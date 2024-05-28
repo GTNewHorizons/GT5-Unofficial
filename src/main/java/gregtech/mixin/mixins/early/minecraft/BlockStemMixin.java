@@ -1,4 +1,4 @@
-package gregtech.mixin.mixins.minecraft;
+package gregtech.mixin.mixins.early.minecraft;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStem;
