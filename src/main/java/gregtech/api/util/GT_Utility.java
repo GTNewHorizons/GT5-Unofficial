@@ -11,7 +11,7 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.Materials.FLUID_MAP;
 import static gregtech.api.enums.Mods.Translocator;
-import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
+import static gregtech.common.GT_UndergroundFluid.readUndergroundFluidInformation;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
 import static net.minecraftforge.common.util.ForgeDirection.NORTH;
@@ -55,6 +55,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.common.GT_UndergroundFluid;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
@@ -3548,7 +3549,7 @@ public class GT_Utility {
 
     private static void addUndergroundFluidInfo(EntityPlayer aPlayer, ArrayList<String> tList, Chunk currentChunk) {
         if (aPlayer.capabilities.isCreativeMode) {
-            final FluidStack tFluid = undergroundOilReadInformation(currentChunk); // -# to only read
+            final FluidStack tFluid = GT_UndergroundFluid.readUndergroundFluidInformation(currentChunk); // -# to only read
             if (tFluid != null) tList.add(
                 EnumChatFormatting.GOLD + tFluid.getLocalizedName()
                     + EnumChatFormatting.RESET

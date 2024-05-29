@@ -11,13 +11,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_OilDrillInfinite extends GT_MetaTileEntity_OilDrillBase {
+public class GT_MetaTileEntity_UndergroundFluidDrillInfinite extends GT_MetaTileEntity_UndergroundFluidDrillBase {
 
-    public GT_MetaTileEntity_OilDrillInfinite(int aID, String aName, String aNameRegional) {
+    public GT_MetaTileEntity_UndergroundFluidDrillInfinite(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_OilDrillInfinite(String aName) {
+    public GT_MetaTileEntity_UndergroundFluidDrillInfinite(String aName) {
         super(aName);
     }
 
@@ -46,13 +46,13 @@ public class GT_MetaTileEntity_OilDrillInfinite extends GT_MetaTileEntity_OilDri
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_OilDrillInfinite(mName);
+        return new GT_MetaTileEntity_UndergroundFluidDrillInfinite(mName);
     }
 
     @Override
-    protected FluidStack pumpOil(float speed, boolean simulate) {
+    protected FluidStack pumpFluid(float speed, boolean simulate) {
         // always simulate to not deplete vein
-        return super.pumpOil(speed, true);
+        return super.pumpFluid(speed, true);
     }
 
     @Override

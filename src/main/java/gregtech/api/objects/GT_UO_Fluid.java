@@ -1,6 +1,6 @@
 package gregtech.api.objects;
 
-import static gregtech.common.GT_UndergroundOil.DIVIDER;
+import static gregtech.common.GT_UndergroundFluid.DIVIDER;
 
 import java.util.Random;
 

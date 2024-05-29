@@ -16,13 +16,14 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER_GLOW;
-import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
+import static gregtech.common.GT_UndergroundFluid.readUndergroundFluidInformation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import gregtech.common.GT_UndergroundFluid;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -214,7 +215,7 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
                         for (int j = 0; j < oilfieldSize; j++) {
                             Chunk tChunk = getBaseMetaTileEntity().getWorld()
                                 .getChunkFromChunkCoords(xChunk + i + x * oilfieldSize, zChunk + j + z * oilfieldSize);
-                            FluidStack tFluid = undergroundOilReadInformation(tChunk);
+                            FluidStack tFluid = GT_UndergroundFluid.readUndergroundFluidInformation(tChunk);
                             if (tFluid != null) {
                                 if (tFluid.amount > max) max = tFluid.amount;
                                 if (tFluid.amount < min) min = tFluid.amount;

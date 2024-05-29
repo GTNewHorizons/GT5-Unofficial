@@ -3068,7 +3068,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     @SubscribeEvent
     public void handleChunkLoadEvent(ChunkDataEvent.Load event) {
-        GT_UndergroundOil.migrate(event);
+        GT_UndergroundFluid.migrate(event);
         GT_Pollution.migrate(event);
     }
 

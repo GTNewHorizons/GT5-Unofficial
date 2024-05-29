@@ -1,55 +1,53 @@
 package gregtech.common.tileentities.machines.multi;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_OilDrill2 extends GT_MetaTileEntity_OilDrillBase {
+public class GT_MetaTileEntity_UndergroundFluidDrill1 extends GT_MetaTileEntity_UndergroundFluidDrillBase {
 
-    public GT_MetaTileEntity_OilDrill2(int aID, String aName, String aNameRegional) {
+    public GT_MetaTileEntity_UndergroundFluidDrill1(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_OilDrill2(String aName) {
+    public GT_MetaTileEntity_UndergroundFluidDrill1(String aName) {
         super(aName);
     }
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        return createTooltip("II");
+        return createTooltip("I");
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_OilDrill2(mName);
+        return new GT_MetaTileEntity_UndergroundFluidDrill1(mName);
     }
 
     @Override
     protected ItemList getCasingBlockItem() {
-        return ItemList.Casing_CleanStainlessSteel;
+        return ItemList.Casing_SolidSteel;
     }
 
     @Override
     protected Materials getFrameMaterial() {
-        return Materials.StainlessSteel;
+        return Materials.Steel;
     }
 
     @Override
     protected int getCasingTextureIndex() {
-        return GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 1);
+        return 16;
     }
 
     @Override
     protected int getRangeInChunks() {
-        return 2;
+        return 1;
     }
 
     @Override
     protected int getMinTier() {
-        return 3;
+        return 2;
     }
 }

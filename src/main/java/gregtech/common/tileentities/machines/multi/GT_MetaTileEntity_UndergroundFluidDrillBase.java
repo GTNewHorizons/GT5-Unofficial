@@ -6,13 +6,13 @@ import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.GT_Values.debugDriller;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_UNDERGROUND_FLUID_DRILL;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_UNDERGROUND_FLUID_DRILL_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_UNDERGROUND_FLUID_DRILL_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_UNDERGROUND_FLUID_DRILL_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
-import static gregtech.common.GT_UndergroundOil.undergroundOil;
-import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
+import static gregtech.common.GT_UndergroundFluid.undergroundFluid;
+import static gregtech.common.GT_UndergroundFluid.readUndergroundFluidInformation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.annotation.Nonnegative;
 
+import gregtech.common.GT_UndergroundFluid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -57,19 +58,19 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ValidationResult;
 import gregtech.api.util.ValidationType;
 
-public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_DrillerBase implements IMetricsExporter {
+public abstract class GT_MetaTileEntity_UndergroundFluidDrillBase extends GT_MetaTileEntity_DrillerBase implements IMetricsExporter {
 
-    private final ArrayList<Chunk> mOilFieldChunks = new ArrayList<>();
-    private int mOilId = 0;
-    private int mOilFlow = 0;
+    private final ArrayList<Chunk> fluidChunksToExtractFrom = new ArrayList<>();
+    private int fluidToPumpId = 0;
+    private int fluidFlowRate = 0;
 
     private int chunkRangeConfig = getRangeInChunks();
 
-    public GT_MetaTileEntity_OilDrillBase(int aID, String aName, String aNameRegional) {
+    public GT_MetaTileEntity_UndergroundFluidDrillBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_OilDrillBase(String aName) {
+    public GT_MetaTileEntity_UndergroundFluidDrillBase(String aName) {
         super(aName);
     }
 
@@ -78,20 +79,20 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
             if (aActive) return new ITexture[] { getCasingTextureForId(casingTextureIndex), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_DRILL_ACTIVE)
+                .addIcon(OVERLAY_FRONT_UNDERGROUND_FLUID_DRILL_ACTIVE)
                 .extFacing()
                 .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_DRILL_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_FRONT_UNDERGROUND_FLUID_DRILL_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
             return new ITexture[] { getCasingTextureForId(casingTextureIndex), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_DRILL)
+                .addIcon(OVERLAY_FRONT_UNDERGROUND_FLUID_DRILL)
                 .extFacing()
                 .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_DRILL_GLOW)
+                    .addIcon(OVERLAY_FRONT_UNDERGROUND_FLUID_DRILL_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
@@ -102,14 +103,14 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("mOilId", mOilId);
+        aNBT.setInteger("mOilId", fluidToPumpId);
         aNBT.setInteger("chunkRangeConfig", chunkRangeConfig);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mOilId = aNBT.getInteger("mOilId");
+        fluidToPumpId = aNBT.getInteger("mOilId");
         if (aNBT.hasKey("chunkRangeConfig")) chunkRangeConfig = aNBT.getInteger("chunkRangeConfig");
     }
 
@@ -119,10 +120,10 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
 
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Pump")
-            .addInfo("Controller Block for the Oil/Gas/Fluid Drilling Rig " + (tierSuffix != null ? tierSuffix : ""))
-            .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
-            .addInfo("Use a Screwdriver to configure range")
-            .addInfo("Use Programmed Circuits to ignore near exhausted oil field")
+            .addInfo("Controller Block for the Underground Fluid Drilling Rig " + (tierSuffix != null ? tierSuffix : ""))
+            .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks.")
+            .addInfo("Use a Screwdriver to configure range.")
+            .addInfo("Use Programmed Circuits to ignore near exhausted fluid fields.")
             .addInfo("If total circuit # is greater than output amount it will halt. If it worked right.") // doesn't
             // work
             .addSeparator()
@@ -156,7 +157,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
             }
             if (chunkRangeConfig > getRangeInChunks()) chunkRangeConfig = 1;
         }
-        if (oldChunkRange != chunkRangeConfig) mOilFieldChunks.clear();
+        if (oldChunkRange != chunkRangeConfig) fluidChunksToExtractFrom.clear();
         GT_Utility.sendChatToPlayer(
             aPlayer,
             StatCollector.translateToLocal("GT5U.machines.workareaset") + " "
@@ -214,7 +215,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
                 mWorkChunkNeedsReload = false;
             }
             float speed = computeSpeed();
-            ValidationResult<FluidStack> pumpResult = tryPumpOil(speed);
+            ValidationResult<FluidStack> pumpResult = tryPumpFluid(speed);
             if (pumpResult.getType() != ValidationType.VALID) {
                 mEUt = 0;
                 mMaxProgresstime = 0;
@@ -234,19 +235,17 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
     }
 
     private boolean tryFillChunkList() {
-        FluidStack tFluid, tOil;
-        if (mOilId <= 0) {
-            tFluid = undergroundOilReadInformation(getBaseMetaTileEntity());
-            if (tFluid == null) return false;
-            mOilId = tFluid.getFluidID();
+        FluidStack fluidStack;
+        if (fluidToPumpId <= 0) {
+            fluidStack = readUndergroundFluidInformation(getBaseMetaTileEntity());
+            if (fluidStack == null) return false;
+            fluidToPumpId = fluidStack.getFluidID();
         }
         if (debugDriller) {
-            GT_Log.out.println(" Driller on  fluid = " + mOilId);
+            GT_Log.out.println(" Driller on  fluid = " + fluidToPumpId);
         }
 
-        tOil = new FluidStack(FluidRegistry.getFluid(mOilId), 0);
-
-        if (mOilFieldChunks.isEmpty()) {
+        if (fluidChunksToExtractFrom.isEmpty()) {
             Chunk tChunk = getBaseMetaTileEntity().getWorld()
                 .getChunkFromBlockCoords(getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getZCoord());
             int range = chunkRangeConfig;
@@ -271,36 +270,36 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
                     }
                     tChunk = getBaseMetaTileEntity().getWorld()
                         .getChunkFromChunkCoords(xChunk + i, zChunk + j);
-                    tFluid = undergroundOilReadInformation(tChunk);
+                    fluidStack = GT_UndergroundFluid.readUndergroundFluidInformation(tChunk);
                     if (debugDriller) {
                         GT_Log.out.println(
-                            " Fluid in chunk = " + tFluid.getFluid()
+                            " Fluid in chunk = " + fluidStack.getFluid()
                                 .getID());
                     }
-                    if (tOil.isFluidEqual(tFluid) && tFluid.amount > 0) {
-                        mOilFieldChunks.add(tChunk);
+                    if (fluidStack.amount > 0) {
+                        fluidChunksToExtractFrom.add(tChunk);
                         if (debugDriller) {
-                            GT_Log.out.println(" Matching fluid, quantity = " + tFluid.amount);
+                            GT_Log.out.println(" Matching fluid, quantity = " + fluidStack.amount);
                         }
                     }
                 }
             }
         }
         if (debugDriller) {
-            GT_Log.out.println("mOilFieldChunks.size = " + mOilFieldChunks.size());
+            GT_Log.out.println("mUndergroundFluidFieldChunks.size = " + fluidChunksToExtractFrom.size());
         }
-        return !mOilFieldChunks.isEmpty();
+        return !fluidChunksToExtractFrom.isEmpty();
     }
 
     /**
-     * Tries to pump oil, accounting for output space if void protection is enabled.
+     * Tries to pump fluid, accounting for output space if void protection is enabled.
      * <p>
      * If pumped fluid will not fit in output hatches, it returns a result with INVALID.
      * <p>
      * If vein is depleted, it returns a result with VALID and null fluid.
      */
-    protected ValidationResult<FluidStack> tryPumpOil(float speed) {
-        if (mOilId <= 0) return null;
+    protected ValidationResult<FluidStack> tryPumpFluid(float speed) {
+        if (fluidToPumpId <= 0) return null;
         if (debugDriller) {
             GT_Log.out.println(" pump speed = " + speed);
         }
@@ -308,32 +307,32 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
         // Even though it works fine without this check,
         // it can save tiny amount of CPU time when void protection is disabled
         if (protectsExcessFluid()) {
-            FluidStack simulatedOil = pumpOil(speed, true);
-            if (!canOutputAll(new FluidStack[] { simulatedOil })) {
+            FluidStack simulatedFluid = pumpFluid(speed, true);
+            if (!canOutputAll(new FluidStack[] { simulatedFluid })) {
                 return ValidationResult.of(ValidationType.INVALID, null);
             }
         }
 
-        FluidStack pumpedOil = pumpOil(speed, false);
-        mOilFlow = pumpedOil.amount;
-        return ValidationResult.of(ValidationType.VALID, pumpedOil.amount == 0 ? null : pumpedOil);
+        FluidStack pumpedFluid = pumpFluid(speed, false);
+        fluidFlowRate = pumpedFluid.amount;
+        return ValidationResult.of(ValidationType.VALID, pumpedFluid.amount == 0 ? null : pumpedFluid);
     }
 
     /**
-     * @param speed    Speed to pump oil
+     * @param speed    Speed to pump fluid
      * @param simulate If true, it actually does not consume vein
      * @return Fluid pumped
      */
-    protected FluidStack pumpOil(@Nonnegative float speed, boolean simulate) {
+    protected FluidStack pumpFluid(@Nonnegative float speed, boolean simulate) {
         if (speed < 0) {
             throw new IllegalArgumentException("Don't pass negative speed");
         }
 
         ArrayList<Chunk> emptyChunks = new ArrayList<>();
-        FluidStack returnOil = new FluidStack(FluidRegistry.getFluid(mOilId), 0);
+        FluidStack returnedFluidStack = new FluidStack(FluidRegistry.getFluid(fluidToPumpId), 0);
 
-        for (Chunk tChunk : mOilFieldChunks) {
-            FluidStack pumped = undergroundOil(tChunk, simulate ? -speed : speed);
+        for (Chunk tChunk : fluidChunksToExtractFrom) {
+            FluidStack pumped = GT_UndergroundFluid.undergroundFluid(tChunk, simulate ? -speed : speed);
             if (debugDriller) {
                 GT_Log.out.println(
                     " chunkX = " + tChunk.getChunkCoordIntPair().chunkXPos
@@ -349,14 +348,14 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
                 emptyChunks.add(tChunk);
                 continue;
             }
-            if (returnOil.isFluidEqual(pumped)) {
-                returnOil.amount += pumped.amount;
+            if (returnedFluidStack.isFluidEqual(pumped)) {
+                returnedFluidStack.amount += pumped.amount;
             }
         }
         for (Chunk tChunk : emptyChunks) {
-            mOilFieldChunks.remove(tChunk);
+            fluidChunksToExtractFrom.remove(tChunk);
         }
-        return returnOil;
+        return returnedFluidStack;
     }
 
     @Override
@@ -404,7 +403,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
                         "GT5U.gui.text.pump_rate.1",
                         EnumChatFormatting.AQUA + numberFormat.format(getFlowRatePerTick()))
                         + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"),
-                    mOilFlow + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"));
+                    fluidFlowRate + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"));
             } else {
                 builder.add(failureReason);
             }
@@ -425,13 +424,13 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
     }
 
     protected int getFlowRatePerTick() {
-        return this.mMaxProgresstime > 0 ? (mOilFlow / this.mMaxProgresstime) : 0;
+        return this.mMaxProgresstime > 0 ? (fluidFlowRate / this.mMaxProgresstime) : 0;
     }
 
     @NotNull
     private String getFluidName() {
-        if (mOilId > 0) {
-            final Fluid fluid = FluidRegistry.getFluid(mOilId);
+        if (fluidToPumpId > 0) {
+            final Fluid fluid = FluidRegistry.getFluid(fluidToPumpId);
             return fluid.getLocalizedName(new FluidStack(fluid, 0));
         }
         return "None";
@@ -479,7 +478,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
             .widget(new FakeSyncWidget.IntegerSyncer(() -> workState, newInt -> workState = newInt))
             .widget(new FakeSyncWidget.StringSyncer(this::getFluidName, newString -> clientFluidType = newString))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getFlowRatePerTick, newInt -> clientFlowPerTick = newInt))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> mOilFlow, newInt -> clientFlowPerOperation = newInt));
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> fluidFlowRate, newInt -> clientFlowPerOperation = newInt));
     }
 
     @Override

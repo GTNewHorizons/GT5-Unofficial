@@ -29,7 +29,7 @@ import gregtech.api.util.GT_ChunkAssociatedData;
 /**
  * Created by Tec on 29.04.2017.
  */
-public class GT_UndergroundOil {
+public class GT_UndergroundFluid {
 
     public static final short DIVIDER = 5000;
     private static final GT_UndergroundOilStore STORAGE = new GT_UndergroundOilStore();
@@ -38,10 +38,10 @@ public class GT_UndergroundOil {
     /**
      * Effectively just call {@code undergroundOil(te, -1)} for you
      *
-     * @see #undergroundOil(World, int, int, float)
+     * @see #undergroundFluid(World, int, int, float)
      */
-    public static FluidStack undergroundOilReadInformation(IGregTechTileEntity te) {
-        return undergroundOil(
+    public static FluidStack readUndergroundFluidInformation(IGregTechTileEntity te) {
+        return undergroundFluid(
             te.getWorld()
                 .getChunkFromBlockCoords(te.getXCoord(), te.getZCoord()),
             -1);
@@ -50,15 +50,15 @@ public class GT_UndergroundOil {
     /**
      * Effectively just call {@code undergroundOil(chunk, -1)} for you
      *
-     * @see #undergroundOil(World, int, int, float)
+     * @see #undergroundFluid(World, int, int, float)
      */
-    public static FluidStack undergroundOilReadInformation(Chunk chunk) {
-        return undergroundOil(chunk, -1);
+    public static FluidStack readUndergroundFluidInformation(Chunk chunk) {
+        return undergroundFluid(chunk, -1);
     }
 
-    /** @see #undergroundOil(World, int, int, float) */
-    public static FluidStack undergroundOil(IGregTechTileEntity te, float readOrDrainCoefficient) {
-        return undergroundOil(
+    /** @see #undergroundFluid(World, int, int, float) */
+    public static FluidStack undergroundFluid(IGregTechTileEntity te, float readOrDrainCoefficient) {
+        return undergroundFluid(
             te.getWorld()
                 .getChunkFromBlockCoords(te.getXCoord(), te.getZCoord()),
             readOrDrainCoefficient);
@@ -66,9 +66,9 @@ public class GT_UndergroundOil {
 
     // Returns whole content for information purposes -> when drainSpeedCoefficient < 0
     // Else returns extracted fluidStack if amount > 0, or null otherwise
-    /** @see #undergroundOil(World, int, int, float) */
-    public static FluidStack undergroundOil(Chunk chunk, float readOrDrainCoefficient) {
-        return undergroundOil(chunk.worldObj, chunk.xPosition, chunk.zPosition, readOrDrainCoefficient);
+    /** @see #undergroundFluid(World, int, int, float) */
+    public static FluidStack undergroundFluid(Chunk chunk, float readOrDrainCoefficient) {
+        return undergroundFluid(chunk.worldObj, chunk.xPosition, chunk.zPosition, readOrDrainCoefficient);
     }
 
     /**
@@ -81,7 +81,7 @@ public class GT_UndergroundOil {
      *                               output
      * @return null if nothing here, or depleted already, or a client side world
      */
-    public static FluidStack undergroundOil(World w, int chunkX, int chunkZ, float readOrDrainCoefficient) {
+    public static FluidStack undergroundFluid(World w, int chunkX, int chunkZ, float readOrDrainCoefficient) {
         if (w.isRemote) return null; // troublemakers go away
         ChunkData chunkData = STORAGE.get(w, chunkX, chunkZ);
         if (chunkData.getVein() == null || chunkData.getFluid() == null) // nothing here...
@@ -193,7 +193,7 @@ public class GT_UndergroundOil {
         private static final WeakHashMap<GT_UO_Fluid, Integer> hashes = new WeakHashMap<>();
 
         private GT_UndergroundOilStore() {
-            super("UO", GT_UndergroundOil.ChunkData.class, 64, (byte) 0, false);
+            super("UO", GT_UndergroundFluid.ChunkData.class, 64, (byte) 0, false);
         }
 
         @Override
@@ -211,11 +211,11 @@ public class GT_UndergroundOil {
         }
 
         @Override
-        protected GT_UndergroundOil.ChunkData readElement(DataInput input, int version, World world, int chunkX,
-            int chunkZ) throws IOException {
+        protected GT_UndergroundFluid.ChunkData readElement(DataInput input, int version, World world, int chunkX,
+                                                            int chunkZ) throws IOException {
             /* see class javadoc for explanation */
             if (version != 0) throw new IOException("Region file corrupted");
-            GT_UndergroundOil.ChunkData pristine = createElement(world, chunkX, chunkZ);
+            GT_UndergroundFluid.ChunkData pristine = createElement(world, chunkX, chunkZ);
             int hash = input.readInt();
             String veinKey = hash != 0 ? input.readUTF() : null;
             int amount = hash != 0 ? input.readInt() : -1;
@@ -224,7 +224,7 @@ public class GT_UndergroundOil {
                 return pristine;
             }
             if (hash == 0) return NIL_FLUID_STACK;
-            return new GT_UndergroundOil.ChunkData(
+            return new GT_UndergroundFluid.ChunkData(
                 amount,
                 GT_Mod.gregtechproxy.mUndergroundOil.GetDimension(world.provider.dimensionId)
                     .getUOFluid(veinKey),
@@ -232,12 +232,12 @@ public class GT_UndergroundOil {
         }
 
         @Override
-        protected GT_UndergroundOil.ChunkData createElement(World world, int chunkX, int chunkZ) {
+        protected GT_UndergroundFluid.ChunkData createElement(World world, int chunkX, int chunkZ) {
             Pair<GT_UO_Fluid, Integer> pristine = getPristineAmount(world, chunkX, chunkZ);
             if (pristine == null) return NIL_FLUID_STACK;
             int dimensionId = world.provider.dimensionId;
             GT_UO_Dimension dimension = GT_Mod.gregtechproxy.mUndergroundOil.GetDimension(dimensionId);
-            return new GT_UndergroundOil.ChunkData(
+            return new GT_UndergroundFluid.ChunkData(
                 pristine.getRight(),
                 pristine.getLeft(),
                 dimension.getUOFluidKey(pristine.getLeft()),

@@ -564,11 +564,11 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbin
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiFurnace;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_NanoForge;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilCracker;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill1;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill2;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill3;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill4;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrillInfinite;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_UndergroundFluidDrill1;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_UndergroundFluidDrill2;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_UndergroundFluidDrill3;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_UndergroundFluidDrill4;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_UndergroundFluidDrillInfinite;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OreDrillingPlant1;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OreDrillingPlant2;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OreDrillingPlant3;
@@ -939,27 +939,27 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
         // Converter recipes in case you had old one lying around
         ItemList.OilDrill1.set(
-            new GT_MetaTileEntity_OilDrill1(
+            new GT_MetaTileEntity_UndergroundFluidDrill1(
                 MULTIBLOCK_PUMP_MKI_CONTROLLER.ID,
                 "multimachine.oildrill1",
                 "Oil/Gas/Fluid Drilling Rig").getStackForm(1));
         ItemList.OilDrill2.set(
-            new GT_MetaTileEntity_OilDrill2(
+            new GT_MetaTileEntity_UndergroundFluidDrill2(
                 MULTILOCK_PUMP_MKII_CONTROLLER.ID,
                 "multimachine.oildrill2",
                 "Oil/Gas/Fluid Drilling Rig II").getStackForm(1));
         ItemList.OilDrill3.set(
-            new GT_MetaTileEntity_OilDrill3(
+            new GT_MetaTileEntity_UndergroundFluidDrill3(
                 MULTILOCK_PUMP_MKIII_CONTROLLER.ID,
                 "multimachine.oildrill3",
                 "Oil/Gas/Fluid Drilling Rig III").getStackForm(1));
         ItemList.OilDrill4.set(
-            new GT_MetaTileEntity_OilDrill4(
+            new GT_MetaTileEntity_UndergroundFluidDrill4(
                 MULTILOCK_PUMP_MKIV_CONTROLLER.ID,
                 "multimachine.oildrill4",
                 "Oil/Gas/Fluid Drilling Rig IV").getStackForm(1));
         ItemList.OilDrillInfinite.set(
-            new GT_MetaTileEntity_OilDrillInfinite(
+            new GT_MetaTileEntity_UndergroundFluidDrillInfinite(
                 MULTIBLOCK_PUMP_INFINITE_CONTROLLER.ID,
                 "multimachine.oildrillinfinite",
                 "Infinite Oil/Gas/Fluid Drilling Rig").getStackForm(1));

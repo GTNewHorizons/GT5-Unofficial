@@ -8,13 +8,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_OilDrill4 extends GT_MetaTileEntity_OilDrillBase {
+public class GT_MetaTileEntity_UndergroundFluidDrill4 extends GT_MetaTileEntity_UndergroundFluidDrillBase {
 
-    public GT_MetaTileEntity_OilDrill4(int aID, String aName, String aNameRegional) {
+    public GT_MetaTileEntity_UndergroundFluidDrill4(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_OilDrill4(String aName) {
+    public GT_MetaTileEntity_UndergroundFluidDrill4(String aName) {
         super(aName);
     }
 
@@ -25,7 +25,7 @@ public class GT_MetaTileEntity_OilDrill4 extends GT_MetaTileEntity_OilDrillBase 
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_OilDrill4(mName);
+        return new GT_MetaTileEntity_UndergroundFluidDrill4(mName);
     }
 
     @Override
