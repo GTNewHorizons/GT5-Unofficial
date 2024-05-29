@@ -12,6 +12,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.IFluidBlock;
 
@@ -72,6 +73,18 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
 
     private void initRecipeResults() {
         addResultMessage(STATE_UPWARD, true, "backfiller_working");
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("liquidenabled", mLiquidEnabled);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey("liquidenabled")) mLiquidEnabled = aNBT.getBoolean("liquidenabled");
     }
 
     protected GT_Multiblock_Tooltip_Builder createTooltip(String aStructureName) {
@@ -167,7 +180,8 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
                 return false;
             }
         }
-        if (aBlock.getMaterial().isSolid()) {
+        if (aBlock.getMaterial()
+            .isSolid()) {
             return false;
         }
         return GT_Utility
