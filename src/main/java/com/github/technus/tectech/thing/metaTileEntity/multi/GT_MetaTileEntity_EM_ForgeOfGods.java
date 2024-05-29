@@ -168,7 +168,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         if (mMachine) return -1;
         int realBudget = elementBudget >= 1000 ? elementBudget : Math.min(1000, elementBudget * 5);
         // 1000 blocks max per placement.
-        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 63, 20, 1, realBudget, env, false, true);
+        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 63, 14, 1, realBudget, env, false, true);
         if (isUpgradeActive(26) && stackSize.stackSize > 1) {
             built += survivialBuildPiece(
                 STRUCTURE_PIECE_SECOND_RING,
@@ -258,10 +258,10 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         structureBuild_EM(STRUCTURE_PIECE_MAIN, 63, 14, 1, stackSize, hintsOnly);
-        if (isUpgradeActive(26) && stackSize.stackSize > 1) {
+        if (stackSize.stackSize > 1) {
             buildPiece(STRUCTURE_PIECE_SECOND_RING, stackSize, hintsOnly, 55, 11, -67);
         }
-        if (isUpgradeActive(29) && stackSize.stackSize > 2) {
+        if (stackSize.stackSize > 2) {
             buildPiece(STRUCTURE_PIECE_THIRD_RING, stackSize, hintsOnly, 47, 13, -76);
         }
     }
