@@ -157,12 +157,19 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
 
     private boolean isRefillableBlock(int aX, int aY, int aZ) {
         IGregTechTileEntity aBaseTile = getBaseMetaTileEntity();
-        Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
-        if (mLiquidEnabled) {
-            if (!aBaseTile.getBlock(aX, aY, aZ)
-                .isAir(aBaseTile.getWorld(), aX, aY, aZ) && !isFluid(aBlock)) return false;
-        } else if (!aBaseTile.getBlock(aX, aY, aZ)
-            .isAir(aBaseTile.getWorld(), aX, aY, aZ)) return false;
+        Block aBlock = aBaseTile.getBlock(aX, aY, aZ);
+        if (!aBlock.isAir(aBaseTile.getWorld(), aX, aY, aZ)) {
+            if (mLiquidEnabled) {
+                if (!isFluid(aBlock)) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        if (aBlock.getMaterial().isSolid()) {
+            return false;
+        }
         return GT_Utility
             .setBlockByFakePlayer(getFakePlayer(aBaseTile), aX, aY, aZ, GregTech_API.sBlockConcretes, 8, true);
     }
