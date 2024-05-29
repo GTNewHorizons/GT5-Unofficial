@@ -43,6 +43,11 @@ public enum Mixin {
             .setApplyIf(() -> ConfigHandler.enabledPatches[3])
             .setPhase(Phase.EARLY)
             .setSide(Side.BOTH)),
+    BlockStemMixin(new Builder("Stem Crop Block Accessor").addMixinClasses("minecraft.BlockStemMixin")
+        .addTargetedMod(VANILLA)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.EARLY)
+        .setSide(Side.BOTH)),
     // Extra utilities
     RemoveLastMilleniumRain(new Builder("Remove rain from the Last Millenium (Extra Utilities)")
         .addMixinClasses("xu.WorldProviderEndOfTimeMixin")
@@ -62,7 +67,7 @@ public enum Mixin {
         .addTargetedMod(THAUMCRAFT)
         .setApplyIf(() -> ConfigHandler.enabledPatches[2])
         .setPhase(Phase.LATE)
-        .setSide(Side.BOTH)),;
+        .setSide(Side.BOTH));
 
     public static final Logger LOGGER = LogManager.getLogger("GregTech-Mixin");
 
