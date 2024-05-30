@@ -76,6 +76,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import forestry.plugins.PluginCore;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -83,6 +84,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
+import ic2.core.Ic2Items;
 import kubatech.api.enums.ItemList;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_DEFusionCrafter;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeEntityCrusher;
@@ -154,6 +156,15 @@ public class RecipeLoader {
                         ? GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 1, 11104) // IV World Accelerator
                         : gregtech.api.enums.ItemList.Robot_Arm_IV,
                     'Z', OrePrefixes.circuit.get(Materials.Ultimate) });
+
+            // Vanilla should always be loaded
+            GT_MetaTileEntity_ExtremeIndustrialGreenhouse.addFertilizerItem(new ItemStack(Items.dye, 1, 15));
+            // IC2 should always be loaded
+            GT_MetaTileEntity_ExtremeIndustrialGreenhouse.addFertilizerItem(Ic2Items.fertilizer);
+            if (Forestry.isModLoaded()) {
+                GT_MetaTileEntity_ExtremeIndustrialGreenhouse
+                    .addFertilizerItem(PluginCore.items.fertilizerCompound.getItemStack(1));
+            }
         }
         if (registerMTEUsingID(
             5_001,
