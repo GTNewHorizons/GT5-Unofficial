@@ -49,23 +49,27 @@ public class EIGIC2Bucket extends EIGBucket {
     private static final boolean IS_ON_WET_FARMLAND = true;
     /**
      * The amount of water stored in the crop stick when hydration is turned on.
+     * bounds of 0 to 200 inclusive
      */
-    private static final int WATER_STORAGE_VALUE = Math.max(0, Math.min(200, 200));
+    private static final int WATER_STORAGE_VALUE = 200;
     // nutrient factors
     /**
      * The number of blocks of dirt we assume are under. Subtract 1 if we have a block under our crop.
+     * bounds of 0 to 3, inclusive
      */
-    private static final int NUMBER_OF_DIRT_BLOCKS_UNDER = Math.max(0, Math.min(3, 0));
+    private static final int NUMBER_OF_DIRT_BLOCKS_UNDER = 0;
     /**
      * The amount of fertilizer stored in the crop stick
+     * bounds of 0 to 200, inclusive
      */
-    private static final int FERTILIZER_STORAGE_VALUE = Math.max(0, Math.min(200, 0));
+    private static final int FERTILIZER_STORAGE_VALUE = 0;
     // air quality factors
     /**
      * How many blocks in a 3x3 area centered on the crop do not contain solid blocks or other crops.
      * Max value is 8 because the crop always counts itself.
+     * bound of 0-8 inclusive
      */
-    private static final int CROP_OBSTRUCTION_VALUE = Math.max(0, Math.min(8, 9 - 4));
+    private static final int CROP_OBSTRUCTION_VALUE = 5;
     /**
      * Being able to see the sky gives a +2 bonus to the air quality
      */
