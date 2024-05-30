@@ -720,7 +720,6 @@ public class EIGIC2Bucket extends EIGBucket {
      * @return The humidity environmental value at the controller's location.
      */
     public static byte getHumidity(GT_MetaTileEntity_ExtremeIndustrialGreenhouse greenhouse, boolean useNoHumidity) {
-        // TODO: Check if we may want to have the slot remember whether humidity is turned on or not.
         if (useNoHumidity) return 0;
         int value = Crops.instance.getHumidityBiomeBonus(
             greenhouse.getBaseMetaTileEntity()

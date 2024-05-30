@@ -146,7 +146,7 @@ public class EIGDropTable {
     }
 
     /**
-     * Gets the amout for a specific item.
+     * Gets the amount for a specific item.
      *
      * @param item The item to look for.
      * @return 0 if nothing is found else a positive value.
@@ -156,6 +156,24 @@ public class EIGDropTable {
             return this.dropTable.get(item);
         }
         return 0;
+    }
+
+    /**
+     * Sets the amount for a specific item.
+     *
+     * @param item The item to look for.
+     */
+    public void setItemAmount(ItemStack item, double value) {
+        this.dropTable.put(item, value);
+    }
+
+    /**
+     * Removes an item from the drop table
+     *
+     * @param item The item to remove from the drop table.
+     */
+    public void removeItem(ItemStack item) {
+        this.dropTable.remove(item);
     }
 
     /**
