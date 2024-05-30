@@ -83,4 +83,14 @@ dependencies {
     functionalTestImplementation('org.junit.platform:junit-platform-reporting')
 
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:DuraDisplay:1.2.3:dev")
+
+
+    // For testing Water Purification Plant
+    devOnlyNonPublishable("com.github.GTNewHorizons:ServerUtilities:2.0.35:dev")
+    devOnlyNonPublishable("com.github.GTNewHorizons:TecTech:5.3.45:dev") { transitive = false }
+    devOnlyNonPublishable("com.github.GTNewHorizons:Schematica:1.11.1-GTNH:dev")
+    devOnlyNonPublishable("com.github.GTNewHorizons:worldedit-gtnh:v0.0.5:dev")
+    api('com.github.GTNewHorizons:Yamcl:0.6.0:dev') { transitive = false }
+    implementation('com.github.GTNewHorizons:GTNEIOrePlugin:1.2.0:dev') { transitive = false }
+    devOnlyNonPublishable("com.github.GTNewHorizons:Chisel:2.15.0-GTNH:dev")
 }

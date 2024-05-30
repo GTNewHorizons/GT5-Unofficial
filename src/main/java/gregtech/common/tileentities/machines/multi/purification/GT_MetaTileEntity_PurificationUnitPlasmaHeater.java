@@ -80,7 +80,7 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
         Cooling
     }
 
-    private CycleState state;
+    private CycleState state = CycleState.Heating;
 
     // A cycle is 30s at shortest, a purification plant cycle is 120s. 33% chance per heating cycle
     // will give you plenty of room for delay and still get to 99% chance.

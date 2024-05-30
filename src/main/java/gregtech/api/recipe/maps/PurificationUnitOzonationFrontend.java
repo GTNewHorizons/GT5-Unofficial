@@ -25,27 +25,27 @@ public class PurificationUnitOzonationFrontend extends PurificationUnitRecipeMap
             120,
             uiPropertiesBuilder.logoPos(new Pos2d(160, 100))
                 .progressBarTexture(new FallbackableUITexture(GT_UITextures.PROGRESSBAR_OZONATION))
-                .logoPos(new Pos2d(152, 90)),
-            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
+                .logoPos(new Pos2d(152, 97)),
+            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 180)));
     }
 
     @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
         ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(42, 44));
-        positions.add(new Pos2d(80, 60));
+        positions.add(new Pos2d(79, 100));
+        positions.add(new Pos2d(27, 77));
         return positions;
     }
 
     @Override
     public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-        return UIHelper.getGridPositions(itemOutputCount, 80, 20, 2);
+        return UIHelper.getGridPositions(itemOutputCount, 131, 26, 2);
     }
 
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
         ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(116, 44));
+        positions.add(new Pos2d(131, 97));
         return positions;
     }
 }
