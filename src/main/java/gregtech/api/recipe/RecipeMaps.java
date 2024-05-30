@@ -61,6 +61,7 @@ import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.recipe.maps.PrinterBackend;
 import gregtech.api.recipe.maps.PurificationUnitClarifierFrontend;
 import gregtech.api.recipe.maps.PurificationUnitFlocculatorFrontend;
+import gregtech.api.recipe.maps.PurificationUnitOzonationFrontend;
 import gregtech.api.recipe.maps.PurificationUnitPhAdjustmentFrontend;
 import gregtech.api.recipe.maps.RecyclerBackend;
 import gregtech.api.recipe.maps.ReplicatorBackend;
@@ -1177,6 +1178,7 @@ public final class RecipeMaps {
                 .<GT_Recipe, Float>comparing(
                     recipe -> recipe.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f))
                 .thenComparing(GT_Recipe::compareTo))
+        .frontend(PurificationUnitOzonationFrontend::new)
         .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationFlocculationRecipes = RecipeMapBuilder

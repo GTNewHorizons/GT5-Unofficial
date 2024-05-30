@@ -222,10 +222,9 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
                     + " bonus to success chance for every doubling of "
                     + EnumChatFormatting.WHITE
                     + "Ozone Gas.")
-            .addSeparator()
             .addInfo(AuthorNotAPenguin)
-            .beginStructureBlock(9, 10, 5, false)
             .addSeparator()
+            .beginStructureBlock(9, 10, 5, false)
             .addCasingInfoRangeColored(
                 "Ozonation Casing",
                 EnumChatFormatting.GRAY,
