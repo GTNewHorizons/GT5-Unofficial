@@ -320,6 +320,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_FLOCCULATOR
 import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_OZONATION;
 import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_PH_ADJUSTMENT;
 import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_PLASMA_HEATER;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_UV_TREATMENT;
 import static gregtech.api.enums.MetaTileEntityIDs.PYROLYSE_OVEN_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_IV;
@@ -594,6 +595,7 @@ import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntit
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitOzonation;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitPhAdjustment;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitPlasmaHeater;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitUVTreatment;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_pHSensor;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Bronze;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Steel;
@@ -886,6 +888,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 PURIFICATION_UNIT_PLASMA_HEATER.ID,
                 "multimachine.purificationunitplasmaheater",
                 "Plasma Heater Purification Unit").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitUVTreatment.set(
+            new GT_MetaTileEntity_PurificationUnitUVTreatment(
+                PURIFICATION_UNIT_UV_TREATMENT.ID,
+                "multimachine.purificationunituvtreatment",
+                "Ultraviolet Treatment Purification Unit").getStackForm(1L));
         ItemList.Machine_Multi_LargeBoiler_Bronze.set(
             new GT_MetaTileEntity_LargeBoiler_Bronze(
                 LARGE_BRONZE_BOILER_CONTROLLER.ID,

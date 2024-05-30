@@ -16,7 +16,7 @@ import gregtech.api.util.GT_LanguageManager;
 public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
 
     public GT_Block_Casings9() {
-        super(GT_Item_Casings9.class, "gt.blockcasings9", GT_Material_Casings.INSTANCE, 11);
+        super(GT_Item_Casings9.class, "gt.blockcasings9", GT_Material_Casings.INSTANCE, 13);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "PBI Pipe Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Advanced Filter Casing");
         GT_LanguageManager
@@ -34,6 +34,9 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         // todo: ask deleno for non placeholder name
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Ozonation Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Plasma Heating Casing");
+        GT_LanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".11.name", "Naquadria-Reinforced Water Plant Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Ultravioler Laser Emitter");
 
         ItemList.Casing_Pipe_Polybenzimidazole.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Vent_T2.set(new ItemStack(this, 1, 1));
@@ -46,6 +49,8 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         ItemList.BlockHighPressureResistantCasing.set(new ItemStack(this, 1, 8));
         ItemList.BlockOzoneCasing.set(new ItemStack(this, 1, 9));
         ItemList.BlockPlasmaHeatingCasing.set(new ItemStack(this, 1, 10));
+        ItemList.BlockNaquadriaReinforcedWaterPlantCasing.set(new ItemStack(this, 1, 11));
+        ItemList.BlockUltraVioletLaserEmitter.set(new ItemStack(this, 1, 12));
     }
 
     @Override
@@ -68,6 +73,8 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
             case 8 -> Textures.BlockIcons.MACHINE_CASING_HIGH_PRESSURE_RESISTANT.getIcon();
             case 9 -> Textures.BlockIcons.MACHINE_CASING_OZONE.getIcon();
             case 10 -> Textures.BlockIcons.MACHINE_CASING_PLASMA_HEATER.getIcon();
+            case 11 -> Textures.BlockIcons.MACHINE_CASING_NAQUADAH_REINFORCED_WATER_PLANT.getIcon(); // TODO
+            case 12 -> Textures.BlockIcons.MACHINE_CASING_NAQUADAH_REINFORCED_WATER_PLANT.getIcon(); // TODO
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

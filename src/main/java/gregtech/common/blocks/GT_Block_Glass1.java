@@ -22,14 +22,18 @@ import gregtech.api.util.GT_LanguageManager;
 public class GT_Block_Glass1 extends GT_Block_Casings_Abstract {
 
     public GT_Block_Glass1() {
-        super(GT_Item_Glass1.class, "gt.blockglass1", Material.glass, 1);
+        super(GT_Item_Glass1.class, "gt.blockglass1", Material.glass, 2);
         this.opaque = false;
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "pH Resistant Glass");
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".0.tooltip", "Able to resist extreme pH values");
 
+        GT_LanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".1.name", "Neutronium-Coated UV-Resistant Glass");
+
         ItemList.GlassPHResistant.set(new ItemStack(this, 1, 0));
+        ItemList.GlassUVResistant.set(new ItemStack(this, 1, 1));
     }
 
     @Override
@@ -64,6 +68,7 @@ public class GT_Block_Glass1 extends GT_Block_Casings_Abstract {
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.GLASS_PH_RESISTANT.getIcon();
+            case 1 -> Textures.BlockIcons.GLASS_PH_RESISTANT.getIcon(); // TODO
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

@@ -1182,6 +1182,7 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_PurificationUnitPhAdjustment,
     Machine_Multi_PurificationUnitOzonation,
     Machine_Multi_PurificationUnitPlasmaHeater,
+    Machine_Multi_PurificationUnitUVTreatment,
     Machine_LV_AlloySmelter,
     Machine_MV_AlloySmelter,
     Machine_HV_AlloySmelter,
@@ -2050,7 +2051,10 @@ public enum ItemList implements IItemContainer {
     BlockExtremeCorrosionResistantCasing,
     BlockHighPressureResistantCasing,
     BlockOzoneCasing,
-    BlockPlasmaHeatingCasing;
+    BlockPlasmaHeatingCasing,
+    BlockNaquadriaReinforcedWaterPlantCasing,
+    GlassUVResistant,
+    BlockUltraVioletLaserEmitter;
 
     public static final ItemList[] DYE_ONLY_ITEMS = { Color_00, Color_01, Color_02, Color_03, Color_04, Color_05,
         Color_06, Color_07, Color_08, Color_09, Color_10, Color_11, Color_12, Color_13, Color_14, Color_15 },
