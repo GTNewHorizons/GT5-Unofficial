@@ -6,6 +6,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusOutput;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.GregtechMetaTileEntity_SteamCompressor;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.GregtechMetaTileEntity_SteamMacerator;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.GregtechMetaTileEntity_SteamCentrifuge;
 
 public class GregtechSteamMultis {
 
@@ -19,6 +20,10 @@ public class GregtechSteamMultis {
         GregtechItemList.Controller_SteamCompressorMulti.set(
             new GregtechMetaTileEntity_SteamCompressor(31078, "gtpp.multimachine.steam.compressor", "Steam Squasher")
                 .getStackForm(1L));
+        GregtechItemList.Controller_SteamMaceratorMulti.set(
+            new GregtechMetaTileEntity_SteamCentrifuge(31080,"gtpp.multimachine.steam.centrifuge", "Steam Centrifuge")
+                .getStackForm(1));
+
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
             new GT_MetaTileEntity_Hatch_Steam_BusInput(31046, "hatch.input_bus.tier.steam", "Input Bus (Steam)", 0)
