@@ -1,19 +1,22 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.GregTech_API.*;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import javax.annotation.Nonnull;
 
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.multitileentity.multiblock.casing.Glasses;
+import ic2.core.init.BlocksItems;
+import ic2.core.init.InternalName;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import net.minecraft.util.StatCollector;
@@ -39,8 +42,8 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 
 import java.util.function.Supplier;
 
+public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamWasher> implements ISurvivalConstructable {
 
-public class GregtechMetaTileEntity_SteamCentrifuge extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamCentrifuge> implements ISurvivalConstructable {
 
     private String mCasingName = "Solid Steel Machine Casing";
     private String tCasing1 = "Steel Frame Box";
@@ -54,10 +57,9 @@ public class GregtechMetaTileEntity_SteamCentrifuge extends GregtechMeta_SteamMu
 
 
 
-
     @Override
     public String getMachineType() {
-        return "Centrifuge";
+        return "Washer";
     }
     @Override
     public int getMaxParallelRecipes() {
@@ -73,12 +75,10 @@ public class GregtechMetaTileEntity_SteamCentrifuge extends GregtechMeta_SteamMu
 
 
 
-
-
-    public GregtechMetaTileEntity_SteamCentrifuge(String aName) {
+    public GregtechMetaTileEntity_SteamWasher(String aName) {
         super(aName);
     }
-    public GregtechMetaTileEntity_SteamCentrifuge(int aID, String aName, String aNameRegional) {
+    public GregtechMetaTileEntity_SteamWasher(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
     @Override
@@ -87,7 +87,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge extends GregtechMeta_SteamMu
     }
     @Override
     protected GT_RenderedTexture getFrontOverlayActive() {
-        return new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE);
+        return new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE);
     }
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
@@ -99,44 +99,55 @@ public class GregtechMetaTileEntity_SteamCentrifuge extends GregtechMeta_SteamMu
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
     }
     @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        // don't rotate a washer, water will flow out.
+        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
+    }
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntity_SteamCentrifuge(this.mName);
+        return new GregtechMetaTileEntity_SteamWasher(this.mName);
     }
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.centrifugeRecipes;
+        return RecipeMaps.oreWasherRecipes;
     }
 
 
 
 
-    private static IStructureDefinition<GregtechMetaTileEntity_SteamCentrifuge> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<GregtechMetaTileEntity_SteamWasher> STRUCTURE_DEFINITION = null;
     @Override
-    public IStructureDefinition<GregtechMetaTileEntity_SteamCentrifuge> getStructureDefinition() {
+    public IStructureDefinition<GregtechMetaTileEntity_SteamWasher> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_SteamCentrifuge>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_SteamWasher>builder()
                 .addShape(
                     mName,
                     transpose(
                         new String[][]{
-                            {" AAA ","AAAAA","AAAAA","AAAAA"," AAA "},
-                            {"     "," EBE "," BDB "," EBE ","     "},
-                            {"  A  "," ECE ","ACDCA"," ECE ","  A  "},
-                            {" A~A ","AEBEA","ABDBA","AEBEA"," AAA "},
-                            {" AAA ","AAAAA","AAAAA","AAAAA"," AAA "}, }))
-                .addElement('E', ofFrame(Materials.Steel))
+                            {"         ","         "," CCCCCC  ","         ","         "},
+                            {"         ","         "," C    C  ","         ","         "},
+                            {"     AAA ","    A   A"," C  A C A","    A   A","     AAA "},
+                            {"    ADDDA","FAF D   D","AAA D C D","FAF D   D","    ADDDA"},
+                            {"    ADDDA","F~F DEEED","AAA DECED","FAF DEEED","    ADDDA"},
+                            {"    AAAAA","AAA ABBBA","AAA ABABA","AAA ABBBA","    AAAAA"}, }))
+                .addElement('F', ofFrame(Materials.Steel))
                 .addElement('C', ofBlock(getCasingBlock2(), getCasingMeta2()))
-                .addElement('D', ofBlock(getCasingBlock3(),getCasingMeta3()))
+                .addElement('E', ofChain(
+                    isAir(),
+                    ofBlockAnyMeta(Blocks.water),
+                    ofBlockAnyMeta(Blocks.flowing_water),
+                    ofBlockAnyMeta(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater))))
+                .addElement('D', Glasses.chainAllGlasses())
                 .addElement('B', ofBlock(getCasingBlock4(), getCasingMeta4()))
                 .addElement(
                     'A',
                     ofChain(
-                        buildSteamInput(GregtechMetaTileEntity_SteamCentrifuge.class)
+                        buildSteamInput(GregtechMetaTileEntity_SteamWasher.class)
                             .casingIndex(CASING_TEXTURE_ID)
                             .dot(1)
                             .build(),
-                        buildHatchAdder(GregtechMetaTileEntity_SteamCentrifuge.class)
-                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
+                        buildHatchAdder(GregtechMetaTileEntity_SteamWasher.class)
+                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam, InputHatch)
                             .casingIndex(CASING_TEXTURE_ID)
                             .dot(1)
                             .build(),
@@ -180,17 +191,17 @@ public class GregtechMetaTileEntity_SteamCentrifuge extends GregtechMeta_SteamMu
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         fixAllMaintenanceIssue();
-        boolean didBuild = checkPiece(mName, 2, 3, 0);
-        return didBuild && mCasing >= 50 && checkHatch();
+        boolean didBuild = checkPiece(mName, 1, 4, 1);
+        return didBuild && mCasing >= 10 && checkHatch();
     }
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(mName, stackSize, hintsOnly, 2,3,0);
+        buildPiece(mName, stackSize, hintsOnly, 1,4,1);
     }
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if(mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 2, 3, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(mName, stackSize, 1, 4, 1, elementBudget, env, false, true);
     }
 
 
@@ -200,7 +211,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge extends GregtechMeta_SteamMu
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Steam Centrifuge")
+            .addInfo("Controller Block for the Steam Washer")
             .addInfo("Runs recipes up to MV tier")
             .addInfo("Centrifuged up to " + getMaxParallelRecipes() + " things at a time")
             .addSeparator()
