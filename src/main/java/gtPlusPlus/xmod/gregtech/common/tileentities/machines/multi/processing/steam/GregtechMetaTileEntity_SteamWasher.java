@@ -45,7 +45,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
     private String tCasing1 = "Steel Frame Box";
     private String tCasing2 = "Steel Gear Box Casing";
     private String tCasing3 = "Steel Pipe Casing";
-    private String tCasing4 = "Glass";
+    private String tCasing4 = "Any Glass";
 
     private static final int CASING_TEXTURE_ID = 16;
     private int mCasing;
@@ -136,7 +136,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                         ofBlockAnyMeta(Blocks.water),
                         ofBlockAnyMeta(Blocks.flowing_water),
                         ofBlockAnyMeta(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater))))
-                .addElement('D', Glasses.chainAllGlasses())
+                .addElement('D', ofChain(ofBlock(Blocks.glass, 0), Glasses.chainAllGlasses()))
                 .addElement('B', ofBlock(getCasingBlock4(), getCasingMeta4()))
                 .addElement(
                     'A',
