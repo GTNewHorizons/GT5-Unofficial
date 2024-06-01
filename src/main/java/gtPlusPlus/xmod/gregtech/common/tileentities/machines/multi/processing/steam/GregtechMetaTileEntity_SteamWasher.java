@@ -19,7 +19,6 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,16 +39,14 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
 
-import java.util.function.Supplier;
-
 public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamWasher> implements ISurvivalConstructable {
 
 
     private String mCasingName = "Solid Steel Machine Casing";
     private String tCasing1 = "Steel Frame Box";
-    private String tCasing2 = "Steel Firebox Casing";
-    private String tCasing3 = "Steel Gear Box Casing";
-    private String tCasing4 = "Steel Pipe Casing";
+    private String tCasing2 = "Steel Gear Box Casing";
+    private String tCasing3 = "Steel Pipe Casing";
+    private String tCasing4 = "Glass";
 
     private static final int CASING_TEXTURE_ID = 16;
     private int mCasing;
@@ -83,11 +80,11 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
     }
     @Override
     protected GT_RenderedTexture getFrontOverlay() {
-        return new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE);
+        return new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER);
     }
     @Override
     protected GT_RenderedTexture getFrontOverlayActive() {
-        return new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE);
+        return new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER_ACTIVE);
     }
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
@@ -192,7 +189,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         mCasing = 0;
         fixAllMaintenanceIssue();
         boolean didBuild = checkPiece(mName, 1, 4, 1);
-        return didBuild && mCasing >= 10 && checkHatch();
+        return didBuild && mCasing >= 45 && checkHatch();
     }
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
@@ -212,18 +209,19 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Steam Washer")
-            .addInfo("Runs recipes up to MV tier")
+            .addInfo("Runs recipes up to LV tier")
             .addInfo("Centrifuged up to " + getMaxParallelRecipes() + " things at a time")
             .addSeparator()
-            .beginStructureBlock(5, 5, 5, false)
-            .addCasingInfoMin(mCasingName, 50, false)
-            .addCasingInfo(tCasing1, 12)
-            .addCasingInfo(tCasing2, 3)
-            .addCasingInfo(tCasing3, 8)
-            .addCasingInfo(tCasing4, 4)
+            .beginStructureBlock(5, 5, 9, false)
+            .addCasingInfoMin(mCasingName, 45, false)
+            .addCasingInfo(tCasing1, 8)
+            .addCasingInfo(tCasing2, 8)
+            .addCasingInfo(tCasing3, 12)
+            .addCasingInfo(tCasing4, 24)
             .addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
             .addOtherStructurePart(TT_steamoutputbus, "Any casing", 1)
             .addOtherStructurePart(TT_steamhatch, "Any casing", 1)
+            .addInputHatch("Any casing", 1)
             .toolTipFinisher(getNickname());
         return tt;
     }

@@ -16,7 +16,6 @@ import gregtech.api.interfaces.ITexture;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,8 +35,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
-
-import java.util.function.Supplier;
 
 
 public class GregtechMetaTileEntity_SteamCentrifuge extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamCentrifuge> implements ISurvivalConstructable {

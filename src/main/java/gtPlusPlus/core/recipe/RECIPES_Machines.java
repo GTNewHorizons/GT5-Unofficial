@@ -11,6 +11,7 @@ import java.util.List;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -831,6 +832,34 @@ public class RECIPES_Machines {
             "gemDiamond",
             aBronzeBricks,
             GregtechItemList.Controller_SteamMaceratorMulti.get(1));
+
+        ItemStack aSolidSteelMachineCasing = ItemUtils.simpleMetaStack(GregTech_API.sBlockCasings1, 0,1);
+        // Steam Washer Multi
+        RecipeUtils.addShapedGregtechRecipe(
+            aSolidSteelMachineCasing,
+            OrePrefixes.plate.get(Materials.WroughtIron),
+            aSolidSteelMachineCasing,
+            OrePrefixes.rotor.get(Materials.Tin),
+            OrePrefixes.frameGt.get(Materials.Steel),
+            OrePrefixes.rotor.get(Materials.Tin),
+            aSolidSteelMachineCasing,
+            OrePrefixes.plate.get(Materials.WroughtIron),
+            aSolidSteelMachineCasing,
+            GregtechItemList.Controller_SteamWasherMulti.get(1));
+
+        // Steam Centrifuge Multi
+        RecipeUtils.addShapedGregtechRecipe(
+            aSolidSteelMachineCasing,
+            OrePrefixes.plate.get(Materials.WroughtIron),
+            aSolidSteelMachineCasing,
+            OrePrefixes.gear.get(Materials.Steel),
+            OrePrefixes.frameGt.get(Materials.Steel),
+            OrePrefixes.gear.get(Materials.Steel),
+            aSolidSteelMachineCasing,
+            OrePrefixes.plate.get(Materials.WroughtIron),
+            aSolidSteelMachineCasing,
+            GregtechItemList.Controller_SteamCentrifugeMulti.get(1));
+
         // Steam Compressor Multi
         RecipeUtils.addShapedGregtechRecipe(
             aBronzeBricks,
