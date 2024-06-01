@@ -8,7 +8,6 @@ import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -48,7 +47,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
     private String tCasing4 = "Any Glass";
 
     private static final int CASING_TEXTURE_ID = 16;
-    private int mCasing;
+    private static int mCasing;
 
     @Override
     public String getMachineType() {
@@ -128,7 +127,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                             { "    ADDDA", "F~F DEEED", "AAA DECED", "FAF DEEED", "    ADDDA" },
                             { "    AAAAA", "AAA ABBBA", "AAA ABABA", "AAA ABBBA", "    AAAAA" }, }))
                 .addElement('F', ofFrame(Materials.Steel))
-                .addElement('C', ofBlock(getCasingBlock2(), getCasingMeta2()))
+                .addElement('C', ofBlock(sBlockCasings2, 13))
                 .addElement(
                     'E',
                     ofChain(
@@ -137,7 +136,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                         ofBlockAnyMeta(Blocks.flowing_water),
                         ofBlockAnyMeta(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater))))
                 .addElement('D', ofChain(ofBlock(Blocks.glass, 0), Glasses.chainAllGlasses()))
-                .addElement('B', ofBlock(getCasingBlock4(), getCasingMeta4()))
+                .addElement('B', ofBlock(sBlockCasings2, 3))
                 .addElement(
                     'A',
                     ofChain(
@@ -149,42 +148,10 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                             .casingIndex(CASING_TEXTURE_ID)
                             .dot(1)
                             .build(),
-                        onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock5(), getCasingMeta5()))))
+                        onElementPass(x -> ++x.mCasing, ofBlock(sBlockCasings2, 0))))
                 .build();
         }
         return STRUCTURE_DEFINITION;
-    }
-
-    public Block getCasingBlock2() {
-        return sBlockCasings2;
-    }
-
-    public byte getCasingMeta2() {
-        return 13;
-    }
-
-    public Block getCasingBlock3() {
-        return sBlockCasings3;
-    }
-
-    public byte getCasingMeta3() {
-        return 14;
-    }
-
-    public Block getCasingBlock4() {
-        return sBlockCasings2;
-    }
-
-    public byte getCasingMeta4() {
-        return 3;
-    }
-
-    public Block getCasingBlock5() {
-        return sBlockCasings2;
-    }
-
-    public byte getCasingMeta5() {
-        return 0;
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {

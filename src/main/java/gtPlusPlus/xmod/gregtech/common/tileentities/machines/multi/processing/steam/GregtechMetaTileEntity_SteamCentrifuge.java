@@ -10,7 +10,6 @@ import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -45,7 +44,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     private String tCasing4 = "Steel Pipe Casing";
 
     private static final int CASING_TEXTURE_ID = 16;
-    private int mCasing;
+    private static int mCasing;
 
     @Override
     public String getMachineType() {
@@ -118,9 +117,9 @@ public class GregtechMetaTileEntity_SteamCentrifuge
                             { " A~A ", "AEBEA", "ABDBA", "AEBEA", " AAA " },
                             { " AAA ", "AAAAA", "AAAAA", "AAAAA", " AAA " }, }))
                 .addElement('E', ofFrame(Materials.Steel))
-                .addElement('C', ofBlock(getCasingBlock2(), getCasingMeta2()))
-                .addElement('D', ofBlock(getCasingBlock3(), getCasingMeta3()))
-                .addElement('B', ofBlock(getCasingBlock4(), getCasingMeta4()))
+                .addElement('C', ofBlock(sBlockCasings2, 13))
+                .addElement('D', ofBlock(sBlockCasings3, 14))
+                .addElement('B', ofBlock(sBlockCasings2, 3))
                 .addElement(
                     'A',
                     ofChain(
@@ -132,42 +131,10 @@ public class GregtechMetaTileEntity_SteamCentrifuge
                             .casingIndex(CASING_TEXTURE_ID)
                             .dot(1)
                             .build(),
-                        onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock5(), getCasingMeta5()))))
+                        onElementPass(x -> ++x.mCasing, ofBlock(sBlockCasings2, 0))))
                 .build();
         }
         return STRUCTURE_DEFINITION;
-    }
-
-    public Block getCasingBlock2() {
-        return sBlockCasings2;
-    }
-
-    public byte getCasingMeta2() {
-        return 13;
-    }
-
-    public Block getCasingBlock3() {
-        return sBlockCasings3;
-    }
-
-    public byte getCasingMeta3() {
-        return 14;
-    }
-
-    public Block getCasingBlock4() {
-        return sBlockCasings2;
-    }
-
-    public byte getCasingMeta4() {
-        return 3;
-    }
-
-    public Block getCasingBlock5() {
-        return sBlockCasings2;
-    }
-
-    public byte getCasingMeta5() {
-        return 0;
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -194,7 +161,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Steam Centrifuge")
             .addInfo("Runs recipes up to MV tier")
-            .addInfo("Centrifuged up to " + getMaxParallelRecipes() + " things at a time")
+            .addInfo("Centrifuges up to " + getMaxParallelRecipes() + " things at a time")
             .addSeparator()
             .beginStructureBlock(5, 5, 5, false)
             .addCasingInfoMin(mCasingName, 50, false)
