@@ -1,7 +1,5 @@
 package gregtech.mixin;
 
-import static gregtech.mixin.TargetedMod.EXTRA_UTILITIES;
-import static gregtech.mixin.TargetedMod.THAUMCRAFT;
 import static gregtech.mixin.TargetedMod.VANILLA;
 
 import java.util.ArrayList;
