@@ -13,6 +13,8 @@ public class GregtechSteamMultis {
 
     public static void run() {
 
+        //id 31079 and 31081 are occupied by another machine
+
         Logger.INFO("Gregtech5u Content | Registering Steam Multiblocks.");
 
         GregtechItemList.Controller_SteamMaceratorMulti.set(
