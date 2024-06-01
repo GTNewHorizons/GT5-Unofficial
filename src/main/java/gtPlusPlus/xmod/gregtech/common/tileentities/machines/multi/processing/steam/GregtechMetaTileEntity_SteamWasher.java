@@ -211,7 +211,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Steam Washer")
             .addInfo("Runs recipes up to LV tier")
-            .addInfo("Centrifuged up to " + getMaxParallelRecipes() + " things at a time")
+            .addInfo("Washing up to " + getMaxParallelRecipes() + " things at a time")
             .addSeparator()
             .beginStructureBlock(5, 5, 9, false)
             .addCasingInfoMin(mCasingName, 45, false)
