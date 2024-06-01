@@ -389,18 +389,9 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
         this.mDoor = 0;
         this.mHardenedClay = 0;
 
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 3, 11, 0) || this.tileEntityDispensers.isEmpty()
-            || this.mDoor > 2
-            || this.mHardenedClay < 40) return false;
-
-        this.mWrench = true;
-        this.mScrewdriver = true;
-        this.mSoftHammer = true;
-        this.mHardHammer = true;
-        this.mSolderingTool = true;
-        this.mCrowbar = true;
-
-        return true;
+        return this.checkPiece(STRUCTURE_PIECE_MAIN, 3, 11, 0) && !this.tileEntityDispensers.isEmpty()
+            && this.mDoor <= 2
+            && this.mHardenedClay >= 40;
     }
 
     @Override
@@ -637,5 +628,10 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
                     .setEnabled(widget -> !this.mMachine)
                     .setPos(92, 22))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> this.mMachine, val -> this.mMachine = val));
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

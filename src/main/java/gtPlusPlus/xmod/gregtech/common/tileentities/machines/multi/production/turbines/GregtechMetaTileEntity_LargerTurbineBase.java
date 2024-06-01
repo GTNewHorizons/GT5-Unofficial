@@ -536,14 +536,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
             mRuntime = 0;
 
             if (getBaseMetaTileEntity().getRandomNumber(6000) < getMaintenanceThreshold()) {
-                switch (getBaseMetaTileEntity().getRandomNumber(6)) {
-                    case 0 -> mWrench = false;
-                    case 1 -> mScrewdriver = false;
-                    case 2 -> mSoftHammer = false;
-                    case 3 -> mHardHammer = false;
-                    case 4 -> mSolderingTool = false;
-                    case 5 -> mCrowbar = false;
-                }
+                causeMaintenanceIssue();
             }
             for (GT_MetaTileEntity_Hatch_Turbine aHatch : getFullTurbineAssemblies()) {
                 // This cycle depletes durability from the turbine rotors.

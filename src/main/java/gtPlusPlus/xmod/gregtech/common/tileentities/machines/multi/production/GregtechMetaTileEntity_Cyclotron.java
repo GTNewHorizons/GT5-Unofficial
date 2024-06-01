@@ -230,7 +230,6 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
             @NotNull
             @Override
             public CheckRecipeResult process() {
-                fixAllMaintenanceIssue();
                 CheckRecipeResult result = super.process();
                 if (result.wasSuccessful()) {
                     for (ItemStack s : outputItems) {
@@ -284,7 +283,6 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
                 }
             }
         }
-        this.fixAllMaintenanceIssue();
         return super.onRunningTick(aStack);
     }
 
@@ -326,6 +324,11 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
     @Override
     public boolean doesBindPlayerInventory() {
+        return false;
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
 }

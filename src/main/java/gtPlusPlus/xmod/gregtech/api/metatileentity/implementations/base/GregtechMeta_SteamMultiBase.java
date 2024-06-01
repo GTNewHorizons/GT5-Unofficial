@@ -140,7 +140,6 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
      */
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        fixAllMaintenanceIssue();
         if (lEUt < 0) {
             long aSteamVal = ((-lEUt * 10000) / Math.max(1000, mEfficiency));
             // Logger.INFO("Trying to drain "+aSteamVal+" steam per tick.");
@@ -424,5 +423,10 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
         public IGT_HatchAdder<? super GregtechMeta_SteamMultiBase<?>> adder() {
             return GregtechMeta_SteamMultiBase::addToMachineList;
         }
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

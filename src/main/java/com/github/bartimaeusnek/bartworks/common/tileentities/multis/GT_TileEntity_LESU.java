@@ -338,12 +338,6 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         if (aBaseMetaTileEntity.isServerSide()) {
             this.mMaxProgresstime = 1;
             if (aTick % 20 == 0) this.checkMachine(aBaseMetaTileEntity, null);
-            this.mWrench = true;
-            this.mScrewdriver = true;
-            this.mSoftHammer = true;
-            this.mHardHammer = true;
-            this.mSolderingTool = true;
-            this.mCrowbar = true;
         }
     }
 
@@ -407,13 +401,6 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
                 : ConfigHandler.energyPerCell * this.connectedcells.hashset.size();
         this.mMaxProgresstime = 1;
         this.mProgresstime = 0;
-
-        this.mCrowbar = true;
-        this.mHardHammer = true;
-        this.mScrewdriver = true;
-        this.mSoftHammer = true;
-        this.mSolderingTool = true;
-        this.mWrench = true;
 
         this.getBaseMetaTileEntity()
             .enableWorking();
@@ -594,5 +581,10 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
                     .setEnabled(
                         widget -> !this.getBaseMetaTileEntity()
                             .isActive()));
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

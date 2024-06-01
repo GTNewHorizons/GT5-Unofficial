@@ -124,7 +124,6 @@ public class GregtechMetaTileEntity_SteamCompressor
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        fixAllMaintenanceIssue();
         return checkPiece(mName, 1, 1, 0) && mCasing >= 28;
     }
 
@@ -152,5 +151,4 @@ public class GregtechMetaTileEntity_SteamCompressor
             }
         }.setMaxParallel(getMaxParallelRecipes());
     }
-
 }
