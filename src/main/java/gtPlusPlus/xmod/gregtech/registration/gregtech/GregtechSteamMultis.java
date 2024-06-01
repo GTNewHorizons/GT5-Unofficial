@@ -4,9 +4,9 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusOutput;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.GregtechMetaTileEntity_SteamCentrifuge;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.GregtechMetaTileEntity_SteamCompressor;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.GregtechMetaTileEntity_SteamMacerator;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.GregtechMetaTileEntity_SteamCentrifuge;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.GregtechMetaTileEntity_SteamWasher;
 
 public class GregtechSteamMultis {
@@ -22,12 +22,11 @@ public class GregtechSteamMultis {
             new GregtechMetaTileEntity_SteamCompressor(31078, "gtpp.multimachine.steam.compressor", "Steam Squasher")
                 .getStackForm(1L));
         GregtechItemList.Controller_SteamCentrifugeMulti.set(
-            new GregtechMetaTileEntity_SteamCentrifuge(31080,"gtpp.multimachine.steam.centrifuge", "Steam Centrifuge")
+            new GregtechMetaTileEntity_SteamCentrifuge(31080, "gtpp.multimachine.steam.centrifuge", "Steam Centrifuge")
                 .getStackForm(1));
         GregtechItemList.Controller_SteamWasherMulti.set(
-            new GregtechMetaTileEntity_SteamWasher(31082,"gtpp.multimachine.steam.washer", "Steam Washer")
+            new GregtechMetaTileEntity_SteamWasher(31082, "gtpp.multimachine.steam.washer", "Steam Washer")
                 .getStackForm(1));
-
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
             new GT_MetaTileEntity_Hatch_Steam_BusInput(31046, "hatch.input_bus.tier.steam", "Input Bus (Steam)", 0)

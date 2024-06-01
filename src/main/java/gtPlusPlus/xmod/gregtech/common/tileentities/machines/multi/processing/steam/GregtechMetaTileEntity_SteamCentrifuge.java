@@ -10,13 +10,10 @@ import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import javax.annotation.Nonnull;
 
-
-import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.ITexture;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -24,7 +21,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -36,8 +35,8 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
 
-
-public class GregtechMetaTileEntity_SteamCentrifuge extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamCentrifuge> implements ISurvivalConstructable {
+public class GregtechMetaTileEntity_SteamCentrifuge
+    extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamCentrifuge> implements ISurvivalConstructable {
 
     private String mCasingName = "Solid Steel Machine Casing";
     private String tCasing1 = "Steel Frame Box";
@@ -48,66 +47,64 @@ public class GregtechMetaTileEntity_SteamCentrifuge extends GregtechMeta_SteamMu
     private static final int CASING_TEXTURE_ID = 16;
     private int mCasing;
 
-
-
-
-
     @Override
     public String getMachineType() {
         return "Centrifuge";
     }
+
     @Override
     public int getMaxParallelRecipes() {
         return 8;
     }
+
     protected static int getCasingTextureIndex() {
         return CASING_TEXTURE_ID;
     }
+
     protected static String getNickname() {
         return "EvgenWarGold";
     }
 
-
-
-
-
-
     public GregtechMetaTileEntity_SteamCentrifuge(String aName) {
         super(aName);
     }
+
     public GregtechMetaTileEntity_SteamCentrifuge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
+
     @Override
     protected GT_RenderedTexture getFrontOverlay() {
         return new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE);
     }
+
     @Override
     protected GT_RenderedTexture getFrontOverlayActive() {
         return new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE);
     }
+
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-                                 final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()),
                 aActive ? getFrontOverlayActive() : getFrontOverlay() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
     }
+
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GregtechMetaTileEntity_SteamCentrifuge(this.mName);
     }
+
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.centrifugeRecipes;
     }
 
-
-
-
     private static IStructureDefinition<GregtechMetaTileEntity_SteamCentrifuge> STRUCTURE_DEFINITION = null;
+
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_SteamCentrifuge> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
@@ -115,21 +112,19 @@ public class GregtechMetaTileEntity_SteamCentrifuge extends GregtechMeta_SteamMu
                 .addShape(
                     mName,
                     transpose(
-                        new String[][]{
-                            {" AAA ","AAAAA","AAAAA","AAAAA"," AAA "},
-                            {"     "," EBE "," BDB "," EBE ","     "},
-                            {"  A  "," ECE ","ACDCA"," ECE ","  A  "},
-                            {" A~A ","AEBEA","ABDBA","AEBEA"," AAA "},
-                            {" AAA ","AAAAA","AAAAA","AAAAA"," AAA "}, }))
+                        new String[][] { { " AAA ", "AAAAA", "AAAAA", "AAAAA", " AAA " },
+                            { "     ", " EBE ", " BDB ", " EBE ", "     " },
+                            { "  A  ", " ECE ", "ACDCA", " ECE ", "  A  " },
+                            { " A~A ", "AEBEA", "ABDBA", "AEBEA", " AAA " },
+                            { " AAA ", "AAAAA", "AAAAA", "AAAAA", " AAA " }, }))
                 .addElement('E', ofFrame(Materials.Steel))
                 .addElement('C', ofBlock(getCasingBlock2(), getCasingMeta2()))
-                .addElement('D', ofBlock(getCasingBlock3(),getCasingMeta3()))
+                .addElement('D', ofBlock(getCasingBlock3(), getCasingMeta3()))
                 .addElement('B', ofBlock(getCasingBlock4(), getCasingMeta4()))
                 .addElement(
                     'A',
                     ofChain(
-                        buildSteamInput(GregtechMetaTileEntity_SteamCentrifuge.class)
-                            .casingIndex(CASING_TEXTURE_ID)
+                        buildSteamInput(GregtechMetaTileEntity_SteamCentrifuge.class).casingIndex(CASING_TEXTURE_ID)
                             .dot(1)
                             .build(),
                         buildHatchAdder(GregtechMetaTileEntity_SteamCentrifuge.class)
@@ -143,36 +138,37 @@ public class GregtechMetaTileEntity_SteamCentrifuge extends GregtechMeta_SteamMu
         return STRUCTURE_DEFINITION;
     }
 
-
-
-
     public Block getCasingBlock2() {
         return sBlockCasings2;
     }
+
     public byte getCasingMeta2() {
         return 13;
     }
+
     public Block getCasingBlock3() {
         return sBlockCasings3;
     }
+
     public byte getCasingMeta3() {
         return 14;
     }
+
     public Block getCasingBlock4() {
         return sBlockCasings2;
     }
+
     public byte getCasingMeta4() {
         return 3;
     }
+
     public Block getCasingBlock5() {
         return sBlockCasings2;
     }
+
     public byte getCasingMeta5() {
         return 0;
     }
-
-
-
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
@@ -180,18 +176,17 @@ public class GregtechMetaTileEntity_SteamCentrifuge extends GregtechMeta_SteamMu
         boolean didBuild = checkPiece(mName, 2, 3, 0);
         return didBuild && mCasing >= 50 && checkHatch();
     }
+
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(mName, stackSize, hintsOnly, 2,3,0);
+        buildPiece(mName, stackSize, hintsOnly, 2, 3, 0);
     }
+
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if(mMachine) return -1;
+        if (mMachine) return -1;
         return survivialBuildPiece(mName, stackSize, 2, 3, 0, elementBudget, env, false, true);
     }
-
-
-
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
@@ -213,9 +208,6 @@ public class GregtechMetaTileEntity_SteamCentrifuge extends GregtechMeta_SteamMu
             .toolTipFinisher(getNickname());
         return tt;
     }
-
-
-
 
     @Override
     protected ProcessingLogic createProcessingLogic() {

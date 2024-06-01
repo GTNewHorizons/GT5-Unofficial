@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,6 +27,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.recipe.RecipeMap;
@@ -186,7 +186,6 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
             aDidAdd = addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
         else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output);
 
-
         return aDidAdd;
     }
 
@@ -256,10 +255,9 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
                 rList.add(tHatch.getFillableStack());
             }
         }
-        for (GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches)
-            if (hatch.getFillableStack() != null) {
-                rList.add(hatch.getFillableStack());
-            }
+        for (GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) if (hatch.getFillableStack() != null) {
+            rList.add(hatch.getFillableStack());
+        }
         return rList;
     }
 
@@ -361,7 +359,7 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
                 ret = true;
             }
         }
-        for (GT_MetaTileEntity_Hatch_Input g: this.mInputHatches) {
+        for (GT_MetaTileEntity_Hatch_Input g : this.mInputHatches) {
             if (resetRecipeMapForHatch(g, aMap)) {
                 ret = true;
             }
