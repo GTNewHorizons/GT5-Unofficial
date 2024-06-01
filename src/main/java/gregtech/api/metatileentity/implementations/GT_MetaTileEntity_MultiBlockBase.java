@@ -1879,11 +1879,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (tag.getBoolean("incompleteStructure")) {
             currentTip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
         }
-        currentTip.add(
-            (tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
-                + "  Efficiency: "
-                + tag.getFloat("efficiency")
-                + "%");
+        String efficiency = RESET + "  Efficiency: " + tag.getFloat("efficiency") + "%";
+        if (tag.getBoolean("hasProblems")) {
+            currentTip.add(RED + "** HAS PROBLEMS **" + efficiency);
+        } else if (!tag.getBoolean("incompleteStructure")) {
+            currentTip.add(GREEN + "Running Fine" + efficiency);
+        }
 
         boolean isActive = tag.getBoolean("isActive");
         if (isActive) {
@@ -2551,6 +2552,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     public boolean shouldCheckMaintenance() {
-        return !disableMaintenance || hasMaintenanceChecks;
+        return disableMaintenance || hasMaintenanceChecks;
     }
 }
