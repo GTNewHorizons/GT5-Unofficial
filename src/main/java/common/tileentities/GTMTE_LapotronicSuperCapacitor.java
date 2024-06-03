@@ -1159,7 +1159,7 @@ public class GTMTE_LapotronicSuperCapacitor
             .widget(new FakeSyncWidget.BooleanSyncer(() -> wireless_mode, val -> wireless_mode = val))
             .widget(new FakeSyncWidget.BooleanSyncer(this::canUseWireless, val -> canUseWireless = val))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (wireless_mode && canUseWireless && !balanced) {
+                if (mMachine && wireless_mode && canUseWireless && !balanced) {
                     counter = rebalance();
                 }
             })
