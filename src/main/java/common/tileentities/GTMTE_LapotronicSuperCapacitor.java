@@ -106,6 +106,7 @@ public class GTMTE_LapotronicSuperCapacitor
     private boolean wireless_mode = false;
     private boolean not_processed_lsc = true;
     private int counter = 1;
+    private boolean balanced = false;
 
     private final Queue<Long> energyInputValues = new LinkedList<>();
     private final Queue<Long> energyOutputValues = new LinkedList<>();
@@ -770,30 +771,7 @@ public class GTMTE_LapotronicSuperCapacitor
         if (wireless_mode && (counter >= LSC_time_between_wireless_rebalance_in_ticks)) {
 
             // Reset tick counter.
-            counter = 1;
-
-            // Find difference.
-            BigInteger transferred_eu = stored.subtract(
-                (LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount())))
-                    .add(UEV_wireless_eu_cap.multiply(BigInteger.valueOf(getUEVCapacitorCount())))
-                    .add(UIV_wireless_eu_cap.multiply(BigInteger.valueOf(getUIVCapacitorCount())))
-                    .add(UMV_wireless_eu_cap.multiply(BigInteger.valueOf(getUMVCapacitorCount()))));
-
-            if (transferred_eu.signum() == 1) {
-                inputLastTick += transferred_eu.longValue();
-            } else {
-                outputLastTick += transferred_eu.longValue();
-            }
-
-            // If that difference can be added then do so.
-            if (WirelessNetworkManager.addEUToGlobalEnergyMap(global_energy_user_uuid, transferred_eu)) {
-                // If it succeeds there was sufficient energy so set the internal capacity as such.
-                stored = LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount()))
-                    .add(
-                        UEV_wireless_eu_cap.multiply(BigInteger.valueOf(getUEVCapacitorCount()))
-                            .add(UIV_wireless_eu_cap.multiply(BigInteger.valueOf(getUIVCapacitorCount())))
-                            .add(UMV_wireless_eu_cap.multiply(BigInteger.valueOf(getUMVCapacitorCount()))));
-            }
+            counter = rebalance();
         }
 
         // Lose some energy.
@@ -827,6 +805,36 @@ public class GTMTE_LapotronicSuperCapacitor
         energyOutputValues.offer(outputLastTick);
 
         return true;
+    }
+
+    private int rebalance() {
+
+        balanced = true;
+
+        // Find difference.
+        BigInteger transferred_eu = stored.subtract(
+            (LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount())))
+                .add(UEV_wireless_eu_cap.multiply(BigInteger.valueOf(getUEVCapacitorCount())))
+                .add(UIV_wireless_eu_cap.multiply(BigInteger.valueOf(getUIVCapacitorCount())))
+                .add(UMV_wireless_eu_cap.multiply(BigInteger.valueOf(getUMVCapacitorCount()))));
+
+        if (transferred_eu.signum() == 1) {
+            inputLastTick += transferred_eu.longValue();
+        } else {
+            outputLastTick += transferred_eu.longValue();
+        }
+
+        // If that difference can be added then do so.
+        if (WirelessNetworkManager.addEUToGlobalEnergyMap(global_energy_user_uuid, transferred_eu)) {
+            // If it succeeds there was sufficient energy so set the internal capacity as such.
+            stored = LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount()))
+                .add(
+                    UEV_wireless_eu_cap.multiply(BigInteger.valueOf(getUEVCapacitorCount()))
+                        .add(UIV_wireless_eu_cap.multiply(BigInteger.valueOf(getUIVCapacitorCount())))
+                        .add(UMV_wireless_eu_cap.multiply(BigInteger.valueOf(getUMVCapacitorCount()))));
+        }
+
+        return 1;
     }
 
     /**
@@ -1149,7 +1157,24 @@ public class GTMTE_LapotronicSuperCapacitor
             .addTooltip(StatCollector.translateToLocal("gui.kekztech_lapotronicenergyunit.wireless"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> wireless_mode, val -> wireless_mode = val))
-            .widget(new FakeSyncWidget.BooleanSyncer(this::canUseWireless, val -> canUseWireless = val));
+            .widget(new FakeSyncWidget.BooleanSyncer(this::canUseWireless, val -> canUseWireless = val))
+            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                if (wireless_mode && canUseWireless && !balanced) {
+                    counter = rebalance();
+                }
+            })
+                .setPlayClickSound(true)
+                .setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(KT_UITextures.OVERLAY_BUTTON_WIRELESS_REBALANCE);
+                    return ret.toArray(new IDrawable[0]);
+                })
+                .setPos(98, 91)
+                .setSize(16, 16)
+                .setEnabled((widget) -> wireless_mode && canUseWireless && !balanced)
+                .addTooltip(StatCollector.translateToLocal("gui.kekztech_lapotronicenergyunit.wireless_rebalance"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 
     private enum LSCHatchElement implements IHatchElement<GTMTE_LapotronicSuperCapacitor> {
