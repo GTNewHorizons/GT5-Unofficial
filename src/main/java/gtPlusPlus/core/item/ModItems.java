@@ -558,7 +558,7 @@ public final class ModItems {
         dustLi2CO3CaOH2 = ItemUtils.generateSpecialUseDusts(
             "Li2CO3CaOH2",
             "Li2CO3 + Ca(OH)2 Compound",
-            "Li2CO3CaOH2",
+            "Li2CO3Ca(OH)2",
             Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_carbonate
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(FLUORIDES.SODIUM_FLUORIDE, false);
         // FLiBe Fuel Compounds
