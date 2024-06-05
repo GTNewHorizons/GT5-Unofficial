@@ -309,7 +309,6 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
-        this.fixAllMaintenanceIssue();
         // Silly Client Syncing
         if (aBaseMetaTileEntity.isClientSide()) {
             this.mLevel = getCasingTier();
@@ -372,5 +371,10 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
             t.printStackTrace();
             return 0;
         }
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

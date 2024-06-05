@@ -113,7 +113,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
                     doNormalMaintain();
                 } else {
                     // Centre offline? ...do nothing.
-                    // doRandomIssue();
+                    // machine.causeMaintenanceIssue();
                 }
             } else {
                 // If the connection invalid, set it to null.
@@ -123,7 +123,7 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
                     tryFindConnection();
                     // Let's have some "surprise". Sorry, surprise party is over.
                     // if (this.machine != null && this.machine.isValid()) {
-                    // doRandomIssue();
+                    // machine.causeMaintenanceIssue();
                 }
             }
         }
@@ -198,17 +198,6 @@ public class GT_MetaTileEntity_Hatch_DroneDownLink extends GT_MetaTileEntity_Hat
                     }
                 }
             }
-        }
-    }
-
-    private void doRandomIssue() {
-        switch (getBaseMetaTileEntity().getRandomNumber(6)) {
-            case 0 -> machine.mWrench = !machine.mWrench;
-            case 1 -> machine.mScrewdriver = !machine.mScrewdriver;
-            case 2 -> machine.mSoftHammer = !machine.mSoftHammer;
-            case 3 -> machine.mCrowbar = !machine.mCrowbar;
-            case 4 -> machine.mSolderingTool = !connection.machine.mSolderingTool;
-            case 5 -> machine.mHardHammer = !connection.machine.mHardHammer;
         }
     }
 
