@@ -109,8 +109,6 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         return -1;
     }
 
-    private String tCasing3 = "Bronze/Steel Gear Box Casing";
-
     public static int getTierCasing1(Block block, int meta) {
         if (block == sBlockCasings2 && 2 == meta) return 1;
         if (block == sBlockCasings2 && 3 == meta) return 2;
@@ -354,6 +352,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
             .addInfo("Controller Block for the Steam Washer")
             .addInfo("Runs recipes up to LV tier")
             .addInfo("Washing up to 8/16 things at a time")
+            .addInfo("Multi consumes x2 amount of steam on Tier 2")
             .addSeparator()
             .beginStructureBlock(5, 5, 9, false)
             .addCasingInfoMin(tCasing1, 57, false)

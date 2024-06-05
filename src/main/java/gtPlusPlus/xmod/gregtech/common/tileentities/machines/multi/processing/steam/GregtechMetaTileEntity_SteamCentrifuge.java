@@ -350,6 +350,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
             .addInfo("Controller Block for the Steam Centrifuge")
             .addInfo("Runs recipes up to MV tier")
             .addInfo("Centrifuges up to 8/16 things at a time")
+            .addInfo("Multi consumes x2 amount of steam on Tier 2")
             .addSeparator()
             .beginStructureBlock(5, 5, 5, false)
             .addCasingInfoMin(tCasing1, 62, false)
