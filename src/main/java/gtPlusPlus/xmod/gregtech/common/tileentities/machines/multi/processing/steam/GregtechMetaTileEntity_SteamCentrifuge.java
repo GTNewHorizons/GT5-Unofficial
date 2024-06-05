@@ -10,8 +10,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -47,6 +45,8 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.common.blocks.GT_Block_Casings1;
 import gregtech.common.blocks.GT_Block_Casings2;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GregtechMetaTileEntity_SteamCentrifuge
     extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamCentrifuge> implements ISurvivalConstructable {
@@ -86,8 +86,6 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     private int tierCasing4 = -1;
 
     private int tierMachine = 1;
-
-    private int paralell = 1;
 
     private String tCasing1 = "Solid Bronze/Steel Machine Casing";
 
@@ -135,27 +133,25 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("tierMachine", tierMachine);
-        aNBT.setInteger("paralell", paralell);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         tierMachine = aNBT.getInteger("tierMachine");
-        paralell = aNBT.getInteger("paralell");
     }
 
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add("Machine Tier: " + EnumChatFormatting.YELLOW + tierMachine);
-        info.add("Parallel: " + EnumChatFormatting.YELLOW + paralell);
+        info.add("Parallel: " + EnumChatFormatting.YELLOW + getMaxParallelRecipes());
         return info.toArray(new String[0]);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-                             IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
 
@@ -173,7 +169,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-                                int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
         tag.setInteger("paralell", getMaxParallelRecipes());
@@ -191,14 +187,12 @@ public class GregtechMetaTileEntity_SteamCentrifuge
         if (tierCasing1 == 1 || tierCasing2 == 1 || tierCasing3 == 1 || tierCasing4 == 1) {
             fixAllMaintenanceIssue();
             updateHatchTexture();
-            paralell = 1;
             tierMachine = 1;
             return true;
         }
         if (tierCasing1 == 2 || tierCasing2 == 2 || tierCasing3 == 2 || tierCasing4 == 2) {
             fixAllMaintenanceIssue();
             updateHatchTexture();
-            paralell = 2;
             tierMachine = 2;
             return true;
         }
@@ -320,13 +314,14 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     }
 
     private int getCasingTextureID() {
-        if (tierCasing4 == 2) return ((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0);
+        if (tierCasing1 == 2 || tierCasing2 == 2 || tierCasing3 == 2 || tierCasing4 == 2)
+            return ((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0);
         return ((GT_Block_Casings1) GregTech_API.sBlockCasings1).getTextureIndex(10);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return paralell == 1 ? 8 : 16;
+        return tierMachine == 1 ? 8 : 16;
     }
 
     @Override
@@ -342,7 +337,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
             @Nonnull
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 return GT_OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.33F)
+                    .setEUtDiscount(1.33F * tierMachine)
                     .setSpeedBoost(1.5F);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
