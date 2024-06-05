@@ -61,7 +61,7 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.15.8:dev") { transitive = false }
 
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.26:deobf") {transitive = false}
-    compileOnly("com.github.GTNewHorizons:ThaumicBases:1.6.4:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:ThaumicBases:1.6.7:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:EnderCore:0.4.6:dev") { transitive = false }
     implementation("com.github.GTNewHorizons:Galacticraft:3.1.5-GTNH:dev") { transitive = false }
     implementation("com.github.GTNewHorizons:TinkersConstruct:1.12.2-GTNH:dev")
