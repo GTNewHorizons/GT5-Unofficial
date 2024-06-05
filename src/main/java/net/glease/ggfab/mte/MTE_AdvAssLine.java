@@ -932,6 +932,11 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     }
 
     @Override
+    protected boolean supportsSlotAutomation(int aSlot) {
+        return aSlot == getControllerSlotIndex();
+    }
+
+    @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
