@@ -1,16 +1,32 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static gregtech.api.GregTech_API.sBlockCasings1;
+import static gregtech.api.GregTech_API.sBlockCasings2;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import javax.annotation.Nonnull;
 
+import com.google.common.collect.ImmutableList;
+import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.common.blocks.GT_Block_Casings1;
+import gregtech.common.blocks.GT_Block_Casings2;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -32,12 +48,19 @@ import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class GregtechMetaTileEntity_SteamMacerator
     extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamMacerator> implements ISurvivalConstructable {
 
-    private String mCasingName = "Bronze Plated Bricks";
+    private String mCasingName = "Bronze/Steel Plated Bricks";
     private static IStructureDefinition<GregtechMetaTileEntity_SteamMacerator> STRUCTURE_DEFINITION = null;
-    private int mCasing;
+
+    private int tierMachine = 0;
+
+    private int tierCasing1 = -1;
 
     public GregtechMetaTileEntity_SteamMacerator(String aName) {
         super(aName);
@@ -50,6 +73,12 @@ public class GregtechMetaTileEntity_SteamMacerator
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
         return new GregtechMetaTileEntity_SteamMacerator(this.mName);
+    }
+
+    public static int getTierCasing1(Block block, int meta) {
+        if (block == sBlockCasings1 && 10 == meta) return 1;
+        if (block == sBlockCasings2 && 0 == meta) return 2;
+        return -1;
     }
 
     @Override
@@ -78,7 +107,8 @@ public class GregtechMetaTileEntity_SteamMacerator
             .addInfo("Controller Block for the Steam Macerator")
             .addInfo("33.3% faster than using a single block Steam Macerator.")
             .addInfo("Uses only 66.6% of the steam/s required compared to a single block Steam Macerator.")
-            .addInfo("Macerates up to " + getMaxParallelRecipes() + " things at a time")
+            .addInfo("Compresses up to 8/16 things at a time")
+            .addInfo("Multi consumes x2 amount of steam on Tier 2")
             .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
@@ -100,16 +130,23 @@ public class GregtechMetaTileEntity_SteamMacerator
                         new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
                 .addElement(
                     'C',
-                    ofChain(
-                        buildSteamInput(GregtechMetaTileEntity_SteamMacerator.class).casingIndex(10)
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(GregtechMetaTileEntity_SteamMacerator.class)
-                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
-                            .casingIndex(10)
-                            .dot(1)
-                            .build(),
-                        onElementPass(x -> ++x.mCasing, ofBlock(sBlockCasings1, 10))))
+                    withChannel(
+                        "tier",
+                        ofChain(
+                            ofBlocksTiered(
+                                GregtechMetaTileEntity_SteamMacerator::getTierCasing1,
+                                ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                                -1,
+                                (t, m) -> t.tierCasing1 = m,
+                                t -> t.tierCasing1),
+                            buildSteamInput(GregtechMetaTileEntity_SteamMacerator.class).casingIndex(10)
+                                .dot(1)
+                                .build(),
+                            buildHatchAdder(GregtechMetaTileEntity_SteamMacerator.class)
+                                .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
+                                .casingIndex(10)
+                                .dot(1)
+                                .buildAndChain())))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -127,14 +164,50 @@ public class GregtechMetaTileEntity_SteamMacerator
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCasing = 0;
-        fixAllMaintenanceIssue();
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 14;
+        tierMachine = -1;
+        tierCasing1 = -1;
+        if (!checkPiece(mName, 1, 1, 0)) return false;
+        if (tierCasing1 < 0) return false;
+        if (tierCasing1 == 1) {
+            fixAllMaintenanceIssue();
+            updateHatchTexture();
+            tierMachine = 1;
+            return true;
+        }
+        if (tierCasing1 == 2) {
+            fixAllMaintenanceIssue();
+            updateHatchTexture();
+            tierMachine = 2;
+            return true;
+        }
+
+        return this.mSteamInputs.size() == 1 || this.mSteamOutputs.size() == 1;
+    }
+
+    @Override
+    public void onValueUpdate(byte aValue) {
+        tierCasing1 = aValue;
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return (byte) tierCasing1;
+    }
+
+    protected void updateHatchTexture() {
+        for (GT_MetaTileEntity_Hatch h : mSteamInputs) h.updateTexture(getCasingTextureID());
+        for (GT_MetaTileEntity_Hatch h : mSteamOutputs) h.updateTexture(getCasingTextureID());
+        for (GT_MetaTileEntity_Hatch h : mSteamInputFluids) h.updateTexture(getCasingTextureID());
+    }
+
+    private int getCasingTextureID() {
+        if (tierCasing1 == 2) return ((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0);
+        return ((GT_Block_Casings1) GregTech_API.sBlockCasings1).getTextureIndex(10);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return 8;
+        return tierMachine == 1 ? 8 : 16;
     }
 
     @Override
@@ -143,6 +216,13 @@ public class GregtechMetaTileEntity_SteamMacerator
     }
 
     // note that a basic steam machine has .setEUtDiscount(2F).setSpeedBoost(2F). So these are bonuses.
+
+
+    @Override
+    public int getItemOutputLimit() {
+        return 1;
+    }
+
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
@@ -151,15 +231,65 @@ public class GregtechMetaTileEntity_SteamMacerator
             @Nonnull
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 return GT_OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.33F)
+                    .setEUtDiscount(1.33F * tierMachine)
                     .setSpeedBoost(1.5F);
             }
-
-        }.setMaxParallel(getMaxParallelRecipes());
+        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
-    public int getItemOutputLimit() {
-        return 1;
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+                                 final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        if (side == facing) {
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
+                aActive ? getFrontOverlayActive() : getFrontOverlay() };
+        }
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+
+        currenttip.add(
+            StatCollector.translateToLocal("GTPP.machines.tier") + ": "
+                + EnumChatFormatting.YELLOW
+                + tag.getInteger("tierMachine")
+                + EnumChatFormatting.RESET);
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "
+                + EnumChatFormatting.BLUE
+                + tag.getInteger("paralell")
+                + EnumChatFormatting.RESET);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+                                int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("tierMachine", tierMachine);
+        tag.setInteger("paralell", getMaxParallelRecipes());
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("tierMachine", tierMachine);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        tierMachine = aNBT.getInteger("tierMachine");
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        info.add("Machine Tier: " + EnumChatFormatting.YELLOW + tierMachine);
+        info.add("Parallel: " + EnumChatFormatting.YELLOW + getMaxParallelRecipes());
+        return info.toArray(new String[0]);
     }
 }

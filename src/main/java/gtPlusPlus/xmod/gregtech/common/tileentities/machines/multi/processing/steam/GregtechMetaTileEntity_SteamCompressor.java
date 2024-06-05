@@ -57,7 +57,7 @@ public class GregtechMetaTileEntity_SteamCompressor
     private String mCasingName = "Bronze/Steel Plated Bricks";
     private static IStructureDefinition<GregtechMetaTileEntity_SteamCompressor> STRUCTURE_DEFINITION = null;
 
-    private int tierMachine = 0;
+    private int tierMachine = 1;
 
     private int tierCasing1 = -1;
 
