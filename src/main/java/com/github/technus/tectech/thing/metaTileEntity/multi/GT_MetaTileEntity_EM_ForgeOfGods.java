@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -1788,7 +1789,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 builder);
     }
 
-    List<ItemStack> inputs = new ArrayList<>(
+    ArrayList<ItemStack> inputs = new ArrayList<>(
         Arrays.asList(
             ItemList.Electric_Motor_UMV.get(13L),
             ItemList.Electric_Pump_UXV.get(32L),
@@ -1797,18 +1798,22 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
             ItemList.Superconducting_Magnet_Solenoid_UIV.get(48L),
             ItemList.NaquadriaSupersolid.get(32L),
             CustomItemList.astralArrayFabricator.get(36L),
-            CustomItemList.Machine_Multi_EyeOfHarmony.get(2L)));
+            CustomItemList.Machine_Multi_EyeOfHarmony.get(2L),
+            ItemList.NandChip.get(32L)));
 
     protected ModularWindow createManualInsertionWindow(final EntityPlayer player) {
         final int WIDTH = 189;
-        final int HEIGHT = 84;
+        final int HEIGHT = 106;
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
         final MultiChildWidget columns = new MultiChildWidget();
         final DynamicPositionedColumn column1 = new DynamicPositionedColumn();
         final DynamicPositionedColumn column2 = new DynamicPositionedColumn();
         final DynamicPositionedColumn column3 = new DynamicPositionedColumn();
-        List<DynamicPositionedColumn> columnList = Arrays.asList(column1, column2, column3);
+        final DynamicPositionedColumn column4 = new DynamicPositionedColumn();
+        final DynamicPositionedColumn column5 = new DynamicPositionedColumn();
+        final DynamicPositionedColumn column6 = new DynamicPositionedColumn();
+        List<DynamicPositionedColumn> columnList = Arrays.asList(column1, column2, column3, column4, column5, column6);
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
         builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
@@ -1825,46 +1830,104 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 .phantom(false)
                 .background(getGUITextureSet().getItemSlot())
                 .build()
-                .setPos(111, 6));
-        for (int i = 0; i < inputs.size(); i++) {
+                .setPos(112, 6));
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient()) {
+                widget.getWindow().closeWindow();
+                widget.getContext().openSyncedWindow(UPGRADE_TREE_WINDOW_ID);
+                widget.getContext().openSyncedWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
+            }
+        }).setBackground(ModularUITextures.VANILLA_BACKGROUND, new Text("x")).setPos(179, 0).setSize(10, 10));
+        builder.widget(new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient()) {
+                ArrayList<ItemStack> list = new ArrayList<>(inputSlotHandler.getStacks());
+                list.removeIf(Objects::isNull);
+                int foundInputs = 0;
+                int[] foundInputIndices = new int[inputs.size()];
+                for (ItemStack inputStack : list) {
+                    for (ItemStack requiredStack : inputs) {
+                        if (ItemStack.areItemStacksEqual(requiredStack, inputStack)) {
+                            foundInputIndices[foundInputs] = inputSlotHandler.getStacks()
+                                .indexOf(inputStack);
+                            foundInputs++;
+                        }
+                    }
+                }
+                if (foundInputs == inputs.size()) {
+                    for (int index : foundInputIndices) {
+                        inputSlotHandler.extractItem(index, inputSlotHandler.getStackInSlot(index).stackSize, false);
+                    }
+                }
+            }
+        })
+            .setPlayClickSound(true)
+            .setBackground(GT_UITextures.BUTTON_STANDARD)
+            .setSize(179, 18))
+            .addChild(
+                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.consumeUpgradeMats"))
+                    .setTextAlignment(Alignment.Center)
+                    .setScale(0.75f)
+                    .setPos(0, 1)
+                    .setSize(179, 18))
+            .setPos(5, 82)
+            .setSize(179, 16));
+
+        int uniqueItems = inputs.size();
+        for (int i = 0; i < 12; i++) {
             int index = i;
             int cleanDiv4 = index / 4;
-            builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.BUTTON_STANDARD_PRESSED)
-                    .setPos(6 + cleanDiv4 * 36, 6 + index % 4 * 18)
-                    .setSize(18, 18));
-            columnList.get(cleanDiv4)
-                .addChild(
-                    new ItemDrawable().setItem(inputs.get(index))
-                        .asWidget()
-                        .dynamicTooltip(() -> {
-                            List<String> tooltip = new ArrayList<>();
-                            tooltip.add(
-                                inputs.get(index) != null ? inputs.get(index)
-                                    .getDisplayName() : "");
-                            return tooltip;
-                        })
-                        .setSize(16, 16));
+            if (i < uniqueItems) {
+                builder.widget(
+                    new DrawableWidget().setDrawable(GT_UITextures.BUTTON_STANDARD_PRESSED)
+                        .setPos(5 + cleanDiv4 * 36, 6 + index % 4 * 18)
+                        .setSize(18, 18));
+                columnList.get(cleanDiv4)
+                    .addChild(
+                        new ItemDrawable().setItem(inputs.get(index))
+                            .asWidget()
+                            .dynamicTooltip(() -> {
+                                List<String> tooltip = new ArrayList<>();
+                                tooltip.add(
+                                    inputs.get(index) != null ? inputs.get(index)
+                                        .getDisplayName() : "");
+                                return tooltip;
+                            })
+                            .setSize(16, 16));
+                columnList.get(cleanDiv4 + 3)
+                    .addChild(
+                        new TextWidget("x" + inputs.get(i).stackSize).setTextAlignment(Alignment.CenterLeft)
+                            .setScale(0.8f)
+                            .setSize(18, 8));
+            } else {
+                builder.widget(
+                    new DrawableWidget().setDrawable(GT_UITextures.BUTTON_STANDARD_DISABLED)
+                        .setPos(5 + cleanDiv4 * 36, 6 + index % 4 * 18)
+                        .setSize(18, 18));
+            }
         }
 
-        columns.addChild(
-            column1.setSpace(2)
-                .setAlignment(MainAxisAlignment.SPACE_BETWEEN)
-                .setSize(34, 72)
-                .setPos(1, 1));
-        columns.addChild(
-            column2.setSpace(2)
-                .setAlignment(MainAxisAlignment.SPACE_BETWEEN)
-                .setSize(34, 72)
-                .setPos(37, 1));
-        columns.addChild(
-            column3.setSpace(2)
-                .setAlignment(MainAxisAlignment.SPACE_BETWEEN)
-                .setSize(34, 72)
-                .setPos(73, 1));
+        int counter = 0;
+        for (DynamicPositionedColumn column : columnList) {
+            int spacing = 2;
+            int xCord = 1 + counter * 36;
+            int yCord = 1;
+            if (counter > 2) {
+                spacing = 10;
+                xCord = 19 + (counter - 3) * 36;
+                yCord = 5;
+            }
+            columns.addChild(
+                column.setSpace(spacing)
+                    .setAlignment(MainAxisAlignment.SPACE_BETWEEN)
+                    .setSize(16, 72)
+                    .setPos(xCord, yCord));
+            counter++;
+        }
+
         builder.widget(
-            columns.setSize(72, 72)
-                .setPos(6, 6));
+            columns.setSize(108, 72)
+                .setPos(5, 6));
+
         return builder.build();
     }
 

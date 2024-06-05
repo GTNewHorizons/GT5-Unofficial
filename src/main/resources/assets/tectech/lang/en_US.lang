@@ -1034,6 +1034,7 @@ gt.blockmachines.multimachine.FOG.recipes=Recipes Processed
 gt.blockmachines.multimachine.FOG.fuel=Fuel Units Consumed
 gt.blockmachines.multimachine.FOG.extensions=Extensions Built
 gt.blockmachines.multimachine.FOG.shardgain=Graviton Shards gained
+gt.blockmachines.multimachine.FOG.consumeUpgradeMats=Click to consume upgrade materials, supply §4exact§r stacksizes
 
 # Optical Circuits
 achievement.gt.metaitem.03.32155=Optical Assembly
