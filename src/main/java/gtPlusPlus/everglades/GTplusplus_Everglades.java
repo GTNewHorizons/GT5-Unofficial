@@ -159,8 +159,8 @@ public class GTplusplus_Everglades implements ActionListener {
         for (WorldGen_GT_Ore_Layer t : WorldGen_Ores.validOreveins.values()) {
             addVMDrop(t.mPrimaryMeta, 0, t.mWeight);
             addVMDrop(t.mSecondaryMeta, 0, t.mWeight);
-            addVMDrop(t.mBetweenMeta, 0, t.mWeight);
-            addVMDrop(t.mSporadicMeta, 0, t.mWeight);
+            addVMDrop(t.mBetweenMeta, 0, t.mWeight / 8f);
+            addVMDrop(t.mSporadicMeta, 0, t.mWeight / 8f);
         }
     }
 
