@@ -165,13 +165,11 @@ public class GregtechMetaTileEntity_SteamCompressor
         if (!checkPiece(mName, 1, 1, 0)) return false;
         if (tierCasing1 < 0) return false;
         if (tierCasing1 == 1) {
-            fixAllMaintenanceIssue();
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
         if (tierCasing1 == 2) {
-            fixAllMaintenanceIssue();
             updateHatchTexture();
             tierMachine = 2;
             return true;
