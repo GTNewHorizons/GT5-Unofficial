@@ -174,7 +174,6 @@ public class GregtechMetaTileEntity_SteamMacerator
             return true;
         }
         if (tierCasing1 == 2) {
-            fixAllMaintenanceIssue();
             updateHatchTexture();
             tierMachine = 2;
             return true;

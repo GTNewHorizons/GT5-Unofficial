@@ -188,13 +188,11 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         if (!checkPiece(STRUCTUR_PIECE_MAIN, horizontalOffSet, verticalOffSet, depthOffSet)) return false;
         if (tierCasing1 < 0 || tierCasing2 < 0 || tierCasing4 < 0) return false;
         if (tierCasing1 == 1 || tierCasing2 == 1 || tierCasing4 == 1) {
-            fixAllMaintenanceIssue();
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
         if (tierCasing1 == 2 || tierCasing2 == 2 || tierCasing4 == 2) {
-            fixAllMaintenanceIssue();
             updateHatchTexture();
             tierMachine = 2;
             return true;

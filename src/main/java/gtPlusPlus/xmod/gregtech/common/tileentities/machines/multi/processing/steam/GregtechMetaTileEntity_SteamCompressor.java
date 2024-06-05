@@ -171,7 +171,6 @@ public class GregtechMetaTileEntity_SteamCompressor
             return true;
         }
         if (tierCasing1 == 2) {
-            fixAllMaintenanceIssue();
             updateHatchTexture();
             tierMachine = 2;
             return true;
