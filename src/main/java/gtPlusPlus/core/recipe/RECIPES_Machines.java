@@ -819,7 +819,6 @@ public class RECIPES_Machines {
             500);
 
         ItemStack aBronzeBricks = ItemUtils.simpleMetaStack(GregTech_API.sBlockCasings1, 10, 1);
-        ItemStack aSolidSteelMachineCasing = ItemUtils.simpleMetaStack(GregTech_API.sBlockCasings2, 0, 1);
         // Steam Macerator Multi
         RecipeUtils.addShapedGregtechRecipe(
             aBronzeBricks,
@@ -835,28 +834,28 @@ public class RECIPES_Machines {
 
         // Steam Washer Multi
         RecipeUtils.addShapedGregtechRecipe(
-            aSolidSteelMachineCasing,
+            aBronzeBricks,
             "plateWroughtIron",
-            aSolidSteelMachineCasing,
+            aBronzeBricks,
             "rotorTin",
-            "frameGtSteel",
+            ALLOY.TUMBAGA.getFrameBox(1),
             "rotorTin",
-            aSolidSteelMachineCasing,
+            aBronzeBricks,
             "plateWroughtIron",
-            aSolidSteelMachineCasing,
+            aBronzeBricks,
             GregtechItemList.Controller_SteamWasherMulti.get(1));
 
         // Steam Centrifuge Multi
         RecipeUtils.addShapedGregtechRecipe(
-            aSolidSteelMachineCasing,
+            aBronzeBricks,
             "plateWroughtIron",
-            aSolidSteelMachineCasing,
-            "gearSteel",
-            "frameGtSteel",
-            "gearSteel",
-            aSolidSteelMachineCasing,
+            aBronzeBricks,
+            "gearBronze",
+            ALLOY.TUMBAGA.getFrameBox(1),
+            "gearBronze",
+            aBronzeBricks,
             "plateWroughtIron",
-            aSolidSteelMachineCasing,
+            aBronzeBricks,
             GregtechItemList.Controller_SteamCentrifugeMulti.get(1));
 
         // Steam Compressor Multi
