@@ -80,40 +80,40 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     private static final int verticalOffSet = 3;
     private static final int depthOffSet = 0;
 
-    private int tierCasing1 = -1;
-    private int tierCasing2 = -1;
-    private int tierCasing3 = -1;
-    private int tierCasing4 = -1;
+    private int tierGearBoxCasing = -1;
+    private int tierPipeCasing = -1;
+    private int tierFireBoxCasing = -1;
+    private int tierMachineCasing = -1;
 
     private int tierMachine = 1;
 
-    private String tCasing1 = "Solid Bronze/Steel Machine Casing";
+    private String tMachineCasing = "Solid Bronze or Steel Machine Casing";
 
-    public static int getTierCasing4(Block block, int meta) {
+    public static int getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) return 1;
         if (block == sBlockCasings2 && 0 == meta) return 2;
         return -1;
     }
 
-    private String tCasing2 = "Bronze/Steel Firebox Casing";
+    private String tFireBoxCasing = "Bronze or Steel Firebox Casing";
 
-    public static int getTierCasing3(Block block, int meta) {
+    public static int getTierFireBoxCasing(Block block, int meta) {
         if (block == sBlockCasings3 && 13 == meta) return 1;
         if (block == sBlockCasings3 && 14 == meta) return 2;
         return -1;
     }
 
-    private String tCasing3 = "Bronze/Steel Gear Box Casing";
+    private String tGearBoxCasing = "Bronze or Steel Gear Box Casing";
 
-    public static int getTierCasing1(Block block, int meta) {
+    public static int getTierGearBoxCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 2 == meta) return 1;
         if (block == sBlockCasings2 && 3 == meta) return 2;
         return -1;
     }
 
-    private String tCasing4 = "Bronze/Steel Pipe Casing";
+    private String tPipeCasing = "Bronze or Steel Pipe Casing";
 
-    public static int getTierCasing2(Block block, int meta) {
+    public static int getTierPipeCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 12 == meta) return 1;
         if (block == sBlockCasings2 && 13 == meta) return 2;
         return -1;
@@ -177,34 +177,33 @@ public class GregtechMetaTileEntity_SteamCentrifuge
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierMachine = -1;
-        tierCasing1 = -1;
-        tierCasing2 = -1;
-        tierCasing3 = -1;
-        tierCasing4 = -1;
+        tierGearBoxCasing = -1;
+        tierPipeCasing = -1;
+        tierFireBoxCasing = -1;
+        tierMachineCasing = -1;
         if (!checkPiece(STRUCTUR_PIECE_MAIN, horizontalOffSet, verticalOffSet, depthOffSet)) return false;
-        if (tierCasing1 < 0 || tierCasing2 < 0 || tierCasing3 < 0 || tierCasing4 < 0) return false;
-        if (tierCasing1 == 1 || tierCasing2 == 1 || tierCasing3 == 1 || tierCasing4 == 1) {
+        if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierFireBoxCasing < 0 && tierMachineCasing < 0) return false;
+        if (tierGearBoxCasing == 1 && tierPipeCasing == 1 && tierFireBoxCasing == 1 && tierMachineCasing == 1) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
-        if (tierCasing1 == 2 || tierCasing2 == 2 || tierCasing3 == 2 || tierCasing4 == 2) {
+        if (tierGearBoxCasing == 2 && tierPipeCasing == 2 && tierFireBoxCasing == 2 && tierMachineCasing == 2) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
         }
-        return this.mSteamInputs.size() == 1 || this.mSteamOutputs.size() == 1;
+        return false;
     }
 
     @Override
     public void onValueUpdate(byte aValue) {
-        tierCasing4 = aValue;
+        tierMachineCasing = aValue;
     }
 
     @Override
     public byte getUpdateData() {
-        return (byte) tierCasing4;
+        return (byte) tierMachineCasing;
     }
 
     @Override
@@ -219,42 +218,42 @@ public class GregtechMetaTileEntity_SteamCentrifuge
                     withChannel(
                         "tier",
                         ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamCentrifuge::getTierCasing1,
+                            GregtechMetaTileEntity_SteamCentrifuge::getTierGearBoxCasing,
                             ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
                             -1,
-                            (t, m) -> t.tierCasing1 = m,
-                            t -> t.tierCasing1)))
+                            (t, m) -> t.tierGearBoxCasing = m,
+                            t -> t.tierGearBoxCasing)))
                 .addElement(
                     'C',
                     withChannel(
                         "tier",
                         ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamCentrifuge::getTierCasing2,
+                            GregtechMetaTileEntity_SteamCentrifuge::getTierPipeCasing,
                             ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
                             -1,
-                            (t, m) -> t.tierCasing2 = m,
-                            t -> t.tierCasing2)))
+                            (t, m) -> t.tierPipeCasing = m,
+                            t -> t.tierPipeCasing)))
                 .addElement(
                     'D',
                     withChannel(
                         "tier",
                         ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamCentrifuge::getTierCasing3,
+                            GregtechMetaTileEntity_SteamCentrifuge::getTierFireBoxCasing,
                             ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
                             -1,
-                            (t, m) -> t.tierCasing3 = m,
-                            t -> t.tierCasing3)))
+                            (t, m) -> t.tierFireBoxCasing = m,
+                            t -> t.tierFireBoxCasing)))
                 .addElement(
                     'A',
                     withChannel(
                         "tier",
                         ofChain(
                             ofBlocksTiered(
-                                GregtechMetaTileEntity_SteamCentrifuge::getTierCasing4,
+                                GregtechMetaTileEntity_SteamCentrifuge::getTierMachineCasing,
                                 ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
                                 -1,
-                                (t, m) -> t.tierCasing4 = m,
-                                t -> t.tierCasing4),
+                                (t, m) -> t.tierMachineCasing = m,
+                                t -> t.tierMachineCasing),
                             buildSteamInput(GregtechMetaTileEntity_SteamCentrifuge.class).casingIndex(10)
                                 .dot(1)
                                 .build(),
@@ -312,7 +311,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     }
 
     private int getCasingTextureID() {
-        if (tierCasing1 == 2 || tierCasing2 == 2 || tierCasing3 == 2 || tierCasing4 == 2)
+        if (tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierFireBoxCasing == 2 || tierMachineCasing == 2)
             return ((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0);
         return ((GT_Block_Casings1) GregTech_API.sBlockCasings1).getTextureIndex(10);
     }
@@ -347,14 +346,14 @@ public class GregtechMetaTileEntity_SteamCentrifuge
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Steam Centrifuge")
             .addInfo("Runs recipes up to MV tier")
-            .addInfo("Centrifuges up to 8/16 things at a time")
+            .addInfo("Centrifuges up to Tier 1 - 8 and Tier 2 - 16 things at a time")
             .addInfo("Multi consumes x2 amount of steam on Tier 2")
             .addSeparator()
             .beginStructureBlock(5, 5, 5, false)
-            .addCasingInfoMin(tCasing1, 62, false)
-            .addCasingInfo(tCasing2, 3)
-            .addCasingInfo(tCasing3, 8)
-            .addCasingInfo(tCasing4, 4)
+            .addCasingInfoMin(tMachineCasing, 60, false)
+            .addCasingInfo(tFireBoxCasing, 3)
+            .addCasingInfo(tGearBoxCasing, 8)
+            .addCasingInfo(tPipeCasing, 4)
             .addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
             .addOtherStructurePart(TT_steamoutputbus, "Any casing", 1)
             .addOtherStructurePart(TT_steamhatch, "Any casing", 1)

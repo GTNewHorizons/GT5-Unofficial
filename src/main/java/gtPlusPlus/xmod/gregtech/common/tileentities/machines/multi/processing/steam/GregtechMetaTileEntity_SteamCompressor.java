@@ -54,14 +54,14 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class GregtechMetaTileEntity_SteamCompressor
     extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamCompressor> implements ISurvivalConstructable {
 
-    private String mCasingName = "Bronze/Steel Plated Bricks";
+    private String mCasingName = "Bronze or Steel Plated Bricks";
     private static IStructureDefinition<GregtechMetaTileEntity_SteamCompressor> STRUCTURE_DEFINITION = null;
 
     private int tierMachine = 1;
 
-    private int tierCasing1 = -1;
+    private int tierMachineCasing = -1;
 
-    public static int getTierCasing1(Block block, int meta) {
+    public static int getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) return 1;
         if (block == sBlockCasings2 && 0 == meta) return 2;
         return -1;
@@ -102,7 +102,7 @@ public class GregtechMetaTileEntity_SteamCompressor
             .addInfo("Controller Block for the Steam Compressor")
             .addInfo("33.3% faster than using a single block Steam Compressor.")
             .addInfo("Uses only 66.6% of the steam/s compared to a single block Steam Compressor.")
-            .addInfo("Compresses up to 8/16 things at a time")
+            .addInfo("Compresses up to Tier 1 - 8 and Tier 2 - 16 things at a time")
             .addInfo("Multi consumes x2 amount of steam on Tier 2")
             .addSeparator()
             .beginStructureBlock(3, 3, 4, true)
@@ -130,11 +130,11 @@ public class GregtechMetaTileEntity_SteamCompressor
                         "tier",
                         ofChain(
                             ofBlocksTiered(
-                                GregtechMetaTileEntity_SteamCompressor::getTierCasing1,
+                                GregtechMetaTileEntity_SteamCompressor::getTierMachineCasing,
                                 ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
                                 -1,
-                                (t, m) -> t.tierCasing1 = m,
-                                t -> t.tierCasing1),
+                                (t, m) -> t.tierMachineCasing = m,
+                                t -> t.tierMachineCasing),
                             buildSteamInput(GregtechMetaTileEntity_SteamCompressor.class).casingIndex(10)
                                 .dot(1)
                                 .build(),
@@ -160,32 +160,31 @@ public class GregtechMetaTileEntity_SteamCompressor
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierMachine = -1;
-        tierCasing1 = -1;
+        tierMachineCasing = -1;
         if (!checkPiece(mName, 1, 1, 0)) return false;
-        if (tierCasing1 < 0) return false;
-        if (tierCasing1 == 1) {
+        if (tierMachineCasing < 0) return false;
+        if (tierMachineCasing == 1) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
-        if (tierCasing1 == 2) {
+        if (tierMachineCasing == 2) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
         }
 
-        return this.mSteamInputs.size() == 1 || this.mSteamOutputs.size() == 1;
+        return false;
     }
 
     @Override
     public void onValueUpdate(byte aValue) {
-        tierCasing1 = aValue;
+        tierMachineCasing = aValue;
     }
 
     @Override
     public byte getUpdateData() {
-        return (byte) tierCasing1;
+        return (byte) tierMachineCasing;
     }
 
     protected void updateHatchTexture() {
@@ -195,7 +194,7 @@ public class GregtechMetaTileEntity_SteamCompressor
     }
 
     private int getCasingTextureID() {
-        if (tierCasing1 == 2) return ((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0);
+        if (tierMachineCasing == 2) return ((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0);
         return ((GT_Block_Casings1) GregTech_API.sBlockCasings1).getTextureIndex(10);
     }
 

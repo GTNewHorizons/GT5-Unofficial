@@ -55,12 +55,12 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class GregtechMetaTileEntity_SteamMacerator
     extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamMacerator> implements ISurvivalConstructable {
 
-    private String mCasingName = "Bronze/Steel Plated Bricks";
+    private String mCasingName = "Bronze or Steel Plated Bricks";
     private static IStructureDefinition<GregtechMetaTileEntity_SteamMacerator> STRUCTURE_DEFINITION = null;
 
     private int tierMachine = 0;
 
-    private int tierCasing1 = -1;
+    private int tierMachineCasing = -1;
 
     public GregtechMetaTileEntity_SteamMacerator(String aName) {
         super(aName);
@@ -75,7 +75,7 @@ public class GregtechMetaTileEntity_SteamMacerator
         return new GregtechMetaTileEntity_SteamMacerator(this.mName);
     }
 
-    public static int getTierCasing1(Block block, int meta) {
+    public static int getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) return 1;
         if (block == sBlockCasings2 && 0 == meta) return 2;
         return -1;
@@ -107,7 +107,7 @@ public class GregtechMetaTileEntity_SteamMacerator
             .addInfo("Controller Block for the Steam Macerator")
             .addInfo("33.3% faster than using a single block Steam Macerator.")
             .addInfo("Uses only 66.6% of the steam/s required compared to a single block Steam Macerator.")
-            .addInfo("Compresses up to 8/16 things at a time")
+            .addInfo("Compresses up to Tier 1 - 8 and Tier 2 - 16 things at a time")
             .addInfo("Multi consumes x2 amount of steam on Tier 2")
             .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
@@ -134,11 +134,11 @@ public class GregtechMetaTileEntity_SteamMacerator
                         "tier",
                         ofChain(
                             ofBlocksTiered(
-                                GregtechMetaTileEntity_SteamMacerator::getTierCasing1,
+                                GregtechMetaTileEntity_SteamMacerator::getTierMachineCasing,
                                 ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
                                 -1,
-                                (t, m) -> t.tierCasing1 = m,
-                                t -> t.tierCasing1),
+                                (t, m) -> t.tierMachineCasing = m,
+                                t -> t.tierMachineCasing),
                             buildSteamInput(GregtechMetaTileEntity_SteamMacerator.class).casingIndex(10)
                                 .dot(1)
                                 .build(),
@@ -164,32 +164,31 @@ public class GregtechMetaTileEntity_SteamMacerator
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierMachine = -1;
-        tierCasing1 = -1;
+        tierMachineCasing = -1;
         if (!checkPiece(mName, 1, 1, 0)) return false;
-        if (tierCasing1 < 0) return false;
-        if (tierCasing1 == 1) {
+        if (tierMachineCasing < 0) return false;
+        if (tierMachineCasing == 1) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
-        if (tierCasing1 == 2) {
+        if (tierMachineCasing == 2) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
         }
 
-        return this.mSteamInputs.size() == 1 || this.mSteamOutputs.size() == 1;
+        return false;
     }
 
     @Override
     public void onValueUpdate(byte aValue) {
-        tierCasing1 = aValue;
+        tierMachineCasing = aValue;
     }
 
     @Override
     public byte getUpdateData() {
-        return (byte) tierCasing1;
+        return (byte) tierMachineCasing;
     }
 
     protected void updateHatchTexture() {
@@ -199,7 +198,7 @@ public class GregtechMetaTileEntity_SteamMacerator
     }
 
     private int getCasingTextureID() {
-        if (tierCasing1 == 2) return ((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0);
+        if (tierMachineCasing == 2) return ((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0);
         return ((GT_Block_Casings1) GregTech_API.sBlockCasings1).getTextureIndex(10);
     }
 
