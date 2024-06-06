@@ -353,7 +353,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
             .beginStructureBlock(5, 5, 9, false)
             .addCasingInfoMin(tMachineCasing, 55, false)
             .addCasingInfo(tPipeCasing, 12)
-            .addCasingInfo(tGearBoxCasing,8)
+            .addCasingInfo(tGearBoxCasing, 8)
             .addCasingInfo(tGlasses, 24)
             .addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
             .addOtherStructurePart(TT_steamoutputbus, "Any casing", 1)

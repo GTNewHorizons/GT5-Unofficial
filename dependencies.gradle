@@ -56,7 +56,7 @@ dependencies {
     compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-alpha52:api') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.0:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.39:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.8.4:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.8.6:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.10.0-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.15.8:dev") { transitive = false }
 
