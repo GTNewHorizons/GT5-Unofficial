@@ -81,21 +81,22 @@ public class RendererGlasBlock implements ISimpleBlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
                                     RenderBlocks renderer) {
+        boolean flag = false;
         if (block instanceof BW_GlasBlocks) {
-            renderer.renderStandardBlock(ItemRegistry.bw_fake_glasses, x, y, z);
-            renderer.renderStandardBlockWithColorMultiplier(block, x, y, z,
+            flag |= renderer.renderStandardBlock(ItemRegistry.bw_fake_glasses, x, y, z);
+            flag |= renderer.renderStandardBlockWithColorMultiplier(block, x, y, z,
                 ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[0] / 255f,
                 ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[1] / 255f,
                 ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[2] / 255f);
         }
         if (block instanceof BW_GlasBlocks2) {
-            renderer.renderStandardBlock(ItemRegistry.bw_fake_glasses2, x, y, z);
-            renderer.renderStandardBlockWithColorMultiplier(block, x, y, z,
+            flag |= renderer.renderStandardBlock(ItemRegistry.bw_fake_glasses2, x, y, z);
+            flag |= renderer.renderStandardBlockWithColorMultiplier(block, x, y, z,
                 ((BW_GlasBlocks2) block).getColor(world.getBlockMetadata(x, y, z))[0] / 255f,
                 ((BW_GlasBlocks2) block).getColor(world.getBlockMetadata(x, y, z))[1] / 255f,
                 ((BW_GlasBlocks2) block).getColor(world.getBlockMetadata(x, y, z))[2] / 255f);
         }
-        return true;
+        return flag;
     }
     // spotless:on
 
