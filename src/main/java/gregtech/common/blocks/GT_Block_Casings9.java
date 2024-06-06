@@ -36,7 +36,7 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Plasma Heating Casing");
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".11.name", "Naquadria-Reinforced Water Plant Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Ultravioler Laser Emitter");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "UV Backlight Sterilizer Casing");
 
         ItemList.Casing_Pipe_Polybenzimidazole.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Vent_T2.set(new ItemStack(this, 1, 1));
@@ -73,8 +73,8 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
             case 8 -> Textures.BlockIcons.MACHINE_CASING_HIGH_PRESSURE_RESISTANT.getIcon();
             case 9 -> Textures.BlockIcons.MACHINE_CASING_OZONE.getIcon();
             case 10 -> Textures.BlockIcons.MACHINE_CASING_PLASMA_HEATER.getIcon();
-            case 11 -> Textures.BlockIcons.MACHINE_CASING_NAQUADAH_REINFORCED_WATER_PLANT.getIcon(); // TODO
-            case 12 -> Textures.BlockIcons.MACHINE_CASING_NAQUADAH_REINFORCED_WATER_PLANT.getIcon(); // TODO
+            case 11 -> Textures.BlockIcons.NAQUADRIA_REINFORCED_WATER_PLANT_CASING.getIcon();
+            case 12 -> Textures.BlockIcons.UV_BACKLIGHT_STERILIZER_CASING.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

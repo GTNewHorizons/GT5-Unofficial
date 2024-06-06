@@ -57,7 +57,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
         .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 11))
         // Neutronium-Coated UV-Resistant Glass
         .addElement('B', ofBlock(GregTech_API.sBlockGlass1, 1))
-        // UV Laser Emitter
+        // UV Backlight sterilizer casing
         .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 12))
         .addElement('D', ofFrame(Materials.StellarAlloy))
         .build();

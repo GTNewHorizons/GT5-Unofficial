@@ -68,7 +68,7 @@ public class GT_Block_Glass1 extends GT_Block_Casings_Abstract {
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.GLASS_PH_RESISTANT.getIcon();
-            case 1 -> Textures.BlockIcons.GLASS_PH_RESISTANT.getIcon(); // TODO
+            case 1 -> Textures.BlockIcons.NEUTRONIUM_COATED_UV_RESISTANT_GLASS.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }
