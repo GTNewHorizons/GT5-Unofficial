@@ -53,6 +53,7 @@ import static gregtech.client.GT_TooltipHandler.Tier.UV;
 import static gregtech.client.GT_TooltipHandler.Tier.UXV;
 import static gregtech.client.GT_TooltipHandler.Tier.ZPM;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
+import static gregtech.common.items.ID_MetaItem_01.Coin_Chocolate;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -132,6 +133,28 @@ import gregtech.common.items.behaviors.Behaviour_Sonictron;
 import gregtech.common.items.behaviors.Behaviour_Spray_Color;
 import gregtech.common.items.behaviors.Behaviour_Spray_Color_Remover;
 import gregtech.common.items.behaviors.Behaviour_WrittenBook;
+enum ID_MetaItem_01{
+    Credit_Greg_Copper(0),
+    Credit_Greg_Cupronickel(1),
+    Credit_Greg_Silver(2),
+    Credit_Greg_Gold(3),
+    Credit_Greg_Platinum(4),
+    Credit_Greg_Osmium(5),
+    Credit_Greg_Naquadah(6),
+    Credit_Greg_Neutronium(7),
+    Coin_Gold_Ancient(8),
+    Coin_Doge(9),
+    Coin_Chocolate(10),
+    Credit_Copper(11),
+    Credit_Silver(13),
+    Credit_Gold(14),
+    Credit_Platinum(15),
+    Credit_Osmium(16);
+    final int ID;
+    ID_MetaItem_01(int ID){
+        this.ID = ID;
+    }
+}
 
 public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
@@ -216,37 +239,37 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             new Object[] { "XXX", "XDX", "XXX", 'X', OrePrefixes.gem.get(Materials.NetherStar), 'D',
                 new ItemStack(Blocks.dragon_egg, 1, 32767) });
 
-        ItemList.Credit_Greg_Copper.set(addItem(tLastID = 0, "Copper GT Credit", "0.125 Credits"));
+        ItemList.Credit_Greg_Copper.set(addItem(ID_MetaItem_01.Credit_Greg_Copper.ID, "Copper GT Credit", "0.125 Credits"));
         ItemList.Credit_Greg_Cupronickel.set(
-            addItem(tLastID = 1, "Cupronickel GT Credit", "1 Credit", new ItemData(Materials.Cupronickel, 907200L)));
+            addItem(ID_MetaItem_01.Credit_Greg_Cupronickel.ID, "Cupronickel GT Credit", "1 Credit", new ItemData(Materials.Cupronickel, 907200L)));
         ItemList.Credit_Greg_Silver.set(
             addItem(
-                tLastID = 2,
+                ID_MetaItem_01.Credit_Greg_Silver.ID,
                 "Silver GT Credit",
                 "8 Credits",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)));
-        ItemList.Credit_Greg_Gold.set(addItem(tLastID = 3, "Gold GT Credit", "64 Credits"));
-        ItemList.Credit_Greg_Platinum.set(addItem(tLastID = 4, "Platinum GT Credit", "512 Credits"));
-        ItemList.Credit_Greg_Osmium.set(addItem(tLastID = 5, "Osmium GT Credit", "4,096 Credits"));
-        ItemList.Credit_Greg_Naquadah.set(addItem(tLastID = 6, "Naquadah GT Credit", "32,768 Credits"));
-        ItemList.Credit_Greg_Neutronium.set(addItem(tLastID = 7, "Neutronium GT Credit", "262,144 Credits"));
+        ItemList.Credit_Greg_Gold.set(addItem(ID_MetaItem_01.Credit_Greg_Gold.ID, "Gold GT Credit", "64 Credits"));
+        ItemList.Credit_Greg_Platinum.set(addItem(ID_MetaItem_01.Credit_Greg_Platinum.ID, "Platinum GT Credit", "512 Credits"));
+        ItemList.Credit_Greg_Osmium.set(addItem(ID_MetaItem_01.Credit_Greg_Osmium.ID, "Osmium GT Credit", "4,096 Credits"));
+        ItemList.Credit_Greg_Naquadah.set(addItem(ID_MetaItem_01.Credit_Greg_Naquadah.ID, "Naquadah GT Credit", "32,768 Credits"));
+        ItemList.Credit_Greg_Neutronium.set(addItem(ID_MetaItem_01.Credit_Greg_Neutronium.ID, "Neutronium GT Credit", "262,144 Credits"));
         ItemList.Coin_Gold_Ancient.set(
             addItem(
-                tLastID = 8,
+                ID_MetaItem_01.Coin_Gold_Ancient.ID,
                 "Ancient Gold Coin",
                 "Found in ancient Ruins",
                 new ItemData(Materials.Gold, 907200L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 8L)));
         ItemList.Coin_Doge.set(
             addItem(
-                tLastID = 9,
+                ID_MetaItem_01.Coin_Doge.ID,
                 "Doge Coin",
                 "wow much coin how money so crypto plz mine v rich very currency wow",
                 new ItemData(Materials.Brass, 907200L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)));
         ItemList.Coin_Chocolate.set(
             addItem(
-                tLastID = 10,
+                ID_MetaItem_01.Coin_Chocolate.ID,
                 "Chocolate Coin",
                 "Wrapped in Gold",
                 new ItemData(Materials.Gold, OrePrefixes.foil.mMaterialAmount),
@@ -262,17 +285,17 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                     200,
                     1,
                     100)));
-        ItemList.Credit_Copper.set(addItem(tLastID = 11, "Industrial Copper Credit", "0.125 Credits"));
+        ItemList.Credit_Copper.set(addItem(ID_MetaItem_01.Credit_Copper.ID, "Industrial Copper Credit", "0.125 Credits"));
 
         ItemList.Credit_Silver.set(
             addItem(
-                tLastID = 13,
+                ID_MetaItem_01.Credit_Silver.ID,
                 "Industrial Silver Credit",
                 "8 Credits",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)));
-        ItemList.Credit_Gold.set(addItem(tLastID = 14, "Industrial Gold Credit", "64 Credits"));
-        ItemList.Credit_Platinum.set(addItem(tLastID = 15, "Industrial Platinum Credit", "512 Credits"));
-        ItemList.Credit_Osmium.set(addItem(tLastID = 16, "Industrial Osmium Credit", "4096 Credits"));
+        ItemList.Credit_Gold.set(addItem(ID_MetaItem_01.Credit_Gold.ID, "Industrial Gold Credit", "64 Credits"));
+        ItemList.Credit_Platinum.set(addItem(ID_MetaItem_01.Credit_Platinum.ID, "Industrial Platinum Credit", "512 Credits"));
+        ItemList.Credit_Osmium.set(addItem(ID_MetaItem_01.Credit_Osmium.ID, "Industrial Osmium Credit", "4096 Credits"));
 
         GT_ModHandler.addShapelessCraftingRecipe(
             ItemList.Coin_Chocolate.get(1L),
