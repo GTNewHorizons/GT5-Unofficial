@@ -327,13 +327,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             for (int i = 0; i < mOutputFluids.length; i++)
                 mOutputFluids[i] = GT_Utility.loadFluid(aNBT, "mOutputFluids" + i);
         }
-
-        mWrench = aNBT.getBoolean("mWrench");
-        mScrewdriver = aNBT.getBoolean("mScrewdriver");
-        mSoftHammer = aNBT.getBoolean("mSoftHammer");
-        mHardHammer = aNBT.getBoolean("mHardHammer");
-        mSolderingTool = aNBT.getBoolean("mSolderingTool");
-        mCrowbar = aNBT.getBoolean("mCrowbar");
+        if (shouldCheckMaintenance()) {
+            mWrench = aNBT.getBoolean("mWrench");
+            mScrewdriver = aNBT.getBoolean("mScrewdriver");
+            mSoftHammer = aNBT.getBoolean("mSoftHammer");
+            mHardHammer = aNBT.getBoolean("mHardHammer");
+            mSolderingTool = aNBT.getBoolean("mSolderingTool");
+            mCrowbar = aNBT.getBoolean("mCrowbar");
+        } else fixAllIssues();
     }
 
     protected SingleRecipeCheck loadSingleRecipeChecker(NBTTagCompound aNBT) {
@@ -2552,6 +2553,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     public boolean shouldCheckMaintenance() {
-        return disableMaintenance || hasMaintenanceChecks;
+        return !disableMaintenance && hasMaintenanceChecks;
     }
 }
