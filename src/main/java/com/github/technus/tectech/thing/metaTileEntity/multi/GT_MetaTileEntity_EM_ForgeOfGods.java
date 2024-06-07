@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
+import static com.github.technus.tectech.loader.recipe.Godforge.godforgeUpgradeMats;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.GodforgeCasings;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.forgeOfGodsRenderBlock;
 import static com.github.technus.tectech.util.GodforgeMath.allowModuleConnection;
@@ -42,7 +43,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.GodforgeGlassBlock;
 import com.github.technus.tectech.thing.block.TileForgeOfGods;
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
@@ -89,7 +89,6 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
@@ -146,6 +145,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     private static final int MANUAL_INSERTION_WINDOW_ID = 15;
     private static final int TEXTURE_INDEX = 960;
     private static final int[] FIRST_SPLIT_UPGRADES = new int[] { 12, 13, 14 };
+    private static final Integer[] UPGRADE_MATERIAL_ID_CONVERSION = { 0, 5, 7, 11, 26, 29, 30 };
     private static final long POWER_MILESTONE_CONSTANT = LongMath.pow(10, 15);
     private static final long RECIPE_MILESTONE_CONSTANT = LongMath.pow(10, 7);
     private static final long FUEL_MILESTONE_CONSTANT = 10_000;
@@ -1128,15 +1128,29 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     private int[] followupUpgrades = new int[] {};
     private boolean allPrereqRequired = false;
     private boolean isUpradeSplitStart = false;
+    private boolean doesCurrentUpgradeRequireExtraMats = false;
     private boolean[] upgrades = new boolean[31];
+    private boolean[] materialPaidUpgrades = new boolean[7];
 
     protected ModularWindow createUpgradeTreeWindow(final EntityPlayer player) {
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
         final int PARENT_WIDTH = 300;
         final int PARENT_HEIGHT = 1000;
         ModularWindow.Builder builder = ModularWindow.builder(PARENT_WIDTH, PARENT_HEIGHT);
-        scrollable.widget(
-            createUpgradeBox(0, 0, 3, new int[] {}, false, new int[] { 1 }, false, 0, new Pos2d(126, 56), scrollable))
+        scrollable
+            .widget(
+                createUpgradeBox(
+                    0,
+                    0,
+                    3,
+                    new int[] {},
+                    false,
+                    new int[] { 1 },
+                    false,
+                    true,
+                    0,
+                    new Pos2d(126, 56),
+                    scrollable))
             .widget(
                 createUpgradeBox(
                     1,
@@ -1145,6 +1159,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     new int[] { 0 },
                     false,
                     new int[] { 2, 3 },
+                    false,
                     false,
                     1,
                     new Pos2d(126, 116),
@@ -1158,6 +1173,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] { 4, 5 },
                     false,
+                    false,
                     1,
                     new Pos2d(96, 176),
                     scrollable))
@@ -1169,6 +1185,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     new int[] { 1 },
                     false,
                     new int[] { 5, 6 },
+                    false,
                     false,
                     1,
                     new Pos2d(156, 176),
@@ -1182,6 +1199,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] { 8 },
                     false,
+                    false,
                     1,
                     new Pos2d(66, 236),
                     scrollable))
@@ -1194,6 +1212,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] { 7 },
                     false,
+                    true,
                     1,
                     new Pos2d(126, 236),
                     scrollable))
@@ -1205,6 +1224,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     new int[] { 3 },
                     false,
                     new int[] { 10 },
+                    false,
                     false,
                     1,
                     new Pos2d(186, 236),
@@ -1218,6 +1238,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] { 8, 9, 10 },
                     false,
+                    true,
                     2,
                     new Pos2d(126, 296),
                     scrollable))
@@ -1229,6 +1250,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     new int[] { 4, 7 },
                     true,
                     new int[] { 11 },
+                    false,
                     false,
                     2,
                     new Pos2d(56, 356),
@@ -1242,6 +1264,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] {},
                     false,
+                    false,
                     2,
                     new Pos2d(126, 356),
                     scrollable))
@@ -1254,6 +1277,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     true,
                     new int[] { 11 },
                     false,
+                    true,
                     2,
                     new Pos2d(196, 356),
                     scrollable))
@@ -1266,6 +1290,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] { 12, 13, 14 },
                     false,
+                    true,
                     2,
                     new Pos2d(126, 416),
                     scrollable))
@@ -1278,6 +1303,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] { 17 },
                     true,
+                    false,
                     3,
                     new Pos2d(66, 476),
                     scrollable))
@@ -1290,6 +1316,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] { 18 },
                     true,
+                    false,
                     3,
                     new Pos2d(126, 476),
                     scrollable))
@@ -1302,6 +1329,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] { 15, 19 },
                     true,
+                    false,
                     3,
                     new Pos2d(186, 476),
                     scrollable))
@@ -1313,6 +1341,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     new int[] { 14 },
                     false,
                     new int[] {},
+                    false,
                     false,
                     4,
                     new Pos2d(246, 496),
@@ -1326,6 +1355,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] {},
                     false,
+                    false,
                     4,
                     new Pos2d(6, 556),
                     scrollable))
@@ -1337,6 +1367,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     new int[] { 12 },
                     false,
                     new int[] { 16, 20 },
+                    false,
                     false,
                     3,
                     new Pos2d(66, 536),
@@ -1350,6 +1381,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] { 21 },
                     false,
+                    false,
                     3,
                     new Pos2d(126, 536),
                     scrollable))
@@ -1361,6 +1393,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     new int[] { 14 },
                     false,
                     new int[] { 22 },
+                    false,
                     false,
                     3,
                     new Pos2d(186, 536),
@@ -1374,6 +1407,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] { 23 },
                     false,
+                    false,
                     3,
                     new Pos2d(66, 596),
                     scrollable))
@@ -1385,6 +1419,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     new int[] { 18 },
                     false,
                     new int[] { 23 },
+                    false,
                     false,
                     3,
                     new Pos2d(126, 596),
@@ -1398,6 +1433,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] { 23 },
                     false,
+                    false,
                     3,
                     new Pos2d(186, 596),
                     scrollable))
@@ -1409,6 +1445,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     new int[] { 20, 21, 22 },
                     false,
                     new int[] { 24 },
+                    false,
                     false,
                     4,
                     new Pos2d(126, 656),
@@ -1422,6 +1459,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] { 25 },
                     false,
+                    false,
                     5,
                     new Pos2d(126, 718),
                     scrollable))
@@ -1433,6 +1471,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     new int[] { 24 },
                     false,
                     new int[] { 26 },
+                    false,
                     false,
                     6,
                     new Pos2d(36, 758),
@@ -1446,6 +1485,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] { 27 },
                     false,
+                    true,
                     7,
                     new Pos2d(36, 848),
                     scrollable))
@@ -1457,6 +1497,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     new int[] { 26 },
                     false,
                     new int[] { 28 },
+                    false,
                     false,
                     8,
                     new Pos2d(126, 888),
@@ -1470,6 +1511,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] { 29 },
                     false,
+                    false,
                     9,
                     new Pos2d(216, 848),
                     scrollable))
@@ -1482,6 +1524,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] { 30 },
                     false,
+                    true,
                     10,
                     new Pos2d(216, 758),
                     scrollable))
@@ -1494,6 +1537,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     false,
                     new int[] {},
                     false,
+                    true,
                     12,
                     new Pos2d(126, 798),
                     scrollable))
@@ -1510,46 +1554,45 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 ButtonWidget.closeWindowButton(true)
                     .setPos(282, 354));
         if (debugMode) {
-            builder.widget(
-                new MultiChildWidget()
-                    .addChild(
-                        new ButtonWidget().setOnClick((clickData, widget) -> upgrades = new boolean[31])
-                            .setSize(40, 15)
-                            .setBackground(GT_UITextures.BUTTON_STANDARD)
-                            .addTooltip(translateToLocal("fog.debug.resetbutton.tooltip"))
-                            .setTooltipShowUpDelay(TOOLTIP_DELAY))
-                    .addChild(
-                        new TextWidget(translateToLocal("fog.debug.resetbutton.text"))
-                            .setTextAlignment(Alignment.Center)
-                            .setScale(0.57f)
-                            .setMaxWidth(36)
-                            .setPos(3, 3))
-                    .addChild(
-                        new NumericWidget().setSetter(val -> gravitonShardsAvailable = (int) val)
-                            .setGetter(() -> gravitonShardsAvailable)
-                            .setBounds(0, 112)
-                            .setDefaultValue(0)
-                            .setScrollValues(1, 4, 64)
-                            .setTextAlignment(Alignment.Center)
-                            .setTextColor(Color.WHITE.normal)
-                            .setSize(25, 18)
-                            .setPos(4, 16)
-                            .addTooltip(translateToLocal("fog.debug.gravitonshardsetter.tooltip"))
-                            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                            .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD))
-                    .addChild(
-                        new ButtonWidget().setOnClick((clickData, widget) -> Arrays.fill(upgrades, true))
-                            .setSize(40, 15)
-                            .setBackground(GT_UITextures.BUTTON_STANDARD)
-                            .addTooltip(translateToLocal("fog.debug.unlockall.text"))
-                            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                            .setPos(0, 35))
-                    .addChild(
-                        new TextWidget(translateToLocal("fog.debug.unlockall.text")).setTextAlignment(Alignment.Center)
-                            .setScale(0.57f)
-                            .setMaxWidth(36)
-                            .setPos(3, 38))
-                    .setPos(4, 354));
+            builder.widget(new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
+                upgrades = new boolean[31];
+                materialPaidUpgrades = new boolean[7];
+            })
+                .setSize(40, 15)
+                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .addTooltip(translateToLocal("fog.debug.resetbutton.tooltip"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY))
+                .addChild(
+                    new TextWidget(translateToLocal("fog.debug.resetbutton.text")).setTextAlignment(Alignment.Center)
+                        .setScale(0.57f)
+                        .setMaxWidth(36)
+                        .setPos(3, 3))
+                .addChild(
+                    new NumericWidget().setSetter(val -> gravitonShardsAvailable = (int) val)
+                        .setGetter(() -> gravitonShardsAvailable)
+                        .setBounds(0, 112)
+                        .setDefaultValue(0)
+                        .setScrollValues(1, 4, 64)
+                        .setTextAlignment(Alignment.Center)
+                        .setTextColor(Color.WHITE.normal)
+                        .setSize(25, 18)
+                        .setPos(4, 16)
+                        .addTooltip(translateToLocal("fog.debug.gravitonshardsetter.tooltip"))
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD))
+                .addChild(
+                    new ButtonWidget().setOnClick((clickData, widget) -> Arrays.fill(upgrades, true))
+                        .setSize(40, 15)
+                        .setBackground(GT_UITextures.BUTTON_STANDARD)
+                        .addTooltip(translateToLocal("fog.debug.unlockall.text"))
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                        .setPos(0, 35))
+                .addChild(
+                    new TextWidget(translateToLocal("fog.debug.unlockall.text")).setTextAlignment(Alignment.Center)
+                        .setScale(0.57f)
+                        .setMaxWidth(36)
+                        .setPos(3, 38))
+                .setPos(4, 354));
 
         }
         return builder.build();
@@ -1673,26 +1716,30 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                             unlockedPrereqUpgrades++;
                         }
                     }
-                    if (allPrereqRequired) {
-                        if (unlockedPrereqUpgrades == prereqUpgrades.length
-                            && gravitonShardsAvailable >= gravitonShardCost) {
-                            gravitonShardsAvailable -= gravitonShardCost;
-                            gravitonShardsSpent += gravitonShardCost;
-                            upgrades[currentUpgradeID] = true;
-                        }
-                    } else if (unlockedPrereqUpgrades > 0 || prereqUpgrades.length == 0) {
-                        if (isUpradeSplitStart) {
-                            for (int splitUpgrade : FIRST_SPLIT_UPGRADES) {
-                                if (upgrades[splitUpgrade]) {
-                                    unlockedSplitUpgrades++;
-                                }
+                    if (!doesCurrentUpgradeRequireExtraMats
+                        || materialPaidUpgrades[Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
+                            .indexOf(currentUpgradeID)]) {
+                        if (allPrereqRequired) {
+                            if (unlockedPrereqUpgrades == prereqUpgrades.length
+                                && gravitonShardsAvailable >= gravitonShardCost) {
+                                gravitonShardsAvailable -= gravitonShardCost;
+                                gravitonShardsSpent += gravitonShardCost;
+                                upgrades[currentUpgradeID] = true;
                             }
-                            unlockedSplitUpgrades -= (ringAmount - 1);
-                        }
-                        if (unlockedSplitUpgrades <= 0 && gravitonShardsAvailable >= gravitonShardCost) {
-                            gravitonShardsAvailable -= gravitonShardCost;
-                            gravitonShardsSpent += gravitonShardCost;
-                            upgrades[currentUpgradeID] = true;
+                        } else if (unlockedPrereqUpgrades > 0 || prereqUpgrades.length == 0) {
+                            if (isUpradeSplitStart) {
+                                for (int splitUpgrade : FIRST_SPLIT_UPGRADES) {
+                                    if (upgrades[splitUpgrade]) {
+                                        unlockedSplitUpgrades++;
+                                    }
+                                }
+                                unlockedSplitUpgrades -= (ringAmount - 1);
+                            }
+                            if (unlockedSplitUpgrades <= 0 && gravitonShardsAvailable >= gravitonShardCost) {
+                                gravitonShardsAvailable -= gravitonShardCost;
+                                gravitonShardsSpent += gravitonShardCost;
+                                upgrades[currentUpgradeID] = true;
+                            }
                         }
                     }
                 } else {
@@ -1723,20 +1770,48 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                         .setScale(0.7f)
                         .setMaxWidth(36)
                         .setPos(3, 5))
-                .addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
-                    if (!widget.isClient()) {
-                        widget.getContext()
-                            .openSyncedWindow(MANUAL_INSERTION_WINDOW_ID);
-                        widget.getContext()
-                            .closeWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
-                        widget.getContext()
-                            .closeWindow(UPGRADE_TREE_WINDOW_ID);
-                    }
-                })
-                    .setBackground(TecTechUITextures.BUTTON_CELESTIAL_32x32)
-                    .setPos(50, 50))
                 .setPos(WIDTH / 2 - 21, (int) (HEIGHT * 0.9)));
+        if (Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
+            .contains(currentUpgradeID)) {
+            builder.widget(createMaterialInputButton(currentUpgradeID, WIDTH / 2 - 40, (int) (HEIGHT * 0.9), builder));
+        }
         return builder.build();
+    }
+
+    private Widget createMaterialInputButton(int upgradeID, int xCoord, int yCoord, IWidgetBuilder<?> builder) {
+        return new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient() && doesCurrentUpgradeRequireExtraMats) {
+                widget.getContext()
+                    .openSyncedWindow(MANUAL_INSERTION_WINDOW_ID);
+                widget.getContext()
+                    .closeWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
+                widget.getContext()
+                    .closeWindow(UPGRADE_TREE_WINDOW_ID);
+            }
+        })
+            .setPlayClickSound(doesCurrentUpgradeRequireExtraMats)
+            .setBackground(() -> {
+                if (doesCurrentUpgradeRequireExtraMats) {
+                    if (materialPaidUpgrades[Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
+                        .indexOf(upgradeID)]) {
+                        return new IDrawable[] { TecTechUITextures.BUTTON_BOXED_CHECKMARK_18x18 };
+                    } else {
+                        return new IDrawable[] { TecTechUITextures.BUTTON_BOXED_EXCLAMATION_POINT_18x18 };
+                    }
+                } else {
+
+                    return new IDrawable[] { GT_UITextures.TRANSPARENT };
+                }
+            })
+            .setPos(xCoord, yCoord)
+            .setSize(15, 15)
+            .attachSyncer(
+                new FakeSyncWidget.BooleanSyncer(
+                    () -> materialPaidUpgrades[Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
+                        .indexOf(upgradeID)],
+                    val -> materialPaidUpgrades[Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
+                        .indexOf(upgradeID)] = val),
+                builder);
     }
 
     /**
@@ -1750,12 +1825,13 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
      *                                unlock this one. True means ALL, False means AT LEAST ONE
      * @param followingUpgradeIDs     IDs of the following upgrades directly connected to the current one
      * @param isStartOfSplit          Whether this upgrade is one of the initial split upgrades
+     * @param requiresExtraMaterials  Whether this upgrade requires materials other than graviton shards to unlock
      * @param shardCost               How many graviton shards are needed to unlock this upgrade
      * @param pos                     Position of the upgrade inside the scrollableWidget
      */
     private Widget createUpgradeBox(int upgradeID, int colorCode, int milestone, int[] prerequisiteUpgradeIDs,
-        boolean requireAllPrerequisites, int[] followingUpgradeIDs, boolean isStartOfSplit, int shardCost, Pos2d pos,
-        IWidgetBuilder<?> builder) {
+        boolean requireAllPrerequisites, int[] followingUpgradeIDs, boolean isStartOfSplit,
+        boolean requiresExtraMaterials, int shardCost, Pos2d pos, IWidgetBuilder<?> builder) {
         return new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
             currentUpgradeID = upgradeID;
             currentColorCode = colorCode;
@@ -1765,6 +1841,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
             allPrereqRequired = requireAllPrerequisites;
             followupUpgrades = followingUpgradeIDs;
             isUpradeSplitStart = isStartOfSplit;
+            doesCurrentUpgradeRequireExtraMats = requiresExtraMaterials;
             if (!widget.isClient()) widget.getContext()
                 .openSyncedWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
         })
@@ -1789,19 +1866,8 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 builder);
     }
 
-    ArrayList<ItemStack> inputs = new ArrayList<>(
-        Arrays.asList(
-            ItemList.Electric_Motor_UMV.get(13L),
-            ItemList.Electric_Pump_UXV.get(32L),
-            ItemList.Electric_Piston_UXV.get(32L),
-            ItemList.Robot_Arm_UXV.get(32L),
-            ItemList.Superconducting_Magnet_Solenoid_UIV.get(48L),
-            ItemList.NaquadriaSupersolid.get(32L),
-            CustomItemList.astralArrayFabricator.get(36L),
-            CustomItemList.Machine_Multi_EyeOfHarmony.get(2L),
-            ItemList.NandChip.get(32L)));
-
     protected ModularWindow createManualInsertionWindow(final EntityPlayer player) {
+        ItemStack[] inputs = godforgeUpgradeMats.get(currentUpgradeID);
         final int WIDTH = 189;
         final int HEIGHT = 106;
         final int PARENT_WIDTH = getGUIWidth();
@@ -1833,17 +1899,23 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 .setPos(112, 6));
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
             if (!widget.isClient()) {
-                widget.getWindow().closeWindow();
-                widget.getContext().openSyncedWindow(UPGRADE_TREE_WINDOW_ID);
-                widget.getContext().openSyncedWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
+                widget.getWindow()
+                    .closeWindow();
+                widget.getContext()
+                    .openSyncedWindow(UPGRADE_TREE_WINDOW_ID);
+                widget.getContext()
+                    .openSyncedWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
             }
-        }).setBackground(ModularUITextures.VANILLA_BACKGROUND, new Text("x")).setPos(179, 0).setSize(10, 10));
+        })
+            .setBackground(ModularUITextures.VANILLA_BACKGROUND, new Text("x"))
+            .setPos(179, 0)
+            .setSize(10, 10));
         builder.widget(new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
             if (!widget.isClient()) {
                 ArrayList<ItemStack> list = new ArrayList<>(inputSlotHandler.getStacks());
                 list.removeIf(Objects::isNull);
                 int foundInputs = 0;
-                int[] foundInputIndices = new int[inputs.size()];
+                int[] foundInputIndices = new int[inputs.length];
                 for (ItemStack inputStack : list) {
                     for (ItemStack requiredStack : inputs) {
                         if (ItemStack.areItemStacksEqual(requiredStack, inputStack)) {
@@ -1853,10 +1925,12 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                         }
                     }
                 }
-                if (foundInputs == inputs.size()) {
+                if (foundInputs == inputs.length) {
                     for (int index : foundInputIndices) {
                         inputSlotHandler.extractItem(index, inputSlotHandler.getStackInSlot(index).stackSize, false);
                     }
+                    materialPaidUpgrades[Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
+                        .indexOf(currentUpgradeID)] = true;
                 }
             }
         })
@@ -1872,7 +1946,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
             .setPos(5, 82)
             .setSize(179, 16));
 
-        int uniqueItems = inputs.size();
+        int uniqueItems = inputs.length;
         for (int i = 0; i < 12; i++) {
             int index = i;
             int cleanDiv4 = index / 4;
@@ -1883,19 +1957,17 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                         .setSize(18, 18));
                 columnList.get(cleanDiv4)
                     .addChild(
-                        new ItemDrawable().setItem(inputs.get(index))
+                        new ItemDrawable().setItem(inputs[index])
                             .asWidget()
                             .dynamicTooltip(() -> {
                                 List<String> tooltip = new ArrayList<>();
-                                tooltip.add(
-                                    inputs.get(index) != null ? inputs.get(index)
-                                        .getDisplayName() : "");
+                                tooltip.add(inputs[index] != null ? inputs[index].getDisplayName() : "");
                                 return tooltip;
                             })
                             .setSize(16, 16));
                 columnList.get(cleanDiv4 + 3)
                     .addChild(
-                        new TextWidget("x" + inputs.get(i).stackSize).setTextAlignment(Alignment.CenterLeft)
+                        new TextWidget("x" + inputs[i].stackSize).setTextAlignment(Alignment.CenterLeft)
                             .setScale(0.8f)
                             .setSize(18, 8));
             } else {
@@ -2382,7 +2454,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         NBT.setLong("totalFuelConsumed", totalFuelConsumed);
         NBT.setInteger("starFuelStored", stellarFuelAmount);
 
-        // Store booleanArray of all upgrades
+        // Store booleanArrays of all upgrades
         NBTTagCompound upgradeBooleanArrayNBTTag = new NBTTagCompound();
 
         int upgradeIndex = 0;
@@ -2392,6 +2464,16 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         }
 
         NBT.setTag("upgrades", upgradeBooleanArrayNBTTag);
+
+        NBTTagCompound upgradeMaterialBooleanArrayNBTTag = new NBTTagCompound();
+
+        int upgradeMaterialIndex = 0;
+        for (Boolean upgrade : materialPaidUpgrades) {
+            upgradeBooleanArrayNBTTag.setBoolean("upgradeMaterial" + upgradeMaterialIndex, upgrade);
+            upgradeMaterialIndex++;
+        }
+
+        NBT.setTag("upgradeMaterials", upgradeMaterialBooleanArrayNBTTag);
         super.saveNBTData(NBT);
     }
 
@@ -2413,12 +2495,22 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         NBTTagCompound upgradeBooleanArrayNBTTag = new NBTTagCompound();
 
         int upgradeIndex = 0;
-        for (Boolean upgrade : upgrades) {
+        for (boolean upgrade : upgrades) {
             upgradeBooleanArrayNBTTag.setBoolean("upgrade" + upgradeIndex, upgrade);
             upgradeIndex++;
         }
 
         NBT.setTag("upgrades", upgradeBooleanArrayNBTTag);
+
+        NBTTagCompound upgradeMaterialBooleanArrayNBTTag = new NBTTagCompound();
+
+        int upgradeMaterialIndex = 0;
+        for (boolean upgrade : materialPaidUpgrades) {
+            upgradeMaterialBooleanArrayNBTTag.setBoolean("upgradeMaterial" + upgradeMaterialIndex, upgrade);
+            upgradeMaterialIndex++;
+        }
+
+        NBT.setTag("upgradeMaterials", upgradeMaterialBooleanArrayNBTTag);
         super.saveNBTData(NBT);
     }
 
@@ -2441,6 +2533,13 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         for (int upgradeIndex = 0; upgradeIndex < 31; upgradeIndex++) {
             boolean upgrade = tempBooleanTag.getBoolean("upgrade" + upgradeIndex);
             upgrades[upgradeIndex] = upgrade;
+        }
+
+        tempBooleanTag = NBT.getCompoundTag("upgradeMaterials");
+
+        for (int upgradeIndex = 0; upgradeIndex < 7; upgradeIndex++) {
+            boolean upgrade = tempBooleanTag.getBoolean("upgradeMaterial" + upgradeIndex);
+            materialPaidUpgrades[upgradeIndex] = upgrade;
         }
 
         super.loadNBTData(NBT);

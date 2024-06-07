@@ -1,6 +1,8 @@
 package com.github.technus.tectech.loader.recipe;
 
 import static com.github.technus.tectech.util.GodforgeMath.getRandomIntInRange;
+import static gregtech.api.enums.Mods.EternalSingularity;
+import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
@@ -12,10 +14,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.github.technus.tectech.recipe.TT_recipeAdder;
+import com.github.technus.tectech.thing.CustomItemList;
 
+import goodgenerator.items.MyMaterial;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.material.ELEMENT;
 
@@ -26,6 +33,7 @@ public class Godforge implements Runnable {
     public static final HashMap<ItemStack, Integer> exoticModulePlasmaItemMap = new HashMap<>();
     public static final HashMap<FluidStack, Integer> exoticModulePlasmaFluidMap = new HashMap<>();
     public static final HashMap<ItemStack, Integer> exoticModuleMagmatterItemMap = new HashMap<>();
+    public static final HashMap<Integer, ItemStack[]> godforgeUpgradeMats = new HashMap<>();
     public static final List<ItemStack> quarkGluonFluidItemsForNEI = new ArrayList<>();
     public static final List<ItemStack> quarkGluonItemsForNEI = new ArrayList<>();
     public static final List<ItemStack> magmatterTimeFluidItemsForNEI = new ArrayList<>();
@@ -544,5 +552,24 @@ public class Godforge implements Runnable {
                 GT_Utility.getFluidDisplayStack(MaterialsUEVplus.Space.getMolten(getRandomIntInRange(51, 100)), true));
         }
         magmatterItemsForNEI.addAll(exoticModuleMagmatterItemMap.keySet());
+
+        // Godforge upgrade materials
+        if (EternalSingularity.isModLoaded()) {
+            godforgeUpgradeMats.put(
+                0,
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 64),
+                    ItemList.SuperconductorComposite.get(32),
+                    MyMaterial.metastableOganesson.get(OrePrefixes.gearGt, 16),
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 16L), ItemList.Robot_Arm_UIV.get(64L),
+                    ItemList.Field_Generator_UIV.get(16L) });
+
+            godforgeUpgradeMats.put(
+                5,
+                new ItemStack[] { ItemList.Electric_Motor_UIV.get(13L),
+                    ItemList.Superconducting_Magnet_Solenoid_UMV.get(48L),
+                    CustomItemList.astralArrayFabricator.get(36L), CustomItemList.Machine_Multi_EyeOfHarmony.get(2L),
+                    ItemList.NandChip.get(32L) });
+        }
+
     }
 }
