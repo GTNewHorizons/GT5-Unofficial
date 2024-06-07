@@ -2561,6 +2561,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     public boolean shouldCheckMaintenance() {
-        return disableMaintenance || hasMaintenanceChecks;
+        return !disableMaintenance && hasMaintenanceChecks;
     }
 }
