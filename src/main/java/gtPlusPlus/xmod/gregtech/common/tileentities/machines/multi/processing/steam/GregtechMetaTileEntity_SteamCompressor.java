@@ -278,5 +278,4 @@ public class GregtechMetaTileEntity_SteamCompressor
         info.add("Parallel: " + EnumChatFormatting.YELLOW + getMaxParallelRecipes());
         return info.toArray(new String[0]);
     }
-
 }

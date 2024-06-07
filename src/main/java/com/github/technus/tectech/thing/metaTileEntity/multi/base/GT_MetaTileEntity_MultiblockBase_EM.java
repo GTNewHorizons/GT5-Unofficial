@@ -96,7 +96,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maint
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_HatchElementBuilder;
@@ -304,7 +303,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
      * Checks Recipes (when all machine is complete and can work)
      * <p>
      * can get/set Parameters here also
-     * 
+     *
      * @deprecated Use {@link #createProcessingLogic()} ()} or {@link #checkProcessing_EM()}
      *
      * @param itemStack item in the controller
@@ -1121,7 +1120,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
                 if (mMachine) { // S
                     byte Tick = (byte) (aTick % 20);
                     if (MULTI_CHECK_AT == Tick) {
-                        maintenance_EM();
+                        checkMaintenance();
                     }
 
                     if (getRepairStatus() >= minRepairStatus) { // S
@@ -1233,49 +1232,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
             }
         }
         mOutputFluids = null;
-    }
-
-    protected void maintenance_EM() {
-        if (GT_MetaTileEntity_MultiBlockBase.disableMaintenance) {
-            mWrench = true;
-            mScrewdriver = true;
-            mSoftHammer = true;
-            mHardHammer = true;
-            mSolderingTool = true;
-            mCrowbar = true;
-        } else {
-            for (GT_MetaTileEntity_Hatch_Maintenance tHatch : filterValidMTEs(mMaintenanceHatches)) {
-                if (tHatch.mAuto
-                    && !(mWrench && mScrewdriver && mSoftHammer && mHardHammer && mSolderingTool && mCrowbar)) {
-                    tHatch.autoMaintainance();
-                }
-                if (tHatch.mWrench) {
-                    mWrench = true;
-                }
-                if (tHatch.mScrewdriver) {
-                    mScrewdriver = true;
-                }
-                if (tHatch.mSoftHammer) {
-                    mSoftHammer = true;
-                }
-                if (tHatch.mHardHammer) {
-                    mHardHammer = true;
-                }
-                if (tHatch.mSolderingTool) {
-                    mSolderingTool = true;
-                }
-                if (tHatch.mCrowbar) {
-                    mCrowbar = true;
-                }
-
-                tHatch.mWrench = false;
-                tHatch.mScrewdriver = false;
-                tHatch.mSoftHammer = false;
-                tHatch.mHardHammer = false;
-                tHatch.mSolderingTool = false;
-                tHatch.mCrowbar = false;
-            }
-        }
     }
 
     protected void clearHatches_EM() {
@@ -2810,14 +2766,4 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
     }
 
     // endregion
-
-    protected void turnOffMaintenance() {
-        mWrench = true;
-        mScrewdriver = true;
-        mSoftHammer = true;
-        mHardHammer = true;
-        mSolderingTool = true;
-        mCrowbar = true;
-        hasMaintenanceChecks = false;
-    }
 }
