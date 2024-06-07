@@ -1821,13 +1821,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return false;
+        return supportsSlotAutomation(aIndex);
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return false;
+        return supportsSlotAutomation(aIndex);
     }
 
     protected ItemStack[] getCompactedInputs() {
@@ -2088,7 +2088,16 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     public ItemStack getControllerSlot() {
-        return mInventory[1];
+        return mInventory[getControllerSlotIndex()];
+    }
+
+    public final int getControllerSlotIndex() {
+        return 1;
+    }
+
+    // True if the slot with index aSlot may be interacted with through automation
+    protected boolean supportsSlotAutomation(int aSlot) {
+        return false;
     }
 
     @Override
