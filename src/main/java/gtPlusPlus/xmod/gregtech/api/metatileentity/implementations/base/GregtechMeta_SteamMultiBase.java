@@ -27,6 +27,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.recipe.RecipeMap;
@@ -129,6 +130,7 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
             if (this.mUpdate == 1 || this.mStartUpCheck == 1) {
                 this.mSteamInputs.clear();
                 this.mSteamOutputs.clear();
+                this.mInputHatches.clear();
                 this.mSteamInputFluids.clear();
             }
         }
@@ -180,7 +182,9 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
         } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Steam_BusOutput) {
             log("Adding Steam Output Bus");
             aDidAdd = addToMachineListInternal(mSteamOutputs, aMetaTileEntity, aBaseCasingIndex);
-        }
+        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input)
+            aDidAdd = addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
+        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output);
 
         return aDidAdd;
     }
@@ -250,6 +254,9 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
             if (tHatch.getFillableStack() != null) {
                 rList.add(tHatch.getFillableStack());
             }
+        }
+        for (GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) if (hatch.getFillableStack() != null) {
+            rList.add(hatch.getFillableStack());
         }
         return rList;
     }
@@ -338,6 +345,7 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
     @Override
     public void clearHatches() {
         super.clearHatches();
+        mInputHatches.clear();
         mSteamInputFluids.clear();
         mSteamInputs.clear();
         mSteamOutputs.clear();
@@ -351,6 +359,12 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
                 ret = true;
             }
         }
+        for (GT_MetaTileEntity_Hatch_Input g : this.mInputHatches) {
+            if (resetRecipeMapForHatch(g, aMap)) {
+                ret = true;
+            }
+        }
+
         return ret;
     }
 
