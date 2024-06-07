@@ -831,6 +831,33 @@ public class RECIPES_Machines {
             "gemDiamond",
             aBronzeBricks,
             GregtechItemList.Controller_SteamMaceratorMulti.get(1));
+
+        // Steam Washer Multi
+        RecipeUtils.addShapedGregtechRecipe(
+            aBronzeBricks,
+            "plateWroughtIron",
+            aBronzeBricks,
+            "rotorTin",
+            ALLOY.TUMBAGA.getFrameBox(1),
+            "rotorTin",
+            aBronzeBricks,
+            "plateWroughtIron",
+            aBronzeBricks,
+            GregtechItemList.Controller_SteamWasherMulti.get(1));
+
+        // Steam Centrifuge Multi
+        RecipeUtils.addShapedGregtechRecipe(
+            aBronzeBricks,
+            "plateWroughtIron",
+            aBronzeBricks,
+            "gearBronze",
+            ALLOY.TUMBAGA.getFrameBox(1),
+            "gearBronze",
+            aBronzeBricks,
+            "plateWroughtIron",
+            aBronzeBricks,
+            GregtechItemList.Controller_SteamCentrifugeMulti.get(1));
+
         // Steam Compressor Multi
         RecipeUtils.addShapedGregtechRecipe(
             aBronzeBricks,
