@@ -297,132 +297,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Credit_Platinum.set(addItem(ID_MetaItem_01.Credit_Platinum.ID, "Industrial Platinum Credit", "512 Credits"));
         ItemList.Credit_Osmium.set(addItem(ID_MetaItem_01.Credit_Osmium.ID, "Industrial Osmium Credit", "4096 Credits"));
 
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Coin_Chocolate.get(1L),
-            new Object[] { OrePrefixes.dust.get(Materials.Cocoa), OrePrefixes.dust.get(Materials.Milk),
-                OrePrefixes.dust.get(Materials.Sugar), OrePrefixes.foil.get(Materials.Gold) });
-
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Copper.get(8L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Iron });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Iron.get(8L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Silver });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Silver.get(8L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Gold });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Gold.get(8L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Platinum });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Platinum.get(8L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Osmium });
-
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Iron.get(1L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Copper, ItemList.Credit_Copper, ItemList.Credit_Copper,
-                ItemList.Credit_Copper, ItemList.Credit_Copper, ItemList.Credit_Copper, ItemList.Credit_Copper,
-                ItemList.Credit_Copper });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Silver.get(1L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Iron, ItemList.Credit_Iron, ItemList.Credit_Iron, ItemList.Credit_Iron,
-                ItemList.Credit_Iron, ItemList.Credit_Iron, ItemList.Credit_Iron, ItemList.Credit_Iron });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Gold.get(1L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Silver, ItemList.Credit_Silver, ItemList.Credit_Silver,
-                ItemList.Credit_Silver, ItemList.Credit_Silver, ItemList.Credit_Silver, ItemList.Credit_Silver,
-                ItemList.Credit_Silver });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Platinum.get(1L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Gold, ItemList.Credit_Gold, ItemList.Credit_Gold, ItemList.Credit_Gold,
-                ItemList.Credit_Gold, ItemList.Credit_Gold, ItemList.Credit_Gold, ItemList.Credit_Gold });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Osmium.get(1L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Platinum, ItemList.Credit_Platinum, ItemList.Credit_Platinum,
-                ItemList.Credit_Platinum, ItemList.Credit_Platinum, ItemList.Credit_Platinum, ItemList.Credit_Platinum,
-                ItemList.Credit_Platinum });
-
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Greg_Copper.get(8L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Greg_Cupronickel });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Greg_Cupronickel.get(8L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Greg_Silver });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Greg_Silver.get(8L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Greg_Gold });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Greg_Gold.get(8L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Greg_Platinum });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Greg_Platinum.get(8L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Greg_Osmium });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Greg_Osmium.get(8L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Greg_Naquadah });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Greg_Naquadah.get(8L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Greg_Neutronium });
-
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Greg_Cupronickel.get(1L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Greg_Copper, ItemList.Credit_Greg_Copper, ItemList.Credit_Greg_Copper,
-                ItemList.Credit_Greg_Copper, ItemList.Credit_Greg_Copper, ItemList.Credit_Greg_Copper,
-                ItemList.Credit_Greg_Copper, ItemList.Credit_Greg_Copper });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Greg_Silver.get(1L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Greg_Cupronickel, ItemList.Credit_Greg_Cupronickel,
-                ItemList.Credit_Greg_Cupronickel, ItemList.Credit_Greg_Cupronickel, ItemList.Credit_Greg_Cupronickel,
-                ItemList.Credit_Greg_Cupronickel, ItemList.Credit_Greg_Cupronickel, ItemList.Credit_Greg_Cupronickel });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Greg_Gold.get(1L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Greg_Silver, ItemList.Credit_Greg_Silver, ItemList.Credit_Greg_Silver,
-                ItemList.Credit_Greg_Silver, ItemList.Credit_Greg_Silver, ItemList.Credit_Greg_Silver,
-                ItemList.Credit_Greg_Silver, ItemList.Credit_Greg_Silver });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Greg_Platinum.get(1L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Greg_Gold, ItemList.Credit_Greg_Gold, ItemList.Credit_Greg_Gold,
-                ItemList.Credit_Greg_Gold, ItemList.Credit_Greg_Gold, ItemList.Credit_Greg_Gold,
-                ItemList.Credit_Greg_Gold, ItemList.Credit_Greg_Gold });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Greg_Osmium.get(1L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Greg_Platinum, ItemList.Credit_Greg_Platinum, ItemList.Credit_Greg_Platinum,
-                ItemList.Credit_Greg_Platinum, ItemList.Credit_Greg_Platinum, ItemList.Credit_Greg_Platinum,
-                ItemList.Credit_Greg_Platinum, ItemList.Credit_Greg_Platinum });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Greg_Naquadah.get(1L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Greg_Osmium, ItemList.Credit_Greg_Osmium, ItemList.Credit_Greg_Osmium,
-                ItemList.Credit_Greg_Osmium, ItemList.Credit_Greg_Osmium, ItemList.Credit_Greg_Osmium,
-                ItemList.Credit_Greg_Osmium, ItemList.Credit_Greg_Osmium });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Credit_Greg_Neutronium.get(1L),
-            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { ItemList.Credit_Greg_Naquadah, ItemList.Credit_Greg_Naquadah, ItemList.Credit_Greg_Naquadah,
-                ItemList.Credit_Greg_Naquadah, ItemList.Credit_Greg_Naquadah, ItemList.Credit_Greg_Naquadah,
-                ItemList.Credit_Greg_Naquadah, ItemList.Credit_Greg_Naquadah });
 
         ItemList.Component_Minecart_Wheels_Iron.set(
             addItem(
@@ -4527,6 +4401,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_VALVE)),
             new GT_Cover_SteamRegulator(16384, TextureFactory.of(OVERLAY_VALVE)));
 
+        initCoinShapelessRecipes();
     }
 
     private static final Map<Materials, Materials> cauldronRemap = new HashMap<>();
@@ -4646,5 +4521,134 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
     @Override
     public boolean doesMaterialAllowGeneration(OrePrefixes aPrefix, Materials aMaterial) {
         return (super.doesMaterialAllowGeneration(aPrefix, aMaterial));
+    }
+
+    private void initCoinShapelessRecipes(){
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Coin_Chocolate.get(1L),
+            new Object[] { OrePrefixes.dust.get(Materials.Cocoa), OrePrefixes.dust.get(Materials.Milk),
+                OrePrefixes.dust.get(Materials.Sugar), OrePrefixes.foil.get(Materials.Gold) });
+
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Copper.get(8L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Iron });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Iron.get(8L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Silver });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Silver.get(8L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Gold });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Gold.get(8L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Platinum });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Platinum.get(8L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Osmium });
+
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Iron.get(1L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Copper, ItemList.Credit_Copper, ItemList.Credit_Copper,
+                ItemList.Credit_Copper, ItemList.Credit_Copper, ItemList.Credit_Copper, ItemList.Credit_Copper,
+                ItemList.Credit_Copper });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Silver.get(1L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Iron, ItemList.Credit_Iron, ItemList.Credit_Iron, ItemList.Credit_Iron,
+                ItemList.Credit_Iron, ItemList.Credit_Iron, ItemList.Credit_Iron, ItemList.Credit_Iron });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Gold.get(1L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Silver, ItemList.Credit_Silver, ItemList.Credit_Silver,
+                ItemList.Credit_Silver, ItemList.Credit_Silver, ItemList.Credit_Silver, ItemList.Credit_Silver,
+                ItemList.Credit_Silver });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Platinum.get(1L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Gold, ItemList.Credit_Gold, ItemList.Credit_Gold, ItemList.Credit_Gold,
+                ItemList.Credit_Gold, ItemList.Credit_Gold, ItemList.Credit_Gold, ItemList.Credit_Gold });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Osmium.get(1L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Platinum, ItemList.Credit_Platinum, ItemList.Credit_Platinum,
+                ItemList.Credit_Platinum, ItemList.Credit_Platinum, ItemList.Credit_Platinum, ItemList.Credit_Platinum,
+                ItemList.Credit_Platinum });
+
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Greg_Copper.get(8L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Greg_Cupronickel });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Greg_Cupronickel.get(8L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Greg_Silver });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Greg_Silver.get(8L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Greg_Gold });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Greg_Gold.get(8L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Greg_Platinum });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Greg_Platinum.get(8L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Greg_Osmium });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Greg_Osmium.get(8L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Greg_Naquadah });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Greg_Naquadah.get(8L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Greg_Neutronium });
+
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Greg_Cupronickel.get(1L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Greg_Copper, ItemList.Credit_Greg_Copper, ItemList.Credit_Greg_Copper,
+                ItemList.Credit_Greg_Copper, ItemList.Credit_Greg_Copper, ItemList.Credit_Greg_Copper,
+                ItemList.Credit_Greg_Copper, ItemList.Credit_Greg_Copper });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Greg_Silver.get(1L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Greg_Cupronickel, ItemList.Credit_Greg_Cupronickel,
+                ItemList.Credit_Greg_Cupronickel, ItemList.Credit_Greg_Cupronickel, ItemList.Credit_Greg_Cupronickel,
+                ItemList.Credit_Greg_Cupronickel, ItemList.Credit_Greg_Cupronickel, ItemList.Credit_Greg_Cupronickel });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Greg_Gold.get(1L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Greg_Silver, ItemList.Credit_Greg_Silver, ItemList.Credit_Greg_Silver,
+                ItemList.Credit_Greg_Silver, ItemList.Credit_Greg_Silver, ItemList.Credit_Greg_Silver,
+                ItemList.Credit_Greg_Silver, ItemList.Credit_Greg_Silver });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Greg_Platinum.get(1L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Greg_Gold, ItemList.Credit_Greg_Gold, ItemList.Credit_Greg_Gold,
+                ItemList.Credit_Greg_Gold, ItemList.Credit_Greg_Gold, ItemList.Credit_Greg_Gold,
+                ItemList.Credit_Greg_Gold, ItemList.Credit_Greg_Gold });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Greg_Osmium.get(1L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Greg_Platinum, ItemList.Credit_Greg_Platinum, ItemList.Credit_Greg_Platinum,
+                ItemList.Credit_Greg_Platinum, ItemList.Credit_Greg_Platinum, ItemList.Credit_Greg_Platinum,
+                ItemList.Credit_Greg_Platinum, ItemList.Credit_Greg_Platinum });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Greg_Naquadah.get(1L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Greg_Osmium, ItemList.Credit_Greg_Osmium, ItemList.Credit_Greg_Osmium,
+                ItemList.Credit_Greg_Osmium, ItemList.Credit_Greg_Osmium, ItemList.Credit_Greg_Osmium,
+                ItemList.Credit_Greg_Osmium, ItemList.Credit_Greg_Osmium });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Credit_Greg_Neutronium.get(1L),
+            GT_ModHandler.RecipeBits.KEEPNBT | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Credit_Greg_Naquadah, ItemList.Credit_Greg_Naquadah, ItemList.Credit_Greg_Naquadah,
+                ItemList.Credit_Greg_Naquadah, ItemList.Credit_Greg_Naquadah, ItemList.Credit_Greg_Naquadah,
+                ItemList.Credit_Greg_Naquadah, ItemList.Credit_Greg_Naquadah });
     }
 }
