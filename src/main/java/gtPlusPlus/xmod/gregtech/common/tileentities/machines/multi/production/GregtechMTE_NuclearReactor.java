@@ -269,7 +269,6 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
                 && mDynamoHatches.size() == 4
                 && mMufflerHatches.size() == 4
                 && mMaintenanceHatches.size() == 2) {
-                fixAllMaintenanceIssue();
                 this.turnCasingActive(false);
                 return true;
             }
@@ -520,5 +519,10 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
     public void loadNBTData(NBTTagCompound aNBT) {
         this.mFuelRemaining = aNBT.getInteger("mFuelRemaining");
         super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

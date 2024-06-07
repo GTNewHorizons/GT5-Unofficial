@@ -270,12 +270,6 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             if (mFluid == null) {
                 mStorageCurrent = BigInteger.ZERO;
             }
-            mWrench = true;
-            mScrewdriver = true;
-            mSolderingTool = true;
-            mSoftHammer = true;
-            mHardHammer = true;
-            mCrowbar = true;
             return true;
         }
         return false;
@@ -705,5 +699,10 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             .setSize(16, 16)
             .addTooltip(StatCollector.translateToLocal("gui.YOTTank.button.locking"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY);
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

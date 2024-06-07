@@ -278,7 +278,6 @@ public class GT_MetaTileEntity_DroneCentre extends
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            fixAll();
             if (aTick % 20 == 0) {
                 if (switch (droneLevel) {
                     case 1 -> getBaseMetaTileEntity().getRandomNumber(28800);
@@ -482,10 +481,6 @@ public class GT_MetaTileEntity_DroneCentre extends
         this.getBaseMetaTileEntity()
             .getWorld()
             .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
-    }
-
-    private void fixAll() {
-        this.mWrench = this.mScrewdriver = this.mSoftHammer = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
     }
 
     @Override
@@ -908,5 +903,10 @@ public class GT_MetaTileEntity_DroneCentre extends
 
     public static HashMultimap<Integer, GT_MetaTileEntity_DroneCentre> getCentreMap() {
         return droneMap;
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

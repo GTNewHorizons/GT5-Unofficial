@@ -142,7 +142,6 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
      */
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        fixAllMaintenanceIssue();
         if (lEUt < 0) {
             long aSteamVal = ((-lEUt * 10000) / Math.max(1000, mEfficiency));
             // Logger.INFO("Trying to drain "+aSteamVal+" steam per tick.");
@@ -376,11 +375,12 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
         if (tag.getBoolean("incompleteStructure")) {
             currentTip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
         }
-        currentTip.add(
-            (tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
-                + "  Efficiency: "
-                + tag.getFloat("efficiency")
-                + "%");
+        String efficiency = RESET + "  Efficiency: " + tag.getFloat("efficiency") + "%";
+        if (tag.getBoolean("hasProblems")) {
+            currentTip.add(RED + "** HAS PROBLEMS **" + efficiency);
+        } else if (!tag.getBoolean("incompleteStructure")) {
+            currentTip.add(GREEN + "Running Fine" + efficiency);
+        }
 
         boolean isActive = tag.getBoolean("isActive");
         if (isActive) {
@@ -438,5 +438,10 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
         public IGT_HatchAdder<? super GregtechMeta_SteamMultiBase<?>> adder() {
             return GregtechMeta_SteamMultiBase::addToMachineList;
         }
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }
