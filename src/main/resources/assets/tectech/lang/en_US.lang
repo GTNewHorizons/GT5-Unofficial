@@ -986,6 +986,9 @@ fog.button.voltageconfig.tooltip.01=Open voltage config
 fog.button.voltageconfig.tooltip.02=Voltage config locked, missing upgrade
 fog.button.structurecheck.tooltip=Refresh module connection status
 fog.button.milestones.tooltip=Milestone Overview
+fog.button.materialrequirements.tooltip=Upgrade needs additional materials
+fog.button.materialrequirementsmet.tooltip=All materials supplied
+fog.button.materialrequirements.tooltip.clickhere=Click to open material insertion window
 
 
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods

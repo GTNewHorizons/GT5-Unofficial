@@ -54,6 +54,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.godforge_modules.GT
 import com.github.technus.tectech.thing.metaTileEntity.multi.godforge_modules.GT_MetaTileEntity_EM_PlasmaModule;
 import com.github.technus.tectech.thing.metaTileEntity.multi.godforge_modules.GT_MetaTileEntity_EM_SmeltingModule;
 import com.github.technus.tectech.util.CommonValues;
+import com.google.common.collect.ImmutableList;
 import com.google.common.math.LongMath;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -1799,12 +1800,13 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                         return new IDrawable[] { TecTechUITextures.BUTTON_BOXED_EXCLAMATION_POINT_18x18 };
                     }
                 } else {
-
                     return new IDrawable[] { GT_UITextures.TRANSPARENT };
                 }
             })
             .setPos(xCoord, yCoord)
             .setSize(15, 15)
+            .dynamicTooltip(this::upgradeMaterialRequirements)
+            .addTooltip(EnumChatFormatting.GRAY + translateToLocal("fog.button.materialrequirements.tooltip.clickhere"))
             .attachSyncer(
                 new FakeSyncWidget.BooleanSyncer(
                     () -> materialPaidUpgrades[Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
@@ -2396,6 +2398,14 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         } else {
             return new Text(progressText + ": " + EnumChatFormatting.GRAY + max + " " + suffix);
         }
+    }
+
+    private List<String> upgradeMaterialRequirements() {
+        if (materialPaidUpgrades[Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
+            .indexOf(currentUpgradeID)]) {
+            return ImmutableList.of(translateToLocal("fog.button.materialrequirementsmet.tooltip"));
+        }
+        return ImmutableList.of(translateToLocal("fog.button.materialrequirements.tooltip"));
     }
 
     private void increaseBattery(int amount) {
