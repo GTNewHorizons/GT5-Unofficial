@@ -505,10 +505,12 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
             if (mFluid != null) {
                 // Try to drain 1% of the tank per tick
-                int outputAmount = mStorageCurrent.divide(BigInteger.valueOf(100L / tickRate))
+                int outputAmount = mStorageCurrent.divide(ONE_HUNDRED)
                     .min(MAX_INT_BIGINT)
                     .max(BigInteger.ONE)
                     .intValueExact();
+                outputAmount = (int) Math.min(Integer.MAX_VALUE, (long) outputAmount * tickRate);
+
                 final int originalOutputAmount = outputAmount;
 
                 for (final GT_MetaTileEntity_Hatch outputHatch : mOutputHatches) {
