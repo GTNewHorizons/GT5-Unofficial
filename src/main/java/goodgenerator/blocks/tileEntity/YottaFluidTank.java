@@ -509,7 +509,8 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                     .min(MAX_INT_BIGINT)
                     .max(BigInteger.ONE)
                     .intValueExact();
-                outputAmount = (int) Math.min(Integer.MAX_VALUE, (long) outputAmount * tickRate);
+                if (outputAmount != 1) outputAmount = (int) Math.min(Integer.MAX_VALUE, (long) outputAmount * tickRate);
+                else outputAmount = Math.min(mStorageCurrent.intValueExact(), outputAmount * (int) tickRate);
 
                 final int originalOutputAmount = outputAmount;
 
