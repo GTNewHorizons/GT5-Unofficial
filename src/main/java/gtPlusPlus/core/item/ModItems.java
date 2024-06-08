@@ -941,6 +941,9 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.TRINIUM_REINFORCED_STEEL);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ELEMENT.STANDALONE.CHRONOMATIC_GLASS);
 
+        // Gear
+        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.GEAR, ELEMENT.STANDALONE.RHUGNOR);
+
         // Special Sillyness
         if (true) {
 
