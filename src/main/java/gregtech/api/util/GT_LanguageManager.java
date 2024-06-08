@@ -460,8 +460,8 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_249", "3 Issues");
         addStringLocalization("Interaction_DESCRIPTION_Index_250", "4 Issues");
         addStringLocalization("Interaction_DESCRIPTION_Index_251", "5 Issues");
-        addStringLocalization("Interaction_DESCRIPTION_Index_252", "Rotor < 80%");
-        addStringLocalization("Interaction_DESCRIPTION_Index_253", "Rotor < 100%");
+        addStringLocalization("Interaction_DESCRIPTION_Index_252", "Rotor < 20%");
+        addStringLocalization("Interaction_DESCRIPTION_Index_253", "Rotor ≈ 0%");
         addStringLocalization("Interaction_DESCRIPTION_Index_254", "Detect slot#");
         addStringLocalization("Interaction_DESCRIPTION_Index_254.0", "Detect Slot");
         addStringLocalization("Interaction_DESCRIPTION_Index_254.1", "Internal slot#");
