@@ -2,6 +2,7 @@ package com.github.technus.tectech.loader.recipe;
 
 import static com.github.technus.tectech.util.GodforgeMath.getRandomIntInRange;
 import static gregtech.api.enums.Mods.EternalSingularity;
+import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
@@ -14,9 +15,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.github.technus.tectech.recipe.TT_recipeAdder;
-import com.github.technus.tectech.thing.CustomItemList;
 
 import goodgenerator.items.MyMaterial;
+import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
@@ -24,7 +25,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class Godforge implements Runnable {
 
@@ -554,7 +557,7 @@ public class Godforge implements Runnable {
         magmatterItemsForNEI.addAll(exoticModuleMagmatterItemMap.keySet());
 
         // Godforge upgrade materials
-        if (EternalSingularity.isModLoaded()) {
+        if (EternalSingularity.isModLoaded() && GalaxySpace.isModLoaded()) {
             godforgeUpgradeMats.put(
                 0,
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 64),
@@ -565,10 +568,26 @@ public class Godforge implements Runnable {
 
             godforgeUpgradeMats.put(
                 5,
-                new ItemStack[] { ItemList.Electric_Motor_UIV.get(13L),
-                    ItemList.Superconducting_Magnet_Solenoid_UMV.get(48L),
-                    CustomItemList.astralArrayFabricator.get(36L), CustomItemList.Machine_Multi_EyeOfHarmony.get(2L),
-                    ItemList.NandChip.get(32L) });
+                new ItemStack[] { GregtechItemList.Mega_AlloyBlastSmelter.get(16L),
+                    ItemList.Casing_Coil_Hypogen.get(32L), ItemList.Superconducting_Magnet_Solenoid_UIV.get(64L),
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 16L), ItemList.Robot_Arm_UIV.get(64L),
+                    ItemList.Field_Generator_UIV.get(16L) });
+
+            godforgeUpgradeMats.put(
+                7,
+                new ItemStack[] { ItemRefer.Compact_Fusion_MK5.get(1), ItemRefer.Compact_Fusion_Coil_T4.get(32),
+                    getModItem(GalaxySpace.ID, "item.DysonSwarmParts", 64, 3), ALLOY.QUANTUM.getPlateDense(48),
+                    ELEMENT.STANDALONE.RHUGNOR.getGear(48),
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 16L), ItemList.Robot_Arm_UIV.get(64L),
+                    ItemList.Field_Generator_UIV.get(32L) });
+
+            godforgeUpgradeMats.put(11, new ItemStack[] { ItemList.NandChip.get(56) });
+
+            godforgeUpgradeMats.put(26, new ItemStack[] { ItemList.NandChip.get(56) });
+
+            godforgeUpgradeMats.put(29, new ItemStack[] { ItemList.NandChip.get(56) });
+
+            godforgeUpgradeMats.put(30, new ItemStack[] { ItemList.NandChip.get(56) });
         }
 
     }
