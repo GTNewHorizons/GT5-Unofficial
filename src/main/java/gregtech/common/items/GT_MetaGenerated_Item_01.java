@@ -84,6 +84,38 @@ import static gregtech.common.items.ID_MetaItem_01.Component_Minecraft_Wheels_Ir
 import static gregtech.common.items.ID_MetaItem_01.Component_Minecraft_Wheels_Steel;
 import static gregtech.common.items.ID_MetaItem_01.Compressed_Fireclay;
 import static gregtech.common.items.ID_MetaItem_01.Firebrick;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Empty;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Anvil;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Arrow;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Baguette;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Ball;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Block;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Bolt;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Bottle;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Bread;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Bun;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Casing;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Credit;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Cylinder;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Gear;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Gear_Small;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Ingot;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Name;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Nugget;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Pipe_Huge;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Pipe_Large;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Pipe_Medium;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Pipe_Small;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Pipe_Tiny;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Plate;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Ring;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Rod;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Rod_Long;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Rotor;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Round;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Screw;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Tool_Head_Drill;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Turbine_Blade;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -210,7 +242,40 @@ enum ID_MetaItem_01{
     Arrow_Plastic_Glass_Slowness_Long(255),
     Arrow_Plastic_Glass_Weakness(256),
     Arrow_Plastic_Glass_Weakness_Long(257),
-    Arrow_Plastic_Glass_Holy_Water(258);
+    Arrow_Plastic_Glass_Holy_Water(258),
+    Shape_Empty(300),
+    Shape_Mold_Plate(301),
+    Shape_Mold_Casing(302),
+    Shape_Mold_Gear(303),
+    Shape_Mold_Credit(304),
+    Shape_Mold_Bottle(305),
+    Shape_Mold_Ingot(306),
+    Shape_Mold_Ball(307),
+    Shape_Mold_Block(308),
+    Shape_Mold_Nugget(309),
+    Shape_Mold_Bun(310),
+    Shape_Mold_Bread(311),
+    Shape_Mold_Baguette(312),
+    Shape_Mold_Cylinder(313),
+    Shape_Mold_Anvil(314),
+    Shape_Mold_Name(315),
+    Shape_Mold_Arrow(316),
+    Shape_Mold_Gear_Small(317),
+    Shape_Mold_Rod(318),
+    Shape_Mold_Bolt(319),
+    Shape_Mold_Round(320),
+    Shape_Mold_Screw(321),
+    Shape_Mold_Ring(322),
+    Shape_Mold_Rod_Long(323),
+    Shape_Mold_Rotor(324),
+    Shape_Mold_Turbine_Blade(325),
+    Shape_Mold_Pipe_Tiny(326),
+    Shape_Mold_Pipe_Small(327),
+    Shape_Mold_Pipe_Medium(328),
+    Shape_Mold_Pipe_Large(329),
+    Shape_Mold_Pipe_Huge(330),
+    Shape_Mold_Tool_Head_Drill(331);
+
 
 
     final int ID;
@@ -607,48 +672,48 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Shape_Empty.set(
             addItem(
-                tLastID = 300,
+                Shape_Empty.ID,
                 "Empty Shape Plate",
                 "Raw Plate to make Molds and Extruder Shapes",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)));
 
-        ItemList.Shape_Mold_Plate.set(addItem(tLastID = 301, "Mold (Plate)", "Mold for making Plates"));
-        ItemList.Shape_Mold_Casing.set(addItem(tLastID = 302, "Mold (Casing)", "Mold for making Item Casings"));
-        ItemList.Shape_Mold_Gear.set(addItem(tLastID = 303, "Mold (Gear)", "Mold for making Gears"));
+        ItemList.Shape_Mold_Plate.set(addItem(Shape_Mold_Plate.ID, "Mold (Plate)", "Mold for making Plates"));
+        ItemList.Shape_Mold_Casing.set(addItem(Shape_Mold_Casing.ID, "Mold (Casing)", "Mold for making Item Casings"));
+        ItemList.Shape_Mold_Gear.set(addItem(Shape_Mold_Gear.ID, "Mold (Gear)", "Mold for making Gears"));
         ItemList.Shape_Mold_Credit
-            .set(addItem(tLastID = 304, "Mold (Coinage)", "Secure Mold for making Coins (Don't lose it!)"));
-        ItemList.Shape_Mold_Bottle.set(addItem(tLastID = 305, "Mold (Bottle)", "Mold for making Bottles"));
-        ItemList.Shape_Mold_Ingot.set(addItem(tLastID = 306, "Mold (Ingot)", "Mold for making Ingots"));
-        ItemList.Shape_Mold_Ball.set(addItem(tLastID = 307, "Mold (Ball)", "Mold for making Balls"));
-        ItemList.Shape_Mold_Block.set(addItem(tLastID = 308, "Mold (Block)", "Mold for making Blocks"));
-        ItemList.Shape_Mold_Nugget.set(addItem(tLastID = 309, "Mold (Nuggets)", "Mold for making Nuggets"));
-        ItemList.Shape_Mold_Bun.set(addItem(tLastID = 310, "Mold (Buns)", "Mold for shaping Buns"));
-        ItemList.Shape_Mold_Bread.set(addItem(tLastID = 311, "Mold (Bread)", "Mold for shaping Breads"));
-        ItemList.Shape_Mold_Baguette.set(addItem(tLastID = 312, "Mold (Baguette)", "Mold for shaping Baguettes"));
-        ItemList.Shape_Mold_Cylinder.set(addItem(tLastID = 313, "Mold (Cylinder)", "Mold for shaping Cylinders"));
-        ItemList.Shape_Mold_Anvil.set(addItem(tLastID = 314, "Mold (Anvil)", "Mold for shaping Anvils"));
+            .set(addItem(Shape_Mold_Credit.ID, "Mold (Coinage)", "Secure Mold for making Coins (Don't lose it!)"));
+        ItemList.Shape_Mold_Bottle.set(addItem(Shape_Mold_Bottle.ID, "Mold (Bottle)", "Mold for making Bottles"));
+        ItemList.Shape_Mold_Ingot.set(addItem(Shape_Mold_Ingot.ID, "Mold (Ingot)", "Mold for making Ingots"));
+        ItemList.Shape_Mold_Ball.set(addItem(Shape_Mold_Ball.ID, "Mold (Ball)", "Mold for making Balls"));
+        ItemList.Shape_Mold_Block.set(addItem(Shape_Mold_Block.ID, "Mold (Block)", "Mold for making Blocks"));
+        ItemList.Shape_Mold_Nugget.set(addItem(Shape_Mold_Nugget.ID, "Mold (Nuggets)", "Mold for making Nuggets"));
+        ItemList.Shape_Mold_Bun.set(addItem(Shape_Mold_Bun.ID, "Mold (Buns)", "Mold for shaping Buns"));
+        ItemList.Shape_Mold_Bread.set(addItem(Shape_Mold_Bread.ID, "Mold (Bread)", "Mold for shaping Breads"));
+        ItemList.Shape_Mold_Baguette.set(addItem(Shape_Mold_Baguette.ID, "Mold (Baguette)", "Mold for shaping Baguettes"));
+        ItemList.Shape_Mold_Cylinder.set(addItem(Shape_Mold_Cylinder.ID, "Mold (Cylinder)", "Mold for shaping Cylinders"));
+        ItemList.Shape_Mold_Anvil.set(addItem(Shape_Mold_Anvil.ID, "Mold (Anvil)", "Mold for shaping Anvils"));
         ItemList.Shape_Mold_Name
-            .set(addItem(tLastID = 315, "Mold (Name)", "Mold for naming Items (rename Mold with Anvil)"));
-        ItemList.Shape_Mold_Arrow.set(addItem(tLastID = 316, "Mold (Arrow Head)", "Mold for making Arrow Heads"));
-        ItemList.Shape_Mold_Gear_Small.set(addItem(tLastID = 317, "Mold (Small Gear)", "Mold for making small Gears"));
-        ItemList.Shape_Mold_Rod.set(addItem(tLastID = 318, "Mold (Rod)", "Mold for making Rods"));
-        ItemList.Shape_Mold_Bolt.set(addItem(tLastID = 319, "Mold (Bolt)", "Mold for making Bolts"));
-        ItemList.Shape_Mold_Round.set(addItem(tLastID = 320, "Mold (Round)", "Mold for making Rounds"));
-        ItemList.Shape_Mold_Screw.set(addItem(tLastID = 321, "Mold (Screw)", "Mold for making Screws"));
-        ItemList.Shape_Mold_Ring.set(addItem(tLastID = 322, "Mold (Ring)", "Mold for making Rings"));
-        ItemList.Shape_Mold_Rod_Long.set(addItem(tLastID = 323, "Mold (Long Rod)", "Mold for making Long Rods"));
-        ItemList.Shape_Mold_Rotor.set(addItem(tLastID = 324, "Mold (Rotor)", "Mold for making a Rotor"));
+            .set(addItem(Shape_Mold_Name.ID, "Mold (Name)", "Mold for naming Items (rename Mold with Anvil)"));
+        ItemList.Shape_Mold_Arrow.set(addItem(Shape_Mold_Arrow.ID, "Mold (Arrow Head)", "Mold for making Arrow Heads"));
+        ItemList.Shape_Mold_Gear_Small.set(addItem(Shape_Mold_Gear_Small.ID, "Mold (Small Gear)", "Mold for making small Gears"));
+        ItemList.Shape_Mold_Rod.set(addItem(Shape_Mold_Rod.ID, "Mold (Rod)", "Mold for making Rods"));
+        ItemList.Shape_Mold_Bolt.set(addItem(Shape_Mold_Bolt.ID, "Mold (Bolt)", "Mold for making Bolts"));
+        ItemList.Shape_Mold_Round.set(addItem(Shape_Mold_Round.ID, "Mold (Round)", "Mold for making Rounds"));
+        ItemList.Shape_Mold_Screw.set(addItem(Shape_Mold_Screw.ID, "Mold (Screw)", "Mold for making Screws"));
+        ItemList.Shape_Mold_Ring.set(addItem(Shape_Mold_Ring.ID, "Mold (Ring)", "Mold for making Rings"));
+        ItemList.Shape_Mold_Rod_Long.set(addItem(Shape_Mold_Rod_Long.ID, "Mold (Long Rod)", "Mold for making Long Rods"));
+        ItemList.Shape_Mold_Rotor.set(addItem(Shape_Mold_Rotor.ID, "Mold (Rotor)", "Mold for making a Rotor"));
         ItemList.Shape_Mold_Turbine_Blade
-            .set(addItem(tLastID = 325, "Mold (Turbine Blade)", "Mold for making a Turbine Blade"));
-        ItemList.Shape_Mold_Pipe_Tiny.set(addItem(tLastID = 326, "Mold (Tiny Pipe)", "Mold for making tiny Pipes"));
-        ItemList.Shape_Mold_Pipe_Small.set(addItem(tLastID = 327, "Mold (Small Pipe)", "Mold for making small Pipes"));
-        ItemList.Shape_Mold_Pipe_Medium.set(addItem(tLastID = 328, "Mold (Normal Pipe)", "Mold for making Pipes"));
-        ItemList.Shape_Mold_Pipe_Large.set(addItem(tLastID = 329, "Mold (Large Pipe)", "Mold for making large Pipes"));
+            .set(addItem(Shape_Mold_Turbine_Blade.ID, "Mold (Turbine Blade)", "Mold for making a Turbine Blade"));
+        ItemList.Shape_Mold_Pipe_Tiny.set(addItem(Shape_Mold_Pipe_Tiny.ID, "Mold (Tiny Pipe)", "Mold for making tiny Pipes"));
+        ItemList.Shape_Mold_Pipe_Small.set(addItem(Shape_Mold_Pipe_Small.ID, "Mold (Small Pipe)", "Mold for making small Pipes"));
+        ItemList.Shape_Mold_Pipe_Medium.set(addItem(Shape_Mold_Pipe_Medium.ID, "Mold (Normal Pipe)", "Mold for making Pipes"));
+        ItemList.Shape_Mold_Pipe_Large.set(addItem(Shape_Mold_Pipe_Large.ID, "Mold (Large Pipe)", "Mold for making large Pipes"));
         ItemList.Shape_Mold_Pipe_Huge
-            .set(addItem(tLastID = 330, "Mold (Huge Pipe)", "Mold for making full Block Pipes"));
+            .set(addItem(Shape_Mold_Pipe_Huge.ID, "Mold (Huge Pipe)", "Mold for making full Block Pipes"));
         ItemList.Shape_Mold_ToolHeadDrill
-            .set(addItem(tLastID = 331, "Mold (Drill Head)", "Mold for making Drill Heads"));
+            .set(addItem(Shape_Mold_Tool_Head_Drill.ID, "Mold (Drill Head)", "Mold for making Drill Heads"));
         GT_ModHandler.removeRecipe(
             new ItemStack(Blocks.glass),
             null,
