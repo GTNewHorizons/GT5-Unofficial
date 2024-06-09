@@ -91,6 +91,6 @@ public class GT_MetaTileEntity_LargeBoiler_Titanium extends GT_MetaTileEntity_La
 
     @Override
     boolean isSuperheated() {
-        return true;
+        return false;
     }
 }
