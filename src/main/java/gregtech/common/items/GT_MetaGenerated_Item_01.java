@@ -101,8 +101,29 @@ import static gregtech.common.items.ID_MetaItem_01.Battery_SU_MV_Sulfuric_Acid;
 import static gregtech.common.items.ID_MetaItem_01.Book_Written_01;
 import static gregtech.common.items.ID_MetaItem_01.Book_Written_02;
 import static gregtech.common.items.ID_MetaItem_01.Book_Written_03;
+import static gregtech.common.items.ID_MetaItem_01.Circuit_Advanced;
+import static gregtech.common.items.ID_MetaItem_01.Circuit_Basic;
+import static gregtech.common.items.ID_MetaItem_01.Circuit_Board_Advanced;
+import static gregtech.common.items.ID_MetaItem_01.Circuit_Board_Basic;
+import static gregtech.common.items.ID_MetaItem_01.Circuit_Board_Elite;
+import static gregtech.common.items.ID_MetaItem_01.Circuit_Data;
+import static gregtech.common.items.ID_MetaItem_01.Circuit_Elite;
+import static gregtech.common.items.ID_MetaItem_01.Circuit_Good;
+import static gregtech.common.items.ID_MetaItem_01.Circuit_Master;
+import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Advanced;
+import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Crystal_Chip_Elite;
+import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Crystal_Chip_Master;
+import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Crystal_Chip_Wetware;
+import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Wiring_Advanced;
+import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Wiring_Basic;
+import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Wiring_Elite;
+import static gregtech.common.items.ID_MetaItem_01.Circuit_Primitive;
+import static gregtech.common.items.ID_MetaItem_01.Component_Filter;
+import static gregtech.common.items.ID_MetaItem_01.Component_Grinder_Diamond;
+import static gregtech.common.items.ID_MetaItem_01.Component_Grinder_Tungsten;
 import static gregtech.common.items.ID_MetaItem_01.Component_Minecraft_Wheels_Iron;
 import static gregtech.common.items.ID_MetaItem_01.Component_Minecraft_Wheels_Steel;
+import static gregtech.common.items.ID_MetaItem_01.Component_Sawblade_Diamond;
 import static gregtech.common.items.ID_MetaItem_01.Compressed_Fireclay;
 import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_EV;
 import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_HV;
@@ -118,8 +139,35 @@ import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UMV;
 import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UV;
 import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UXV;
 import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_ZPM;
+import static gregtech.common.items.ID_MetaItem_01.Cover_ActivityDetector;
+import static gregtech.common.items.ID_MetaItem_01.Cover_Controller;
+import static gregtech.common.items.ID_MetaItem_01.Cover_Crafting;
+import static gregtech.common.items.ID_MetaItem_01.Cover_Drain;
+import static gregtech.common.items.ID_MetaItem_01.Cover_EnergyDetector;
+import static gregtech.common.items.ID_MetaItem_01.Cover_FLuidStorageMonitor;
+import static gregtech.common.items.ID_MetaItem_01.Cover_FluidDetector;
 import static gregtech.common.items.ID_MetaItem_01.Cover_FluidLimiter;
+import static gregtech.common.items.ID_MetaItem_01.Cover_ItemDetector;
+import static gregtech.common.items.ID_MetaItem_01.Cover_NeedsMaintenance;
+import static gregtech.common.items.ID_MetaItem_01.Cover_PlayerDetector;
+import static gregtech.common.items.ID_MetaItem_01.Cover_RedstoneReceiverExternal;
+import static gregtech.common.items.ID_MetaItem_01.Cover_RedstoneReceiverInternal;
+import static gregtech.common.items.ID_MetaItem_01.Cover_RedstoneTransmitterExternal;
+import static gregtech.common.items.ID_MetaItem_01.Cover_RedstoneTransmitterInternal;
+import static gregtech.common.items.ID_MetaItem_01.Cover_Screen;
+import static gregtech.common.items.ID_MetaItem_01.Cover_Shutter;
+import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel;
+import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_8V;
+import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_EV;
+import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_HV;
+import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_IV;
+import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_LV;
+import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_LuV;
+import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_MV;
+import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_UV;
+import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_ZPM;
 import static gregtech.common.items.ID_MetaItem_01.Crate_Empty;
+import static gregtech.common.items.ID_MetaItem_01.Duct_Tape;
 import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_EV;
 import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_HV;
 import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_IV;
@@ -162,11 +210,41 @@ import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UMV;
 import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UV;
 import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UXV;
 import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_ZPM;
+import static gregtech.common.items.ID_MetaItem_01.Emitter_EV;
+import static gregtech.common.items.ID_MetaItem_01.Emitter_HV;
+import static gregtech.common.items.ID_MetaItem_01.Emitter_IV;
+import static gregtech.common.items.ID_MetaItem_01.Emitter_LV;
+import static gregtech.common.items.ID_MetaItem_01.Emitter_LuV;
+import static gregtech.common.items.ID_MetaItem_01.Emitter_MAX;
+import static gregtech.common.items.ID_MetaItem_01.Emitter_MV;
+import static gregtech.common.items.ID_MetaItem_01.Emitter_UEV;
+import static gregtech.common.items.ID_MetaItem_01.Emitter_UHV;
+import static gregtech.common.items.ID_MetaItem_01.Emitter_UIV;
+import static gregtech.common.items.ID_MetaItem_01.Emitter_UMV;
+import static gregtech.common.items.ID_MetaItem_01.Emitter_UV;
+import static gregtech.common.items.ID_MetaItem_01.Emitter_UXV;
+import static gregtech.common.items.ID_MetaItem_01.Emitter_ZPM;
+import static gregtech.common.items.ID_MetaItem_01.Empty_Board_Basic;
+import static gregtech.common.items.ID_MetaItem_01.Empty_Board_Elite;
 import static gregtech.common.items.ID_MetaItem_01.EnergisedTesseract;
 import static gregtech.common.items.ID_MetaItem_01.Energy_Cluster;
 import static gregtech.common.items.ID_MetaItem_01.Energy_Lapotronic_Orb;
 import static gregtech.common.items.ID_MetaItem_01.Energy_Lapotronic_orb_2;
 import static gregtech.common.items.ID_MetaItem_01.Energy_Module;
+import static gregtech.common.items.ID_MetaItem_01.Field_Generator_EV;
+import static gregtech.common.items.ID_MetaItem_01.Field_Generator_HV;
+import static gregtech.common.items.ID_MetaItem_01.Field_Generator_IV;
+import static gregtech.common.items.ID_MetaItem_01.Field_Generator_LV;
+import static gregtech.common.items.ID_MetaItem_01.Field_Generator_LuV;
+import static gregtech.common.items.ID_MetaItem_01.Field_Generator_MAX;
+import static gregtech.common.items.ID_MetaItem_01.Field_Generator_MV;
+import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UEV;
+import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UHV;
+import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UIV;
+import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UMV;
+import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UV;
+import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UXV;
+import static gregtech.common.items.ID_MetaItem_01.Field_Generator_ZPM;
 import static gregtech.common.items.ID_MetaItem_01.Firebrick;
 import static gregtech.common.items.ID_MetaItem_01.FluidFilter;
 import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_EV;
@@ -180,6 +258,7 @@ import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_ZPM;
 import static gregtech.common.items.ID_MetaItem_01.Fuel_Can_Plastic_Empty;
 import static gregtech.common.items.ID_MetaItem_01.Fuel_Can_Plastic_Filled;
 import static gregtech.common.items.ID_MetaItem_01.GigaChad;
+import static gregtech.common.items.ID_MetaItem_01.Gravistar;
 import static gregtech.common.items.ID_MetaItem_01.Ingot_Heavy1;
 import static gregtech.common.items.ID_MetaItem_01.Ingot_Heavy2;
 import static gregtech.common.items.ID_MetaItem_01.Ingot_Heavy3;
@@ -195,12 +274,17 @@ import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_StainlessSte
 import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Steel;
 import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Titanium;
 import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_TungstenSteel;
+import static gregtech.common.items.ID_MetaItem_01.McGuffium_239;
+import static gregtech.common.items.ID_MetaItem_01.NC_SensorKit;
+import static gregtech.common.items.ID_MetaItem_01.NaquadriaSupersolid;
 import static gregtech.common.items.ID_MetaItem_01.Paper_Magic_Empty;
 import static gregtech.common.items.ID_MetaItem_01.Paper_Magic_Page;
 import static gregtech.common.items.ID_MetaItem_01.Paper_Magic_Pages;
 import static gregtech.common.items.ID_MetaItem_01.Paper_Printed_Pages;
 import static gregtech.common.items.ID_MetaItem_01.Paper_Punch_Card_Empty;
 import static gregtech.common.items.ID_MetaItem_01.Paper_Punch_Card_Encoded;
+import static gregtech.common.items.ID_MetaItem_01.QuantumEye;
+import static gregtech.common.items.ID_MetaItem_01.QuantumStar;
 import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_EV;
 import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_HV;
 import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_IV;
@@ -221,6 +305,20 @@ import static gregtech.common.items.ID_MetaItem_01.Schematic_2by2;
 import static gregtech.common.items.ID_MetaItem_01.Schematic_3by3;
 import static gregtech.common.items.ID_MetaItem_01.Schematic_Crafting;
 import static gregtech.common.items.ID_MetaItem_01.Schematic_Dust;
+import static gregtech.common.items.ID_MetaItem_01.Sensor_EV;
+import static gregtech.common.items.ID_MetaItem_01.Sensor_HV;
+import static gregtech.common.items.ID_MetaItem_01.Sensor_IV;
+import static gregtech.common.items.ID_MetaItem_01.Sensor_LV;
+import static gregtech.common.items.ID_MetaItem_01.Sensor_LuV;
+import static gregtech.common.items.ID_MetaItem_01.Sensor_MAX;
+import static gregtech.common.items.ID_MetaItem_01.Sensor_MV;
+import static gregtech.common.items.ID_MetaItem_01.Sensor_UEV;
+import static gregtech.common.items.ID_MetaItem_01.Sensor_UHV;
+import static gregtech.common.items.ID_MetaItem_01.Sensor_UIV;
+import static gregtech.common.items.ID_MetaItem_01.Sensor_UMV;
+import static gregtech.common.items.ID_MetaItem_01.Sensor_UV;
+import static gregtech.common.items.ID_MetaItem_01.Sensor_UXV;
+import static gregtech.common.items.ID_MetaItem_01.Sensor_ZPM;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Empty;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Axe;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Block;
@@ -319,15 +417,24 @@ import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_8;
 import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_9;
 import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_Remover;
 import static gregtech.common.items.ID_MetaItem_01.Spray_Empty;
+import static gregtech.common.items.ID_MetaItem_01.StableAdhesive;
+import static gregtech.common.items.ID_MetaItem_01.Steam_Regulator_EV;
+import static gregtech.common.items.ID_MetaItem_01.Steam_Regulator_HV;
+import static gregtech.common.items.ID_MetaItem_01.Steam_Regulator_IV;
+import static gregtech.common.items.ID_MetaItem_01.Steam_Regulator_LV;
+import static gregtech.common.items.ID_MetaItem_01.Steam_Regulator_MV;
 import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_EV;
 import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_HV;
 import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_IV;
 import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_LV;
 import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_MV;
+import static gregtech.common.items.ID_MetaItem_01.SuperconductorComposite;
 import static gregtech.common.items.ID_MetaItem_01.Tesseract;
 import static gregtech.common.items.ID_MetaItem_01.Thermos_Can_Empty;
 import static gregtech.common.items.ID_MetaItem_01.Tool_Cheat;
 import static gregtech.common.items.ID_MetaItem_01.Tool_Cover_Copy_Paste;
+import static gregtech.common.items.ID_MetaItem_01.Tool_DataOrb;
+import static gregtech.common.items.ID_MetaItem_01.Tool_DataStick;
 import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Empty;
 import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Full;
 import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Used;
@@ -338,6 +445,9 @@ import static gregtech.common.items.ID_MetaItem_01.Tool_MatchBox_Full;
 import static gregtech.common.items.ID_MetaItem_01.Tool_MatchBox_Used;
 import static gregtech.common.items.ID_MetaItem_01.Tool_Matches;
 import static gregtech.common.items.ID_MetaItem_01.Tool_Scanner;
+import static gregtech.common.items.ID_MetaItem_01.Tool_Sonictron;
+import static gregtech.common.items.ID_MetaItem_01.Upgrade_Lock;
+import static gregtech.common.items.ID_MetaItem_01.Upgrade_Muffler;
 import static gregtech.common.items.ID_MetaItem_01.ZPM2;
 import static gregtech.common.items.ID_MetaItem_01.ZPM3;
 import static gregtech.common.items.ID_MetaItem_01.ZPM4;
@@ -732,7 +842,117 @@ enum ID_MetaItem_01 {
     Robot_Arm_UIV(33),
     Robot_Arm_UMV(34),
     Robot_Arm_UXV(35),
-    Robot_Arm_MAX(36);
+    Robot_Arm_MAX(36),
+    QuantumEye(724),
+    QuantumStar(725),
+    Gravistar(726),
+    Emitter_LV(680),
+    Emitter_MV(681),
+    Emitter_HV(682),
+    Emitter_EV(683),
+    Emitter_IV(684),
+    Emitter_LuV(685),
+    Emitter_ZPM(686),
+    Emitter_UV(687),
+    Emitter_UHV(688),
+    Emitter_UEV(689),
+    Emitter_UIV(37),
+    Emitter_UMV(38),
+    Emitter_UXV(39),
+    Emitter_MAX(40),
+    Sensor_LV(690),
+    Sensor_MV(691),
+    Sensor_HV(692),
+    Sensor_EV(693),
+    Sensor_IV(694),
+    Sensor_LuV(695),
+    Sensor_ZPM(696),
+    Sensor_UV(697),
+    Sensor_UHV(698),
+    Sensor_UEV(699),
+    Sensor_UIV(41),
+    Sensor_UMV(42),
+    Sensor_UXV(43),
+    Sensor_MAX(44),
+    Field_Generator_LV(670),
+    Field_Generator_MV(671),
+    Field_Generator_HV(672),
+    Field_Generator_EV(673),
+    Field_Generator_IV(674),
+    Field_Generator_LuV(675),
+    Field_Generator_ZPM(676),
+    Field_Generator_UV(677),
+    Field_Generator_UHV(678),
+    Field_Generator_UEV(679),
+    Field_Generator_UIV(45),
+    Field_Generator_UMV(46),
+    Field_Generator_UXV(47),
+    Field_Generator_MAX(48),
+    StableAdhesive(427),
+    SuperconductorComposite(428),
+    NaquadriaSupersolid(429),
+    Circuit_Primitive(700),
+    Circuit_Basic(701),
+    Circuit_Good(702),
+    Circuit_Advanced(703),
+    Circuit_Data(704),
+    Circuit_Elite(705),
+    Circuit_Master(706),
+    Tool_DataOrb(707),
+    Tool_DataStick(708),
+    Circuit_Board_Basic(710),
+    Circuit_Board_Advanced(711),
+    Circuit_Board_Elite(712),
+    Circuit_Parts_Crystal_Chip_Elite(713),
+    Circuit_Parts_Crystal_Chip_Master(714),
+    Circuit_Parts_Crystal_Chip_Wetware(668),
+    Circuit_Parts_Advanced(715),
+    Circuit_Parts_Wiring_Basic(716),
+    Circuit_Parts_Wiring_Advanced(717),
+    Circuit_Parts_Wiring_Elite(718),
+    Empty_Board_Basic(719),
+    Empty_Board_Elite(720),
+    Component_Sawblade_Diamond(721),
+    Component_Grinder_Diamond(722),
+    Component_Grinder_Tungsten(723),
+    Upgrade_Muffler(727),
+    Upgrade_Lock(728),
+    Component_Filter(729),
+    Cover_Controller(730),
+    Cover_ActivityDetector(731),
+    Cover_FluidDetector(732),
+    Cover_ItemDetector(733),
+    Cover_EnergyDetector(734),
+    Cover_PlayerDetector(735),
+    Cover_FLuidStorageMonitor(577),
+    Cover_Screen(740),
+    Cover_Crafting(744),
+    Cover_Drain(745),
+    Cover_Shutter(749),
+    Cover_SolarPanel(750),
+    Cover_SolarPanel_8V(751),
+    Cover_SolarPanel_LV(752),
+    Cover_SolarPanel_MV(753),
+    Cover_SolarPanel_HV(754),
+    Cover_SolarPanel_EV(755),
+    Cover_SolarPanel_IV(756),
+    Cover_SolarPanel_LuV(757),
+    Cover_SolarPanel_ZPM(758),
+    Cover_SolarPanel_UV(759),
+    Tool_Sonictron(760),
+    NC_SensorKit(763),
+    Duct_Tape(764),
+    McGuffium_239(765),
+    Cover_RedstoneTransmitterExternal(741),
+    Cover_RedstoneTransmitterInternal(742),
+    Cover_RedstoneReceiverExternal(746),
+    Cover_RedstoneReceiverInternal(747),
+    Cover_NeedsMaintenance(748),
+    Steam_Regulator_LV(332),
+    Steam_Regulator_MV(333),
+    Steam_Regulator_HV(334),
+    Steam_Regulator_EV(335),
+    Steam_Regulator_IV(336);
 
     final int ID;
 
@@ -804,8 +1024,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             OrePrefixes.cell,
             OrePrefixes.cellPlasma);
         INSTANCE = this;
-
-        int tLastID = 0;
 
         ItemList.Credit_Greg_Copper
             .set(addItem(ID_MetaItem_01.Credit_Greg_Copper.ID, "Copper GT Credit", "0.125 Credits"));
@@ -2702,13 +2920,13 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 512L)));
 
-        ItemList.QuantumEye.set(addItem(tLastID = 724, "Quantum Eye", "Improved Ender Eye"));
-        ItemList.QuantumStar.set(addItem(tLastID = 725, "Quantum Star", "Improved Nether Star"));
-        ItemList.Gravistar.set(addItem(tLastID = 726, "Gravi Star", "Ultimate Nether Star"));
+        ItemList.QuantumEye.set(addItem(QuantumEye.ID, "Quantum Eye", "Improved Ender Eye"));
+        ItemList.QuantumStar.set(addItem(QuantumStar.ID, "Quantum Star", "Improved Nether Star"));
+        ItemList.Gravistar.set(addItem(Gravistar.ID, "Gravi Star", "Ultimate Nether Star"));
 
         ItemList.Emitter_LV.set(
             addItem(
-                680,
+                Emitter_LV.ID,
                 "Emitter (LV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
@@ -2716,7 +2934,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 1L)));
         ItemList.Emitter_MV.set(
             addItem(
-                681,
+                Emitter_MV.ID,
                 "Emitter (MV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
@@ -2724,7 +2942,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 2L)));
         ItemList.Emitter_HV.set(
             addItem(
-                682,
+                Emitter_HV.ID,
                 "Emitter (HV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
@@ -2732,7 +2950,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 4L)));
         ItemList.Emitter_EV.set(
             addItem(
-                683,
+                Emitter_EV.ID,
                 "Emitter (EV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L),
@@ -2740,7 +2958,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 8L)));
         ItemList.Emitter_IV.set(
             addItem(
-                684,
+                Emitter_IV.ID,
                 "Emitter (IV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
@@ -2748,7 +2966,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 16L)));
         ItemList.Emitter_LuV.set(
             addItem(
-                685,
+                Emitter_LuV.ID,
                 "Emitter (LuV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L),
@@ -2756,7 +2974,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 32L)));
         ItemList.Emitter_ZPM.set(
             addItem(
-                686,
+                Emitter_ZPM.ID,
                 "Emitter (ZPM)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
@@ -2764,7 +2982,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 64L)));
         ItemList.Emitter_UV.set(
             addItem(
-                687,
+                Emitter_UV.ID,
                 "Emitter (UV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L),
@@ -2772,7 +2990,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 128L)));
         ItemList.Emitter_UHV.set(
             addItem(
-                688,
+                Emitter_UHV.ID,
                 "Emitter (UHV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L),
@@ -2780,7 +2998,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 256L)));
         ItemList.Emitter_UEV.set(
             addItem(
-                689,
+                Emitter_UEV.ID,
                 "Emitter (UEV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2788,7 +3006,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 512L)));
         ItemList.Emitter_UIV.set(
             addItem(
-                37,
+                Emitter_UIV.ID,
                 "Emitter (UIV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2796,7 +3014,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 512L)));
         ItemList.Emitter_UMV.set(
             addItem(
-                38,
+                Emitter_UMV.ID,
                 "Emitter (UMV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2804,7 +3022,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 512L)));
         ItemList.Emitter_UXV.set(
             addItem(
-                39,
+                Emitter_UXV.ID,
                 "Emitter (UXV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2812,7 +3030,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 512L)));
         ItemList.Emitter_MAX.set(
             addItem(
-                40,
+                Emitter_MAX.ID,
                 "Emitter (MAX)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2821,7 +3039,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Sensor_LV.set(
             addItem(
-                690,
+                Sensor_LV.ID,
                 "Sensor (LV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
@@ -2830,7 +3048,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Sensor_MV.set(
             addItem(
-                691,
+                Sensor_MV.ID,
                 "Sensor (MV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
@@ -2838,7 +3056,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L)));
         ItemList.Sensor_HV.set(
             addItem(
-                692,
+                Sensor_HV.ID,
                 "Sensor (HV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
@@ -2846,7 +3064,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 4L)));
         ItemList.Sensor_EV.set(
             addItem(
-                693,
+                Sensor_EV.ID,
                 "Sensor (EV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L),
@@ -2854,7 +3072,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 8L)));
         ItemList.Sensor_IV.set(
             addItem(
-                694,
+                Sensor_IV.ID,
                 "Sensor (IV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
@@ -2862,7 +3080,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 16L)));
         ItemList.Sensor_LuV.set(
             addItem(
-                695,
+                Sensor_LuV.ID,
                 "Sensor (LuV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L),
@@ -2870,7 +3088,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 32L)));
         ItemList.Sensor_ZPM.set(
             addItem(
-                696,
+                Sensor_ZPM.ID,
                 "Sensor (ZPM)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
@@ -2878,7 +3096,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 64L)));
         ItemList.Sensor_UV.set(
             addItem(
-                697,
+                Sensor_UV.ID,
                 "Sensor (UV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L),
@@ -2886,7 +3104,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 128L)));
         ItemList.Sensor_UHV.set(
             addItem(
-                698,
+                Sensor_UHV.ID,
                 "Sensor (UHV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L),
@@ -2894,7 +3112,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 256L)));
         ItemList.Sensor_UEV.set(
             addItem(
-                699,
+                Sensor_UEV.ID,
                 "Sensor (UEV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2902,7 +3120,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 512L)));
         ItemList.Sensor_UIV.set(
             addItem(
-                41,
+                Sensor_UIV.ID,
                 "Sensor (UIV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2910,7 +3128,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 512L)));
         ItemList.Sensor_UMV.set(
             addItem(
-                42,
+                Sensor_UMV.ID,
                 "Sensor (UMV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2918,7 +3136,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 512L)));
         ItemList.Sensor_UXV.set(
             addItem(
-                43,
+                Sensor_UXV.ID,
                 "Sensor (UXV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2926,7 +3144,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 512L)));
         ItemList.Sensor_MAX.set(
             addItem(
-                44,
+                Sensor_MAX.ID,
                 "Sensor (MAX)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2935,7 +3153,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Field_Generator_LV.set(
             addItem(
-                670,
+                Field_Generator_LV.ID,
                 "Field Generator (LV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
@@ -2943,7 +3161,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 1L)));
         ItemList.Field_Generator_MV.set(
             addItem(
-                671,
+                Field_Generator_MV.ID,
                 "Field Generator (MV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
@@ -2951,7 +3169,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 2L)));
         ItemList.Field_Generator_HV.set(
             addItem(
-                672,
+                Field_Generator_HV.ID,
                 "Field Generator (HV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L),
@@ -2959,7 +3177,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 4L)));
         ItemList.Field_Generator_EV.set(
             addItem(
-                673,
+                Field_Generator_EV.ID,
                 "Field Generator (EV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
@@ -2967,7 +3185,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 8L)));
         ItemList.Field_Generator_IV.set(
             addItem(
-                674,
+                Field_Generator_IV.ID,
                 "Field Generator (IV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L),
@@ -2975,7 +3193,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 16L)));
         ItemList.Field_Generator_LuV.set(
             addItem(
-                675,
+                Field_Generator_LuV.ID,
                 "Field Generator (LuV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
@@ -2983,7 +3201,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 32L)));
         ItemList.Field_Generator_ZPM.set(
             addItem(
-                676,
+                Field_Generator_ZPM.ID,
                 "Field Generator (ZPM)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L),
@@ -2991,7 +3209,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 64L)));
         ItemList.Field_Generator_UV.set(
             addItem(
-                677,
+                Field_Generator_UV.ID,
                 "Field Generator (UV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L),
@@ -2999,7 +3217,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 128L)));
         ItemList.Field_Generator_UHV.set(
             addItem(
-                678,
+                Field_Generator_UHV.ID,
                 "Field Generator (UHV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -3007,7 +3225,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 256L)));
         ItemList.Field_Generator_UEV.set(
             addItem(
-                679,
+                Field_Generator_UEV.ID,
                 "Field Generator (UEV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L),
@@ -3015,7 +3233,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 512L)));
         ItemList.Field_Generator_UIV.set(
             addItem(
-                45,
+                Field_Generator_UIV.ID,
                 "Field Generator (UIV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L),
@@ -3023,7 +3241,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 512L)));
         ItemList.Field_Generator_UMV.set(
             addItem(
-                46,
+                Field_Generator_UMV.ID,
                 "Field Generator (UMV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L),
@@ -3031,7 +3249,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 512L)));
         ItemList.Field_Generator_UXV.set(
             addItem(
-                47,
+                Field_Generator_UXV.ID,
                 "Field Generator (UXV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L),
@@ -3039,7 +3257,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 512L)));
         ItemList.Field_Generator_MAX.set(
             addItem(
-                48,
+                Field_Generator_MAX.ID,
                 "Field Generator (MAX)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L),
@@ -3048,7 +3266,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.StableAdhesive.set(
             addItem(
-                427,
+                StableAdhesive.ID,
                 "Hyper-Stable Self-Healing Adhesive",
                 "Complete and selective adhesion, even when torn or damaged",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 30L),
@@ -3057,7 +3275,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VINCULUM, 5L)));
         ItemList.SuperconductorComposite.set(
             addItem(
-                428,
+                SuperconductorComposite.ID,
                 "Superconductor Rare-Earth Composite",
                 "Zero resistance to electrical and quantum flow, regardless of temperature",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 50L),
@@ -3066,7 +3284,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 10L)));
         ItemList.NaquadriaSupersolid.set(
             addItem(
-                429,
+                NaquadriaSupersolid.ID,
                 "Black Body Naquadria Supersolid",
                 "Flows like a fluid and reflects nothing, perfect absorption and transfer",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 100L),
@@ -3078,49 +3296,49 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         // Circuits ULV - LuV.
         ItemList.Circuit_Primitive.set(
             addItem(
-                tLastID = 700,
+                Circuit_Primitive.ID,
                 "Vacuum Tube",
                 "A very simple Circuit",
                 OrePrefixes.circuit.get(Materials.Primitive),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Basic.set(
             addItem(
-                tLastID = 701,
+                Circuit_Basic.ID,
                 "Integrated Logic Circuit",
                 "A Basic Circuit",
                 OrePrefixes.circuit.get(Materials.Basic),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Good.set(
             addItem(
-                tLastID = 702,
+                Circuit_Good.ID,
                 "Good Electronic Circuit",
                 "A Good Circuit",
                 OrePrefixes.circuit.get(Materials.Good),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Advanced.set(
             addItem(
-                tLastID = 703,
+                Circuit_Advanced.ID,
                 "Processor Assembly",
                 "An Advanced Circuit",
                 OrePrefixes.circuit.get(Materials.Advanced),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Data.set(
             addItem(
-                tLastID = 704,
+                Circuit_Data.ID,
                 "Workstation",
                 "An Extreme Circuit",
                 OrePrefixes.circuit.get(Materials.Data),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Elite.set(
             addItem(
-                tLastID = 705,
+                Circuit_Elite.ID,
                 "Mainframe",
                 "An Elite Circuit",
                 OrePrefixes.circuit.get(Materials.Elite),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Master.set(
             addItem(
-                tLastID = 706,
+                Circuit_Master.ID,
                 "Nanoprocessor Mainframe",
                 "A Master Circuit",
                 OrePrefixes.circuit.get(Materials.Master),
@@ -3132,7 +3350,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Tool_DataOrb.set(
             addItem(
-                tLastID = 707,
+                Tool_DataOrb.ID,
                 "Data Orb",
                 "A High Capacity Data Storage",
                 SubTag.NO_UNIFICATION,
@@ -3140,7 +3358,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Tool_DataStick.set(
             addItem(
-                tLastID = 708,
+                Tool_DataStick.ID,
                 "Data Stick",
                 "A Low Capacity Data Storage",
                 SubTag.NO_UNIFICATION,
@@ -3156,35 +3374,40 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 6L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 6L)));
 
-        ItemList.Circuit_Board_Basic.set(addItem(tLastID = 710, "Coated Circuit Board", "A Basic Board"));
+        ItemList.Circuit_Board_Basic.set(addItem(Circuit_Board_Basic.ID, "Coated Circuit Board", "A Basic Board"));
         ItemList.Circuit_Board_Coated.set(ItemList.Circuit_Board_Basic.get(1));
-        ItemList.Circuit_Board_Advanced.set(addItem(tLastID = 711, "Epoxy Circuit Board", "An Advanced Board"));
+        ItemList.Circuit_Board_Advanced
+            .set(addItem(Circuit_Board_Advanced.ID, "Epoxy Circuit Board", "An Advanced Board"));
         ItemList.Circuit_Board_Epoxy.set(ItemList.Circuit_Board_Advanced.get(1));
         ItemList.Circuit_Board_Elite
-            .set(addItem(tLastID = 712, "Multilayer Fiber-Reinforced Circuit Board", "An Elite Board"));
+            .set(addItem(Circuit_Board_Elite.ID, "Multilayer Fiber-Reinforced Circuit Board", "An Elite Board"));
         ItemList.Circuit_Board_Multifiberglass.set(ItemList.Circuit_Board_Elite.get(1));
         ItemList.Circuit_Parts_Crystal_Chip_Elite
-            .set(addItem(tLastID = 713, "Engraved Crystal Chip", "Needed for Circuits"));
+            .set(addItem(Circuit_Parts_Crystal_Chip_Elite.ID, "Engraved Crystal Chip", "Needed for Circuits"));
         ItemList.Circuit_Parts_Crystal_Chip_Master
-            .set(addItem(tLastID = 714, "Engraved Lapotron Chip", "Needed for Circuits"));
+            .set(addItem(Circuit_Parts_Crystal_Chip_Master.ID, "Engraved Lapotron Chip", "Needed for Circuits"));
         ItemList.Circuit_Parts_Crystal_Chip_Wetware
-            .set(addItem(tLastID = 668, "Living Crystal Chip", "Needed for Circuits"));
-        ItemList.Circuit_Parts_Advanced.set(addItem(tLastID = 715, "Diode", "Basic Electronic Component"));
+            .set(addItem(Circuit_Parts_Crystal_Chip_Wetware.ID, "Living Crystal Chip", "Needed for Circuits"));
+        ItemList.Circuit_Parts_Advanced.set(addItem(Circuit_Parts_Advanced.ID, "Diode", "Basic Electronic Component"));
         ItemList.Circuit_Parts_Diode.set(ItemList.Circuit_Parts_Advanced.get(1));
-        ItemList.Circuit_Parts_Wiring_Basic.set(addItem(tLastID = 716, "Resistor", "Basic Electronic Component"));
+        ItemList.Circuit_Parts_Wiring_Basic
+            .set(addItem(Circuit_Parts_Wiring_Basic.ID, "Resistor", "Basic Electronic Component"));
         ItemList.Circuit_Parts_Resistor.set(ItemList.Circuit_Parts_Wiring_Basic.get(1));
-        ItemList.Circuit_Parts_Wiring_Advanced.set(addItem(tLastID = 717, "Transistor", "Basic Electronic Component"));
+        ItemList.Circuit_Parts_Wiring_Advanced
+            .set(addItem(Circuit_Parts_Wiring_Advanced.ID, "Transistor", "Basic Electronic Component"));
         ItemList.Circuit_Parts_Transistor.set(ItemList.Circuit_Parts_Wiring_Advanced.get(1));
-        ItemList.Circuit_Parts_Wiring_Elite.set(addItem(tLastID = 718, "Capacitor", "Electronic Component"));
+        ItemList.Circuit_Parts_Wiring_Elite
+            .set(addItem(Circuit_Parts_Wiring_Elite.ID, "Capacitor", "Electronic Component"));
         ItemList.Circuit_Parts_Capacitor.set(ItemList.Circuit_Parts_Wiring_Elite.get(1));
-        ItemList.Empty_Board_Basic.set(addItem(tLastID = 719, "Phenolic Circuit Board", "A Good Board"));
+        ItemList.Empty_Board_Basic.set(addItem(Empty_Board_Basic.ID, "Phenolic Circuit Board", "A Good Board"));
         ItemList.Circuit_Board_Phenolic.set(ItemList.Empty_Board_Basic.get(1));
-        ItemList.Empty_Board_Elite.set(addItem(tLastID = 720, "Fiber-Reinforced Circuit Board", "An Extreme Board"));
+        ItemList.Empty_Board_Elite
+            .set(addItem(Empty_Board_Elite.ID, "Fiber-Reinforced Circuit Board", "An Extreme Board"));
         ItemList.Circuit_Board_Fiberglass.set(ItemList.Empty_Board_Elite.get(1));
 
         ItemList.Component_Sawblade_Diamond.set(
             addItem(
-                tLastID = 721,
+                Component_Sawblade_Diamond.ID,
                 "Diamond Sawblade",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
@@ -3193,7 +3416,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 OreDictNames.craftingDiamondBlade));
         ItemList.Component_Grinder_Diamond.set(
             addItem(
-                tLastID = 722,
+                Component_Grinder_Diamond.ID,
                 "Diamond Grinding Head",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
@@ -3202,7 +3425,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 OreDictNames.craftingGrinder));
         ItemList.Component_Grinder_Tungsten.set(
             addItem(
-                tLastID = 723,
+                Component_Grinder_Tungsten.ID,
                 "Tungsten Grinding Head",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
@@ -3212,21 +3435,21 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Upgrade_Muffler.set(
             addItem(
-                tLastID = 727,
+                Upgrade_Muffler.ID,
                 "Muffler Upgrade",
                 "Makes Machines silent",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L)));
         ItemList.Upgrade_Lock.set(
             addItem(
-                tLastID = 728,
+                Upgrade_Lock.ID,
                 "Lock Upgrade",
                 "Protects your Machines",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 4L)));
 
         ItemList.Component_Filter.set(
             addItem(
-                tLastID = 729,
+                Component_Filter.ID,
                 "Item Filter",
                 "",
                 new ItemData(Materials.Zinc, OrePrefixes.foil.mMaterialAmount * 16L),
@@ -3237,49 +3460,49 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Cover_Controller.set(
             addItem(
-                tLastID = 730,
+                Cover_Controller.ID,
                 "Machine Controller Cover",
                 "Turns Machines ON/OFF",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         ItemList.Cover_ActivityDetector.set(
             addItem(
-                tLastID = 731,
+                Cover_ActivityDetector.ID,
                 "Activity Detector Cover",
                 "Gives out Activity as Redstone",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         ItemList.Cover_FluidDetector.set(
             addItem(
-                tLastID = 732,
+                Cover_FluidDetector.ID,
                 "Fluid Detector Cover",
                 "Gives out Fluid Amount as Redstone",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)));
         ItemList.Cover_ItemDetector.set(
             addItem(
-                tLastID = 733,
+                Cover_ItemDetector.ID,
                 "Item Detector Cover",
                 "Gives out Item Amount as Redstone",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1L)));
         ItemList.Cover_EnergyDetector.set(
             addItem(
-                tLastID = 734,
+                Cover_EnergyDetector.ID,
                 "Energy Detector Cover",
                 "Gives out Energy Amount as Redstone",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)));
         ItemList.Cover_PlayerDetector.set(
             addItem(
-                tLastID = 735,
+                Cover_PlayerDetector.ID,
                 "Player Detector Cover",
                 "Gives out close Players as Redstone",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         ItemList.Cover_FluidStorageMonitor.set(
             addItem(
-                tLastID = 577,
+                Cover_FLuidStorageMonitor.ID,
                 "Fluid Storage Monitor Cover",
                 "Displays the fluid stored in the Tank",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
@@ -3287,7 +3510,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Cover_Screen.set(
             addItem(
-                tLastID = 740,
+                Cover_Screen.ID,
                 "Computer Monitor Cover",
                 "Displays Data and GUI",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L),
@@ -3295,13 +3518,13 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 1L)));
         ItemList.Cover_Crafting.set(
             addItem(
-                tLastID = 744,
+                Cover_Crafting.ID,
                 "Crafting Table Cover",
                 "Better than a wooden Workbench",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 4L)));
         ItemList.Cover_Drain.set(
             addItem(
-                tLastID = 745,
+                Cover_Drain.ID,
                 "Drain Module Cover",
                 "Absorbs Fluids and collects Rain",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L),
@@ -3309,7 +3532,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Cover_Shutter.set(
             addItem(
-                tLastID = 749,
+                Cover_Shutter.ID,
                 "Shutter Module Cover",
                 "Blocks Inventory/Tank Side. Use together with Machine Controller.",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
@@ -3317,7 +3540,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Cover_SolarPanel.set(
             addItem(
-                tLastID = 750,
+                Cover_SolarPanel.ID,
                 "Solar Panel",
                 "May the Sun be with you (Needs cleaning with right click)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
@@ -3325,7 +3548,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 1L)));
         ItemList.Cover_SolarPanel_8V.set(
             addItem(
-                tLastID = 751,
+                Cover_SolarPanel_8V.ID,
                 "Solar Panel (8V)",
                 "8 Volt Solar Panel (Needs cleaning with right click)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
@@ -3333,7 +3556,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 2L)));
         ItemList.Cover_SolarPanel_LV.set(
             addItem(
-                tLastID = 752,
+                Cover_SolarPanel_LV.ID,
                 "Solar Panel (LV)",
                 "Low Voltage Solar Panel (Needs cleaning with right click)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
@@ -3341,7 +3564,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 4L)));
         ItemList.Cover_SolarPanel_MV.set(
             addItem(
-                tLastID = 753,
+                Cover_SolarPanel_MV.ID,
                 "Solar Panel (MV)",
                 "Medium Voltage Solar Panel (Needs cleaning with right click)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L),
@@ -3349,7 +3572,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 8L)));
         ItemList.Cover_SolarPanel_HV.set(
             addItem(
-                tLastID = 754,
+                Cover_SolarPanel_HV.ID,
                 "Solar Panel (HV)",
                 "High Voltage Solar Panel (Needs cleaning with right click)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
@@ -3357,7 +3580,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 16L)));
         ItemList.Cover_SolarPanel_EV.set(
             addItem(
-                tLastID = 755,
+                Cover_SolarPanel_EV.ID,
                 "Solar Panel (EV)",
                 "Extreme Solar Panel (Needs cleaning with right click)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L),
@@ -3365,7 +3588,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 32L)));
         ItemList.Cover_SolarPanel_IV.set(
             addItem(
-                tLastID = 756,
+                Cover_SolarPanel_IV.ID,
                 "Solar Panel (IV)",
                 "Insane Solar Panel (Needs cleaning with right click)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
@@ -3373,7 +3596,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 64L)));
         ItemList.Cover_SolarPanel_LuV.set(
             addItem(
-                tLastID = 757,
+                Cover_SolarPanel_LuV.ID,
                 "Solar Panel (LuV)",
                 "Ludicrous Solar Panel (Needs cleaning with right click)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
@@ -3381,7 +3604,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 64L)));
         ItemList.Cover_SolarPanel_ZPM.set(
             addItem(
-                tLastID = 758,
+                Cover_SolarPanel_ZPM.ID,
                 "Solar Panel (ZPM)",
                 "ZPM Voltage Solar Panel (Needs cleaning with right click)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
@@ -3389,7 +3612,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 64L)));
         ItemList.Cover_SolarPanel_UV.set(
             addItem(
-                tLastID = 759,
+                Cover_SolarPanel_UV.ID,
                 "Solar Panel (UV)",
                 "Ultimate Solar Panel (Needs cleaning with right click)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
@@ -3398,7 +3621,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Tool_Sonictron.set(
             addItem(
-                tLastID = 760,
+                Tool_Sonictron.ID,
                 "Sonictron",
                 "Bring your Music with you",
                 Behaviour_Sonictron.INSTANCE,
@@ -3419,10 +3642,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 6L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 6L)));
 
-        ItemList.NC_SensorKit.set(addItem(tLastID = 763, "GregTech Sensor Kit", "", new Behaviour_SensorKit()));
+        ItemList.NC_SensorKit.set(addItem(NC_SensorKit.ID, "GregTech Sensor Kit", "", new Behaviour_SensorKit()));
         ItemList.Duct_Tape.set(
             addItem(
-                tLastID = 764,
+                Duct_Tape.ID,
                 "BrainTech Aerospace Advanced Reinforced Duct Tape FAL-84",
                 "If you can't fix it with this, use more of it!",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
@@ -3430,7 +3653,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 OreDictNames.craftingDuctTape));
         ItemList.McGuffium_239.set(
             addItem(
-                tLastID = 765,
+                McGuffium_239.ID,
                 "Mc Guffium 239",
                 "42% better than Phlebotnium",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ALIENIS, 8L),
@@ -3446,28 +3669,28 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Cover_RedstoneTransmitterExternal.set(
             addItem(
-                tLastID = 741,
+                Cover_RedstoneTransmitterExternal.ID,
                 "Redstone Transmitter (External)",
                 "Transfers Redstone signals wireless",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         ItemList.Cover_RedstoneTransmitterInternal.set(
             addItem(
-                tLastID = 742,
+                Cover_RedstoneTransmitterInternal.ID,
                 "Redstone Transmitter (Internal)",
                 "Transfers Redstone signals wireless",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         ItemList.Cover_RedstoneReceiverExternal.set(
             addItem(
-                tLastID = 746,
+                Cover_RedstoneReceiverExternal.ID,
                 "Redstone Receiver (External)",
                 "Transfers Redstone signals wireless",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
         ItemList.Cover_RedstoneReceiverInternal.set(
             addItem(
-                tLastID = 747,
+                Cover_RedstoneReceiverInternal.ID,
                 "Redstone Receiver (Internal)",
                 "Transfers Redstone signals wireless",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
@@ -3475,7 +3698,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Cover_NeedsMaintainance.set(
             addItem(
-                tLastID = 748,
+                Cover_NeedsMaintenance.ID,
                 "Needs Maintenance Cover",
                 "Attach to Multiblock Controller. Emits Redstone Signal if needs Maintenance",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
@@ -3483,7 +3706,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Steam_Regulator_LV.set(
             addItem(
-                tLastID = 332,
+                Steam_Regulator_LV.ID,
                 "Steam Regulator (LV)",
                 GT_Utility.formatNumbers(1024) + PartCoverText + GT_Utility.formatNumbers(1024 * 20) + PartCoverText2,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
@@ -3492,7 +3715,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)));
         ItemList.Steam_Regulator_MV.set(
             addItem(
-                tLastID = 333,
+                Steam_Regulator_MV.ID,
                 "Steam Regulator (MV)",
                 GT_Utility.formatNumbers(2048) + PartCoverText + GT_Utility.formatNumbers(2048 * 20) + PartCoverText2,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
@@ -3501,7 +3724,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)));
         ItemList.Steam_Regulator_HV.set(
             addItem(
-                tLastID = 334,
+                Steam_Regulator_HV.ID,
                 "Steam Regulator (HV)",
                 GT_Utility.formatNumbers(4096) + PartCoverText + GT_Utility.formatNumbers(4096 * 20) + PartCoverText2,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
@@ -3510,7 +3733,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)));
         ItemList.Steam_Regulator_EV.set(
             addItem(
-                tLastID = 335,
+                Steam_Regulator_EV.ID,
                 "Steam Regulator (EV)",
                 GT_Utility.formatNumbers(8192) + PartCoverText + GT_Utility.formatNumbers(8192 * 20) + PartCoverText2,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L),
@@ -3519,7 +3742,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 8L)));
         ItemList.Steam_Regulator_IV.set(
             addItem(
-                tLastID = 336,
+                Steam_Regulator_IV.ID,
                 "Steam Regulator (IV)",
                 GT_Utility.formatNumbers(16384) + PartCoverText + GT_Utility.formatNumbers(16384 * 20) + PartCoverText2,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
