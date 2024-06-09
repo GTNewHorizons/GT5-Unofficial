@@ -85,6 +85,34 @@ import static gregtech.common.items.ID_MetaItem_01.Component_Minecraft_Wheels_St
 import static gregtech.common.items.ID_MetaItem_01.Compressed_Fireclay;
 import static gregtech.common.items.ID_MetaItem_01.Firebrick;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Empty;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Axe;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Block;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Bolt;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Bottle;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Casing;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Cell;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_File;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Gear;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Hammer;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Hoe;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Ingot;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pickaxe;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pipe_Huge;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pipe_Large;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pipe_Medium;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pipe_Small;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pipe_Tiny;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Plate;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Ring;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Rod;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Rotor;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Saw;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Shovel;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Small_Gear;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Sword;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Tool_Head_Drill;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Turbine_Blade;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Wire;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Anvil;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Arrow;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Baguette;
@@ -116,6 +144,8 @@ import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Round;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Screw;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Tool_Head_Drill;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Turbine_Blade;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Slicer_Flat;
+import static gregtech.common.items.ID_MetaItem_01.Shape_Slicer_Stripes;
 import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Remover;
 import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_Remover;
 import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Empty;
@@ -298,7 +328,38 @@ enum ID_MetaItem_01 {
     Tool_Lighter_Invar_Full(476),
     Tool_Lighter_Platinum_Empty(477),
     Tool_Lighter_Platinum_Used(478),
-    Tool_Lighter_Platinum_Full(479);
+    Tool_Lighter_Platinum_Full(479),
+    Shape_Extruder_Plate(350),
+    Shape_Extruder_Rod(351),
+    Shape_Extruder_Bolt(352),
+    Shape_Extruder_Ring(353),
+    Shape_Extruder_Cell(354),
+    Shape_Extruder_Ingot(355),
+    Shape_Extruder_Wire(356),
+    Shape_Extruder_Casing(357),
+    Shape_Extruder_Pipe_Tiny(358),
+    Shape_Extruder_Pipe_Small(359),
+    Shape_Extruder_Pipe_Medium(360),
+    Shape_Extruder_Pipe_Large(361),
+    Shape_Extruder_Pipe_Huge(362),
+    Shape_Extruder_Block(363),
+    Shape_Extruder_Sword(364),
+    Shape_Extruder_Pickaxe(365),
+    Shape_Extruder_Shovel(366),
+    Shape_Extruder_Axe(367),
+    Shape_Extruder_Hoe(368),
+    Shape_Extruder_Hammer(369),
+    Shape_Extruder_File(370),
+    Shape_Extruder_Saw(371),
+    Shape_Extruder_Gear(372),
+    Shape_Extruder_Bottle(373),
+    Shape_Extruder_Rotor(374),
+    Shape_Extruder_Small_Gear(375),
+    Shape_Extruder_Turbine_Blade(376),
+    Shape_Extruder_Tool_Head_Drill(377),
+    Shape_Slicer_Flat(398),
+    Shape_Slicer_Stripes(399);
+
 
     final int ID;
 
@@ -728,65 +789,65 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .set(addItem(Shape_Mold_Tool_Head_Drill.ID, "Mold (Drill Head)", "Mold for making Drill Heads"));
 
         ItemList.Shape_Extruder_Plate
-            .set(addItem(tLastID = 350, "Extruder Shape (Plate)", "Extruder Shape for making Plates"));
+            .set(addItem(Shape_Extruder_Plate.ID, "Extruder Shape (Plate)", "Extruder Shape for making Plates"));
         ItemList.Shape_Extruder_Rod
-            .set(addItem(tLastID = 351, "Extruder Shape (Rod)", "Extruder Shape for making Rods"));
+            .set(addItem(Shape_Extruder_Rod.ID, "Extruder Shape (Rod)", "Extruder Shape for making Rods"));
         ItemList.Shape_Extruder_Bolt
-            .set(addItem(tLastID = 352, "Extruder Shape (Bolt)", "Extruder Shape for making Bolts"));
+            .set(addItem(Shape_Extruder_Bolt.ID, "Extruder Shape (Bolt)", "Extruder Shape for making Bolts"));
         ItemList.Shape_Extruder_Ring
-            .set(addItem(tLastID = 353, "Extruder Shape (Ring)", "Extruder Shape for making Rings"));
+            .set(addItem(Shape_Extruder_Ring.ID, "Extruder Shape (Ring)", "Extruder Shape for making Rings"));
         ItemList.Shape_Extruder_Cell
-            .set(addItem(tLastID = 354, "Extruder Shape (Cell)", "Extruder Shape for making Cells"));
+            .set(addItem(Shape_Extruder_Cell.ID, "Extruder Shape (Cell)", "Extruder Shape for making Cells"));
         ItemList.Shape_Extruder_Ingot.set(
-            addItem(tLastID = 355, "Extruder Shape (Ingot)", "Extruder Shape for, wait, can't we just use a Furnace?"));
+            addItem(Shape_Extruder_Ingot.ID, "Extruder Shape (Ingot)", "Extruder Shape for, wait, can't we just use a Furnace?"));
         ItemList.Shape_Extruder_Wire
-            .set(addItem(tLastID = 356, "Extruder Shape (Wire)", "Extruder Shape for making Wires"));
+            .set(addItem(Shape_Extruder_Wire.ID, "Extruder Shape (Wire)", "Extruder Shape for making Wires"));
         ItemList.Shape_Extruder_Casing
-            .set(addItem(tLastID = 357, "Extruder Shape (Casing)", "Extruder Shape for making Item Casings"));
+            .set(addItem(Shape_Extruder_Casing.ID, "Extruder Shape (Casing)", "Extruder Shape for making Item Casings"));
         ItemList.Shape_Extruder_Pipe_Tiny
-            .set(addItem(tLastID = 358, "Extruder Shape (Tiny Pipe)", "Extruder Shape for making tiny Pipes"));
+            .set(addItem(Shape_Extruder_Pipe_Tiny.ID, "Extruder Shape (Tiny Pipe)", "Extruder Shape for making tiny Pipes"));
         ItemList.Shape_Extruder_Pipe_Small
-            .set(addItem(tLastID = 359, "Extruder Shape (Small Pipe)", "Extruder Shape for making small Pipes"));
+            .set(addItem(Shape_Extruder_Pipe_Small.ID, "Extruder Shape (Small Pipe)", "Extruder Shape for making small Pipes"));
         ItemList.Shape_Extruder_Pipe_Medium
-            .set(addItem(tLastID = 360, "Extruder Shape (Normal Pipe)", "Extruder Shape for making Pipes"));
+            .set(addItem(Shape_Extruder_Pipe_Medium.ID, "Extruder Shape (Normal Pipe)", "Extruder Shape for making Pipes"));
         ItemList.Shape_Extruder_Pipe_Large
-            .set(addItem(tLastID = 361, "Extruder Shape (Large Pipe)", "Extruder Shape for making large Pipes"));
+            .set(addItem(Shape_Extruder_Pipe_Large.ID, "Extruder Shape (Large Pipe)", "Extruder Shape for making large Pipes"));
         ItemList.Shape_Extruder_Pipe_Huge
-            .set(addItem(tLastID = 362, "Extruder Shape (Huge Pipe)", "Extruder Shape for making full Block Pipes"));
+            .set(addItem(Shape_Extruder_Pipe_Huge.ID, "Extruder Shape (Huge Pipe)", "Extruder Shape for making full Block Pipes"));
         ItemList.Shape_Extruder_Block
-            .set(addItem(tLastID = 363, "Extruder Shape (Block)", "Extruder Shape for making Blocks"));
+            .set(addItem(Shape_Extruder_Block.ID, "Extruder Shape (Block)", "Extruder Shape for making Blocks"));
         ItemList.Shape_Extruder_Sword
-            .set(addItem(tLastID = 364, "Extruder Shape (Sword Blade)", "Extruder Shape for making Swords"));
+            .set(addItem(Shape_Extruder_Sword.ID, "Extruder Shape (Sword Blade)", "Extruder Shape for making Swords"));
         ItemList.Shape_Extruder_Pickaxe
-            .set(addItem(tLastID = 365, "Extruder Shape (Pickaxe Head)", "Extruder Shape for making Pickaxes"));
+            .set(addItem(Shape_Extruder_Pickaxe.ID, "Extruder Shape (Pickaxe Head)", "Extruder Shape for making Pickaxes"));
         ItemList.Shape_Extruder_Shovel
-            .set(addItem(tLastID = 366, "Extruder Shape (Shovel Head)", "Extruder Shape for making Shovels"));
+            .set(addItem(Shape_Extruder_Shovel.ID, "Extruder Shape (Shovel Head)", "Extruder Shape for making Shovels"));
         ItemList.Shape_Extruder_Axe
-            .set(addItem(tLastID = 367, "Extruder Shape (Axe Head)", "Extruder Shape for making Axes"));
+            .set(addItem(Shape_Extruder_Axe.ID, "Extruder Shape (Axe Head)", "Extruder Shape for making Axes"));
         ItemList.Shape_Extruder_Hoe
-            .set(addItem(tLastID = 368, "Extruder Shape (Hoe Head)", "Extruder Shape for making Hoes"));
+            .set(addItem(Shape_Extruder_Hoe.ID, "Extruder Shape (Hoe Head)", "Extruder Shape for making Hoes"));
         ItemList.Shape_Extruder_Hammer
-            .set(addItem(tLastID = 369, "Extruder Shape (Hammer Head)", "Extruder Shape for making Hammers"));
+            .set(addItem(Shape_Extruder_Hammer.ID, "Extruder Shape (Hammer Head)", "Extruder Shape for making Hammers"));
         ItemList.Shape_Extruder_File
-            .set(addItem(tLastID = 370, "Extruder Shape (File Head)", "Extruder Shape for making Files"));
+            .set(addItem(Shape_Extruder_File.ID, "Extruder Shape (File Head)", "Extruder Shape for making Files"));
         ItemList.Shape_Extruder_Saw
-            .set(addItem(tLastID = 371, "Extruder Shape (Saw Blade)", "Extruder Shape for making Saws"));
+            .set(addItem(Shape_Extruder_Saw.ID, "Extruder Shape (Saw Blade)", "Extruder Shape for making Saws"));
         ItemList.Shape_Extruder_Gear
-            .set(addItem(tLastID = 372, "Extruder Shape (Gear)", "Extruder Shape for making Gears"));
+            .set(addItem(Shape_Extruder_Gear.ID, "Extruder Shape (Gear)", "Extruder Shape for making Gears"));
         ItemList.Shape_Extruder_Bottle
-            .set(addItem(tLastID = 373, "Extruder Shape (Bottle)", "Extruder Shape for making Bottles"));
+            .set(addItem(Shape_Extruder_Bottle.ID, "Extruder Shape (Bottle)", "Extruder Shape for making Bottles"));
         ItemList.Shape_Extruder_Rotor
-            .set(addItem(tLastID = 374, "Extruder Shape (Rotor)", "Extruder Shape for a Rotor"));
+            .set(addItem(Shape_Extruder_Rotor.ID, "Extruder Shape (Rotor)", "Extruder Shape for a Rotor"));
         ItemList.Shape_Extruder_Small_Gear
-            .set(addItem(tLastID = 375, "Extruder Shape (Small Gear)", "Extruder Shape for a Small Gear"));
+            .set(addItem(Shape_Extruder_Small_Gear.ID, "Extruder Shape (Small Gear)", "Extruder Shape for a Small Gear"));
         ItemList.Shape_Extruder_Turbine_Blade
-            .set(addItem(tLastID = 376, "Extruder Shape (Turbine Blade)", "Extruder Shape for a Turbine Blade"));
+            .set(addItem(Shape_Extruder_Turbine_Blade.ID, "Extruder Shape (Turbine Blade)", "Extruder Shape for a Turbine Blade"));
         ItemList.Shape_Extruder_ToolHeadDrill
-            .set(addItem(tLastID = 377, "Extruder Shape (Drill Head)", "Extruder Shape for a Drill Head"));
+            .set(addItem(Shape_Extruder_Tool_Head_Drill.ID, "Extruder Shape (Drill Head)", "Extruder Shape for a Drill Head"));
 
-        ItemList.Shape_Slicer_Flat.set(addItem(tLastID = 398, "Slicer Blade (Flat)", "Slicer Blade for cutting Flat"));
+        ItemList.Shape_Slicer_Flat.set(addItem(Shape_Slicer_Flat.ID, "Slicer Blade (Flat)", "Slicer Blade for cutting Flat"));
         ItemList.Shape_Slicer_Stripes
-            .set(addItem(tLastID = 399, "Slicer Blade (Stripes)", "Slicer Blade for cutting Stripes"));
+            .set(addItem(Shape_Slicer_Stripes.ID, "Slicer Blade (Stripes)", "Slicer Blade for cutting Stripes"));
 
         ItemList.Fuel_Can_Plastic_Empty.set(
             addItem(
