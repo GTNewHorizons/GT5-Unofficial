@@ -525,12 +525,14 @@ public class RecipeLoader {
             .eut(1920)
             .addTo(mixerRecipes);
 
-        // Boring but makes a lot more sense than needing to make it in an assembler or something similar
-        GameRegistry.addShapelessRecipe(
-            new ItemStack(LanthItemList.IRON_COATED_QUARTZ),
-            Materials.Iron.getDust(2),
-            Materials.NetherQuartz.getPlates(1));
-
+        GT_Values.RA.stdBuilder()
+        	.itemInputs(Materials.Iron.getDust(2), Materials.NetherQuartz.getPlates(1))
+        	.itemOutputs(new ItemStack(LanthItemList.IRON_COATED_QUARTZ))
+        	.duration(10 * GT_RecipeBuilder.SECONDS)
+        	.eut(480)
+        	.addTo(assemblerRecipes);
+        
+        
         // Masks
         // Quartz + Fe2O3 T1
         // " + Cr T2

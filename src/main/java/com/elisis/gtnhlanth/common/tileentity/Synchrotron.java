@@ -709,7 +709,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
         Particle inputParticle = Particle.getParticleFromId(inputParticleId);
 
         if (!inputParticle.canAccelerate()) {
-            stopMachine();
+            stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
             // GT_Log.out.print("Accelerate");
         }
 
@@ -767,6 +767,11 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
         inputRate = this.getInputInformation()
             .getRate();
         outputRate = (int) (inputRate * getOutputRatetio(voltageFactor));
+        
+        if (outputRate == 0) {
+        	stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.low_input_rate"));
+        	return false;
+        }
 
         // GT_Log.out.print("Voltage factor " + voltageFactor);
 

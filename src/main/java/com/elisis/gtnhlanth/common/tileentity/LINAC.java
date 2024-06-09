@@ -308,7 +308,8 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
         Particle inputParticle = Particle.getParticleFromId(particleId);
 
         if (!inputParticle.canAccelerate()) {
-            stopMachine();
+            stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
+            return false;
         }
 
         mMaxProgresstime = 20;
