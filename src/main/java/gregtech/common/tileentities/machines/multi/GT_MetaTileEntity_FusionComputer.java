@@ -223,18 +223,9 @@ public abstract class GT_MetaTileEntity_FusionComputer
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (checkPiece(STRUCTURE_PIECE_MAIN, 7, 1, 12) && mInputHatches.size() > 1
+        return checkPiece(STRUCTURE_PIECE_MAIN, 7, 1, 12) && mInputHatches.size() > 1
             && !mOutputHatches.isEmpty()
-            && !mEnergyHatches.isEmpty()) {
-            mWrench = true;
-            mScrewdriver = true;
-            mSoftHammer = true;
-            mHardHammer = true;
-            mSolderingTool = true;
-            mCrowbar = true;
-            return true;
-        }
-        return false;
+            && !mEnergyHatches.isEmpty();
     }
 
     private boolean addEnergyInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
@@ -652,5 +643,10 @@ public abstract class GT_MetaTileEntity_FusionComputer
     @Override
     public Set<VoidingMode> getAllowedVoidingModes() {
         return VoidingMode.FLUID_ONLY_MODES;
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

@@ -574,6 +574,11 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     }
 
     @Override
+    protected boolean supportsSlotAutomation(int aSlot) {
+        return aSlot == getControllerSlotIndex();
+    }
+
+    @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ) {
         if (!aPlayer.isSneaking()) {
