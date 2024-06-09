@@ -24,10 +24,6 @@ public class Util {
 
         }
 
-        if (stack.stackSize < 0) {
-            stack.stackSize = 0;
-        }
-
     }
 
     public static List<Pos2d> getGridPositions(int totalCount, int xOrigin, int yOrigin, int xDirMaxCount,

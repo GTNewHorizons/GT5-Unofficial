@@ -45,6 +45,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -63,6 +64,9 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
     protected static final String STRUCTURE_PIECE_ENTRANCE = "entrance";
     protected static final String STRUCTURE_PIECE_BASE = "base";
+
+    public static final int CONSUMED_FLUID = 32_000; // Fluid consumed per processed recipe, maybe increase with EU
+    public static final int MIN_INPUT_FOCUS = 25; // Inclusive
 
     private ArrayList<TileHatchInputBeamline> mInputBeamline = new ArrayList<>();
     private ArrayList<TileHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
@@ -651,7 +655,6 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
-        // TODO Auto-generated method stub
         return true;
     }
 
@@ -692,16 +695,14 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
         }
 
         if (this.getInputInformation()
-            .getEnergy() == 0) {
+            .getEnergy() == 0) { // Only really applies if there's no input
             return false;
         }
 
         if (this.getInputInformation()
-            .getFocus() < 25) {
+            .getFocus() < MIN_INPUT_FOCUS) {
             return false;
         }
-
-        BeamInformation inputInformation = this.getInputInformation();
 
         inputParticleId = this.getInputInformation()
             .getParticleId();
@@ -710,12 +711,13 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         if (!inputParticle.canAccelerate()) {
             stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
+            return false;
             // GT_Log.out.print("Accelerate");
         }
 
         // GT_Log.out.print("Got this far");
 
-        mMaxProgresstime = 20;
+        mMaxProgresstime = TickTime.SECOND;
 
         long voltage = this.getMaxInputVoltage();
         mEUt = (int) (-voltage / GT_Values.V[(int) this.getInputVoltageTier()]
@@ -760,7 +762,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
         float mass = inputParticle.getMass();
 
         // Perhaps divide by mass somehow here too
-        outputEnergy = (float) calculateOutputParticleEnergy(voltage, inputEnergy, this.antennaeTier); // TODO maybe
+        outputEnergy = (float) calculateOutputParticleEnergy(voltage, inputEnergy, this.antennaeTier); // maybe
                                                                                                        // adjust
                                                                                                        // behaviour here
 
@@ -777,9 +779,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         // outputAmount = inputParticle.getCharge() / Particle.ELECTRON.getCharge() * 100;
 
-        int fluidConsumed = 32_000; // Amount of fluid consumed per operation, maybe increase with EU/t
-
-        if (primaryFluid.amount < fluidConsumed
+        if (primaryFluid.amount < CONSUMED_FLUID
             || (!primaryFluid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1)) && primaryFluid.getFluid()
                 .getTemperature() > 200)) {
 
@@ -789,21 +789,14 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
             return false;
         }
 
-        primaryFluid.amount -= fluidConsumed;
+        primaryFluid.amount -= CONSUMED_FLUID;
 
-        FluidStack fluidOutput = null;
-
-        fluidOutput = new FluidStack(BeamlineRecipeLoader.coolantMap.get(primaryFluid.getFluid()), fluidConsumed);
-
-        // GT_Log.out.print(fluidOutput.getLocalizedName());
-
+        FluidStack fluidOutput = new FluidStack(
+            BeamlineRecipeLoader.coolantMap.get(primaryFluid.getFluid()),
+            CONSUMED_FLUID);
         if (Objects.isNull(fluidOutput)) return false;
 
-        // GT_Log.out.print("Fluid out ok");
-
         this.addFluidOutputs(new FluidStack[] { fluidOutput });
-
-        // GT_Log.out.print("This far too");
 
         outputAfterRecipe();
 

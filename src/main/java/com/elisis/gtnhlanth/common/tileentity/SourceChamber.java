@@ -46,6 +46,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.SimpleShutDownReason;
 
 public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<SourceChamber>
     implements ISurvivalConstructable {
@@ -136,7 +137,7 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
             .addMaintenanceHatch(addDotText(3))
             .addInputBus(addDotText(1))
             .addOutputBus(addDotText(2))
-            .toolTipFinisher("GTNH: Lanthanides");;
+            .toolTipFinisher("GTNH: Lanthanides");
         return tt;
     }
 
@@ -158,7 +159,6 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
      * protected OverclockDescriber createOverclockDescriber() { return new EUNoTotalOverclockDescriber((byte) 4, 1); }
      */
 
-    // TODO: Variable recipe duration
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
 
@@ -217,7 +217,8 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
         // GT_Log.out.print(outputEnergy);
 
         if (outputEnergy <= 0) {
-            stopMachine();
+            stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.scerror"));
+            return false;
         }
 
         outputFocus = tRecipe.focus;

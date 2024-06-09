@@ -14,6 +14,7 @@ GT5U.gui.text.gtnhlanth.nocoolant=No coolant present in machine!
 GT5U.gui.text.gtnhlanth.inscoolant=Insufficient coolant in machine!
 GT5U.gui.text.gtnhlanth.noaccel=Particle type can't be accelerated!
 GT5U.gui.text.gtnhlanth.low_input_rate=Input amount too low!
+GT5U.gui.text.gtnhlanth.scerror=Math error, broken recipe?
 
 # NEI
 value.disstank=Ratio: %s:1
