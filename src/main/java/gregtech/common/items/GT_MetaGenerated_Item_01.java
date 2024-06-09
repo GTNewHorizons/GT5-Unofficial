@@ -79,6 +79,25 @@ import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Slowness;
 import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Slowness_Long;
 import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Weakness;
 import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Weakness_Long;
+import static gregtech.common.items.ID_MetaItem_01.Battery_Hull_HV;
+import static gregtech.common.items.ID_MetaItem_01.Battery_Hull_LV;
+import static gregtech.common.items.ID_MetaItem_01.Battery_Hull_MV;
+import static gregtech.common.items.ID_MetaItem_01.Battery_RE_HV_Cadmium;
+import static gregtech.common.items.ID_MetaItem_01.Battery_RE_HV_Lithium;
+import static gregtech.common.items.ID_MetaItem_01.Battery_RE_HV_Sodium;
+import static gregtech.common.items.ID_MetaItem_01.Battery_RE_LV_Cadmium;
+import static gregtech.common.items.ID_MetaItem_01.Battery_RE_LV_Lithium;
+import static gregtech.common.items.ID_MetaItem_01.Battery_RE_LV_Sodium;
+import static gregtech.common.items.ID_MetaItem_01.Battery_RE_MV_Cadmium;
+import static gregtech.common.items.ID_MetaItem_01.Battery_RE_MV_Lithium;
+import static gregtech.common.items.ID_MetaItem_01.Battery_RE_MV_Sodium;
+import static gregtech.common.items.ID_MetaItem_01.Battery_RE_ULV_Tantalum;
+import static gregtech.common.items.ID_MetaItem_01.Battery_SU_HV_Mercury;
+import static gregtech.common.items.ID_MetaItem_01.Battery_SU_HV_Sulfuric_Acid;
+import static gregtech.common.items.ID_MetaItem_01.Battery_SU_LV_Mercury;
+import static gregtech.common.items.ID_MetaItem_01.Battery_SU_LV_Sulfuric_Acid;
+import static gregtech.common.items.ID_MetaItem_01.Battery_SU_MV_Mercury;
+import static gregtech.common.items.ID_MetaItem_01.Battery_SU_MV_Sulfuric_Acid;
 import static gregtech.common.items.ID_MetaItem_01.Book_Written_01;
 import static gregtech.common.items.ID_MetaItem_01.Book_Written_02;
 import static gregtech.common.items.ID_MetaItem_01.Book_Written_03;
@@ -86,6 +105,10 @@ import static gregtech.common.items.ID_MetaItem_01.Component_Minecraft_Wheels_Ir
 import static gregtech.common.items.ID_MetaItem_01.Component_Minecraft_Wheels_Steel;
 import static gregtech.common.items.ID_MetaItem_01.Compressed_Fireclay;
 import static gregtech.common.items.ID_MetaItem_01.Crate_Empty;
+import static gregtech.common.items.ID_MetaItem_01.Energy_Cluster;
+import static gregtech.common.items.ID_MetaItem_01.Energy_Lapotronic_Orb;
+import static gregtech.common.items.ID_MetaItem_01.Energy_Lapotronic_orb_2;
+import static gregtech.common.items.ID_MetaItem_01.Energy_Module;
 import static gregtech.common.items.ID_MetaItem_01.Firebrick;
 import static gregtech.common.items.ID_MetaItem_01.Fuel_Can_Plastic_Empty;
 import static gregtech.common.items.ID_MetaItem_01.Fuel_Can_Plastic_Filled;
@@ -213,6 +236,8 @@ import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_9;
 import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_Remover;
 import static gregtech.common.items.ID_MetaItem_01.Spray_Empty;
 import static gregtech.common.items.ID_MetaItem_01.Thermos_Can_Empty;
+import static gregtech.common.items.ID_MetaItem_01.Tool_Cheat;
+import static gregtech.common.items.ID_MetaItem_01.Tool_Cover_Copy_Paste;
 import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Empty;
 import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Full;
 import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Used;
@@ -222,6 +247,12 @@ import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Platinum_Used;
 import static gregtech.common.items.ID_MetaItem_01.Tool_MatchBox_Full;
 import static gregtech.common.items.ID_MetaItem_01.Tool_MatchBox_Used;
 import static gregtech.common.items.ID_MetaItem_01.Tool_Matches;
+import static gregtech.common.items.ID_MetaItem_01.Tool_Scanner;
+import static gregtech.common.items.ID_MetaItem_01.ZPM2;
+import static gregtech.common.items.ID_MetaItem_01.ZPM3;
+import static gregtech.common.items.ID_MetaItem_01.ZPM4;
+import static gregtech.common.items.ID_MetaItem_01.ZPM5;
+import static gregtech.common.items.ID_MetaItem_01.ZPM6;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -489,7 +520,39 @@ enum ID_MetaItem_01 {
     Schematic_1by1(495),
     Schematic_2by2(496),
     Schematic_3by3(497),
-    Schematic_Dust(498);
+    Schematic_Dust(498),
+    Battery_Hull_LV(500),
+    Battery_Hull_MV(501),
+    Battery_Hull_HV(502),
+    Battery_RE_ULV_Tantalum(499),
+    Battery_SU_LV_Sulfuric_Acid(510),
+    Battery_SU_LV_Mercury(511),
+    Battery_RE_LV_Cadmium(517),
+    Battery_RE_LV_Lithium(518),
+    Battery_RE_LV_Sodium(519),
+    Battery_SU_MV_Sulfuric_Acid(520),
+    Battery_SU_MV_Mercury(521),
+    Battery_RE_MV_Cadmium(527),
+    Battery_RE_MV_Lithium(528),
+    Battery_RE_MV_Sodium(529),
+    Battery_SU_HV_Sulfuric_Acid(530),
+    Battery_SU_HV_Mercury(531),
+    Battery_RE_HV_Cadmium(537),
+    Battery_RE_HV_Lithium(538),
+    Battery_RE_HV_Sodium(539),
+    Energy_Lapotronic_Orb(597),
+    ZPM(598),
+    Energy_Lapotronic_orb_2(599),
+    ZPM2(605),
+    ZPM3(609),
+    ZPM4(594),
+    ZPM5(145),
+    ZPM6(146),
+    Energy_Module(736),
+    Energy_Cluster(737),
+    Tool_Cover_Copy_Paste(709),
+    Tool_Cheat(761),
+    Tool_Scanner(762);
 
     final int ID;
 
@@ -1439,7 +1502,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Battery_Hull_LV.set(
             addItem(
-                500,
+                Battery_Hull_LV.ID,
                 "Small Battery Hull",
                 "An empty LV Battery Hull",
                 new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.mMaterialAmount * 1L),
@@ -1448,7 +1511,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)));
         ItemList.Battery_Hull_MV.set(
             addItem(
-                501,
+                Battery_Hull_MV.ID,
                 "Medium Battery Hull",
                 "An empty MV Battery Hull",
                 new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.mMaterialAmount * 3L),
@@ -1457,7 +1520,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)));
         ItemList.Battery_Hull_HV.set(
             addItem(
-                502,
+                Battery_Hull_HV.ID,
                 "Large Battery Hull",
                 "An empty HV Battery Hull",
                 new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.mMaterialAmount * 9L),
@@ -1468,202 +1531,170 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         // ULV Batteries
         ItemList.Battery_RE_ULV_Tantalum.set(
             addItem(
-                tLastID = 499,
+                Battery_RE_ULV_Tantalum.ID,
                 "Tantalum Capacitor",
                 "Reusable",
                 "batteryULV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)));
-        setElectricStats(32000 + tLastID, 1000L, GT_Values.V[0], 0L, -3L, false);
-        registerTieredTooltip(ItemList.Battery_RE_ULV_Tantalum.get(1), ULV);
 
         // LV Batteries
         ItemList.Battery_SU_LV_SulfuricAcid.set(
             addItem(
-                tLastID = 510,
+                Battery_SU_LV_Sulfuric_Acid.ID,
                 "Small Acid Battery",
                 "Single Use",
                 "batteryLV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
-        setElectricStats(32000 + tLastID, 18000L, GT_Values.V[1], 1L, -2L, true);
-        registerTieredTooltip(ItemList.Battery_SU_LV_SulfuricAcid.get(1), LV);
 
         ItemList.Battery_SU_LV_Mercury.set(
             addItem(
-                tLastID = 511,
+                Battery_SU_LV_Mercury.ID,
                 "Small Mercury Battery",
                 "Single Use",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
-        setElectricStats(32000 + tLastID, 32000L, GT_Values.V[1], 1L, -2L, true);
-        registerTieredTooltip(ItemList.Battery_SU_LV_Mercury.get(1), LV);
 
         ItemList.Battery_RE_LV_Cadmium.set(
             addItem(
-                tLastID = 517,
+                Battery_RE_LV_Cadmium.ID,
                 "Small Cadmium Battery",
                 "Reusable",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L),
                 "batteryLV"));
-        setElectricStats(32000 + tLastID, 75000L, GT_Values.V[1], 1L, -3L, true);
-        registerTieredTooltip(ItemList.Battery_RE_LV_Cadmium.get(1), LV);
 
         ItemList.Battery_RE_LV_Lithium.set(
             addItem(
-                tLastID = 518,
+                Battery_RE_LV_Lithium.ID,
                 "Small Lithium Battery",
                 "Reusable",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L),
                 "batteryLV"));
-        setElectricStats(32000 + tLastID, 100000L, GT_Values.V[1], 1L, -3L, true);
-        registerTieredTooltip(ItemList.Battery_RE_LV_Lithium.get(1), LV);
 
         ItemList.Battery_RE_LV_Sodium.set(
             addItem(
-                tLastID = 519,
+                Battery_RE_LV_Sodium.ID,
                 "Small Sodium Battery",
                 "Reusable",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L),
                 "batteryLV"));
-        setElectricStats(32000 + tLastID, 50000L, GT_Values.V[1], 1L, -3L, true);
-        registerTieredTooltip(ItemList.Battery_RE_LV_Sodium.get(1), LV);
 
         // MV Batteries
         ItemList.Battery_SU_MV_SulfuricAcid.set(
             addItem(
-                tLastID = 520,
+                Battery_SU_MV_Sulfuric_Acid.ID,
                 "Medium Acid Battery",
                 "Single Use",
                 "batteryMV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
-        setElectricStats(32000 + tLastID, 72000L, GT_Values.V[2], 2L, -2L, true);
-        registerTieredTooltip(ItemList.Battery_SU_MV_SulfuricAcid.get(1), MV);
 
         ItemList.Battery_SU_MV_Mercury.set(
             addItem(
-                tLastID = 521,
+                Battery_SU_MV_Mercury.ID,
                 "Medium Mercury Battery",
                 "Single Use",
                 "batteryMV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
-        setElectricStats(32000 + tLastID, 128000L, GT_Values.V[2], 2L, -2L, true);
-        registerTieredTooltip(ItemList.Battery_SU_MV_Mercury.get(1), MV);
 
         ItemList.Battery_RE_MV_Cadmium.set(
             addItem(
-                tLastID = 527,
+                Battery_RE_MV_Cadmium.ID,
                 "Medium Cadmium Battery",
                 "Reusable",
                 "batteryMV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
-        setElectricStats(32000 + tLastID, 300000L, GT_Values.V[2], 2L, -3L, true);
-        registerTieredTooltip(ItemList.Battery_RE_MV_Cadmium.get(1), MV);
 
         ItemList.Battery_RE_MV_Lithium.set(
             addItem(
-                tLastID = 528,
+                Battery_RE_MV_Lithium.ID,
                 "Medium Lithium Battery",
                 "Reusable",
                 "batteryMV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
-        setElectricStats(32000 + tLastID, 400000L, GT_Values.V[2], 2L, -3L, true);
-        registerTieredTooltip(ItemList.Battery_RE_MV_Lithium.get(1), MV);
 
         ItemList.Battery_RE_MV_Sodium.set(
             addItem(
-                tLastID = 529,
+                Battery_RE_MV_Sodium.ID,
                 "Medium Sodium Battery",
                 "Reusable",
                 "batteryMV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
-        setElectricStats(32000 + tLastID, 200000L, GT_Values.V[2], 2L, -3L, true);
-        registerTieredTooltip(ItemList.Battery_RE_MV_Sodium.get(1), MV);
 
         // HV Batteries
         ItemList.Battery_SU_HV_SulfuricAcid.set(
             addItem(
-                tLastID = 530,
+                Battery_SU_HV_Sulfuric_Acid.ID,
                 "Large Acid Battery",
                 "Single Use",
                 "batteryHV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 8L)));
-        setElectricStats(32000 + tLastID, 288000L, GT_Values.V[3], 3L, -2L, true);
-        registerTieredTooltip(ItemList.Battery_SU_HV_SulfuricAcid.get(1), HV);
 
         ItemList.Battery_SU_HV_Mercury.set(
             addItem(
-                tLastID = 531,
+                Battery_SU_HV_Mercury.ID,
                 "Large Mercury Battery",
                 "Single Use",
                 "batteryHV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 8L)));
-        setElectricStats(32000 + tLastID, 512000L, GT_Values.V[3], 3L, -2L, true);
-        registerTieredTooltip(ItemList.Battery_SU_HV_Mercury.get(1), HV);
 
         ItemList.Battery_RE_HV_Cadmium.set(
             addItem(
-                tLastID = 537,
+                Battery_RE_HV_Cadmium.ID,
                 "Large Cadmium Battery",
                 "Reusable",
                 "batteryHV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
-        setElectricStats(32000 + tLastID, 1200000L, GT_Values.V[3], 3L, -3L, true);
-        registerTieredTooltip(ItemList.Battery_RE_HV_Cadmium.get(1), HV);
 
         ItemList.Battery_RE_HV_Lithium.set(
             addItem(
-                tLastID = 538,
+                Battery_RE_HV_Lithium.ID,
                 "Large Lithium Battery",
                 "Reusable",
                 "batteryHV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
-        setElectricStats(32000 + tLastID, 1600000L, GT_Values.V[3], 3L, -3L, true);
-        registerTieredTooltip(ItemList.Battery_RE_HV_Lithium.get(1), HV);
 
         ItemList.Battery_RE_HV_Sodium.set(
             addItem(
-                tLastID = 539,
+                Battery_RE_HV_Sodium.ID,
                 "Large Sodium Battery",
                 "Reusable",
                 "batteryHV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
-        setElectricStats(32000 + tLastID, 800000L, GT_Values.V[3], 3L, -3L, true);
-        registerTieredTooltip(ItemList.Battery_RE_HV_Sodium.get(1), HV);
 
         // IV Battery
         ItemList.Energy_LapotronicOrb.set(
             addItem(
-                tLastID = 597,
+                Energy_Lapotronic_Orb.ID,
                 "Lapotronic Energy Orb",
                 "Reusable battery",
                 "batteryIV",
@@ -1671,26 +1702,22 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
                 OrePrefixes.battery.get(Materials.Ultimate)));
-        setElectricStats(32000 + tLastID, 100000000L, GT_Values.V[5], 5L, -3L, true);
-        registerTieredTooltip(ItemList.Energy_LapotronicOrb.get(1), IV);
 
         // ZPM Module
         ItemList.ZPM.set(
             addItem(
-                tLastID = 598,
+                ID_MetaItem_01.ZPM.ID,
                 "Zero Point Module",
                 "Single use battery",
                 "batteryZPM",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
-        setElectricStats(32000 + tLastID, 2000000000000L, GT_Values.V[7], 7L, -2L, true);
-        registerTieredTooltip(ItemList.ZPM.get(1), ZPM);
 
         // LuV Lapotron orb cluster battery
         ItemList.Energy_LapotronicOrb2.set(
             addItem(
-                tLastID = 599,
+                Energy_Lapotronic_orb_2.ID,
                 "Lapotronic Energy Orb Cluster",
                 "Reusable battery",
                 "batteryLuV",
@@ -1698,78 +1725,66 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
                 OrePrefixes.battery.get(Materials.Ultimate)));
-        setElectricStats(32000 + tLastID, 1000000000L, GT_Values.V[6], 6L, -3L, true);
-        registerTieredTooltip(ItemList.Energy_LapotronicOrb2.get(1), LuV);
 
         // UV Battery
         ItemList.ZPM2.set(
             addItem(
-                tLastID = 605,
+                ZPM2.ID,
                 "Ultimate Battery",
                 "Fill this to win minecraft",
                 "batteryUV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
-        setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[8], 8L, -3L, true);
-        registerTieredTooltip(ItemList.ZPM2.get(1), UV);
 
         // UMV Battery
         ItemList.ZPM3.set(
             addItem(
-                tLastID = 609,
+                ZPM3.ID,
                 "Really Ultimate Battery",
                 "Fill this to be way older",
                 "batteryUMV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
-        setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[12], 12L, -3L, true);
-        registerTieredTooltip(ItemList.ZPM3.get(1), UMV);
 
         // UXV Battery
         ItemList.ZPM4.set(
             addItem(
-                tLastID = 594,
+                ZPM4.ID,
                 "Extremely Ultimate Battery",
                 "Fill this to be older",
                 "batteryUXV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
-        setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[13], 13L, -3L, true);
-        registerTieredTooltip(ItemList.ZPM4.get(1), UXV);
 
         // MAX Battery
         ItemList.ZPM5.set(
             addItem(
-                tLastID = 145,
+                ZPM5.ID,
                 "Insanely Ultimate Battery",
                 "Fill this for fun",
                 "batteryMAX",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
-        setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[14], 14L, -3L, true);
-        registerTieredTooltip(ItemList.ZPM5.get(1), MAX);
 
         // ERROR Battery
         ItemList.ZPM6.set(
             addItem(
-                tLastID = 146,
+                ZPM6.ID,
                 "Mega Ultimate Battery",
                 "Fill the capacitor to reach enlightenment",
                 "batteryERV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
-        setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[15], 15L, -3L, true);
-        registerTieredTooltip(ItemList.ZPM6.get(1), ERV);
 
         // ZPM Cluster
         ItemList.Energy_Module.set(
             addItem(
-                tLastID = 736,
+                Energy_Module.ID,
                 "Energy Module",
                 "Reusable battery",
                 "batteryZPM",
@@ -1777,21 +1792,17 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
                 OrePrefixes.battery.get(Materials.Ultimate)));
-        setElectricStats(32000 + tLastID, 10000000000L, GT_Values.V[7], 7L, -3L, true);
-        registerTieredTooltip(ItemList.Energy_Module.get(1), ZPM);
 
         // UV Cluster
         ItemList.Energy_Cluster.set(
             addItem(
-                tLastID = 737,
+                Energy_Cluster.ID,
                 "Energy Cluster",
                 "Reusable battery",
                 "batteryUV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
-        setElectricStats(32000 + tLastID, 100000000000L, GT_Values.V[8], 8L, -3L, true);
-        registerTieredTooltip(ItemList.Energy_Cluster.get(1), UV);
 
         // UIV, UMV, UXV and MAX component textures backported from gregicality.
         ItemList.Electric_Motor_LV.set(
@@ -2880,7 +2891,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "A very simple Circuit",
                 OrePrefixes.circuit.get(Materials.Primitive),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Primitive.get(1), ULV);
         ItemList.Circuit_Basic.set(
             addItem(
                 tLastID = 701,
@@ -2888,7 +2898,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "A Basic Circuit",
                 OrePrefixes.circuit.get(Materials.Basic),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Basic.get(1), LV);
         ItemList.Circuit_Good.set(
             addItem(
                 tLastID = 702,
@@ -2896,7 +2905,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "A Good Circuit",
                 OrePrefixes.circuit.get(Materials.Good),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Good.get(1), MV);
         ItemList.Circuit_Advanced.set(
             addItem(
                 tLastID = 703,
@@ -2904,7 +2912,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "An Advanced Circuit",
                 OrePrefixes.circuit.get(Materials.Advanced),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Advanced.get(1), HV);
         ItemList.Circuit_Data.set(
             addItem(
                 tLastID = 704,
@@ -2912,7 +2919,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "An Extreme Circuit",
                 OrePrefixes.circuit.get(Materials.Data),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Data.get(1), EV);
         ItemList.Circuit_Elite.set(
             addItem(
                 tLastID = 705,
@@ -2920,7 +2926,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "An Elite Circuit",
                 OrePrefixes.circuit.get(Materials.Elite),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Elite.get(1), IV);
         ItemList.Circuit_Master.set(
             addItem(
                 tLastID = 706,
@@ -2928,7 +2933,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "A Master Circuit",
                 OrePrefixes.circuit.get(Materials.Master),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Master.get(1), LuV);
 
         // Backwards compatibility.
         ItemList.Circuit_Parts_Vacuum_Tube.set(ItemList.Circuit_Primitive.get(1));
@@ -2952,14 +2956,13 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Tool_Cover_Copy_Paste.set(
             addItem(
-                tLastID = 709,
+                Tool_Cover_Copy_Paste.ID,
                 "Cover Copy/Paste tool",
                 "Set Cover Massively.",
                 Behaviour_Cover_Tool.INSTANCE,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 6L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 6L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 6L)));
-        setElectricStats(32000 + tLastID, 400000L, GT_Values.V[2], 2L, -1L, false);
 
         ItemList.Circuit_Board_Basic.set(addItem(tLastID = 710, "Coated Circuit Board", "A Basic Board"));
         ItemList.Circuit_Board_Coated.set(ItemList.Circuit_Board_Basic.get(1));
@@ -3210,21 +3213,19 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 4L)));
         ItemList.Tool_Cheat.set(
             addItem(
-                tLastID = 761,
+                Tool_Cheat.ID,
                 "Debug Scanner",
                 "Also an Infinite Energy Source",
                 Behaviour_Scanner.INSTANCE,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 64L)));
-        setElectricStats(32000 + tLastID, -2000000000L, 1000000000L, -1L, -3L, false);
         ItemList.Tool_Scanner.set(
             addItem(
-                tLastID = 762,
+                Tool_Scanner.ID,
                 "Portable Scanner",
                 "Tricorder",
                 Behaviour_Scanner.INSTANCE,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 6L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 6L)));
-        setElectricStats(32000 + tLastID, 400000L, GT_Values.V[2], 2L, -1L, false);
 
         ItemList.NC_SensorKit.set(addItem(tLastID = 763, "GregTech Sensor Kit", "", new Behaviour_SensorKit()));
         ItemList.Duct_Tape.set(
@@ -3340,6 +3341,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         registerCovers();
         registerBehaviors();
         setAllFluidContainerStats();
+        setAllElectricStats();
+        registerTieredTooltips();
 
         compressorRecipes();
         craftingShapedRecipes();
@@ -5107,5 +5110,74 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             addItemBehavior(32000 + Spray_Colors[i], behaviourSprayColor);
             addItemBehavior(32001 + Spray_Colors_Used[i], behaviourSprayColor);
         }
+    }
+
+    private void setAllElectricStats() {
+        setElectricStats(32000 + Battery_RE_ULV_Tantalum.ID, 1000L, GT_Values.V[0], 0L, -3L, false);
+        setElectricStats(32000 + Battery_SU_LV_Sulfuric_Acid.ID, 18000L, GT_Values.V[1], 1L, -2L, true);
+        setElectricStats(32000 + Battery_SU_LV_Mercury.ID, 32000L, GT_Values.V[1], 1L, -2L, true);
+        setElectricStats(32000 + Battery_RE_LV_Cadmium.ID, 75000L, GT_Values.V[1], 1L, -3L, true);
+        setElectricStats(32000 + Battery_RE_LV_Lithium.ID, 100000L, GT_Values.V[1], 1L, -3L, true);
+        setElectricStats(32000 + Battery_RE_LV_Sodium.ID, 50000L, GT_Values.V[1], 1L, -3L, true);
+        setElectricStats(32000 + Battery_SU_MV_Sulfuric_Acid.ID, 72000L, GT_Values.V[2], 2L, -2L, true);
+        setElectricStats(32000 + Battery_SU_MV_Mercury.ID, 128000L, GT_Values.V[2], 2L, -2L, true);
+        setElectricStats(32000 + Battery_RE_MV_Cadmium.ID, 300000L, GT_Values.V[2], 2L, -3L, true);
+        setElectricStats(32000 + Battery_RE_MV_Lithium.ID, 400000L, GT_Values.V[2], 2L, -3L, true);
+        setElectricStats(32000 + Battery_RE_MV_Sodium.ID, 200000L, GT_Values.V[2], 2L, -3L, true);
+        setElectricStats(32000 + Battery_SU_HV_Sulfuric_Acid.ID, 288000L, GT_Values.V[3], 3L, -2L, true);
+        setElectricStats(32000 + Battery_SU_HV_Mercury.ID, 512000L, GT_Values.V[3], 3L, -2L, true);
+        setElectricStats(32000 + Battery_RE_HV_Cadmium.ID, 1200000L, GT_Values.V[3], 3L, -3L, true);
+        setElectricStats(32000 + Battery_RE_HV_Lithium.ID, 1600000L, GT_Values.V[3], 3L, -3L, true);
+        setElectricStats(32000 + Battery_RE_HV_Sodium.ID, 800000L, GT_Values.V[3], 3L, -3L, true);
+        setElectricStats(32000 + Energy_Lapotronic_Orb.ID, 100000000L, GT_Values.V[5], 5L, -3L, true);
+        setElectricStats(32000 + ID_MetaItem_01.ZPM.ID, 2000000000000L, GT_Values.V[7], 7L, -2L, true);
+        setElectricStats(32000 + Energy_Lapotronic_orb_2.ID, 1000000000L, GT_Values.V[6], 6L, -3L, true);
+        setElectricStats(32000 + ZPM2.ID, Long.MAX_VALUE, GT_Values.V[8], 8L, -3L, true);
+        setElectricStats(32000 + ZPM3.ID, Long.MAX_VALUE, GT_Values.V[12], 12L, -3L, true);
+        setElectricStats(32000 + ZPM4.ID, Long.MAX_VALUE, GT_Values.V[13], 13L, -3L, true);
+        setElectricStats(32000 + ZPM5.ID, Long.MAX_VALUE, GT_Values.V[14], 14L, -3L, true);
+        setElectricStats(32000 + ZPM6.ID, Long.MAX_VALUE, GT_Values.V[15], 15L, -3L, true);
+        setElectricStats(32000 + Energy_Module.ID, 10000000000L, GT_Values.V[7], 7L, -3L, true);
+        setElectricStats(32000 + Energy_Cluster.ID, 100000000000L, GT_Values.V[8], 8L, -3L, true);
+        setElectricStats(32000 + Tool_Cover_Copy_Paste.ID, 400000L, GT_Values.V[2], 2L, -1L, false);
+        setElectricStats(32000 + Tool_Cheat.ID, -2000000000L, 1000000000L, -1L, -3L, false);
+        setElectricStats(32000 + Tool_Scanner.ID, 400000L, GT_Values.V[2], 2L, -1L, false);
+    }
+
+    private void registerTieredTooltips() {
+        registerTieredTooltip(ItemList.Battery_RE_ULV_Tantalum.get(1), ULV);
+        registerTieredTooltip(ItemList.Battery_SU_LV_SulfuricAcid.get(1), LV);
+        registerTieredTooltip(ItemList.Battery_SU_LV_Mercury.get(1), LV);
+        registerTieredTooltip(ItemList.Battery_RE_LV_Cadmium.get(1), LV);
+        registerTieredTooltip(ItemList.Battery_RE_LV_Lithium.get(1), LV);
+        registerTieredTooltip(ItemList.Battery_RE_LV_Sodium.get(1), LV);
+        registerTieredTooltip(ItemList.Battery_SU_MV_SulfuricAcid.get(1), MV);
+        registerTieredTooltip(ItemList.Battery_SU_MV_Mercury.get(1), MV);
+        registerTieredTooltip(ItemList.Battery_RE_MV_Cadmium.get(1), MV);
+        registerTieredTooltip(ItemList.Battery_RE_MV_Lithium.get(1), MV);
+        registerTieredTooltip(ItemList.Battery_RE_MV_Sodium.get(1), MV);
+        registerTieredTooltip(ItemList.Battery_SU_HV_SulfuricAcid.get(1), HV);
+        registerTieredTooltip(ItemList.Battery_SU_HV_Mercury.get(1), HV);
+        registerTieredTooltip(ItemList.Battery_RE_HV_Cadmium.get(1), HV);
+        registerTieredTooltip(ItemList.Battery_RE_HV_Lithium.get(1), HV);
+        registerTieredTooltip(ItemList.Battery_RE_HV_Sodium.get(1), HV);
+        registerTieredTooltip(ItemList.Energy_LapotronicOrb.get(1), IV);
+        registerTieredTooltip(ItemList.ZPM.get(1), ZPM);
+        registerTieredTooltip(ItemList.Energy_LapotronicOrb2.get(1), LuV);
+        registerTieredTooltip(ItemList.ZPM2.get(1), UV);
+        registerTieredTooltip(ItemList.ZPM3.get(1), UMV);
+        registerTieredTooltip(ItemList.ZPM4.get(1), UXV);
+        registerTieredTooltip(ItemList.ZPM5.get(1), MAX);
+        registerTieredTooltip(ItemList.ZPM6.get(1), ERV);
+        registerTieredTooltip(ItemList.Energy_Module.get(1), ZPM);
+        registerTieredTooltip(ItemList.Energy_Cluster.get(1), UV);
+        registerTieredTooltip(ItemList.Circuit_Primitive.get(1), ULV);
+        registerTieredTooltip(ItemList.Circuit_Basic.get(1), LV);
+        registerTieredTooltip(ItemList.Circuit_Good.get(1), MV);
+        registerTieredTooltip(ItemList.Circuit_Advanced.get(1), HV);
+        registerTieredTooltip(ItemList.Circuit_Data.get(1), EV);
+        registerTieredTooltip(ItemList.Circuit_Elite.get(1), IV);
+        registerTieredTooltip(ItemList.Circuit_Master.get(1), LuV);
+
     }
 }
