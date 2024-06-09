@@ -236,6 +236,29 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
     private static final String FRText1 = "Configurable up to ";
     private static final String FRText2 = " L/sec (as Cover)/n Rightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick/n to adjust the pump speed by 1/16/256 L/sec per click";
 
+    private void setBurnValues(){
+        setBurnValue(17000 + Materials.Wood.mMetaItemSubID, 1600);
+    }
+
+    private void oredictBlacklistEntries(){
+        GT_OreDictUnificator.addToBlacklist(new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID));
+    }
+
+    private void compressorRecipes(){
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 8L))
+            .itemOutputs(new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+    }
+
+    private void registerCovers(){
+        GregTech_API.registerCover(
+            new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID),
+            TextureFactory.of(COVER_WOOD_PLATE),
+            null);
+    }
     public GT_MetaGenerated_Item_01() {
         super(
             "metaitem.01",
@@ -275,32 +298,11 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         int tLastID = 0;
 
-        setBurnValue(17000 + Materials.Wood.mMetaItemSubID, 1600);
-        GT_OreDictUnificator.addToBlacklist(new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID));
+        setBurnValues();
+        oredictBlacklistEntries();
+        compressorRecipes();
 
-        // Compressor recipe
-        {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 8L))
-                .itemOutputs(new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-        }
 
-        GregTech_API.registerCover(
-            new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID),
-            TextureFactory.of(COVER_WOOD_PLATE),
-            null);
-
-        ItemStack tStack = new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID);
-        tStack.setStackDisplayName("The holy Planks of Sengir");
-        GT_Utility.ItemNBT.addEnchantment(tStack, Enchantment.smite, 10);
-        GT_ModHandler.addCraftingRecipe(
-            tStack,
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { "XXX", "XDX", "XXX", 'X', OrePrefixes.gem.get(Materials.NetherStar), 'D',
-                new ItemStack(Blocks.dragon_egg, 1, 32767) });
 
         ItemList.Credit_Greg_Copper.set(addItem(ID_MetaItem_01.Credit_Greg_Copper.ID, "Copper GT Credit", "0.125 Credits"));
         ItemList.Credit_Greg_Cupronickel.set(
@@ -4356,7 +4358,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             new GT_Cover_SteamRegulator(16384, TextureFactory.of(OVERLAY_VALVE)));
 
         initCoinShapelessRecipes();
-        initArrowCraftingRecipes();
+        initCraftingShapedRecipes();
     }
 
     private static final Map<Materials, Materials> cauldronRemap = new HashMap<>();
@@ -4477,8 +4479,19 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
     public boolean doesMaterialAllowGeneration(OrePrefixes aPrefix, Materials aMaterial) {
         return (super.doesMaterialAllowGeneration(aPrefix, aMaterial));
     }
+    private void initCraftingShapedRecipes(){
+        ItemStack tStack = new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID);
+        tStack.setStackDisplayName("The holy Planks of Sengir");
+        GT_Utility.ItemNBT.addEnchantment(tStack, Enchantment.smite, 10);
+        GT_ModHandler.addCraftingRecipe(
+            tStack,
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "XXX", "XDX", "XXX", 'X', OrePrefixes.gem.get(Materials.NetherStar), 'D',
+                new ItemStack(Blocks.dragon_egg, 1, 32767) });
 
-    private void initArrowCraftingRecipes(){
+        initArrowCraftingShapedRecipes();
+    }
+    private void initArrowCraftingShapedRecipes(){
         GT_ModHandler.addCraftingRecipe(
             ItemList.Arrow_Wooden_Glass_Emtpy.get(1L),
             GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
