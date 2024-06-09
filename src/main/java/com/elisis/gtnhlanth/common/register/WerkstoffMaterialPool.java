@@ -1916,7 +1916,6 @@ public class WerkstoffMaterialPool implements Runnable {
     // new Pair<>(Oxygen, 3),
     // new Pair<>(Hydrogen, 35));
 
-    // Beamline fuckery
     public static final Werkstoff Permalloy = new Werkstoff(
         new short[] { 195, 230, 225 },
         "Permalloy",
@@ -1938,7 +1937,8 @@ public class WerkstoffMaterialPool implements Runnable {
         new short[] { 210, 230, 225 },
         "Mu-metal",
         subscriptNumbers("?NiFeCuCrMo?"),
-        new Werkstoff.Stats().setBlastFurnace(true),
+        new Werkstoff.Stats().setBlastFurnace(true)
+            .setMass(180),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
@@ -2030,9 +2030,10 @@ public class WerkstoffMaterialPool implements Runnable {
         new short[] { 140, 110, 120 },
         "Lanthanum Hexaboride",
         subscriptNumbers("LaB6"),
-        new Werkstoff.Stats(),
+        new Werkstoff.Stats().setMass(200),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
+            .onlyDust()
             .addGems()
             .addSimpleMetalWorkingItems(),
         offsetID3b + 8,
