@@ -104,6 +104,7 @@ import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
 
 public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_MultiblockBase_EM
     implements IConstructable, ISurvivalConstructable {
@@ -333,10 +334,12 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
             // Check and drain fuel
             if (ticker % (5 * SECONDS) == 0) {
                 ticker = 0;
-                FluidStack fluidInHatch = null;
+                startRecipeProcessing();
+                FluidStack[] fluidInHatch = null;
+                boolean fuelDrained = false;
                 if (mInputHatches != null && mInputHatches.size() != 0) {
-                    fluidInHatch = mInputHatches.get(0)
-                        .getFluid();
+                    fluidInHatch = this.getStoredFluids()
+                        .toArray(new FluidStack[0]);
                 }
                 int maxModuleCount = 8;
 
@@ -346,43 +349,51 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 if (upgrades[29]) {
                     maxModuleCount += 4;
                 }
-                if (getBaseMetaTileEntity().isAllowedToWork()) {
-                    if (internalBattery == 0) {
-
-                        for (ItemStack itemStack : mInputBusses.get(0)
-                            .getRealInventory()) {
-                            if (itemStack != null && itemStack.isItemEqual(STELLAR_FUEL)) {
-                                stellarFuelAmount += itemStack.stackSize;
-                                itemStack.stackSize = 0;
-                            }
-                        }
-                        neededStartupFuel = calculateStartupFuelConsumption(this);
-                        if (stellarFuelAmount >= neededStartupFuel) {
-                            stellarFuelAmount -= neededStartupFuel;
-                            increaseBattery(neededStartupFuel);
-                        }
-                    } else {
-                        fuelConsumption = (long) calculateFuelConsumption(this) * 5 * (batteryCharging ? 2 : 1);
-                        if (fluidInHatch != null && fluidInHatch.isFluidEqual(validFuelList.get(selectedFuelType))) {
-                            FluidStack fluidNeeded = new FluidStack(
-                                validFuelList.get(selectedFuelType),
-                                (int) fuelConsumption);
-                            FluidStack fluidReal = mInputHatches.get(0)
-                                .drain(fluidNeeded.amount, true);
-                            if (fluidReal == null || fluidReal.amount < fluidNeeded.amount) {
-                                reduceBattery(fuelConsumptionFactor);
-                            } else {
-                                totalFuelConsumed += getFuelFactor();
-                                if (batteryCharging) {
-                                    increaseBattery(fuelConsumptionFactor);
-                                }
-                            }
-                        } else {
-                            reduceBattery(fuelConsumptionFactor);
+                if (internalBattery == 0) {
+                    for (ItemStack itemStack : mInputBusses.get(0)
+                        .getRealInventory()) {
+                        if (itemStack != null && itemStack.isItemEqual(STELLAR_FUEL)) {
+                            stellarFuelAmount += itemStack.stackSize;
+                            itemStack.stackSize = 0;
                         }
                     }
+                    neededStartupFuel = calculateStartupFuelConsumption(this);
+                    if (stellarFuelAmount >= neededStartupFuel) {
+                        stellarFuelAmount -= neededStartupFuel;
+                        increaseBattery(neededStartupFuel);
+                    }
                 } else {
-                    reduceBattery(fuelConsumptionFactor);
+                    fuelConsumption = (long) calculateFuelConsumption(this) * 5 * (batteryCharging ? 2 : 1);
+                    if (fluidInHatch != null) {
+                        for (FluidStack fluid : fluidInHatch) {
+                            if (fluid.isFluidEqual(validFuelList.get(selectedFuelType))) {
+                                FluidStack fluidNeeded = new FluidStack(
+                                    validFuelList.get(selectedFuelType),
+                                    (int) fuelConsumption);
+                                FluidStack fluidReal;
+                                if (mInputHatches.get(0) instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
+                                    fluidReal = meHatch.drain(ForgeDirection.UNKNOWN, fluidNeeded, true);
+                                } else {
+                                    fluidReal = mInputHatches.get(0)
+                                        .drain(fluidNeeded.amount, true);
+                                }
+                                if (fluidReal == null || fluidReal.amount < fluidNeeded.amount) {
+                                    reduceBattery(fuelConsumptionFactor);
+                                } else {
+                                    totalFuelConsumed += getFuelFactor();
+                                    if (batteryCharging) {
+                                        increaseBattery(fuelConsumptionFactor);
+                                    }
+                                }
+                                fuelDrained = true;
+                            }
+                        }
+                        if (!fuelDrained) {
+                            reduceBattery(fuelConsumptionFactor);
+                        }
+                    } else {
+                        reduceBattery(fuelConsumptionFactor);
+                    }
                 }
 
                 determineCompositionMilestoneLevel();
@@ -417,6 +428,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 }
                 if (mEfficiency < 0) mEfficiency = 0;
                 fixAllMaintenance();
+                endRecipeProcessing();
             }
         }
     }
@@ -2412,6 +2424,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         if ((internalBattery + amount) <= maxBatteryCharge) {
             internalBattery += amount;
         } else {
+            internalBattery = maxBatteryCharge;
             batteryCharging = false;
         }
     }
