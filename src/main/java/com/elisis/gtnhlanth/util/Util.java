@@ -22,7 +22,7 @@ public class Util {
 
             stack.setItemDamage(stack.getItemDamage() + damage);
 
-        }	
+        }
 
     }
 
