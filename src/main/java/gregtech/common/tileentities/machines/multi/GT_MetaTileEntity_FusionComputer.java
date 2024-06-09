@@ -32,6 +32,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -72,6 +73,8 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
 public abstract class GT_MetaTileEntity_FusionComputer
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_FusionComputer>
@@ -220,18 +223,9 @@ public abstract class GT_MetaTileEntity_FusionComputer
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (checkPiece(STRUCTURE_PIECE_MAIN, 7, 1, 12) && mInputHatches.size() > 1
+        return checkPiece(STRUCTURE_PIECE_MAIN, 7, 1, 12) && mInputHatches.size() > 1
             && !mOutputHatches.isEmpty()
-            && !mEnergyHatches.isEmpty()) {
-            mWrench = true;
-            mScrewdriver = true;
-            mSoftHammer = true;
-            mHardHammer = true;
-            mSolderingTool = true;
-            mCrowbar = true;
-            return true;
-        }
-        return false;
+            && !mEnergyHatches.isEmpty();
     }
 
     private boolean addEnergyInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
@@ -339,7 +333,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                 }
                 return result;
             }
-        }.setOverclock(1, 1);
+        };
     }
 
     @Override
@@ -397,7 +391,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                         }
                     }
                     if (this.mEUStore <= 0 && mMaxProgresstime > 0) {
-                        criticalStopMachine();
+                        stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                     }
                     if (mMaxProgresstime > 0) {
                         this.getBaseMetaTileEntity()
@@ -432,7 +426,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                                 this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                                 if (checkRecipe()) {
                                     if (this.mEUStore < this.mLastRecipe.mSpecialValue + this.mEUt) {
-                                        criticalStopMachine();
+                                        stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                                     }
                                     aBaseMetaTileEntity
                                         .decreaseStoredEnergyUnits(this.mLastRecipe.mSpecialValue + this.mEUt, true);
@@ -441,9 +435,9 @@ public abstract class GT_MetaTileEntity_FusionComputer
                             if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
                         }
                     }
-                } else {
+                } else if (aBaseMetaTileEntity.isAllowedToWork()) {
                     this.mLastRecipe = null;
-                    stopMachine();
+                    stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
                 }
             }
             aBaseMetaTileEntity
@@ -473,8 +467,8 @@ public abstract class GT_MetaTileEntity_FusionComputer
     }
 
     @Override
-    public void stopMachine() {
-        super.stopMachine();
+    public void stopMachine(@NotNull ShutDownReason reason) {
+        super.stopMachine(reason);
         turnCasingActive(false);
     }
 
@@ -563,6 +557,9 @@ public abstract class GT_MetaTileEntity_FusionComputer
         return 166;
     }
 
+    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+    protected long clientEU;
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder
@@ -608,24 +605,27 @@ public abstract class GT_MetaTileEntity_FusionComputer
                     .setTexture(GT_UITextures.PROGRESSBAR_STORED_EU, 147)
                     .setPos(5, 156)
                     .setSize(147, 5))
-            .widget(TextWidget.dynamicString(() -> {
-                long energy = getBaseMetaTileEntity().getStoredEU();
-                if (energy > 160_000_000L && energy < 160_010_000L) {
-                    energy = 160_000_000L;
+            .widget(new TextWidget().setStringSupplier(() -> {
+                if (clientEU > 160_000_000L && clientEU < 160_010_000L) {
+                    clientEU = 160_000_000L;
                 }
-                if (energy > 320_000_000L && energy < 320_010_000L) {
-                    energy = 320_000_000L;
+                if (clientEU > 320_000_000L && clientEU < 320_010_000L) {
+                    clientEU = 320_000_000L;
                 }
-                if (energy > 640_000_000L && energy < 640_010_000L) {
-                    energy = 640_000_000L;
+                if (clientEU > 640_000_000L && clientEU < 640_010_000L) {
+                    clientEU = 640_000_000L;
                 }
-                if (energy > 5_120_000_000L && energy < 5_120_080_000L) {
-                    energy = 5_120_000_000L;
+                if (clientEU > 5_120_000_000L && clientEU < 5_120_080_000L) {
+                    clientEU = 5_120_000_000L;
                 }
-                return GT_Utility.formatNumbers(energy) + " EU";
+                return numberFormat.format(clientEU) + " EU";
             })
                 .setDefaultColor(COLOR_TEXT_RED.get())
-                .setPos(50, 155))
+                .setTextAlignment(Alignment.Center)
+                .setScale(0.5f)
+                .setPos(5, 157)
+                .setSize(147, 5))
+            .widget(new FakeSyncWidget.LongSyncer(() -> getBaseMetaTileEntity().getStoredEU(), val -> clientEU = val))
             .widget(
                 new ButtonWidget().setNEITransferRect(
                     RecipeMaps.fusionRecipes.getFrontend()
@@ -643,5 +643,10 @@ public abstract class GT_MetaTileEntity_FusionComputer
     @Override
     public Set<VoidingMode> getAllowedVoidingModes() {
         return VoidingMode.FLUID_ONLY_MODES;
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

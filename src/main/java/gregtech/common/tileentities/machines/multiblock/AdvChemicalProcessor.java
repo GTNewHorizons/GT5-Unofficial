@@ -38,7 +38,7 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -390,9 +390,9 @@ public class AdvChemicalProcessor
                     .setPos(20 * (i % 4) + 18, 18 + (i / 4) * 20));
         }
         child.addChild(
-            new TextFieldWidget().setGetterInt(() -> maxComplexParallels)
-                .setSetterInt(parallel -> setMaxComplexParallels(parallel, true))
-                .setNumbers(1, MAX_PROCESSES)
+            new NumericWidget().setGetter(() -> maxComplexParallels)
+                .setSetter(parallel -> setMaxComplexParallels((int) parallel, true))
+                .setBounds(1, MAX_PROCESSES)
                 .setTextColor(Color.WHITE.normal)
                 .setTextAlignment(Alignment.Center)
                 .addTooltip("Tier")

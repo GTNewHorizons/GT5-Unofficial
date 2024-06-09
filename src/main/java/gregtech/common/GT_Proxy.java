@@ -646,6 +646,16 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean costlyCableConnection = false;
     public boolean crashOnNullRecipeInput = false;
 
+    public enum OreDropSystem {
+        Block,
+        PerDimBlock,
+        UnifiedBlock,
+        FortuneItem,
+        Item
+    }
+
+    public OreDropSystem oreDropSystem = OreDropSystem.FortuneItem;
+
     /**
      * This enables ambient-occlusion smooth lighting on tiles
      */
@@ -1726,11 +1736,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 if ((aOriginalMod.toLowerCase(Locale.ENGLISH)
                     .contains("xycraft"))
                     || (aOriginalMod.toLowerCase(Locale.ENGLISH)
-                        .contains("tconstruct"))
-                    || ((aOriginalMod.toLowerCase(Locale.ENGLISH)
-                        .contains("natura"))
-                        && (!aOriginalMod.toLowerCase(Locale.ENGLISH)
-                            .contains("natural")))) {
+                        .contains("tconstruct"))) {
                     if (GT_Values.D1) {
                         GT_Log.ore.println(aMod + " -> " + aEvent.Name + " is getting ignored, because of racism. :P");
                     }

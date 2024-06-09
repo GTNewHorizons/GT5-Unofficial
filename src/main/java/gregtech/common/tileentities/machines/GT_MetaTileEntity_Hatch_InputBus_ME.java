@@ -40,7 +40,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
@@ -72,6 +72,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.widget.AESlotWidget;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -396,7 +397,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         if (aIndex == getCircuitSlot() || aIndex == getManualSlot()) return mInventory[aIndex];
         if (mInventory[aIndex] != null) {
             AENetworkProxy proxy = getProxy();
-            if (proxy == null) {
+            if (proxy == null || !proxy.isActive()) {
                 return null;
             }
             try {
@@ -439,6 +440,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public void startRecipeProcessing() {
         processingRecipe = true;
+        updateAllInformationSlots();
     }
 
     private void refreshItemList() {
@@ -489,11 +491,15 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                             .extractAEPower(request.getStackSize(), Actionable.MODULATE, PowerMultiplier.CONFIG);
                         setInventorySlotContents(i + SLOT_COUNT, oldStack);
                         if (result == null || result.getStackSize() != toExtract) {
-                            controller.criticalStopMachine();
+                            controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
                             checkRecipeResult = SimpleCheckRecipeResult
                                 .ofFailurePersistOnShutdown("stocking_bus_fail_extraction");
                         }
-                    } catch (final GridAccessException ignored) {}
+                    } catch (final GridAccessException ignored) {
+                        controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
+                        checkRecipeResult = SimpleCheckRecipeResult
+                            .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
+                    }
                 }
                 savedStackSizes[i] = 0;
                 shadowInventory[i] = null;
@@ -529,6 +535,16 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             }
         }
         return null;
+    }
+
+    /**
+     * Used to avoid slot update.
+     */
+    public ItemStack getShadowItemStack(int index) {
+        if (index < 0 || index >= shadowInventory.length) {
+            return null;
+        }
+        return shadowInventory[index];
     }
 
     @Override
@@ -697,10 +713,10 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 .setPos(3, 2)
                 .setSize(74, 14))
             .widget(
-                new TextFieldWidget().setSetterInt(val -> minAutoPullStackSize = val)
-                    .setGetterInt(() -> minAutoPullStackSize)
-                    .setNumbers(1, Integer.MAX_VALUE)
-                    .setOnScrollNumbers(1, 4, 64)
+                new NumericWidget().setSetter(val -> minAutoPullStackSize = (int) val)
+                    .setGetter(() -> minAutoPullStackSize)
+                    .setBounds(1, Integer.MAX_VALUE)
+                    .setScrollValues(1, 4, 64)
                     .setTextAlignment(Alignment.Center)
                     .setTextColor(Color.WHITE.normal)
                     .setSize(70, 18)
@@ -711,10 +727,10 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 .setPos(3, 42)
                 .setSize(74, 14))
             .widget(
-                new TextFieldWidget().setSetterInt(val -> autoPullRefreshTime = val)
-                    .setGetterInt(() -> autoPullRefreshTime)
-                    .setNumbers(1, Integer.MAX_VALUE)
-                    .setOnScrollNumbers(1, 4, 64)
+                new NumericWidget().setSetter(val -> autoPullRefreshTime = (int) val)
+                    .setGetter(() -> autoPullRefreshTime)
+                    .setBounds(1, Integer.MAX_VALUE)
+                    .setScrollValues(1, 4, 64)
                     .setTextAlignment(Alignment.Center)
                     .setTextColor(Color.WHITE.normal)
                     .setSize(70, 18)

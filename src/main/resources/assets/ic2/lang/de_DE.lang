@@ -1,0 +1,29 @@
+ic2.itemEnergeticRotor=Kinetischer Getriebe-Rotor (Energische Legierung)
+ic2.itemTungstenSteelRotor=Kinetischer Getriebe-Rotor (Wolframstahl)
+ic2.itemVibrantRotor=Kinetischer Getriebe-Rotor (Schwingende Legierung)
+ic2.itemIridiumRotor=Kinetischer Getriebe-Rotor (Iridium)
+
+ic2.itemMagnaliumRotor=Kinetischer Getriebe-Rotor (Magnalium)
+ic2.itemUltimetRotor=Kinetischer Getriebe-Rotor (Ultimet)
+
+ic2.blockGenerator=RTG ENERGIE
+ic2.blockGenerator.0=RTG ENERGIE
+ic2.blockGenerator.1=KINETISCHE ENERGIE
+ic2.blockGenerator.2=FEHLER ENERGIE
+ic2.blockGenerator.3=MEHR FEHLER ENERGIE
+
+ic2.blockRTGenerator2=RTG ENERGIE 2
+ic2.blockKineticGenerator2=KINETISCHE ENERGIE 2
+
+ic2.HydrofluoricAcid=Zelle mit industriell verstärkter Flusssäure
+ic2.SulfurDioxide=Zelle mit Schwefeldioxid
+ic2.SulfuricApatite=Zelle mit schwefligem Apatit
+ic2.SulfurousAcid=Zelle mit Schwefelsäure
+
+ic2.HydrogenChloride=Zelle mit industriell verstärkter Salzsäure
+ic2.LithiumHydroxide=Zelle mit Lithiumhydroxid
+ic2.SulfuricLithium=Zelle mit schwefeligem Lithium
+
+ic2.UraniumHexaFluoride=Zelle mit Uran-Hexafluorid
+ic2.ThoriumTetraFluoride=Zelle mit Thorium-Tetrafluorid
+ic2.UraniumTetraFluoride=Zelle mit Uran-Tetrafluorid

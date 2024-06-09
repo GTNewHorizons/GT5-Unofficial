@@ -134,7 +134,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 1,
                 "Dark Coffee au lait",
                 "Keeping you awake the whole night",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.2F,
@@ -210,7 +209,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 4,
                 "Lait au cafe",
                 "You want Coffee to your Sugar?",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     3,
                     0.4F,
@@ -298,7 +296,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 8,
                 "Sweet Tea",
                 "How about a Tea Party? In Boston?",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.2F,
@@ -438,7 +435,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 104,
                 "Potato Juice",
                 "Ever seen Potato Juice in stores? No? That has a reason.",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     3,
                     0.3F,
@@ -724,7 +720,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 116,
                 "Scotch",
                 "Technically this is just a Whisky",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.1F,
@@ -753,7 +748,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 117,
                 "Glen McKenner",
                 "Don't hand to easily surprised people, they will shatter it.",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.1F,
@@ -878,7 +872,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 122,
                 "Diabolo Sauce",
                 "As if the Devil made this Sauce",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.1F,
@@ -903,7 +896,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 123,
                 "Diablo Sauce",
                 "Diablo always comes back!",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.1F,
@@ -1001,7 +993,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 127,
                 "Golden Apple Juice",
                 "A golden Apple in liquid form",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     4,
                     0.2F,
@@ -1030,7 +1021,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 128,
                 "Golden Cider",
                 "More Resistance, less Regeneration",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     4,
                     0.2F,
@@ -1059,7 +1049,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 129,
                 "Idun's Apple Juice",
                 "So you got the Idea of using Notch Apples for a drink?",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     4,
                     0.2F,
@@ -1092,7 +1081,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 130,
                 "Notches Brew",
                 "This is just overpowered",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     4,
                     0.2F,
@@ -1217,7 +1205,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 135,
                 "Cave Johnson's Grenade Juice",
                 "When life gives you Lemons, make Life take them Lemons back!",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     0,
                     0.0F,
@@ -2683,14 +2670,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.melon_block, 1, 0))
-            .itemOutputs(new ItemStack(Items.melon, 8, 0), new ItemStack(Items.melon_seeds, 1))
-            .outputChances(10000, 8000)
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.pumpkin, 1, 0))
             .itemOutputs(new ItemStack(Items.pumpkin_seeds, 4, 0))
             .duration(20 * SECONDS)
@@ -2700,13 +2679,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.melon, 1, 0))
             .itemOutputs(new ItemStack(Items.melon_seeds, 1, 0))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.wheat, 1, 0))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);

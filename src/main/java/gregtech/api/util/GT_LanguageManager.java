@@ -37,6 +37,11 @@ public class GT_LanguageManager {
      */
     public static Configuration sEnglishFile;
     /**
+     * If the game is running with en_US language. This does not get updated when user changes language in game;
+     * GT lang system cannot handle that anyway.
+     */
+    public static boolean isEN_US;
+    /**
      * If placeholder like %material should be used for writing lang entries to file.
      */
     public static boolean i18nPlaceholder = true;
@@ -125,14 +130,25 @@ public class GT_LanguageManager {
             sEnglishFile.save();
             hasUnsavedEntry = false;
         }
-        if (!tProperty.wasRead()) {
-            if (GregTech_API.sPostloadFinished) {
-                sEnglishFile.save();
-            } else {
-                hasUnsavedEntry = true;
+        String translation = tProperty.getString();
+        if (tProperty.wasRead()) {
+            if (isEN_US && !aEnglish.equals(translation)) {
+                tProperty.set(aEnglish);
+                markFileDirty();
+                return aEnglish;
             }
+        } else {
+            markFileDirty();
         }
-        return tProperty.getString();
+        return translation;
+    }
+
+    private static synchronized void markFileDirty() {
+        if (GregTech_API.sPostloadFinished) {
+            sEnglishFile.save();
+        } else {
+            hasUnsavedEntry = true;
+        }
     }
 
     public static String getTranslation(String aKey) {
@@ -444,8 +460,8 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_249", "3 Issues");
         addStringLocalization("Interaction_DESCRIPTION_Index_250", "4 Issues");
         addStringLocalization("Interaction_DESCRIPTION_Index_251", "5 Issues");
-        addStringLocalization("Interaction_DESCRIPTION_Index_252", "Rotor < 80%");
-        addStringLocalization("Interaction_DESCRIPTION_Index_253", "Rotor < 100%");
+        addStringLocalization("Interaction_DESCRIPTION_Index_252", "Rotor < 20%");
+        addStringLocalization("Interaction_DESCRIPTION_Index_253", "Rotor ≈ 0%");
         addStringLocalization("Interaction_DESCRIPTION_Index_254", "Detect slot#");
         addStringLocalization("Interaction_DESCRIPTION_Index_254.0", "Detect Slot");
         addStringLocalization("Interaction_DESCRIPTION_Index_254.1", "Internal slot#");

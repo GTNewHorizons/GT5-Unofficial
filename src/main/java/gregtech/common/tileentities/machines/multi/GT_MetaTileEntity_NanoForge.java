@@ -260,6 +260,16 @@ public class GT_MetaTileEntity_NanoForge extends
     }
 
     @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            // TODO: Look for proper fix
+            // Updates every 10 sec
+            if (mUpdate <= -150) mUpdate = 50;
+        }
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mSpecialTier = 0;
         if (checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1) && aStack != null) {
@@ -278,9 +288,7 @@ public class GT_MetaTileEntity_NanoForge extends
             }
         }
 
-        if (mMaintenanceHatches.size() != 1 || mInputBusses.isEmpty()
-            || mOutputBusses.isEmpty()
-            || mInputHatches.isEmpty()) {
+        if (mMaintenanceHatches.size() != 1) {
             return false;
         }
 

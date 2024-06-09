@@ -7,7 +7,6 @@ import static ic2.core.util.LiquidUtil.fillContainerStack;
 import static ic2.core.util.LiquidUtil.placeFluid;
 
 import java.util.List;
-import java.util.function.Function;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -34,15 +33,12 @@ import net.minecraftforge.fluids.IFluidHandler;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.math.MathExpression;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.IItemWithModularUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.VanillaButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -315,76 +311,47 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
     private class VolumetricFlaskUIFactory {
 
         private final UIBuildContext buildContext;
+        private int capacity;
         private final int maxCapacity;
-        private TextFieldWidget textField;
 
         public VolumetricFlaskUIFactory(UIBuildContext buildContext, ItemStack flask) {
             this.buildContext = buildContext;
-            this.maxCapacity = ((GT_VolumetricFlask) flask.getItem()).getMaxCapacity();
+            GT_VolumetricFlask flaskItem = (GT_VolumetricFlask) flask.getItem();
+            this.capacity = flaskItem.getCapacity(flask);
+            this.maxCapacity = flaskItem.getMaxCapacity();
         }
 
         public ModularWindow createWindow() {
-            ModularWindow.Builder builder = ModularWindow.builder(176, 107);
+            ModularWindow.Builder builder = ModularWindow.builder(150, 54);
             builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
 
-            textField = new TextFieldWidget() {
-
-                @Override
-                public void onDestroy() {
-                    if (isClient()) return;
-                    setCapacity(getCurrentItem(), (int) MathExpression.parseMathExpression(getText(), 1));
-                    getContext().onWidgetUpdate();
-                }
-            };
-            textField.setText(
-                String.valueOf(((GT_VolumetricFlask) getCurrentItem().getItem()).getCapacity(getCurrentItem())));
+            NumericWidget capacityWidget = new NumericWidget();
             builder.widget(
-                textField.setNumbers(() -> 1, () -> maxCapacity)
-                    .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
-                    .setTextAlignment(Alignment.CenterLeft)
+                capacityWidget.setGetter(() -> capacity)
+                    .setSetter(value -> setCapacity(getCurrentItem(), capacity = (int) value))
+                    .setBounds(1, maxCapacity)
+                    .setScrollValues(1, 144, 1000)
+                    .setDefaultValue(capacity)
                     .setTextColor(Color.WHITE.dark(1))
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setFocusOnGuiOpen(true)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
-                    .setPos(60, 55)
-                    .setSize(59, 12));
-
-            addChangeAmountButton(builder, "+1", new Pos2d(20, 26), new Size(22, 20), val -> val + 1);
-            addChangeAmountButton(builder, "+10", new Pos2d(48, 26), new Size(28, 20), val -> val + 10);
-            addChangeAmountButton(builder, "+100", new Pos2d(82, 26), new Size(32, 20), val -> val + 100);
-            addChangeAmountButton(builder, "+1000", new Pos2d(120, 26), new Size(38, 20), val -> val + 1000);
-            addChangeAmountButton(builder, "-1", new Pos2d(20, 75), new Size(22, 20), val -> val - 1);
-            addChangeAmountButton(builder, "-10", new Pos2d(48, 75), new Size(28, 20), val -> val - 10);
-            addChangeAmountButton(builder, "-100", new Pos2d(82, 75), new Size(32, 20), val -> val - 100);
-            addChangeAmountButton(builder, "-1000", new Pos2d(120, 75), new Size(38, 20), val -> val - 1000);
-            builder.widget(
-                new VanillaButtonWidget().setDisplayString("Accept")
-                    .setClickableGetter(() -> MathExpression.parseMathExpression(textField.getText()) > 0)
-                    .setOnClick((clickData, widget) -> {
-                        if (widget.isClient()) {
-                            textField.onRemoveFocus();
-                        } else {
-                            widget.getWindow()
-                                .tryClose();
-                        }
-                    })
-                    .setPos(128, 51)
-                    .setSize(38, 20));
+                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                    .setPos(8, 8)
+                    .setSize(77, 12))
+                .widget(new TextWidget("Capacity").setPos(88, 10))
+                .widget(
+                    new VanillaButtonWidget().setDisplayString("Confirm")
+                        .setOnClick((clickData, widget) -> {
+                            capacityWidget.onRemoveFocus();
+                            if (!widget.isClient()) {
+                                widget.getWindow()
+                                    .tryClose();
+                            }
+                        })
+                        .setPos(8, 26)
+                        .setSize(48, 20));
 
             return builder.build();
-        }
-
-        private void addChangeAmountButton(ModularWindow.Builder builder, String text, Pos2d pos, Size size,
-            Function<Integer, Integer> function) {
-            builder.widget(
-                new VanillaButtonWidget().setDisplayString(text)
-                    .setOnClick((clickData, widget) -> {
-                        String currentText = textField.getText();
-                        int amount = (int) MathExpression.parseMathExpression(currentText, 1);
-                        amount = Math.min(maxCapacity, Math.max(1, function.apply(amount)));
-                        textField.setText(String.valueOf(amount));
-                    })
-                    .setPos(pos)
-                    .setSize(size));
         }
 
         private ItemStack getCurrentItem() {

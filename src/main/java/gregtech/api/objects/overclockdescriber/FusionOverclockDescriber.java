@@ -9,26 +9,13 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
+import gregtech.nei.formatter.FusionSpecialValueFormatter;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class FusionOverclockDescriber extends EUOverclockDescriber {
 
     protected final long capableStartup;
-
-    /**
-     * The values of {@link GT_MetaTileEntity_FusionComputer#capableStartupCanonical()} from MK1 ~ MK5
-     */
-    public static long getCapableStartupCanonical(int tier) {
-        return switch (tier) {
-            case 1 -> 160_000_000L;
-            case 2 -> 320_000_000L;
-            case 3 -> 640_000_000L;
-            case 4 -> 5_120_000_000L;
-            default -> 20_480_000_000L;
-        };
-    }
 
     public FusionOverclockDescriber(byte energyTier, long capableStartup) {
         super(energyTier, 1);
@@ -37,7 +24,8 @@ public class FusionOverclockDescriber extends EUOverclockDescriber {
 
     @Override
     public GT_OverclockCalculator createCalculator(GT_OverclockCalculator template, GT_Recipe recipe) {
-        return super.createCalculator(template, recipe).limitOverclockCount(overclock(recipe.mSpecialValue))
+        return super.createCalculator(template, recipe)
+            .limitOverclockCount(overclock(recipe.mSpecialValue, recipe.mEUt))
             .setEUtIncreasePerOC(getEUtIncreasePerOC())
             .setDurationDecreasePerOC(getDurationDecreasePerOC());
     }
@@ -64,21 +52,9 @@ public class FusionOverclockDescriber extends EUOverclockDescriber {
         return this.capableStartup >= recipe.mSpecialValue;
     }
 
-    protected int overclock(long startEnergy) {
-        return switch (getFusionTier()) {
-            case 1 -> 0;
-            case 2 -> (startEnergy <= getCapableStartupCanonical(1)) ? 1 : 0;
-            case 3 -> (startEnergy <= getCapableStartupCanonical(1)) ? 2
-                : ((startEnergy <= getCapableStartupCanonical(2)) ? 1 : 0);
-            case 4 -> (startEnergy <= getCapableStartupCanonical(1)) ? 3
-                : (startEnergy <= getCapableStartupCanonical(2)) ? 2
-                    : (startEnergy <= getCapableStartupCanonical(3)) ? 1 : 0;
-            case 5 -> (startEnergy <= getCapableStartupCanonical(1)) ? 4
-                : (startEnergy <= getCapableStartupCanonical(2)) ? 3
-                    : (startEnergy <= getCapableStartupCanonical(3)) ? 2
-                        : (startEnergy <= getCapableStartupCanonical(4)) ? 1 : 0;
-            default -> throw new IllegalStateException("Unexpected fusion tier: " + getFusionTier());
-        };
+    protected int overclock(long startEnergy, long voltage) {
+        // Fusion Computer tier - recipe tier
+        return Math.max(getFusionTier() - FusionSpecialValueFormatter.getFusionTier(startEnergy, voltage), 0);
     }
 
     protected int getFusionTier() {

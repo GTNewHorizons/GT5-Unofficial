@@ -26,6 +26,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -516,7 +517,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
         NBTTagCompound tag = accessor.getNBTData();
         FluidStack fluid = tag.hasKey("mFluid") ? FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("mFluid")) : null;
-        if (fluid != null && fluid.amount > 0) {
+        if (fluid != null && fluid.amount >= 0) {
             currenttip.remove(0);
             currenttip.add(
                 0,
@@ -542,6 +543,8 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     public boolean useModularUI() {
         return true;
     }
+
+    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
@@ -570,7 +573,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 20))
             .widget(
-                TextWidget.dynamicString(() -> GT_Utility.parseNumberToString(mFluid != null ? mFluid.amount : 0))
+                new TextWidget().setStringSupplier(() -> numberFormat.format(mFluid != null ? mFluid.amount : 0))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 30))
             .widget(

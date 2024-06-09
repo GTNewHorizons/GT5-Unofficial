@@ -46,6 +46,7 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IAllSidedTexturedTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
@@ -86,6 +87,16 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             textureArray[3] = pipeRenderedTileEntity.getTextureCovered(SOUTH);
             textureArray[4] = pipeRenderedTileEntity.getTextureCovered(WEST);
             textureArray[5] = pipeRenderedTileEntity.getTextureCovered(EAST);
+            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
+        }
+        if (tTileEntity instanceof IAllSidedTexturedTileEntity allSidedTexturedTileEntity) {
+            ITexture[] texture = allSidedTexturedTileEntity.getTexture(aBlock);
+            textureArray[0] = texture;
+            textureArray[1] = texture;
+            textureArray[2] = texture;
+            textureArray[3] = texture;
+            textureArray[4] = texture;
+            textureArray[5] = texture;
             return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
         }
         if (tTileEntity instanceof ITexturedTileEntity texturedTileEntity) {
@@ -545,12 +556,13 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             aBlock.setBlockBoundsForItemRender();
             aRenderer.setRenderBoundsFromBlock(aBlock);
             // spotless:off
-            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, ForgeDirection.DOWN), true);
-            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, ForgeDirection.UP), true);
-            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, ForgeDirection.NORTH), true);
-            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, ForgeDirection.SOUTH), true);
-            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, ForgeDirection.WEST), true);
-            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, ForgeDirection.EAST), true);
+            ITexture[] texture = tTileEntity.getTexture(aBlock);
+            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
             // spotless:on
         } else if (aMeta > 0 && (aMeta < GregTech_API.METATILEENTITIES.length)
             && aBlock instanceof GT_Block_Machines

@@ -428,11 +428,11 @@ public class GT_OverclockCalculator {
         if (!amperageOC) {
             overclockCount = Math.min(overclockCount, calculateRecipeToMachineVoltageDifference());
         }
-        if (overclockCount < 0) {
-            recipeVoltage = Long.MAX_VALUE;
-            duration = Integer.MAX_VALUE;
-            return;
-        }
+
+        // Not just a safeguard. This also means that you can run a 1.2A recipe on a single hatch for a regular gt
+        // multi.
+        // This is intended, including the fact that you don't get an OC with a one tier upgrade in that case.
+        overclockCount = Math.max(overclockCount, 0);
 
         overclockCount = limitOverclocks ? Math.min(maxOverclocks, overclockCount) : overclockCount;
         heatOverclockCount = Math.min(heatOverclockCount, overclockCount);
@@ -616,6 +616,8 @@ public class GT_OverclockCalculator {
         if (recipeVoltage <= GT_Values.V[0]) {
             amountOfTotalOverclocks = Math.min(amountOfTotalOverclocks, calculateRecipeToMachineVoltageDifference());
         }
+        amountOfTotalOverclocks = limitOverclocks ? Math.min(amountOfTotalOverclocks, maxOverclocks)
+            : amountOfTotalOverclocks;
         return (long) Math.ceil(
             recipeVoltage * Math.pow(eutIncreasePerOC, amountOfParallelOverclocks + amountOfParallelHeatOverclocks)
                 * Math.pow(

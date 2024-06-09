@@ -1023,4 +1023,17 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     public boolean supportsFluids() {
         return this.supportFluids;
     }
+
+    @Override
+    public List<ItemStack> getItemsForHoloGlasses() {
+        List<ItemStack> list = new ArrayList<>();
+        for (PatternSlot slot : internalInventory) {
+            if (slot == null) continue;
+
+            IAEItemStack[] outputs = slot.getPatternDetails()
+                .getCondensedOutputs();
+            list.add(outputs[0].getItemStack());
+        }
+        return list;
+    }
 }

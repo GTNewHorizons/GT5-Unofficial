@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
-import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -16,7 +15,7 @@ import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollower_NumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 
 public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
@@ -195,16 +194,18 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
                     new CoverDataControllerWidget<>(
                         this::getCoverData,
                         this::setCoverData,
-                        GT_Cover_RedstoneWirelessBase.this).addFollower(
-                            new CoverDataFollower_TextFieldWidget<>(),
-                            coverData -> String.valueOf(getFlagFrequency(convert(coverData))),
-                            (coverData, text) -> new ISerializableObject.LegacyCoverData(
-                                (int) MathExpression.parseMathExpression(text) | getFlagCheckbox(convert(coverData))),
-                            widget -> widget.setOnScrollNumbers()
-                                .setNumbers(0, MAX_CHANNEL)
-                                .setFocusOnGuiOpen(true)
-                                .setPos(spaceX * 0, spaceY * 0 + 2)
-                                .setSize(spaceX * 4 - 3, 12))
+                        GT_Cover_RedstoneWirelessBase.this)
+
+                            .addFollower(
+                                new CoverDataFollower_NumericWidget<>(),
+                                coverData -> (double) getFlagFrequency(convert(coverData)),
+                                (coverData, state) -> new ISerializableObject.LegacyCoverData(
+                                    state.intValue() | getFlagCheckbox(convert(coverData))),
+                                widget -> widget.setBounds(0, MAX_CHANNEL)
+                                    .setScrollValues(1, 1000, 10)
+                                    .setFocusOnGuiOpen(true)
+                                    .setPos(spaceX * 0, spaceY * 0 + 2)
+                                    .setSize(spaceX * 4 - 3, 12))
                             .addFollower(
                                 CoverDataFollower_ToggleButtonWidget.ofCheck(),
                                 coverData -> getFlagCheckbox(convert(coverData)) > 0,
