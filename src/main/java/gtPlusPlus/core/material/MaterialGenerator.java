@@ -247,7 +247,7 @@ public class MaterialGenerator {
         if (generateDehydratorRecipe && matInfo.getFluid() != null && matInfo.getDust(0) != null) {
             CORE.RA.addDehydratorRecipe(
                 new ItemStack[] { CI.getNumberedCircuit(20) },
-                matInfo.getFluidStack(1000),
+                matInfo.getFluidStack(144),
                 null,
                 new ItemStack[] { matInfo.getDust(1), },
                 new int[] { 10000 },
