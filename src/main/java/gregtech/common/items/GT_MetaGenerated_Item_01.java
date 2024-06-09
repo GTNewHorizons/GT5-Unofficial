@@ -104,18 +104,88 @@ import static gregtech.common.items.ID_MetaItem_01.Book_Written_03;
 import static gregtech.common.items.ID_MetaItem_01.Component_Minecraft_Wheels_Iron;
 import static gregtech.common.items.ID_MetaItem_01.Component_Minecraft_Wheels_Steel;
 import static gregtech.common.items.ID_MetaItem_01.Compressed_Fireclay;
+import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_EV;
+import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_HV;
+import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_IV;
+import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_LV;
+import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_LuV;
+import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_MAX;
+import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_MV;
+import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UEV;
+import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UHV;
+import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UIV;
+import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UMV;
+import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UV;
+import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UXV;
+import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_ZPM;
+import static gregtech.common.items.ID_MetaItem_01.Cover_FluidLimiter;
 import static gregtech.common.items.ID_MetaItem_01.Crate_Empty;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_EV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_HV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_IV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_LV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_LuV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_MAX;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_MV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UEV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UHV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UIV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UMV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UXV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_ZPM;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_EV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_HV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_IV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_LV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_LuV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_MAX;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_MV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UEV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UHV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UIV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UMV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UXV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_ZPM;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_EV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_HV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_IV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_LV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_LuV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_MAX;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_MV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UEV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UHV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UIV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UMV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UXV;
+import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_ZPM;
+import static gregtech.common.items.ID_MetaItem_01.EnergisedTesseract;
 import static gregtech.common.items.ID_MetaItem_01.Energy_Cluster;
 import static gregtech.common.items.ID_MetaItem_01.Energy_Lapotronic_Orb;
 import static gregtech.common.items.ID_MetaItem_01.Energy_Lapotronic_orb_2;
 import static gregtech.common.items.ID_MetaItem_01.Energy_Module;
 import static gregtech.common.items.ID_MetaItem_01.Firebrick;
+import static gregtech.common.items.ID_MetaItem_01.FluidFilter;
+import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_EV;
+import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_HV;
+import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_IV;
+import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_LV;
+import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_LuV;
+import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_MV;
+import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_UV;
+import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_ZPM;
 import static gregtech.common.items.ID_MetaItem_01.Fuel_Can_Plastic_Empty;
 import static gregtech.common.items.ID_MetaItem_01.Fuel_Can_Plastic_Filled;
+import static gregtech.common.items.ID_MetaItem_01.GigaChad;
 import static gregtech.common.items.ID_MetaItem_01.Ingot_Heavy1;
 import static gregtech.common.items.ID_MetaItem_01.Ingot_Heavy2;
 import static gregtech.common.items.ID_MetaItem_01.Ingot_Heavy3;
 import static gregtech.common.items.ID_MetaItem_01.Ingot_Iridium_Alloy;
+import static gregtech.common.items.ID_MetaItem_01.ItemFilter_Export;
+import static gregtech.common.items.ID_MetaItem_01.ItemFilter_Import;
 import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Aluminium;
 import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Chrome;
 import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Iridium;
@@ -131,6 +201,20 @@ import static gregtech.common.items.ID_MetaItem_01.Paper_Magic_Pages;
 import static gregtech.common.items.ID_MetaItem_01.Paper_Printed_Pages;
 import static gregtech.common.items.ID_MetaItem_01.Paper_Punch_Card_Empty;
 import static gregtech.common.items.ID_MetaItem_01.Paper_Punch_Card_Encoded;
+import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_EV;
+import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_HV;
+import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_IV;
+import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_LV;
+import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_LuV;
+import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_MAX;
+import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_MV;
+import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UEV;
+import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UHV;
+import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UIV;
+import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UMV;
+import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UV;
+import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UXV;
+import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_ZPM;
 import static gregtech.common.items.ID_MetaItem_01.Schematic;
 import static gregtech.common.items.ID_MetaItem_01.Schematic_1by1;
 import static gregtech.common.items.ID_MetaItem_01.Schematic_2by2;
@@ -235,6 +319,12 @@ import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_8;
 import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_9;
 import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_Remover;
 import static gregtech.common.items.ID_MetaItem_01.Spray_Empty;
+import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_EV;
+import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_HV;
+import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_IV;
+import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_LV;
+import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_MV;
+import static gregtech.common.items.ID_MetaItem_01.Tesseract;
 import static gregtech.common.items.ID_MetaItem_01.Thermos_Can_Empty;
 import static gregtech.common.items.ID_MetaItem_01.Tool_Cheat;
 import static gregtech.common.items.ID_MetaItem_01.Tool_Cover_Copy_Paste;
@@ -552,7 +642,97 @@ enum ID_MetaItem_01 {
     Energy_Cluster(737),
     Tool_Cover_Copy_Paste(709),
     Tool_Cheat(761),
-    Tool_Scanner(762);
+    Tool_Scanner(762),
+    Electric_Motor_LV(600),
+    Electric_Motor_MV(601),
+    Electric_Motor_HV(602),
+    Electric_Motor_EV(603),
+    Electric_Motor_IV(604),
+    Electric_Motor_LuV(606),
+    Electric_Motor_ZPM(607),
+    Electric_Motor_UV(608),
+    Electric_Motor_UHV(596),
+    Electric_Motor_UEV(595),
+    Electric_Motor_UIV(17),
+    Electric_Motor_UMV(18),
+    Electric_Motor_UXV(19),
+    Electric_Motor_MAX(20),
+    Tesseract(415),
+    GigaChad(416),
+    EnergisedTesseract(417),
+    Electric_Piston_LV(640),
+    Electric_Piston_MV(641),
+    Electric_Piston_HV(642),
+    Electric_Piston_EV(643),
+    Electric_Piston_IV(644),
+    Electric_Piston_LuV(645),
+    Electric_Piston_ZPM(646),
+    Electric_Piston_UV(647),
+    Electric_Piston_UHV(648),
+    Electric_Piston_UEV(649),
+    Electric_Piston_UIV(21),
+    Electric_Piston_UMV(22),
+    Electric_Piston_UXV(23),
+    Electric_Piston_MAX(24),
+    Electric_Pump_LV(610),
+    Electric_Pump_MV(611),
+    Electric_Pump_HV(612),
+    Electric_Pump_EV(613),
+    Electric_Pump_IV(614),
+    Electric_Pump_LuV(615),
+    Electric_Pump_ZPM(616),
+    Electric_Pump_UV(617),
+    Electric_Pump_UHV(618),
+    Electric_Pump_UEV(619),
+    Electric_Pump_UIV(25),
+    Electric_Pump_UMV(26),
+    Electric_Pump_UXV(27),
+    Electric_Pump_MAX(28),
+    Steam_Valve_LV(620),
+    Steam_Valve_MV(621),
+    Steam_Valve_HV(622),
+    Steam_Valve_EV(623),
+    Steam_Valve_IV(624),
+    FluidRegulator_LV(660),
+    FluidRegulator_MV(661),
+    FluidRegulator_HV(662),
+    FluidRegulator_EV(663),
+    FluidRegulator_IV(664),
+    FluidRegulator_LuV(665),
+    FluidRegulator_ZPM(666),
+    FluidRegulator_UV(667),
+    FluidFilter(669),
+    ItemFilter_Export(270),
+    ItemFilter_Import(271),
+    Cover_FluidLimiter(272),
+    Conveyor_Module_LV(630),
+    Conveyor_Module_MV(631),
+    Conveyor_Module_HV(632),
+    Conveyor_Module_EV(633),
+    Conveyor_Module_IV(634),
+    Conveyor_Module_LuV(635),
+    Conveyor_Module_ZPM(636),
+    Conveyor_Module_UV(637),
+    Conveyor_Module_UHV(638),
+    Conveyor_Module_UEV(639),
+    Conveyor_Module_UIV(29),
+    Conveyor_Module_UMV(30),
+    Conveyor_Module_UXV(31),
+    Conveyor_Module_MAX(32),
+    Robot_Arm_LV(650),
+    Robot_Arm_MV(651),
+    Robot_Arm_HV(652),
+    Robot_Arm_EV(653),
+    Robot_Arm_IV(654),
+    Robot_Arm_LuV(655),
+    Robot_Arm_ZPM(656),
+    Robot_Arm_UV(657),
+    Robot_Arm_UHV(658),
+    Robot_Arm_UEV(659),
+    Robot_Arm_UIV(33),
+    Robot_Arm_UMV(34),
+    Robot_Arm_UXV(35),
+    Robot_Arm_MAX(36);
 
     final int ID;
 
@@ -1807,7 +1987,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         // UIV, UMV, UXV and MAX component textures backported from gregicality.
         ItemList.Electric_Motor_LV.set(
             addItem(
-                600,
+                Electric_Motor_LV.ID,
                 "Electric Motor (LV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
@@ -1815,7 +1995,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L)));
         ItemList.Electric_Motor_MV.set(
             addItem(
-                601,
+                Electric_Motor_MV.ID,
                 "Electric Motor (MV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
@@ -1823,7 +2003,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 2L)));
         ItemList.Electric_Motor_HV.set(
             addItem(
-                602,
+                Electric_Motor_HV.ID,
                 "Electric Motor (HV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
@@ -1831,7 +2011,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 4L)));
         ItemList.Electric_Motor_EV.set(
             addItem(
-                603,
+                Electric_Motor_EV.ID,
                 "Electric Motor (EV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L),
@@ -1839,7 +2019,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 8L)));
         ItemList.Electric_Motor_IV.set(
             addItem(
-                604,
+                Electric_Motor_IV.ID,
                 "Electric Motor (IV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
@@ -1847,7 +2027,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 16L)));
         ItemList.Electric_Motor_LuV.set(
             addItem(
-                606,
+                Electric_Motor_LuV.ID,
                 "Electric Motor (LuV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L),
@@ -1855,7 +2035,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 32L)));
         ItemList.Electric_Motor_ZPM.set(
             addItem(
-                607,
+                Electric_Motor_ZPM.ID,
                 "Electric Motor (ZPM)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
@@ -1863,7 +2043,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 64L)));
         ItemList.Electric_Motor_UV.set(
             addItem(
-                608,
+                Electric_Motor_UV.ID,
                 "Electric Motor (UV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L),
@@ -1871,7 +2051,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 128L)));
         ItemList.Electric_Motor_UHV.set(
             addItem(
-                596,
+                Electric_Motor_UHV.ID,
                 "Electric Motor (UHV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L),
@@ -1879,7 +2059,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 256L)));
         ItemList.Electric_Motor_UEV.set(
             addItem(
-                595,
+                Electric_Motor_UEV.ID,
                 "Electric Motor (UEV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -1887,7 +2067,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
         ItemList.Electric_Motor_UIV.set(
             addItem(
-                17,
+                Electric_Motor_UIV.ID,
                 "Electric Motor (UIV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -1895,7 +2075,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
         ItemList.Electric_Motor_UMV.set(
             addItem(
-                18,
+                Electric_Motor_UMV.ID,
                 "Electric Motor (UMV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -1903,7 +2083,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
         ItemList.Electric_Motor_UXV.set(
             addItem(
-                19,
+                Electric_Motor_UXV.ID,
                 "Electric Motor (UXV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -1911,7 +2091,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
         ItemList.Electric_Motor_MAX.set(
             addItem(
-                20,
+                Electric_Motor_MAX.ID,
                 "Electric Motor (MAX)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -1920,7 +2100,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Tesseract.set(
             addItem(
-                415,
+                Tesseract.ID,
                 "Raw Tesseract",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
@@ -1928,13 +2108,13 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L)));
         ItemList.GigaChad.set(
             addItem(
-                416,
+                GigaChad.ID,
                 "Giga Chad Token",
                 "You are worthy",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1000L)));
         ItemList.EnergisedTesseract.set(
             addItem(
-                417,
+                EnergisedTesseract.ID,
                 "Energised Tesseract",
                 "Higher dimensional engineering",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10L),
@@ -1943,7 +2123,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Electric_Piston_LV.set(
             addItem(
-                640,
+                Electric_Piston_LV.ID,
                 "Electric Piston (LV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
@@ -1951,7 +2131,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L)));
         ItemList.Electric_Piston_MV.set(
             addItem(
-                641,
+                Electric_Piston_MV.ID,
                 "Electric Piston (MV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
@@ -1959,7 +2139,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 2L)));
         ItemList.Electric_Piston_HV.set(
             addItem(
-                642,
+                Electric_Piston_HV.ID,
                 "Electric Piston (HV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
@@ -1967,7 +2147,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 4L)));
         ItemList.Electric_Piston_EV.set(
             addItem(
-                643,
+                Electric_Piston_EV.ID,
                 "Electric Piston (EV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L),
@@ -1975,7 +2155,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 8L)));
         ItemList.Electric_Piston_IV.set(
             addItem(
-                644,
+                Electric_Piston_IV.ID,
                 "Electric Piston (IV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
@@ -1983,7 +2163,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 16L)));
         ItemList.Electric_Piston_LuV.set(
             addItem(
-                645,
+                Electric_Piston_LuV.ID,
                 "Electric Piston (LuV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L),
@@ -1991,7 +2171,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 32L)));
         ItemList.Electric_Piston_ZPM.set(
             addItem(
-                646,
+                Electric_Piston_ZPM.ID,
                 "Electric Piston (ZPM)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
@@ -1999,7 +2179,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 64L)));
         ItemList.Electric_Piston_UV.set(
             addItem(
-                647,
+                Electric_Piston_UV.ID,
                 "Electric Piston (UV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L),
@@ -2007,7 +2187,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 128L)));
         ItemList.Electric_Piston_UHV.set(
             addItem(
-                648,
+                Electric_Piston_UHV.ID,
                 "Electric Piston (UHV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L),
@@ -2015,7 +2195,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 256L)));
         ItemList.Electric_Piston_UEV.set(
             addItem(
-                649,
+                Electric_Piston_UEV.ID,
                 "Electric Piston (UEV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2023,7 +2203,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
         ItemList.Electric_Piston_UIV.set(
             addItem(
-                21,
+                Electric_Piston_UIV.ID,
                 "Electric Piston (UIV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2031,7 +2211,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
         ItemList.Electric_Piston_UMV.set(
             addItem(
-                22,
+                Electric_Piston_UMV.ID,
                 "Electric Piston (UMV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2039,7 +2219,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
         ItemList.Electric_Piston_UXV.set(
             addItem(
-                23,
+                Electric_Piston_UXV.ID,
                 "Electric Piston (UXV)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2047,7 +2227,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
         ItemList.Electric_Piston_MAX.set(
             addItem(
-                24,
+                Electric_Piston_MAX.ID,
                 "Electric Piston (MAX)",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2056,7 +2236,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Electric_Pump_LV.set(
             addItem(
-                610,
+                Electric_Pump_LV.ID,
                 "Electric Pump (LV)",
                 GT_Utility.formatNumbers(32) + PartCoverText + GT_Utility.formatNumbers(32 * 20) + PartCoverText2,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
@@ -2065,7 +2245,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)));
         ItemList.Electric_Pump_MV.set(
             addItem(
-                611,
+                Electric_Pump_MV.ID,
                 "Electric Pump (MV)",
                 GT_Utility.formatNumbers(128) + PartCoverText + GT_Utility.formatNumbers(128 * 20) + PartCoverText2,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
@@ -2074,7 +2254,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)));
         ItemList.Electric_Pump_HV.set(
             addItem(
-                612,
+                Electric_Pump_HV.ID,
                 "Electric Pump (HV)",
                 GT_Utility.formatNumbers(512) + PartCoverText + GT_Utility.formatNumbers(512 * 20) + PartCoverText2,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
@@ -2083,7 +2263,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)));
         ItemList.Electric_Pump_EV.set(
             addItem(
-                613,
+                Electric_Pump_EV.ID,
                 "Electric Pump (EV)",
                 GT_Utility.formatNumbers(2048) + PartCoverText + GT_Utility.formatNumbers(2048 * 20) + PartCoverText2,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L),
@@ -2092,7 +2272,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 8L)));
         ItemList.Electric_Pump_IV.set(
             addItem(
-                614,
+                Electric_Pump_IV.ID,
                 "Electric Pump (IV)",
                 GT_Utility.formatNumbers(8192) + PartCoverText + GT_Utility.formatNumbers(8192 * 20) + PartCoverText2,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
@@ -2101,7 +2281,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 16L)));
         ItemList.Electric_Pump_LuV.set(
             addItem(
-                615,
+                Electric_Pump_LuV.ID,
                 "Electric Pump (LuV)",
                 GT_Utility.formatNumbers(32768) + PartCoverText + GT_Utility.formatNumbers(32768 * 20) + PartCoverText2,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L),
@@ -2110,7 +2290,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 32L)));
         ItemList.Electric_Pump_ZPM.set(
             addItem(
-                616,
+                Electric_Pump_ZPM.ID,
                 "Electric Pump (ZPM)",
                 GT_Utility.formatNumbers(131072) + PartCoverText
                     + GT_Utility.formatNumbers(131072 * 20)
@@ -2121,7 +2301,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 64L)));
         ItemList.Electric_Pump_UV.set(
             addItem(
-                617,
+                Electric_Pump_UV.ID,
                 "Electric Pump (UV)",
                 GT_Utility.formatNumbers(524288) + PartCoverText
                     + GT_Utility.formatNumbers(524288 * 20)
@@ -2132,7 +2312,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 128L)));
         ItemList.Electric_Pump_UHV.set(
             addItem(
-                618,
+                Electric_Pump_UHV.ID,
                 "Electric Pump (UHV)",
                 GT_Utility.formatNumbers(1048576) + PartCoverText
                     + GT_Utility.formatNumbers(1048576 * 20)
@@ -2143,7 +2323,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 256L)));
         ItemList.Electric_Pump_UEV.set(
             addItem(
-                619,
+                Electric_Pump_UEV.ID,
                 "Electric Pump (UEV)",
                 GT_Utility.formatNumbers(2097152) + PartCoverText
                     + GT_Utility.formatNumbers(2097152 * 20)
@@ -2154,7 +2334,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 512L)));
         ItemList.Electric_Pump_UIV.set(
             addItem(
-                25,
+                Electric_Pump_UIV.ID,
                 "Electric Pump (UIV)",
                 PartNotCoverText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2163,7 +2343,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 512L)));
         ItemList.Electric_Pump_UMV.set(
             addItem(
-                26,
+                Electric_Pump_UMV.ID,
                 "Electric Pump (UMV)",
                 PartNotCoverText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2172,7 +2352,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 512L)));
         ItemList.Electric_Pump_UXV.set(
             addItem(
-                27,
+                Electric_Pump_UXV.ID,
                 "Electric Pump (UXV)",
                 PartNotCoverText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2181,7 +2361,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 512L)));
         ItemList.Electric_Pump_MAX.set(
             addItem(
-                28,
+                Electric_Pump_MAX.ID,
                 "Electric Pump (MAX)",
                 PartNotCoverText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2191,7 +2371,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Steam_Valve_LV.set(
             addItem(
-                620,
+                Steam_Valve_LV.ID,
                 "Steam Valve (LV)",
                 GT_Utility.formatNumbers(1024) + PartCoverText + GT_Utility.formatNumbers(1024 * 20) + PartCoverText2,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
@@ -2200,7 +2380,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)));
         ItemList.Steam_Valve_MV.set(
             addItem(
-                621,
+                Steam_Valve_MV.ID,
                 "Steam Valve (MV)",
                 GT_Utility.formatNumbers(2048) + PartCoverText + GT_Utility.formatNumbers(2048 * 20) + PartCoverText2,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
@@ -2209,7 +2389,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)));
         ItemList.Steam_Valve_HV.set(
             addItem(
-                622,
+                Steam_Valve_HV.ID,
                 "Steam Valve (HV)",
                 GT_Utility.formatNumbers(4096) + PartCoverText + GT_Utility.formatNumbers(4096 * 20) + PartCoverText2,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
@@ -2218,7 +2398,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)));
         ItemList.Steam_Valve_EV.set(
             addItem(
-                623,
+                Steam_Valve_EV.ID,
                 "Steam Valve (EV)",
                 GT_Utility.formatNumbers(8192) + PartCoverText + GT_Utility.formatNumbers(8192 * 20) + PartCoverText2,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L),
@@ -2227,7 +2407,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 8L)));
         ItemList.Steam_Valve_IV.set(
             addItem(
-                624,
+                Steam_Valve_IV.ID,
                 "Steam Valve (IV)",
                 GT_Utility.formatNumbers(16384) + PartCoverText + GT_Utility.formatNumbers(16384 * 20) + PartCoverText2,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
@@ -2235,44 +2415,56 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 16L)));
 
-        ItemList.FluidRegulator_LV
-            .set(addItem(tLastID = 660, "Fluid Regulator (LV)", FRText1 + GT_Utility.formatNumbers(640) + FRText2));
-        ItemList.FluidRegulator_MV
-            .set(addItem(tLastID = 661, "Fluid Regulator (MV)", FRText1 + GT_Utility.formatNumbers(2560) + FRText2));
-        ItemList.FluidRegulator_HV
-            .set(addItem(tLastID = 662, "Fluid Regulator (HV)", FRText1 + GT_Utility.formatNumbers(10240) + FRText2));
-        ItemList.FluidRegulator_EV
-            .set(addItem(tLastID = 663, "Fluid Regulator (EV)", FRText1 + GT_Utility.formatNumbers(40960) + FRText2));
-        ItemList.FluidRegulator_IV
-            .set(addItem(tLastID = 664, "Fluid Regulator (IV)", FRText1 + GT_Utility.formatNumbers(163840) + FRText2));
-        ItemList.FluidRegulator_LuV
-            .set(addItem(tLastID = 665, "Fluid Regulator (LuV)", FRText1 + GT_Utility.formatNumbers(655360) + FRText2));
+        ItemList.FluidRegulator_LV.set(
+            addItem(FluidRegulator_LV.ID, "Fluid Regulator (LV)", FRText1 + GT_Utility.formatNumbers(640) + FRText2));
+        ItemList.FluidRegulator_MV.set(
+            addItem(FluidRegulator_MV.ID, "Fluid Regulator (MV)", FRText1 + GT_Utility.formatNumbers(2560) + FRText2));
+        ItemList.FluidRegulator_HV.set(
+            addItem(FluidRegulator_HV.ID, "Fluid Regulator (HV)", FRText1 + GT_Utility.formatNumbers(10240) + FRText2));
+        ItemList.FluidRegulator_EV.set(
+            addItem(FluidRegulator_EV.ID, "Fluid Regulator (EV)", FRText1 + GT_Utility.formatNumbers(40960) + FRText2));
+        ItemList.FluidRegulator_IV.set(
+            addItem(
+                FluidRegulator_IV.ID,
+                "Fluid Regulator (IV)",
+                FRText1 + GT_Utility.formatNumbers(163840) + FRText2));
+        ItemList.FluidRegulator_LuV.set(
+            addItem(
+                FluidRegulator_LuV.ID,
+                "Fluid Regulator (LuV)",
+                FRText1 + GT_Utility.formatNumbers(655360) + FRText2));
         ItemList.FluidRegulator_ZPM.set(
-            addItem(tLastID = 666, "Fluid Regulator (ZPM)", FRText1 + GT_Utility.formatNumbers(2621440) + FRText2));
+            addItem(
+                FluidRegulator_ZPM.ID,
+                "Fluid Regulator (ZPM)",
+                FRText1 + GT_Utility.formatNumbers(2621440) + FRText2));
         ItemList.FluidRegulator_UV.set(
-            addItem(tLastID = 667, "Fluid Regulator (UV)", FRText1 + GT_Utility.formatNumbers(10485760) + FRText2));
+            addItem(
+                FluidRegulator_UV.ID,
+                "Fluid Regulator (UV)",
+                FRText1 + GT_Utility.formatNumbers(10485760) + FRText2));
 
-        ItemList.FluidFilter
-            .set(addItem(669, "Fluid Filter Cover", "Set with Fluid Container to only accept one Fluid Type"));
+        ItemList.FluidFilter.set(
+            addItem(FluidFilter.ID, "Fluid Filter Cover", "Set with Fluid Container to only accept one Fluid Type"));
 
         ItemList.ItemFilter_Export.set(
             addItem(
-                270,
+                ItemFilter_Export.ID,
                 "Item Filter Cover (Export)",
                 "Right click with an item to set filter (Only supports Export Mode)"));
 
         ItemList.ItemFilter_Import.set(
             addItem(
-                271,
+                ItemFilter_Import.ID,
                 "Item Filter Cover (Import)",
                 "Right click with an item to set filter (Only supports Import Mode)"));
 
         ItemList.Cover_FluidLimiter
-            .set(addItem(272, "Fluid Limiter Cover", "Limits fluid input depending on fill level"));
+            .set(addItem(Cover_FluidLimiter.ID, "Fluid Limiter Cover", "Limits fluid input depending on fill level"));
 
         ItemList.Conveyor_Module_LV.set(
             addItem(
-                630,
+                Conveyor_Module_LV.ID,
                 "Conveyor Module (LV)",
                 "1 stack every 20 secs (as Cover)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
@@ -2280,7 +2472,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L)));
         ItemList.Conveyor_Module_MV.set(
             addItem(
-                631,
+                Conveyor_Module_MV.ID,
                 "Conveyor Module (MV)",
                 "1 stack every 5 secs (as Cover)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
@@ -2288,7 +2480,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 2L)));
         ItemList.Conveyor_Module_HV.set(
             addItem(
-                632,
+                Conveyor_Module_HV.ID,
                 "Conveyor Module (HV)",
                 "1 stack every 1 sec (as Cover)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
@@ -2296,7 +2488,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 4L)));
         ItemList.Conveyor_Module_EV.set(
             addItem(
-                633,
+                Conveyor_Module_EV.ID,
                 "Conveyor Module (EV)",
                 "1 stack every 1/5 sec (as Cover)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L),
@@ -2304,7 +2496,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 8L)));
         ItemList.Conveyor_Module_IV.set(
             addItem(
-                634,
+                Conveyor_Module_IV.ID,
                 "Conveyor Module (IV)",
                 "1 stack every 1/20 sec (as Cover)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
@@ -2312,7 +2504,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 16L)));
         ItemList.Conveyor_Module_LuV.set(
             addItem(
-                635,
+                Conveyor_Module_LuV.ID,
                 "Conveyor Module (LuV)",
                 "2 stacks every 1/20 sec (as Cover)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L),
@@ -2320,7 +2512,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 32L)));
         ItemList.Conveyor_Module_ZPM.set(
             addItem(
-                636,
+                Conveyor_Module_ZPM.ID,
                 "Conveyor Module (ZPM)",
                 "4 stacks every 1/20 sec (as Cover)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
@@ -2328,7 +2520,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 64L)));
         ItemList.Conveyor_Module_UV.set(
             addItem(
-                637,
+                Conveyor_Module_UV.ID,
                 "Conveyor Module (UV)",
                 "8 stacks every 1/20 sec (as Cover)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L),
@@ -2336,7 +2528,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 128L)));
         ItemList.Conveyor_Module_UHV.set(
             addItem(
-                638,
+                Conveyor_Module_UHV.ID,
                 "Conveyor Module (UHV)",
                 "16 stacks every 1/20 sec (as Cover)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L),
@@ -2344,7 +2536,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 256L)));
         ItemList.Conveyor_Module_UEV.set(
             addItem(
-                639,
+                Conveyor_Module_UEV.ID,
                 "Conveyor Module (UEV)",
                 "32 stacks every 1/20 sec (as Cover)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2352,7 +2544,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L)));
         ItemList.Conveyor_Module_UIV.set(
             addItem(
-                29,
+                Conveyor_Module_UIV.ID,
                 "Conveyor Module (UIV)",
                 PartNotCoverText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2360,7 +2552,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L)));
         ItemList.Conveyor_Module_UMV.set(
             addItem(
-                30,
+                Conveyor_Module_UMV.ID,
                 "Conveyor Module (UMV)",
                 PartNotCoverText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2368,7 +2560,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L)));
         ItemList.Conveyor_Module_UXV.set(
             addItem(
-                31,
+                Conveyor_Module_UXV.ID,
                 "Conveyor Module (UXV)",
                 PartNotCoverText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2376,7 +2568,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L)));
         ItemList.Conveyor_Module_MAX.set(
             addItem(
-                32,
+                Conveyor_Module_MAX.ID,
                 "Conveyor Module (MAX)",
                 PartNotCoverText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2385,7 +2577,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Robot_Arm_LV.set(
             addItem(
-                650,
+                Robot_Arm_LV.ID,
                 "Robot Arm (LV)",
                 "1 stack every 20 secs (as Cover)/n " + RAText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
@@ -2394,7 +2586,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L)));
         ItemList.Robot_Arm_MV.set(
             addItem(
-                651,
+                Robot_Arm_MV.ID,
                 "Robot Arm (MV)",
                 "1 stack every 5 secs (as Cover)/n " + RAText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
@@ -2403,7 +2595,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L)));
         ItemList.Robot_Arm_HV.set(
             addItem(
-                652,
+                Robot_Arm_HV.ID,
                 "Robot Arm (HV)",
                 "1 stack every 1 sec (as Cover)/n " + RAText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
@@ -2412,7 +2604,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 4L)));
         ItemList.Robot_Arm_EV.set(
             addItem(
-                653,
+                Robot_Arm_EV.ID,
                 "Robot Arm (EV)",
                 "1 stack every 1/5 sec (as Cover)/n " + RAText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L),
@@ -2421,7 +2613,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 8L)));
         ItemList.Robot_Arm_IV.set(
             addItem(
-                654,
+                Robot_Arm_IV.ID,
                 "Robot Arm (IV)",
                 "1 stack every 1/20 sec (as Cover)/n " + RAText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
@@ -2430,7 +2622,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 16L)));
         ItemList.Robot_Arm_LuV.set(
             addItem(
-                655,
+                Robot_Arm_LuV.ID,
                 "Robot Arm (LuV)",
                 PartNotCoverText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L),
@@ -2439,7 +2631,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 32L)));
         ItemList.Robot_Arm_ZPM.set(
             addItem(
-                656,
+                Robot_Arm_ZPM.ID,
                 "Robot Arm (ZPM)",
                 PartNotCoverText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
@@ -2448,7 +2640,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 64L)));
         ItemList.Robot_Arm_UV.set(
             addItem(
-                657,
+                Robot_Arm_UV.ID,
                 "Robot Arm (UV)",
                 PartNotCoverText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L),
@@ -2457,7 +2649,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 128L)));
         ItemList.Robot_Arm_UHV.set(
             addItem(
-                658,
+                Robot_Arm_UHV.ID,
                 "Robot Arm (UHV)",
                 PartNotCoverText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L),
@@ -2466,7 +2658,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 256L)));
         ItemList.Robot_Arm_UEV.set(
             addItem(
-                659,
+                Robot_Arm_UEV.ID,
                 "Robot Arm (UEV)",
                 PartNotCoverText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2475,7 +2667,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 512L)));
         ItemList.Robot_Arm_UIV.set(
             addItem(
-                33,
+                Robot_Arm_UIV.ID,
                 "Robot Arm (UIV)",
                 PartNotCoverText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2484,7 +2676,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 512L)));
         ItemList.Robot_Arm_UMV.set(
             addItem(
-                34,
+                Robot_Arm_UMV.ID,
                 "Robot Arm (UMV)",
                 PartNotCoverText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2493,7 +2685,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 512L)));
         ItemList.Robot_Arm_UXV.set(
             addItem(
-                35,
+                Robot_Arm_UXV.ID,
                 "Robot Arm (UXV)",
                 PartNotCoverText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -2502,7 +2694,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 512L)));
         ItemList.Robot_Arm_MAX.set(
             addItem(
-                36,
+                Robot_Arm_MAX.ID,
                 "Robot Arm (MAX)",
                 PartNotCoverText,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
