@@ -69,13 +69,13 @@ public class RecipeLoader_Nuclear {
     private static void blastFurnace() {
 
         GT_Values.RA.addBlastRecipe(
-            FLUORIDES.LITHIUM_FLUORIDE.getDust(2),
-            FLUORIDES.BERYLLIUM_FLUORIDE.getDust(1),
+            FLUORIDES.LITHIUM_FLUORIDE.getDust(4),
+            FLUORIDES.BERYLLIUM_FLUORIDE.getDust(3),
             GT_Values.NF,
             GT_Values.NF,
-            NUCLIDE.Li2BeF4.getDust(1),
+            NUCLIDE.Li2BeF4.getDust(7),
             null,
-            60 * 20,
+            140 * 20,
             2000,
             3000);
 
@@ -184,7 +184,7 @@ public class RecipeLoader_Nuclear {
         GT_Values.RA.addChemicalBathRecipe(
             ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 3),
             FluidUtils.getFluidStack("hydrofluoricacid", 500),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 1),
+            ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 2),
             null,
             null,
             new int[] {},
@@ -210,7 +210,7 @@ public class RecipeLoader_Nuclear {
             null, // Input Stack 2
             FluidUtils.getFluidStack("hydrofluoricacid", 500),
             FluidUtils.getFluidStack("water", 1000), // Fluid Output
-            ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 1),
+            ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 2),
             120 * 20);
 
         GT_Values.RA.addChemicalRecipe(
@@ -237,7 +237,7 @@ public class RecipeLoader_Nuclear {
             ItemUtils.getGregtechCircuit(3),
             ELEMENT.getInstance().BERYLLIUM.getDust(1),
             MISC_MATERIALS.HYDROXIDE.getFluidStack(2000),
-            FLUORIDES.BERYLLIUM_HYDROXIDE.getFluidStack(1000),
+            FLUORIDES.BERYLLIUM_HYDROXIDE.getFluidStack(432),
             GT_Values.NI,
             4 * 20,
             30);
@@ -246,7 +246,7 @@ public class RecipeLoader_Nuclear {
             ItemUtils.getGregtechCircuit(3),
             ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
             MISC_MATERIALS.AMMONIA.getFluidStack(1000),
-            FLUORIDES.AMMONIUM_BIFLUORIDE.getFluidStack(1000),
+            FLUORIDES.AMMONIUM_BIFLUORIDE.getFluidStack(576),
             CI.emptyCells(1),
             20 * 20,
             30);
@@ -256,7 +256,7 @@ public class RecipeLoader_Nuclear {
                 ItemUtils.getGregtechCircuit(3),
                 aGtHydrofluoricAcid,
                 MISC_MATERIALS.AMMONIA.getFluidStack(1000),
-                FLUORIDES.AMMONIUM_BIFLUORIDE.getFluidStack(1000),
+                FLUORIDES.AMMONIUM_BIFLUORIDE.getFluidStack(576),
                 CI.emptyCells(2),
                 40 * 20,
                 30);
@@ -279,7 +279,7 @@ public class RecipeLoader_Nuclear {
             ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3),
             FluidUtils.getFluidStack("hydrofluoricacid", 500),
             FluidUtils.getWater(1000),
-            FLUORIDES.SODIUM_FLUORIDE.getDust(1),
+            FLUORIDES.SODIUM_FLUORIDE.getDust(2),
             60 * 20);
 
         if (FluidUtils.doesFluidExist("hydrofluoricacid_gt5u")) {
@@ -288,7 +288,7 @@ public class RecipeLoader_Nuclear {
                 ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3),
                 FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 1000),
                 FluidUtils.getWater(1000),
-                FLUORIDES.SODIUM_FLUORIDE.getDust(1),
+                FLUORIDES.SODIUM_FLUORIDE.getDust(2),
                 60 * 20);
         }
     }
@@ -371,11 +371,11 @@ public class RecipeLoader_Nuclear {
             64); // EU
 
         // Zirconium Chloride -> TetraFluoride
-        FluidStack aHydrogenChloride = new FluidStack(GenericChem.HydrochloricAcid, 4000);
+        FluidStack aHydrogenChloride = new FluidStack(GenericChem.HydrochloricAcid, 800);
         CORE.RA.addDehydratorRecipe(
             new ItemStack[] { CI.getNumberedAdvancedCircuit(11),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 1), }, // Item
-            FluidUtils.getFluidStack("hydrofluoricacid", 2000),
+            FluidUtils.getFluidStack("hydrofluoricacid", 400),
             aHydrogenChloride,
             new ItemStack[] { FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1) },
             new int[] { 10000 },
@@ -386,7 +386,7 @@ public class RecipeLoader_Nuclear {
         CORE.RA.addDehydratorRecipe(
             new ItemStack[] { CI.getNumberedAdvancedCircuit(10),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 1) },
-            FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 4000),
+            FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 800),
             aHydrogenChloride,
             new ItemStack[] { FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1) },
             new int[] { 10000 },
@@ -394,23 +394,28 @@ public class RecipeLoader_Nuclear {
             500); // EU
 
         // Be(OH)2 + 2 (NH4)HF2 → (NH4)2BeF4 + 2 H2O
+        // Inputs use solid rule, outputs use fluid rule
+        // Recipe relies on fix for cells of ammonium bifluoride and beryllium hydroxide to contain 144 liters instead of 1000
+        // If cells cannot be fixed, this must be migrated to an LCR
         CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(6), FLUORIDES.AMMONIUM_BIFLUORIDE.getCell(2) },
-            FLUORIDES.BERYLLIUM_HYDROXIDE.getFluidStack(1000), // Fluid input (slot 1)
+            new ItemStack[] { CI.getNumberedAdvancedCircuit(6), FLUORIDES.AMMONIUM_BIFLUORIDE.getCell(8) },
+            FLUORIDES.BERYLLIUM_HYDROXIDE.getFluidStack(432), // Fluid input (slot 1)
             FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1000),
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 2) },
+            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 2), CI.emptyCells(6) },
             new int[] { 10000 },
             6 * 20, // Time in ticks
             64); // EU
 
         // (NH4)2BeF4 → 2 NH3 + 2 HF + BeF2
+        // Recipe relies on fix for beryllium fluoride cells to contain 144 liters instead of 1000
+        // If cells cannot be fixed, this must be migrated to an LCR
         CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(17), CI.emptyCells(4) },
+            new ItemStack[] { CI.getNumberedAdvancedCircuit(17), CI.emptyCells(6) },
             FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1000),
             null,
             new ItemStack[] { MISC_MATERIALS.AMMONIA.getCell(2),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
-                FLUORIDES.BERYLLIUM_FLUORIDE.getCell(1) },
+                FLUORIDES.BERYLLIUM_FLUORIDE.getCell(3) },
             new int[] { 10000, 10000, 10000 },
             5 * 60 * 20,
             120);
@@ -454,30 +459,30 @@ public class RecipeLoader_Nuclear {
         // Lithium Fluoride
         CORE.RA.addFluidExtractionRecipe(
             ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 1),
-            FLUORIDES.LITHIUM_FLUORIDE.getFluidStack(1000),
+            FLUORIDES.LITHIUM_FLUORIDE.getFluidStack(144),
             100,
             500);
         // LFTR Fuel 1
         CORE.RA.addFluidExtractionRecipe(
             NUCLIDE.LiFBeF2ZrF4U235.getDust(1),
-            NUCLIDE.LiFBeF2ZrF4U235.getFluidStack(1000),
+            NUCLIDE.LiFBeF2ZrF4U235.getFluidStack(144),
             250,
             1000);
         CORE.RA.addFluidExtractionRecipe(
             NUCLIDE.LiFBeF2ZrF4UF4.getDust(1),
-            NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(1000),
+            NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(144),
             150,
             1500);
         CORE.RA.addFluidExtractionRecipe(
             NUCLIDE.LiFBeF2ThF4UF4.getDust(1),
-            NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(1000),
+            NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(144),
             150,
             2000);
 
         // ZIRCONIUM_TETRAFLUORIDE
         CORE.RA.addFluidExtractionRecipe(
             FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1),
-            FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(1000),
+            FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(144),
             200,
             512 + 256);
     }
@@ -565,18 +570,21 @@ public class RecipeLoader_Nuclear {
 
         GT_ModHandler.addPulverisationRecipe(
             ItemUtils.getItemStackOfAmountFromOreDict("pelletZirconium", 1),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustZrCl4", 1));
+            ItemUtils.getItemStackOfAmountFromOreDict("dustZrCl4", 5));
     }
 
     private static void mixerRecipes() {
 
+        // Rebalanced to correct the chemistry
+        // UF4 uses solid rule due to item form even though item form currently is inaccessible because item form may be accessible in future and must be consistent
+        // UF4 solid rule also assumes 1:144 item:fluid ratio in this case
         GT_Values.RA.addMixerRecipe(
             ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 4),
             ItemUtils.getItemStackOfAmountFromOreDict("dustUranium235", 1),
             null,
             null,
             FluidUtils.getFluidStack("hydrofluoricacid", 10000),
-            FLUORIDES.URANIUM_TETRAFLUORIDE.getFluidStack(5000),
+            FLUORIDES.URANIUM_TETRAFLUORIDE.getFluidStack(3600),
             null,
             3000,
             500);
@@ -674,7 +682,7 @@ public class RecipeLoader_Nuclear {
         CORE.RA.addFluidHeaterRecipe(
             FLUORIDES.SODIUM_FLUORIDE.getDust(1),
             null,
-            FLUORIDES.SODIUM_FLUORIDE.getFluidStack(1000),
+            FLUORIDES.SODIUM_FLUORIDE.getFluidStack(144),
             20 * 30,
             500);
     }
