@@ -1,6 +1,5 @@
 package gregtech.common.items;
 
-import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Textures.BlockIcons.COVER_WOOD_PLATE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR;
@@ -80,10 +79,41 @@ import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Slowness;
 import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Slowness_Long;
 import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Weakness;
 import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Weakness_Long;
+import static gregtech.common.items.ID_MetaItem_01.Book_Written_01;
+import static gregtech.common.items.ID_MetaItem_01.Book_Written_02;
+import static gregtech.common.items.ID_MetaItem_01.Book_Written_03;
 import static gregtech.common.items.ID_MetaItem_01.Component_Minecraft_Wheels_Iron;
 import static gregtech.common.items.ID_MetaItem_01.Component_Minecraft_Wheels_Steel;
 import static gregtech.common.items.ID_MetaItem_01.Compressed_Fireclay;
+import static gregtech.common.items.ID_MetaItem_01.Crate_Empty;
 import static gregtech.common.items.ID_MetaItem_01.Firebrick;
+import static gregtech.common.items.ID_MetaItem_01.Fuel_Can_Plastic_Empty;
+import static gregtech.common.items.ID_MetaItem_01.Fuel_Can_Plastic_Filled;
+import static gregtech.common.items.ID_MetaItem_01.Ingot_Heavy1;
+import static gregtech.common.items.ID_MetaItem_01.Ingot_Heavy2;
+import static gregtech.common.items.ID_MetaItem_01.Ingot_Heavy3;
+import static gregtech.common.items.ID_MetaItem_01.Ingot_Iridium_Alloy;
+import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Aluminium;
+import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Chrome;
+import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Iridium;
+import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Neutronium;
+import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Osmium;
+import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_StainlessSteel;
+import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Steel;
+import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Titanium;
+import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_TungstenSteel;
+import static gregtech.common.items.ID_MetaItem_01.Paper_Magic_Empty;
+import static gregtech.common.items.ID_MetaItem_01.Paper_Magic_Page;
+import static gregtech.common.items.ID_MetaItem_01.Paper_Magic_Pages;
+import static gregtech.common.items.ID_MetaItem_01.Paper_Printed_Pages;
+import static gregtech.common.items.ID_MetaItem_01.Paper_Punch_Card_Empty;
+import static gregtech.common.items.ID_MetaItem_01.Paper_Punch_Card_Encoded;
+import static gregtech.common.items.ID_MetaItem_01.Schematic;
+import static gregtech.common.items.ID_MetaItem_01.Schematic_1by1;
+import static gregtech.common.items.ID_MetaItem_01.Schematic_2by2;
+import static gregtech.common.items.ID_MetaItem_01.Schematic_3by3;
+import static gregtech.common.items.ID_MetaItem_01.Schematic_Crafting;
+import static gregtech.common.items.ID_MetaItem_01.Schematic_Dust;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Empty;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Axe;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Block;
@@ -146,8 +176,43 @@ import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Tool_Head_Drill;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Turbine_Blade;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Slicer_Flat;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Slicer_Stripes;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_0;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_1;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_10;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_11;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_12;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_13;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_14;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_15;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_2;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_3;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_4;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_5;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_6;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_7;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_8;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_9;
 import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Remover;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Remover_Empty;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_0;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_1;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_10;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_11;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_12;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_13;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_14;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_15;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_2;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_3;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_4;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_5;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_6;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_7;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_8;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_9;
 import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_Remover;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Empty;
+import static gregtech.common.items.ID_MetaItem_01.Thermos_Can_Empty;
 import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Empty;
 import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Full;
 import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Used;
@@ -358,8 +423,73 @@ enum ID_MetaItem_01 {
     Shape_Extruder_Turbine_Blade(376),
     Shape_Extruder_Tool_Head_Drill(377),
     Shape_Slicer_Flat(398),
-    Shape_Slicer_Stripes(399);
-
+    Shape_Slicer_Stripes(399),
+    Fuel_Can_Plastic_Empty(400),
+    Fuel_Can_Plastic_Filled(401),
+    Spray_Empty(402),
+    Crate_Empty(403),
+    Thermos_Can_Empty(404),
+    Large_Fluid_Cell_Steel(405),
+    Large_Fluid_Cell_TungstenSteel(406),
+    Large_Fluid_Cell_Aluminium(407),
+    Large_Fluid_Cell_StainlessSteel(408),
+    Large_Fluid_Cell_Titanium(409),
+    Large_Fluid_Cell_Chrome(410),
+    Large_Fluid_Cell_Iridium(411),
+    Large_Fluid_Cell_Osmium(412),
+    Large_Fluid_Cell_Neutronium(413),
+    Spray_Color_0(430),
+    Spray_Color_Used_0(431),
+    Spray_Color_1(432),
+    Spray_Color_Used_1(433),
+    Spray_Color_2(434),
+    Spray_Color_Used_2(435),
+    Spray_Color_3(436),
+    Spray_Color_Used_3(437),
+    Spray_Color_4(438),
+    Spray_Color_Used_4(439),
+    Spray_Color_5(440),
+    Spray_Color_Used_5(441),
+    Spray_Color_6(442),
+    Spray_Color_Used_6(443),
+    Spray_Color_7(444),
+    Spray_Color_Used_7(445),
+    Spray_Color_8(446),
+    Spray_Color_Used_8(447),
+    Spray_Color_9(448),
+    Spray_Color_Used_9(449),
+    Spray_Color_10(450),
+    Spray_Color_Used_10(451),
+    Spray_Color_11(452),
+    Spray_Color_Used_11(453),
+    Spray_Color_12(454),
+    Spray_Color_Used_12(455),
+    Spray_Color_13(456),
+    Spray_Color_Used_13(457),
+    Spray_Color_14(458),
+    Spray_Color_Used_14(459),
+    Spray_Color_15(460),
+    Spray_Color_Used_15(461),
+    Spray_Color_Remover_Empty(467),
+    Ingot_Heavy1(462),
+    Ingot_Heavy2(463),
+    Ingot_Heavy3(464),
+    Ingot_Iridium_Alloy(480),
+    Paper_Printed_Pages(481),
+    Paper_Magic_Empty(482),
+    Paper_Magic_Page(483),
+    Paper_Magic_Pages(484),
+    Paper_Punch_Card_Empty(485),
+    Paper_Punch_Card_Encoded(486),
+    Book_Written_01(487),
+    Book_Written_02(488),
+    Book_Written_03(489),
+    Schematic(490),
+    Schematic_Crafting(491),
+    Schematic_1by1(495),
+    Schematic_2by2(496),
+    Schematic_3by3(497),
+    Schematic_Dust(498);
 
     final int ID;
 
@@ -384,6 +514,16 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
     private static final String RAText = "Grabs from and inserts into specific slots";
     private static final String FRText1 = "Configurable up to ";
     private static final String FRText2 = " L/sec (as Cover)/n Rightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick/n to adjust the pump speed by 1/16/256 L/sec per click";
+
+    private static final int[] Spray_Colors = new int[] { Spray_Color_0.ID, Spray_Color_1.ID, Spray_Color_2.ID,
+        Spray_Color_3.ID, Spray_Color_4.ID, Spray_Color_5.ID, Spray_Color_6.ID, Spray_Color_7.ID, Spray_Color_8.ID,
+        Spray_Color_9.ID, Spray_Color_10.ID, Spray_Color_11.ID, Spray_Color_12.ID, Spray_Color_13.ID, Spray_Color_14.ID,
+        Spray_Color_15.ID };
+    private static final int[] Spray_Colors_Used = new int[] { Spray_Color_Used_0.ID, Spray_Color_Used_1.ID,
+        Spray_Color_Used_2.ID, Spray_Color_Used_3.ID, Spray_Color_Used_4.ID, Spray_Color_Used_5.ID,
+        Spray_Color_Used_6.ID, Spray_Color_Used_7.ID, Spray_Color_Used_8.ID, Spray_Color_Used_9.ID,
+        Spray_Color_Used_10.ID, Spray_Color_Used_11.ID, Spray_Color_Used_12.ID, Spray_Color_Used_13.ID,
+        Spray_Color_Used_14.ID, Spray_Color_Used_15.ID };
 
     public GT_MetaGenerated_Item_01() {
         super(
@@ -799,35 +939,47 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Shape_Extruder_Cell
             .set(addItem(Shape_Extruder_Cell.ID, "Extruder Shape (Cell)", "Extruder Shape for making Cells"));
         ItemList.Shape_Extruder_Ingot.set(
-            addItem(Shape_Extruder_Ingot.ID, "Extruder Shape (Ingot)", "Extruder Shape for, wait, can't we just use a Furnace?"));
+            addItem(
+                Shape_Extruder_Ingot.ID,
+                "Extruder Shape (Ingot)",
+                "Extruder Shape for, wait, can't we just use a Furnace?"));
         ItemList.Shape_Extruder_Wire
             .set(addItem(Shape_Extruder_Wire.ID, "Extruder Shape (Wire)", "Extruder Shape for making Wires"));
-        ItemList.Shape_Extruder_Casing
-            .set(addItem(Shape_Extruder_Casing.ID, "Extruder Shape (Casing)", "Extruder Shape for making Item Casings"));
-        ItemList.Shape_Extruder_Pipe_Tiny
-            .set(addItem(Shape_Extruder_Pipe_Tiny.ID, "Extruder Shape (Tiny Pipe)", "Extruder Shape for making tiny Pipes"));
-        ItemList.Shape_Extruder_Pipe_Small
-            .set(addItem(Shape_Extruder_Pipe_Small.ID, "Extruder Shape (Small Pipe)", "Extruder Shape for making small Pipes"));
-        ItemList.Shape_Extruder_Pipe_Medium
-            .set(addItem(Shape_Extruder_Pipe_Medium.ID, "Extruder Shape (Normal Pipe)", "Extruder Shape for making Pipes"));
-        ItemList.Shape_Extruder_Pipe_Large
-            .set(addItem(Shape_Extruder_Pipe_Large.ID, "Extruder Shape (Large Pipe)", "Extruder Shape for making large Pipes"));
-        ItemList.Shape_Extruder_Pipe_Huge
-            .set(addItem(Shape_Extruder_Pipe_Huge.ID, "Extruder Shape (Huge Pipe)", "Extruder Shape for making full Block Pipes"));
+        ItemList.Shape_Extruder_Casing.set(
+            addItem(Shape_Extruder_Casing.ID, "Extruder Shape (Casing)", "Extruder Shape for making Item Casings"));
+        ItemList.Shape_Extruder_Pipe_Tiny.set(
+            addItem(Shape_Extruder_Pipe_Tiny.ID, "Extruder Shape (Tiny Pipe)", "Extruder Shape for making tiny Pipes"));
+        ItemList.Shape_Extruder_Pipe_Small.set(
+            addItem(
+                Shape_Extruder_Pipe_Small.ID,
+                "Extruder Shape (Small Pipe)",
+                "Extruder Shape for making small Pipes"));
+        ItemList.Shape_Extruder_Pipe_Medium.set(
+            addItem(Shape_Extruder_Pipe_Medium.ID, "Extruder Shape (Normal Pipe)", "Extruder Shape for making Pipes"));
+        ItemList.Shape_Extruder_Pipe_Large.set(
+            addItem(
+                Shape_Extruder_Pipe_Large.ID,
+                "Extruder Shape (Large Pipe)",
+                "Extruder Shape for making large Pipes"));
+        ItemList.Shape_Extruder_Pipe_Huge.set(
+            addItem(
+                Shape_Extruder_Pipe_Huge.ID,
+                "Extruder Shape (Huge Pipe)",
+                "Extruder Shape for making full Block Pipes"));
         ItemList.Shape_Extruder_Block
             .set(addItem(Shape_Extruder_Block.ID, "Extruder Shape (Block)", "Extruder Shape for making Blocks"));
         ItemList.Shape_Extruder_Sword
             .set(addItem(Shape_Extruder_Sword.ID, "Extruder Shape (Sword Blade)", "Extruder Shape for making Swords"));
-        ItemList.Shape_Extruder_Pickaxe
-            .set(addItem(Shape_Extruder_Pickaxe.ID, "Extruder Shape (Pickaxe Head)", "Extruder Shape for making Pickaxes"));
-        ItemList.Shape_Extruder_Shovel
-            .set(addItem(Shape_Extruder_Shovel.ID, "Extruder Shape (Shovel Head)", "Extruder Shape for making Shovels"));
+        ItemList.Shape_Extruder_Pickaxe.set(
+            addItem(Shape_Extruder_Pickaxe.ID, "Extruder Shape (Pickaxe Head)", "Extruder Shape for making Pickaxes"));
+        ItemList.Shape_Extruder_Shovel.set(
+            addItem(Shape_Extruder_Shovel.ID, "Extruder Shape (Shovel Head)", "Extruder Shape for making Shovels"));
         ItemList.Shape_Extruder_Axe
             .set(addItem(Shape_Extruder_Axe.ID, "Extruder Shape (Axe Head)", "Extruder Shape for making Axes"));
         ItemList.Shape_Extruder_Hoe
             .set(addItem(Shape_Extruder_Hoe.ID, "Extruder Shape (Hoe Head)", "Extruder Shape for making Hoes"));
-        ItemList.Shape_Extruder_Hammer
-            .set(addItem(Shape_Extruder_Hammer.ID, "Extruder Shape (Hammer Head)", "Extruder Shape for making Hammers"));
+        ItemList.Shape_Extruder_Hammer.set(
+            addItem(Shape_Extruder_Hammer.ID, "Extruder Shape (Hammer Head)", "Extruder Shape for making Hammers"));
         ItemList.Shape_Extruder_File
             .set(addItem(Shape_Extruder_File.ID, "Extruder Shape (File Head)", "Extruder Shape for making Files"));
         ItemList.Shape_Extruder_Saw
@@ -838,20 +990,27 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .set(addItem(Shape_Extruder_Bottle.ID, "Extruder Shape (Bottle)", "Extruder Shape for making Bottles"));
         ItemList.Shape_Extruder_Rotor
             .set(addItem(Shape_Extruder_Rotor.ID, "Extruder Shape (Rotor)", "Extruder Shape for a Rotor"));
-        ItemList.Shape_Extruder_Small_Gear
-            .set(addItem(Shape_Extruder_Small_Gear.ID, "Extruder Shape (Small Gear)", "Extruder Shape for a Small Gear"));
-        ItemList.Shape_Extruder_Turbine_Blade
-            .set(addItem(Shape_Extruder_Turbine_Blade.ID, "Extruder Shape (Turbine Blade)", "Extruder Shape for a Turbine Blade"));
-        ItemList.Shape_Extruder_ToolHeadDrill
-            .set(addItem(Shape_Extruder_Tool_Head_Drill.ID, "Extruder Shape (Drill Head)", "Extruder Shape for a Drill Head"));
+        ItemList.Shape_Extruder_Small_Gear.set(
+            addItem(Shape_Extruder_Small_Gear.ID, "Extruder Shape (Small Gear)", "Extruder Shape for a Small Gear"));
+        ItemList.Shape_Extruder_Turbine_Blade.set(
+            addItem(
+                Shape_Extruder_Turbine_Blade.ID,
+                "Extruder Shape (Turbine Blade)",
+                "Extruder Shape for a Turbine Blade"));
+        ItemList.Shape_Extruder_ToolHeadDrill.set(
+            addItem(
+                Shape_Extruder_Tool_Head_Drill.ID,
+                "Extruder Shape (Drill Head)",
+                "Extruder Shape for a Drill Head"));
 
-        ItemList.Shape_Slicer_Flat.set(addItem(Shape_Slicer_Flat.ID, "Slicer Blade (Flat)", "Slicer Blade for cutting Flat"));
+        ItemList.Shape_Slicer_Flat
+            .set(addItem(Shape_Slicer_Flat.ID, "Slicer Blade (Flat)", "Slicer Blade for cutting Flat"));
         ItemList.Shape_Slicer_Stripes
             .set(addItem(Shape_Slicer_Stripes.ID, "Slicer Blade (Stripes)", "Slicer Blade for cutting Stripes"));
 
         ItemList.Fuel_Can_Plastic_Empty.set(
             addItem(
-                tLastID = 400,
+                Fuel_Can_Plastic_Empty.ID,
                 "Empty Plastic Fuel Can",
                 "Used to store Fuels",
                 new ItemData(Materials.Plastic, OrePrefixes.plate.mMaterialAmount * 1L),
@@ -859,7 +1018,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L)));
         ItemList.Fuel_Can_Plastic_Filled.set(
             addItem(
-                tLastID = 401,
+                Fuel_Can_Plastic_Filled.ID,
                 "Plastic Fuel Can",
                 "Burns well in Diesel Generators",
                 new ItemData(Materials.Plastic, OrePrefixes.plate.mMaterialAmount * 1L),
@@ -868,7 +1027,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Spray_Empty.set(
             addItem(
-                tLastID = 402,
+                Spray_Empty.ID,
                 "Empty Spray Can",
                 "Used for making Sprays",
                 new ItemData(
@@ -881,7 +1040,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Crate_Empty.set(
             addItem(
-                tLastID = 403,
+                Crate_Empty.ID,
                 "Empty Crate",
                 "To Package lots of Material",
                 new ItemData(Materials.Wood, 3628800L, Materials.Iron, OrePrefixes.screw.mMaterialAmount),
@@ -890,7 +1049,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.ThermosCan_Empty.set(
             addItem(
-                tLastID = 404,
+                Thermos_Can_Empty.ID,
                 "Empty Thermos Can",
                 "Keeping hot things hot and cold things cold",
                 new ItemData(
@@ -902,7 +1061,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Large_Fluid_Cell_Steel.set(
             addItem(
-                tLastID = 405,
+                Large_Fluid_Cell_Steel.ID,
                 "Large Steel Fluid Cell",
                 "",
                 new ItemData(
@@ -911,11 +1070,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                     new MaterialStack(Materials.Bronze, OrePrefixes.ring.mMaterialAmount * 4L)),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)));
-        setFluidContainerStats(32000 + tLastID, 8000L, 64L);
 
         ItemList.Large_Fluid_Cell_TungstenSteel.set(
             addItem(
-                tLastID = 406,
+                Large_Fluid_Cell_TungstenSteel.ID,
                 "Large Tungstensteel Fluid Cell",
                 "",
                 new ItemData(
@@ -924,11 +1082,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                     new MaterialStack(Materials.Platinum, OrePrefixes.ring.mMaterialAmount * 4L)),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 9L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 7L)));
-        setFluidContainerStats(32000 + tLastID, 512000L, 32L);
 
         ItemList.Large_Fluid_Cell_Aluminium.set(
             addItem(
-                tLastID = 407,
+                Large_Fluid_Cell_Aluminium.ID,
                 "Large Aluminium Fluid Cell",
                 "",
                 new ItemData(
@@ -937,11 +1094,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                     new MaterialStack(Materials.Silver, OrePrefixes.ring.mMaterialAmount * 4L)),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 5L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 3L)));
-        setFluidContainerStats(32000 + tLastID, 32000L, 64L);
 
         ItemList.Large_Fluid_Cell_StainlessSteel.set(
             addItem(
-                tLastID = 408,
+                Large_Fluid_Cell_StainlessSteel.ID,
                 "Large Stainless Steel Fluid Cell",
                 "",
                 new ItemData(
@@ -950,11 +1106,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                     new MaterialStack(Materials.Electrum, OrePrefixes.ring.mMaterialAmount * 4L)),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 6L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)));
-        setFluidContainerStats(32000 + tLastID, 64000L, 64L);
 
         ItemList.Large_Fluid_Cell_Titanium.set(
             addItem(
-                tLastID = 409,
+                Large_Fluid_Cell_Titanium.ID,
                 "Large Titanium Fluid Cell",
                 "",
                 new ItemData(
@@ -963,11 +1118,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                     new MaterialStack(Materials.RoseGold, OrePrefixes.ring.mMaterialAmount * 4L)),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 7L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 5L)));
-        setFluidContainerStats(32000 + tLastID, 128000L, 64L);
 
         ItemList.Large_Fluid_Cell_Chrome.set(
             addItem(
-                tLastID = 410,
+                Large_Fluid_Cell_Chrome.ID,
                 "Large Chrome Fluid Cell",
                 "",
                 new ItemData(
@@ -976,11 +1130,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                     new MaterialStack(Materials.Palladium, OrePrefixes.ring.mMaterialAmount * 4L)),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 8L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 6L)));
-        setFluidContainerStats(32000 + tLastID, 2048000L, 8L);
 
         ItemList.Large_Fluid_Cell_Iridium.set(
             addItem(
-                tLastID = 411,
+                Large_Fluid_Cell_Iridium.ID,
                 "Large Iridium Fluid Cell",
                 "",
                 new ItemData(
@@ -989,11 +1142,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                     new MaterialStack(Materials.Naquadah, OrePrefixes.ring.mMaterialAmount * 4L)),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 10L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 8L)));
-        setFluidContainerStats(32000 + tLastID, 8192000L, 2L);
 
         ItemList.Large_Fluid_Cell_Osmium.set(
             addItem(
-                tLastID = 412,
+                Large_Fluid_Cell_Osmium.ID,
                 "Large Osmium Fluid Cell",
                 "",
                 new ItemData(
@@ -1002,11 +1154,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                     new MaterialStack(Materials.ElectrumFlux, OrePrefixes.ring.mMaterialAmount * 4L)),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 11L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 9L)));
-        setFluidContainerStats(32000 + tLastID, 32768000L, 1L);
 
         ItemList.Large_Fluid_Cell_Neutronium.set(
             addItem(
-                tLastID = 413,
+                Large_Fluid_Cell_Neutronium.ID,
                 "Large Neutronium Fluid Cell",
                 "",
                 new ItemData(
@@ -1015,30 +1166,21 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                     new MaterialStack(Materials.Draconium, OrePrefixes.ring.mMaterialAmount * 4L)),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 12L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 10L)));
-        setFluidContainerStats(32000 + tLastID, 131072000L, 1L);
 
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
             ItemList.SPRAY_CAN_DYES[i].set(
                 addItem(
-                    tLastID = 430 + 2 * i,
+                    Spray_Colors[i],
                     "Spray Can (" + Dyes.get(i).mName + ")",
                     "Full",
                     new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 4L)));
             ItemList.SPRAY_CAN_DYES_USED[i].set(
                 addItem(
-                    tLastID + 1,
+                    Spray_Colors_Used[i],
                     "Spray Can (" + Dyes.get(i).mName + ")",
                     "Used",
                     new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 3L),
                     SubTag.INVISIBLE));
-            IItemBehaviour<GT_MetaBase_Item> tBehaviour = new Behaviour_Spray_Color(
-                ItemList.Spray_Empty.get(1L),
-                ItemList.SPRAY_CAN_DYES_USED[i].get(1L),
-                ItemList.SPRAY_CAN_DYES[i].get(1L),
-                512L,
-                i);
-            addItemBehavior(32000 + tLastID, tBehaviour);
-            addItemBehavior(32001 + tLastID, tBehaviour);
         }
 
         ItemList.Spray_Color_Remover.set(
@@ -1059,7 +1201,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Spray_Color_Remover_Empty.set(
             addItem(
-                tLastID = 467,
+                Spray_Color_Remover_Empty.ID,
                 "Empty Spray Can Solvent Cannister",
                 "Used for making Spray Can Solvent",
                 new ItemData(
@@ -1150,18 +1292,16 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
 
-        if (GalacticraftMars.isModLoaded()) {
-            ItemList.Ingot_Heavy1
-                .set(addItem(tLastID = 462, "Heavy Duty Alloy Ingot T1", "Used to make Heavy Duty Plates T1"));
-            ItemList.Ingot_Heavy2
-                .set(addItem(tLastID = 463, "Heavy Duty Alloy Ingot T2", "Used to make Heavy Duty Plates T2"));
-            ItemList.Ingot_Heavy3
-                .set(addItem(tLastID = 464, "Heavy Duty Alloy Ingot T3", "Used to make Heavy Duty Plates T3"));
+        ItemList.Ingot_Heavy1
+            .set(addItem(Ingot_Heavy1.ID, "Heavy Duty Alloy Ingot T1", "Used to make Heavy Duty Plates T1"));
+        ItemList.Ingot_Heavy2
+            .set(addItem(Ingot_Heavy2.ID, "Heavy Duty Alloy Ingot T2", "Used to make Heavy Duty Plates T2"));
+        ItemList.Ingot_Heavy3
+            .set(addItem(Ingot_Heavy3.ID, "Heavy Duty Alloy Ingot T3", "Used to make Heavy Duty Plates T3"));
 
-        }
         ItemList.Ingot_IridiumAlloy.set(
             addItem(
-                tLastID = 480,
+                Ingot_Iridium_Alloy.ID,
                 "Iridium Alloy Ingot",
                 "Used to make Iridium Plates",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 4L),
@@ -1169,7 +1309,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Paper_Printed_Pages.set(
             addItem(
-                tLastID = 481,
+                Paper_Printed_Pages.ID,
                 "Printed Pages",
                 "Used to make written Books",
                 new ItemData(Materials.Paper, 10886400L),
@@ -1177,7 +1317,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L)));
         ItemList.Paper_Magic_Empty.set(
             addItem(
-                tLastID = 482,
+                Paper_Magic_Empty.ID,
                 "Magic Paper",
                 "",
                 SubTag.INVISIBLE,
@@ -1186,7 +1326,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 1L)));
         ItemList.Paper_Magic_Page.set(
             addItem(
-                tLastID = 483,
+                Paper_Magic_Page.ID,
                 "Enchanted Page",
                 "",
                 SubTag.INVISIBLE,
@@ -1195,7 +1335,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 2L)));
         ItemList.Paper_Magic_Pages.set(
             addItem(
-                tLastID = 484,
+                Paper_Magic_Pages.ID,
                 "Enchanted Pages",
                 "",
                 SubTag.INVISIBLE,
@@ -1204,7 +1344,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 4L)));
         ItemList.Paper_Punch_Card_Empty.set(
             addItem(
-                tLastID = 485,
+                Paper_Punch_Card_Empty.ID,
                 "Punch Card",
                 "",
                 SubTag.INVISIBLE,
@@ -1212,7 +1352,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L)));
         ItemList.Paper_Punch_Card_Encoded.set(
             addItem(
-                tLastID = 486,
+                Paper_Punch_Card_Encoded.ID,
                 "Punched Card",
                 "",
                 SubTag.INVISIBLE,
@@ -1220,7 +1360,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L)));
         ItemList.Book_Written_01.set(
             addItem(
-                tLastID = 487,
+                Book_Written_01.ID,
                 "Book",
                 "",
                 new ItemData(Materials.Paper, 10886400L),
@@ -1230,7 +1370,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L)));
         ItemList.Book_Written_02.set(
             addItem(
-                tLastID = 488,
+                Book_Written_02.ID,
                 "Book",
                 "",
                 new ItemData(Materials.Paper, 10886400L),
@@ -1240,7 +1380,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L)));
         ItemList.Book_Written_03.set(
             addItem(
-                tLastID = 489,
+                Book_Written_03.ID,
                 "Book",
                 "",
                 new ItemData(Materials.Paper, 10886400L),
@@ -1251,14 +1391,14 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Schematic.set(
             addItem(
-                tLastID = 490,
+                Schematic.ID,
                 "Schematic",
                 "EMPTY",
                 new ItemData(Materials.Steel, 7257600L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 1L)));
         ItemList.Schematic_Crafting.set(
             addItem(
-                tLastID = 491,
+                Schematic_Crafting.ID,
                 "Schematic (Crafting)",
                 "Crafts the Programmed Recipe",
                 new ItemData(Materials.Steel, 7257600L),
@@ -1266,7 +1406,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)));
         ItemList.Schematic_1by1.set(
             addItem(
-                tLastID = 495,
+                Schematic_1by1.ID,
                 "Schematic (1x1)",
                 "Crafts 1 Items as 1x1 (use in Packager)",
                 new ItemData(Materials.Steel, 7257600L),
@@ -1274,7 +1414,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)));
         ItemList.Schematic_2by2.set(
             addItem(
-                tLastID = 496,
+                Schematic_2by2.ID,
                 "Schematic (2x2)",
                 "Crafts 4 Items as 2x2 (use in Packager)",
                 new ItemData(Materials.Steel, 7257600L),
@@ -1282,7 +1422,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)));
         ItemList.Schematic_3by3.set(
             addItem(
-                tLastID = 497,
+                Schematic_3by3.ID,
                 "Schematic (3x3)",
                 "Crafts 9 Items as 3x3 (use in Packager)",
                 new ItemData(Materials.Steel, 7257600L),
@@ -1290,7 +1430,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)));
         ItemList.Schematic_Dust.set(
             addItem(
-                tLastID = 498,
+                Schematic_Dust.ID,
                 "Schematic (Dusts)",
                 "Combines Dusts (use in Packager)",
                 new ItemData(Materials.Steel, 7257600L),
@@ -3199,6 +3339,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         oredictBlacklistEntries();
         registerCovers();
         registerBehaviors();
+        setAllFluidContainerStats();
 
         compressorRecipes();
         craftingShapedRecipes();
@@ -3330,6 +3471,18 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
     private void setBurnValues() {
         setBurnValue(17000 + Materials.Wood.mMetaItemSubID, 1600);
+    }
+
+    private void setAllFluidContainerStats() {
+        setFluidContainerStats(32000 + Large_Fluid_Cell_Steel.ID, 8_000L, 64L);
+        setFluidContainerStats(32000 + Large_Fluid_Cell_TungstenSteel.ID, 512_000L, 32L);
+        setFluidContainerStats(32000 + Large_Fluid_Cell_Aluminium.ID, 32_000L, 64L);
+        setFluidContainerStats(32000 + Large_Fluid_Cell_StainlessSteel.ID, 64_000L, 64L);
+        setFluidContainerStats(32000 + Large_Fluid_Cell_Titanium.ID, 128_000L, 64L);
+        setFluidContainerStats(32000 + Large_Fluid_Cell_Chrome.ID, 2_048_000L, 8L);
+        setFluidContainerStats(32000 + Large_Fluid_Cell_Iridium.ID, 8_192_000L, 2L);
+        setFluidContainerStats(32000 + Large_Fluid_Cell_Osmium.ID, 32_768_000L, 1L);
+        setFluidContainerStats(32000 + Large_Fluid_Cell_Neutronium.ID, 131_072_000L, 1L);
     }
 
     private void oredictBlacklistEntries() {
@@ -4944,5 +5097,15 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         addItemBehavior(32000 + Tool_Lighter_Platinum_Used.ID, behaviourLighterPlatinum);
         addItemBehavior(32000 + Tool_Lighter_Platinum_Full.ID, behaviourLighterPlatinum);
 
+        for (int i = 0; i < 16; i++) {
+            IItemBehaviour<GT_MetaBase_Item> behaviourSprayColor = new Behaviour_Spray_Color(
+                ItemList.Spray_Empty.get(1L),
+                ItemList.SPRAY_CAN_DYES_USED[i].get(1L),
+                ItemList.SPRAY_CAN_DYES[i].get(1L),
+                512L,
+                i);
+            addItemBehavior(32000 + Spray_Colors[i], behaviourSprayColor);
+            addItemBehavior(32001 + Spray_Colors_Used[i], behaviourSprayColor);
+        }
     }
 }
