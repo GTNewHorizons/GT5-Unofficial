@@ -394,28 +394,28 @@ public class RecipeLoader_Nuclear {
             500); // EU
 
         // Be(OH)2 + 2 (NH4)HF2 → (NH4)2BeF4 + 2 H2O
-        // Inputs use solid rule, outputs use fluid rule
-        // Recipe relies on fix for cells of ammonium bifluoride and beryllium hydroxide to contain 144 liters instead of 1000
-        // If cells cannot be fixed, this must be migrated to an LCR
+        // Inputs use solid rule because they are molten forms of solids
+        // Outputs use fluid rule because they are not molten forms of solids
         CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(6), FLUORIDES.AMMONIUM_BIFLUORIDE.getCell(8) },
-            FLUORIDES.BERYLLIUM_HYDROXIDE.getFluidStack(432), // Fluid input (slot 1)
+            new ItemStack[] { FLUORIDES.BERYLLIUM_HYDROXIDE.getDust(3), CI.emptyCells(2) },
+            FLUORIDES.AMMONIUM_BIFLUORIDE.getFluidStack(1152), // Fluid input (slot 1)
             FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1000),
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 2), CI.emptyCells(6) },
+            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 2) },
             new int[] { 10000 },
             6 * 20, // Time in ticks
             64); // EU
 
         // (NH4)2BeF4 → 2 NH3 + 2 HF + BeF2
-        // Recipe relies on fix for beryllium fluoride cells to contain 144 liters instead of 1000
-        // If cells cannot be fixed, this must be migrated to an LCR
+        // Ammonium tetrafluoroberyllate uses fluid rule because it is not a molten form of a solid
+        // Beryllium fluoride uses solid rule
+        // Industrial strength hydrofluoric acid follows its usual convention where it is twice as dense as regular hydrofluoric acid
         CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(17), CI.emptyCells(6) },
+            new ItemStack[] { CI.getNumberedAdvancedCircuit(17), CI.emptyCells(3) },
             FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1000),
             null,
             new ItemStack[] { MISC_MATERIALS.AMMONIA.getCell(2),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
-                FLUORIDES.BERYLLIUM_FLUORIDE.getCell(3) },
+                FLUORIDES.BERYLLIUM_FLUORIDE.getDust(3) },
             new int[] { 10000, 10000, 10000 },
             5 * 60 * 20,
             120);
