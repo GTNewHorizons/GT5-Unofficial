@@ -116,6 +116,17 @@ import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Round;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Screw;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Tool_Head_Drill;
 import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Turbine_Blade;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Remover;
+import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_Remover;
+import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Empty;
+import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Full;
+import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Used;
+import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Platinum_Empty;
+import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Platinum_Full;
+import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Platinum_Used;
+import static gregtech.common.items.ID_MetaItem_01.Tool_MatchBox_Full;
+import static gregtech.common.items.ID_MetaItem_01.Tool_MatchBox_Used;
+import static gregtech.common.items.ID_MetaItem_01.Tool_Matches;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -274,7 +285,19 @@ enum ID_MetaItem_01{
     Shape_Mold_Pipe_Medium(328),
     Shape_Mold_Pipe_Large(329),
     Shape_Mold_Pipe_Huge(330),
-    Shape_Mold_Tool_Head_Drill(331);
+    Shape_Mold_Tool_Head_Drill(331),
+    Spray_Color_Remover(465),
+    Spray_Color_Used_Remover(466),
+    Tool_Matches(471),
+    Tool_MatchBox_Used(472),
+    Tool_MatchBox_Full(473),
+    Tool_Lighter_Invar_Empty(474),
+    Tool_Lighter_Invar_Used(475),
+    Tool_Lighter_Invar_Full(476),
+    Tool_Lighter_Platinum_Empty(477),
+    Tool_Lighter_Platinum_Used(478),
+    Tool_Lighter_Platinum_Full(479);
+
 
 
 
@@ -957,26 +980,19 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Spray_Color_Remover.set(
             addItem(
-                tLastID = 465,
+                Spray_Color_Remover.ID,
                 "Spray Can Solvent",
                 "Full",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.PERDITIO, 8L)));
         ItemList.Spray_Color_Used_Remover.set(
             addItem(
-                tLastID = 466,
+                Spray_Color_Used_Remover.ID,
                 "Spray Can Solvent",
                 "Used",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 3L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.PERDITIO, 6L),
                 SubTag.INVISIBLE));
-        IItemBehaviour<GT_MetaBase_Item> tBehaviour = new Behaviour_Spray_Color_Remover(
-            ItemList.Spray_Empty.get(1L),
-            ItemList.Spray_Color_Used_Remover.get(1L),
-            ItemList.Spray_Color_Remover.get(1L),
-            1024L);
-        addItemBehavior(32000 + 465, tBehaviour);
-        addItemBehavior(32000 + 466, tBehaviour);
 
         ItemList.Spray_Color_Remover_Empty.set(
             addItem(
@@ -993,7 +1009,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Tool_Matches.set(
             addItem(
-                tLastID = 471,
+                Tool_Matches.ID,
                 "Match",
                 "",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L),
@@ -1001,7 +1017,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Tool_MatchBox_Used.set(
             addItem(
-                tLastID = 472,
+                Tool_MatchBox_Used.ID,
                 "Match Box",
                 "This is not a Car",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 2L),
@@ -1010,25 +1026,17 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Tool_MatchBox_Full.set(
             addItem(
-                tLastID = 473,
+                Tool_MatchBox_Full.ID,
                 "Match Box (Full)",
                 "This is not a Car",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
 
-        tBehaviour = new Behaviour_Lighter(null, ItemList.Tool_Matches.get(1L), ItemList.Tool_Matches.get(1L), 1L);
-        addItemBehavior(32471, tBehaviour);
-        tBehaviour = new Behaviour_Lighter(
-            null,
-            ItemList.Tool_MatchBox_Used.get(1L),
-            ItemList.Tool_MatchBox_Full.get(1L),
-            16L);
-        addItemBehavior(32472, tBehaviour);
-        addItemBehavior(32473, tBehaviour);
+
 
         ItemList.Tool_Lighter_Invar_Empty.set(
             addItem(
-                tLastID = 474,
+                Tool_Lighter_Invar_Empty.ID,
                 "Lighter (Empty)",
                 "",
                 new ItemData(Materials.Invar, OrePrefixes.plate.mMaterialAmount * 2L),
@@ -1036,7 +1044,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)));
         ItemList.Tool_Lighter_Invar_Used.set(
             addItem(
-                tLastID = 475,
+                Tool_Lighter_Invar_Used.ID,
                 "Lighter",
                 "",
                 new ItemData(Materials.Invar, OrePrefixes.plate.mMaterialAmount * 2L),
@@ -1045,24 +1053,17 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 SubTag.INVISIBLE));
         ItemList.Tool_Lighter_Invar_Full.set(
             addItem(
-                tLastID = 476,
+                Tool_Lighter_Invar_Full.ID,
                 "Lighter (Full)",
                 "",
                 new ItemData(Materials.Invar, OrePrefixes.plate.mMaterialAmount * 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
 
-        tBehaviour = new Behaviour_Lighter(
-            ItemList.Tool_Lighter_Invar_Empty.get(1L),
-            ItemList.Tool_Lighter_Invar_Used.get(1L),
-            ItemList.Tool_Lighter_Invar_Full.get(1L),
-            100L);
-        addItemBehavior(32475, tBehaviour);
-        addItemBehavior(32476, tBehaviour);
 
         ItemList.Tool_Lighter_Platinum_Empty.set(
             addItem(
-                tLastID = 477,
+                Tool_Lighter_Platinum_Empty.ID,
                 "Platinum Lighter (Empty)",
                 "A known Prank Master is engraved on it",
                 new ItemData(Materials.Platinum, OrePrefixes.plate.mMaterialAmount * 2L),
@@ -1071,7 +1072,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)));
         ItemList.Tool_Lighter_Platinum_Used.set(
             addItem(
-                tLastID = 478,
+                Tool_Lighter_Platinum_Used.ID,
                 "Platinum Lighter",
                 "A known Prank Master is engraved on it",
                 new ItemData(Materials.Platinum, OrePrefixes.plate.mMaterialAmount * 2L),
@@ -1081,21 +1082,13 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 SubTag.INVISIBLE));
         ItemList.Tool_Lighter_Platinum_Full.set(
             addItem(
-                tLastID = 479,
+                Tool_Lighter_Platinum_Full.ID,
                 "Platinum Lighter (Full)",
                 "A known Prank Master is engraved on it",
                 new ItemData(Materials.Platinum, OrePrefixes.plate.mMaterialAmount * 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
-
-        tBehaviour = new Behaviour_Lighter(
-            ItemList.Tool_Lighter_Platinum_Empty.get(1L),
-            ItemList.Tool_Lighter_Platinum_Used.get(1L),
-            ItemList.Tool_Lighter_Platinum_Full.get(1L),
-            1000L);
-        addItemBehavior(32478, tBehaviour);
-        addItemBehavior(32479, tBehaviour);
 
         if (GalacticraftMars.isModLoaded()) {
             ItemList.Ingot_Heavy1
@@ -3151,6 +3144,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         setBurnValues();
         oredictBlacklistEntries();
         registerCovers();
+        registerBehaviors();
 
         compressorRecipes();
         craftingShapedRecipes();
@@ -4856,6 +4850,45 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GT_ModHandler.addShapelessCraftingRecipe(
             ItemList.ItemFilter_Import.get(1L),
             new Object[] { ItemList.ItemFilter_Export.get(1L) });
+
+    }
+    private void registerBehaviors(){
+        IItemBehaviour<GT_MetaBase_Item> behaviourSprayColorRemover = new Behaviour_Spray_Color_Remover(
+            ItemList.Spray_Empty.get(1L),
+            ItemList.Spray_Color_Used_Remover.get(1L),
+            ItemList.Spray_Color_Remover.get(1L),
+            1024L);
+        addItemBehavior(32000 + Spray_Color_Remover.ID, behaviourSprayColorRemover);
+        addItemBehavior(32000 + Spray_Color_Used_Remover.ID, behaviourSprayColorRemover);
+
+        IItemBehaviour<GT_MetaBase_Item> behaviourMatches = new Behaviour_Lighter(null, ItemList.Tool_Matches.get(1L), ItemList.Tool_Matches.get(1L), 1L);
+        addItemBehavior(32000+ Tool_Matches.ID, behaviourMatches);
+        IItemBehaviour<GT_MetaBase_Item> behaviourMatchBox = new Behaviour_Lighter(
+            null,
+            ItemList.Tool_MatchBox_Used.get(1L),
+            ItemList.Tool_MatchBox_Full.get(1L),
+            16L);
+        addItemBehavior(32000+Tool_MatchBox_Used.ID, behaviourMatchBox);
+        addItemBehavior(32000+Tool_MatchBox_Full.ID, behaviourMatchBox);
+
+        IItemBehaviour<GT_MetaBase_Item> behaviourLighterInvar = new Behaviour_Lighter(
+            ItemList.Tool_Lighter_Invar_Empty.get(1L),
+            ItemList.Tool_Lighter_Invar_Used.get(1L),
+            ItemList.Tool_Lighter_Invar_Full.get(1L),
+            100L);
+        addItemBehavior(32000+ Tool_Lighter_Invar_Used.ID, behaviourLighterInvar);
+        addItemBehavior(32000+ Tool_Lighter_Invar_Full.ID, behaviourLighterInvar);
+
+        IItemBehaviour<GT_MetaBase_Item> behaviourLighterPlatinum = new Behaviour_Lighter(
+            ItemList.Tool_Lighter_Platinum_Empty.get(1L),
+            ItemList.Tool_Lighter_Platinum_Used.get(1L),
+            ItemList.Tool_Lighter_Platinum_Full.get(1L),
+            1000L);
+        addItemBehavior(32000+Tool_Lighter_Platinum_Used.ID, behaviourLighterPlatinum);
+        addItemBehavior(32000+Tool_Lighter_Platinum_Full.ID, behaviourLighterPlatinum);
+
+
+
 
     }
 }
