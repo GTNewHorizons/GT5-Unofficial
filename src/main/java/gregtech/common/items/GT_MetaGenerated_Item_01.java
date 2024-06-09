@@ -57,8 +57,8 @@ import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Empty;
 import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Holy_Water;
 import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Poison;
 import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Poison_Long;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Slowness;
 import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Poison_Strong;
+import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Slowness;
 import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Slowness_Long;
 import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Weakness;
 import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Weakness_Long;
@@ -195,7 +195,9 @@ import gregtech.common.items.behaviors.Behaviour_Sonictron;
 import gregtech.common.items.behaviors.Behaviour_Spray_Color;
 import gregtech.common.items.behaviors.Behaviour_Spray_Color_Remover;
 import gregtech.common.items.behaviors.Behaviour_WrittenBook;
-enum ID_MetaItem_01{
+
+enum ID_MetaItem_01 {
+
     Credit_Greg_Copper(0),
     Credit_Greg_Cupronickel(1),
     Credit_Greg_Silver(2),
@@ -276,10 +278,9 @@ enum ID_MetaItem_01{
     Shape_Mold_Pipe_Huge(330),
     Shape_Mold_Tool_Head_Drill(331);
 
-
-
     final int ID;
-    ID_MetaItem_01(int ID){
+
+    ID_MetaItem_01(int ID) {
         this.ID = ID;
     }
 }
@@ -300,6 +301,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
     private static final String RAText = "Grabs from and inserts into specific slots";
     private static final String FRText1 = "Configurable up to ";
     private static final String FRText2 = " L/sec (as Cover)/n Rightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick/n to adjust the pump speed by 1/16/256 L/sec per click";
+
     public GT_MetaGenerated_Item_01() {
         super(
             "metaitem.01",
@@ -339,10 +341,14 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         int tLastID = 0;
 
-
-        ItemList.Credit_Greg_Copper.set(addItem(ID_MetaItem_01.Credit_Greg_Copper.ID, "Copper GT Credit", "0.125 Credits"));
+        ItemList.Credit_Greg_Copper
+            .set(addItem(ID_MetaItem_01.Credit_Greg_Copper.ID, "Copper GT Credit", "0.125 Credits"));
         ItemList.Credit_Greg_Cupronickel.set(
-            addItem(ID_MetaItem_01.Credit_Greg_Cupronickel.ID, "Cupronickel GT Credit", "1 Credit", new ItemData(Materials.Cupronickel, 907200L)));
+            addItem(
+                ID_MetaItem_01.Credit_Greg_Cupronickel.ID,
+                "Cupronickel GT Credit",
+                "1 Credit",
+                new ItemData(Materials.Cupronickel, 907200L)));
         ItemList.Credit_Greg_Silver.set(
             addItem(
                 ID_MetaItem_01.Credit_Greg_Silver.ID,
@@ -350,10 +356,14 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "8 Credits",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)));
         ItemList.Credit_Greg_Gold.set(addItem(ID_MetaItem_01.Credit_Greg_Gold.ID, "Gold GT Credit", "64 Credits"));
-        ItemList.Credit_Greg_Platinum.set(addItem(ID_MetaItem_01.Credit_Greg_Platinum.ID, "Platinum GT Credit", "512 Credits"));
-        ItemList.Credit_Greg_Osmium.set(addItem(ID_MetaItem_01.Credit_Greg_Osmium.ID, "Osmium GT Credit", "4,096 Credits"));
-        ItemList.Credit_Greg_Naquadah.set(addItem(ID_MetaItem_01.Credit_Greg_Naquadah.ID, "Naquadah GT Credit", "32,768 Credits"));
-        ItemList.Credit_Greg_Neutronium.set(addItem(ID_MetaItem_01.Credit_Greg_Neutronium.ID, "Neutronium GT Credit", "262,144 Credits"));
+        ItemList.Credit_Greg_Platinum
+            .set(addItem(ID_MetaItem_01.Credit_Greg_Platinum.ID, "Platinum GT Credit", "512 Credits"));
+        ItemList.Credit_Greg_Osmium
+            .set(addItem(ID_MetaItem_01.Credit_Greg_Osmium.ID, "Osmium GT Credit", "4,096 Credits"));
+        ItemList.Credit_Greg_Naquadah
+            .set(addItem(ID_MetaItem_01.Credit_Greg_Naquadah.ID, "Naquadah GT Credit", "32,768 Credits"));
+        ItemList.Credit_Greg_Neutronium
+            .set(addItem(ID_MetaItem_01.Credit_Greg_Neutronium.ID, "Neutronium GT Credit", "262,144 Credits"));
         ItemList.Coin_Gold_Ancient.set(
             addItem(
                 ID_MetaItem_01.Coin_Gold_Ancient.ID,
@@ -386,7 +396,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                     200,
                     1,
                     100)));
-        ItemList.Credit_Copper.set(addItem(ID_MetaItem_01.Credit_Copper.ID, "Industrial Copper Credit", "0.125 Credits"));
+        ItemList.Credit_Copper
+            .set(addItem(ID_MetaItem_01.Credit_Copper.ID, "Industrial Copper Credit", "0.125 Credits"));
 
         ItemList.Credit_Silver.set(
             addItem(
@@ -395,9 +406,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "8 Credits",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)));
         ItemList.Credit_Gold.set(addItem(ID_MetaItem_01.Credit_Gold.ID, "Industrial Gold Credit", "64 Credits"));
-        ItemList.Credit_Platinum.set(addItem(ID_MetaItem_01.Credit_Platinum.ID, "Industrial Platinum Credit", "512 Credits"));
-        ItemList.Credit_Osmium.set(addItem(ID_MetaItem_01.Credit_Osmium.ID, "Industrial Osmium Credit", "4096 Credits"));
-
+        ItemList.Credit_Platinum
+            .set(addItem(ID_MetaItem_01.Credit_Platinum.ID, "Industrial Platinum Credit", "512 Credits"));
+        ItemList.Credit_Osmium
+            .set(addItem(ID_MetaItem_01.Credit_Osmium.ID, "Industrial Osmium Credit", "4096 Credits"));
 
         ItemList.Component_Minecart_Wheels_Iron.set(
             addItem(
@@ -640,7 +652,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 1L)));
 
-
         ItemList.Shape_Empty.set(
             addItem(
                 Shape_Empty.ID,
@@ -661,31 +672,38 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Shape_Mold_Nugget.set(addItem(Shape_Mold_Nugget.ID, "Mold (Nuggets)", "Mold for making Nuggets"));
         ItemList.Shape_Mold_Bun.set(addItem(Shape_Mold_Bun.ID, "Mold (Buns)", "Mold for shaping Buns"));
         ItemList.Shape_Mold_Bread.set(addItem(Shape_Mold_Bread.ID, "Mold (Bread)", "Mold for shaping Breads"));
-        ItemList.Shape_Mold_Baguette.set(addItem(Shape_Mold_Baguette.ID, "Mold (Baguette)", "Mold for shaping Baguettes"));
-        ItemList.Shape_Mold_Cylinder.set(addItem(Shape_Mold_Cylinder.ID, "Mold (Cylinder)", "Mold for shaping Cylinders"));
+        ItemList.Shape_Mold_Baguette
+            .set(addItem(Shape_Mold_Baguette.ID, "Mold (Baguette)", "Mold for shaping Baguettes"));
+        ItemList.Shape_Mold_Cylinder
+            .set(addItem(Shape_Mold_Cylinder.ID, "Mold (Cylinder)", "Mold for shaping Cylinders"));
         ItemList.Shape_Mold_Anvil.set(addItem(Shape_Mold_Anvil.ID, "Mold (Anvil)", "Mold for shaping Anvils"));
         ItemList.Shape_Mold_Name
             .set(addItem(Shape_Mold_Name.ID, "Mold (Name)", "Mold for naming Items (rename Mold with Anvil)"));
         ItemList.Shape_Mold_Arrow.set(addItem(Shape_Mold_Arrow.ID, "Mold (Arrow Head)", "Mold for making Arrow Heads"));
-        ItemList.Shape_Mold_Gear_Small.set(addItem(Shape_Mold_Gear_Small.ID, "Mold (Small Gear)", "Mold for making small Gears"));
+        ItemList.Shape_Mold_Gear_Small
+            .set(addItem(Shape_Mold_Gear_Small.ID, "Mold (Small Gear)", "Mold for making small Gears"));
         ItemList.Shape_Mold_Rod.set(addItem(Shape_Mold_Rod.ID, "Mold (Rod)", "Mold for making Rods"));
         ItemList.Shape_Mold_Bolt.set(addItem(Shape_Mold_Bolt.ID, "Mold (Bolt)", "Mold for making Bolts"));
         ItemList.Shape_Mold_Round.set(addItem(Shape_Mold_Round.ID, "Mold (Round)", "Mold for making Rounds"));
         ItemList.Shape_Mold_Screw.set(addItem(Shape_Mold_Screw.ID, "Mold (Screw)", "Mold for making Screws"));
         ItemList.Shape_Mold_Ring.set(addItem(Shape_Mold_Ring.ID, "Mold (Ring)", "Mold for making Rings"));
-        ItemList.Shape_Mold_Rod_Long.set(addItem(Shape_Mold_Rod_Long.ID, "Mold (Long Rod)", "Mold for making Long Rods"));
+        ItemList.Shape_Mold_Rod_Long
+            .set(addItem(Shape_Mold_Rod_Long.ID, "Mold (Long Rod)", "Mold for making Long Rods"));
         ItemList.Shape_Mold_Rotor.set(addItem(Shape_Mold_Rotor.ID, "Mold (Rotor)", "Mold for making a Rotor"));
         ItemList.Shape_Mold_Turbine_Blade
             .set(addItem(Shape_Mold_Turbine_Blade.ID, "Mold (Turbine Blade)", "Mold for making a Turbine Blade"));
-        ItemList.Shape_Mold_Pipe_Tiny.set(addItem(Shape_Mold_Pipe_Tiny.ID, "Mold (Tiny Pipe)", "Mold for making tiny Pipes"));
-        ItemList.Shape_Mold_Pipe_Small.set(addItem(Shape_Mold_Pipe_Small.ID, "Mold (Small Pipe)", "Mold for making small Pipes"));
-        ItemList.Shape_Mold_Pipe_Medium.set(addItem(Shape_Mold_Pipe_Medium.ID, "Mold (Normal Pipe)", "Mold for making Pipes"));
-        ItemList.Shape_Mold_Pipe_Large.set(addItem(Shape_Mold_Pipe_Large.ID, "Mold (Large Pipe)", "Mold for making large Pipes"));
+        ItemList.Shape_Mold_Pipe_Tiny
+            .set(addItem(Shape_Mold_Pipe_Tiny.ID, "Mold (Tiny Pipe)", "Mold for making tiny Pipes"));
+        ItemList.Shape_Mold_Pipe_Small
+            .set(addItem(Shape_Mold_Pipe_Small.ID, "Mold (Small Pipe)", "Mold for making small Pipes"));
+        ItemList.Shape_Mold_Pipe_Medium
+            .set(addItem(Shape_Mold_Pipe_Medium.ID, "Mold (Normal Pipe)", "Mold for making Pipes"));
+        ItemList.Shape_Mold_Pipe_Large
+            .set(addItem(Shape_Mold_Pipe_Large.ID, "Mold (Large Pipe)", "Mold for making large Pipes"));
         ItemList.Shape_Mold_Pipe_Huge
             .set(addItem(Shape_Mold_Pipe_Huge.ID, "Mold (Huge Pipe)", "Mold for making full Block Pipes"));
         ItemList.Shape_Mold_ToolHeadDrill
             .set(addItem(Shape_Mold_Tool_Head_Drill.ID, "Mold (Drill Head)", "Mold for making Drill Heads"));
-
 
         ItemList.Shape_Extruder_Plate
             .set(addItem(tLastID = 350, "Extruder Shape (Plate)", "Extruder Shape for making Plates"));
@@ -778,7 +796,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L)));
 
-
         ItemList.Crate_Empty.set(
             addItem(
                 tLastID = 403,
@@ -787,7 +804,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new ItemData(Materials.Wood, 3628800L, Materials.Iron, OrePrefixes.screw.mMaterialAmount),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 2L)));
-
 
         ItemList.ThermosCan_Empty.set(
             addItem(
@@ -814,8 +830,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)));
         setFluidContainerStats(32000 + tLastID, 8000L, 64L);
 
-
-
         ItemList.Large_Fluid_Cell_TungstenSteel.set(
             addItem(
                 tLastID = 406,
@@ -828,8 +842,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 9L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 7L)));
         setFluidContainerStats(32000 + tLastID, 512000L, 32L);
-
-
 
         ItemList.Large_Fluid_Cell_Aluminium.set(
             addItem(
@@ -844,7 +856,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 3L)));
         setFluidContainerStats(32000 + tLastID, 32000L, 64L);
 
-
         ItemList.Large_Fluid_Cell_StainlessSteel.set(
             addItem(
                 tLastID = 408,
@@ -857,8 +868,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 6L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)));
         setFluidContainerStats(32000 + tLastID, 64000L, 64L);
-
-
 
         ItemList.Large_Fluid_Cell_Titanium.set(
             addItem(
@@ -873,8 +882,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 5L)));
         setFluidContainerStats(32000 + tLastID, 128000L, 64L);
 
-
-
         ItemList.Large_Fluid_Cell_Chrome.set(
             addItem(
                 tLastID = 410,
@@ -888,8 +895,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 6L)));
         setFluidContainerStats(32000 + tLastID, 2048000L, 8L);
 
-
-
         ItemList.Large_Fluid_Cell_Iridium.set(
             addItem(
                 tLastID = 411,
@@ -902,8 +907,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 10L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 8L)));
         setFluidContainerStats(32000 + tLastID, 8192000L, 2L);
-
-
 
         ItemList.Large_Fluid_Cell_Osmium.set(
             addItem(
@@ -2822,7 +2825,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 6L),
                 OreDictNames.craftingGrinder));
 
-
         ItemList.Upgrade_Muffler.set(
             addItem(
                 tLastID = 727,
@@ -2928,8 +2930,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L)));
 
-
-
         ItemList.Cover_SolarPanel.set(
             addItem(
                 tLastID = 750,
@@ -3011,7 +3011,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 64L)));
 
-
         ItemList.Tool_Sonictron.set(
             addItem(
                 tLastID = 760,
@@ -3062,7 +3061,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 8L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 8L)));
 
-
         ItemList.Cover_RedstoneTransmitterExternal.set(
             addItem(
                 tLastID = 741,
@@ -3099,7 +3097,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "Attach to Multiblock Controller. Emits Redstone Signal if needs Maintenance",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L)));
-
 
         ItemList.Steam_Regulator_LV.set(
             addItem(
@@ -3280,15 +3277,15 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         return (super.doesMaterialAllowGeneration(aPrefix, aMaterial));
     }
 
-    private void setBurnValues(){
+    private void setBurnValues() {
         setBurnValue(17000 + Materials.Wood.mMetaItemSubID, 1600);
     }
 
-    private void oredictBlacklistEntries(){
+    private void oredictBlacklistEntries() {
         GT_OreDictUnificator.addToBlacklist(new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID));
     }
 
-    private void compressorRecipes(){
+    private void compressorRecipes() {
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 8L))
             .itemOutputs(new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID))
@@ -3296,7 +3293,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(2)
             .addTo(compressorRecipes);
     }
-    private void registerCovers(){
+
+    private void registerCovers() {
         final ITexture doesWorkCoverTexture = TextureFactory.of(
             TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
             TextureFactory.builder()
@@ -3632,7 +3630,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             new GT_Cover_NeedMaintainance(TextureFactory.of(OVERLAY_MAINTENANCE_DETECTOR)));
 
     }
-    private void removeRecipes(){
+
+    private void removeRecipes() {
         GT_ModHandler.removeRecipe(
             new ItemStack(Blocks.glass),
             null,
@@ -3640,7 +3639,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             null,
             new ItemStack(Blocks.glass));
     }
-    private void assemblerRecipes(){
+
+    private void assemblerRecipes() {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
@@ -3650,7 +3650,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(40 * SECONDS)
             .eut(1)
             .addTo(assemblerRecipes);
-
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -3911,8 +3910,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
 
-
-
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
@@ -4013,9 +4010,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(4)
             .addTo(assemblerRecipes);
 
-
-
-
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Sensor_LV.get(1L), ItemList.Emitter_LV.get(1L), GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.NC_SensorKit.get(1L))
@@ -4073,7 +4067,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
     }
-    private void cannerRecipes(){
+
+    private void cannerRecipes() {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 2L),
@@ -4147,7 +4142,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(2)
             .addTo(cannerRecipes);
     }
-    private void packagerRecipes(){
+
+    private void packagerRecipes() {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Tool_Matches.get(16L),
@@ -4163,7 +4159,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(16)
             .addTo(packagerRecipes);
     }
-    private void extractorRecipes(){
+
+    private void extractorRecipes() {
         GT_ModHandler
             .addExtractionRecipe(ItemList.Battery_SU_LV_SulfuricAcid.get(1L), ItemList.Battery_Hull_LV.get(1L));
         GT_ModHandler.addExtractionRecipe(ItemList.Battery_SU_LV_Mercury.get(1L), ItemList.Battery_Hull_LV.get(1L));
@@ -4183,7 +4180,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_HV_Lithium.get(1L), ItemList.Battery_Hull_HV.get(1L));
         GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_HV_Sodium.get(1L), ItemList.Battery_Hull_HV.get(1L));
     }
-    private void craftingShapedRecipes(){
+
+    private void craftingShapedRecipes() {
         ItemStack tStack = new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID);
         tStack.setStackDisplayName("The holy Planks of Sengir");
         GT_Utility.ItemNBT.addEnchantment(tStack, Enchantment.smite, 10);
@@ -4328,7 +4326,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 OrePrefixes.gearGtSmall.get(Materials.TungstenSteel), 'M', ItemList.Electric_Motor_IV, 'C',
                 OrePrefixes.cableGt01.get(Materials.Tungsten) });
 
-
         GT_ModHandler.addCraftingRecipe(
             ItemList.Electric_Pump_LV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
@@ -4370,7 +4367,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 'S', OrePrefixes.screw.get(Materials.TungstenSteel), 'W', OrePrefixes.cableGt01.get(Materials.Tungsten),
                 'P', OrePrefixes.pipeMedium.get(Materials.TungstenSteel) });
 
-
         GT_ModHandler.addCraftingRecipe(
             ItemList.Conveyor_Module_LV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
@@ -4402,7 +4398,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             new Object[] { "RRR", "MCM", "RRR", 'M', ItemList.Electric_Motor_IV, 'C',
                 OrePrefixes.cableGt01.get(Materials.Tungsten), 'R',
                 OrePrefixes.plate.get(Materials.AnySyntheticRubber) });
-
 
         GT_ModHandler.addCraftingRecipe(
             ItemList.Robot_Arm_LV.get(1L),
@@ -4475,7 +4470,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             new Object[] { "SSC", "WQS", "CWS", 'Q', ItemList.QuantumStar, 'S',
                 OrePrefixes.stick.get(Materials.Iridium), 'C', OrePrefixes.circuit.get(Materials.Elite), 'W',
                 OrePrefixes.cableGt01.get(Materials.Tungsten) });
-
 
         GT_ModHandler.addCraftingRecipe(
             ItemList.Sensor_LV.get(1L),
@@ -4677,7 +4671,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
 
     }
-    private void craftingShapelessRecipes(){
+
+    private void craftingShapelessRecipes() {
 
         GT_ModHandler.addShapelessCraftingRecipe(
             ItemList.Coin_Chocolate.get(1L),
