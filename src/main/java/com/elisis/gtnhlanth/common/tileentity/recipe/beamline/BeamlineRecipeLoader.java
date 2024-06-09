@@ -91,8 +91,8 @@ public class BeamlineRecipeLoader {
          * ALPHA
          */
         BeamlineRecipeAdder2.instance.addSourceChamberRecipe(
-            new ItemStack[] { Materials.Uranium.getDustTiny(1) },
-            new ItemStack[] { WerkstoffMaterialPool.Thorium234.get(OrePrefixes.dustTiny, 1) },
+            new ItemStack[] { Materials.Uranium.getDust(1) },
+            new ItemStack[] { WerkstoffMaterialPool.Thorium234.get(OrePrefixes.dust, 1) },
             Particle.ALPHA.ordinal(),
             1,
             4270,

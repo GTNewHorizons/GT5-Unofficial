@@ -42,6 +42,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -312,7 +313,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
             return false;
         }
 
-        mMaxProgresstime = 20;
+        mMaxProgresstime = 1 * TickTime.SECOND;
         // Consume the input tier's corresponding practical voltage instead of the maximum suggested by the logic
         mEUt = (int) -GT_Values.VP[(int) this.getInputVoltageTier()];
 
@@ -374,8 +375,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
         // GT_Log.out.print("Fluid ok");
 
         primFluid.amount -= fluidConsumed;
-
-        FluidStack fluidOutput = null;
+        
         /*
          * Materials fluidMat = Materials.getGtMaterialFromFluid(primFluid.getFluid()); if
          * (fluidMat.equals(Materials.LiquidNitrogen)) { fluidOutput = Materials.Nitrogen.getGas(fluidConsumed); } else
@@ -395,7 +395,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
          * Materials.Oxygen.getGas(fluidConsumed); if (primFluid.isFluidEqual(Materials.SuperCoolant.getFluid(1L))) { }
          */
         // GT_Log.out.print("ABFluid " + primFluid.getLocalizedName());
-        fluidOutput = new FluidStack(BeamlineRecipeLoader.coolantMap.get(primFluid.getFluid()), fluidConsumed);
+        FluidStack fluidOutput = new FluidStack(BeamlineRecipeLoader.coolantMap.get(primFluid.getFluid()), fluidConsumed);
 
         if (Objects.isNull(fluidOutput)) return false;
 
