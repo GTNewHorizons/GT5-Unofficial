@@ -18,6 +18,15 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.elisis.gtnhlanth.common.beamline.BeamInformation;
 import com.elisis.gtnhlanth.common.beamline.BeamLinePacket;
 import com.elisis.gtnhlanth.common.beamline.Particle;
@@ -47,14 +56,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchrotron>
     implements ISurvivalConstructable {
@@ -63,10 +64,10 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
     protected static final String STRUCTURE_PIECE_ENTRANCE = "entrance";
     protected static final String STRUCTURE_PIECE_BASE = "base";
-    
+
     public static final int CONSUMED_FLUID = 32_000; // Fluid consumed per processed recipe, maybe increase with EU
     public static final int MIN_INPUT_FOCUS = 25; // Inclusive
-    
+
     private ArrayList<TileHatchInputBeamline> mInputBeamline = new ArrayList<>();
     private ArrayList<TileHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
@@ -790,7 +791,9 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         primaryFluid.amount -= CONSUMED_FLUID;
 
-        FluidStack fluidOutput = new FluidStack(BeamlineRecipeLoader.coolantMap.get(primaryFluid.getFluid()), CONSUMED_FLUID);
+        FluidStack fluidOutput = new FluidStack(
+            BeamlineRecipeLoader.coolantMap.get(primaryFluid.getFluid()),
+            CONSUMED_FLUID);
         if (Objects.isNull(fluidOutput)) return false;
 
         this.addFluidOutputs(new FluidStack[] { fluidOutput });
