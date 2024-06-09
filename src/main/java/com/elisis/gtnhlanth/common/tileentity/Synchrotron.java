@@ -768,10 +768,10 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
         inputRate = this.getInputInformation()
             .getRate();
         outputRate = (int) (inputRate * getOutputRatetio(voltageFactor));
-        
+
         if (outputRate == 0) {
-        	stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.low_input_rate"));
-        	return false;
+            stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.low_input_rate"));
+            return false;
         }
 
         // GT_Log.out.print("Voltage factor " + voltageFactor);

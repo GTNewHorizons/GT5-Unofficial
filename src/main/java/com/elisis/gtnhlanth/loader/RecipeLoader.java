@@ -527,13 +527,12 @@ public class RecipeLoader {
             .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
-        	.itemInputs(Materials.Iron.getDust(2), Materials.NetherQuartz.getPlates(1))
-        	.itemOutputs(new ItemStack(LanthItemList.IRON_COATED_QUARTZ))
-        	.duration(10 * GT_RecipeBuilder.SECONDS)
-        	.eut(480)
-        	.addTo(assemblerRecipes);
-        
-        
+            .itemInputs(Materials.Iron.getDust(2), Materials.NetherQuartz.getPlates(1))
+            .itemOutputs(new ItemStack(LanthItemList.IRON_COATED_QUARTZ))
+            .duration(10 * GT_RecipeBuilder.SECONDS)
+            .eut(480)
+            .addTo(assemblerRecipes);
+
         // Masks
         // Quartz + Fe2O3 T1
         // " + Cr T2

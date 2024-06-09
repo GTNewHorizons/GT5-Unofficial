@@ -1937,7 +1937,8 @@ public class WerkstoffMaterialPool implements Runnable {
         new short[] { 210, 230, 225 },
         "Mu-metal",
         subscriptNumbers("?NiFeCuCrMo?"),
-        new Werkstoff.Stats().setBlastFurnace(true).setMass(180),
+        new Werkstoff.Stats().setBlastFurnace(true)
+            .setMass(180),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
@@ -2032,7 +2033,7 @@ public class WerkstoffMaterialPool implements Runnable {
         new Werkstoff.Stats().setMass(200),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
-        	.onlyDust()
+            .onlyDust()
             .addGems()
             .addSimpleMetalWorkingItems(),
         offsetID3b + 8,
