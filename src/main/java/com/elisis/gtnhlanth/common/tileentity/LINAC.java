@@ -375,7 +375,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
         // GT_Log.out.print("Fluid ok");
 
         primFluid.amount -= fluidConsumed;
-        
+
         /*
          * Materials fluidMat = Materials.getGtMaterialFromFluid(primFluid.getFluid()); if
          * (fluidMat.equals(Materials.LiquidNitrogen)) { fluidOutput = Materials.Nitrogen.getGas(fluidConsumed); } else
@@ -395,7 +395,9 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
          * Materials.Oxygen.getGas(fluidConsumed); if (primFluid.isFluidEqual(Materials.SuperCoolant.getFluid(1L))) { }
          */
         // GT_Log.out.print("ABFluid " + primFluid.getLocalizedName());
-        FluidStack fluidOutput = new FluidStack(BeamlineRecipeLoader.coolantMap.get(primFluid.getFluid()), fluidConsumed);
+        FluidStack fluidOutput = new FluidStack(
+            BeamlineRecipeLoader.coolantMap.get(primFluid.getFluid()),
+            fluidConsumed);
 
         if (Objects.isNull(fluidOutput)) return false;
 
