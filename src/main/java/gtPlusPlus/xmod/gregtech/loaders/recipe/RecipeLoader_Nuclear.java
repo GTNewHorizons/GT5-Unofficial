@@ -455,7 +455,7 @@ public class RecipeLoader_Nuclear {
     private static void fluidExtractorRecipes() {
 
         // FLiBe fuel
-        CORE.RA.addFluidExtractionRecipe(NUCLIDE.Li2BeF4.getDust(1), NUCLIDE.Li2BeF4.getFluidStack(1000), 100, 500);
+        CORE.RA.addFluidExtractionRecipe(NUCLIDE.Li2BeF4.getDust(1), NUCLIDE.Li2BeF4.getFluidStack(144), 100, 500);
         // Lithium Fluoride
         CORE.RA.addFluidExtractionRecipe(
             ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 1),
