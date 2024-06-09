@@ -118,6 +118,18 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
+
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.elisis.gtnhlanth.Tags;
@@ -126,8 +138,8 @@ import com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool;
 import com.elisis.gtnhlanth.common.register.LanthItemList;
 import com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool;
 import com.github.bartimaeusnek.bartworks.system.material.BW_GT_MaterialReference;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.PlatinumSludgeOverHaul;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.items.MyMaterial;
@@ -145,17 +157,6 @@ import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
 import ic2.core.Ic2Items;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class RecipeLoader {
 
@@ -642,69 +643,84 @@ public class RecipeLoader {
             if (maskIngredient == null) continue;
 
             if (mask.getLensColour() == null) { // CR Recipe
-            	
-            	if (mask == MaskList.PPIC) {
-            		
-            		GT_Values.RA.stdBuilder()
-            			.itemInputs(new ItemStack(LanthItemList.maskMap.get(MaskList.NPIC)), Materials.IndiumGalliumPhosphide.getDust(64))
-            			.fluidInputs(Materials.Sunnarium.getMolten(1440L))
-            			.itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PPIC)))
-            			.duration(60 * GT_RecipeBuilder.SECONDS)
-            			.eut(TierEU.RECIPE_ZPM).requiresCleanRoom()
-            			.addTo(UniversalChemical);            			
-            		
-            	} else if (mask == MaskList.HPIC) {
-            		GT_Values.RA.stdBuilder()
-        				.itemInputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PIC)), Materials.IndiumGalliumPhosphide.getDust(2))
-        				.fluidInputs(Materials.VanadiumGallium.getMolten(288L))
-        				.itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.HPIC)))
-        				.duration(60 * GT_RecipeBuilder.SECONDS)
-        				.eut(7860).requiresCleanRoom()
-        				.addTo(UniversalChemical);     
-            	
-            	} else if (mask == MaskList.UHPIC) {
-            		
-            		GT_Values.RA.stdBuilder()
-        				.itemInputs(new ItemStack(LanthItemList.maskMap.get(MaskList.HPIC)), Materials.IndiumGalliumPhosphide.getDust(8))
-        				.fluidInputs(Materials.Naquadah.getMolten(576L))
-        				.itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.UHPIC)))
-        				.duration(60 * GT_RecipeBuilder.SECONDS)
-        				.eut(TierEU.RECIPE_LuV).requiresCleanRoom()
-        				.addTo(UniversalChemical);     
-            		
-            	
-            	} else if (mask == MaskList.NCPU) {
-            		
-            		GT_Values.RA.stdBuilder()
-        			.itemInputs(new ItemStack(LanthItemList.maskMap.get(MaskList.CPU)), GT_Utility.copyAmount(16, Ic2Items.carbonFiber))
-        			.fluidInputs(Materials.Glowstone.getMolten(576L))
-        			.itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.NCPU)))
-        			.duration(60 * GT_RecipeBuilder.SECONDS)
-        			.eut(TierEU.RECIPE_EV).requiresCleanRoom()
-        			.addTo(UniversalChemical);     
-            		
-            	} else if (mask == MaskList.QBIT) {
-            		
-            		GT_Values.RA.stdBuilder()
-        			.itemInputs(new ItemStack(LanthItemList.maskMap.get(MaskList.NCPU)), Materials.IndiumGalliumPhosphide.getDust(1))
-        			.fluidInputs(Materials.Radon.getGas(50L))
-        			.itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.QBIT)))
-        			.duration(60 * GT_RecipeBuilder.SECONDS)
-        			.eut(TierEU.RECIPE_EV).requiresCleanRoom()
-        			.addTo(UniversalChemical);
-            		
-            		GT_Values.RA.stdBuilder()
-        			.itemInputs(new ItemStack(LanthItemList.maskMap.get(MaskList.NCPU)), ItemList.QuantumEye.get(2))
-        			.fluidInputs(Materials.GalliumArsenide.getMolten(288L))
-        			.itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.QBIT)))
-        			.duration(45 * GT_RecipeBuilder.SECONDS)
-        			.eut(TierEU.RECIPE_EV).requiresCleanRoom()
-        			.addTo(UniversalChemical);
-            		
-            	}
-            	
-            	continue;
-            
+
+                if (mask == MaskList.PPIC) {
+
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                            new ItemStack(LanthItemList.maskMap.get(MaskList.NPIC)),
+                            Materials.IndiumGalliumPhosphide.getDust(64))
+                        .fluidInputs(Materials.Sunnarium.getMolten(1440L))
+                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PPIC)))
+                        .duration(60 * GT_RecipeBuilder.SECONDS)
+                        .eut(TierEU.RECIPE_ZPM)
+                        .requiresCleanRoom()
+                        .addTo(UniversalChemical);
+
+                } else if (mask == MaskList.HPIC) {
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                            new ItemStack(LanthItemList.maskMap.get(MaskList.PIC)),
+                            Materials.IndiumGalliumPhosphide.getDust(2))
+                        .fluidInputs(Materials.VanadiumGallium.getMolten(288L))
+                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.HPIC)))
+                        .duration(60 * GT_RecipeBuilder.SECONDS)
+                        .eut(7860)
+                        .requiresCleanRoom()
+                        .addTo(UniversalChemical);
+
+                } else if (mask == MaskList.UHPIC) {
+
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                            new ItemStack(LanthItemList.maskMap.get(MaskList.HPIC)),
+                            Materials.IndiumGalliumPhosphide.getDust(8))
+                        .fluidInputs(Materials.Naquadah.getMolten(576L))
+                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.UHPIC)))
+                        .duration(60 * GT_RecipeBuilder.SECONDS)
+                        .eut(TierEU.RECIPE_LuV)
+                        .requiresCleanRoom()
+                        .addTo(UniversalChemical);
+
+                } else if (mask == MaskList.NCPU) {
+
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                            new ItemStack(LanthItemList.maskMap.get(MaskList.CPU)),
+                            GT_Utility.copyAmount(16, Ic2Items.carbonFiber))
+                        .fluidInputs(Materials.Glowstone.getMolten(576L))
+                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.NCPU)))
+                        .duration(60 * GT_RecipeBuilder.SECONDS)
+                        .eut(TierEU.RECIPE_EV)
+                        .requiresCleanRoom()
+                        .addTo(UniversalChemical);
+
+                } else if (mask == MaskList.QBIT) {
+
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                            new ItemStack(LanthItemList.maskMap.get(MaskList.NCPU)),
+                            Materials.IndiumGalliumPhosphide.getDust(1))
+                        .fluidInputs(Materials.Radon.getGas(50L))
+                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.QBIT)))
+                        .duration(60 * GT_RecipeBuilder.SECONDS)
+                        .eut(TierEU.RECIPE_EV)
+                        .requiresCleanRoom()
+                        .addTo(UniversalChemical);
+
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(new ItemStack(LanthItemList.maskMap.get(MaskList.NCPU)), ItemList.QuantumEye.get(2))
+                        .fluidInputs(Materials.GalliumArsenide.getMolten(288L))
+                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.QBIT)))
+                        .duration(45 * GT_RecipeBuilder.SECONDS)
+                        .eut(TierEU.RECIPE_EV)
+                        .requiresCleanRoom()
+                        .addTo(UniversalChemical);
+
+                }
+
+                continue;
+
             }
 
             if (mask == MaskList.NAND) {
