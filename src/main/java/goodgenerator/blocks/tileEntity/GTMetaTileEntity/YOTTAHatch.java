@@ -262,7 +262,7 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
                     final BigInteger delta = host.mStorage.subtract(host.mStorageCurrent);
                     returned = delta.intValueExact();
                 }
-                host.mStorageCurrent = host.mStorage;
+                if (doFill) host.mStorageCurrent = host.mStorage;
                 return returned;
             }
         }
@@ -291,7 +291,7 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
                     final BigInteger delta = host.mStorage.subtract(host.mStorageCurrent);
                     returned = delta.longValueExact();
                 }
-                host.mStorageCurrent = host.mStorage;
+                if (doFill) host.mStorageCurrent = host.mStorage;
                 return returned;
             }
         }
