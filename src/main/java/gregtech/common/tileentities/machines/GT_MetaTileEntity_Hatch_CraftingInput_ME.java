@@ -812,13 +812,13 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             for (ItemStack item : i.itemInventory) {
                 if (item != null && item.stackSize > 0) {
                     String name = item.getDisplayName();
-                    nameToAmount.merge(name, (long) item.stackSize,Long::sum);
+                    nameToAmount.merge(name, (long) item.stackSize, Long::sum);
                 }
             }
             for (FluidStack fluid : i.fluidInventory) {
                 if (fluid != null && fluid.amount > 0) {
                     String name = fluid.getLocalizedName();
-                    nameToAmount.merge(name, (long) fluid.amount,Long::sum);
+                    nameToAmount.merge(name, (long) fluid.amount, Long::sum);
                 }
             }
         }
