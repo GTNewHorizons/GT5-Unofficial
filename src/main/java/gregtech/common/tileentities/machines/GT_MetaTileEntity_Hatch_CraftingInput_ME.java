@@ -34,6 +34,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -131,7 +132,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             NBTTagList inv = nbt.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < inv.tagCount(); i++) {
                 NBTTagCompound tagItemStack = inv.getCompoundTagAt(i);
-                var item = GT_Utility.loadItem(tagItemStack);
+                ItemStack item = GT_Utility.loadItem(tagItemStack);
                 if (item != null) {
                     if (item.stackSize > 0) {
                         itemInventory.add(item);
@@ -145,7 +146,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             NBTTagList fluidInv = nbt.getTagList("fluidInventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < fluidInv.tagCount(); i++) {
                 NBTTagCompound tagFluidStack = fluidInv.getCompoundTagAt(i);
-                var fluid = FluidStack.loadFluidStackFromNBT(tagFluidStack);
+                FluidStack fluid = FluidStack.loadFluidStackFromNBT(tagFluidStack);
                 if (fluid != null) {
                     if (fluid.amount > 0) {
                         fluidInventory.add(fluid);
@@ -165,28 +166,47 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                         .getPatternForItem(newPattern, world)));
         }
 
-        private boolean isEmpty() {
-            // if one item / fluid is empty then it should be safe to assume all other is empty,
-            // or at least won't require a recipe check, as long as the pattern is sane
-            if (!itemInventory.isEmpty()) {
-                return itemInventory.get(0) == null || itemInventory.get(0).stackSize <= 0;
+        public void updateSlotItems() {
+            for (int i = itemInventory.size() - 1; i >= 0; i--) {
+                ItemStack itemStack = itemInventory.get(i);
+                if (itemStack == null || itemStack.stackSize <= 0) {
+                    itemInventory.remove(i);
+                }
             }
+        }
 
-            if (!fluidInventory.isEmpty()) {
-                return fluidInventory.get(0) == null || fluidInventory.get(0).amount <= 0;
+        public void updateSlotFluids() {
+            for (int i = fluidInventory.size() - 1; i >= 0; i--) {
+                FluidStack fluidStack = fluidInventory.get(i);
+                if (fluidStack == null || fluidStack.amount <= 0) {
+                    fluidInventory.remove(i);
+                }
             }
-            return true;
+        }
+
+        public boolean isItemEmpty() {
+            updateSlotItems();
+            return itemInventory.isEmpty();
+        }
+
+        public boolean isFluidEmpty() {
+            updateSlotFluids();
+            return fluidInventory.isEmpty();
+        }
+
+        public boolean isEmpty() {
+            return isItemEmpty() && isFluidEmpty();
         }
 
         @Override
         public ItemStack[] getItemInputs() {
-            if (isEmpty()) return new ItemStack[0];
+            if (isItemEmpty()) return new ItemStack[0];
             return ArrayUtils.addAll(itemInventory.toArray(new ItemStack[0]), sharedItemGetter.getSharedItem());
         }
 
         @Override
         public FluidStack[] getFluidInputs() {
-            if (isEmpty()) return new FluidStack[0];
+            if (isFluidEmpty()) return new FluidStack[0];
             return fluidInventory.toArray(new FluidStack[0]);
         }
 
@@ -223,73 +243,51 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             }
         }
 
+        private void insertItem(ItemStack inserted) {
+            for (ItemStack itemStack : itemInventory) {
+                if (GT_Utility.areStacksEqual(inserted, itemStack)) {
+                    if (itemStack.stackSize > Integer.MAX_VALUE - inserted.stackSize) {
+                        inserted.stackSize -= Integer.MAX_VALUE - itemStack.stackSize;
+                        itemStack.stackSize = Integer.MAX_VALUE;
+                    } else {
+                        itemStack.stackSize += inserted.stackSize;
+                        return;
+                    }
+                }
+            }
+            if (inserted.stackSize > 0) {
+                itemInventory.add(inserted);
+            }
+        }
+
+        private void insertFluid(FluidStack inserted) {
+            for (FluidStack fluidStack : fluidInventory) {
+                if (GT_Utility.areFluidsEqual(inserted, fluidStack)) {
+                    if (fluidStack.amount > Integer.MAX_VALUE - inserted.amount) {
+                        inserted.amount -= Integer.MAX_VALUE - fluidStack.amount;
+                        fluidStack.amount = Integer.MAX_VALUE;
+                    } else {
+                        fluidStack.amount += inserted.amount;
+                        return;
+                    }
+                }
+            }
+            if (inserted.amount > 0) {
+                fluidInventory.add(inserted);
+            }
+        }
+
         public boolean insertItemsAndFluids(InventoryCrafting inventoryCrafting) {
-            int errorIndex = -1; // overflow may occur at this index
             for (int i = 0; i < inventoryCrafting.getSizeInventory(); ++i) {
                 ItemStack itemStack = inventoryCrafting.getStackInSlot(i);
                 if (itemStack == null) continue;
 
-                boolean inserted = false;
                 if (itemStack.getItem() instanceof ItemFluidPacket) { // insert fluid
-                    var fluidStack = ItemFluidPacket.getFluidStack(itemStack);
-                    if (fluidStack == null) continue;
-                    for (var fluid : fluidInventory) {
-                        if (!fluid.isFluidEqual(fluidStack)) continue;
-                        if (Integer.MAX_VALUE - fluidStack.amount < fluid.amount) {
-                            // Overflow detected
-                            errorIndex = i;
-                            break;
-                        }
-                        fluid.amount += fluidStack.amount;
-                        inserted = true;
-                        break;
-                    }
-                    if (errorIndex != -1) break;
-                    if (!inserted) {
-                        fluidInventory.add(fluidStack);
-                    }
+                    FluidStack fluidStack = ItemFluidPacket.getFluidStack(itemStack);
+                    if (fluidStack != null) insertFluid(fluidStack);
                 } else { // insert item
-                    for (var item : itemInventory) {
-                        if (!itemStack.isItemEqual(item)) continue;
-                        if (Integer.MAX_VALUE - itemStack.stackSize < item.stackSize) {
-                            // Overflow detected
-                            errorIndex = i;
-                            break;
-                        }
-                        item.stackSize += itemStack.stackSize;
-                        inserted = true;
-                        break;
-                    }
-                    if (errorIndex != -1) break;
-                    if (!inserted) {
-                        itemInventory.add(itemStack);
-                    }
+                    insertItem(itemStack);
                 }
-            }
-            if (errorIndex != -1) { // need to rollback
-                // Clean up the inserted items/liquids
-                for (int i = 0; i < errorIndex; ++i) {
-                    var itemStack = inventoryCrafting.getStackInSlot(i);
-                    if (itemStack == null) continue;
-                    if (itemStack.getItem() instanceof ItemFluidPacket) { // remove fluid
-                        var fluidStack = ItemFluidPacket.getFluidStack(itemStack);
-                        if (fluidStack == null) continue;
-                        for (var fluid : fluidInventory) {
-                            if (fluid.isFluidEqual(fluidStack)) {
-                                fluid.amount -= fluidStack.amount;
-                                break;
-                            }
-                        }
-                    } else { // remove item
-                        for (var item : itemInventory) {
-                            if (item.isItemEqual(itemStack)) {
-                                item.stackSize -= itemStack.stackSize;
-                                break;
-                            }
-                        }
-                    }
-                }
-                return false;
             }
             return true;
         }
@@ -606,13 +604,13 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public String[] getInfoData() {
-        var ret = new ArrayList<String>();
+        List<String> ret = new ArrayList<>();
         ret.add(
             "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
                 : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
         ret.add("Internal Inventory: ");
-        var i = 0;
-        for (var slot : internalInventory) {
+        int i = 0;
+        for (PatternSlot slot : internalInventory) {
             if (slot == null) continue;
             IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
 
@@ -623,21 +621,26 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                     + EnumChatFormatting.BLUE
                     + describePattern(slot.patternDetails)
                     + EnumChatFormatting.RESET);
-            for (var item : slot.itemInventory) {
-                if (item == null || item.stackSize == 0) continue;
+            Map<GT_Utility.ItemId, Long> itemMap = GT_Utility.convertItemListToMap(slot.itemInventory);
+            for (Map.Entry<GT_Utility.ItemId, Long> entry : itemMap.entrySet()) {
+                ItemStack item = entry.getKey()
+                    .getItemStack();
+                long amount = entry.getValue();
                 ret.add(
                     item.getItem()
                         .getItemStackDisplayName(item) + ": "
                         + EnumChatFormatting.GOLD
-                        + nc.toWideReadableForm(item.stackSize)
+                        + nc.toWideReadableForm(amount)
                         + EnumChatFormatting.RESET);
             }
-            for (var fluid : slot.fluidInventory) {
-                if (fluid == null || fluid.amount == 0) continue;
+            Map<Fluid, Long> fluidMap = GT_Utility.convertFluidListToMap(slot.fluidInventory);
+            for (Map.Entry<Fluid, Long> entry : fluidMap.entrySet()) {
+                FluidStack fluid = new FluidStack(entry.getKey(), 1);
+                long amount = entry.getValue();
                 ret.add(
                     fluid.getLocalizedName() + ": "
                         + EnumChatFormatting.AQUA
-                        + nc.toWideReadableForm(fluid.amount)
+                        + nc.toWideReadableForm(amount)
                         + EnumChatFormatting.RESET);
             }
         }
@@ -694,11 +697,11 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
                     @Override
                     protected ItemStack getItemStackForRendering(Slot slotIn) {
-                        var stack = slot.getStack();
+                        ItemStack stack = slot.getStack();
                         if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)) {
                             return stack;
                         }
-                        var output = patternItem.getOutput(stack);
+                        ItemStack output = patternItem.getOutput(stack);
                         return output != null ? output : stack;
                     }
                 }.setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
@@ -743,10 +746,10 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     private void onPatternChange(int index, ItemStack newItem) {
         if (!getBaseMetaTileEntity().isServerSide()) return;
 
-        var world = getBaseMetaTileEntity().getWorld();
+        World world = getBaseMetaTileEntity().getWorld();
 
         // remove old if applicable
-        var originalPattern = internalInventory[index];
+        PatternSlot originalPattern = internalInventory[index];
         if (originalPattern != null) {
             if (originalPattern.hasChanged(newItem, world)) {
                 try {
@@ -762,7 +765,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         // original does not exist or has changed
         if (newItem == null || !(newItem.getItem() instanceof ICraftingPatternItem)) return;
 
-        var patternSlot = new PatternSlot(newItem, world, this::getSharedItems);
+        PatternSlot patternSlot = new PatternSlot(newItem, world, this::getSharedItems);
         internalInventory[index] = patternSlot;
         patternDetailsPatternSlotMap.put(patternSlot.getPatternDetails(), patternSlot);
 
@@ -783,11 +786,11 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         if (tag.hasKey("name"))
             currenttip.add(EnumChatFormatting.AQUA + tag.getString("name") + EnumChatFormatting.RESET);
         if (tag.hasKey("inventory")) {
-            var inventory = tag.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
+            NBTTagList inventory = tag.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < inventory.tagCount(); ++i) {
-                var item = inventory.getCompoundTagAt(i);
-                var name = item.getString("name");
-                var amount = item.getLong("amount");
+                NBTTagCompound item = inventory.getCompoundTagAt(i);
+                String name = item.getString("name");
+                long amount = item.getLong("amount");
                 currenttip.add(
                     name + ": "
                         + EnumChatFormatting.GOLD
@@ -805,24 +808,22 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         NBTTagList inventory = new NBTTagList();
         HashMap<String, Long> nameToAmount = new HashMap<>();
         for (Iterator<PatternSlot> it = inventories(); it.hasNext();) {
-            var i = it.next();
-            for (var item : i.itemInventory) {
+            PatternSlot i = it.next();
+            for (ItemStack item : i.itemInventory) {
                 if (item != null && item.stackSize > 0) {
-                    var name = item.getDisplayName();
-                    var amount = nameToAmount.getOrDefault(name, 0L);
-                    nameToAmount.put(name, amount + item.stackSize);
+                    String name = item.getDisplayName();
+                    nameToAmount.merge(name, (long) item.stackSize, Long::sum);
                 }
             }
-            for (var fluid : i.fluidInventory) {
+            for (FluidStack fluid : i.fluidInventory) {
                 if (fluid != null && fluid.amount > 0) {
-                    var name = fluid.getLocalizedName();
-                    var amount = nameToAmount.getOrDefault(name, 0L);
-                    nameToAmount.put(name, amount + fluid.amount);
+                    String name = fluid.getLocalizedName();
+                    nameToAmount.merge(name, (long) fluid.amount, Long::sum);
                 }
             }
         }
-        for (var entry : nameToAmount.entrySet()) {
-            var item = new NBTTagCompound();
+        for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
+            NBTTagCompound item = new NBTTagCompound();
             item.setString("name", entry.getKey());
             item.setLong("amount", entry.getValue());
             inventory.appendTag(item);
@@ -891,7 +892,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     }
 
     private void refundAll() {
-        for (var slot : internalInventory) {
+        for (PatternSlot slot : internalInventory) {
             if (slot == null) continue;
             try {
                 slot.refund(getProxy(), getRequest());
@@ -901,7 +902,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public boolean justUpdated() {
-        var ret = justHadNewItems;
+        boolean ret = justHadNewItems;
         justHadNewItems = false;
         return ret;
     }
@@ -932,7 +933,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         final ItemStack is = aPlayer.inventory.getCurrentItem();
         if (is != null && is.getItem() instanceof ToolQuartzCuttingKnife) {
             if (ForgeEventFactory.onItemUseStart(aPlayer, is, 1) <= 0) return false;
-            var te = getBaseMetaTileEntity();
+            IGregTechTileEntity te = getBaseMetaTileEntity();
             aPlayer.openGui(
                 AppEng.instance(),
                 GuiBridge.GUI_RENAMER.ordinal() << 5 | (side.ordinal()),
