@@ -169,11 +169,13 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
 
     @Override
     public IAEFluidStack injectItems(IAEFluidStack input, Actionable type, BaseActionSource src) {
-        long amt = fill(null, input, false);
-        if (amt == input.getStackSize()) {
-            if (type.equals(Actionable.MODULATE)) fill(null, input, true);
-            return null;
+        long amt = fill(null, input, type.equals(Actionable.MODULATE));
+        if (amt == 0) {
+            return input;
         }
+        input = input.copy();
+        input.decStackSize(amt);
+        if (input.getStackSize() <= 0) return null;
         return input;
     }
 
