@@ -126,21 +126,21 @@ public class GregtechMetaTileEntity_SteamCompressor
                             { "CCC", "CCC", "CCC", "CCC" }, }))
                 .addElement(
                     'C',
-                        ofChain(
-                            ofBlocksTiered(
-                                GregtechMetaTileEntity_SteamCompressor::getTierMachineCasing,
-                                ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                                -1,
-                                (t, m) -> t.tierMachineCasing = m,
-                                t -> t.tierMachineCasing),
-                            buildSteamInput(GregtechMetaTileEntity_SteamCompressor.class).casingIndex(10)
-                                .dot(1)
-                                .build(),
-                            buildHatchAdder(GregtechMetaTileEntity_SteamCompressor.class)
-                                .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
-                                .casingIndex(10)
-                                .dot(1)
-                                .buildAndChain()))
+                    ofChain(
+                        ofBlocksTiered(
+                            GregtechMetaTileEntity_SteamCompressor::getTierMachineCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                            -1,
+                            (t, m) -> t.tierMachineCasing = m,
+                            t -> t.tierMachineCasing),
+                        buildSteamInput(GregtechMetaTileEntity_SteamCompressor.class).casingIndex(10)
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(GregtechMetaTileEntity_SteamCompressor.class)
+                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
+                            .casingIndex(10)
+                            .dot(1)
+                            .buildAndChain()))
                 .build();
         }
         return STRUCTURE_DEFINITION;

@@ -227,12 +227,12 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                             t -> t.tierGearBoxCasing)))
                 .addElement(
                     'C',
-                        ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamWasher::getTierPipeCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
-                            -1,
-                            (t, m) -> t.tierPipeCasing = m,
-                            t -> t.tierPipeCasing))
+                    ofBlocksTiered(
+                        GregtechMetaTileEntity_SteamWasher::getTierPipeCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
+                        -1,
+                        (t, m) -> t.tierPipeCasing = m,
+                        t -> t.tierPipeCasing))
                 .addElement('D', ofChain(ofBlock(Blocks.glass, 0), Glasses.chainAllGlasses()))
                 .addElement(
                     'E',
@@ -243,24 +243,21 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                         ofBlockAnyMeta(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater))))
                 .addElement(
                     'A',
-                        ofChain(
-                            ofBlocksTiered(
-                                GregtechMetaTileEntity_SteamWasher::getTierMachineCasing,
-                                ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                                -1,
-                                (t, m) -> t.tierMachineCasing = m,
-                                t -> t.tierMachineCasing),
-                            buildSteamInput(GregtechMetaTileEntity_SteamWasher.class).casingIndex(10)
-                                .dot(1)
-                                .build(),
-                            buildHatchAdder(GregtechMetaTileEntity_SteamWasher.class)
-                                .atLeast(
-                                    SteamHatchElement.InputBus_Steam,
-                                    SteamHatchElement.OutputBus_Steam,
-                                    InputHatch)
-                                .casingIndex(10)
-                                .dot(1)
-                                .buildAndChain()))
+                    ofChain(
+                        ofBlocksTiered(
+                            GregtechMetaTileEntity_SteamWasher::getTierMachineCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                            -1,
+                            (t, m) -> t.tierMachineCasing = m,
+                            t -> t.tierMachineCasing),
+                        buildSteamInput(GregtechMetaTileEntity_SteamWasher.class).casingIndex(10)
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(GregtechMetaTileEntity_SteamWasher.class)
+                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam, InputHatch)
+                            .casingIndex(10)
+                            .dot(1)
+                            .buildAndChain()))
                 .build();
 
         }
