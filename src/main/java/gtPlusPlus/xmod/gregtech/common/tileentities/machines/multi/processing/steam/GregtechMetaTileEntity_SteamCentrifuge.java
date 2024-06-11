@@ -192,12 +192,18 @@ public class GregtechMetaTileEntity_SteamCentrifuge
         tCountCasing = 0;
         if (!checkPiece(STRUCTUR_PIECE_MAIN, horizontalOffSet, verticalOffSet, depthOffSet)) return false;
         if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierFireBoxCasing < 0 && tierMachineCasing < 0) return false;
-        if (tierGearBoxCasing == 1 && tierPipeCasing == 1 && tierFireBoxCasing == 1 && tierMachineCasing == 1 && tCountCasing > 60) {
+        if (tierGearBoxCasing == 1 && tierPipeCasing == 1
+            && tierFireBoxCasing == 1
+            && tierMachineCasing == 1
+            && tCountCasing > 60) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
-        if (tierGearBoxCasing == 2 && tierPipeCasing == 2 && tierFireBoxCasing == 2 && tierMachineCasing == 2 && tCountCasing > 60) {
+        if (tierGearBoxCasing == 2 && tierPipeCasing == 2
+            && tierFireBoxCasing == 2
+            && tierMachineCasing == 2
+            && tCountCasing > 60) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
@@ -224,46 +230,45 @@ public class GregtechMetaTileEntity_SteamCentrifuge
                 .addShape(STRUCTUR_PIECE_MAIN, transpose(shape))
                 .addElement(
                     'B',
-                        ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamCentrifuge::getTierGearBoxCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
-                            -1,
-                            (t, m) -> t.tierGearBoxCasing = m,
-                            t -> t.tierGearBoxCasing))
+                    ofBlocksTiered(
+                        GregtechMetaTileEntity_SteamCentrifuge::getTierGearBoxCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
+                        -1,
+                        (t, m) -> t.tierGearBoxCasing = m,
+                        t -> t.tierGearBoxCasing))
                 .addElement(
                     'C',
-                        ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamCentrifuge::getTierPipeCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
-                            -1,
-                            (t, m) -> t.tierPipeCasing = m,
-                            t -> t.tierPipeCasing))
+                    ofBlocksTiered(
+                        GregtechMetaTileEntity_SteamCentrifuge::getTierPipeCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
+                        -1,
+                        (t, m) -> t.tierPipeCasing = m,
+                        t -> t.tierPipeCasing))
                 .addElement(
                     'D',
-                        ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamCentrifuge::getTierFireBoxCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
-                            -1,
-                            (t, m) -> t.tierFireBoxCasing = m,
-                            t -> t.tierFireBoxCasing))
+                    ofBlocksTiered(
+                        GregtechMetaTileEntity_SteamCentrifuge::getTierFireBoxCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
+                        -1,
+                        (t, m) -> t.tierFireBoxCasing = m,
+                        t -> t.tierFireBoxCasing))
                 .addElement(
                     'A',
-                        ofChain(
-                            buildSteamInput(GregtechMetaTileEntity_SteamCentrifuge.class).casingIndex(10)
-                                .dot(1)
-                                .build(),
-                            buildHatchAdder(GregtechMetaTileEntity_SteamCentrifuge.class)
-                                .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
-                                .casingIndex(10)
-                                .dot(1)
-                                .buildAndChain(),
-                            ofBlocksTiered(
-                                GregtechMetaTileEntity_SteamCentrifuge::getTierMachineCasing,
-                                ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                                -1,
-                                (t, m) -> t.tierMachineCasing = m,
-                                t -> t.tierMachineCasing)
-                        ))
+                    ofChain(
+                        buildSteamInput(GregtechMetaTileEntity_SteamCentrifuge.class).casingIndex(10)
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(GregtechMetaTileEntity_SteamCentrifuge.class)
+                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
+                            .casingIndex(10)
+                            .dot(1)
+                            .buildAndChain(),
+                        ofBlocksTiered(
+                            GregtechMetaTileEntity_SteamCentrifuge::getTierMachineCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                            -1,
+                            (t, m) -> t.tierMachineCasing = m,
+                            t -> t.tierMachineCasing)))
                 .build();
 
         }
