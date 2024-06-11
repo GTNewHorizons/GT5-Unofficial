@@ -217,12 +217,12 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                 .addShape(STRUCTUR_PIECE_MAIN, transpose(shape))
                 .addElement(
                     'B',
-                        ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamWasher::getTierGearBoxCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
-                            -1,
-                            (t, m) -> t.tierGearBoxCasing = m,
-                            t -> t.tierGearBoxCasing))
+                    ofBlocksTiered(
+                        GregtechMetaTileEntity_SteamWasher::getTierGearBoxCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
+                        -1,
+                        (t, m) -> t.tierGearBoxCasing = m,
+                        t -> t.tierGearBoxCasing))
                 .addElement(
                     'C',
                     ofBlocksTiered(
