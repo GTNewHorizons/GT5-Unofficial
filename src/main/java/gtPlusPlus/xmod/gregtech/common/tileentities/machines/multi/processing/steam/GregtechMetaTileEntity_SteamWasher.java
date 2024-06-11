@@ -96,13 +96,21 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
     private int tierMachineCasing = -1;
     private int tierMachine = 1;
 
+    private static int tCountCasing = 0;
+
     private String tGlasses = "Any Glass";
 
     private String tMachineCasing = "Solid Bronze or Steel Machine Casing";
 
     public static int getTierMachineCasing(Block block, int meta) {
-        if (block == sBlockCasings1 && 10 == meta) return 1;
-        if (block == sBlockCasings2 && 0 == meta) return 2;
+        if (block == sBlockCasings1 && 10 == meta) {
+            tCountCasing++;
+            return 1;
+        }
+        if (block == sBlockCasings2 && 0 == meta) {
+            tCountCasing++;
+            return 2;
+        }
         return -1;
     }
 
@@ -183,14 +191,15 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         tierGearBoxCasing = -1;
         tierPipeCasing = -1;
         tierMachineCasing = -1;
+        tCountCasing = 0;
         if (!checkPiece(STRUCTUR_PIECE_MAIN, horizontalOffSet, verticalOffSet, depthOffSet)) return false;
         if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierMachineCasing < 0) return false;
-        if (tierGearBoxCasing == 1 && tierPipeCasing == 1 && tierMachineCasing == 1) {
+        if (tierGearBoxCasing == 1 && tierPipeCasing == 1 && tierMachineCasing == 1 && tCountCasing > 55) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
-        if (tierGearBoxCasing == 2 && tierPipeCasing == 2 && tierMachineCasing == 2) {
+        if (tierGearBoxCasing == 2 && tierPipeCasing == 2 && tierMachineCasing == 2 && tCountCasing > 55) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
@@ -242,12 +251,6 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                 .addElement(
                     'A',
                     ofChain(
-                        ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamWasher::getTierMachineCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                            -1,
-                            (t, m) -> t.tierMachineCasing = m,
-                            t -> t.tierMachineCasing),
                         buildSteamInput(GregtechMetaTileEntity_SteamWasher.class).casingIndex(10)
                             .dot(1)
                             .build(),
@@ -255,7 +258,13 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                             .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam, InputHatch)
                             .casingIndex(10)
                             .dot(1)
-                            .buildAndChain()))
+                            .buildAndChain(),
+                        ofBlocksTiered(
+                            GregtechMetaTileEntity_SteamWasher::getTierMachineCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                            -1,
+                            (t, m) -> t.tierMachineCasing = m,
+                            t -> t.tierMachineCasing)))
                 .build();
 
         }
