@@ -56,6 +56,8 @@ public class GregtechMetaTileEntity_SteamMacerator
     extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamMacerator> implements ISurvivalConstructable {
 
     private String mCasingName = "Bronze or Steel Plated Bricks";
+
+    private static int mCounCasing = 0;
     private static IStructureDefinition<GregtechMetaTileEntity_SteamMacerator> STRUCTURE_DEFINITION = null;
 
     private int tierMachine = 0;
@@ -76,8 +78,14 @@ public class GregtechMetaTileEntity_SteamMacerator
     }
 
     public static int getTierMachineCasing(Block block, int meta) {
-        if (block == sBlockCasings1 && 10 == meta) return 1;
-        if (block == sBlockCasings2 && 0 == meta) return 2;
+        if (block == sBlockCasings1 && 10 == meta) {
+            mCounCasing++;
+            return 1;
+        }
+        if (block == sBlockCasings2 && 0 == meta) {
+            mCounCasing++;
+            return 2;
+        }
         return -1;
     }
 
@@ -130,15 +138,7 @@ public class GregtechMetaTileEntity_SteamMacerator
                         new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
                 .addElement(
                     'C',
-                    withChannel(
-                        "tier",
                         ofChain(
-                            ofBlocksTiered(
-                                GregtechMetaTileEntity_SteamMacerator::getTierMachineCasing,
-                                ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                                -1,
-                                (t, m) -> t.tierMachineCasing = m,
-                                t -> t.tierMachineCasing),
                             buildSteamInput(GregtechMetaTileEntity_SteamMacerator.class).casingIndex(10)
                                 .dot(1)
                                 .build(),
@@ -146,7 +146,13 @@ public class GregtechMetaTileEntity_SteamMacerator
                                 .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
                                 .casingIndex(10)
                                 .dot(1)
-                                .buildAndChain())))
+                                .buildAndChain(),
+                            ofBlocksTiered(
+                                GregtechMetaTileEntity_SteamMacerator::getTierMachineCasing,
+                                ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                                -1,
+                                (t, m) -> t.tierMachineCasing = m,
+                                t -> t.tierMachineCasing)))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -165,14 +171,15 @@ public class GregtechMetaTileEntity_SteamMacerator
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tierMachineCasing = -1;
+        mCounCasing = 0;
         if (!checkPiece(mName, 1, 1, 0)) return false;
         if (tierMachineCasing < 0) return false;
-        if (tierMachineCasing == 1) {
+        if (tierMachineCasing == 1 && mCounCasing > 14) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
-        if (tierMachineCasing == 2) {
+        if (tierMachineCasing == 2 && mCounCasing > 14) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
