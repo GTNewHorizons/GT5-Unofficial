@@ -130,8 +130,6 @@ public class GregtechMetaTileEntity_SteamMacerator
                         new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
                 .addElement(
                     'C',
-                    withChannel(
-                        "tier",
                         ofChain(
                             ofBlocksTiered(
                                 GregtechMetaTileEntity_SteamMacerator::getTierMachineCasing,
@@ -146,7 +144,7 @@ public class GregtechMetaTileEntity_SteamMacerator
                                 .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
                                 .casingIndex(10)
                                 .dot(1)
-                                .buildAndChain())))
+                                .buildAndChain()))
                 .build();
         }
         return STRUCTURE_DEFINITION;

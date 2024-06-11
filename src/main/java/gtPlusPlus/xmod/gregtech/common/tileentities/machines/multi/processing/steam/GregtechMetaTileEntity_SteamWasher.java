@@ -227,14 +227,12 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                             t -> t.tierGearBoxCasing)))
                 .addElement(
                     'C',
-                    withChannel(
-                        "tier",
                         ofBlocksTiered(
                             GregtechMetaTileEntity_SteamWasher::getTierPipeCasing,
                             ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
                             -1,
                             (t, m) -> t.tierPipeCasing = m,
-                            t -> t.tierPipeCasing)))
+                            t -> t.tierPipeCasing))
                 .addElement('D', ofChain(ofBlock(Blocks.glass, 0), Glasses.chainAllGlasses()))
                 .addElement(
                     'E',
@@ -245,8 +243,6 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                         ofBlockAnyMeta(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater))))
                 .addElement(
                     'A',
-                    withChannel(
-                        "tier",
                         ofChain(
                             ofBlocksTiered(
                                 GregtechMetaTileEntity_SteamWasher::getTierMachineCasing,
@@ -264,7 +260,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                                     InputHatch)
                                 .casingIndex(10)
                                 .dot(1)
-                                .buildAndChain())))
+                                .buildAndChain()))
                 .build();
 
         }
