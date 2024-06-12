@@ -99,12 +99,6 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mWrench = true;
-        mScrewdriver = true;
-        mSoftHammer = true;
-        mHardHammer = true;
-        mSolderingTool = true;
-        mCrowbar = true;
         return structureCheck_EM(mName, 5, 11, 0);
     }
 
@@ -136,19 +130,6 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new CoolantTower(mName);
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aTick % 72000 == 0) {
-            mWrench = true;
-            mScrewdriver = true;
-            mSoftHammer = true;
-            mHardHammer = true;
-            mSolderingTool = true;
-            mCrowbar = true;
-        }
     }
 
     @Override
@@ -221,5 +202,10 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivialBuildPiece(mName, stackSize, 5, 11, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

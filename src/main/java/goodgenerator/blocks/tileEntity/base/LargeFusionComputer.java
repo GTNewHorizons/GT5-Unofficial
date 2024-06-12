@@ -203,22 +203,9 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.eEnergyMulti.clear();
-        if (structureCheck_EM(MAIN_NAME, 23, 3, 40) && mInputHatches.size() + mDualInputHatches.size() != 0
+        return structureCheck_EM(MAIN_NAME, 23, 3, 40) && mInputHatches.size() + mDualInputHatches.size() != 0
             && !mOutputHatches.isEmpty()
-            && (mEnergyHatches.size() + eEnergyMulti.size()) != 0) {
-            fixAllIssue();
-            return true;
-        }
-        return false;
-    }
-
-    public void fixAllIssue() {
-        mWrench = true;
-        mScrewdriver = true;
-        mSoftHammer = true;
-        mHardHammer = true;
-        mSolderingTool = true;
-        mCrowbar = true;
+            && (mEnergyHatches.size() + eEnergyMulti.size()) != 0;
     }
 
     @Override
@@ -275,7 +262,6 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
         }
 
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (aTick % 400 == 0) fixAllIssue();
             if (mEfficiency < 0) mEfficiency = 0;
             if (mRunningOnLoad && checkMachine(aBaseMetaTileEntity, mInventory[1])) {
                 checkRecipe();
@@ -629,6 +615,11 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
             .widget(new FakeSyncWidget.LongSyncer(this::getEUVar, this::setEUVar));
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 
     public static final String[] L0 = { "                                               ",

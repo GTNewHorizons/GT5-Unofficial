@@ -450,7 +450,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
         if (mAllEnergyHatches.size() + mAllDynamoHatches.size() > 0) {
             mAverageEuUsage = volSum / (mAllEnergyHatches.size() + mAllDynamoHatches.size());
         } else mAverageEuUsage = 0;
-        fixAllMaintenanceIssue();
         return true;
     }
 
@@ -559,7 +558,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
         this.mMaxProgresstime = 200;
         this.lEUt = 0;
         this.mEfficiencyIncrease = 10000;
-        this.fixAllMaintenanceIssue();
         return SimpleCheckRecipeResult.ofSuccess("managing_power");
     }
 
@@ -610,11 +608,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
         // mTax = mTax * (1f + (10000f - mEfficiency) / 10000f);
 
         return MathUtils.roundToClosestLong(mTax);
-    }
-
-    @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        this.fixAllMaintenanceIssue();
     }
 
     @Override
@@ -934,5 +927,10 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
 
     private float getProgress() {
         return (float) getBaseMetaTileEntity().getStoredEU() / getBaseMetaTileEntity().getEUCapacity();
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

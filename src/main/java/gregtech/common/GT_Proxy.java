@@ -1736,11 +1736,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 if ((aOriginalMod.toLowerCase(Locale.ENGLISH)
                     .contains("xycraft"))
                     || (aOriginalMod.toLowerCase(Locale.ENGLISH)
-                        .contains("tconstruct"))
-                    || ((aOriginalMod.toLowerCase(Locale.ENGLISH)
-                        .contains("natura"))
-                        && (!aOriginalMod.toLowerCase(Locale.ENGLISH)
-                            .contains("natural")))) {
+                        .contains("tconstruct"))) {
                     if (GT_Values.D1) {
                         GT_Log.ore.println(aMod + " -> " + aEvent.Name + " is getting ignored, because of racism. :P");
                     }

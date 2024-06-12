@@ -59,19 +59,12 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
 
     public FuelRefineFactory(String name) {
         super(name);
-        turnOffMaintenance();
         useLongPower = true;
     }
 
     public FuelRefineFactory(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
-        turnOffMaintenance();
         useLongPower = true;
-    }
-
-    @Override
-    public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (!hasMaintenanceChecks) turnOffMaintenance();
     }
 
     @Override
@@ -372,5 +365,10 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivialBuildPiece(mName, stackSize, 7, 12, 1, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

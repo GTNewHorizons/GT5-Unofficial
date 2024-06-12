@@ -312,6 +312,7 @@ gui.YOTTank.button.locking=Fluid locking
 gui.LargeFusion.0=Energy Capacity:
 gui.LargeFusion.1=Stored Energy:
 gt.blockmachines.LargeFusionComputerPP.cfgi.0=Batch Size
+gt.blockmachines.YottaFluidTank.cfgi.0=Tick rate (Update I/O every x ticks)
 
 # RecipeMaps
 gg.recipe.naquadah_reactor=Large Naquadah Reactor
