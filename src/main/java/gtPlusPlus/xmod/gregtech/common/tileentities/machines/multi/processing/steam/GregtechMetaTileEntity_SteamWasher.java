@@ -253,11 +253,13 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                     ofChain(
                         buildSteamInput(GregtechMetaTileEntity_SteamWasher.class).casingIndex(10)
                             .dot(1)
+                            .allowOnly(ForgeDirection.NORTH)
                             .build(),
                         buildHatchAdder(GregtechMetaTileEntity_SteamWasher.class)
                             .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam, InputHatch)
                             .casingIndex(10)
                             .dot(1)
+                            .allowOnly(ForgeDirection.NORTH)
                             .buildAndChain(),
                         ofBlocksTiered(
                             GregtechMetaTileEntity_SteamWasher::getTierMachineCasing,
