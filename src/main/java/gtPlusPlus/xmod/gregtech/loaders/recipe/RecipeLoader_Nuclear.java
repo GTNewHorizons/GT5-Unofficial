@@ -408,7 +408,8 @@ public class RecipeLoader_Nuclear {
         // (NH4)2BeF4 → 2 NH3 + 2 HF + BeF2
         // Ammonium tetrafluoroberyllate uses fluid rule because it is not a molten form of a solid
         // Beryllium fluoride uses solid rule
-        // Industrial strength hydrofluoric acid follows its usual convention where it is twice as dense as regular hydrofluoric acid
+        // Industrial strength hydrofluoric acid follows its usual convention where it is twice as dense as regular
+        // hydrofluoric acid
         CORE.RA.addDehydratorRecipe(
             new ItemStack[] { CI.getNumberedAdvancedCircuit(17), CI.emptyCells(3) },
             FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1000),
@@ -576,7 +577,8 @@ public class RecipeLoader_Nuclear {
     private static void mixerRecipes() {
 
         // Rebalanced to correct the chemistry
-        // UF4 uses solid rule due to item form even though item form currently is inaccessible because item form may be accessible in future and must be consistent
+        // UF4 uses solid rule due to item form even though item form currently is inaccessible because item form may be
+        // accessible in future and must be consistent
         // UF4 solid rule also assumes 1:144 item:fluid ratio in this case
         GT_Values.RA.addMixerRecipe(
             ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 4),
