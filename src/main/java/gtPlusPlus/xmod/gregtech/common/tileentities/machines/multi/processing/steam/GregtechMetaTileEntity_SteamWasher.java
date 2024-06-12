@@ -368,6 +368,6 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
         // don't rotate a washer, water will flow out.
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
+        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated();
     }
 }
