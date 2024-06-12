@@ -40,7 +40,7 @@ dependencies {
     api("com.github.GTNewHorizons:GTNHLib:0.2.11:dev")
     api("com.github.GTNewHorizons:ModularUI:1.2.0:dev")
     api("com.github.GTNewHorizons:waila:1.8.0:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-404-GTNH:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-405-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.3.4-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.6.0:dev')
     api('com.github.GTNewHorizons:ThaumicTinkerer:2.10.0:dev')
@@ -70,7 +70,7 @@ dependencies {
     compileOnly rfg.deobf("curse.maven:cofh-core-69162:2388751")
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.6.2:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.5.15:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.5.17:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:Botania:1.11.3-GTNH:dev') { transitive = false }
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.4.10-GTNH:dev') { transitive = false }
     compileOnly rfg.deobf("curse.maven:extra-utilities-225561:2264384")
