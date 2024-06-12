@@ -86,7 +86,7 @@ public class GregtechMetaTileEntity_SteamMacerator
             mCounCasing++;
             return 2;
         }
-        return -1;
+        return 0;
     }
 
     @Override

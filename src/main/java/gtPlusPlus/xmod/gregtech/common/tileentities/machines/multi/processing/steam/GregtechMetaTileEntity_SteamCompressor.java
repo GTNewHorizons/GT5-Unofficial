@@ -72,7 +72,7 @@ public class GregtechMetaTileEntity_SteamCompressor
             mCountCasing++;
             return 2;
         }
-        return -1;
+        return 0;
     }
 
     public GregtechMetaTileEntity_SteamCompressor(String aName) {
