@@ -536,7 +536,7 @@ public final class ModItems {
         dustCalciumHydroxide = ItemUtils.generateSpecialUseDusts(
             "CalciumHydroxide",
             "Hydrated Lime",
-            "Ca(OH)2",
+            "CaO2H2",
             Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_hydroxide
         dustCalciumCarbonate = ItemUtils.generateSpecialUseDusts(
             "CalciumCarbonate",
@@ -557,8 +557,8 @@ public final class ModItems {
         }
         dustLi2CO3CaOH2 = ItemUtils.generateSpecialUseDusts(
             "Li2CO3CaOH2",
-            "Li2CO3 + Ca(OH)2 Compound",
-            "Li2CO3Ca(OH)2",
+            "Li2CO3 + CaO2H2 Compound",
+            "Li2CO3CaO2H2",
             Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_carbonate
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(FLUORIDES.SODIUM_FLUORIDE, false);
         // FLiBe Fuel Compounds
