@@ -501,6 +501,8 @@ GT5U.type_filter.representation_slot.tooltip.1=§7Right click to cycle back
 GT5U.type_filter.representation_slot.tooltip.2=§7Click with an item to set filter
 
 GT5U.gui.select.current=Current:
+GT5U.gui.button.liquid_filling_OFF=§7Liquid Filling: §4OFF
+GT5U.gui.button.liquid_filling_ON=§7Liquid Filling: §aON
 GT5U.gui.button.power_switch=Power Switch
 GT5U.gui.button.voiding_mode=Voiding Mode:
 GT5U.gui.button.voiding_mode_none=§7Void Nothing

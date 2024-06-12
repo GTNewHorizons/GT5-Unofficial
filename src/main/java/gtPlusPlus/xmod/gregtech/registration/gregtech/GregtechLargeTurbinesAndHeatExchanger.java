@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gregtech.api.enums.Mods.GoodGenerator;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Turbine;
@@ -32,11 +30,9 @@ public class GregtechLargeTurbinesAndHeatExchanger {
         GregtechItemList.Large_Plasma_Turbine.set(
             new GT_MTE_LargeTurbine_Plasma(31074, "multimachine.largerplasmaturbine", "XL Turbo Plasma Turbine")
                 .getStackForm(1L));
-        if (GoodGenerator.isModLoaded()) {
-            GregtechItemList.Large_SCSteam_Turbine.set(
-                new GT_MTE_LargeTurbine_SCSteam(31076, "multimachine.largerscturbine", "XL Turbo SC Steam Turbine")
-                    .getStackForm(1L));
-        }
+        GregtechItemList.Large_SCSteam_Turbine.set(
+            new GT_MTE_LargeTurbine_SCSteam(31076, "multimachine.largerscturbine", "XL Turbo SC Steam Turbine")
+                .getStackForm(1L));
         GregtechItemList.Hatch_Turbine_Rotor
             .set(new GT_MetaTileEntity_Hatch_Turbine(30010, "hatch.turbine", "Rotor Assembly", 8).getStackForm(1L));
         GregtechItemList.XL_HeatExchanger.set(

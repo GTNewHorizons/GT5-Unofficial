@@ -14,4 +14,8 @@ public class KT_UITextures {
 
     public static final UITexture OVERLAY_BUTTON_WIRELESS_OFF_DISABLED = UITexture
         .fullImage(KekzCore.MODID, "gui/overlay_button/wireless_off_disabled");
+
+    public static final UITexture OVERLAY_BUTTON_WIRELESS_REBALANCE = UITexture
+        .fullImage(KekzCore.MODID, "gui/overlay_button/wireless_rebalance");
+
 }

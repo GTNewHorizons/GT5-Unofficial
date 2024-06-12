@@ -47,7 +47,6 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
 
     @Override
     public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (!hasMaintenanceChecks) turnOffMaintenance();
         if (!mMachine) {
             aBaseMetaTileEntity.disableWorking();
         }
@@ -82,13 +81,11 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
 
     public GT_MetaTileEntity_EM_transformer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        turnOffMaintenance();
         eDismantleBoom = true;
     }
 
     public GT_MetaTileEntity_EM_transformer(String aName) {
         super(aName);
-        turnOffMaintenance();
         eDismantleBoom = true;
     }
 
@@ -217,5 +214,10 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     @Override
     public boolean isAllowedToWorkButtonEnabled() {
         return true;
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

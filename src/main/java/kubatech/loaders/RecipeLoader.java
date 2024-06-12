@@ -21,8 +21,12 @@
 package kubatech.loaders;
 
 import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.DraconicEvolution;
+import static gregtech.api.enums.Mods.EnderIO;
+import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
@@ -72,6 +76,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import forestry.plugins.PluginCore;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -79,7 +84,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
-import kubatech.api.LoaderReference;
+import ic2.core.Ic2Items;
 import kubatech.api.enums.ItemList;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_DEFusionCrafter;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeEntityCrusher;
@@ -101,7 +106,7 @@ public class RecipeLoader {
             GT_MetaTileEntity_ExtremeEntityCrusher.class,
             "multimachine.entitycrusher",
             "Extreme Entity Crusher",
-            LoaderReference.EnderIO)) {
+            EnderIO.isModLoaded())) {
             GT_ModHandler.addCraftingRecipe(
                 ItemList.ExtremeEntityCrusher.get(1),
                 bitsd,
@@ -114,7 +119,7 @@ public class RecipeLoader {
             GT_MetaTileEntity_MegaIndustrialApiary.class,
             "multimachine.extremeapiary",
             "Industrial Apicultural Acclimatiser and Drone Domestication Station",
-            LoaderReference.Forestry)) {
+            Forestry.isModLoaded())) {
             GT_Values.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, gregtech.api.enums.ItemList.Machine_IndustrialApiary.get(1))
                 .metadata(RESEARCH_TIME, 8 * MINUTES + 20 * SECONDS)
@@ -151,6 +156,15 @@ public class RecipeLoader {
                         ? GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 1, 11104) // IV World Accelerator
                         : gregtech.api.enums.ItemList.Robot_Arm_IV,
                     'Z', OrePrefixes.circuit.get(Materials.Ultimate) });
+
+            // Vanilla should always be loaded
+            GT_MetaTileEntity_ExtremeIndustrialGreenhouse.addFertilizerItem(new ItemStack(Items.dye, 1, 15));
+            // IC2 should always be loaded
+            GT_MetaTileEntity_ExtremeIndustrialGreenhouse.addFertilizerItem(Ic2Items.fertilizer);
+            if (Forestry.isModLoaded()) {
+                GT_MetaTileEntity_ExtremeIndustrialGreenhouse
+                    .addFertilizerItem(PluginCore.items.fertilizerCompound.getItemStack(1));
+            }
         }
         if (registerMTEUsingID(
             5_001,
@@ -158,7 +172,7 @@ public class RecipeLoader {
             GT_MetaTileEntity_DEFusionCrafter.class,
             "multimachine.defusioncrafter",
             "Draconic Evolution Fusion Crafter",
-            LoaderReference.DraconicEvolution)) {
+            DraconicEvolution.isModLoaded())) {
             // Controller recipe added in TecTech
             DEFCRecipes.addRecipes();
         }
@@ -212,7 +226,7 @@ public class RecipeLoader {
 
     private static void RegisterTeaLine() {
         // TEA LINE //
-        if (LoaderReference.GTPlusPlus && LoaderReference.HarvestCraft) {
+        if (PamsHarvestCraft.isModLoaded()) {
             CORE.RA.addDehydratorRecipe(
                 new ItemStack[] { GameRegistry.findItemStack("harvestcraft", "tealeafItem", 1) },
                 null,

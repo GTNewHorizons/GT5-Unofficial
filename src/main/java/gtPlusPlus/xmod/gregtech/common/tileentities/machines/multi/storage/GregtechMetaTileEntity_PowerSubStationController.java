@@ -9,7 +9,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChann
 import static gregtech.api.enums.GT_HatchElement.Dynamo;
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.Mods.TecTech;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
@@ -451,7 +450,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
         if (mAllEnergyHatches.size() + mAllDynamoHatches.size() > 0) {
             mAverageEuUsage = volSum / (mAllEnergyHatches.size() + mAllDynamoHatches.size());
         } else mAverageEuUsage = 0;
-        fixAllMaintenanceIssue();
         return true;
     }
 
@@ -466,7 +464,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
             } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
                 return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (TecTech.isModLoaded()) {
+            } else {
                 if (isThisHatchMultiDynamo(aMetaTileEntity)) {
                     return addToMachineList(aTileEntity, aBaseCasingIndex);
                 } else if (isThisHatchMultiEnergy(aMetaTileEntity)) {
@@ -560,7 +558,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
         this.mMaxProgresstime = 200;
         this.lEUt = 0;
         this.mEfficiencyIncrease = 10000;
-        this.fixAllMaintenanceIssue();
         return SimpleCheckRecipeResult.ofSuccess("managing_power");
     }
 
@@ -611,11 +608,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
         // mTax = mTax * (1f + (10000f - mEfficiency) / 10000f);
 
         return MathUtils.roundToClosestLong(mTax);
-    }
-
-    @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        this.fixAllMaintenanceIssue();
     }
 
     @Override
@@ -935,5 +927,10 @@ public class GregtechMetaTileEntity_PowerSubStationController extends
 
     private float getProgress() {
         return (float) getBaseMetaTileEntity().getStoredEU() / getBaseMetaTileEntity().getEUCapacity();
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

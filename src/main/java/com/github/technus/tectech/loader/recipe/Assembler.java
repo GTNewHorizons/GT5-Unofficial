@@ -890,85 +890,82 @@ public class Assembler implements Runnable {
         }
 
         // Buck Converter IV-UIV
-        if (BartWorks.isModLoaded()) {
-            // Buck Converter IV
-            GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { ItemList.Transformer_LuV_IV.get(1), getItemContainer("Display").get(1),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 2),
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.TungstenSteel, 4),
-                    getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 2) },
-                Materials.TungstenSteel.getMolten(288),
-                CustomItemList.Machine_BuckConverter_IV.get(1),
-                100,
-                7680);
+        // Buck Converter IV
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] { ItemList.Transformer_LuV_IV.get(1), getItemContainer("Display").get(1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 2),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.TungstenSteel, 4),
+                getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 2) },
+            Materials.TungstenSteel.getMolten(288),
+            CustomItemList.Machine_BuckConverter_IV.get(1),
+            100,
+            7680);
 
-            // Buck Converter LuV
-            GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { ItemList.Transformer_ZPM_LuV.get(1), getItemContainer("Display").get(1),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
-                    GT_OreDictUnificator
-                        .get(OrePrefixes.plate, getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome), 2),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.NiobiumTitanium, 4),
-                    getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 3) },
-                new FluidStack(FluidRegistry.getFluid("molten.rhodium-plated palladium"), 288),
-                CustomItemList.Machine_BuckConverter_LuV.get(1),
-                100,
-                30720);
+        // Buck Converter LuV
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] { ItemList.Transformer_ZPM_LuV.get(1), getItemContainer("Display").get(1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                GT_OreDictUnificator
+                    .get(OrePrefixes.plate, getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome), 2),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.NiobiumTitanium, 4),
+                getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 3) },
+            new FluidStack(FluidRegistry.getFluid("molten.rhodium-plated palladium"), 288),
+            CustomItemList.Machine_BuckConverter_LuV.get(1),
+            100,
+            30720);
 
-            // Buck Converter ZPM
-            GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { ItemList.Transformer_UV_ZPM.get(1), getItemContainer("Display").get(1),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 2),
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 2),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.TungstenSteel, 4),
-                    getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 4) },
-                Materials.Iridium.getMolten(288),
-                CustomItemList.Machine_BuckConverter_ZPM.get(1),
-                100,
-                122880);
+        // Buck Converter ZPM
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] { ItemList.Transformer_UV_ZPM.get(1), getItemContainer("Display").get(1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 2),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 2),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.TungstenSteel, 4),
+                getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 4) },
+            Materials.Iridium.getMolten(288),
+            CustomItemList.Machine_BuckConverter_ZPM.get(1),
+            100,
+            122880);
 
-            // Buck Converter UV
-            GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { ItemList.Transformer_MAX_UV.get(1), getItemContainer("Display").get(1),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.SuperconductorUHV, 2),
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 4),
-                    getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 5) },
-                Materials.Osmium.getMolten(288),
-                CustomItemList.Machine_BuckConverter_UV.get(1),
-                100,
-                500000);
+        // Buck Converter UV
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] { ItemList.Transformer_MAX_UV.get(1), getItemContainer("Display").get(1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.SuperconductorUHV, 2),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 4),
+                getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 5) },
+            Materials.Osmium.getMolten(288),
+            CustomItemList.Machine_BuckConverter_UV.get(1),
+            100,
+            500000);
 
-            // Buck Converter UHV
-            GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { getItemContainer("Transformer_UEV_UHV").get(1), getItemContainer("Display").get(1),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 2),
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.ElectrumFlux, 4),
-                    getModItem(BartWorks.ID, "BW_GlasBlocks", 4L, 5) },
-                Materials.Neutronium.getMolten(288),
-                CustomItemList.Machine_BuckConverter_UHV.get(1),
-                100,
-                2000000);
+        // Buck Converter UHV
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] { getItemContainer("Transformer_UEV_UHV").get(1), getItemContainer("Display").get(1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 2),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.ElectrumFlux, 4),
+                getModItem(BartWorks.ID, "BW_GlasBlocks", 4L, 5) },
+            Materials.Neutronium.getMolten(288),
+            CustomItemList.Machine_BuckConverter_UHV.get(1),
+            100,
+            2000000);
 
-            // Buck Converter UEV
-            GT_Values.RA
-                .addAssemblerRecipe(
-                    new ItemStack[] { getItemContainer("Transformer_UIV_UEV").get(1),
-                        getItemContainer("Display").get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 2),
-                        GT_OreDictUnificator
-                            .get(OrePrefixes.plate, getOrDefault("Bedrockium", Materials.Neutronium), 2),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Bedrockium, 4),
-                        getModItem(BartWorks.ID, "BW_GlasBlocks", 8L, 5) },
-                    getOrDefault("Bedrockium", Materials.Neutronium).getMolten(288),
-                    CustomItemList.Machine_BuckConverter_UEV.get(1),
-                    100,
-                    8000000);
+        // Buck Converter UEV
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] { getItemContainer("Transformer_UIV_UEV").get(1), getItemContainer("Display").get(1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 2),
+                GT_OreDictUnificator.get(OrePrefixes.plate, getOrDefault("Bedrockium", Materials.Neutronium), 2),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Bedrockium, 4),
+                getModItem(BartWorks.ID, "BW_GlasBlocks", 8L, 5) },
+            getOrDefault("Bedrockium", Materials.Neutronium).getMolten(288),
+            CustomItemList.Machine_BuckConverter_UEV.get(1),
+            100,
+            8000000);
 
-            // Buck Converter UIV
-            GT_Values.RA.addAssemblerRecipe(
+        // Buck Converter UIV
+        GT_Values.RA
+            .addAssemblerRecipe(
                 new ItemStack[] { getItemContainer("Transformer_UMV_UIV").get(1), getItemContainer("Display").get(1),
                     GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Optical, 2),
                     GT_OreDictUnificator
@@ -979,7 +976,6 @@ public class Assembler implements Runnable {
                 CustomItemList.Machine_BuckConverter_UIV.get(1),
                 200,
                 8000000);
-        }
 
         // Laser Dynamo
         {

@@ -136,15 +136,13 @@ public class ForgeHammerRecipes implements Runnable {
             .eut(16)
             .addTo(hammerRecipes);
 
-        if (GTPlusPlus.isModLoaded()) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(ItemList.Tesseract.get(1L), getModItem(GTPlusPlus.ID, "MU-metaitem.01", 1, 32105))
-                .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(2880L))
-                .fluidOutputs(MaterialsUEVplus.Space.getMolten(1440L), MaterialsUEVplus.Time.getMolten(1440L))
-                .duration(10 * SECONDS)
-                .eut(TierEU.RECIPE_UXV)
-                .addTo(hammerRecipes);
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Tesseract.get(1L), getModItem(GTPlusPlus.ID, "MU-metaitem.01", 1, 32105))
+            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(2880L))
+            .fluidOutputs(MaterialsUEVplus.Space.getMolten(1440L), MaterialsUEVplus.Time.getMolten(1440L))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UXV)
+            .addTo(hammerRecipes);
 
         if (HardcoreEnderExpansion.isModLoaded()) {
             GT_Values.RA.stdBuilder()

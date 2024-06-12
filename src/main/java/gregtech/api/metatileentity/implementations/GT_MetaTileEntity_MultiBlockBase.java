@@ -114,6 +114,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     implements ControllerWithOptionalFeatures, IAddGregtechLogo, IAddUIWidgets, IBindPlayerInventoryUI {
 
     public static boolean disableMaintenance;
+    public boolean hasMaintenanceChecks = getDefaultHasMaintenanceChecks();
     public boolean mMachine = false, mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false,
         mSolderingTool = false, mCrowbar = false, mRunningOnLoad = false;
     public boolean mStructureChanged = false;
@@ -168,6 +169,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         this.damageFactorHigh = (float) GregTech_API.sMachineFile
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorHigh", 0.6f);
         this.mNEI = "";
+        if (!shouldCheckMaintenance()) fixAllIssues();
     }
 
     public GT_MetaTileEntity_MultiBlockBase(String aName) {
@@ -179,6 +181,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorLow", 5);
         this.damageFactorHigh = (float) GregTech_API.sMachineFile
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorHigh", 0.6f);
+        if (!shouldCheckMaintenance()) fixAllIssues();
     }
 
     @Override
@@ -324,13 +327,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             for (int i = 0; i < mOutputFluids.length; i++)
                 mOutputFluids[i] = GT_Utility.loadFluid(aNBT, "mOutputFluids" + i);
         }
-
-        mWrench = aNBT.getBoolean("mWrench");
-        mScrewdriver = aNBT.getBoolean("mScrewdriver");
-        mSoftHammer = aNBT.getBoolean("mSoftHammer");
-        mHardHammer = aNBT.getBoolean("mHardHammer");
-        mSolderingTool = aNBT.getBoolean("mSolderingTool");
-        mCrowbar = aNBT.getBoolean("mCrowbar");
+        if (shouldCheckMaintenance()) {
+            mWrench = aNBT.getBoolean("mWrench");
+            mScrewdriver = aNBT.getBoolean("mScrewdriver");
+            mSoftHammer = aNBT.getBoolean("mSoftHammer");
+            mHardHammer = aNBT.getBoolean("mHardHammer");
+            mSolderingTool = aNBT.getBoolean("mSolderingTool");
+            mCrowbar = aNBT.getBoolean("mCrowbar");
+        } else fixAllIssues();
     }
 
     protected SingleRecipeCheck loadSingleRecipeChecker(NBTTagCompound aNBT) {
@@ -444,17 +448,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
     }
 
-    private void checkMaintenance() {
-        if (disableMaintenance) {
-            mWrench = true;
-            mScrewdriver = true;
-            mSoftHammer = true;
-            mHardHammer = true;
-            mSolderingTool = true;
-            mCrowbar = true;
+    public void checkMaintenance() {
+        if (!shouldCheckMaintenance()) return;
 
-            return;
-        }
         for (GT_MetaTileEntity_Hatch_Maintenance tHatch : filterValidMTEs(mMaintenanceHatches)) {
             if (tHatch.mAuto && !(mWrench && mScrewdriver && mSoftHammer && mHardHammer && mSolderingTool && mCrowbar))
                 tHatch.autoMaintainance();
@@ -975,21 +971,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             stopMachine(ShutDownReasonRegistry.NO_MACHINE_PART);
             return false;
         }
-        if (getRepairStatus() == 0) {
+        if (shouldCheckMaintenance() && getRepairStatus() == 0) {
             stopMachine(ShutDownReasonRegistry.NO_REPAIR);
             return false;
         }
         if (mRuntime++ > 1000) {
             mRuntime = 0;
-            if (getBaseMetaTileEntity().getRandomNumber(6000) == 0) {
-                switch (getBaseMetaTileEntity().getRandomNumber(6)) {
-                    case 0 -> mWrench = false;
-                    case 1 -> mScrewdriver = false;
-                    case 2 -> mSoftHammer = false;
-                    case 3 -> mHardHammer = false;
-                    case 4 -> mSolderingTool = false;
-                    case 5 -> mCrowbar = false;
-                }
+            if (shouldCheckMaintenance() && getBaseMetaTileEntity().getRandomNumber(6000) == 0) {
+                causeMaintenanceIssue();
             }
             if (mInventory[1] != null && getBaseMetaTileEntity().getRandomNumber(2) == 0
                 && !mInventory[1].getUnlocalizedName()
@@ -1005,6 +994,17 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }
         return true;
+    }
+
+    public void causeMaintenanceIssue() {
+        switch (getBaseMetaTileEntity().getRandomNumber(6)) {
+            case 0 -> mWrench = false;
+            case 1 -> mScrewdriver = false;
+            case 2 -> mSoftHammer = false;
+            case 3 -> mHardHammer = false;
+            case 4 -> mSolderingTool = false;
+            case 5 -> mCrowbar = false;
+        }
     }
 
     public void explodeMultiblock() {
@@ -1822,13 +1822,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return false;
+        return supportsSlotAutomation(aIndex);
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return false;
+        return supportsSlotAutomation(aIndex);
     }
 
     protected ItemStack[] getCompactedInputs() {
@@ -1880,11 +1880,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (tag.getBoolean("incompleteStructure")) {
             currentTip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
         }
-        currentTip.add(
-            (tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
-                + "  Efficiency: "
-                + tag.getFloat("efficiency")
-                + "%");
+        String efficiency = RESET + "  Efficiency: " + tag.getFloat("efficiency") + "%";
+        if (tag.getBoolean("hasProblems")) {
+            currentTip.add(RED + "** HAS PROBLEMS **" + efficiency);
+        } else if (!tag.getBoolean("incompleteStructure")) {
+            currentTip.add(GREEN + "Running Fine" + efficiency);
+        }
 
         boolean isActive = tag.getBoolean("isActive");
         if (isActive) {
@@ -2088,7 +2089,16 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     public ItemStack getControllerSlot() {
-        return mInventory[1];
+        return mInventory[getControllerSlotIndex()];
+    }
+
+    public final int getControllerSlotIndex() {
+        return 1;
+    }
+
+    // True if the slot with index aSlot may be interacted with through automation
+    protected boolean supportsSlotAutomation(int aSlot) {
+        return false;
     }
 
     @Override
@@ -2536,5 +2546,22 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @TestOnly
     protected void setExoticEnergyHatches(List<GT_MetaTileEntity_Hatch> ExoticEnergyHatches) {
         this.mExoticEnergyHatches = ExoticEnergyHatches;
+    }
+
+    public void fixAllIssues() {
+        mWrench = true;
+        mScrewdriver = true;
+        mSoftHammer = true;
+        mHardHammer = true;
+        mSolderingTool = true;
+        mCrowbar = true;
+    }
+
+    public boolean getDefaultHasMaintenanceChecks() {
+        return true;
+    }
+
+    public boolean shouldCheckMaintenance() {
+        return !disableMaintenance && hasMaintenanceChecks;
     }
 }

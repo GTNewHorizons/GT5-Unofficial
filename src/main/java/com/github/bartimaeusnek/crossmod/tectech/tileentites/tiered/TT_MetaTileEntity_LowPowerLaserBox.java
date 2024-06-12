@@ -13,10 +13,10 @@
 
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered;
 
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -168,9 +168,9 @@ public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLase
     @Override
     public String[] getDescription() {
         return new String[] { "Like a Tranformer... but for LAZORZ",
-            "Transfer rate: " + ChatColorHelper.YELLOW
+            "Transfer rate: " + EnumChatFormatting.YELLOW
                 + GT_Utility.formatNumbers(this.getTotalPower())
-                + ChatColorHelper.WHITE
+                + EnumChatFormatting.WHITE
                 + " EU/t",
             BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
     }

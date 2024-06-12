@@ -1,9 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.enums.Mods.TecTech;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -31,8 +29,7 @@ public class AssemblyLineRecipes implements Runnable {
     private final Materials LuVMat;
 
     public AssemblyLineRecipes() {
-        solderIndalloy = GTPlusPlus.isModLoaded() ? FluidRegistry.getFluid("molten.indalloy140")
-            : FluidRegistry.getFluid("molten.solderingalloy");
+        solderIndalloy = FluidRegistry.getFluid("molten.indalloy140");
 
         LuVMat = ExternalMaterials.getRuridit();
     }
@@ -861,9 +858,7 @@ public class AssemblyLineRecipes implements Runnable {
                 ItemList.Energy_Module.get(1),
                 ItemList.Cover_WirelessNeedsMaintainance.get(1))
             .itemOutputs(ItemList.TierdDrone1.get(4))
-            .fluidInputs(
-                new FluidStack(solderIndalloy, 576),
-                FluidRegistry.getFluidStack(GTPlusPlus.isModLoaded() ? "fluid.rocketfuelmixc" : "nitrofuel", 4000))
+            .fluidInputs(new FluidStack(solderIndalloy, 576), FluidRegistry.getFluidStack("fluid.rocketfuelmixc", 4000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(AssemblyLine);
@@ -878,15 +873,13 @@ public class AssemblyLineRecipes implements Runnable {
                 ItemList.Field_Generator_UV.get(16),
                 ItemList.Gravistar.get(8),
                 ItemList.Emitter_UV.get(4),
-                TecTech.isModLoaded() ? GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 16, 15497)
-                    : ItemList.Hatch_AutoMaintenance.get(64),
+                GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 16, 15497),
                 ItemList.Energy_Cluster.get(8),
                 ItemList.Cover_WirelessNeedsMaintainance.get(1))
             .itemOutputs(ItemList.TierdDrone2.get(1))
             .fluidInputs(
                 new FluidStack(solderIndalloy, 144000),
-                GTPlusPlus.isModLoaded() ? FluidRegistry.getFluidStack("molten.ethylcyanoacrylatesuperglue", 2000)
-                    : Materials.AdvancedGlue.getFluid(256000))
+                FluidRegistry.getFluidStack("molten.ethylcyanoacrylatesuperglue", 2000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(AssemblyLine);

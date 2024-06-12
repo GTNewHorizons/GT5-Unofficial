@@ -13,7 +13,7 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
-import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
+import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.Energy;
@@ -200,7 +200,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             .addOutputBus("As specified in final slice on layer 1", 4)
             .addOtherStructurePart("EV+ Tier Glass", "As specified on layer 2", 5)
             .addMaintenanceHatch("Any layer 1 casing", 2)
-            .toolTipFinisher(ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
         return tt;
     }
 
@@ -571,6 +571,11 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     @Override
     public boolean supportsBatchMode() {
         return true;
+    }
+
+    @Override
+    protected boolean supportsSlotAutomation(int aSlot) {
+        return aSlot == getControllerSlotIndex();
     }
 
     @Override

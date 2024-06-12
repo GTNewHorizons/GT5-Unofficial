@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
-import static gregtech.api.enums.Mods.TecTech;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.lang.reflect.InvocationTargetException;
@@ -545,52 +544,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         super.updateSlots();
     }
 
-    /**
-     * Causes a Random Maint. Issue.
-     * 
-     * @return {@link boolean} - Returns whether or not an issue was caused, should always be true.
-     */
-    public boolean causeMaintenanceIssue() {
-        boolean b = false;
-        switch (this.getBaseMetaTileEntity()
-            .getRandomNumber(6)) {
-            case 0 -> {
-                this.mWrench = false;
-                b = true;
-            }
-            case 1 -> {
-                this.mScrewdriver = false;
-                b = true;
-            }
-            case 2 -> {
-                this.mSoftHammer = false;
-                b = true;
-            }
-            case 3 -> {
-                this.mHardHammer = false;
-                b = true;
-            }
-            case 4 -> {
-                this.mSolderingTool = false;
-                b = true;
-            }
-            case 5 -> {
-                this.mCrowbar = false;
-                b = true;
-            }
-        }
-        return b;
-    }
-
-    public void fixAllMaintenanceIssue() {
-        this.mCrowbar = true;
-        this.mWrench = true;
-        this.mHardHammer = true;
-        this.mSoftHammer = true;
-        this.mSolderingTool = true;
-        this.mScrewdriver = true;
-    }
-
     public boolean checkHatch() {
         return mMaintenanceHatches.size() <= 1
             && (this.getPollutionPerSecond(null) > 0 ? !mMufflerHatches.isEmpty() : true);
@@ -719,14 +672,14 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         }
 
         // Handle TT Multi-A Energy Hatches
-        else if (TecTech.isModLoaded() && isThisHatchMultiEnergy(aMetaTileEntity)) {
+        else if (isThisHatchMultiEnergy(aMetaTileEntity)) {
             log("Found isThisHatchMultiEnergy");
             aDidAdd = addToMachineListInternal(mTecTechEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
             updateMasterEnergyHatchList(aMetaTileEntity);
         }
 
         // Handle TT Multi-A Dynamos
-        else if (TecTech.isModLoaded() && isThisHatchMultiDynamo(aMetaTileEntity)) {
+        else if (isThisHatchMultiDynamo(aMetaTileEntity)) {
             log("Found isThisHatchMultiDynamo");
             aDidAdd = addToMachineListInternal(mTecTechDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
             updateMasterDynamoHatchList(aMetaTileEntity);
@@ -975,7 +928,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
 
     /**
      * TecTech Multi-Amp Dynamo Support
-     * 
+     *
      * @param aTileEntity      - The Dynamo Hatch
      * @param aBaseCasingIndex - Casing Texture
      * @return
@@ -1028,7 +981,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
 
     /**
      * TecTech Multi-Amp Energy Hatch Support
-     * 
+     *
      * @param aTileEntity      - The Energy Hatch
      * @param aBaseCasingIndex - Casing Texture
      * @return
@@ -1187,41 +1140,11 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
     }
 
-    @Override
-    public void onServerStart() {
-        super.onServerStart();
-        tryTickWaitTimerDown();
-    }
-
-    @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
-        tryTickWaitTimerDown();
-    }
-
-    @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPreTick(aBaseMetaTileEntity, aTick);
-        tryTickWaitTimerDown();
-    }
-
-    @Override
-    public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
-        super.onCreated(aStack, aWorld, aPlayer);
-        tryTickWaitTimerDown();
-    }
-
-    private void tryTickWaitTimerDown() {
-        /*
-         * if (mStartUpCheck > 10) { mStartUpCheck = 10; }
-         */
-    }
-
     // Only support to use meta to tier
 
     /**
      * accept meta [0, maxMeta)
-     * 
+     *
      * @param maxMeta exclusive
      */
     public static <T> IStructureElement<T> addTieredBlock(Block aBlock, BiConsumer<T, Integer> aSetTheMeta,
