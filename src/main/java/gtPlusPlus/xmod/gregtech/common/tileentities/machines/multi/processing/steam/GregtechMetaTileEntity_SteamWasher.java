@@ -77,7 +77,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
 
     private static final String STRUCTUR_PIECE_MAIN = "main";
 
-    private static IStructureDefinition<GregtechMetaTileEntity_SteamWasher> STRUCTURE_DEFINITION = null;
+    private IStructureDefinition<GregtechMetaTileEntity_SteamWasher> STRUCTURE_DEFINITION = null;
 
     private final String[][] shape = new String[][] {
         { "         ", "         ", " CCCCCC  ", "         ", "         " },
@@ -96,13 +96,13 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
     private int tierMachineCasing = -1;
     private int tierMachine = 1;
 
-    private static int tCountCasing = 0;
+    private int tCountCasing = 0;
 
     private String tGlasses = "Any Glass";
 
     private String tMachineCasing = "Solid Bronze or Steel Machine Casing";
 
-    public static int getTierMachineCasing(Block block, int meta) {
+    public int getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
             tCountCasing++;
             return 1;
@@ -262,7 +262,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                             .allowOnly(ForgeDirection.NORTH)
                             .buildAndChain(),
                         ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamWasher::getTierMachineCasing,
+                            this::getTierMachineCasing,
                             ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
                             -1,
                             (t, m) -> t.tierMachineCasing = m,

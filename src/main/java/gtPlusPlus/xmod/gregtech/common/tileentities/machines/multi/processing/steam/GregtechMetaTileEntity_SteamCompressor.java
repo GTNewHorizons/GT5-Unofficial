@@ -56,14 +56,14 @@ public class GregtechMetaTileEntity_SteamCompressor
 
     private String mCasingName = "Bronze or Steel Plated Bricks";
 
-    private static int mCountCasing = 0;
-    private static IStructureDefinition<GregtechMetaTileEntity_SteamCompressor> STRUCTURE_DEFINITION = null;
+    private int mCountCasing = 0;
+    private IStructureDefinition<GregtechMetaTileEntity_SteamCompressor> STRUCTURE_DEFINITION = null;
 
     private int tierMachine = 1;
 
     private int tierMachineCasing = -1;
 
-    public static int getTierMachineCasing(Block block, int meta) {
+    public int getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
             mCountCasing++;
             return 1;
@@ -144,7 +144,7 @@ public class GregtechMetaTileEntity_SteamCompressor
                             .dot(1)
                             .buildAndChain(),
                         ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamCompressor::getTierMachineCasing,
+                            this::getTierMachineCasing,
                             ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
                             -1,
                             (t, m) -> t.tierMachineCasing = m,

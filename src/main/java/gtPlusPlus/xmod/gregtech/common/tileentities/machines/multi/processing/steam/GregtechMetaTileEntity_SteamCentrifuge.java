@@ -71,7 +71,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
 
     private static final String STRUCTUR_PIECE_MAIN = "main";
 
-    private static IStructureDefinition<GregtechMetaTileEntity_SteamCentrifuge> STRUCTURE_DEFINITION = null;
+    private IStructureDefinition<GregtechMetaTileEntity_SteamCentrifuge> STRUCTURE_DEFINITION = null;
     private final String[][] shape = new String[][] { { " AAA ", "AAAAA", "AAAAA", "AAAAA", " AAA " },
         { "     ", " ABA ", " BDB ", " ABA ", "     " }, { "  A  ", " ACA ", "ACDCA", " ACA ", "  A  " },
         { " A~A ", "AABAA", "ABDBA", "AABAA", " AAA " }, { " AAA ", "AAAAA", "AAAAA", "AAAAA", " AAA " } };
@@ -85,13 +85,13 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     private int tierFireBoxCasing = -1;
     private int tierMachineCasing = -1;
 
-    private static int tCountCasing = 0;
+    private int tCountCasing = 0;
 
     private int tierMachine = 1;
 
     private String tMachineCasing = "Solid Bronze or Steel Machine Casing";
 
-    public static int getTierMachineCasing(Block block, int meta) {
+    public int getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
             tCountCasing++;
             return 1;
@@ -264,7 +264,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
                             .dot(1)
                             .buildAndChain(),
                         ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamCentrifuge::getTierMachineCasing,
+                            this::getTierMachineCasing,
                             ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
                             -1,
                             (t, m) -> t.tierMachineCasing = m,

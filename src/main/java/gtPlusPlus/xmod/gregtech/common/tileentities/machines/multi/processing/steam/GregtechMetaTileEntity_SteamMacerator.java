@@ -57,8 +57,8 @@ public class GregtechMetaTileEntity_SteamMacerator
 
     private String mCasingName = "Bronze or Steel Plated Bricks";
 
-    private static int mCounCasing = 0;
-    private static IStructureDefinition<GregtechMetaTileEntity_SteamMacerator> STRUCTURE_DEFINITION = null;
+    private int mCounCasing = 0;
+    private IStructureDefinition<GregtechMetaTileEntity_SteamMacerator> STRUCTURE_DEFINITION = null;
 
     private int tierMachine = 0;
 
@@ -77,7 +77,7 @@ public class GregtechMetaTileEntity_SteamMacerator
         return new GregtechMetaTileEntity_SteamMacerator(this.mName);
     }
 
-    public static int getTierMachineCasing(Block block, int meta) {
+    public int getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
             mCounCasing++;
             return 1;
@@ -148,7 +148,7 @@ public class GregtechMetaTileEntity_SteamMacerator
                             .dot(1)
                             .buildAndChain(),
                         ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamMacerator::getTierMachineCasing,
+                            this::getTierMachineCasing,
                             ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
                             -1,
                             (t, m) -> t.tierMachineCasing = m,
