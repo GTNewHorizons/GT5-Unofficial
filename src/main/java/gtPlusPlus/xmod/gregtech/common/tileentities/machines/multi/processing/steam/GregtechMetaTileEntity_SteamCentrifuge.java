@@ -100,7 +100,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
             tCountCasing++;
             return 2;
         }
-        return -1;
+        return 0;
     }
 
     private String tFireBoxCasing = "Bronze or Steel Firebox Casing";
@@ -108,7 +108,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     public static int getTierFireBoxCasing(Block block, int meta) {
         if (block == sBlockCasings3 && 13 == meta) return 1;
         if (block == sBlockCasings3 && 14 == meta) return 2;
-        return -1;
+        return 0;
     }
 
     private String tGearBoxCasing = "Bronze or Steel Gear Box Casing";
@@ -116,7 +116,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     public static int getTierGearBoxCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 2 == meta) return 1;
         if (block == sBlockCasings2 && 3 == meta) return 2;
-        return -1;
+        return 0;
     }
 
     private String tPipeCasing = "Bronze or Steel Pipe Casing";
@@ -124,7 +124,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     public static int getTierPipeCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 12 == meta) return 1;
         if (block == sBlockCasings2 && 13 == meta) return 2;
-        return -1;
+        return 0;
     }
 
     protected void updateHatchTexture() {

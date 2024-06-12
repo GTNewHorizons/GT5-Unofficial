@@ -111,7 +111,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
             tCountCasing++;
             return 2;
         }
-        return -1;
+        return 0;
     }
 
     private String tGearBoxCasing = "Bronze or Steel Gear Box Casing";
@@ -119,7 +119,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
     public static int getTierGearBoxCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 2 == meta) return 1;
         if (block == sBlockCasings2 && 3 == meta) return 2;
-        return -1;
+        return 0;
     }
 
     private String tPipeCasing = "Bronze or Steel Pipe Casing";
@@ -127,7 +127,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
     public static int getTierPipeCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 12 == meta) return 1;
         if (block == sBlockCasings2 && 13 == meta) return 2;
-        return -1;
+        return 0;
     }
 
     protected void updateHatchTexture() {
@@ -253,11 +253,13 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                     ofChain(
                         buildSteamInput(GregtechMetaTileEntity_SteamWasher.class).casingIndex(10)
                             .dot(1)
+                            .allowOnly(ForgeDirection.NORTH)
                             .build(),
                         buildHatchAdder(GregtechMetaTileEntity_SteamWasher.class)
                             .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam, InputHatch)
                             .casingIndex(10)
                             .dot(1)
+                            .allowOnly(ForgeDirection.NORTH)
                             .buildAndChain(),
                         ofBlocksTiered(
                             GregtechMetaTileEntity_SteamWasher::getTierMachineCasing,
@@ -366,6 +368,6 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
         // don't rotate a washer, water will flow out.
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
+        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated();
     }
 }
