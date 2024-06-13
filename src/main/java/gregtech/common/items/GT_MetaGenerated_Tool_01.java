@@ -116,6 +116,7 @@ import static gregtech.common.items.ID_MetaTool_01.WRENCH_LV;
 import static gregtech.common.items.ID_MetaTool_01.WRENCH_MV;
 
 enum ID_MetaTool_01{
+    // Please pretty please, add your entries while conserving the order
     SWORD(0),
     PICKAXE(2),
     SHOVEL(4),
@@ -154,10 +155,10 @@ enum ID_MetaTool_01{
     WRENCH_HV(124),
     JACKHAMMER(130),
     BUZZSAW_LV(140),
-    BUZZSAW_MV(142),
-    BUZZSAW_HV(144),
     @Deprecated
     BUZZSAW(140),
+    BUZZSAW_MV(142),
+    BUZZSAW_HV(144),
     SCREWDRIVER_LV(150),
     SCREWDRIVER_MV(152),
     SCREWDRIVER_HV(154),

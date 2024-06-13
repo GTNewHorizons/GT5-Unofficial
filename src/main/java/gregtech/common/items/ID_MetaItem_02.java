@@ -1,6 +1,7 @@
 package gregtech.common.items;
 
 public enum ID_MetaItem_02 {
+    // Please pretty please, add your entries while conserving the order
     ThermosCan_Dark_Coffee(0),
     ThermosCan_Dark_Cafe_au_lait(1),
     ThermosCan_Coffee(2),
@@ -86,6 +87,8 @@ public enum ID_MetaItem_02 {
     Food_Baked_Pizza_Veggie(260),
     Food_Baked_Pizza_Cheese(261),
     Food_Baked_Pizza_Meat(262),
+    SFMixture(270),
+    MSFMixture(271),
     Dye_Indigo(410),
     Dye_Color_00(414),
     Dye_Color_01(415),
@@ -133,8 +136,6 @@ public enum ID_MetaItem_02 {
     Plank_Plum(497),
     Plank_Maple(498),
     Plank_Citrus(499),
-    SFMixture(270),
-    MSFMixture(271),
     Crop_Drop_Plumbilia(500),
     Crop_Drop_Argentia(501),
     Crop_Drop_Indigo(502),
@@ -146,9 +147,6 @@ public enum ID_MetaItem_02 {
     Crop_Drop_UUMBerry(512),
     Crop_Drop_UUABerry(513),
     Crop_Drop_MilkWart(520),
-    Crop_Drop_Coppon(530),
-    Crop_Drop_Tine(540),
-    Crop_Drop_Mica(538),
     Crop_Drop_Bauxite(521),
     Crop_Drop_Ilmenite(522),
     Crop_Drop_Pitchblende(523),
@@ -157,11 +155,14 @@ public enum ID_MetaItem_02 {
     Crop_Drop_Nickel(527),
     Crop_Drop_Zinc(528),
     Crop_Drop_Manganese(529),
+    Crop_Drop_Coppon(530),
     Crop_Drop_Scheelite(531),
     Crop_Drop_Platinum(532),
     Crop_Drop_Iridium(533),
     Crop_Drop_Osmium(534),
     Crop_Drop_Naquadah(535),
+    Crop_Drop_Mica(538),
+    Crop_Drop_Tine(540),
     Crop_Drop_Chilly(550),
     Crop_Drop_Lemon(551),
     Crop_Drop_Tomato(552),
@@ -196,8 +197,7 @@ public enum ID_MetaItem_02 {
     Cover_WirelessItemDetector(582),
     Cover_WirelessNeedsMaintainance(583),
     Cover_WirelessActivityDetector(584),
-    Display_ITS_FREE(765),
-    ;
+    Display_ITS_FREE(765);
     final int ID;
 
     ID_MetaItem_02(int ID) {
