@@ -273,10 +273,12 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
          * copper foil + sulfuric acid fiberglass circuit board (simple + multilayer) / glass + plastic + electrum foil
          * + sulfuric acid wetware lifesupport board / fiberglass CB + teflon +
          */
-        ItemList.Circuit_Board_Wetware
-            .set(addItem(Circuit_Board_Wetware.ID, "Wetware Lifesupport Circuit Board", "The Board that keeps life", o));
-        ItemList.Circuit_Board_Plastic.set(addItem(Circuit_Board_Plastic.ID, "Plastic Circuit Board", "A Good Board", o));
-        ItemList.Circuit_Board_Bio.set(addItem(Circuit_Board_Bio.ID, "Bio Circuit Board", "Bio genetic mutated Board", o));
+        ItemList.Circuit_Board_Wetware.set(
+            addItem(Circuit_Board_Wetware.ID, "Wetware Lifesupport Circuit Board", "The Board that keeps life", o));
+        ItemList.Circuit_Board_Plastic
+            .set(addItem(Circuit_Board_Plastic.ID, "Plastic Circuit Board", "A Good Board", o));
+        ItemList.Circuit_Board_Bio
+            .set(addItem(Circuit_Board_Bio.ID, "Bio Circuit Board", "Bio genetic mutated Board", o));
 
         /*
          * electronic components: vacuum tube (glass tube + red alloy cables) basic electronic circuits normal+smd coils
@@ -314,25 +316,36 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_GlassFiber
             .set(addItem(Circuit_Parts_GlassFiber.ID, "Glass Fiber", Materials.BorosilicateGlass.mChemicalFormula, o));
-        ItemList.Circuit_Parts_PetriDish.set(addItem(Circuit_Parts_PetriDish.ID, "Petri Dish", "For cultivating cells", o));
-        ItemList.Circuit_Parts_Reinforced_Glass_Tube.set(addItem(Circuit_Parts_Reinforced_Glass_Tube.ID, "Reinforced Glass Tube", "", o));
+        ItemList.Circuit_Parts_PetriDish
+            .set(addItem(Circuit_Parts_PetriDish.ID, "Petri Dish", "For cultivating cells", o));
+        ItemList.Circuit_Parts_Reinforced_Glass_Tube
+            .set(addItem(Circuit_Parts_Reinforced_Glass_Tube.ID, "Reinforced Glass Tube", "", o));
 
         ItemList.Circuit_Parts_ResistorASMD
             .set(addItem(Circuit_Parts_ResistorASMD.ID, "Advanced SMD Resistor", "Advanced Electronic Component", o));
-        ItemList.Circuit_Parts_DiodeASMD.set(addItem(Circuit_Parts_DiodeASMD.ID, "Advanced SMD Diode", "Advanced Electronic Component", o));
-        ItemList.Circuit_Parts_TransistorASMD
-            .set(addItem(Circuit_Parts_TransistorASMD.ID, "Advanced SMD Transistor", "Advanced Electronic Component", o));
+        ItemList.Circuit_Parts_DiodeASMD
+            .set(addItem(Circuit_Parts_DiodeASMD.ID, "Advanced SMD Diode", "Advanced Electronic Component", o));
+        ItemList.Circuit_Parts_TransistorASMD.set(
+            addItem(Circuit_Parts_TransistorASMD.ID, "Advanced SMD Transistor", "Advanced Electronic Component", o));
         ItemList.Circuit_Parts_CapacitorASMD
             .set(addItem(Circuit_Parts_CapacitorASMD.ID, "Advanced SMD Capacitor", "Advanced Electronic Component", o));
 
-        ItemList.Circuit_Parts_ResistorXSMD
-            .set(addItem(Circuit_Parts_ResistorXSMD.ID, "Optical SMD Resistor", "Highly Advanced Electronic Component", o));
+        ItemList.Circuit_Parts_ResistorXSMD.set(
+            addItem(Circuit_Parts_ResistorXSMD.ID, "Optical SMD Resistor", "Highly Advanced Electronic Component", o));
         ItemList.Circuit_Parts_DiodeXSMD
             .set(addItem(Circuit_Parts_DiodeXSMD.ID, "Optical SMD Diode", "Highly Advanced Electronic Component", o));
-        ItemList.Circuit_Parts_TransistorXSMD
-            .set(addItem(Circuit_Parts_TransistorXSMD.ID, "Optical SMD Transistor", "Highly Advanced Electronic Component", o));
-        ItemList.Circuit_Parts_CapacitorXSMD
-            .set(addItem(Circuit_Parts_CapacitorXSMD.ID, "Optical SMD Capacitor", "Highly Advanced Electronic Component", o));
+        ItemList.Circuit_Parts_TransistorXSMD.set(
+            addItem(
+                Circuit_Parts_TransistorXSMD.ID,
+                "Optical SMD Transistor",
+                "Highly Advanced Electronic Component",
+                o));
+        ItemList.Circuit_Parts_CapacitorXSMD.set(
+            addItem(
+                Circuit_Parts_CapacitorXSMD.ID,
+                "Optical SMD Capacitor",
+                "Highly Advanced Electronic Component",
+                o));
 
         ItemList.Circuit_Parts_InductorSMD.set(
             addItem(
@@ -343,8 +356,8 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_InductorASMD
             .set(addItem(Circuit_Parts_InductorASMD.ID, "Advanced SMD Inductor", "Advanced Electronic Component", o));
-        ItemList.Circuit_Parts_InductorXSMD
-            .set(addItem(Circuit_Parts_InductorXSMD.ID, "Optical SMD Inductor", "Highly Advanced Electronic Component", o));
+        ItemList.Circuit_Parts_InductorXSMD.set(
+            addItem(Circuit_Parts_InductorXSMD.ID, "Optical SMD Inductor", "Highly Advanced Electronic Component", o));
 
         /*
          * ICs Lenses made from perfect crystals first instead of plates Monocrystalline silicon ingot
@@ -355,30 +368,42 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
          * nanotube interconnected circuit (H-IC + nanotubes)
          * quantum chips
          */
-        ItemList.Circuit_Silicon_Ingot.set(addItem(Circuit_Silicon_Ingot.ID, "Monocrystalline Silicon Boule", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Ingot2
-            .set(addItem(Circuit_Silicon_Ingot2.ID, "Phosphorus doped Monocrystalline Silicon Boule", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Ingot
+            .set(addItem(Circuit_Silicon_Ingot.ID, "Monocrystalline Silicon Boule", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Ingot2.set(
+            addItem(Circuit_Silicon_Ingot2.ID, "Phosphorus doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Ingot3
             .set(addItem(Circuit_Silicon_Ingot3.ID, "Naquadah doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Ingot4
             .set(addItem(Circuit_Silicon_Ingot4.ID, "Europium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Ingot5
             .set(addItem(Circuit_Silicon_Ingot5.ID, "Americium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Ingot6.set(addItem(Circuit_Silicon_Ingot6.ID, "Optically Enriched Crystalline Boule", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Ingot6
+            .set(addItem(Circuit_Silicon_Ingot6.ID, "Optically Enriched Crystalline Boule", "Raw Circuit", o));
 
         ItemList.Circuit_Silicon_Wafer.set(addItem(Circuit_Silicon_Wafer.ID, "Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Wafer2.set(addItem(Circuit_Silicon_Wafer2.ID, "Phosphorus doped Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Wafer3.set(addItem(Circuit_Silicon_Wafer3.ID, "Naquadah doped Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Wafer4.set(addItem(Circuit_Silicon_Wafer4.ID, "Europium doped Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Wafer5.set(addItem(Circuit_Silicon_Wafer5.ID, "Americium doped Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Wafer6.set(addItem(Circuit_Silicon_Wafer6.ID, "Photonically Prepared Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Wafer7.set(addItem(Circuit_Silicon_Wafer7.ID, "Photonically Enhanced Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer2
+            .set(addItem(Circuit_Silicon_Wafer2.ID, "Phosphorus doped Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer3
+            .set(addItem(Circuit_Silicon_Wafer3.ID, "Naquadah doped Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer4
+            .set(addItem(Circuit_Silicon_Wafer4.ID, "Europium doped Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer5
+            .set(addItem(Circuit_Silicon_Wafer5.ID, "Americium doped Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer6
+            .set(addItem(Circuit_Silicon_Wafer6.ID, "Photonically Prepared Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer7
+            .set(addItem(Circuit_Silicon_Wafer7.ID, "Photonically Enhanced Wafer", "Raw Circuit", o));
 
-        ItemList.Circuit_Wafer_ILC.set(addItem(Circuit_Wafer_ILC.ID, "Integrated Logic Circuit (Wafer)", "Raw Circuit", o));
-        ItemList.Circuit_Chip_ILC.set(addItem(Circuit_Chip_ILC.ID, "Integrated Logic Circuit", "Integrated Circuit", o));
+        ItemList.Circuit_Wafer_ILC
+            .set(addItem(Circuit_Wafer_ILC.ID, "Integrated Logic Circuit (Wafer)", "Raw Circuit", o));
+        ItemList.Circuit_Chip_ILC
+            .set(addItem(Circuit_Chip_ILC.ID, "Integrated Logic Circuit", "Integrated Circuit", o));
 
-        ItemList.Circuit_Wafer_Ram.set(addItem(Circuit_Wafer_Ram.ID, "Random Access Memory Chip (Wafer)", "Raw Circuit", o));
-        ItemList.Circuit_Chip_Ram.set(addItem(Circuit_Chip_Ram.ID, "Random Access Memory Chip", "Integrated Circuit", o));
+        ItemList.Circuit_Wafer_Ram
+            .set(addItem(Circuit_Wafer_Ram.ID, "Random Access Memory Chip (Wafer)", "Raw Circuit", o));
+        ItemList.Circuit_Chip_Ram
+            .set(addItem(Circuit_Chip_Ram.ID, "Random Access Memory Chip", "Integrated Circuit", o));
 
         ItemList.Circuit_Wafer_NAND.set(addItem(Circuit_Wafer_NAND.ID, "NAND Memory Chip (Wafer)", "Raw Circuit", o));
         ItemList.Circuit_Chip_NAND.set(addItem(Circuit_Chip_NAND.ID, "NAND Memory Chip", "Integrated Circuit", o));
@@ -386,7 +411,8 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         ItemList.Circuit_Wafer_NOR.set(addItem(Circuit_Wafer_NOR.ID, "NOR Memory Chip (Wafer)", "Raw Circuit", o));
         ItemList.Circuit_Chip_NOR.set(addItem(Circuit_Chip_NOR.ID, "NOR Memory Chip", "Integrated Circuit", o));
 
-        ItemList.Circuit_Wafer_CPU.set(addItem(Circuit_Wafer_CPU.ID, "Central Processing Unit (Wafer)", "Raw Circuit", o));
+        ItemList.Circuit_Wafer_CPU
+            .set(addItem(Circuit_Wafer_CPU.ID, "Central Processing Unit (Wafer)", "Raw Circuit", o));
         ItemList.Circuit_Chip_CPU.set(addItem(Circuit_Chip_CPU.ID, "Central Processing Unit", "Integrated Circuit", o));
 
         ItemList.Circuit_Wafer_SoC.set(addItem(Circuit_Wafer_SoC.ID, "SoC Wafer", "Raw Circuit", o));
@@ -402,19 +428,25 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         ItemList.Circuit_Chip_HPIC.set(addItem(Circuit_Chip_HPIC.ID, "High Power IC", "High Power Circuit", o));
 
         ItemList.Circuit_Wafer_NanoCPU.set(addItem(Circuit_Wafer_NanoCPU.ID, "NanoCPU Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_NanoCPU.set(addItem(Circuit_Chip_NanoCPU.ID, "Nanocomponent Central Processing Unit", "Power Circuit", o));
+        ItemList.Circuit_Chip_NanoCPU
+            .set(addItem(Circuit_Chip_NanoCPU.ID, "Nanocomponent Central Processing Unit", "Power Circuit", o));
 
         ItemList.Circuit_Wafer_QuantumCPU.set(addItem(Circuit_Wafer_QuantumCPU.ID, "QBit Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_QuantumCPU.set(addItem(Circuit_Chip_QuantumCPU.ID, "QBit Processing Unit", "Quantum CPU", o));
+        ItemList.Circuit_Chip_QuantumCPU
+            .set(addItem(Circuit_Chip_QuantumCPU.ID, "QBit Processing Unit", "Quantum CPU", o));
 
         ItemList.Circuit_Wafer_UHPIC.set(addItem(Circuit_Wafer_UHPIC.ID, "UHPIC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_UHPIC.set(addItem(Circuit_Chip_UHPIC.ID, "Ultra High Power IC", "Ultra High Power Circuit", o));
+        ItemList.Circuit_Chip_UHPIC
+            .set(addItem(Circuit_Chip_UHPIC.ID, "Ultra High Power IC", "Ultra High Power Circuit", o));
 
-        ItemList.Circuit_Wafer_Simple_SoC.set(addItem(Circuit_Wafer_Simple_SoC.ID, "Simple SoC Wafer", "Raw Primitive Circuit", o));
-        ItemList.Circuit_Chip_Simple_SoC.set(addItem(Circuit_Chip_Simple_SoC.ID, "Simple SoC", "Simple System on a Chip", o));
+        ItemList.Circuit_Wafer_Simple_SoC
+            .set(addItem(Circuit_Wafer_Simple_SoC.ID, "Simple SoC Wafer", "Raw Primitive Circuit", o));
+        ItemList.Circuit_Chip_Simple_SoC
+            .set(addItem(Circuit_Chip_Simple_SoC.ID, "Simple SoC", "Simple System on a Chip", o));
 
         ItemList.Circuit_Wafer_ULPIC.set(addItem(Circuit_Wafer_ULPIC.ID, "ULPIC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_ULPIC.set(addItem(Circuit_Chip_ULPIC.ID, "Ultra Low Power IC", "Ultra Low Power Circuit", o));
+        ItemList.Circuit_Chip_ULPIC
+            .set(addItem(Circuit_Chip_ULPIC.ID, "Ultra Low Power IC", "Ultra Low Power Circuit", o));
 
         ItemList.Circuit_Wafer_LPIC.set(addItem(Circuit_Wafer_LPIC.ID, "LPIC Wafer", "Raw Circuit", o));
         ItemList.Circuit_Chip_LPIC.set(addItem(Circuit_Chip_LPIC.ID, "Low Power IC", "Low Power Circuit", o));
@@ -429,25 +461,30 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         ItemList.Circuit_Chip_QPIC.set(addItem(Circuit_Chip_QPIC.ID, "Quantum Power IC", "Quantum Power Circuit", o));
 
         ItemList.Circuit_Wafer_Bioware.set(addItem(Circuit_Wafer_Bioware.ID, "Living Bio Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Parts_Chip_Bioware.set(addItem(Circuit_Parts_Chip_Bioware.ID, "Living Bio Chip", "Needed for Circuits", o));
+        ItemList.Circuit_Parts_Chip_Bioware
+            .set(addItem(Circuit_Parts_Chip_Bioware.ID, "Living Bio Chip", "Needed for Circuits", o));
         /*
          * Engraved Crystal Chip Engraved Lapotron Chip Crystal CPU SoCrystal stem cells (disassemble eggs)
          */
-        ItemList.Circuit_Chip_CrystalSoC2
-            .set(addItem(Circuit_Chip_CrystalSoC2.ID, "Raw Advanced Crystal Chip", "Raw Advanced Crystal Processor", o));
-        ItemList.Circuit_Parts_RawCrystalChip.set(addItem(Circuit_Parts_RawCrystalChip.ID, "Raw Crystal Chip", "Raw Crystal Processor", o));
-        ItemList.Circuit_Chip_CrystalCPU.set(addItem(Circuit_Chip_CrystalCPU.ID, "Crystal Processing Unit", "Crystal CPU", o)); // Crystal
-                                                                                                        // chip
-                                                                                                        // elite
-                                                                                                        // part
-        ItemList.Circuit_Chip_CrystalSoC.set(addItem(Circuit_Chip_CrystalSoC.ID, "Crystal SoC", "Crystal System on a Chip", o));
+        ItemList.Circuit_Chip_CrystalSoC2.set(
+            addItem(Circuit_Chip_CrystalSoC2.ID, "Raw Advanced Crystal Chip", "Raw Advanced Crystal Processor", o));
+        ItemList.Circuit_Parts_RawCrystalChip
+            .set(addItem(Circuit_Parts_RawCrystalChip.ID, "Raw Crystal Chip", "Raw Crystal Processor", o));
+        ItemList.Circuit_Chip_CrystalCPU
+            .set(addItem(Circuit_Chip_CrystalCPU.ID, "Crystal Processing Unit", "Crystal CPU", o)); // Crystal
+        // chip
+        // elite
+        // part
+        ItemList.Circuit_Chip_CrystalSoC
+            .set(addItem(Circuit_Chip_CrystalSoC.ID, "Crystal SoC", "Crystal System on a Chip", o));
         ItemList.Circuit_Chip_NeuroCPU.set(addItem(Circuit_Chip_NeuroCPU.ID, "Neuro Processing Unit", "Neuro CPU", o));
         ItemList.Circuit_Chip_Stemcell.set(addItem(Circuit_Chip_Stemcell.ID, "Stemcells", "Raw inteligence", o));
         ItemList.Circuit_Parts_RawCrystalParts
             .set(addItem(Circuit_Parts_RawCrystalParts.ID, "Raw Crystal Chip Parts", "Raw Crystal Processor Parts", o));
         ItemList.Circuit_Chip_Biocell.set(addItem(Circuit_Chip_Biocell.ID, "Biocells", "Mutated Raw inteligence", o));
         ItemList.Circuit_Chip_BioCPU.set(addItem(Circuit_Chip_BioCPU.ID, "Bio Processing Unit", "Bio CPU", o));
-        ItemList.Circuit_Chip_Optical.set(addItem(Circuit_Chip_Optical.ID, "Raw Exposed Optical Chip", "Raw Optical Chip", o));
+        ItemList.Circuit_Chip_Optical
+            .set(addItem(Circuit_Chip_Optical.ID, "Raw Exposed Optical Chip", "Raw Optical Chip", o));
 
         // Nand Chip
         ItemList.NandChip.set(
@@ -547,7 +584,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 OrePrefixes.circuit.get(Materials.Ultimate),
                 SubTag.NO_UNIFICATION));
 
-
         // Crystal circuits
         ItemList.Circuit_Crystalprocessor.set(
             addItem(
@@ -580,7 +616,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A Super Circuit",
                 OrePrefixes.circuit.get(Materials.SuperconductorUHV),
                 SubTag.NO_UNIFICATION));
-
 
         // ???? Scared to remove.
         ItemList.Circuit_Ultimate.set(ItemList.Circuit_Ultimatecrystalcomputer.get(1L)); // maybe should be removed
@@ -618,7 +653,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 OrePrefixes.circuit.get(Materials.Infinite),
                 SubTag.NO_UNIFICATION));
 
-
         // Bioware circuits.
         ItemList.Circuit_Bioprocessor.set(
             addItem(
@@ -652,21 +686,32 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 OrePrefixes.circuit.get(Materials.Bio),
                 SubTag.NO_UNIFICATION));
 
-
-        ItemList.Circuit_Board_Coated_Basic.set(addItem(Circuit_Board_Coated_Basic.ID, "Circuit Board", "A basic Circuit Board", o));
-        ItemList.Circuit_Board_Phenolic_Good.set(addItem(Circuit_Board_Phenolic_Good.ID, "Good Circuit Board", "A good Circuit Board", o));
+        ItemList.Circuit_Board_Coated_Basic
+            .set(addItem(Circuit_Board_Coated_Basic.ID, "Circuit Board", "A basic Circuit Board", o));
+        ItemList.Circuit_Board_Phenolic_Good
+            .set(addItem(Circuit_Board_Phenolic_Good.ID, "Good Circuit Board", "A good Circuit Board", o));
         ItemList.Circuit_Board_Epoxy_Advanced
             .set(addItem(Circuit_Board_Epoxy_Advanced.ID, "Advanced Circuit Board", "A advanced Circuit Board", o));
-        ItemList.Circuit_Board_Fiberglass_Advanced
-            .set(addItem(Circuit_Board_Fiberglass_Advanced.ID, "More Advanced Circuit Board", "A more advanced Circuit Board", o));
+        ItemList.Circuit_Board_Fiberglass_Advanced.set(
+            addItem(
+                Circuit_Board_Fiberglass_Advanced.ID,
+                "More Advanced Circuit Board",
+                "A more advanced Circuit Board",
+                o));
         ItemList.Circuit_Board_Multifiberglass_Elite
             .set(addItem(Circuit_Board_Multifiberglass_Elite.ID, "Elite Circuit Board", "A elite Circuit Board", o));
-        ItemList.Circuit_Board_Wetware_Extreme
-            .set(addItem(Circuit_Board_Multifiberglass_Elite.ID, "Extreme Wetware Lifesupport Circuit Board", "The Board that keeps life", o));
-        ItemList.Circuit_Board_Plastic_Advanced.set(addItem(Circuit_Board_Plastic_Advanced.ID, "Plastic Circuit Board", "A good Board", o));
-        ItemList.Circuit_Board_Bio_Ultra
-            .set(addItem(Circuit_Board_Bio_Ultra.ID, "Ultra Bio Mutated Circuit Board", "Bio genetic mutated Board", o));
-        ItemList.Circuit_Board_Optical.set(addItem(Circuit_Board_Optical.ID, "Optical Circuit Board", "Optically Infused Board", o));
+        ItemList.Circuit_Board_Wetware_Extreme.set(
+            addItem(
+                Circuit_Board_Multifiberglass_Elite.ID,
+                "Extreme Wetware Lifesupport Circuit Board",
+                "The Board that keeps life",
+                o));
+        ItemList.Circuit_Board_Plastic_Advanced
+            .set(addItem(Circuit_Board_Plastic_Advanced.ID, "Plastic Circuit Board", "A good Board", o));
+        ItemList.Circuit_Board_Bio_Ultra.set(
+            addItem(Circuit_Board_Bio_Ultra.ID, "Ultra Bio Mutated Circuit Board", "Bio genetic mutated Board", o));
+        ItemList.Circuit_Board_Optical
+            .set(addItem(Circuit_Board_Optical.ID, "Optical Circuit Board", "Optically Infused Board", o));
 
         // Optical circuits
         ItemList.Circuit_OpticalProcessor.set(
@@ -701,7 +746,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 OrePrefixes.circuit.get(Materials.Optical),
                 SubTag.NO_UNIFICATION));
 
-
         // Exotic circuits
         ItemList.Circuit_ExoticProcessor.set(
             addItem(
@@ -734,7 +778,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Exotic Circuit",
                 OrePrefixes.circuit.get(Materials.Exotic),
                 SubTag.NO_UNIFICATION));
-
 
         // Cosmic circuits
         ItemList.Circuit_CosmicProcessor.set(
@@ -769,7 +812,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 OrePrefixes.circuit.get(Materials.Cosmic),
                 SubTag.NO_UNIFICATION));
 
-
         // Transcendent circuits
         ItemList.Circuit_TranscendentProcessor.set(
             addItem(
@@ -803,7 +845,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 OrePrefixes.circuit.get(Materials.Transcendent),
                 SubTag.NO_UNIFICATION));
 
-
         ItemList.Tube_Wires.set(addItem(Tube_Wires.ID, "Tube Wires", "For the Vacuum Tubes", o));
 
         ItemList.Cover_SolarPanel_UHV.set(
@@ -831,7 +872,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 512L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 512L)));
 
-
         ItemList.ULV_Coil.set(addItem(ULV_Coil.ID, "Ultra Low Voltage Coil", "Primitive Coil", o));
         ItemList.LV_Coil.set(addItem(LV_Coil.ID, "Low Voltage Coil", "Basic Coil", o));
         ItemList.MV_Coil.set(addItem(MV_Coil.ID, "Medium Voltage Coil", "Good Coil", o));
@@ -843,14 +883,16 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         ItemList.UV_Coil.set(addItem(UV_Coil.ID, "Ultimate Voltage Coil", "Super Coil", o));
         ItemList.UHV_Coil.set(addItem(UHV_Coil.ID, "Highly Ultimate Voltage Coil", "Infinite Coil", o));
 
-        ItemList.GalliumArsenideCrystal.set(addItem(GalliumArsenideCrystal.ID, "Gallium Arsenide Crystal", "For making boules", o));
+        ItemList.GalliumArsenideCrystal
+            .set(addItem(GalliumArsenideCrystal.ID, "Gallium Arsenide Crystal", "For making boules", o));
         ItemList.GalliumArsenideCrystalSmallPart
             .set(addItem(GalliumArsenideCrystalSmallPart.ID, "Small Gallium Arsenide Crystal", "For making boules", o));
         ItemList.KevlarFiber.set(addItem(KevlarFiber.ID, "Kevlar Fiber", "For making Kevlar Plates", o));
         ItemList.WovenKevlar.set(addItem(WovenKevlar.ID, "Woven Kevlar", "For making Kevlar Plates", o));
         ItemList.Spinneret.set(addItem(Spinneret.ID, "Spinneret", "For making Kevlar Fiber", o));
 
-        ItemList.IndustrialApiary_Upgrade_Frame.set(addItem(IndustrialApiary_Upgrade_Frame.ID, "Upgrade Frame", "Crafting component", o));
+        ItemList.IndustrialApiary_Upgrade_Frame
+            .set(addItem(IndustrialApiary_Upgrade_Frame.ID, "Upgrade Frame", "Crafting component", o));
 
         ItemList.IndustrialApiary_Upgrade_Acceleration_1.set(
             addItem(
@@ -1058,9 +1100,12 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                     "Removing this cover will destroy the linked card",
                     GT_Values.AuthorQuerns)));
 
-        ItemList.Optical_Cpu_Containment_Housing.set(addItem(Optical_Cpu_Containment_Housing.ID, "Optical CPU Containment Housing", "CPU Housing", o));
-        ItemList.Optically_Perfected_CPU.set(addItem(Optically_Perfected_CPU.ID, "Optically Perfected CPU", "Perfected CPU!", o));
-        ItemList.Optically_Compatible_Memory.set(addItem(Optically_Compatible_Memory.ID, "Optically Compatible Memory", "Its in the name!", o));
+        ItemList.Optical_Cpu_Containment_Housing
+            .set(addItem(Optical_Cpu_Containment_Housing.ID, "Optical CPU Containment Housing", "CPU Housing", o));
+        ItemList.Optically_Perfected_CPU
+            .set(addItem(Optically_Perfected_CPU.ID, "Optically Perfected CPU", "Perfected CPU!", o));
+        ItemList.Optically_Compatible_Memory
+            .set(addItem(Optically_Compatible_Memory.ID, "Optically Compatible Memory", "Its in the name!", o));
 
         ItemList.Timepiece.set(addItem(Timepiece.ID, "Timepiece", "Beware of the kid with the hat", o));
 
@@ -1070,7 +1115,10 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "White Dwarf Extruder Shape (Plate)",
                 "Ultra Strong Stellar Shape for making Plates"));
         ItemList.White_Dwarf_Shape_Extruder_Rod.set(
-            addItem(White_Dwarf_Shape_Extruder_Rod.ID, "White Dwarf Extruder Shape (Rod)", "Ultra Strong Stellar Shape for making Rods"));
+            addItem(
+                White_Dwarf_Shape_Extruder_Rod.ID,
+                "White Dwarf Extruder Shape (Rod)",
+                "Ultra Strong Stellar Shape for making Rods"));
         ItemList.White_Dwarf_Shape_Extruder_Bolt.set(
             addItem(
                 White_Dwarf_Shape_Extruder_Bolt.ID,
@@ -1182,7 +1230,10 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "White Dwarf Extruder Shape (Bottle)",
                 "Ultra Strong Stellar Shape for making Bottles"));
         ItemList.White_Dwarf_Shape_Extruder_Rotor.set(
-            addItem(White_Dwarf_Shape_Extruder_Rotor.ID, "White Dwarf Extruder Shape (Rotor)", "Ultra Strong Stellar Shape for a Rotor"));
+            addItem(
+                White_Dwarf_Shape_Extruder_Rotor.ID,
+                "White Dwarf Extruder Shape (Rotor)",
+                "Ultra Strong Stellar Shape for a Rotor"));
         ItemList.White_Dwarf_Shape_Extruder_Small_Gear.set(
             addItem(
                 White_Dwarf_Shape_Extruder_Small_Gear.ID,
@@ -1204,7 +1255,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         registerCovers();
     }
 
-    private void registerAllTieredTooltips(){
+    private void registerAllTieredTooltips() {
         registerTieredTooltip(ItemList.NandChip.get(1), ULV);
         registerTieredTooltip(ItemList.Circuit_Integrated_Good.get(1), MV);
         registerTieredTooltip(ItemList.Circuit_Microprocessor.get(1), LV);
@@ -1246,7 +1297,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         registerTieredTooltip(ItemList.Circuit_TranscendentMainframe.get(1), MAX);
     }
 
-    private void initOreDictUnificatorEntries(){
+    private void initOreDictUnificatorEntries() {
         GT_OreDictUnificator
             .set(OrePrefixes.componentCircuit, Materials.Resistor, ItemList.Circuit_Parts_Resistor.get(1L));
         GT_OreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Diode, ItemList.Circuit_Parts_Diode.get(1L));
@@ -1283,7 +1334,8 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
             true);
 
     }
-    private void initOrePrefixes(){
+
+    private void initOrePrefixes() {
         OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_1.get(1L));
         OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_2.get(1L));
         OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_3.get(1L));
@@ -1317,7 +1369,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_UNLIGHT.get(1L));
     }
 
-    private void registerCovers(){
+    private void registerCovers() {
         GregTech_API.registerCover(
             ItemList.Cover_Metrics_Transmitter.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)),

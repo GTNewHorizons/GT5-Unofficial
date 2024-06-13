@@ -1,6 +1,7 @@
 package gregtech.common.items;
 
 public enum ID_MetaTool_01 {
+
     // Please pretty please, add your entries while conserving the order
     SWORD(0),
     PICKAXE(2),
@@ -63,6 +64,7 @@ public enum ID_MetaTool_01 {
     POCKET_SAW(188),
     POCKET_SCREWDRIVER(190),
     POCKET_WIRECUTTER(192);
+
     final int ID;
 
     ID_MetaTool_01(int ID) {

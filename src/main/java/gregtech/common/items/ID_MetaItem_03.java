@@ -1,6 +1,7 @@
 package gregtech.common.items;
 
 public enum ID_MetaItem_03 {
+
     // Please pretty please, add your entries while conserving the order
     Circuit_Board_Wetware(6),
     Circuit_Board_Plastic(7),
@@ -219,6 +220,7 @@ public enum ID_MetaItem_03 {
     White_Dwarf_Shape_Extruder_Turbine_Blade(755),
     White_Dwarf_Shape_Extruder_ToolHeadDrill(756),
     Timepiece(757);
+
     final int ID;
 
     ID_MetaItem_03(int ID) {

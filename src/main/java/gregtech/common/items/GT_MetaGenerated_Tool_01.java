@@ -1,5 +1,59 @@
 package gregtech.common.items;
 
+import static gregtech.common.items.ID_MetaTool_01.AXE;
+import static gregtech.common.items.ID_MetaTool_01.BRANCHCUTTER;
+import static gregtech.common.items.ID_MetaTool_01.BUTCHERYKNIFE;
+import static gregtech.common.items.ID_MetaTool_01.BUZZSAW_HV;
+import static gregtech.common.items.ID_MetaTool_01.BUZZSAW_LV;
+import static gregtech.common.items.ID_MetaTool_01.BUZZSAW_MV;
+import static gregtech.common.items.ID_MetaTool_01.CHAINSAW_HV;
+import static gregtech.common.items.ID_MetaTool_01.CHAINSAW_LV;
+import static gregtech.common.items.ID_MetaTool_01.CHAINSAW_MV;
+import static gregtech.common.items.ID_MetaTool_01.CROWBAR;
+import static gregtech.common.items.ID_MetaTool_01.DRILL_HV;
+import static gregtech.common.items.ID_MetaTool_01.DRILL_LV;
+import static gregtech.common.items.ID_MetaTool_01.DRILL_MV;
+import static gregtech.common.items.ID_MetaTool_01.FILE;
+import static gregtech.common.items.ID_MetaTool_01.HARDHAMMER;
+import static gregtech.common.items.ID_MetaTool_01.HOE;
+import static gregtech.common.items.ID_MetaTool_01.JACKHAMMER;
+import static gregtech.common.items.ID_MetaTool_01.KNIFE;
+import static gregtech.common.items.ID_MetaTool_01.MORTAR;
+import static gregtech.common.items.ID_MetaTool_01.PICKAXE;
+import static gregtech.common.items.ID_MetaTool_01.PLOW;
+import static gregtech.common.items.ID_MetaTool_01.PLUNGER;
+import static gregtech.common.items.ID_MetaTool_01.POCKET_BRANCHCUTTER;
+import static gregtech.common.items.ID_MetaTool_01.POCKET_FILE;
+import static gregtech.common.items.ID_MetaTool_01.POCKET_KNIFE;
+import static gregtech.common.items.ID_MetaTool_01.POCKET_MULTITOOL;
+import static gregtech.common.items.ID_MetaTool_01.POCKET_SAW;
+import static gregtech.common.items.ID_MetaTool_01.POCKET_SCREWDRIVER;
+import static gregtech.common.items.ID_MetaTool_01.POCKET_WIRECUTTER;
+import static gregtech.common.items.ID_MetaTool_01.ROLLING_PIN;
+import static gregtech.common.items.ID_MetaTool_01.SAW;
+import static gregtech.common.items.ID_MetaTool_01.SCOOP;
+import static gregtech.common.items.ID_MetaTool_01.SCREWDRIVER;
+import static gregtech.common.items.ID_MetaTool_01.SCREWDRIVER_HV;
+import static gregtech.common.items.ID_MetaTool_01.SCREWDRIVER_LV;
+import static gregtech.common.items.ID_MetaTool_01.SCREWDRIVER_MV;
+import static gregtech.common.items.ID_MetaTool_01.SENSE;
+import static gregtech.common.items.ID_MetaTool_01.SHOVEL;
+import static gregtech.common.items.ID_MetaTool_01.SOFTMALLET;
+import static gregtech.common.items.ID_MetaTool_01.SOLDERING_IRON_HV;
+import static gregtech.common.items.ID_MetaTool_01.SOLDERING_IRON_LV;
+import static gregtech.common.items.ID_MetaTool_01.SOLDERING_IRON_MV;
+import static gregtech.common.items.ID_MetaTool_01.SWORD;
+import static gregtech.common.items.ID_MetaTool_01.TURBINE;
+import static gregtech.common.items.ID_MetaTool_01.TURBINE_HUGE;
+import static gregtech.common.items.ID_MetaTool_01.TURBINE_LARGE;
+import static gregtech.common.items.ID_MetaTool_01.TURBINE_SMALL;
+import static gregtech.common.items.ID_MetaTool_01.UNIVERSALSPADE;
+import static gregtech.common.items.ID_MetaTool_01.WIRECUTTER;
+import static gregtech.common.items.ID_MetaTool_01.WRENCH;
+import static gregtech.common.items.ID_MetaTool_01.WRENCH_HV;
+import static gregtech.common.items.ID_MetaTool_01.WRENCH_LV;
+import static gregtech.common.items.ID_MetaTool_01.WRENCH_MV;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -61,63 +115,7 @@ import gregtech.common.tools.pocket.GT_Tool_Pocket_Saw;
 import gregtech.common.tools.pocket.GT_Tool_Pocket_Screwdriver;
 import gregtech.common.tools.pocket.GT_Tool_Pocket_WireCutter;
 
-import static gregtech.common.items.ID_MetaTool_01.AXE;
-import static gregtech.common.items.ID_MetaTool_01.BRANCHCUTTER;
-import static gregtech.common.items.ID_MetaTool_01.BUTCHERYKNIFE;
-import static gregtech.common.items.ID_MetaTool_01.BUZZSAW_HV;
-import static gregtech.common.items.ID_MetaTool_01.BUZZSAW_LV;
-import static gregtech.common.items.ID_MetaTool_01.BUZZSAW_MV;
-import static gregtech.common.items.ID_MetaTool_01.CHAINSAW_HV;
-import static gregtech.common.items.ID_MetaTool_01.CHAINSAW_LV;
-import static gregtech.common.items.ID_MetaTool_01.CHAINSAW_MV;
-import static gregtech.common.items.ID_MetaTool_01.CROWBAR;
-import static gregtech.common.items.ID_MetaTool_01.DRILL_HV;
-import static gregtech.common.items.ID_MetaTool_01.DRILL_LV;
-import static gregtech.common.items.ID_MetaTool_01.DRILL_MV;
-import static gregtech.common.items.ID_MetaTool_01.FILE;
-import static gregtech.common.items.ID_MetaTool_01.HARDHAMMER;
-import static gregtech.common.items.ID_MetaTool_01.HOE;
-import static gregtech.common.items.ID_MetaTool_01.JACKHAMMER;
-import static gregtech.common.items.ID_MetaTool_01.KNIFE;
-import static gregtech.common.items.ID_MetaTool_01.MORTAR;
-import static gregtech.common.items.ID_MetaTool_01.PICKAXE;
-import static gregtech.common.items.ID_MetaTool_01.PLOW;
-import static gregtech.common.items.ID_MetaTool_01.PLUNGER;
-import static gregtech.common.items.ID_MetaTool_01.POCKET_BRANCHCUTTER;
-import static gregtech.common.items.ID_MetaTool_01.POCKET_FILE;
-import static gregtech.common.items.ID_MetaTool_01.POCKET_KNIFE;
-import static gregtech.common.items.ID_MetaTool_01.POCKET_MULTITOOL;
-import static gregtech.common.items.ID_MetaTool_01.POCKET_SAW;
-import static gregtech.common.items.ID_MetaTool_01.POCKET_SCREWDRIVER;
-import static gregtech.common.items.ID_MetaTool_01.POCKET_WIRECUTTER;
-import static gregtech.common.items.ID_MetaTool_01.ROLLING_PIN;
-import static gregtech.common.items.ID_MetaTool_01.SAW;
-import static gregtech.common.items.ID_MetaTool_01.SCOOP;
-import static gregtech.common.items.ID_MetaTool_01.SCREWDRIVER;
-import static gregtech.common.items.ID_MetaTool_01.SCREWDRIVER_HV;
-import static gregtech.common.items.ID_MetaTool_01.SCREWDRIVER_LV;
-import static gregtech.common.items.ID_MetaTool_01.SCREWDRIVER_MV;
-import static gregtech.common.items.ID_MetaTool_01.SENSE;
-import static gregtech.common.items.ID_MetaTool_01.SHOVEL;
-import static gregtech.common.items.ID_MetaTool_01.SOFTMALLET;
-import static gregtech.common.items.ID_MetaTool_01.SOLDERING_IRON_HV;
-import static gregtech.common.items.ID_MetaTool_01.SOLDERING_IRON_LV;
-import static gregtech.common.items.ID_MetaTool_01.SOLDERING_IRON_MV;
-import static gregtech.common.items.ID_MetaTool_01.SWORD;
-import static gregtech.common.items.ID_MetaTool_01.TURBINE;
-import static gregtech.common.items.ID_MetaTool_01.TURBINE_HUGE;
-import static gregtech.common.items.ID_MetaTool_01.TURBINE_LARGE;
-import static gregtech.common.items.ID_MetaTool_01.TURBINE_SMALL;
-import static gregtech.common.items.ID_MetaTool_01.UNIVERSALSPADE;
-import static gregtech.common.items.ID_MetaTool_01.WIRECUTTER;
-import static gregtech.common.items.ID_MetaTool_01.WRENCH;
-import static gregtech.common.items.ID_MetaTool_01.WRENCH_HV;
-import static gregtech.common.items.ID_MetaTool_01.WRENCH_LV;
-import static gregtech.common.items.ID_MetaTool_01.WRENCH_MV;
-
 public class GT_MetaGenerated_Tool_01 extends GT_MetaGenerated_Tool {
-
-
 
     public static GT_MetaGenerated_Tool_01 INSTANCE;
 
@@ -534,9 +532,17 @@ public class GT_MetaGenerated_Tool_01 extends GT_MetaGenerated_Tool {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L)),
             GregTech_API.sSolderingToolList);
 
-        addTool(TURBINE_SMALL.ID, "Small Turbine", "Turbine Rotors for your power station", new GT_Tool_Turbine_Small());
+        addTool(
+            TURBINE_SMALL.ID,
+            "Small Turbine",
+            "Turbine Rotors for your power station",
+            new GT_Tool_Turbine_Small());
         addTool(TURBINE.ID, "Turbine", "Turbine Rotors for your power station", new GT_Tool_Turbine_Normal());
-        addTool(TURBINE_LARGE.ID, "Large Turbine", "Turbine Rotors for your power station", new GT_Tool_Turbine_Large());
+        addTool(
+            TURBINE_LARGE.ID,
+            "Large Turbine",
+            "Turbine Rotors for your power station",
+            new GT_Tool_Turbine_Large());
         addTool(TURBINE_HUGE.ID, "Huge Turbine", "Turbine Rotors for your power station", new GT_Tool_Turbine_Huge());
 
         addTool(
@@ -611,7 +617,7 @@ public class GT_MetaGenerated_Tool_01 extends GT_MetaGenerated_Tool {
         initCraftingShapelessRecipes();
     }
 
-    private void initCraftingShapelessRecipes(){
+    private void initCraftingShapelessRecipes() {
         if (GregTech_API.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)) {
             return;
         }
@@ -637,7 +643,8 @@ public class GT_MetaGenerated_Tool_01 extends GT_MetaGenerated_Tool {
             GT_ModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.blaze_rod, 1) });
     }
-    private void initCraftingShapedRecipes(){
+
+    private void initCraftingShapedRecipes() {
         GT_ModHandler.addCraftingRecipe(
             INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Flint, Materials.Stone, null),
             GT_ModHandler.RecipeBits.NOT_REMOVABLE,

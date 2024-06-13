@@ -1812,7 +1812,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Raw_Pizza_Meat.set(
             addItem(
-                Food_Raw_Pizza_Meat.ID  ,
+                Food_Raw_Pizza_Meat.ID,
                 "Raw Mince Meat Pizza",
                 "Into the Oven with it!",
                 new GT_FoodStat(2, 0.2F, EnumAction.eat, null, false, true, false),
@@ -1856,7 +1856,9 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 1L),
                 Dyes.dyeBlue));
 
-        int[] Dye_Colors = new int[]{Dye_Color_00.ID, Dye_Color_01.ID, Dye_Color_02.ID, Dye_Color_03.ID, Dye_Color_04.ID, Dye_Color_05.ID, Dye_Color_06.ID, Dye_Color_07.ID, Dye_Color_08.ID, Dye_Color_09.ID, Dye_Color_10.ID, Dye_Color_11.ID, Dye_Color_12.ID, Dye_Color_13.ID, Dye_Color_14.ID, Dye_Color_15.ID};
+        int[] Dye_Colors = new int[] { Dye_Color_00.ID, Dye_Color_01.ID, Dye_Color_02.ID, Dye_Color_03.ID,
+            Dye_Color_04.ID, Dye_Color_05.ID, Dye_Color_06.ID, Dye_Color_07.ID, Dye_Color_08.ID, Dye_Color_09.ID,
+            Dye_Color_10.ID, Dye_Color_11.ID, Dye_Color_12.ID, Dye_Color_13.ID, Dye_Color_14.ID, Dye_Color_15.ID };
         for (int i = 0; i < 16; i = i + 1) {
             ItemList.DYE_ONLY_ITEMS[i].set(
                 addItem(
@@ -1874,15 +1876,19 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             addItem(Plank_Spruce.ID, "Spruce Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
         ItemList.Plank_Birch.set(
             addItem(Plank_Birch.ID, "Birch Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-       ItemList.Plank_Jungle.set(
+        ItemList.Plank_Jungle.set(
             addItem(Plank_Jungle.ID, "Jungle Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
         ItemList.Plank_Acacia.set(
             addItem(Plank_Acacia.ID, "Acacia Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
         ItemList.Plank_DarkOak.set(
-            addItem(Plank_DarkOak.ID, "Dark Oak Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+            addItem(
+                Plank_DarkOak.ID,
+                "Dark Oak Plank",
+                aTextCover,
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
         ItemList.Plank_Larch.set(
             addItem(Plank_Larch.ID, "Larch Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-         ItemList.Plank_Teak
+        ItemList.Plank_Teak
             .set(addItem(Plank_Teak.ID, "Teak Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
         ItemList.Plank_Acacia_Green.set(
             addItem(
@@ -1893,19 +1899,31 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         ItemList.Plank_Lime
             .set(addItem(Plank_Lime.ID, "Lime Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
         ItemList.Plank_Chestnut.set(
-            addItem(Plank_Chestnut.ID, "Chestnut Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+            addItem(
+                Plank_Chestnut.ID,
+                "Chestnut Plank",
+                aTextCover,
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
         ItemList.Plank_Wenge.set(
             addItem(Plank_Wenge.ID, "Wenge Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
         ItemList.Plank_Baobab.set(
             addItem(Plank_Baobab.ID, "Baobab Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
         ItemList.Plank_Sequoia.set(
-            addItem(Plank_Sequoia.ID, "Sequoia Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+            addItem(
+                Plank_Sequoia.ID,
+                "Sequoia Plank",
+                aTextCover,
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
         ItemList.Plank_Kapok.set(
             addItem(Plank_Kapok.ID, "Kapok Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
         ItemList.Plank_Ebony.set(
             addItem(Plank_Ebony.ID, "Ebony Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
         ItemList.Plank_Mahagony.set(
-            addItem(Plank_Mahagony.ID, "Mahagony Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+            addItem(
+                Plank_Mahagony.ID,
+                "Mahagony Plank",
+                aTextCover,
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
         ItemList.Plank_Balsa.set(
             addItem(Plank_Balsa.ID, "Balsa Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
         ItemList.Plank_Willow.set(
@@ -2046,7 +2064,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
 
-
         ItemList.Crop_Drop_Mica.set(
             addItem(
                 Crop_Drop_Mica.ID,
@@ -2055,7 +2072,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-
 
         ItemList.Crop_Drop_Bauxite.set(addItem(Crop_Drop_Bauxite.ID, "Bauxia Leaf", "Source of Aluminium"));
         ItemList.Crop_Drop_Ilmenite.set(addItem(Crop_Drop_Ilmenite.ID, "Titania Leaf", "Source of Titanium"));
@@ -2470,7 +2486,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         return super.isItemStackUsable(aStack);
     }
 
-    private void setAllFluidContainerStats(){
+    private void setAllFluidContainerStats() {
         setFluidContainerStats(32000 + Food_Raw_Fries.ID, 0L, 16L);
         setFluidContainerStats(32000 + Food_Fries.ID, 0L, 16L);
         setFluidContainerStats(32000 + Food_Raw_PotatoChips.ID, 0L, 16L);
@@ -2486,7 +2502,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         setFluidContainerStats(32000 + Food_Large_Sandwich_Steak.ID, 0L, 16L);
     }
 
-    private void setBurnValues(){
+    private void setBurnValues() {
         setBurnValue(32000 + Plank_Oak.ID, 75);
         setBurnValue(32000 + Plank_Spruce.ID, 75);
         setBurnValue(32000 + Plank_Birch.ID, 75);
@@ -2521,7 +2537,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         setBurnValue(32000 + Crop_Drop_Mica.ID, 240);
     }
 
-    public void initCraftingShapedRecipes(){
+    public void initCraftingShapedRecipes() {
         GT_ModHandler.addCraftingRecipe(
             ItemList.Plank_Oak.get(2L),
             GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
@@ -2548,7 +2564,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             new Object[] { "s ", " P", 'P', new ItemStack(Blocks.wooden_slab, 1, 5) });
     }
 
-    public void initAssemblerRecipes(){
+    public void initAssemblerRecipes() {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Cover_RedstoneTransmitterExternal.get(1L),
@@ -2605,7 +2621,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .addTo(assemblerRecipes);
     }
 
-    public void initCraftingShapelessRecipes(){
+    public void initCraftingShapelessRecipes() {
         GT_ModHandler.addShapelessCraftingRecipe(
             ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
             new Object[] { ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L) });
@@ -2620,7 +2636,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             new Object[] { ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L) });
     }
 
-    public void initExtractorRecipes(){
+    public void initExtractorRecipes() {
         GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 0), new ItemStack(Items.dye, 2, 1));
         GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 1), new ItemStack(Items.dye, 2, 12));
         GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 2), new ItemStack(Items.dye, 2, 13));
@@ -2653,7 +2669,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Tin, 1L));
     }
 
-    public void initCompressorRecipes(){
+    public void initCompressorRecipes() {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_Coppon.get(4L))
             .itemOutputs(new ItemStack(Blocks.wool, 1, 1))
@@ -2739,7 +2755,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .addTo(compressorRecipes);
     }
 
-    public void initMaceratorRecipes(){
+    public void initMaceratorRecipes() {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Food_Sliced_Cheese.get(1L))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cheese, 1L))
@@ -2805,7 +2821,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .addTo(maceratorRecipes);
     }
 
-    public void registerCovers(){
+    public void registerCovers() {
         GregTech_API.registerCover(ItemList.Plank_Oak.get(1L), TextureFactory.of(Blocks.planks, 0), null);
         GregTech_API.registerCover(ItemList.Plank_Spruce.get(1L), TextureFactory.of(Blocks.planks, 1), null);
         GregTech_API.registerCover(ItemList.Plank_Birch.get(1L), TextureFactory.of(Blocks.planks, 2), null);
@@ -3021,8 +3037,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)),
             new GT_Cover_WirelessMaintenanceDetector(TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)));
     }
-
-
 
     @Override
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {

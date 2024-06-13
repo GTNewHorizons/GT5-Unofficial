@@ -1,6 +1,7 @@
 package gregtech.common.items;
 
 public enum ID_MetaItem_02 {
+
     // Please pretty please, add your entries while conserving the order
     ThermosCan_Dark_Coffee(0),
     ThermosCan_Dark_Cafe_au_lait(1),
@@ -198,6 +199,7 @@ public enum ID_MetaItem_02 {
     Cover_WirelessNeedsMaintainance(583),
     Cover_WirelessActivityDetector(584),
     Display_ITS_FREE(765);
+
     final int ID;
 
     ID_MetaItem_02(int ID) {
