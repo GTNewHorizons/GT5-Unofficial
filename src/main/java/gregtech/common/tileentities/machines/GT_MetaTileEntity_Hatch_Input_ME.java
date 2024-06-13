@@ -207,8 +207,6 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             }
 
             FluidStack fluidStackWithAmount = storedInformationFluids[i];
-            // Nothing in stock, no need to save anything
-            if (fluidStackWithAmount == null) continue;
 
             setSavedFluid(i, fluidStackWithAmount);
         }
