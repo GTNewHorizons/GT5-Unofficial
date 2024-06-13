@@ -21,12 +21,73 @@ import static gregtech.client.GT_TooltipHandler.Tier.UV;
 import static gregtech.client.GT_TooltipHandler.Tier.UXV;
 import static gregtech.client.GT_TooltipHandler.Tier.ZPM;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Biomainframe;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Bioprocessor;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Biowarecomputer;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Biowaresupercomputer;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Bio;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Bio_Ultra;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Coated_Basic;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Epoxy_Advanced;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Fiberglass_Advanced;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Multifiberglass_Elite;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Optical;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Phenolic_Good;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Plastic;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Plastic_Advanced;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Wetware;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_BioCPU;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_Biocell;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_CPU;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_CrystalCPU;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_CrystalSoC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_CrystalSoC2;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_HPIC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_ILC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_LPIC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_NAND;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_NOR;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_NPIC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_NanoCPU;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_NeuroCPU;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_Optical;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_PIC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_PPIC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_QPIC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_QuantumCPU;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_Ram;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_Simple_SoC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_SoC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_SoC2;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_Stemcell;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_UHPIC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_ULPIC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_CosmicAssembly;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_CosmicComputer;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_CosmicMainframe;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_CosmicProcessor;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Crystalcomputer;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Crystalmainframe;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Crystalprocessor;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Elitenanocomputer;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_ExoticAssembly;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_ExoticComputer;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_ExoticMainframe;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_ExoticProcessor;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Integrated_Good;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Masterquantumcomputer;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Microprocessor;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Nanocomputer;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Nanoprocessor;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Neuroprocessor;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_OpticalAssembly;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_OpticalComputer;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_OpticalMainframe;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_OpticalProcessor;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_CapacitorASMD;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_CapacitorSMD;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_CapacitorXSMD;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_Chip_Bioware;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_Coil;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_DiodeASMD;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_DiodeSMD;
@@ -37,6 +98,8 @@ import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_InductorASMD;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_InductorSMD;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_InductorXSMD;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_PetriDish;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_RawCrystalChip;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_RawCrystalParts;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_Reinforced_Glass_Tube;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_ResistorASMD;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_ResistorSMD;
@@ -44,6 +107,10 @@ import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_ResistorXSMD;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_TransistorASMD;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_TransistorSMD;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_TransistorXSMD;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Processor;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Quantumcomputer;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Quantummainframe;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Quantumprocessor;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Ingot;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Ingot2;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Ingot3;
@@ -57,6 +124,119 @@ import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Wafer4;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Wafer5;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Wafer6;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Wafer7;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_TranscendentAssembly;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_TranscendentComputer;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_TranscendentMainframe;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_TranscendentProcessor;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Ultimatecrystalcomputer;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_Bioware;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_CPU;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_HPIC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_ILC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_LPIC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_NAND;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_NOR;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_NPIC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_NanoCPU;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_PIC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_PPIC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_QPIC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_QuantumCPU;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_Ram;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_Simple_SoC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_SoC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_SoC2;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_UHPIC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wafer_ULPIC;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wetwarecomputer;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wetwaremainframe;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Wetwaresupercomputer;
+import static gregtech.common.items.ID_MetaItem_03.Cover_Metrics_Transmitter;
+import static gregtech.common.items.ID_MetaItem_03.Cover_SolarPanel_UEV;
+import static gregtech.common.items.ID_MetaItem_03.Cover_SolarPanel_UHV;
+import static gregtech.common.items.ID_MetaItem_03.Cover_SolarPanel_UIV;
+import static gregtech.common.items.ID_MetaItem_03.EV_Coil;
+import static gregtech.common.items.ID_MetaItem_03.GalliumArsenideCrystal;
+import static gregtech.common.items.ID_MetaItem_03.GalliumArsenideCrystalSmallPart;
+import static gregtech.common.items.ID_MetaItem_03.HV_Coil;
+import static gregtech.common.items.ID_MetaItem_03.IV_Coil;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_AUTOMATION;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_Acceleration_1;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_Acceleration_2;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_Acceleration_3;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_Acceleration_4;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_Acceleration_5;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_Acceleration_6;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_Acceleration_7;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_Acceleration_8;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_Acceleration_8_Upgraded;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_COOLER;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_DESERT;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_DRYER;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_FLOWERING;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_Frame;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_HEATER;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_HELL;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_HUMIDIFIER;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_JUNGLE;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_LIFESPAN;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_LIGHT;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_OCEAN;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_PLAINS;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_POLLEN;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_PRODUCTION;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_SEAL;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_SIEVE;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_SKY;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_STABILIZER;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_TERRITORY;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_UNLIGHT;
+import static gregtech.common.items.ID_MetaItem_03.IndustrialApiary_Upgrade_WINTER;
+import static gregtech.common.items.ID_MetaItem_03.KevlarFiber;
+import static gregtech.common.items.ID_MetaItem_03.LV_Coil;
+import static gregtech.common.items.ID_MetaItem_03.LuV_Coil;
+import static gregtech.common.items.ID_MetaItem_03.MV_Coil;
+import static gregtech.common.items.ID_MetaItem_03.NandChip;
+import static gregtech.common.items.ID_MetaItem_03.NuclearStar;
+import static gregtech.common.items.ID_MetaItem_03.Optical_Cpu_Containment_Housing;
+import static gregtech.common.items.ID_MetaItem_03.Optically_Compatible_Memory;
+import static gregtech.common.items.ID_MetaItem_03.Optically_Perfected_CPU;
+import static gregtech.common.items.ID_MetaItem_03.Spinneret;
+import static gregtech.common.items.ID_MetaItem_03.Timepiece;
+import static gregtech.common.items.ID_MetaItem_03.Tube_Wires;
+import static gregtech.common.items.ID_MetaItem_03.UHV_Coil;
+import static gregtech.common.items.ID_MetaItem_03.ULV_Coil;
+import static gregtech.common.items.ID_MetaItem_03.UV_Coil;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Axe;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Block;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Bolt;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Bottle;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Casing;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Cell;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_File;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Gear;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Hammer;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Hoe;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Ingot;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Pickaxe;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Pipe_Huge;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Pipe_Large;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Pipe_Medium;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Pipe_Small;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Pipe_Tiny;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Plate;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Ring;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Rod;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Rotor;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Saw;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Shovel;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Small_Gear;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Sword;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_ToolHeadDrill;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Turbine_Blade;
+import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Wire;
+import static gregtech.common.items.ID_MetaItem_03.WovenKevlar;
+import static gregtech.common.items.ID_MetaItem_03.ZPM_Coil;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -108,7 +288,187 @@ enum ID_MetaItem_03{
     Circuit_Silicon_Wafer5(153),
     Circuit_Silicon_Wafer6(722),
     Circuit_Silicon_Wafer7(723),
-    ;
+    Circuit_Wafer_ILC(36),
+    Circuit_Chip_ILC(37),
+    Circuit_Wafer_Ram(38),
+    Circuit_Chip_Ram(39),
+    Circuit_Wafer_NAND(40),
+    Circuit_Chip_NAND(41),
+    Circuit_Wafer_NOR(42),
+    Circuit_Chip_NOR(43),
+    Circuit_Wafer_CPU(44),
+    Circuit_Chip_CPU(45),
+    Circuit_Wafer_SoC(46),
+    Circuit_Chip_SoC(47),
+    Circuit_Wafer_SoC2(48),
+    Circuit_Chip_SoC2(49),
+    Circuit_Wafer_PIC(50),
+    Circuit_Chip_PIC(51),
+    Circuit_Wafer_HPIC(52),
+    Circuit_Chip_HPIC(53),
+    Circuit_Wafer_NanoCPU(54),
+    Circuit_Chip_NanoCPU(55),
+    Circuit_Wafer_QuantumCPU(56),
+    Circuit_Chip_QuantumCPU(57),
+    Circuit_Wafer_UHPIC(58),
+    Circuit_Chip_UHPIC(59),
+    Circuit_Wafer_Simple_SoC(60),
+    Circuit_Chip_Simple_SoC(61),
+    Circuit_Wafer_ULPIC(62),
+    Circuit_Chip_ULPIC(63),
+    Circuit_Wafer_LPIC(64),
+    Circuit_Chip_LPIC(65),
+    Circuit_Wafer_NPIC(160),
+    Circuit_Chip_NPIC(161),
+    Circuit_Wafer_PPIC(162),
+    Circuit_Chip_PPIC(163),
+    Circuit_Wafer_QPIC(164),
+    Circuit_Chip_QPIC(165),
+    Circuit_Wafer_Bioware(188),
+    Circuit_Parts_Chip_Bioware(189),
+    Circuit_Chip_CrystalSoC2(68),
+    Circuit_Parts_RawCrystalChip(69),
+    Circuit_Chip_CrystalCPU(70),
+    Circuit_Chip_CrystalSoC(71),
+    Circuit_Chip_NeuroCPU(72),
+    Circuit_Chip_Stemcell(73),
+    Circuit_Parts_RawCrystalParts(74),
+    Circuit_Chip_Biocell(76),
+    Circuit_Chip_BioCPU(77),
+    Circuit_Chip_Optical(724),
+    NandChip(75),
+    Circuit_Integrated_Good(79),
+    Circuit_Microprocessor(78),
+    Circuit_Processor(80),
+    Circuit_Nanoprocessor(82),
+    Circuit_Nanocomputer(83),
+    Circuit_Elitenanocomputer(84),
+    Circuit_Quantumprocessor(85),
+    Circuit_Quantumcomputer(86),
+    Circuit_Masterquantumcomputer(87),
+    Circuit_Quantummainframe(88),
+    Circuit_Crystalprocessor(89),
+    Circuit_Crystalcomputer(96),
+    Circuit_Ultimatecrystalcomputer(90),
+    Circuit_Crystalmainframe(91),
+    Circuit_Neuroprocessor(92),
+    Circuit_Wetwarecomputer(93),
+    Circuit_Wetwaresupercomputer(94),
+    Circuit_Wetwaremainframe(95),
+    Circuit_Bioprocessor(97),
+    Circuit_Biowarecomputer(98),
+    Circuit_Biowaresupercomputer(99),
+    Circuit_Biomainframe(120),
+    Circuit_Board_Coated_Basic(100),
+    Circuit_Board_Phenolic_Good(101),
+    Circuit_Board_Epoxy_Advanced(102),
+    Circuit_Board_Fiberglass_Advanced(103),
+    Circuit_Board_Multifiberglass_Elite(104),
+    Circuit_Board_Wetware_Extreme(105),
+    Circuit_Board_Plastic_Advanced(106),
+    Circuit_Board_Bio_Ultra(107),
+    Circuit_Board_Optical(728),
+    Circuit_OpticalProcessor(154),
+    Circuit_OpticalAssembly(155),
+    Circuit_OpticalComputer(156),
+    Circuit_OpticalMainframe(157),
+    Circuit_ExoticProcessor(166),
+    Circuit_ExoticAssembly(167),
+    Circuit_ExoticComputer(168),
+    Circuit_ExoticMainframe(169),
+    Circuit_CosmicProcessor(170),
+    Circuit_CosmicAssembly(171),
+    Circuit_CosmicComputer(172),
+    Circuit_CosmicMainframe(173),
+    Circuit_TranscendentProcessor(174),
+    Circuit_TranscendentAssembly(175),
+    Circuit_TranscendentComputer(176),
+    Circuit_TranscendentMainframe(177),
+    Tube_Wires(110),
+    Cover_SolarPanel_UHV(130),
+    Cover_SolarPanel_UEV(131),
+    Cover_SolarPanel_UIV(132),
+    ULV_Coil(140),
+    LV_Coil(141),
+    MV_Coil(142),
+    HV_Coil(143),
+    EV_Coil(144),
+    IV_Coil(145),
+    LuV_Coil(146),
+    ZPM_Coil(147),
+    UV_Coil(148),
+    UHV_Coil(149),
+    GalliumArsenideCrystal(190),
+    GalliumArsenideCrystalSmallPart(191),
+    KevlarFiber(192),
+    WovenKevlar(193),
+    Spinneret(194),
+    IndustrialApiary_Upgrade_Frame(199),
+    IndustrialApiary_Upgrade_Acceleration_1(200),
+    IndustrialApiary_Upgrade_Acceleration_2(201),
+    IndustrialApiary_Upgrade_Acceleration_3(202),
+    IndustrialApiary_Upgrade_Acceleration_4(203),
+    IndustrialApiary_Upgrade_Acceleration_5(204),
+    IndustrialApiary_Upgrade_Acceleration_6(205),
+    IndustrialApiary_Upgrade_Acceleration_7(206),
+    IndustrialApiary_Upgrade_Acceleration_8(207),
+    IndustrialApiary_Upgrade_Acceleration_8_Upgraded(208),
+    IndustrialApiary_Upgrade_PRODUCTION(209),
+    IndustrialApiary_Upgrade_PLAINS(210),
+    IndustrialApiary_Upgrade_LIGHT(211),
+    IndustrialApiary_Upgrade_FLOWERING(212),
+    IndustrialApiary_Upgrade_WINTER(213),
+    IndustrialApiary_Upgrade_DRYER(214),
+    IndustrialApiary_Upgrade_AUTOMATION(215),
+    IndustrialApiary_Upgrade_HUMIDIFIER(216),
+    IndustrialApiary_Upgrade_HELL(217),
+    IndustrialApiary_Upgrade_POLLEN(218),
+    IndustrialApiary_Upgrade_DESERT(219),
+    IndustrialApiary_Upgrade_COOLER(220),
+    IndustrialApiary_Upgrade_LIFESPAN(221),
+    IndustrialApiary_Upgrade_SEAL(222),
+    IndustrialApiary_Upgrade_STABILIZER(223),
+    IndustrialApiary_Upgrade_JUNGLE(224),
+    IndustrialApiary_Upgrade_TERRITORY(225),
+    IndustrialApiary_Upgrade_OCEAN(226),
+    IndustrialApiary_Upgrade_SKY(227),
+    IndustrialApiary_Upgrade_HEATER(228),
+    IndustrialApiary_Upgrade_SIEVE(229),
+    IndustrialApiary_Upgrade_UNLIGHT(231),
+    NuclearStar(230),
+    Cover_Metrics_Transmitter(232),
+    Optical_Cpu_Containment_Housing(727),
+    Optically_Perfected_CPU(726),
+    Optically_Compatible_Memory(725),
+    Timepiece(757),
+    White_Dwarf_Shape_Extruder_Plate(729),
+    White_Dwarf_Shape_Extruder_Rod(730),
+    White_Dwarf_Shape_Extruder_Bolt(731),
+    White_Dwarf_Shape_Extruder_Ring(732),
+    White_Dwarf_Shape_Extruder_Cell(733),
+    White_Dwarf_Shape_Extruder_Ingot(734),
+    White_Dwarf_Shape_Extruder_Wire(735),
+    White_Dwarf_Shape_Extruder_Casing(736),
+    White_Dwarf_Shape_Extruder_Pipe_Tiny(737),
+    White_Dwarf_Shape_Extruder_Pipe_Small(738),
+    White_Dwarf_Shape_Extruder_Pipe_Medium(739),
+    White_Dwarf_Shape_Extruder_Pipe_Large(740),
+    White_Dwarf_Shape_Extruder_Pipe_Huge(741),
+    White_Dwarf_Shape_Extruder_Block(742),
+    White_Dwarf_Shape_Extruder_Sword(743),
+    White_Dwarf_Shape_Extruder_Pickaxe(744),
+    White_Dwarf_Shape_Extruder_Shovel(745),
+    White_Dwarf_Shape_Extruder_Axe(746),
+    White_Dwarf_Shape_Extruder_Hoe(747),
+    White_Dwarf_Shape_Extruder_Hammer(748),
+    White_Dwarf_Shape_Extruder_File(749),
+    White_Dwarf_Shape_Extruder_Saw(750),
+    White_Dwarf_Shape_Extruder_Gear(751),
+    White_Dwarf_Shape_Extruder_Bottle(752),
+    White_Dwarf_Shape_Extruder_Rotor(753),
+    White_Dwarf_Shape_Extruder_Small_Gear(754),
+    White_Dwarf_Shape_Extruder_Turbine_Blade(755),
+    White_Dwarf_Shape_Extruder_ToolHeadDrill(756);
     final int ID;
     ID_MetaItem_03(int ID){
         this.ID = ID;
@@ -238,85 +598,85 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         ItemList.Circuit_Silicon_Wafer6.set(addItem(Circuit_Silicon_Wafer6.ID, "Photonically Prepared Wafer", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Wafer7.set(addItem(Circuit_Silicon_Wafer7.ID, "Photonically Enhanced Wafer", "Raw Circuit", o));
 
-        ItemList.Circuit_Wafer_ILC.set(addItem(36, "Integrated Logic Circuit (Wafer)", "Raw Circuit", o));
-        ItemList.Circuit_Chip_ILC.set(addItem(37, "Integrated Logic Circuit", "Integrated Circuit", o));
+        ItemList.Circuit_Wafer_ILC.set(addItem(Circuit_Wafer_ILC.ID, "Integrated Logic Circuit (Wafer)", "Raw Circuit", o));
+        ItemList.Circuit_Chip_ILC.set(addItem(Circuit_Chip_ILC.ID, "Integrated Logic Circuit", "Integrated Circuit", o));
 
-        ItemList.Circuit_Wafer_Ram.set(addItem(38, "Random Access Memory Chip (Wafer)", "Raw Circuit", o));
-        ItemList.Circuit_Chip_Ram.set(addItem(39, "Random Access Memory Chip", "Integrated Circuit", o));
+        ItemList.Circuit_Wafer_Ram.set(addItem(Circuit_Wafer_Ram.ID, "Random Access Memory Chip (Wafer)", "Raw Circuit", o));
+        ItemList.Circuit_Chip_Ram.set(addItem(Circuit_Chip_Ram.ID, "Random Access Memory Chip", "Integrated Circuit", o));
 
-        ItemList.Circuit_Wafer_NAND.set(addItem(40, "NAND Memory Chip (Wafer)", "Raw Circuit", o));
-        ItemList.Circuit_Chip_NAND.set(addItem(41, "NAND Memory Chip", "Integrated Circuit", o));
+        ItemList.Circuit_Wafer_NAND.set(addItem(Circuit_Wafer_NAND.ID, "NAND Memory Chip (Wafer)", "Raw Circuit", o));
+        ItemList.Circuit_Chip_NAND.set(addItem(Circuit_Chip_NAND.ID, "NAND Memory Chip", "Integrated Circuit", o));
 
-        ItemList.Circuit_Wafer_NOR.set(addItem(42, "NOR Memory Chip (Wafer)", "Raw Circuit", o));
-        ItemList.Circuit_Chip_NOR.set(addItem(43, "NOR Memory Chip", "Integrated Circuit", o));
+        ItemList.Circuit_Wafer_NOR.set(addItem(Circuit_Wafer_NOR.ID, "NOR Memory Chip (Wafer)", "Raw Circuit", o));
+        ItemList.Circuit_Chip_NOR.set(addItem(Circuit_Chip_NOR.ID, "NOR Memory Chip", "Integrated Circuit", o));
 
-        ItemList.Circuit_Wafer_CPU.set(addItem(44, "Central Processing Unit (Wafer)", "Raw Circuit", o));
-        ItemList.Circuit_Chip_CPU.set(addItem(45, "Central Processing Unit", "Integrated Circuit", o));
+        ItemList.Circuit_Wafer_CPU.set(addItem(Circuit_Wafer_CPU.ID, "Central Processing Unit (Wafer)", "Raw Circuit", o));
+        ItemList.Circuit_Chip_CPU.set(addItem(Circuit_Chip_CPU.ID, "Central Processing Unit", "Integrated Circuit", o));
 
-        ItemList.Circuit_Wafer_SoC.set(addItem(46, "SoC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_SoC.set(addItem(47, "SoC", "System on a Chip", o));
+        ItemList.Circuit_Wafer_SoC.set(addItem(Circuit_Wafer_SoC.ID, "SoC Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_SoC.set(addItem(Circuit_Chip_SoC.ID, "SoC", "System on a Chip", o));
 
-        ItemList.Circuit_Wafer_SoC2.set(addItem(48, "ASoC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_SoC2.set(addItem(49, "ASoC", "Advanced System on a Chip", o));
+        ItemList.Circuit_Wafer_SoC2.set(addItem(Circuit_Wafer_SoC2.ID, "ASoC Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_SoC2.set(addItem(Circuit_Chip_SoC2.ID, "ASoC", "Advanced System on a Chip", o));
 
-        ItemList.Circuit_Wafer_PIC.set(addItem(50, "PIC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_PIC.set(addItem(51, "Power IC", "Power Circuit", o));
+        ItemList.Circuit_Wafer_PIC.set(addItem(Circuit_Wafer_PIC.ID, "PIC Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_PIC.set(addItem(Circuit_Chip_PIC.ID, "Power IC", "Power Circuit", o));
 
-        ItemList.Circuit_Wafer_HPIC.set(addItem(52, "HPIC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_HPIC.set(addItem(53, "High Power IC", "High Power Circuit", o));
+        ItemList.Circuit_Wafer_HPIC.set(addItem(Circuit_Wafer_HPIC.ID, "HPIC Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_HPIC.set(addItem(Circuit_Chip_HPIC.ID, "High Power IC", "High Power Circuit", o));
 
-        ItemList.Circuit_Wafer_NanoCPU.set(addItem(54, "NanoCPU Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_NanoCPU.set(addItem(55, "Nanocomponent Central Processing Unit", "Power Circuit", o));
+        ItemList.Circuit_Wafer_NanoCPU.set(addItem(Circuit_Wafer_NanoCPU.ID, "NanoCPU Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_NanoCPU.set(addItem(Circuit_Chip_NanoCPU.ID, "Nanocomponent Central Processing Unit", "Power Circuit", o));
 
-        ItemList.Circuit_Wafer_QuantumCPU.set(addItem(56, "QBit Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_QuantumCPU.set(addItem(57, "QBit Processing Unit", "Quantum CPU", o));
+        ItemList.Circuit_Wafer_QuantumCPU.set(addItem(Circuit_Wafer_QuantumCPU.ID, "QBit Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_QuantumCPU.set(addItem(Circuit_Chip_QuantumCPU.ID, "QBit Processing Unit", "Quantum CPU", o));
 
-        ItemList.Circuit_Wafer_UHPIC.set(addItem(58, "UHPIC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_UHPIC.set(addItem(59, "Ultra High Power IC", "Ultra High Power Circuit", o));
+        ItemList.Circuit_Wafer_UHPIC.set(addItem(Circuit_Wafer_UHPIC.ID, "UHPIC Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_UHPIC.set(addItem(Circuit_Chip_UHPIC.ID, "Ultra High Power IC", "Ultra High Power Circuit", o));
 
-        ItemList.Circuit_Wafer_Simple_SoC.set(addItem(60, "Simple SoC Wafer", "Raw Primitive Circuit", o));
-        ItemList.Circuit_Chip_Simple_SoC.set(addItem(61, "Simple SoC", "Simple System on a Chip", o));
+        ItemList.Circuit_Wafer_Simple_SoC.set(addItem(Circuit_Wafer_Simple_SoC.ID, "Simple SoC Wafer", "Raw Primitive Circuit", o));
+        ItemList.Circuit_Chip_Simple_SoC.set(addItem(Circuit_Chip_Simple_SoC.ID, "Simple SoC", "Simple System on a Chip", o));
 
-        ItemList.Circuit_Wafer_ULPIC.set(addItem(62, "ULPIC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_ULPIC.set(addItem(63, "Ultra Low Power IC", "Ultra Low Power Circuit", o));
+        ItemList.Circuit_Wafer_ULPIC.set(addItem(Circuit_Wafer_ULPIC.ID, "ULPIC Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_ULPIC.set(addItem(Circuit_Chip_ULPIC.ID, "Ultra Low Power IC", "Ultra Low Power Circuit", o));
 
-        ItemList.Circuit_Wafer_LPIC.set(addItem(64, "LPIC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_LPIC.set(addItem(65, "Low Power IC", "Low Power Circuit", o));
+        ItemList.Circuit_Wafer_LPIC.set(addItem(Circuit_Wafer_LPIC.ID, "LPIC Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_LPIC.set(addItem(Circuit_Chip_LPIC.ID, "Low Power IC", "Low Power Circuit", o));
 
-        ItemList.Circuit_Wafer_NPIC.set(addItem(160, "NPIC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_NPIC.set(addItem(161, "Nano Power IC", "Nano Power Circuit", o));
+        ItemList.Circuit_Wafer_NPIC.set(addItem(Circuit_Wafer_NPIC.ID, "NPIC Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_NPIC.set(addItem(Circuit_Chip_NPIC.ID, "Nano Power IC", "Nano Power Circuit", o));
 
-        ItemList.Circuit_Wafer_PPIC.set(addItem(162, "PPIC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_PPIC.set(addItem(163, "Piko Power IC", "Piko Power Circuit", o));
+        ItemList.Circuit_Wafer_PPIC.set(addItem(Circuit_Wafer_PPIC.ID, "PPIC Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_PPIC.set(addItem(Circuit_Chip_PPIC.ID, "Piko Power IC", "Piko Power Circuit", o));
 
-        ItemList.Circuit_Wafer_QPIC.set(addItem(164, "QPIC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_QPIC.set(addItem(165, "Quantum Power IC", "Quantum Power Circuit", o));
+        ItemList.Circuit_Wafer_QPIC.set(addItem(Circuit_Wafer_QPIC.ID, "QPIC Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_QPIC.set(addItem(Circuit_Chip_QPIC.ID, "Quantum Power IC", "Quantum Power Circuit", o));
 
-        ItemList.Circuit_Wafer_Bioware.set(addItem(188, "Living Bio Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Parts_Chip_Bioware.set(addItem(189, "Living Bio Chip", "Needed for Circuits", o));
+        ItemList.Circuit_Wafer_Bioware.set(addItem(Circuit_Wafer_Bioware.ID, "Living Bio Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Parts_Chip_Bioware.set(addItem(Circuit_Parts_Chip_Bioware.ID, "Living Bio Chip", "Needed for Circuits", o));
         /*
          * Engraved Crystal Chip Engraved Lapotron Chip Crystal CPU SoCrystal stem cells (disassemble eggs)
          */
         ItemList.Circuit_Chip_CrystalSoC2
-            .set(addItem(68, "Raw Advanced Crystal Chip", "Raw Advanced Crystal Processor", o));
-        ItemList.Circuit_Parts_RawCrystalChip.set(addItem(69, "Raw Crystal Chip", "Raw Crystal Processor", o));
-        ItemList.Circuit_Chip_CrystalCPU.set(addItem(70, "Crystal Processing Unit", "Crystal CPU", o)); // Crystal
+            .set(addItem(Circuit_Chip_CrystalSoC2.ID, "Raw Advanced Crystal Chip", "Raw Advanced Crystal Processor", o));
+        ItemList.Circuit_Parts_RawCrystalChip.set(addItem(Circuit_Parts_RawCrystalChip.ID, "Raw Crystal Chip", "Raw Crystal Processor", o));
+        ItemList.Circuit_Chip_CrystalCPU.set(addItem(Circuit_Chip_CrystalCPU.ID, "Crystal Processing Unit", "Crystal CPU", o)); // Crystal
                                                                                                         // chip
                                                                                                         // elite
                                                                                                         // part
-        ItemList.Circuit_Chip_CrystalSoC.set(addItem(71, "Crystal SoC", "Crystal System on a Chip", o));
-        ItemList.Circuit_Chip_NeuroCPU.set(addItem(72, "Neuro Processing Unit", "Neuro CPU", o));
-        ItemList.Circuit_Chip_Stemcell.set(addItem(73, "Stemcells", "Raw inteligence", o));
+        ItemList.Circuit_Chip_CrystalSoC.set(addItem(Circuit_Chip_CrystalSoC.ID, "Crystal SoC", "Crystal System on a Chip", o));
+        ItemList.Circuit_Chip_NeuroCPU.set(addItem(Circuit_Chip_NeuroCPU.ID, "Neuro Processing Unit", "Neuro CPU", o));
+        ItemList.Circuit_Chip_Stemcell.set(addItem(Circuit_Chip_Stemcell.ID, "Stemcells", "Raw inteligence", o));
         ItemList.Circuit_Parts_RawCrystalParts
-            .set(addItem(74, "Raw Crystal Chip Parts", "Raw Crystal Processor Parts", o));
-        ItemList.Circuit_Chip_Biocell.set(addItem(76, "Biocells", "Mutated Raw inteligence", o));
-        ItemList.Circuit_Chip_BioCPU.set(addItem(77, "Bio Processing Unit", "Bio CPU", o));
-        ItemList.Circuit_Chip_Optical.set(addItem(724, "Raw Exposed Optical Chip", "Raw Optical Chip", o));
+            .set(addItem(Circuit_Parts_RawCrystalParts.ID, "Raw Crystal Chip Parts", "Raw Crystal Processor Parts", o));
+        ItemList.Circuit_Chip_Biocell.set(addItem(Circuit_Chip_Biocell.ID, "Biocells", "Mutated Raw inteligence", o));
+        ItemList.Circuit_Chip_BioCPU.set(addItem(Circuit_Chip_BioCPU.ID, "Bio Processing Unit", "Bio CPU", o));
+        ItemList.Circuit_Chip_Optical.set(addItem(Circuit_Chip_Optical.ID, "Raw Exposed Optical Chip", "Raw Optical Chip", o));
 
         // Nand Chip
         ItemList.NandChip.set(
             addItem(
-                75,
+                NandChip.ID,
                 "NAND Chip",
                 "A very simple Circuit",
                 OrePrefixes.circuit.get(Materials.Primitive),
@@ -329,7 +689,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         // Integrated Logic Circuit Item01
         ItemList.Circuit_Integrated_Good.set(
             addItem(
-                79,
+                Circuit_Integrated_Good.ID,
                 "Good Integrated Circuit",
                 "Good Circuit",
                 OrePrefixes.circuit.get(Materials.Good),
@@ -340,7 +700,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Microprocessor.set(
             addItem(
-                78,
+                Circuit_Microprocessor.ID,
                 "Microprocessor",
                 "A Basic Circuit",
                 OrePrefixes.circuit.get(Materials.Basic),
@@ -348,7 +708,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Processor.set(
             addItem(
-                80,
+                Circuit_Processor.ID,
                 "Integrated Processor",
                 "A Good Circuit",
                 OrePrefixes.circuit.get(Materials.Good),
@@ -356,7 +716,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Nanoprocessor.set(
             addItem(
-                82,
+                Circuit_Nanoprocessor.ID,
                 "Nanoprocessor",
                 "An Advanced Circuit",
                 OrePrefixes.circuit.get(Materials.Advanced),
@@ -364,7 +724,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Nanocomputer.set(
             addItem(
-                83,
+                Circuit_Nanocomputer.ID,
                 "Nanoprocessor Assembly",
                 "An Extreme Circuit",
                 OrePrefixes.circuit.get(Materials.Data),
@@ -372,7 +732,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Elitenanocomputer.set(
             addItem(
-                84,
+                Circuit_Elitenanocomputer.ID,
                 "Elite Nanocomputer",
                 "An Elite Circuit",
                 OrePrefixes.circuit.get(Materials.Elite),
@@ -381,7 +741,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         // Quantum circuits
         ItemList.Circuit_Quantumprocessor.set(
             addItem(
-                85,
+                Circuit_Quantumprocessor.ID,
                 "Quantumprocessor",
                 "An Extreme Circuit",
                 OrePrefixes.circuit.get(Materials.Data),
@@ -389,7 +749,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Quantumcomputer.set(
             addItem(
-                86,
+                Circuit_Quantumcomputer.ID,
                 "Quantumprocessor Assembly",
                 "An Elite Circuit",
                 OrePrefixes.circuit.get(Materials.Elite),
@@ -397,7 +757,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Masterquantumcomputer.set(
             addItem(
-                87,
+                Circuit_Masterquantumcomputer.ID,
                 "Master Quantumcomputer",
                 "A Master Circuit",
                 OrePrefixes.circuit.get(Materials.Master),
@@ -405,7 +765,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Quantummainframe.set(
             addItem(
-                88,
+                Circuit_Quantummainframe.ID,
                 "Quantumprocessor Mainframe",
                 "An Ultimate Circuit",
                 OrePrefixes.circuit.get(Materials.Ultimate),
@@ -415,7 +775,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         // Crystal circuits
         ItemList.Circuit_Crystalprocessor.set(
             addItem(
-                89,
+                Circuit_Crystalprocessor.ID,
                 "Crystalprocessor",
                 "An Elite Circuit",
                 OrePrefixes.circuit.get(Materials.Elite),
@@ -423,7 +783,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Crystalcomputer.set(
             addItem(
-                96,
+                Circuit_Crystalcomputer.ID,
                 "Crystalprocessor Assembly",
                 "A Master Circuit",
                 OrePrefixes.circuit.get(Materials.Master),
@@ -431,7 +791,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Ultimatecrystalcomputer.set(
             addItem(
-                90,
+                Circuit_Ultimatecrystalcomputer.ID,
                 "Ultimate Crystalcomputer",
                 "An Ultimate Circuit",
                 OrePrefixes.circuit.get(Materials.Ultimate),
@@ -439,7 +799,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Crystalmainframe.set(
             addItem(
-                91,
+                Circuit_Crystalmainframe.ID,
                 "Crystalprocessor Mainframe",
                 "A Super Circuit",
                 OrePrefixes.circuit.get(Materials.SuperconductorUHV),
@@ -452,7 +812,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         // Wetware circuits
         ItemList.Circuit_Neuroprocessor.set(
             addItem(
-                92,
+                Circuit_Neuroprocessor.ID,
                 "Wetwareprocessor",
                 "A Master Circuit",
                 OrePrefixes.circuit.get(Materials.Master),
@@ -460,7 +820,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Wetwarecomputer.set(
             addItem(
-                93,
+                Circuit_Wetwarecomputer.ID,
                 "Wetwareprocessor Assembly",
                 "An Ultimate Circuit",
                 OrePrefixes.circuit.get(Materials.Ultimate),
@@ -468,7 +828,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Wetwaresupercomputer.set(
             addItem(
-                94,
+                Circuit_Wetwaresupercomputer.ID,
                 "Wetware Supercomputer",
                 "A Super Circuit",
                 OrePrefixes.circuit.get(Materials.SuperconductorUHV),
@@ -476,7 +836,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Wetwaremainframe.set(
             addItem(
-                95,
+                Circuit_Wetwaremainframe.ID,
                 "Wetware Mainframe",
                 "An Infinite Circuit",
                 OrePrefixes.circuit.get(Materials.Infinite),
@@ -486,7 +846,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         // Bioware circuits.
         ItemList.Circuit_Bioprocessor.set(
             addItem(
-                97,
+                Circuit_Bioprocessor.ID,
                 "Bioprocessor",
                 "An Ultimate Circuit",
                 OrePrefixes.circuit.get(Materials.Ultimate),
@@ -494,7 +854,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Biowarecomputer.set(
             addItem(
-                98,
+                Circuit_Biowarecomputer.ID,
                 "Biowareprocessor Assembly",
                 "A Super Circuit",
                 OrePrefixes.circuit.get(Materials.SuperconductorUHV),
@@ -502,7 +862,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Biowaresupercomputer.set(
             addItem(
-                99,
+                Circuit_Biowaresupercomputer.ID,
                 "Bioware Supercomputer",
                 "An Infinite Circuit",
                 OrePrefixes.circuit.get(Materials.Infinite),
@@ -510,32 +870,32 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Biomainframe.set(
             addItem(
-                120,
+                Circuit_Biomainframe.ID,
                 "Bio Mainframe",
                 "A Bio Circuit",
                 OrePrefixes.circuit.get(Materials.Bio),
                 SubTag.NO_UNIFICATION));
 
 
-        ItemList.Circuit_Board_Coated_Basic.set(addItem(100, "Circuit Board", "A basic Circuit Board", o));
-        ItemList.Circuit_Board_Phenolic_Good.set(addItem(101, "Good Circuit Board", "A good Circuit Board", o));
+        ItemList.Circuit_Board_Coated_Basic.set(addItem(Circuit_Board_Coated_Basic.ID, "Circuit Board", "A basic Circuit Board", o));
+        ItemList.Circuit_Board_Phenolic_Good.set(addItem(Circuit_Board_Phenolic_Good.ID, "Good Circuit Board", "A good Circuit Board", o));
         ItemList.Circuit_Board_Epoxy_Advanced
-            .set(addItem(102, "Advanced Circuit Board", "A advanced Circuit Board", o));
+            .set(addItem(Circuit_Board_Epoxy_Advanced.ID, "Advanced Circuit Board", "A advanced Circuit Board", o));
         ItemList.Circuit_Board_Fiberglass_Advanced
-            .set(addItem(103, "More Advanced Circuit Board", "A more advanced Circuit Board", o));
+            .set(addItem(Circuit_Board_Fiberglass_Advanced.ID, "More Advanced Circuit Board", "A more advanced Circuit Board", o));
         ItemList.Circuit_Board_Multifiberglass_Elite
-            .set(addItem(104, "Elite Circuit Board", "A elite Circuit Board", o));
+            .set(addItem(Circuit_Board_Multifiberglass_Elite.ID, "Elite Circuit Board", "A elite Circuit Board", o));
         ItemList.Circuit_Board_Wetware_Extreme
-            .set(addItem(105, "Extreme Wetware Lifesupport Circuit Board", "The Board that keeps life", o));
-        ItemList.Circuit_Board_Plastic_Advanced.set(addItem(106, "Plastic Circuit Board", "A good Board", o));
+            .set(addItem(Circuit_Board_Multifiberglass_Elite.ID, "Extreme Wetware Lifesupport Circuit Board", "The Board that keeps life", o));
+        ItemList.Circuit_Board_Plastic_Advanced.set(addItem(Circuit_Board_Plastic_Advanced.ID, "Plastic Circuit Board", "A good Board", o));
         ItemList.Circuit_Board_Bio_Ultra
-            .set(addItem(107, "Ultra Bio Mutated Circuit Board", "Bio genetic mutated Board", o));
-        ItemList.Circuit_Board_Optical.set(addItem(728, "Optical Circuit Board", "Optically Infused Board", o));
+            .set(addItem(Circuit_Board_Bio_Ultra.ID, "Ultra Bio Mutated Circuit Board", "Bio genetic mutated Board", o));
+        ItemList.Circuit_Board_Optical.set(addItem(Circuit_Board_Optical.ID, "Optical Circuit Board", "Optically Infused Board", o));
 
         // Optical circuits
         ItemList.Circuit_OpticalProcessor.set(
             addItem(
-                154,
+                Circuit_OpticalProcessor.ID,
                 "Optical Processor",
                 "An Optical Circuit",
                 OrePrefixes.circuit.get(Materials.SuperconductorUHV),
@@ -543,7 +903,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_OpticalAssembly.set(
             addItem(
-                155,
+                Circuit_OpticalAssembly.ID,
                 "Optical Assembly",
                 "An Optical Circuit",
                 OrePrefixes.circuit.get(Materials.Infinite),
@@ -551,7 +911,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_OpticalComputer.set(
             addItem(
-                156,
+                Circuit_OpticalComputer.ID,
                 "Optical Computer",
                 "An Optical Circuit",
                 OrePrefixes.circuit.get(Materials.Bio),
@@ -559,7 +919,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_OpticalMainframe.set(
             addItem(
-                157,
+                Circuit_OpticalMainframe.ID,
                 "Optical Mainframe",
                 "An Optical Circuit",
                 OrePrefixes.circuit.get(Materials.Optical),
@@ -569,7 +929,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         // Exotic circuits
         ItemList.Circuit_ExoticProcessor.set(
             addItem(
-                166,
+                Circuit_ExoticProcessor.ID,
                 "Exotic Processor",
                 "An Exotic Circuit",
                 OrePrefixes.circuit.get(Materials.Infinite),
@@ -577,7 +937,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_ExoticAssembly.set(
             addItem(
-                167,
+                Circuit_ExoticAssembly.ID,
                 "Exotic Assembly",
                 "An Exotic Circuit",
                 OrePrefixes.circuit.get(Materials.Bio),
@@ -585,7 +945,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_ExoticComputer.set(
             addItem(
-                168,
+                Circuit_ExoticComputer.ID,
                 "Exotic Computer",
                 "An Exotic Circuit",
                 OrePrefixes.circuit.get(Materials.Optical),
@@ -593,7 +953,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_ExoticMainframe.set(
             addItem(
-                169,
+                Circuit_ExoticMainframe.ID,
                 "Exotic Mainframe",
                 "An Exotic Circuit",
                 OrePrefixes.circuit.get(Materials.Exotic),
@@ -603,7 +963,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         // Cosmic circuits
         ItemList.Circuit_CosmicProcessor.set(
             addItem(
-                170,
+                Circuit_CosmicProcessor.ID,
                 "Cosmic Processor",
                 "A Cosmic Circuit",
                 OrePrefixes.circuit.get(Materials.Bio),
@@ -611,7 +971,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_CosmicAssembly.set(
             addItem(
-                171,
+                Circuit_CosmicAssembly.ID,
                 "Cosmic Assembly",
                 "A Cosmic Circuit",
                 OrePrefixes.circuit.get(Materials.Optical),
@@ -619,7 +979,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_CosmicComputer.set(
             addItem(
-                172,
+                Circuit_CosmicComputer.ID,
                 "Cosmic Computer",
                 "A Cosmic Circuit",
                 OrePrefixes.circuit.get(Materials.Exotic),
@@ -627,7 +987,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_CosmicMainframe.set(
             addItem(
-                173,
+                Circuit_CosmicMainframe.ID,
                 "Cosmic Mainframe",
                 "A Cosmic Circuit",
                 OrePrefixes.circuit.get(Materials.Cosmic),
@@ -637,7 +997,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         // Transcendent circuits
         ItemList.Circuit_TranscendentProcessor.set(
             addItem(
-                174,
+                Circuit_TranscendentProcessor.ID,
                 "Temporally Transcendent Processor",
                 "A circuit operating outside of known spacetime",
                 OrePrefixes.circuit.get(Materials.Optical),
@@ -645,7 +1005,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_TranscendentAssembly.set(
             addItem(
-                175,
+                Circuit_TranscendentAssembly.ID,
                 "Temporally Transcendent Assembly",
                 "A circuit operating outside of known spacetime",
                 OrePrefixes.circuit.get(Materials.Exotic),
@@ -653,7 +1013,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_TranscendentComputer.set(
             addItem(
-                176,
+                Circuit_TranscendentComputer.ID,
                 "Temporally Transcendent Computer",
                 "A circuit operating outside of known spacetime",
                 OrePrefixes.circuit.get(Materials.Cosmic),
@@ -661,18 +1021,18 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_TranscendentMainframe.set(
             addItem(
-                177,
+                Circuit_TranscendentMainframe.ID,
                 "Temporally Transcendent Mainframe",
                 "A circuit operating outside of known spacetime",
                 OrePrefixes.circuit.get(Materials.Transcendent),
                 SubTag.NO_UNIFICATION));
 
 
-        ItemList.Tube_Wires.set(addItem(110, "Tube Wires", "For the Vacuum Tubes", o));
+        ItemList.Tube_Wires.set(addItem(Tube_Wires.ID, "Tube Wires", "For the Vacuum Tubes", o));
 
         ItemList.Cover_SolarPanel_UHV.set(
             addItem(
-                130,
+                Cover_SolarPanel_UHV.ID,
                 "Solar Panel (UHV)",
                 "Ultimate High Voltage Solar Panel (Needs cleaning with right click)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L),
@@ -680,7 +1040,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 128L)));
         ItemList.Cover_SolarPanel_UEV.set(
             addItem(
-                131,
+                Cover_SolarPanel_UEV.ID,
                 "Solar Panel (UEV)",
                 "Ultimate Extreme Voltage Solar Panel (Needs cleaning with right click)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L),
@@ -688,7 +1048,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 256L)));
         ItemList.Cover_SolarPanel_UIV.set(
             addItem(
-                132,
+                Cover_SolarPanel_UIV.ID,
                 "Solar Panel (UIV)",
                 "Ultimate Insane Voltage Solar Panel (Needs cleaning with right click)",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
@@ -696,223 +1056,223 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 512L)));
 
 
-        ItemList.ULV_Coil.set(addItem(140, "Ultra Low Voltage Coil", "Primitive Coil", o));
-        ItemList.LV_Coil.set(addItem(141, "Low Voltage Coil", "Basic Coil", o));
-        ItemList.MV_Coil.set(addItem(142, "Medium Voltage Coil", "Good Coil", o));
-        ItemList.HV_Coil.set(addItem(143, "High Voltage Coil", "Advanced Coil", o));
-        ItemList.EV_Coil.set(addItem(144, "Extreme Voltage Coil", "Extreme Coil", o));
-        ItemList.IV_Coil.set(addItem(145, "Insane Voltage Coil", "Elite Coil", o));
-        ItemList.LuV_Coil.set(addItem(146, "Ludicrous Voltage Coil", "Master Coil", o));
-        ItemList.ZPM_Coil.set(addItem(147, "ZPM Voltage Coil", "Ultimate Coil", o));
-        ItemList.UV_Coil.set(addItem(148, "Ultimate Voltage Coil", "Super Coil", o));
-        ItemList.UHV_Coil.set(addItem(149, "Highly Ultimate Voltage Coil", "Infinite Coil", o));
+        ItemList.ULV_Coil.set(addItem(ULV_Coil.ID, "Ultra Low Voltage Coil", "Primitive Coil", o));
+        ItemList.LV_Coil.set(addItem(LV_Coil.ID, "Low Voltage Coil", "Basic Coil", o));
+        ItemList.MV_Coil.set(addItem(MV_Coil.ID, "Medium Voltage Coil", "Good Coil", o));
+        ItemList.HV_Coil.set(addItem(HV_Coil.ID, "High Voltage Coil", "Advanced Coil", o));
+        ItemList.EV_Coil.set(addItem(EV_Coil.ID, "Extreme Voltage Coil", "Extreme Coil", o));
+        ItemList.IV_Coil.set(addItem(IV_Coil.ID, "Insane Voltage Coil", "Elite Coil", o));
+        ItemList.LuV_Coil.set(addItem(LuV_Coil.ID, "Ludicrous Voltage Coil", "Master Coil", o));
+        ItemList.ZPM_Coil.set(addItem(ZPM_Coil.ID, "ZPM Voltage Coil", "Ultimate Coil", o));
+        ItemList.UV_Coil.set(addItem(UV_Coil.ID, "Ultimate Voltage Coil", "Super Coil", o));
+        ItemList.UHV_Coil.set(addItem(UHV_Coil.ID, "Highly Ultimate Voltage Coil", "Infinite Coil", o));
 
-        ItemList.GalliumArsenideCrystal.set(addItem(190, "Gallium Arsenide Crystal", "For making boules", o));
+        ItemList.GalliumArsenideCrystal.set(addItem(GalliumArsenideCrystal.ID, "Gallium Arsenide Crystal", "For making boules", o));
         ItemList.GalliumArsenideCrystalSmallPart
-            .set(addItem(191, "Small Gallium Arsenide Crystal", "For making boules", o));
-        ItemList.KevlarFiber.set(addItem(192, "Kevlar Fiber", "For making Kevlar Plates", o));
-        ItemList.WovenKevlar.set(addItem(193, "Woven Kevlar", "For making Kevlar Plates", o));
-        ItemList.Spinneret.set(addItem(194, "Spinneret", "For making Kevlar Fiber", o));
+            .set(addItem(GalliumArsenideCrystalSmallPart.ID, "Small Gallium Arsenide Crystal", "For making boules", o));
+        ItemList.KevlarFiber.set(addItem(KevlarFiber.ID, "Kevlar Fiber", "For making Kevlar Plates", o));
+        ItemList.WovenKevlar.set(addItem(WovenKevlar.ID, "Woven Kevlar", "For making Kevlar Plates", o));
+        ItemList.Spinneret.set(addItem(Spinneret.ID, "Spinneret", "For making Kevlar Fiber", o));
 
-        ItemList.IndustrialApiary_Upgrade_Frame.set(addItem(199, "Upgrade Frame", "Crafting component", o));
+        ItemList.IndustrialApiary_Upgrade_Frame.set(addItem(IndustrialApiary_Upgrade_Frame.ID, "Upgrade Frame", "Crafting component", o));
 
         ItemList.IndustrialApiary_Upgrade_Acceleration_1.set(
             addItem(
-                200,
+                IndustrialApiary_Upgrade_Acceleration_1.ID,
                 "Acceleration Upgrade x2",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 2x acceleration level/n * Energy Consumption +1 AMP LV",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_2.set(
             addItem(
-                201,
+                IndustrialApiary_Upgrade_Acceleration_2.ID,
                 "Acceleration Upgrade x4",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 4x acceleration level/n * Energy Consumption +1 AMP MV",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_3.set(
             addItem(
-                202,
+                IndustrialApiary_Upgrade_Acceleration_3.ID,
                 "Acceleration Upgrade x8",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 8x acceleration level/n * Energy Consumption +1 AMP HV",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_4.set(
             addItem(
-                203,
+                IndustrialApiary_Upgrade_Acceleration_4.ID,
                 "Acceleration Upgrade x16",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 16x acceleration level/n * Energy Consumption +1 AMP EV",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_5.set(
             addItem(
-                204,
+                IndustrialApiary_Upgrade_Acceleration_5.ID,
                 "Acceleration Upgrade x32",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 32x acceleration level/n * Energy Consumption +1 AMP IV",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_6.set(
             addItem(
-                205,
+                IndustrialApiary_Upgrade_Acceleration_6.ID,
                 "Acceleration Upgrade x64",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 64x acceleration level/n * Energy Consumption +1 AMP LuV",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_7.set(
             addItem(
-                206,
+                IndustrialApiary_Upgrade_Acceleration_7.ID,
                 "Acceleration Upgrade x128",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 128x acceleration level/n * Energy Consumption +1 AMP ZPM",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_8.set(
             addItem(
-                207,
+                IndustrialApiary_Upgrade_Acceleration_8.ID,
                 "Acceleration Upgrade x256",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 256x acceleration level/n * Energy Consumption +1 AMP UV",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_Acceleration_8_Upgraded.set(
             addItem(
-                208,
+                IndustrialApiary_Upgrade_Acceleration_8_Upgraded.ID,
                 "Upgraded Acceleration Upgrade x256",
                 "Acceleration upgrade for Industrial Apiary/n Maximum Installed: 1/n * Unlocks 256x acceleration level/n * Will also grant 8x production upgrade/n * Energy Consumption +1 AMP UV",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_PRODUCTION.set(
             addItem(
-                209,
+                IndustrialApiary_Upgrade_PRODUCTION.ID,
                 "Production Upgrade",
                 "Production upgrade for Industrial Apiary/n Maximum Installed: 8/n Increases production modifier by 0.25/n Energy Consumption +40%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_PLAINS.set(
             addItem(
-                210,
+                IndustrialApiary_Upgrade_PLAINS.ID,
                 "Plains Emulation Upgrade",
                 "Plains emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Plains/n * Energy Consumption +40%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_LIGHT.set(
             addItem(
-                211,
+                IndustrialApiary_Upgrade_LIGHT.ID,
                 "Light Upgrade",
                 "Light upgrade for Industrial Apiary/n Maximum Installed: 1/n * Internal Lighting/n * Energy Consumption +5%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_FLOWERING.set(
             addItem(
-                212,
+                IndustrialApiary_Upgrade_FLOWERING.ID,
                 "Flowering Upgrade",
                 "Flowering upgrade for Industrial Apiary/n Maximum Installed: 8/n * Flowering and Pollination +20%/n * Energy Consumption +10%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_WINTER.set(
             addItem(
-                213,
+                IndustrialApiary_Upgrade_WINTER.ID,
                 "Winter Emulation Upgrade",
                 "Winter emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Taiga/n * Energy Consumption +50%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_DRYER.set(
             addItem(
-                214,
+                IndustrialApiary_Upgrade_DRYER.ID,
                 "Dryer Upgrade",
                 "Dryer upgrade for Industrial Apiary/n Maximum Installed: 16/n * Humidity -12.5%/n * Energy Consumption +2.5%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_AUTOMATION.set(
             addItem(
-                215,
+                IndustrialApiary_Upgrade_AUTOMATION.ID,
                 "Automation Upgrade",
                 "Automation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Automation/n * Energy Consumption +10%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_HUMIDIFIER.set(
             addItem(
-                216,
+                IndustrialApiary_Upgrade_HUMIDIFIER.ID,
                 "Humidifier Upgrade",
                 "Humidifier upgrade for Industrial Apiary/n Maximum Installed: 16/n * Humidity +12.5%/n * Energy Consumption +2.5%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_HELL.set(
             addItem(
-                217,
+                IndustrialApiary_Upgrade_HELL.ID,
                 "HELL Emulation Upgrade",
                 "HELL emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: HELL/n * Energy Consumption +50%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_POLLEN.set(
             addItem(
-                218,
+                IndustrialApiary_Upgrade_POLLEN.ID,
                 "Pollen Scrubber Upgrade",
                 "Pollen scrubber upgrade for Industrial Apiary/n Maximum Installed: 1/n * Flowering and Pollination -100%/n * Energy Consumption +30%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_DESERT.set(
             addItem(
-                219,
+                IndustrialApiary_Upgrade_DESERT.ID,
                 "Desert Emulation Upgrade",
                 "Desert emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Desert/n * Energy Consumption +20%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_COOLER.set(
             addItem(
-                220,
+                IndustrialApiary_Upgrade_COOLER.ID,
                 "Cooler Upgrade",
                 "Cooler upgrade for Industrial Apiary/n Maximum Installed: 16/n * Temperature -12.5%/n * Energy Consumption +2.5%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_LIFESPAN.set(
             addItem(
-                221,
+                IndustrialApiary_Upgrade_LIFESPAN.ID,
                 "Lifespan Upgrade",
                 "Lifespan upgrade for Industrial Apiary/n Maximum Installed: 4/n * Lifespan -33%/n * Energy Consumption +5%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_SEAL.set(
             addItem(
-                222,
+                IndustrialApiary_Upgrade_SEAL.ID,
                 "Seal Upgrade",
                 "Seal upgrade for Industrial Apiary/n Maximum Installed: 1/n * Rain Protection/n * Energy Consumption +5%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_STABILIZER.set(
             addItem(
-                223,
+                IndustrialApiary_Upgrade_STABILIZER.ID,
                 "Genetic Stabilizer Upgrade",
                 "Genetic stabilizer upgrade for Industrial Apiary/n Maximum Installed: 1/n * Genetic Decay -100%/n * Energy Consumption +150%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_JUNGLE.set(
             addItem(
-                224,
+                IndustrialApiary_Upgrade_JUNGLE.ID,
                 "Jungle Emulation Upgrade",
                 "Jungle emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Jungle/n * Energy Consumption +20%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_TERRITORY.set(
             addItem(
-                225,
+                IndustrialApiary_Upgrade_TERRITORY.ID,
                 "Territory Upgrade",
                 "Territory upgrade for Industrial Apiary/n Maximum Installed: 4/n * Territory +50%/n * Energy Consumption +5%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_OCEAN.set(
             addItem(
-                226,
+                IndustrialApiary_Upgrade_OCEAN.ID,
                 "Ocean Emulation Upgrade",
                 "Ocean emulation upgrade for Industrial Apiary/n Maximum Installed: 1/n * Biome Override: Ocean/n * Energy Consumption +20%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_SKY.set(
             addItem(
-                227,
+                IndustrialApiary_Upgrade_SKY.ID,
                 "Open Sky Upgrade",
                 "Open sky upgrade for Industrial Apiary/n Maximum Installed: 1/n * Open Sky Simulation/n * Energy Consumption +5%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_HEATER.set(
             addItem(
-                228,
+                IndustrialApiary_Upgrade_HEATER.ID,
                 "Heater Upgrade",
                 "Heater upgrade for Industrial Apiary/n Maximum Installed: 16/n * Temperature +12.5%/n * Energy Consumption +2.5%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_SIEVE.set(
             addItem(
-                229,
+                IndustrialApiary_Upgrade_SIEVE.ID,
                 "Sieve Upgrade",
                 "Sieve upgrade for Industrial Apiary/n Maximum Installed: 1/n * Pollen Collection/n * Energy Consumption +25%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_UNLIGHT.set(
             addItem(
-                231,
+                IndustrialApiary_Upgrade_UNLIGHT.ID,
                 "Night Upgrade",
                 "Night upgrade for Industrial Apiary/n Maximum Installed: 1/n * Internal Darkness/n * Energy Consumption +5%",
                 OrePrefixes.apiaryUpgrade.name()));
 
         ItemList.NuclearStar.set(
             addItem(
-                230,
+                NuclearStar.ID,
                 "Nuclear Star",
                 "By the powers of Greg, I command this star to be really hot.",
                 SubTag.NO_UNIFICATION));
 
         ItemList.Cover_Metrics_Transmitter.set(
             addItem(
-                232,
+                Cover_Metrics_Transmitter.ID,
                 "Metrics Transmitter Cover",
                 String.join(
                     "/n ",
@@ -922,145 +1282,144 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                     "Removing this cover will destroy the linked card",
                     GT_Values.AuthorQuerns)));
 
-        ItemList.Optical_Cpu_Containment_Housing.set(addItem(727, "Optical CPU Containment Housing", "CPU Housing", o));
-        ItemList.Optically_Perfected_CPU.set(addItem(726, "Optically Perfected CPU", "Perfected CPU!", o));
-        ItemList.Optically_Compatible_Memory.set(addItem(725, "Optically Compatible Memory", "Its in the name!", o));
+        ItemList.Optical_Cpu_Containment_Housing.set(addItem(Optical_Cpu_Containment_Housing.ID, "Optical CPU Containment Housing", "CPU Housing", o));
+        ItemList.Optically_Perfected_CPU.set(addItem(Optically_Perfected_CPU.ID, "Optically Perfected CPU", "Perfected CPU!", o));
+        ItemList.Optically_Compatible_Memory.set(addItem(Optically_Compatible_Memory.ID, "Optically Compatible Memory", "Its in the name!", o));
 
-        ItemList.Timepiece.set(addItem(757, "Timepiece", "Beware of the kid with the hat", o));
+        ItemList.Timepiece.set(addItem(Timepiece.ID, "Timepiece", "Beware of the kid with the hat", o));
 
-        int whiteDwarfIDs = 729;
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Plate.ID,
                 "White Dwarf Extruder Shape (Plate)",
                 "Ultra Strong Stellar Shape for making Plates"));
         ItemList.White_Dwarf_Shape_Extruder_Rod.set(
-            addItem(whiteDwarfIDs++, "White Dwarf Extruder Shape (Rod)", "Ultra Strong Stellar Shape for making Rods"));
+            addItem(White_Dwarf_Shape_Extruder_Rod.ID, "White Dwarf Extruder Shape (Rod)", "Ultra Strong Stellar Shape for making Rods"));
         ItemList.White_Dwarf_Shape_Extruder_Bolt.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Bolt.ID,
                 "White Dwarf Extruder Shape (Bolt)",
                 "Ultra Strong Stellar Shape for making Bolts"));
         ItemList.White_Dwarf_Shape_Extruder_Ring.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Ring.ID,
                 "White Dwarf Extruder Shape (Ring)",
                 "Ultra Strong Stellar Shape for making Rings"));
         ItemList.White_Dwarf_Shape_Extruder_Cell.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Cell.ID,
                 "White Dwarf Extruder Shape (Cell)",
                 "Ultra Strong Stellar Shape for making Cells"));
         ItemList.White_Dwarf_Shape_Extruder_Ingot.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Ingot.ID,
                 "White Dwarf Extruder Shape (Ingot)",
                 "Ultra Strong Stellar Shape for, wait, can't we just use a Furnace?"));
         ItemList.White_Dwarf_Shape_Extruder_Wire.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Wire.ID,
                 "White Dwarf Extruder Shape (Wire)",
                 "Ultra Strong Stellar Shape for making Wires"));
         ItemList.White_Dwarf_Shape_Extruder_Casing.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Casing.ID,
                 "White Dwarf Extruder Shape (Casing)",
                 "Ultra Strong Stellar Shape for making Item Casings"));
         ItemList.White_Dwarf_Shape_Extruder_Pipe_Tiny.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Pipe_Tiny.ID,
                 "White Dwarf Extruder Shape (Tiny Pipe)",
                 "Ultra Strong Stellar Shape for making tiny Pipes"));
         ItemList.White_Dwarf_Shape_Extruder_Pipe_Small.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Pipe_Small.ID,
                 "White Dwarf Extruder Shape (Small Pipe)",
                 "Ultra Strong Stellar Shape for making small Pipes"));
         ItemList.White_Dwarf_Shape_Extruder_Pipe_Medium.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Pipe_Medium.ID,
                 "White Dwarf Extruder Shape (Normal Pipe)",
                 "Ultra Strong Stellar Shape for making Pipes"));
         ItemList.White_Dwarf_Shape_Extruder_Pipe_Large.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Pipe_Large.ID,
                 "White Dwarf Extruder Shape (Large Pipe)",
                 "Ultra Strong Stellar Shape for making large Pipes"));
         ItemList.White_Dwarf_Shape_Extruder_Pipe_Huge.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Pipe_Huge.ID,
                 "White Dwarf Extruder Shape (Huge Pipe)",
                 "Ultra Strong Stellar Shape for making full Block Pipes"));
         ItemList.White_Dwarf_Shape_Extruder_Block.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Block.ID,
                 "White Dwarf Extruder Shape (Block)",
                 "Ultra Strong Stellar Shape for making Blocks"));
         ItemList.White_Dwarf_Shape_Extruder_Sword.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Sword.ID,
                 "White Dwarf Extruder Shape (Sword Blade)",
                 "Ultra Strong Stellar Shape for making Swords"));
         ItemList.White_Dwarf_Shape_Extruder_Pickaxe.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Pickaxe.ID,
                 "White Dwarf Extruder Shape (Pickaxe Head)",
                 "Ultra Strong Stellar Shape for making Pickaxes"));
         ItemList.White_Dwarf_Shape_Extruder_Shovel.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Shovel.ID,
                 "White Dwarf Extruder Shape (Shovel Head)",
                 "Ultra Strong Stellar Shape for making Shovels"));
         ItemList.White_Dwarf_Shape_Extruder_Axe.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Axe.ID,
                 "White Dwarf Extruder Shape (Axe Head)",
                 "Ultra Strong Stellar Shape for making Axes"));
         ItemList.White_Dwarf_Shape_Extruder_Hoe.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Hoe.ID,
                 "White Dwarf Extruder Shape (Hoe Head)",
                 "Ultra Strong Stellar Shape for making Hoes"));
         ItemList.White_Dwarf_Shape_Extruder_Hammer.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Hammer.ID,
                 "White Dwarf Extruder Shape (Hammer Head)",
                 "Ultra Strong Stellar Shape for making Hammers"));
         ItemList.White_Dwarf_Shape_Extruder_File.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_File.ID,
                 "White Dwarf Extruder Shape (File Head)",
                 "Ultra Strong Stellar Shape for making Files"));
         ItemList.White_Dwarf_Shape_Extruder_Saw.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Saw.ID,
                 "White Dwarf Extruder Shape (Saw Blade)",
                 "Ultra Strong Stellar Shape for making Saws"));
         ItemList.White_Dwarf_Shape_Extruder_Gear.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Gear.ID,
                 "White Dwarf Extruder Shape (Gear)",
                 "Ultra Strong Stellar Shape for making Gears"));
         ItemList.White_Dwarf_Shape_Extruder_Bottle.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Bottle.ID,
                 "White Dwarf Extruder Shape (Bottle)",
                 "Ultra Strong Stellar Shape for making Bottles"));
         ItemList.White_Dwarf_Shape_Extruder_Rotor.set(
-            addItem(whiteDwarfIDs++, "White Dwarf Extruder Shape (Rotor)", "Ultra Strong Stellar Shape for a Rotor"));
+            addItem(White_Dwarf_Shape_Extruder_Rotor.ID, "White Dwarf Extruder Shape (Rotor)", "Ultra Strong Stellar Shape for a Rotor"));
         ItemList.White_Dwarf_Shape_Extruder_Small_Gear.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Small_Gear.ID,
                 "White Dwarf Extruder Shape (Small Gear)",
                 "Ultra Strong Stellar Shape for a Small Gear"));
         ItemList.White_Dwarf_Shape_Extruder_Turbine_Blade.set(
             addItem(
-                whiteDwarfIDs++,
+                White_Dwarf_Shape_Extruder_Turbine_Blade.ID,
                 "White Dwarf Extruder Shape (Turbine Blade)",
                 "Ultra Strong Stellar Extruder Shape for a Turbine Blade"));
         ItemList.White_Dwarf_Shape_Extruder_ToolHeadDrill.set(
             addItem(
-                whiteDwarfIDs,
+                White_Dwarf_Shape_Extruder_ToolHeadDrill.ID,
                 "White Dwarf Extruder Shape (Drill Head)",
                 "White Dwarf Extruder Shape for a Drill Head"));
         registerAllTieredTooltips();
