@@ -60,6 +60,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
+import gregtech.common.items.ID_MetaTool_01;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -2382,7 +2383,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                             aEvent.player.posY,
                             aEvent.player.posZ,
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.AXE,
+                                ID_MetaTool_01.AXE.ID,
                                 1,
                                 Materials.Flint,
                                 Materials.Wood,

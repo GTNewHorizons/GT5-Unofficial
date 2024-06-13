@@ -65,7 +65,7 @@ public enum ID_MetaTool_01 {
     POCKET_SCREWDRIVER(190),
     POCKET_WIRECUTTER(192);
 
-    final int ID;
+    public final int ID;
 
     ID_MetaTool_01(int ID) {
         this.ID = ID;

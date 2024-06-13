@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import gregtech.common.items.ID_MetaTool_01;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
@@ -112,7 +113,7 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
             new long[] { aBatteryStorage, GT_Values.V[aVoltageTier], 3L, -1L });
 
         ItemStack aInputCutter = GT_MetaGenerated_Tool_01.INSTANCE
-            .getToolWithStats(GT_MetaGenerated_Tool_01.WIRECUTTER, 1, aMaterial, aMaterial, null);
+            .getToolWithStats(ID_MetaTool_01.WIRECUTTER.ID, 1, aMaterial, aMaterial, null);
 
         long aDura = MetaGeneratedGregtechTools.getToolMaxDamage(aOutputStack);
         if (aDura <= 32000) {

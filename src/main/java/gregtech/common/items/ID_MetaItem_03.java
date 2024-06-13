@@ -221,7 +221,7 @@ public enum ID_MetaItem_03 {
     White_Dwarf_Shape_Extruder_ToolHeadDrill(756),
     Timepiece(757);
 
-    final int ID;
+    public final int ID;
 
     ID_MetaItem_03(int ID) {
         this.ID = ID;

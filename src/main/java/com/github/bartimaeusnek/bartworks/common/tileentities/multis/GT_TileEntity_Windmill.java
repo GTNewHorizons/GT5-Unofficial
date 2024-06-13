@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import gregtech.common.items.ID_MetaTool_01;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
@@ -612,7 +613,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
                     () -> this.mMachine && !this.getBaseMetaTileEntity()
                         .isActive()
                             ? GT_MetaGenerated_Tool_01.INSTANCE
-                                .getToolWithStats(GT_MetaGenerated_Tool_01.SOFTMALLET, 1, null, null, null)
+                                .getToolWithStats(ID_MetaTool_01.SOFTMALLET.ID, 1, null, null, null)
                             : null).asWidget()
                                 .setPos(66, 66))
             .widget(

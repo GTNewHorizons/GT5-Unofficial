@@ -17,6 +17,7 @@ import static gregtech.api.enums.GT_Values.ticksBetweenSounds;
 
 import java.util.Collections;
 
+import gregtech.common.items.ID_MetaTool_01;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -435,7 +436,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
             .widget(
                 new ItemDrawable(
                     GT_MetaGenerated_Tool_01.INSTANCE
-                        .getToolWithStats(GT_MetaGenerated_Tool_01.SCREWDRIVER, 1, null, null, null)).asWidget()
+                        .getToolWithStats(ID_MetaTool_01.SCREWDRIVER.ID, 1, null, null, null)).asWidget()
                             .setPos(154, 6));
     }
 

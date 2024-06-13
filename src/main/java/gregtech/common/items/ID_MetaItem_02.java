@@ -200,7 +200,7 @@ public enum ID_MetaItem_02 {
     Cover_WirelessActivityDetector(584),
     Display_ITS_FREE(765);
 
-    final int ID;
+    public final int ID;
 
     ID_MetaItem_02(int ID) {
         this.ID = ID;

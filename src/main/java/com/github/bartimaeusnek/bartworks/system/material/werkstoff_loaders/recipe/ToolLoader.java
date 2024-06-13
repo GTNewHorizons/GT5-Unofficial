@@ -35,6 +35,7 @@ import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
+import gregtech.common.items.ID_MetaTool_01;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -67,7 +68,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 .isExtension())
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.HARDHAMMER,
+                        ID_MetaTool_01.HARDHAMMER.ID,
                         1,
                         werkstoff.getBridgeMaterial(),
                         werkstoff.getBridgeMaterial().mHandleMaterial,
@@ -88,7 +89,7 @@ public class ToolLoader implements IWerkstoffRunnable {
             .isExtension()) {
             GT_ModHandler.addCraftingRecipe(
                 GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                    GT_MetaGenerated_Tool_01.SCREWDRIVER,
+                    ID_MetaTool_01.SCREWDRIVER.ID,
                     1,
                     werkstoff.getBridgeMaterial(),
                     werkstoff.getBridgeMaterial().mHandleMaterial,
@@ -105,7 +106,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                     screw.get(werkstoff.getBridgeMaterial().mHandleMaterial) });
             GT_ModHandler.addShapelessCraftingRecipe(
                 GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                    GT_MetaGenerated_Tool_01.HARDHAMMER,
+                    ID_MetaTool_01.HARDHAMMER.ID,
                     1,
                     werkstoff.getBridgeMaterial(),
                     werkstoff.getBridgeMaterial().mHandleMaterial,
@@ -115,7 +116,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                     stick.get(werkstoff.getBridgeMaterial().mHandleMaterial) });
             GT_ModHandler.addCraftingRecipe(
                 GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                    GT_MetaGenerated_Tool_01.FILE,
+                    ID_MetaTool_01.FILE.ID,
                     1,
                     werkstoff.getBridgeMaterial(),
                     werkstoff.getBridgeMaterial().mHandleMaterial,
@@ -126,7 +127,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                     stick.get(werkstoff.getBridgeMaterial().mHandleMaterial) });
             GT_ModHandler.addShapelessCraftingRecipe(
                 GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                    GT_MetaGenerated_Tool_01.SAW,
+                    ID_MetaTool_01.SAW.ID,
                     1,
                     werkstoff.getBridgeMaterial(),
                     werkstoff.getBridgeMaterial().mHandleMaterial,
@@ -135,7 +136,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                     stick.get(werkstoff.getBridgeMaterial().mHandleMaterial) });
             GT_ModHandler.addCraftingRecipe(
                 GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                    GT_MetaGenerated_Tool_01.SOLDERING_IRON_LV,
+                    ID_MetaTool_01.SOLDERING_IRON_LV.ID,
                     1,
                     werkstoff.getBridgeMaterial(),
                     Materials.Rubber,
@@ -172,7 +173,7 @@ public class ToolLoader implements IWerkstoffRunnable {
             if (!werkstoff.hasItemType(gem)) {
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.HARDHAMMER,
+                        ID_MetaTool_01.HARDHAMMER.ID,
                         1,
                         werkstoff.getBridgeMaterial(),
                         werkstoff.getBridgeMaterial().mHandleMaterial,
@@ -185,7 +186,7 @@ public class ToolLoader implements IWerkstoffRunnable {
 
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.PLUNGER,
+                ID_MetaTool_01.PLUNGER.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 werkstoff.getBridgeMaterial(),
@@ -195,7 +196,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 plate.get(Materials.AnyRubber) });
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.WRENCH,
+                ID_MetaTool_01.WRENCH.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 werkstoff.getBridgeMaterial(),
@@ -204,7 +205,7 @@ public class ToolLoader implements IWerkstoffRunnable {
             new Object[] { "IhI", "III", " I ", 'I', ingot.get(werkstoff.getBridgeMaterial()) });
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.CROWBAR,
+                ID_MetaTool_01.CROWBAR.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 werkstoff.getBridgeMaterial(),
@@ -214,7 +215,7 @@ public class ToolLoader implements IWerkstoffRunnable {
 
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.WIRECUTTER,
+                ID_MetaTool_01.WIRECUTTER.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 werkstoff.getBridgeMaterial(),
@@ -224,7 +225,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 plate.get(werkstoff.getBridgeMaterial()), 'T', screw.get(werkstoff.getBridgeMaterial()) });
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.SCOOP,
+                ID_MetaTool_01.SCOOP.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 werkstoff.getBridgeMaterial(),
@@ -234,7 +235,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 new ItemStack(Blocks.wool, 1, 32767) });
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.BRANCHCUTTER,
+                ID_MetaTool_01.BRANCHCUTTER.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 werkstoff.getBridgeMaterial(),
@@ -244,7 +245,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 plate.get(werkstoff.getBridgeMaterial()), 'T', screw.get(werkstoff.getBridgeMaterial()) });
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.KNIFE,
+                ID_MetaTool_01.KNIFE.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 werkstoff.getBridgeMaterial(),
@@ -254,7 +255,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 plate.get(werkstoff.getBridgeMaterial()) });
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.BUTCHERYKNIFE,
+                ID_MetaTool_01.BUTCHERYKNIFE.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 werkstoff.getBridgeMaterial(),
@@ -265,7 +266,7 @@ public class ToolLoader implements IWerkstoffRunnable {
 
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.WRENCH_LV,
+                ID_MetaTool_01.WRENCH_LV.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 Materials.Steel,
@@ -277,7 +278,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 'G', gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Lithium.get(1L) });
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.WRENCH_LV,
+                ID_MetaTool_01.WRENCH_LV.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 Materials.Steel,
@@ -289,7 +290,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 'G', gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Cadmium.get(1L) });
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.WRENCH_LV,
+                ID_MetaTool_01.WRENCH_LV.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 Materials.Steel,
@@ -301,7 +302,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 'G', gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Sodium.get(1L) });
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.WRENCH_MV,
+                ID_MetaTool_01.WRENCH_MV.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 Materials.Aluminium,
@@ -314,7 +315,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 ItemList.Battery_RE_MV_Lithium.get(1L) });
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.WRENCH_MV,
+                ID_MetaTool_01.WRENCH_MV.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 Materials.Aluminium,
@@ -327,7 +328,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 ItemList.Battery_RE_MV_Cadmium.get(1L) });
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.WRENCH_MV,
+                ID_MetaTool_01.WRENCH_MV.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 Materials.Aluminium,
@@ -340,7 +341,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 ItemList.Battery_RE_MV_Sodium.get(1L) });
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.WRENCH_HV,
+                ID_MetaTool_01.WRENCH_HV.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 Materials.StainlessSteel,
@@ -353,7 +354,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 ItemList.Battery_RE_HV_Lithium.get(1L) });
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.WRENCH_HV,
+                ID_MetaTool_01.WRENCH_HV.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 Materials.StainlessSteel,
@@ -366,7 +367,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 ItemList.Battery_RE_HV_Cadmium.get(1L) });
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.WRENCH_HV,
+                ID_MetaTool_01.WRENCH_HV.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 Materials.StainlessSteel,
@@ -380,7 +381,7 @@ public class ToolLoader implements IWerkstoffRunnable {
 
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.SCREWDRIVER_LV,
+                ID_MetaTool_01.SCREWDRIVER_LV.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 Materials.Steel,
@@ -392,7 +393,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 'G', gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Lithium.get(1L) });
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.SCREWDRIVER_LV,
+                ID_MetaTool_01.SCREWDRIVER_LV.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 Materials.Steel,
@@ -404,7 +405,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 'G', gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Cadmium.get(1L) });
         GT_ModHandler.addCraftingRecipe(
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.SCREWDRIVER_LV,
+                ID_MetaTool_01.SCREWDRIVER_LV.ID,
                 1,
                 werkstoff.getBridgeMaterial(),
                 Materials.Steel,
@@ -459,7 +460,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(turbineBlade, 4), GT_OreDictUnificator.get(stickLong, Materials.Magnalium, 1))
                 .itemOutputs(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.TURBINE_SMALL,
+                        ID_MetaTool_01.TURBINE_SMALL.ID,
                         1,
                         werkstoff.getBridgeMaterial(),
                         Materials.Magnalium,
@@ -472,7 +473,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(turbineBlade, 8), GT_OreDictUnificator.get(stickLong, Materials.Titanium, 1))
                 .itemOutputs(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.TURBINE,
+                        ID_MetaTool_01.TURBINE.ID,
                         1,
                         werkstoff.getBridgeMaterial(),
                         Materials.Titanium,
@@ -487,7 +488,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                     GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 1))
                 .itemOutputs(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.TURBINE_LARGE,
+                        ID_MetaTool_01.TURBINE_LARGE.ID,
                         1,
                         werkstoff.getBridgeMaterial(),
                         Materials.TungstenSteel,
@@ -502,7 +503,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                     GT_OreDictUnificator.get(stickLong, Materials.Americium, 1))
                 .itemOutputs(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.TURBINE_HUGE,
+                        ID_MetaTool_01.TURBINE_HUGE.ID,
                         1,
                         werkstoff.getBridgeMaterial(),
                         Materials.Americium,
