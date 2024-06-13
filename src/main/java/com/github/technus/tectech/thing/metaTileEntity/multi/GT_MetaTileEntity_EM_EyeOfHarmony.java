@@ -931,6 +931,26 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     }
 
     @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (astralArrayAmount != 0) {
+            while (astralArrayAmount >= 64) {
+                if (aPlayer.inventory.getFirstEmptyStack() != -1) {
+                    aPlayer.inventory.addItemStackToInventory(astralArrayFabricator.get(64));
+                    astralArrayAmount -= 64;
+                } else {
+                    break;
+                }
+            }
+            if (aPlayer.inventory.getFirstEmptyStack() != -1) {
+                aPlayer.inventory.addItemStackToInventory(astralArrayFabricator.get(astralArrayAmount));
+                astralArrayAmount = 0;
+            }
+        }
+        return true;
+    }
+
+    @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Spacetime Manipulator, EOH")
@@ -1026,6 +1046,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             .addInfo(TOOLTIP_BAR)
             .addInfo(
                 "This multiblock can perform parallel processing by placing Astral Array Fabricators into the input bus.")
+            .addInfo(
+                "They are stored internally and can be retrieved via right-clicking the controller with a wire cutter.")
             .addInfo("The amount of parallel is calculated via these formulas:")
             .addInfo(GREEN + "Parallel exponent = floor(log(8 * Astral Array amount) / log(1.7))")
             .addInfo(GREEN + "Parallel = 2^(Parallel exponent)")
@@ -1188,12 +1210,11 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             }
         }
 
-        astralArrayAmount = 0;
-
         for (ItemStack itemStack : mInputBusses.get(0)
             .getRealInventory()) {
             if (itemStack != null && itemStack.isItemEqual(astralArrayFabricator.get(1))) {
                 astralArrayAmount += itemStack.stackSize;
+                itemStack.stackSize = 0;
             }
         }
 
@@ -1546,14 +1567,14 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                     + RESET
                     + ")");
         }
-        str.add(GOLD + "----------------- Internal Fluids Stored ----------------");
+        str.add(GOLD + "----------------- Internal Storage ----------------");
         validFluidMap.forEach(
             (key, value) -> str.add(BLUE + key.getLocalizedName() + RESET + " : " + RED + formatNumbers(value)));
+        str.add(BLUE + "Astral Array Fabricators" + RESET + " : " + RED + formatNumbers(astralArrayAmount));
         if (recipeRunning) {
             str.add(GOLD + "---------------------- Other Stats ---------------");
             str.add("Recipe Success Chance: " + RED + formatNumbers(100 * successChance) + RESET + "%");
             str.add("Recipe Yield: " + RED + formatNumbers(100 * yield) + RESET + "%");
-            str.add("Astral Array Fabricators detected: " + RED + formatNumbers(astralArrayAmount));
             str.add("Total Parallel: " + RED + formatNumbers(parallelAmount));
             str.add("EU Output: " + RED + toStandardForm(outputEU_BigInt) + RESET + " EU");
             str.add("EU Input:  " + RED + toStandardForm(usedEU.abs()) + RESET + " EU");
