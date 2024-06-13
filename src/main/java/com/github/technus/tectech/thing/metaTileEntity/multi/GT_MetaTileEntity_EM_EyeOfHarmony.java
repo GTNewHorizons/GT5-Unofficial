@@ -1652,6 +1652,11 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private static final String FLUID_STACK_NBT_TAG = "fluidStack";
 
     @Override
+    public void setItemNBT(NBTTagCompound NBT) {
+        NBT.setLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG, astralArrayAmount);
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         // Save the quantity of fluid stored inside the controller.
         validFluidMap.forEach((key, value) -> aNBT.setLong("stored." + key.getUnlocalizedName(), value));
