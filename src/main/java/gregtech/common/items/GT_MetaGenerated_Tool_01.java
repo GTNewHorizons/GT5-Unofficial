@@ -772,6 +772,11 @@ public class GT_MetaGenerated_Tool_01 extends GT_MetaGenerated_Tool {
             GT_ModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.StainlessSteel), 'S',
                 OrePrefixes.stick.get(Materials.StainlessSteel) });
+        GT_ModHandler.addCraftingRecipe(
+            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.IronWood, Materials.IronWood, null),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.IronWood), 'S',
+                OrePrefixes.stick.get(Materials.IronWood) });
 
         if (!GregTech_API.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)) {
             GT_ModHandler.addCraftingRecipe(
@@ -804,82 +809,6 @@ public class GT_MetaGenerated_Tool_01 extends GT_MetaGenerated_Tool {
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[] { "F", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'F',
                     new ItemStack(Items.flint, 1) });
-
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Flint, Materials.Stone, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', new ItemStack(Items.flint, 1), 'S', OrePrefixes.stone });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Bronze, Materials.Stone, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.Bronze), 'S',
-                    OrePrefixes.stone });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Iron, Materials.Stone, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.Iron), 'S',
-                    OrePrefixes.stone });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Steel, Materials.Stone, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.Steel), 'S',
-                    OrePrefixes.stone });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.WroughtIron, Materials.Stone, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.WroughtIron), 'S',
-                    OrePrefixes.stone });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.RedSteel, Materials.Stone, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.RedSteel), 'S',
-                    OrePrefixes.stone });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.BlueSteel, Materials.Stone, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.BlueSteel), 'S',
-                    OrePrefixes.stone });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.BlackSteel, Materials.Stone, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.BlackSteel), 'S',
-                    OrePrefixes.stone });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.DamascusSteel, Materials.Stone, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.DamascusSteel), 'S',
-                    OrePrefixes.stone });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Thaumium, Materials.Stone, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.get(Materials.Thaumium), 'S',
-                    OrePrefixes.stone });
-
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Wood, Materials.Wood, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.plank.get(Materials.Wood), 'S',
-                    OrePrefixes.stick.get(Materials.Wood) });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Plastic, Materials.Plastic, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.Plastic), 'S',
-                    OrePrefixes.stick.get(Materials.Plastic) });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Aluminium, Materials.Aluminium, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.Aluminium), 'S',
-                    OrePrefixes.stick.get(Materials.Aluminium) });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.StainlessSteel, Materials.StainlessSteel, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.StainlessSteel), 'S',
-                    OrePrefixes.stick.get(Materials.StainlessSteel) });
-            GT_ModHandler.addCraftingRecipe(
-                INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.IronWood, Materials.IronWood, null),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.IronWood), 'S',
-                    OrePrefixes.stick.get(Materials.IronWood) });
         }
     }
 }
