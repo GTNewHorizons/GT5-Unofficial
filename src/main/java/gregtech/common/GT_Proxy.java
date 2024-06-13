@@ -60,7 +60,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
-import gregtech.common.items.ID_MetaTool_01;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -173,6 +172,7 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.items.GT_MetaGenerated_Item_98;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.ID_MetaTool_01;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
@@ -2382,12 +2382,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                             aEvent.player.posX,
                             aEvent.player.posY,
                             aEvent.player.posZ,
-                            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                ID_MetaTool_01.AXE.ID,
-                                1,
-                                Materials.Flint,
-                                Materials.Wood,
-                                null)));
+                            GT_MetaGenerated_Tool_01.INSTANCE
+                                .getToolWithStats(ID_MetaTool_01.AXE.ID, 1, Materials.Flint, Materials.Wood, null)));
                 }
             }
             final boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);

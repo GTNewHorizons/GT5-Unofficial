@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import gregtech.common.items.ID_MetaTool_01;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -34,6 +33,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.ID_MetaTool_01;
 import ic2.core.Ic2Items;
 import thaumcraft.api.ThaumcraftApiHelper;
 
@@ -83,12 +83,8 @@ public class GT_Achievements {
             "driltime",
             2,
             4,
-            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                ID_MetaTool_01.DRILL_LV.ID,
-                1,
-                Materials.BlueSteel,
-                Materials.StainlessSteel,
-                null),
+            GT_MetaGenerated_Tool_01.INSTANCE
+                .getToolWithStats(ID_MetaTool_01.DRILL_LV.ID, 1, Materials.BlueSteel, Materials.StainlessSteel, null),
             "tools",
             false);
         registerAchievement(

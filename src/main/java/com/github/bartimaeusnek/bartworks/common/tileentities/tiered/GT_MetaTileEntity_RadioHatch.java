@@ -17,7 +17,6 @@ import static gregtech.api.enums.GT_Values.ticksBetweenSounds;
 
 import java.util.Collections;
 
-import gregtech.common.items.ID_MetaTool_01;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -67,6 +66,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.ID_MetaTool_01;
 
 public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
     implements RecipeMapWorkable, IAddGregtechLogo {

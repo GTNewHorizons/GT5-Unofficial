@@ -9,8 +9,6 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.items.ID_MetaTool_01;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
@@ -24,6 +22,8 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.ID_MetaTool_01;
 
 public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeRegistrator { // TODO COMPARE WITH OLD TOOL
                                                                                            // HEAD??? generator
@@ -94,12 +94,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, aMaterial, 1L),
                             GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(
-                            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                ID_MetaTool_01.AXE.ID,
-                                1,
-                                aMaterial,
-                                aMaterial.mHandleMaterial,
-                                null))
+                            GT_MetaGenerated_Tool_01.INSTANCE
+                                .getToolWithStats(ID_MetaTool_01.AXE.ID, 1, aMaterial, aMaterial.mHandleMaterial, null))
                         .duration(10 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
                         .addTo(assemblerRecipes);
@@ -550,12 +546,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
             case toolHeadFile -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            ID_MetaTool_01.FILE.ID,
-                            1,
-                            aMaterial,
-                            aMaterial.mHandleMaterial,
-                            null),
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(ID_MetaTool_01.FILE.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
                     if ((!aMaterial.contains(SubTag.NO_SMASHING)) && (!aMaterial.contains(SubTag.BOUNCY))) {
@@ -595,12 +587,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
             case toolHeadHoe -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            ID_MetaTool_01.HOE.ID,
-                            1,
-                            aMaterial,
-                            aMaterial.mHandleMaterial,
-                            null),
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(ID_MetaTool_01.HOE.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                 }
                 if (GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L) != null) {
@@ -610,12 +598,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, aMaterial, 1L),
                             GT_Utility.getIntegratedCircuit(16))
                         .itemOutputs(
-                            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                ID_MetaTool_01.HOE.ID,
-                                1,
-                                aMaterial,
-                                aMaterial.mHandleMaterial,
-                                null))
+                            GT_MetaGenerated_Tool_01.INSTANCE
+                                .getToolWithStats(ID_MetaTool_01.HOE.ID, 1, aMaterial, aMaterial.mHandleMaterial, null))
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                         .addTo(assemblerRecipes);
@@ -634,12 +618,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            ID_MetaTool_01.PICKAXE.ID,
-                            1,
-                            aMaterial,
-                            aMaterial.mHandleMaterial,
-                            null),
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(ID_MetaTool_01.PICKAXE.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
                     if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
@@ -675,12 +655,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            ID_MetaTool_01.PLOW.ID,
-                            1,
-                            aMaterial,
-                            aMaterial.mHandleMaterial,
-                            null),
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(ID_MetaTool_01.PLOW.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
                     if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
@@ -715,12 +691,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            ID_MetaTool_01.SAW.ID,
-                            1,
-                            aMaterial,
-                            aMaterial.mHandleMaterial,
-                            null),
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(ID_MetaTool_01.SAW.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
                     if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
@@ -741,12 +713,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GT_OreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial, 1L),
                             GT_Utility.getIntegratedCircuit(7))
                         .itemOutputs(
-                            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                ID_MetaTool_01.SAW.ID,
-                                1,
-                                aMaterial,
-                                aMaterial.mHandleMaterial,
-                                null))
+                            GT_MetaGenerated_Tool_01.INSTANCE
+                                .getToolWithStats(ID_MetaTool_01.SAW.ID, 1, aMaterial, aMaterial.mHandleMaterial, null))
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                         .addTo(assemblerRecipes);
@@ -756,12 +724,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            ID_MetaTool_01.SENSE.ID,
-                            1,
-                            aMaterial,
-                            aMaterial.mHandleMaterial,
-                            null),
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(ID_MetaTool_01.SENSE.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
                     if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
@@ -795,12 +759,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
             }
             case toolHeadShovel -> {
                 GT_ModHandler.addShapelessCraftingRecipe(
-                    GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        ID_MetaTool_01.SHOVEL.ID,
-                        1,
-                        aMaterial,
-                        aMaterial.mHandleMaterial,
-                        null),
+                    GT_MetaGenerated_Tool_01.INSTANCE
+                        .getToolWithStats(ID_MetaTool_01.SHOVEL.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                     new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                 if (GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L) != null) {
                     GT_Values.RA.stdBuilder()
@@ -833,12 +793,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            ID_MetaTool_01.SWORD.ID,
-                            1,
-                            aMaterial,
-                            aMaterial.mHandleMaterial,
-                            null),
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(ID_MetaTool_01.SWORD.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
                     if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
@@ -1156,8 +1112,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GT_Utility.getIntegratedCircuit(14))
                         .itemOutputs(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                aProducesSoftMallet ? ID_MetaTool_01.SOFTMALLET.ID
-                                    : ID_MetaTool_01.HARDHAMMER.ID,
+                                aProducesSoftMallet ? ID_MetaTool_01.SOFTMALLET.ID : ID_MetaTool_01.HARDHAMMER.ID,
                                 1,
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
@@ -1169,8 +1124,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)) {
                     GT_ModHandler.addShapelessCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            aProducesSoftMallet ? ID_MetaTool_01.SOFTMALLET.ID
-                                : ID_MetaTool_01.HARDHAMMER.ID,
+                            aProducesSoftMallet ? ID_MetaTool_01.SOFTMALLET.ID : ID_MetaTool_01.HARDHAMMER.ID,
                             1,
                             aMaterial,
                             aMaterial.mHandleMaterial,
@@ -1179,8 +1133,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                     GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            aProducesSoftMallet ? ID_MetaTool_01.SOFTMALLET.ID
-                                : ID_MetaTool_01.HARDHAMMER.ID,
+                            aProducesSoftMallet ? ID_MetaTool_01.SOFTMALLET.ID : ID_MetaTool_01.HARDHAMMER.ID,
                             1,
                             aMaterial,
                             aMaterial.mHandleMaterial,
@@ -1192,8 +1145,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             'S', OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                     GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            aProducesSoftMallet ? ID_MetaTool_01.SOFTMALLET.ID
-                                : ID_MetaTool_01.HARDHAMMER.ID,
+                            aProducesSoftMallet ? ID_MetaTool_01.SOFTMALLET.ID : ID_MetaTool_01.HARDHAMMER.ID,
                             1,
                             aMaterial,
                             aMaterial.mHandleMaterial,

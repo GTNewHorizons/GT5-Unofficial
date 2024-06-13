@@ -35,7 +35,6 @@ import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
-import gregtech.common.items.ID_MetaTool_01;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -51,6 +50,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.GT_Proxy;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.ID_MetaTool_01;
 
 public class ToolLoader implements IWerkstoffRunnable {
 

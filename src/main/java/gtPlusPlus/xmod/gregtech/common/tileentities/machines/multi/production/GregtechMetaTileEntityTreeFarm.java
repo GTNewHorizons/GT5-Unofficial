@@ -36,7 +36,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import gregtech.common.items.ID_MetaTool_01;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
@@ -71,6 +70,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.ID_MetaTool_01;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -431,22 +431,24 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
             case LOG:
                 if (tool instanceof GT_MetaGenerated_Tool_01) {
 
-                    if (damage == SAW.ID || damage == POCKET_SAW.ID || damage == POCKET_MULTITOOL.ID){
+                    if (damage == SAW.ID || damage == POCKET_SAW.ID || damage == POCKET_MULTITOOL.ID) {
                         return 1;
                     }
 
-                    if (damage == BUZZSAW_LV.ID || damage == BUZZSAW_MV.ID || damage == BUZZSAW_HV.ID){
+                    if (damage == BUZZSAW_LV.ID || damage == BUZZSAW_MV.ID || damage == BUZZSAW_HV.ID) {
                         return 2;
                     }
 
-                    if (damage == CHAINSAW_LV.ID || damage == CHAINSAW_MV.ID || damage == CHAINSAW_HV.ID){
+                    if (damage == CHAINSAW_LV.ID || damage == CHAINSAW_MV.ID || damage == CHAINSAW_HV.ID) {
                         return 4;
                     }
                 }
                 break;
 
             case SAPLING:
-                if (tool instanceof GT_MetaGenerated_Tool_01 && (damage == BRANCHCUTTER.ID || damage == POCKET_BRANCHCUTTER.ID || damage == POCKET_MULTITOOL.ID)){
+                if (tool instanceof GT_MetaGenerated_Tool_01
+                    && (damage == BRANCHCUTTER.ID || damage == POCKET_BRANCHCUTTER.ID
+                        || damage == POCKET_MULTITOOL.ID)) {
                     return 1;
                 }
                 if (tool instanceof IToolGrafter && tool.isDamageable()) {
@@ -463,7 +465,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
                     if (damage == POCKET_MULTITOOL.ID) {
                         return 1;
                     }
-                    if (damage == WIRECUTTER.ID || damage == POCKET_WIRECUTTER.ID){
+                    if (damage == WIRECUTTER.ID || damage == POCKET_WIRECUTTER.ID) {
                         return 2;
                     }
                 }
@@ -475,7 +477,8 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
                 break;
 
             case FRUIT:
-                if (tool instanceof GT_MetaGenerated_Tool_01 && (damage == KNIFE.ID || damage == POCKET_KNIFE.ID || damage == POCKET_MULTITOOL.ID)){
+                if (tool instanceof GT_MetaGenerated_Tool_01
+                    && (damage == KNIFE.ID || damage == POCKET_KNIFE.ID || damage == POCKET_MULTITOOL.ID)) {
                     return 1;
                 }
                 break;
