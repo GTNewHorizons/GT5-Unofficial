@@ -1681,7 +1681,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L)));
-        setFluidContainerStats(32000 + Food_Raw_Fries.ID, 0L, 16L);
         ItemList.Food_Fries.set(
             addItem(
                 Food_Fries.ID,
@@ -1692,7 +1691,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + Food_Fries.ID, 0L, 16L);
         ItemList.Food_Packaged_Fries.set(
             addItem(
                 Food_Packaged_Fries.ID,
@@ -1719,7 +1717,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L)));
-        setFluidContainerStats(32000 + Food_Raw_PotatoChips.ID, 0L, 16L);
         ItemList.Food_PotatoChips.set(
             addItem(
                 Food_PotatoChips.ID,
@@ -1730,7 +1727,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + Food_PotatoChips.ID, 0L, 16L);
         ItemList.Food_ChiliChips.set(
             addItem(
                 Food_ChiliChips.ID,
@@ -1741,7 +1737,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + Food_ChiliChips.ID, 0L, 16L);
         ItemList.Food_Packaged_PotatoChips.set(
             addItem(
                 Food_Packaged_PotatoChips.ID,
@@ -1929,7 +1924,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + Food_Sandwich_Veggie.ID, 0L, 32L);
         ItemList.Food_Sandwich_Cheese.set(
             addItem(
                 Food_Sandwich_Cheese.ID,
@@ -1939,7 +1933,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + Food_Sandwich_Cheese.ID, 0L, 32L);
         ItemList.Food_Sandwich_Bacon.set(
             addItem(
                 Food_Sandwich_Bacon.ID,
@@ -1949,7 +1942,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.CORPUS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + Food_Sandwich_Bacon.ID, 0L, 32L);
         ItemList.Food_Sandwich_Steak.set(
             addItem(
                 Food_Sandwich_Steak.ID,
@@ -1959,8 +1951,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.CORPUS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + Food_Sandwich_Steak.ID, 0L, 32L);
-
         ItemList.Food_Sliced_Baguettes.set(
             addItem(
                 Food_Sliced_Baguettes.ID,
@@ -1979,7 +1969,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 3L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + Food_Large_Sandwich_Veggie.ID, 0L, 16L);
         ItemList.Food_Large_Sandwich_Cheese.set(
             addItem(
                 Food_Large_Sandwich_Cheese.ID,
@@ -1989,7 +1978,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 3L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + Food_Large_Sandwich_Cheese.ID, 0L, 16L);
         ItemList.Food_Large_Sandwich_Bacon.set(
             addItem(
                 Food_Large_Sandwich_Bacon.ID,
@@ -1999,7 +1987,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.CORPUS, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + Food_Large_Sandwich_Bacon.ID, 0L, 16L);
         ItemList.Food_Large_Sandwich_Steak.set(
             addItem(
                 Food_Large_Sandwich_Steak.ID,
@@ -2009,8 +1996,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.CORPUS, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + Food_Large_Sandwich_Steak.ID, 0L, 16L);
-
         ItemList.Food_Raw_Pizza_Veggie.set(
             addItem(
                 Food_Raw_Pizza_Veggie.ID,
@@ -2089,305 +2074,74 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Plank_Oak
             .set(addItem(Plank_Oak.ID, "Oak Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Oak.ID, 75);
         ItemList.Plank_Spruce.set(
             addItem(Plank_Spruce.ID, "Spruce Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Spruce.ID, 75);
         ItemList.Plank_Birch.set(
             addItem(Plank_Birch.ID, "Birch Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Birch.ID, 75);
-        ItemList.Plank_Jungle.set(
+       ItemList.Plank_Jungle.set(
             addItem(Plank_Jungle.ID, "Jungle Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Jungle.ID, 75);
         ItemList.Plank_Acacia.set(
             addItem(Plank_Acacia.ID, "Acacia Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Acacia.ID, 75);
         ItemList.Plank_DarkOak.set(
             addItem(Plank_DarkOak.ID, "Dark Oak Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_DarkOak.ID, 75);
         ItemList.Plank_Larch.set(
             addItem(Plank_Larch.ID, "Larch Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Larch.ID, 75);
-        ItemList.Plank_Teak
+         ItemList.Plank_Teak
             .set(addItem(Plank_Teak.ID, "Teak Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Teak.ID, 75);
         ItemList.Plank_Acacia_Green.set(
             addItem(
                 Plank_Acacia_Green.ID,
                 "Green Acacia Plank",
                 aTextCover,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Acacia_Green.ID, 75);
         ItemList.Plank_Lime
             .set(addItem(Plank_Lime.ID, "Lime Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Lime.ID, 75);
         ItemList.Plank_Chestnut.set(
             addItem(Plank_Chestnut.ID, "Chestnut Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Chestnut.ID, 75);
         ItemList.Plank_Wenge.set(
             addItem(Plank_Wenge.ID, "Wenge Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Wenge.ID, 75);
         ItemList.Plank_Baobab.set(
             addItem(Plank_Baobab.ID, "Baobab Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Baobab.ID, 75);
         ItemList.Plank_Sequoia.set(
             addItem(Plank_Sequoia.ID, "Sequoia Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Sequoia.ID, 75);
         ItemList.Plank_Kapok.set(
             addItem(Plank_Kapok.ID, "Kapok Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Kapok.ID, 75);
         ItemList.Plank_Ebony.set(
             addItem(Plank_Ebony.ID, "Ebony Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Ebony.ID, 75);
         ItemList.Plank_Mahagony.set(
             addItem(Plank_Mahagony.ID, "Mahagony Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Mahagony.ID, 75);
         ItemList.Plank_Balsa.set(
             addItem(Plank_Balsa.ID, "Balsa Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Balsa.ID, 75);
         ItemList.Plank_Willow.set(
             addItem(Plank_Willow.ID, "Willow Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Willow.ID, 75);
         ItemList.Plank_Walnut.set(
             addItem(Plank_Walnut.ID, "Walnut Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Walnut.ID, 75);
         ItemList.Plank_Greenheart.set(
             addItem(
                 Plank_Greenheart.ID,
                 "Greenheart Plank",
                 aTextCover,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Greenheart.ID, 75);
         ItemList.Plank_Cherry.set(
             addItem(Plank_Cherry.ID, "Cherry Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Cherry.ID, 75);
         ItemList.Plank_Mahoe.set(
             addItem(Plank_Mahoe.ID, "Mahoe Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Mahoe.ID, 75);
         ItemList.Plank_Poplar.set(
             addItem(Plank_Poplar.ID, "Poplar Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Poplar.ID, 75);
         ItemList.Plank_Palm
             .set(addItem(Plank_Palm.ID, "Palm Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Palm.ID, 75);
         ItemList.Plank_Papaya.set(
             addItem(Plank_Papaya.ID, "Papaya Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Papaya.ID, 75);
         ItemList.Plank_Pine
             .set(addItem(Plank_Pine.ID, "Pine Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Pine.ID, 75);
         ItemList.Plank_Plum
             .set(addItem(Plank_Plum.ID, "Plum Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Plum.ID, 75);
         ItemList.Plank_Maple.set(
             addItem(Plank_Maple.ID, "Maple Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Maple.ID, 75);
         ItemList.Plank_Citrus.set(
             addItem(Plank_Citrus.ID, "Citrus Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Plank_Citrus.ID, 75);
-
         ItemList.SFMixture.set(addItem(SFMixture.ID, "Super Fuel Binder", "Raw Material"));
         ItemList.MSFMixture.set(addItem(MSFMixture.ID, "Magic Super Fuel Binder", "Raw Material"));
-
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Oak.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', new ItemStack(Blocks.wooden_slab, 1, 0) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Spruce.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', new ItemStack(Blocks.wooden_slab, 1, 1) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Birch.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', new ItemStack(Blocks.wooden_slab, 1, 2) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Jungle.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', new ItemStack(Blocks.wooden_slab, 1, 3) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Acacia.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', new ItemStack(Blocks.wooden_slab, 1, 4) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_DarkOak.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', new ItemStack(Blocks.wooden_slab, 1, 5) });
-
-        GregTech_API.registerCover(ItemList.Plank_Oak.get(1L), TextureFactory.of(Blocks.planks, 0), null);
-        GregTech_API.registerCover(ItemList.Plank_Spruce.get(1L), TextureFactory.of(Blocks.planks, 1), null);
-        GregTech_API.registerCover(ItemList.Plank_Birch.get(1L), TextureFactory.of(Blocks.planks, 2), null);
-        GregTech_API.registerCover(ItemList.Plank_Jungle.get(1L), TextureFactory.of(Blocks.planks, 3), null);
-        GregTech_API.registerCover(ItemList.Plank_Acacia.get(1L), TextureFactory.of(Blocks.planks, 4), null);
-        GregTech_API.registerCover(ItemList.Plank_DarkOak.get(1L), TextureFactory.of(Blocks.planks, 5), null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Larch.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 0, new ItemStack(Blocks.planks, 1, 0))),
-                0),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Teak.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 1, new ItemStack(Blocks.planks, 1, 0))),
-                1),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Acacia_Green.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 2, new ItemStack(Blocks.planks, 1, 0))),
-                2),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Lime.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 3, new ItemStack(Blocks.planks, 1, 0))),
-                3),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Chestnut.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 4, new ItemStack(Blocks.planks, 1, 0))),
-                4),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Wenge.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 5, new ItemStack(Blocks.planks, 1, 0))),
-                5),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Baobab.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 6, new ItemStack(Blocks.planks, 1, 0))),
-                6),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Sequoia.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 7, new ItemStack(Blocks.planks, 1, 0))),
-                7),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Kapok.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 8, new ItemStack(Blocks.planks, 1, 0))),
-                8),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Ebony.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 9, new ItemStack(Blocks.planks, 1, 0))),
-                9),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Mahagony.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 10, new ItemStack(Blocks.planks, 1, 0))),
-                10),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Balsa.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 11, new ItemStack(Blocks.planks, 1, 0))),
-                11),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Willow.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 12, new ItemStack(Blocks.planks, 1, 0))),
-                12),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Walnut.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 13, new ItemStack(Blocks.planks, 1, 0))),
-                13),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Greenheart.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 14, new ItemStack(Blocks.planks, 1, 0))),
-                14),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Cherry.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 15, new ItemStack(Blocks.planks, 1, 0))),
-                15),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Mahoe.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 16, new ItemStack(Blocks.planks, 1, 0))),
-                0),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Poplar.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 17, new ItemStack(Blocks.planks, 1, 0))),
-                1),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Palm.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 18, new ItemStack(Blocks.planks, 1, 0))),
-                2),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Papaya.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 19, new ItemStack(Blocks.planks, 1, 0))),
-                3),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Pine.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 20, new ItemStack(Blocks.planks, 1, 0))),
-                4),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Plum.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 21, new ItemStack(Blocks.planks, 1, 0))),
-                5),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Maple.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 22, new ItemStack(Blocks.planks, 1, 0))),
-                6),
-            null);
-        GregTech_API.registerCover(
-            ItemList.Plank_Citrus.get(1L),
-            TextureFactory.of(
-                GT_Utility.getBlockFromStack(
-                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 23, new ItemStack(Blocks.planks, 1, 0))),
-                7),
-            null);
 
         ItemList.Crop_Drop_Plumbilia.set(
             addItem(
@@ -2495,7 +2249,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Crop_Drop_Tine.ID, 100);
+
 
         ItemList.Crop_Drop_Mica.set(
             addItem(
@@ -2505,7 +2259,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + Crop_Drop_Mica.ID, 240);
+
 
         ItemList.Crop_Drop_Bauxite.set(addItem(Crop_Drop_Bauxite.ID, "Bauxia Leaf", "Source of Aluminium"));
         ItemList.Crop_Drop_Ilmenite.set(addItem(Crop_Drop_Ilmenite.ID, "Titania Leaf", "Source of Titanium"));
@@ -2824,294 +2578,14 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1L)));
 
-        GregTech_API.registerCover(
-            ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)),
-            new GT_Cover_AdvancedRedstoneTransmitterExternal(TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)));
+        ItemList.Display_ITS_FREE.set(
+            addItem(
+                Display_ITS_FREE.ID,
+                "ITS FREE",
+                "(or at least almost free)",
+                SubTag.INVISIBLE,
+                new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)));
 
-        GregTech_API.registerCover(
-            ItemList.Cover_AdvancedRedstoneTransmitterInternal.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)),
-            new GT_Cover_AdvancedRedstoneTransmitterInternal(TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)));
-
-        GregTech_API.registerCover(
-            ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)),
-            new GT_Cover_AdvancedRedstoneReceiverExternal(TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)));
-
-        GregTech_API.registerCover(
-            ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)),
-            new GT_Cover_AdvancedRedstoneReceiverInternal(TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)));
-
-        GregTech_API.registerCover(
-            ItemList.Cover_WirelessFluidDetector.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_FLUID_DETECTOR)),
-            new GT_Cover_WirelessFluidDetector(TextureFactory.of(OVERLAY_WIRELESS_FLUID_DETECTOR)));
-
-        GregTech_API.registerCover(
-            ItemList.Cover_WirelessItemDetector.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_ITEM_DETECTOR)),
-            new GT_Cover_WirelessItemDetector(TextureFactory.of(OVERLAY_WIRELESS_ITEM_DETECTOR)));
-
-        GregTech_API.registerCover(
-            ItemList.Cover_WirelessActivityDetector.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_ACTIVITYDETECTOR)),
-            new GT_Cover_WirelessDoesWorkDetector(TextureFactory.of(OVERLAY_WIRELESS_ACTIVITYDETECTOR)));
-
-        GregTech_API.registerCover(
-            ItemList.Cover_WirelessNeedsMaintainance.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)),
-            new GT_Cover_WirelessMaintenanceDetector(TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)));
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_RedstoneTransmitterExternal.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L))
-            .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_RedstoneReceiverExternal.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L))
-            .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_FluidDetector.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_WirelessFluidDetector.get(1L))
-            .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_ItemDetector.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_WirelessItemDetector.get(1L))
-            .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_NeedsMaintainance.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_WirelessNeedsMaintainance.get(1L))
-            .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_ActivityDetector.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_WirelessActivityDetector.get(1L))
-            .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
-            new Object[] { ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L) });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L),
-            new Object[] { ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L) });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
-            new Object[] { ItemList.Cover_AdvancedRedstoneTransmitterInternal.get(1L) });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_AdvancedRedstoneTransmitterInternal.get(1L),
-            new Object[] { ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L) });
-
-        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 0), new ItemStack(Items.dye, 2, 1));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 1), new ItemStack(Items.dye, 2, 12));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 2), new ItemStack(Items.dye, 2, 13));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 3), new ItemStack(Items.dye, 2, 7));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 4), new ItemStack(Items.dye, 2, 1));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 5), new ItemStack(Items.dye, 2, 14));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 6), new ItemStack(Items.dye, 2, 7));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 7), new ItemStack(Items.dye, 2, 9));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 8), new ItemStack(Items.dye, 2, 7));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.yellow_flower, 1, 0), new ItemStack(Items.dye, 2, 11));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.double_plant, 1, 0), new ItemStack(Items.dye, 3, 11));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.double_plant, 1, 1), new ItemStack(Items.dye, 3, 13));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.double_plant, 1, 4), new ItemStack(Items.dye, 3, 1));
-        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.double_plant, 1, 5), new ItemStack(Items.dye, 3, 9));
-        GT_ModHandler.addExtractionRecipe(
-            ItemList.Crop_Drop_Plumbilia.get(1L),
-            GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lead, 1L));
-        GT_ModHandler.addExtractionRecipe(
-            ItemList.Crop_Drop_Argentia.get(1L),
-            GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Silver, 1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Indigo.get(1L), ItemList.Dye_Indigo.get(1L));
-        GT_ModHandler.addExtractionRecipe(
-            ItemList.Crop_Drop_MilkWart.get(1L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Milk, 1L));
-        GT_ModHandler.addExtractionRecipe(
-            ItemList.Crop_Drop_Coppon.get(1L),
-            GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Copper, 1L));
-        GT_ModHandler.addExtractionRecipe(
-            ItemList.Crop_Drop_Tine.get(1L),
-            GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Tin, 1L));
-
-        // Compression recipes
-        {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(ItemList.Crop_Drop_Coppon.get(4L))
-                .itemOutputs(new ItemStack(Blocks.wool, 1, 1))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(ItemList.Crop_Drop_Plumbilia.get(4L))
-                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(ItemList.Crop_Drop_Argentia.get(4L))
-                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(ItemList.Crop_Drop_Indigo.get(4L))
-                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(ItemList.Crop_Drop_Ferru.get(4L))
-                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(ItemList.Crop_Drop_Aurelia.get(4L))
-                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(ItemList.Crop_Drop_OilBerry.get(4L))
-                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(ItemList.Crop_Drop_BobsYerUncleRanks.get(4L))
-                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(ItemList.Crop_Drop_Tine.get(4L))
-                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(ItemList.Crop_Drop_Rape.get(4L))
-                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(new ItemStack(Blocks.red_flower, 8, 32767))
-                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(new ItemStack(Blocks.yellow_flower, 8, 32767))
-                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-        }
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.Food_Sliced_Cheese.get(1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cheese, 1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.Dye_Cocoa.get(1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Tine.get(1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.pumpkin, 1, 0))
-            .itemOutputs(new ItemStack(Items.pumpkin_seeds, 4, 0))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.melon, 1, 0))
-            .itemOutputs(new ItemStack(Items.melon_seeds, 1, 0))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_ModHandler.getIC2Item("crop", 1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.stick, 1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.wool, 1, WILDCARD))
-            .itemOutputs(new ItemStack(Items.string, 2), new ItemStack(Items.string, 1))
-            .outputChances(10000, 5000)
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.Tesseract.get(1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 8L))
-            .duration(5 * SECONDS)
-            .eut(32_000_000)
-            .addTo(maceratorRecipes);
         try {
             CropCard tCrop;
             GT_Utility.getField(tCrop = Crops.instance.getCropList()[13], "mDrop")
@@ -3123,13 +2597,16 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 e.printStackTrace(GT_Log.err);
             }
         }
-        ItemList.Display_ITS_FREE.set(
-            addItem(
-                Display_ITS_FREE.ID,
-                "ITS FREE",
-                "(or at least almost free)",
-                SubTag.INVISIBLE,
-                new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)));
+
+        setAllFluidContainerStats();
+        setBurnValues();
+        registerCovers();
+        initCraftingShapedRecipes();
+        initCraftingShapelessRecipes();
+        initAssemblerRecipes();
+        initExtractorRecipes();
+        initMaceratorRecipes();
+        initCompressorRecipes();
     }
 
     @Override
@@ -3196,6 +2673,560 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         }
         return super.isItemStackUsable(aStack);
     }
+
+    private void setAllFluidContainerStats(){
+        setFluidContainerStats(32000 + Food_Raw_Fries.ID, 0L, 16L);
+        setFluidContainerStats(32000 + Food_Fries.ID, 0L, 16L);
+        setFluidContainerStats(32000 + Food_Raw_PotatoChips.ID, 0L, 16L);
+        setFluidContainerStats(32000 + Food_PotatoChips.ID, 0L, 16L);
+        setFluidContainerStats(32000 + Food_ChiliChips.ID, 0L, 16L);
+        setFluidContainerStats(32000 + Food_Sandwich_Veggie.ID, 0L, 32L);
+        setFluidContainerStats(32000 + Food_Sandwich_Cheese.ID, 0L, 32L);
+        setFluidContainerStats(32000 + Food_Sandwich_Bacon.ID, 0L, 32L);
+        setFluidContainerStats(32000 + Food_Sandwich_Steak.ID, 0L, 32L);
+        setFluidContainerStats(32000 + Food_Large_Sandwich_Veggie.ID, 0L, 16L);
+        setFluidContainerStats(32000 + Food_Large_Sandwich_Cheese.ID, 0L, 16L);
+        setFluidContainerStats(32000 + Food_Large_Sandwich_Bacon.ID, 0L, 16L);
+        setFluidContainerStats(32000 + Food_Large_Sandwich_Steak.ID, 0L, 16L);
+    }
+
+    private void setBurnValues(){
+        setBurnValue(32000 + Plank_Oak.ID, 75);
+        setBurnValue(32000 + Plank_Spruce.ID, 75);
+        setBurnValue(32000 + Plank_Birch.ID, 75);
+        setBurnValue(32000 + Plank_Jungle.ID, 75);
+        setBurnValue(32000 + Plank_Acacia.ID, 75);
+        setBurnValue(32000 + Plank_DarkOak.ID, 75);
+        setBurnValue(32000 + Plank_Larch.ID, 75);
+        setBurnValue(32000 + Plank_Teak.ID, 75);
+        setBurnValue(32000 + Plank_Acacia_Green.ID, 75);
+        setBurnValue(32000 + Plank_Lime.ID, 75);
+        setBurnValue(32000 + Plank_Chestnut.ID, 75);
+        setBurnValue(32000 + Plank_Wenge.ID, 75);
+        setBurnValue(32000 + Plank_Baobab.ID, 75);
+        setBurnValue(32000 + Plank_Sequoia.ID, 75);
+        setBurnValue(32000 + Plank_Kapok.ID, 75);
+        setBurnValue(32000 + Plank_Ebony.ID, 75);
+        setBurnValue(32000 + Plank_Mahagony.ID, 75);
+        setBurnValue(32000 + Plank_Balsa.ID, 75);
+        setBurnValue(32000 + Plank_Willow.ID, 75);
+        setBurnValue(32000 + Plank_Walnut.ID, 75);
+        setBurnValue(32000 + Plank_Greenheart.ID, 75);
+        setBurnValue(32000 + Plank_Cherry.ID, 75);
+        setBurnValue(32000 + Plank_Mahoe.ID, 75);
+        setBurnValue(32000 + Plank_Poplar.ID, 75);
+        setBurnValue(32000 + Plank_Palm.ID, 75);
+        setBurnValue(32000 + Plank_Papaya.ID, 75);
+        setBurnValue(32000 + Plank_Pine.ID, 75);
+        setBurnValue(32000 + Plank_Plum.ID, 75);
+        setBurnValue(32000 + Plank_Maple.ID, 75);
+        setBurnValue(32000 + Plank_Citrus.ID, 75);
+        setBurnValue(32000 + Crop_Drop_Tine.ID, 100);
+        setBurnValue(32000 + Crop_Drop_Mica.ID, 240);
+    }
+
+    public void initCraftingShapedRecipes(){
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Plank_Oak.get(2L),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "s ", " P", 'P', new ItemStack(Blocks.wooden_slab, 1, 0) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Plank_Spruce.get(2L),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "s ", " P", 'P', new ItemStack(Blocks.wooden_slab, 1, 1) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Plank_Birch.get(2L),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "s ", " P", 'P', new ItemStack(Blocks.wooden_slab, 1, 2) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Plank_Jungle.get(2L),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "s ", " P", 'P', new ItemStack(Blocks.wooden_slab, 1, 3) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Plank_Acacia.get(2L),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "s ", " P", 'P', new ItemStack(Blocks.wooden_slab, 1, 4) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Plank_DarkOak.get(2L),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "s ", " P", 'P', new ItemStack(Blocks.wooden_slab, 1, 5) });
+    }
+
+    public void initAssemblerRecipes(){
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_RedstoneTransmitterExternal.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_RedstoneReceiverExternal.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_FluidDetector.get(1L),
+                ItemList.Emitter_EV.get(1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_WirelessFluidDetector.get(1L))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_ItemDetector.get(1L),
+                ItemList.Emitter_EV.get(1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_WirelessItemDetector.get(1L))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_NeedsMaintainance.get(1L),
+                ItemList.Emitter_EV.get(1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_WirelessNeedsMaintainance.get(1L))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_ActivityDetector.get(1L),
+                ItemList.Emitter_EV.get(1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_WirelessActivityDetector.get(1L))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+    }
+
+    public void initCraftingShapelessRecipes(){
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
+            new Object[] { ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L) });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L),
+            new Object[] { ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L) });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
+            new Object[] { ItemList.Cover_AdvancedRedstoneTransmitterInternal.get(1L) });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Cover_AdvancedRedstoneTransmitterInternal.get(1L),
+            new Object[] { ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L) });
+    }
+
+    public void initExtractorRecipes(){
+        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 0), new ItemStack(Items.dye, 2, 1));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 1), new ItemStack(Items.dye, 2, 12));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 2), new ItemStack(Items.dye, 2, 13));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 3), new ItemStack(Items.dye, 2, 7));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 4), new ItemStack(Items.dye, 2, 1));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 5), new ItemStack(Items.dye, 2, 14));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 6), new ItemStack(Items.dye, 2, 7));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 7), new ItemStack(Items.dye, 2, 9));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.red_flower, 1, 8), new ItemStack(Items.dye, 2, 7));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.yellow_flower, 1, 0), new ItemStack(Items.dye, 2, 11));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.double_plant, 1, 0), new ItemStack(Items.dye, 3, 11));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.double_plant, 1, 1), new ItemStack(Items.dye, 3, 13));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.double_plant, 1, 4), new ItemStack(Items.dye, 3, 1));
+        GT_ModHandler.addExtractionRecipe(new ItemStack(Blocks.double_plant, 1, 5), new ItemStack(Items.dye, 3, 9));
+        GT_ModHandler.addExtractionRecipe(
+            ItemList.Crop_Drop_Plumbilia.get(1L),
+            GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lead, 1L));
+        GT_ModHandler.addExtractionRecipe(
+            ItemList.Crop_Drop_Argentia.get(1L),
+            GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Silver, 1L));
+        GT_ModHandler.addExtractionRecipe(ItemList.Crop_Drop_Indigo.get(1L), ItemList.Dye_Indigo.get(1L));
+        GT_ModHandler.addExtractionRecipe(
+            ItemList.Crop_Drop_MilkWart.get(1L),
+            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Milk, 1L));
+        GT_ModHandler.addExtractionRecipe(
+            ItemList.Crop_Drop_Coppon.get(1L),
+            GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Copper, 1L));
+        GT_ModHandler.addExtractionRecipe(
+            ItemList.Crop_Drop_Tine.get(1L),
+            GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Tin, 1L));
+    }
+
+    public void initCompressorRecipes(){
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Crop_Drop_Coppon.get(4L))
+            .itemOutputs(new ItemStack(Blocks.wool, 1, 1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Crop_Drop_Plumbilia.get(4L))
+            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Crop_Drop_Argentia.get(4L))
+            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Crop_Drop_Indigo.get(4L))
+            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Crop_Drop_Ferru.get(4L))
+            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Crop_Drop_Aurelia.get(4L))
+            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Crop_Drop_OilBerry.get(4L))
+            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Crop_Drop_BobsYerUncleRanks.get(4L))
+            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Crop_Drop_Tine.get(4L))
+            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Crop_Drop_Rape.get(4L))
+            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.red_flower, 8, 32767))
+            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.yellow_flower, 8, 32767))
+            .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+    }
+
+    public void initMaceratorRecipes(){
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Food_Sliced_Cheese.get(1L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cheese, 1L))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Dye_Cocoa.get(1L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Crop_Drop_Tine.get(1L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.pumpkin, 1, 0))
+            .itemOutputs(new ItemStack(Items.pumpkin_seeds, 4, 0))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.melon, 1, 0))
+            .itemOutputs(new ItemStack(Items.melon_seeds, 1, 0))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getIC2Item("crop", 1L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.stick, 1))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.wool, 1, WILDCARD))
+            .itemOutputs(new ItemStack(Items.string, 2), new ItemStack(Items.string, 1))
+            .outputChances(10000, 5000)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Tesseract.get(1))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 8L))
+            .duration(5 * SECONDS)
+            .eut(32_000_000)
+            .addTo(maceratorRecipes);
+    }
+
+    public void registerCovers(){
+        GregTech_API.registerCover(ItemList.Plank_Oak.get(1L), TextureFactory.of(Blocks.planks, 0), null);
+        GregTech_API.registerCover(ItemList.Plank_Spruce.get(1L), TextureFactory.of(Blocks.planks, 1), null);
+        GregTech_API.registerCover(ItemList.Plank_Birch.get(1L), TextureFactory.of(Blocks.planks, 2), null);
+        GregTech_API.registerCover(ItemList.Plank_Jungle.get(1L), TextureFactory.of(Blocks.planks, 3), null);
+        GregTech_API.registerCover(ItemList.Plank_Acacia.get(1L), TextureFactory.of(Blocks.planks, 4), null);
+        GregTech_API.registerCover(ItemList.Plank_DarkOak.get(1L), TextureFactory.of(Blocks.planks, 5), null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Larch.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 0, new ItemStack(Blocks.planks, 1, 0))),
+                0),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Teak.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 1, new ItemStack(Blocks.planks, 1, 0))),
+                1),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Acacia_Green.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 2, new ItemStack(Blocks.planks, 1, 0))),
+                2),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Lime.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 3, new ItemStack(Blocks.planks, 1, 0))),
+                3),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Chestnut.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 4, new ItemStack(Blocks.planks, 1, 0))),
+                4),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Wenge.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 5, new ItemStack(Blocks.planks, 1, 0))),
+                5),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Baobab.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 6, new ItemStack(Blocks.planks, 1, 0))),
+                6),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Sequoia.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 7, new ItemStack(Blocks.planks, 1, 0))),
+                7),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Kapok.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 8, new ItemStack(Blocks.planks, 1, 0))),
+                8),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Ebony.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 9, new ItemStack(Blocks.planks, 1, 0))),
+                9),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Mahagony.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 10, new ItemStack(Blocks.planks, 1, 0))),
+                10),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Balsa.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 11, new ItemStack(Blocks.planks, 1, 0))),
+                11),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Willow.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 12, new ItemStack(Blocks.planks, 1, 0))),
+                12),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Walnut.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 13, new ItemStack(Blocks.planks, 1, 0))),
+                13),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Greenheart.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 14, new ItemStack(Blocks.planks, 1, 0))),
+                14),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Cherry.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 15, new ItemStack(Blocks.planks, 1, 0))),
+                15),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Mahoe.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 16, new ItemStack(Blocks.planks, 1, 0))),
+                0),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Poplar.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 17, new ItemStack(Blocks.planks, 1, 0))),
+                1),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Palm.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 18, new ItemStack(Blocks.planks, 1, 0))),
+                2),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Papaya.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 19, new ItemStack(Blocks.planks, 1, 0))),
+                3),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Pine.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 20, new ItemStack(Blocks.planks, 1, 0))),
+                4),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Plum.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 21, new ItemStack(Blocks.planks, 1, 0))),
+                5),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Maple.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 22, new ItemStack(Blocks.planks, 1, 0))),
+                6),
+            null);
+        GregTech_API.registerCover(
+            ItemList.Plank_Citrus.get(1L),
+            TextureFactory.of(
+                GT_Utility.getBlockFromStack(
+                    GT_ModHandler.getModItem(Forestry.ID, "planks", 1L, 23, new ItemStack(Blocks.planks, 1, 0))),
+                7),
+            null);
+
+        GregTech_API.registerCover(
+            ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)),
+            new GT_Cover_AdvancedRedstoneTransmitterExternal(TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)));
+
+        GregTech_API.registerCover(
+            ItemList.Cover_AdvancedRedstoneTransmitterInternal.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)),
+            new GT_Cover_AdvancedRedstoneTransmitterInternal(TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)));
+
+        GregTech_API.registerCover(
+            ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)),
+            new GT_Cover_AdvancedRedstoneReceiverExternal(TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)));
+
+        GregTech_API.registerCover(
+            ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)),
+            new GT_Cover_AdvancedRedstoneReceiverInternal(TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)));
+
+        GregTech_API.registerCover(
+            ItemList.Cover_WirelessFluidDetector.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_FLUID_DETECTOR)),
+            new GT_Cover_WirelessFluidDetector(TextureFactory.of(OVERLAY_WIRELESS_FLUID_DETECTOR)));
+
+        GregTech_API.registerCover(
+            ItemList.Cover_WirelessItemDetector.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_ITEM_DETECTOR)),
+            new GT_Cover_WirelessItemDetector(TextureFactory.of(OVERLAY_WIRELESS_ITEM_DETECTOR)));
+
+        GregTech_API.registerCover(
+            ItemList.Cover_WirelessActivityDetector.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_ACTIVITYDETECTOR)),
+            new GT_Cover_WirelessDoesWorkDetector(TextureFactory.of(OVERLAY_WIRELESS_ACTIVITYDETECTOR)));
+
+        GregTech_API.registerCover(
+            ItemList.Cover_WirelessNeedsMaintainance.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)),
+            new GT_Cover_WirelessMaintenanceDetector(TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)));
+    }
+
+
 
     @Override
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
