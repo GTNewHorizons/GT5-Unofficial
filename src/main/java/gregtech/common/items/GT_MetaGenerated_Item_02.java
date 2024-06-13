@@ -14,6 +14,202 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Alcopops;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Apple_Juice;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Beer;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Cave_Johnsons_Grenade_Juice;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Chilly_Sauce;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Cider;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Dark_Beer;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Diablo_Sauce;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Diabolo_Sauce;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Dragon_Blood;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Glen_McKenner;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Golden_Apple_Juice;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Golden_Cider;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Grape_Juice;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Holy_Water;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Hops_Juice;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Hot_Sauce;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Iduns_Apple_Juice;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Lemon_Juice;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Lemonade;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Leninade;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Limoncello;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Milk;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Mineral_Water;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Notches_Brew;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Pirate_Brew;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Potato_Juice;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Purple_Drink;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Reed_Water;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Rum;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Salty_Water;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Scotch;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Snitches_Glitch_Sauce;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Vinegar;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Vodka;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Wheaty_Hops_Juice;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Wheaty_Juice;
+import static gregtech.common.items.ID_MetaItem_02.Bottle_Wine;
+import static gregtech.common.items.ID_MetaItem_02.Cover_AdvancedRedstoneReceiverExternal;
+import static gregtech.common.items.ID_MetaItem_02.Cover_AdvancedRedstoneReceiverInternal;
+import static gregtech.common.items.ID_MetaItem_02.Cover_AdvancedRedstoneTransmitterExternal;
+import static gregtech.common.items.ID_MetaItem_02.Cover_AdvancedRedstoneTransmitterInternal;
+import static gregtech.common.items.ID_MetaItem_02.Cover_WirelessActivityDetector;
+import static gregtech.common.items.ID_MetaItem_02.Cover_WirelessFluidDetector;
+import static gregtech.common.items.ID_MetaItem_02.Cover_WirelessItemDetector;
+import static gregtech.common.items.ID_MetaItem_02.Cover_WirelessNeedsMaintainance;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Argentia;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Aurelia;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Bauxite;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_BobsYerUncleRanks;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Chilly;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Coppon;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Cucumber;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Ferru;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Grapes;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Ilmenite;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Indigo;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Iridium;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Lemon;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_MTomato;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Manganese;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Mica;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_MilkWart;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Naquadah;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Nickel;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_OilBerry;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Onion;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Osmium;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Pitchblende;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Platinum;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Plumbilia;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Rape;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Scheelite;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_TeaLeaf;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Thorium;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Tine;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Tomato;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_UUABerry;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_UUMBerry;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Uraninite;
+import static gregtech.common.items.ID_MetaItem_02.Crop_Drop_Zinc;
+import static gregtech.common.items.ID_MetaItem_02.Display_ITS_FREE;
+import static gregtech.common.items.ID_MetaItem_02.Dye_Color_00;
+import static gregtech.common.items.ID_MetaItem_02.Dye_Color_01;
+import static gregtech.common.items.ID_MetaItem_02.Dye_Color_02;
+import static gregtech.common.items.ID_MetaItem_02.Dye_Color_03;
+import static gregtech.common.items.ID_MetaItem_02.Dye_Color_04;
+import static gregtech.common.items.ID_MetaItem_02.Dye_Color_05;
+import static gregtech.common.items.ID_MetaItem_02.Dye_Color_06;
+import static gregtech.common.items.ID_MetaItem_02.Dye_Color_07;
+import static gregtech.common.items.ID_MetaItem_02.Dye_Color_08;
+import static gregtech.common.items.ID_MetaItem_02.Dye_Color_09;
+import static gregtech.common.items.ID_MetaItem_02.Dye_Color_10;
+import static gregtech.common.items.ID_MetaItem_02.Dye_Color_11;
+import static gregtech.common.items.ID_MetaItem_02.Dye_Color_12;
+import static gregtech.common.items.ID_MetaItem_02.Dye_Color_13;
+import static gregtech.common.items.ID_MetaItem_02.Dye_Color_14;
+import static gregtech.common.items.ID_MetaItem_02.Dye_Color_15;
+import static gregtech.common.items.ID_MetaItem_02.Dye_Indigo;
+import static gregtech.common.items.ID_MetaItem_02.Food_Baked_Baguette;
+import static gregtech.common.items.ID_MetaItem_02.Food_Baked_Bun;
+import static gregtech.common.items.ID_MetaItem_02.Food_Baked_Cake;
+import static gregtech.common.items.ID_MetaItem_02.Food_Baked_Pizza_Cheese;
+import static gregtech.common.items.ID_MetaItem_02.Food_Baked_Pizza_Meat;
+import static gregtech.common.items.ID_MetaItem_02.Food_Baked_Pizza_Veggie;
+import static gregtech.common.items.ID_MetaItem_02.Food_Burger_Cheese;
+import static gregtech.common.items.ID_MetaItem_02.Food_Burger_Chum;
+import static gregtech.common.items.ID_MetaItem_02.Food_Burger_Meat;
+import static gregtech.common.items.ID_MetaItem_02.Food_Burger_Veggie;
+import static gregtech.common.items.ID_MetaItem_02.Food_Cheese;
+import static gregtech.common.items.ID_MetaItem_02.Food_ChiliChips;
+import static gregtech.common.items.ID_MetaItem_02.Food_Chum;
+import static gregtech.common.items.ID_MetaItem_02.Food_Chum_On_Stick;
+import static gregtech.common.items.ID_MetaItem_02.Food_Dough;
+import static gregtech.common.items.ID_MetaItem_02.Food_Dough_Chocolate;
+import static gregtech.common.items.ID_MetaItem_02.Food_Dough_Sugar;
+import static gregtech.common.items.ID_MetaItem_02.Food_Flat_Dough;
+import static gregtech.common.items.ID_MetaItem_02.Food_Fries;
+import static gregtech.common.items.ID_MetaItem_02.Food_Large_Sandwich_Bacon;
+import static gregtech.common.items.ID_MetaItem_02.Food_Large_Sandwich_Cheese;
+import static gregtech.common.items.ID_MetaItem_02.Food_Large_Sandwich_Steak;
+import static gregtech.common.items.ID_MetaItem_02.Food_Large_Sandwich_Veggie;
+import static gregtech.common.items.ID_MetaItem_02.Food_Packaged_ChiliChips;
+import static gregtech.common.items.ID_MetaItem_02.Food_Packaged_Fries;
+import static gregtech.common.items.ID_MetaItem_02.Food_Packaged_PotatoChips;
+import static gregtech.common.items.ID_MetaItem_02.Food_PotatoChips;
+import static gregtech.common.items.ID_MetaItem_02.Food_Potato_On_Stick;
+import static gregtech.common.items.ID_MetaItem_02.Food_Potato_On_Stick_Roasted;
+import static gregtech.common.items.ID_MetaItem_02.Food_Raw_Baguette;
+import static gregtech.common.items.ID_MetaItem_02.Food_Raw_Bread;
+import static gregtech.common.items.ID_MetaItem_02.Food_Raw_Bun;
+import static gregtech.common.items.ID_MetaItem_02.Food_Raw_Cake;
+import static gregtech.common.items.ID_MetaItem_02.Food_Raw_Cookie;
+import static gregtech.common.items.ID_MetaItem_02.Food_Raw_Fries;
+import static gregtech.common.items.ID_MetaItem_02.Food_Raw_Pizza_Cheese;
+import static gregtech.common.items.ID_MetaItem_02.Food_Raw_Pizza_Meat;
+import static gregtech.common.items.ID_MetaItem_02.Food_Raw_Pizza_Veggie;
+import static gregtech.common.items.ID_MetaItem_02.Food_Raw_PotatoChips;
+import static gregtech.common.items.ID_MetaItem_02.Food_Sandwich_Bacon;
+import static gregtech.common.items.ID_MetaItem_02.Food_Sandwich_Cheese;
+import static gregtech.common.items.ID_MetaItem_02.Food_Sandwich_Steak;
+import static gregtech.common.items.ID_MetaItem_02.Food_Sandwich_Veggie;
+import static gregtech.common.items.ID_MetaItem_02.Food_Sliced_Baguette;
+import static gregtech.common.items.ID_MetaItem_02.Food_Sliced_Baguettes;
+import static gregtech.common.items.ID_MetaItem_02.Food_Sliced_Bread;
+import static gregtech.common.items.ID_MetaItem_02.Food_Sliced_Breads;
+import static gregtech.common.items.ID_MetaItem_02.Food_Sliced_Bun;
+import static gregtech.common.items.ID_MetaItem_02.Food_Sliced_Buns;
+import static gregtech.common.items.ID_MetaItem_02.Food_Sliced_Cheese;
+import static gregtech.common.items.ID_MetaItem_02.Food_Sliced_Cucumber;
+import static gregtech.common.items.ID_MetaItem_02.Food_Sliced_Lemon;
+import static gregtech.common.items.ID_MetaItem_02.Food_Sliced_Onion;
+import static gregtech.common.items.ID_MetaItem_02.Food_Sliced_Tomato;
+import static gregtech.common.items.ID_MetaItem_02.GelledToluene;
+import static gregtech.common.items.ID_MetaItem_02.MSFMixture;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Acacia;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Acacia_Green;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Balsa;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Baobab;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Birch;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Cherry;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Chestnut;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Citrus;
+import static gregtech.common.items.ID_MetaItem_02.Plank_DarkOak;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Ebony;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Greenheart;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Jungle;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Kapok;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Larch;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Lime;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Mahagony;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Mahoe;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Maple;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Oak;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Palm;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Papaya;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Pine;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Plum;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Poplar;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Sequoia;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Spruce;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Teak;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Walnut;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Wenge;
+import static gregtech.common.items.ID_MetaItem_02.Plank_Willow;
+import static gregtech.common.items.ID_MetaItem_02.SFMixture;
+import static gregtech.common.items.ID_MetaItem_02.ThermosCan_Cafe_au_lait;
+import static gregtech.common.items.ID_MetaItem_02.ThermosCan_Chocolate_Milk;
+import static gregtech.common.items.ID_MetaItem_02.ThermosCan_Coffee;
+import static gregtech.common.items.ID_MetaItem_02.ThermosCan_Dark_Cafe_au_lait;
+import static gregtech.common.items.ID_MetaItem_02.ThermosCan_Dark_Chocolate_Milk;
+import static gregtech.common.items.ID_MetaItem_02.ThermosCan_Dark_Coffee;
+import static gregtech.common.items.ID_MetaItem_02.ThermosCan_Ice_Tea;
+import static gregtech.common.items.ID_MetaItem_02.ThermosCan_Lait_au_cafe;
+import static gregtech.common.items.ID_MetaItem_02.ThermosCan_Sweet_Tea;
+import static gregtech.common.items.ID_MetaItem_02.ThermosCan_Tea;
 
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.enchantment.Enchantment;
@@ -60,6 +256,210 @@ import gregtech.common.items.behaviors.Behaviour_Arrow;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 
+enum ID_MetaItem_02{
+    ThermosCan_Dark_Coffee(0),
+    ThermosCan_Dark_Cafe_au_lait(1),
+    ThermosCan_Coffee(2),
+    ThermosCan_Cafe_au_lait(3),
+    ThermosCan_Lait_au_cafe(4),
+    ThermosCan_Dark_Chocolate_Milk(5),
+    ThermosCan_Chocolate_Milk(6),
+    ThermosCan_Tea(7),
+    ThermosCan_Sweet_Tea(8),
+    ThermosCan_Ice_Tea(9),
+    GelledToluene(10),
+    Bottle_Purple_Drink(100),
+    Bottle_Grape_Juice(101),
+    Bottle_Wine(102),
+    Bottle_Vinegar(103),
+    Bottle_Potato_Juice(104),
+    Bottle_Vodka(105),
+    Bottle_Leninade(106),
+    Bottle_Mineral_Water(107),
+    Bottle_Salty_Water(108),
+    Bottle_Reed_Water(109),
+    Bottle_Rum(110),
+    Bottle_Pirate_Brew(111),
+    Bottle_Hops_Juice(112),
+    Bottle_Dark_Beer(113),
+    Bottle_Dragon_Blood(114),
+    Bottle_Wheaty_Juice(115),
+    Bottle_Scotch(116),
+    Bottle_Glen_McKenner(117),
+    Bottle_Wheaty_Hops_Juice(118),
+    Bottle_Beer(119),
+    Bottle_Chilly_Sauce(120),
+    Bottle_Hot_Sauce(121),
+    Bottle_Diabolo_Sauce(122),
+    Bottle_Diablo_Sauce(123),
+    Bottle_Snitches_Glitch_Sauce(124),
+    Bottle_Apple_Juice(125),
+    Bottle_Cider(126),
+    Bottle_Golden_Apple_Juice(127),
+    Bottle_Golden_Cider(128),
+    Bottle_Iduns_Apple_Juice(129),
+    Bottle_Notches_Brew(130),
+    Bottle_Lemon_Juice(131),
+    Bottle_Limoncello(132),
+    Bottle_Lemonade(133),
+    Bottle_Alcopops(134),
+    Bottle_Cave_Johnsons_Grenade_Juice(135),
+    Bottle_Milk(136),
+    Bottle_Holy_Water(137),
+    Food_Potato_On_Stick(200),
+    Food_Potato_On_Stick_Roasted(201),
+    Food_Raw_Fries(202),
+    Food_Fries(203),
+    Food_Packaged_Fries(204),
+    Food_Raw_PotatoChips(205),
+    Food_PotatoChips(206),
+    Food_ChiliChips(207),
+    Food_Packaged_PotatoChips(208),
+    Food_Packaged_ChiliChips(209),
+    Food_Chum(210),
+    Food_Chum_On_Stick(211),
+    Food_Dough_Sugar(212),
+    Food_Dough_Chocolate(213),
+    Food_Raw_Cookie(214),
+    Food_Sliced_Buns(220),
+    Food_Burger_Veggie(221),
+    Food_Burger_Cheese(222),
+    Food_Burger_Meat(223),
+    Food_Burger_Chum(224),
+    Food_Sliced_Breads(230),
+    Food_Sandwich_Veggie(231),
+    Food_Sandwich_Cheese(232),
+    Food_Sandwich_Bacon(233),
+    Food_Sandwich_Steak(234),
+    Food_Sliced_Baguettes(240),
+    Food_Large_Sandwich_Veggie(241),
+    Food_Large_Sandwich_Cheese(242),
+    Food_Large_Sandwich_Bacon(243),
+    Food_Large_Sandwich_Steak(244),
+    Food_Raw_Pizza_Veggie(250),
+    Food_Raw_Pizza_Cheese(251),
+    Food_Raw_Pizza_Meat(252),
+    Food_Baked_Pizza_Veggie(260),
+    Food_Baked_Pizza_Cheese(261),
+    Food_Baked_Pizza_Meat(262),
+    Dye_Indigo(410),
+    Dye_Color_00(414),
+    Dye_Color_01(415),
+    Dye_Color_02(416),
+    Dye_Color_03(417),
+    Dye_Color_04(418),
+    Dye_Color_05(419),
+    Dye_Color_06(420),
+    Dye_Color_07(421),
+    Dye_Color_08(422),
+    Dye_Color_09(423),
+    Dye_Color_10(424),
+    Dye_Color_11(425),
+    Dye_Color_12(426),
+    Dye_Color_13(427),
+    Dye_Color_14(428),
+    Dye_Color_15(429),
+    Plank_Oak(470),
+    Plank_Spruce(471),
+    Plank_Birch(472),
+    Plank_Jungle(473),
+    Plank_Acacia(474),
+    Plank_DarkOak(475),
+    Plank_Larch(476),
+    Plank_Teak(477),
+    Plank_Acacia_Green(478),
+    Plank_Lime(479),
+    Plank_Chestnut(480),
+    Plank_Wenge(481),
+    Plank_Baobab(482),
+    Plank_Sequoia(483),
+    Plank_Kapok(484),
+    Plank_Ebony(485),
+    Plank_Mahagony(486),
+    Plank_Balsa(487),
+    Plank_Willow(488),
+    Plank_Walnut(489),
+    Plank_Greenheart(490),
+    Plank_Cherry(491),
+    Plank_Mahoe(492),
+    Plank_Poplar(493),
+    Plank_Palm(494),
+    Plank_Papaya(495),
+    Plank_Pine(496),
+    Plank_Plum(497),
+    Plank_Maple(498),
+    Plank_Citrus(499),
+    SFMixture(270),
+    MSFMixture(271),
+    Crop_Drop_Plumbilia(500),
+    Crop_Drop_Argentia(501),
+    Crop_Drop_Indigo(502),
+    Crop_Drop_Ferru(503),
+    Crop_Drop_Aurelia(504),
+    Crop_Drop_TeaLeaf(505),
+    Crop_Drop_OilBerry(510),
+    Crop_Drop_BobsYerUncleRanks(511),
+    Crop_Drop_UUMBerry(512),
+    Crop_Drop_UUABerry(513),
+    Crop_Drop_MilkWart(520),
+    Crop_Drop_Coppon(530),
+    Crop_Drop_Tine(540),
+    Crop_Drop_Mica(538),
+    Crop_Drop_Bauxite(521),
+    Crop_Drop_Ilmenite(522),
+    Crop_Drop_Pitchblende(523),
+    Crop_Drop_Uraninite(524),
+    Crop_Drop_Thorium(526),
+    Crop_Drop_Nickel(527),
+    Crop_Drop_Zinc(528),
+    Crop_Drop_Manganese(529),
+    Crop_Drop_Scheelite(531),
+    Crop_Drop_Platinum(532),
+    Crop_Drop_Iridium(533),
+    Crop_Drop_Osmium(534),
+    Crop_Drop_Naquadah(535),
+    Crop_Drop_Chilly(550),
+    Crop_Drop_Lemon(551),
+    Crop_Drop_Tomato(552),
+    Crop_Drop_MTomato(553),
+    Crop_Drop_Grapes(554),
+    Crop_Drop_Onion(555),
+    Crop_Drop_Cucumber(556),
+    Crop_Drop_Rape(557),
+    Food_Cheese(558),
+    Food_Dough(559),
+    Food_Flat_Dough(560),
+    Food_Raw_Bread(561),
+    Food_Raw_Bun(562),
+    Food_Raw_Baguette(563),
+    Food_Baked_Bun(564),
+    Food_Baked_Baguette(565),
+    Food_Sliced_Bread(566),
+    Food_Sliced_Bun(567),
+    Food_Sliced_Baguette(568),
+    Food_Raw_Cake(569),
+    Food_Baked_Cake(570),
+    Food_Sliced_Lemon(571),
+    Food_Sliced_Tomato(572),
+    Food_Sliced_Onion(573),
+    Food_Sliced_Cucumber(574),
+    Food_Sliced_Cheese(576),
+    Cover_AdvancedRedstoneTransmitterExternal(577),
+    Cover_AdvancedRedstoneTransmitterInternal(578),
+    Cover_AdvancedRedstoneReceiverExternal(579),
+    Cover_AdvancedRedstoneReceiverInternal(580),
+    Cover_WirelessFluidDetector(581),
+    Cover_WirelessItemDetector(582),
+    Cover_WirelessNeedsMaintainance(583),
+    Cover_WirelessActivityDetector(584),
+    Display_ITS_FREE(765),
+    ;
+    final int ID;
+
+    ID_MetaItem_02(int ID) {
+        this.ID = ID;
+    }
+}
 public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
     public static GT_MetaGenerated_Item_02 INSTANCE;
@@ -102,11 +502,9 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             OrePrefixes.gearGt);
         INSTANCE = this;
 
-        int tLastID = 0;
-
         ItemList.ThermosCan_Dark_Coffee.set(
             addItem(
-                tLastID = 0,
+                ThermosCan_Dark_Coffee.ID,
                 "Dark Coffee",
                 "Coffee, dark, without anything else",
                 new GT_FoodStat(
@@ -131,7 +529,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 2L)));
         ItemList.ThermosCan_Dark_Cafe_au_lait.set(
             addItem(
-                tLastID = 1,
+                ThermosCan_Dark_Cafe_au_lait.ID,
                 "Dark Coffee au lait",
                 "Keeping you awake the whole night",
                 new GT_FoodStat(
@@ -156,7 +554,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 3L)));
         ItemList.ThermosCan_Coffee.set(
             addItem(
-                tLastID = 2,
+                ThermosCan_Coffee.ID,
                 "Coffee",
                 "Just the regular morning Coffee",
                 new GT_FoodStat(
@@ -181,7 +579,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L)));
         ItemList.ThermosCan_Cafe_au_lait.set(
             addItem(
-                tLastID = 3,
+                ThermosCan_Cafe_au_lait.ID,
                 "Cafe au lait",
                 "Sweet Coffee",
                 new GT_FoodStat(
@@ -206,7 +604,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 2L)));
         ItemList.ThermosCan_Lait_au_cafe.set(
             addItem(
-                tLastID = 4,
+                ThermosCan_Lait_au_cafe.ID,
                 "Lait au cafe",
                 "You want Coffee to your Sugar?",
                 new GT_FoodStat(
@@ -231,7 +629,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 3L)));
         ItemList.ThermosCan_Dark_Chocolate_Milk.set(
             addItem(
-                tLastID = 5,
+                ThermosCan_Dark_Chocolate_Milk.ID,
                 "Dark Chocolate Milk",
                 "A bit bitter, better add a bit Sugar",
                 new GT_FoodStat(
@@ -252,7 +650,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SANO, 1L)));
         ItemList.ThermosCan_Chocolate_Milk.set(
             addItem(
-                tLastID = 6,
+                ThermosCan_Chocolate_Milk.ID,
                 "Chocolate Milk",
                 "Sweet Goodness",
                 new GT_FoodStat(
@@ -273,7 +671,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SANO, 2L)));
         ItemList.ThermosCan_Tea.set(
             addItem(
-                tLastID = 7,
+                ThermosCan_Tea.ID,
                 "Tea",
                 "Keep calm and carry on",
                 new GT_FoodStat(
@@ -293,7 +691,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)));
         ItemList.ThermosCan_Sweet_Tea.set(
             addItem(
-                tLastID = 8,
+                ThermosCan_Sweet_Tea.ID,
                 "Sweet Tea",
                 "How about a Tea Party? In Boston?",
                 new GT_FoodStat(
@@ -309,7 +707,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)));
         ItemList.ThermosCan_Ice_Tea.set(
             addItem(
-                tLastID = 9,
+                ThermosCan_Ice_Tea.ID,
                 "Ice Tea",
                 "Better than this purple Junk Drink from failed Potions",
                 new GT_FoodStat(
@@ -328,11 +726,11 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.GELUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)));
 
-        ItemList.GelledToluene.set(addItem(tLastID = 10, "Gelled Toluene", "Raw Explosive"));
+        ItemList.GelledToluene.set(addItem(GelledToluene.ID, "Gelled Toluene", "Raw Explosive"));
 
         ItemList.Bottle_Purple_Drink.set(
             addItem(
-                tLastID = 100,
+                Bottle_Purple_Drink.ID,
                 "Purple Drink",
                 "How about Lemonade. Or some Ice Tea? I got Purple Drink!",
                 new GT_FoodStat(
@@ -352,7 +750,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VINCULUM, 1L)));
         ItemList.Bottle_Grape_Juice.set(
             addItem(
-                tLastID = 101,
+                Bottle_Grape_Juice.ID,
                 "Grape Juice",
                 "This has a cleaning effect on your internals.",
                 new GT_FoodStat(
@@ -372,7 +770,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SANO, 1L)));
         ItemList.Bottle_Wine.set(
             addItem(
-                tLastID = 102,
+                Bottle_Wine.ID,
                 "Wine",
                 "Ordinary",
                 new GT_FoodStat(
@@ -400,7 +798,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SANO, 1L)));
         ItemList.Bottle_Vinegar.set(
             addItem(
-                tLastID = 103,
+                Bottle_Vinegar.ID,
                 "Vinegar",
                 "Exquisite",
                 new GT_FoodStat(
@@ -432,7 +830,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SANO, 1L)));
         ItemList.Bottle_Potato_Juice.set(
             addItem(
-                tLastID = 104,
+                Bottle_Potato_Juice.ID,
                 "Potato Juice",
                 "Ever seen Potato Juice in stores? No? That has a reason.",
                 new GT_FoodStat(
@@ -448,7 +846,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L)));
         ItemList.Bottle_Vodka.set(
             addItem(
-                tLastID = 105,
+                Bottle_Vodka.ID,
                 "Vodka",
                 "Not to confuse with Water",
                 new GT_FoodStat(
@@ -476,7 +874,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L)));
         ItemList.Bottle_Leninade.set(
             addItem(
-                tLastID = 106,
+                Bottle_Leninade.ID,
                 "Leninade",
                 "Let the Communism flow through you!",
                 new GT_FoodStat(
@@ -508,7 +906,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 2L)));
         ItemList.Bottle_Mineral_Water.set(
             addItem(
-                tLastID = 107,
+                Bottle_Mineral_Water.ID,
                 "Mineral Water",
                 "The best Stuff you can drink to stay healthy",
                 new GT_FoodStat(
@@ -528,7 +926,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SANO, 1L)));
         ItemList.Bottle_Salty_Water.set(
             addItem(
-                tLastID = 108,
+                Bottle_Salty_Water.ID,
                 "Salty Water",
                 "Like Sea Water but less dirty",
                 SubTag.INVISIBLE,
@@ -549,7 +947,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
         ItemList.Bottle_Reed_Water.set(
             addItem(
-                tLastID = 109,
+                Bottle_Reed_Water.ID,
                 "Reed Water",
                 "I guess this tastes better when fermented",
                 new GT_FoodStat(
@@ -565,7 +963,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L)));
         ItemList.Bottle_Rum.set(
             addItem(
-                tLastID = 110,
+                Bottle_Rum.ID,
                 "Rum",
                 "A buddle o' rum",
                 new GT_FoodStat(
@@ -593,7 +991,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)));
         ItemList.Bottle_Pirate_Brew.set(
             addItem(
-                tLastID = 111,
+                Bottle_Pirate_Brew.ID,
                 "Pirate Brew",
                 "Set the Sails, we are going to Torrentuga!",
                 new GT_FoodStat(
@@ -625,7 +1023,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 2L)));
         ItemList.Bottle_Hops_Juice.set(
             addItem(
-                tLastID = 112,
+                Bottle_Hops_Juice.ID,
                 "Hops Juice",
                 "Every Beer has a start",
                 new GT_FoodStat(
@@ -641,7 +1039,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L)));
         ItemList.Bottle_Dark_Beer.set(
             addItem(
-                tLastID = 113,
+                Bottle_Dark_Beer.ID,
                 "Dark Beer",
                 "Dark Beer, for the real Men",
                 new GT_FoodStat(
@@ -669,7 +1067,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)));
         ItemList.Bottle_Dragon_Blood.set(
             addItem(
-                tLastID = 114,
+                Bottle_Dragon_Blood.ID,
                 "Dragon Blood",
                 "FUS RO DAH!",
                 new GT_FoodStat(
@@ -701,7 +1099,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
         ItemList.Bottle_Wheaty_Juice.set(
             addItem(
-                tLastID = 115,
+                Bottle_Wheaty_Juice.ID,
                 "Wheaty Juice",
                 "Is this liquefied Bread or what?",
                 new GT_FoodStat(
@@ -717,7 +1115,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L)));
         ItemList.Bottle_Scotch.set(
             addItem(
-                tLastID = 116,
+                Bottle_Scotch.ID,
                 "Scotch",
                 "Technically this is just a Whisky",
                 new GT_FoodStat(
@@ -745,7 +1143,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 1L)));
         ItemList.Bottle_Glen_McKenner.set(
             addItem(
-                tLastID = 117,
+                Bottle_Glen_McKenner.ID,
                 "Glen McKenner",
                 "Don't hand to easily surprised people, they will shatter it.",
                 new GT_FoodStat(
@@ -777,7 +1175,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 2L)));
         ItemList.Bottle_Wheaty_Hops_Juice.set(
             addItem(
-                tLastID = 118,
+                Bottle_Wheaty_Hops_Juice.ID,
                 "Wheaty Hops Juice",
                 "Also known as 'Duff-Lite'",
                 new GT_FoodStat(
@@ -793,7 +1191,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 2L)));
         ItemList.Bottle_Beer.set(
             addItem(
-                tLastID = 119,
+                Bottle_Beer.ID,
                 "Beer",
                 "Good old Beer",
                 new GT_FoodStat(
@@ -821,7 +1219,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 1L)));
         ItemList.Bottle_Chilly_Sauce.set(
             addItem(
-                tLastID = 120,
+                Bottle_Chilly_Sauce.ID,
                 "Chilly Sauce",
                 "Spicy",
                 new GT_FoodStat(
@@ -845,7 +1243,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Bottle_Hot_Sauce.set(
             addItem(
-                tLastID = 121,
+                Bottle_Hot_Sauce.ID,
                 "Hot Sauce",
                 "Very Spicy, I guess?",
                 new GT_FoodStat(
@@ -869,7 +1267,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 2L)));
         ItemList.Bottle_Diabolo_Sauce.set(
             addItem(
-                tLastID = 122,
+                Bottle_Diabolo_Sauce.ID,
                 "Diabolo Sauce",
                 "As if the Devil made this Sauce",
                 new GT_FoodStat(
@@ -893,7 +1291,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 3L)));
         ItemList.Bottle_Diablo_Sauce.set(
             addItem(
-                tLastID = 123,
+                Bottle_Diablo_Sauce.ID,
                 "Diablo Sauce",
                 "Diablo always comes back!",
                 new GT_FoodStat(
@@ -917,7 +1315,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 4L)));
         ItemList.Bottle_Snitches_Glitch_Sauce.set(
             addItem(
-                tLastID = 124,
+                Bottle_Snitches_Glitch_Sauce.ID,
                 "Old Man Snitches glitched Diablo Sauce",
                 "[Missing No]",
                 SubTag.INVISIBLE,
@@ -942,7 +1340,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 5L)));
         ItemList.Bottle_Apple_Juice.set(
             addItem(
-                tLastID = 125,
+                Bottle_Apple_Juice.ID,
                 "Apple Juice",
                 "Made of the Apples from our best Oak Farms",
                 new GT_FoodStat(
@@ -962,7 +1360,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L)));
         ItemList.Bottle_Cider.set(
             addItem(
-                tLastID = 126,
+                Bottle_Cider.ID,
                 "Cider",
                 "If you have nothing better to do with your Apples",
                 new GT_FoodStat(
@@ -990,7 +1388,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 1L)));
         ItemList.Bottle_Golden_Apple_Juice.set(
             addItem(
-                tLastID = 127,
+                Bottle_Golden_Apple_Juice.ID,
                 "Golden Apple Juice",
                 "A golden Apple in liquid form",
                 new GT_FoodStat(
@@ -1018,7 +1416,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SANO, 1L)));
         ItemList.Bottle_Golden_Cider.set(
             addItem(
-                tLastID = 128,
+                Bottle_Golden_Cider.ID,
                 "Golden Cider",
                 "More Resistance, less Regeneration",
                 new GT_FoodStat(
@@ -1046,7 +1444,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 1L)));
         ItemList.Bottle_Iduns_Apple_Juice.set(
             addItem(
-                tLastID = 129,
+                Bottle_Iduns_Apple_Juice.ID,
                 "Idun's Apple Juice",
                 "So you got the Idea of using Notch Apples for a drink?",
                 new GT_FoodStat(
@@ -1078,7 +1476,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 9L)));
         ItemList.Bottle_Notches_Brew.set(
             addItem(
-                tLastID = 130,
+                Bottle_Notches_Brew.ID,
                 "Notches Brew",
                 "This is just overpowered",
                 new GT_FoodStat(
@@ -1114,7 +1512,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 9L)));
         ItemList.Bottle_Lemon_Juice.set(
             addItem(
-                tLastID = 131,
+                Bottle_Lemon_Juice.ID,
                 "Lemon Juice",
                 "Maybe adding Sugar will make it less sour",
                 new GT_FoodStat(
@@ -1134,7 +1532,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 1L)));
         ItemList.Bottle_Limoncello.set(
             addItem(
-                tLastID = 132,
+                Bottle_Limoncello.ID,
                 "Limoncello",
                 "An alcoholic Drink which tastes like Lemons",
                 new GT_FoodStat(
@@ -1158,7 +1556,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 1L)));
         ItemList.Bottle_Lemonade.set(
             addItem(
-                tLastID = 133,
+                Bottle_Lemonade.ID,
                 "Lemonade",
                 "Cold and refreshing Lemonade",
                 new GT_FoodStat(
@@ -1178,7 +1576,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 1L)));
         ItemList.Bottle_Alcopops.set(
             addItem(
-                tLastID = 134,
+                Bottle_Alcopops.ID,
                 "Alcopops",
                 "Don't let your Children drink this junk!",
                 new GT_FoodStat(
@@ -1202,7 +1600,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VINCULUM, 1L)));
         ItemList.Bottle_Cave_Johnsons_Grenade_Juice.set(
             addItem(
-                tLastID = 135,
+                Bottle_Cave_Johnsons_Grenade_Juice.ID,
                 "Cave Johnson's Grenade Juice",
                 "When life gives you Lemons, make Life take them Lemons back!",
                 new GT_FoodStat(
@@ -1218,7 +1616,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.PERDITIO, 1L)));
         ItemList.Bottle_Milk.set(
             addItem(
-                tLastID = 136,
+                Bottle_Milk.ID,
                 "Milk",
                 "Got Milk?",
                 OrePrefixes.bottle.get(Materials.Milk),
@@ -1235,7 +1633,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SANO, 1L)));
         ItemList.Bottle_Holy_Water.set(
             addItem(
-                tLastID = 137,
+                Bottle_Holy_Water.ID,
                 "Holy Water",
                 "May the holy Planks be with you",
                 OrePrefixes.bottle.get(Materials.HolyWater),
@@ -1257,7 +1655,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Food_Potato_On_Stick.set(
             addItem(
-                tLastID = 200,
+                Food_Potato_On_Stick.ID,
                 "Potato on a Stick",
                 "Totally looks like a Crab Claw",
                 new GT_FoodStat(1, 0.3F, EnumAction.eat, new ItemStack(Items.stick, 1), false, true, false),
@@ -1266,7 +1664,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
         ItemList.Food_Potato_On_Stick_Roasted.set(
             addItem(
-                tLastID = 201,
+                Food_Potato_On_Stick_Roasted.ID,
                 "Roasted Potato on a Stick",
                 "Still looks like a Crab Claw",
                 new GT_FoodStat(6, 0.6F, EnumAction.eat, new ItemStack(Items.stick, 1), false, true, false),
@@ -1276,17 +1674,17 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Raw_Fries.set(
             addItem(
-                tLastID = 202,
+                Food_Raw_Fries.ID,
                 "Potato Strips",
                 "It's Potato in Stripe Form",
                 new GT_FoodStat(1, 0.3F, EnumAction.eat, null, false, true, false),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L)));
-        setFluidContainerStats(32000 + tLastID, 0L, 16L);
+        setFluidContainerStats(32000 + Food_Raw_Fries.ID, 0L, 16L);
         ItemList.Food_Fries.set(
             addItem(
-                tLastID = 203,
+                Food_Fries.ID,
                 "Fries",
                 "Not to confuse with Fry the Delivery Boy",
                 new GT_FoodStat(7, 0.5F, EnumAction.eat, null, false, true, false),
@@ -1294,10 +1692,10 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + tLastID, 0L, 16L);
+        setFluidContainerStats(32000 + Food_Fries.ID, 0L, 16L);
         ItemList.Food_Packaged_Fries.set(
             addItem(
-                tLastID = 204,
+                Food_Packaged_Fries.ID,
                 "Fries",
                 "Ketchup not included",
                 new GT_FoodStat(
@@ -1314,17 +1712,17 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Raw_PotatoChips.set(
             addItem(
-                tLastID = 205,
+                Food_Raw_PotatoChips.ID,
                 "Potato Chips (Raw)",
                 "Just like a Potato",
                 new GT_FoodStat(1, 0.3F, EnumAction.eat, null, false, true, false),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L)));
-        setFluidContainerStats(32000 + tLastID, 0L, 16L);
+        setFluidContainerStats(32000 + Food_Raw_PotatoChips.ID, 0L, 16L);
         ItemList.Food_PotatoChips.set(
             addItem(
-                tLastID = 206,
+                Food_PotatoChips.ID,
                 "Potato Chips",
                 "Crunchy",
                 new GT_FoodStat(7, 0.5F, EnumAction.eat, null, false, true, false),
@@ -1332,10 +1730,10 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + tLastID, 0L, 16L);
+        setFluidContainerStats(32000 + Food_PotatoChips.ID, 0L, 16L);
         ItemList.Food_ChiliChips.set(
             addItem(
-                tLastID = 207,
+                Food_ChiliChips.ID,
                 "Chili Chips",
                 "Spicy",
                 new GT_FoodStat(7, 0.6F, EnumAction.eat, null, false, true, false),
@@ -1343,10 +1741,10 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + tLastID, 0L, 16L);
+        setFluidContainerStats(32000 + Food_ChiliChips.ID, 0L, 16L);
         ItemList.Food_Packaged_PotatoChips.set(
             addItem(
-                tLastID = 208,
+                Food_Packaged_PotatoChips.ID,
                 "Bag of Potato Chips",
                 "Full of delicious Air",
                 new GT_FoodStat(
@@ -1363,7 +1761,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Packaged_ChiliChips.set(
             addItem(
-                tLastID = 209,
+                Food_Packaged_ChiliChips.ID,
                 "Bag of Chili Chips",
                 "Stop making noises Baj!",
                 new GT_FoodStat(
@@ -1380,7 +1778,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Chum.set(
             addItem(
-                tLastID = 210,
+                Food_Chum.ID,
                 "Chum",
                 "Chum is Fum!",
                 new GT_FoodStat(
@@ -1404,7 +1802,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Chum_On_Stick.set(
             addItem(
-                tLastID = 211,
+                Food_Chum_On_Stick.ID,
                 "Chum on a Stick",
                 "Don't forget to try our Chum-balaya",
                 new GT_FoodStat(
@@ -1428,7 +1826,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Dough_Sugar.set(
             addItem(
-                tLastID = 212,
+                Food_Dough_Sugar.ID,
                 "Sugary Dough",
                 "Don't eat the Dough before it is baken",
                 new GT_FoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
@@ -1436,7 +1834,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
         ItemList.Food_Dough_Chocolate.set(
             addItem(
-                tLastID = 213,
+                Food_Dough_Chocolate.ID,
                 "Chocolate Dough",
                 "I said don't eat the Dough!",
                 new GT_FoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
@@ -1444,7 +1842,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
         ItemList.Food_Raw_Cookie.set(
             addItem(
-                tLastID = 214,
+                Food_Raw_Cookie.ID,
                 "Cookie shaped Dough",
                 "For baking Cookies",
                 new GT_FoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
@@ -1453,7 +1851,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Food_Sliced_Buns.set(
             addItem(
-                tLastID = 220,
+                Food_Sliced_Buns.ID,
                 "Buns",
                 "Pre Sliced",
                 new GT_FoodStat(3, 0.5F, EnumAction.eat, null, false, true, false),
@@ -1462,7 +1860,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Burger_Veggie.set(
             addItem(
-                tLastID = 221,
+                Food_Burger_Veggie.ID,
                 "Veggieburger",
                 "No matter how you call this, this is NOT a Burger!",
                 new GT_FoodStat(3, 0.5F, EnumAction.eat, null, false, true, false),
@@ -1471,7 +1869,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Burger_Cheese.set(
             addItem(
-                tLastID = 222,
+                Food_Burger_Cheese.ID,
                 "Cheeseburger",
                 "Cheesy!",
                 new GT_FoodStat(3, 0.5F, EnumAction.eat, null, false, true, false),
@@ -1481,7 +1879,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new ItemData(Materials.Cheese, 907200L)));
         ItemList.Food_Burger_Meat.set(
             addItem(
-                tLastID = 223,
+                Food_Burger_Meat.ID,
                 "Hamburger",
                 "The Mc Burger Queen Burger",
                 new GT_FoodStat(3, 0.5F, EnumAction.eat, null, false, true, false),
@@ -1490,7 +1888,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Burger_Chum.set(
             addItem(
-                tLastID = 224,
+                Food_Burger_Chum.ID,
                 "Chumburger",
                 "Fum is Chum!",
                 new GT_FoodStat(
@@ -1515,7 +1913,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Food_Sliced_Breads.set(
             addItem(
-                tLastID = 230,
+                Food_Sliced_Breads.ID,
                 "Breads",
                 "Pre Sliced",
                 new GT_FoodStat(5, 0.6F, EnumAction.eat, null, false, true, false),
@@ -1524,48 +1922,48 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Sandwich_Veggie.set(
             addItem(
-                tLastID = 231,
+                Food_Sandwich_Veggie.ID,
                 "Veggie Sandwich",
                 "Meatless",
                 new GT_FoodStat(7, 0.6F, EnumAction.eat, null, false, true, false),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + tLastID, 0L, 32L);
+        setFluidContainerStats(32000 + Food_Sandwich_Veggie.ID, 0L, 32L);
         ItemList.Food_Sandwich_Cheese.set(
             addItem(
-                tLastID = 232,
+                Food_Sandwich_Cheese.ID,
                 "Cheese Sandwich",
                 "Say Cheese!",
                 new GT_FoodStat(7, 0.6F, EnumAction.eat, null, false, true, false),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + tLastID, 0L, 32L);
+        setFluidContainerStats(32000 + Food_Sandwich_Cheese.ID, 0L, 32L);
         ItemList.Food_Sandwich_Bacon.set(
             addItem(
-                tLastID = 233,
+                Food_Sandwich_Bacon.ID,
                 "Bacon Sandwich",
                 "The best Sandwich ever!",
                 new GT_FoodStat(10, 0.8F, EnumAction.eat, null, false, true, false),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.CORPUS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + tLastID, 0L, 32L);
+        setFluidContainerStats(32000 + Food_Sandwich_Bacon.ID, 0L, 32L);
         ItemList.Food_Sandwich_Steak.set(
             addItem(
-                tLastID = 234,
+                Food_Sandwich_Steak.ID,
                 "Steak Sandwich",
                 "Not a 'Steam Sandwich'",
                 new GT_FoodStat(10, 0.8F, EnumAction.eat, null, false, true, false),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.CORPUS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + tLastID, 0L, 32L);
+        setFluidContainerStats(32000 + Food_Sandwich_Steak.ID, 0L, 32L);
 
         ItemList.Food_Sliced_Baguettes.set(
             addItem(
-                tLastID = 240,
+                Food_Sliced_Baguettes.ID,
                 "Baguettes",
                 "Pre Sliced",
                 new GT_FoodStat(8, 0.5F, EnumAction.eat, null, false, true, false),
@@ -1574,48 +1972,48 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Large_Sandwich_Veggie.set(
             addItem(
-                tLastID = 241,
+                Food_Large_Sandwich_Veggie.ID,
                 "Large Veggie Sandwich",
                 "Just not worth it",
                 new GT_FoodStat(15, 0.8F, EnumAction.eat, null, false, true, false),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 3L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + tLastID, 0L, 16L);
+        setFluidContainerStats(32000 + Food_Large_Sandwich_Veggie.ID, 0L, 16L);
         ItemList.Food_Large_Sandwich_Cheese.set(
             addItem(
-                tLastID = 242,
+                Food_Large_Sandwich_Cheese.ID,
                 "Large Cheese Sandwich",
                 "I need another cheesy tooltip for this",
                 new GT_FoodStat(15, 0.8F, EnumAction.eat, null, false, true, false),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 3L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + tLastID, 0L, 16L);
+        setFluidContainerStats(32000 + Food_Large_Sandwich_Cheese.ID, 0L, 16L);
         ItemList.Food_Large_Sandwich_Bacon.set(
             addItem(
-                tLastID = 243,
+                Food_Large_Sandwich_Bacon.ID,
                 "Large Bacon Sandwich",
                 "For Men! (and manly Women)",
                 new GT_FoodStat(20, 1.0F, EnumAction.eat, null, false, true, false),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.CORPUS, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + tLastID, 0L, 16L);
+        setFluidContainerStats(32000 + Food_Large_Sandwich_Bacon.ID, 0L, 16L);
         ItemList.Food_Large_Sandwich_Steak.set(
             addItem(
-                tLastID = 244,
+                Food_Large_Sandwich_Steak.ID,
                 "Large Steak Sandwich",
                 "Yes, I once accidentially called it 'Steam Sandwich'",
                 new GT_FoodStat(20, 1.0F, EnumAction.eat, null, false, true, false),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.CORPUS, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
-        setFluidContainerStats(32000 + tLastID, 0L, 16L);
+        setFluidContainerStats(32000 + Food_Large_Sandwich_Steak.ID, 0L, 16L);
 
         ItemList.Food_Raw_Pizza_Veggie.set(
             addItem(
-                tLastID = 250,
+                Food_Raw_Pizza_Veggie.ID,
                 "Raw Veggie Pizza",
                 "Into the Oven with it!",
                 new GT_FoodStat(1, 0.2F, EnumAction.eat, null, false, true, false),
@@ -1624,7 +2022,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Raw_Pizza_Cheese.set(
             addItem(
-                tLastID = 251,
+                Food_Raw_Pizza_Cheese.ID,
                 "Raw Cheese Pizza",
                 "Into the Oven with it!",
                 new GT_FoodStat(2, 0.2F, EnumAction.eat, null, false, true, false),
@@ -1633,7 +2031,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Raw_Pizza_Meat.set(
             addItem(
-                tLastID = 252,
+                Food_Raw_Pizza_Meat.ID  ,
                 "Raw Mince Meat Pizza",
                 "Into the Oven with it!",
                 new GT_FoodStat(2, 0.2F, EnumAction.eat, null, false, true, false),
@@ -1643,7 +2041,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Food_Baked_Pizza_Veggie.set(
             addItem(
-                tLastID = 260,
+                Food_Baked_Pizza_Veggie.ID,
                 "Veggie Pizza",
                 "The next they want is Gluten Free Pizzas...",
                 new GT_FoodStat(3, 0.3F, EnumAction.eat, null, false, true, false),
@@ -1652,7 +2050,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Baked_Pizza_Cheese.set(
             addItem(
-                tLastID = 261,
+                Food_Baked_Pizza_Cheese.ID,
                 "Cheese Pizza",
                 "Pizza Magarita",
                 new GT_FoodStat(4, 0.4F, EnumAction.eat, null, false, true, false),
@@ -1661,7 +2059,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Baked_Pizza_Meat.set(
             addItem(
-                tLastID = 262,
+                Food_Baked_Pizza_Meat.ID,
                 "Mince Meat Pizza",
                 "Emo Pizza, it cuts itself!",
                 new GT_FoodStat(5, 0.5F, EnumAction.eat, null, false, true, false),
@@ -1671,122 +2069,125 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Dye_Indigo.set(
             addItem(
-                tLastID = 410,
+                Dye_Indigo.ID,
                 "Indigo Dye",
                 "Blue Dye",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 1L),
                 Dyes.dyeBlue));
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
+
+        int[] Dye_Colors = new int[]{Dye_Color_00.ID, Dye_Color_01.ID, Dye_Color_02.ID, Dye_Color_03.ID, Dye_Color_04.ID, Dye_Color_05.ID, Dye_Color_06.ID, Dye_Color_07.ID, Dye_Color_08.ID, Dye_Color_09.ID, Dye_Color_10.ID, Dye_Color_11.ID, Dye_Color_12.ID, Dye_Color_13.ID, Dye_Color_14.ID, Dye_Color_15.ID};
+        for (int i = 0; i < 16; i = i + 1) {
             ItemList.DYE_ONLY_ITEMS[i].set(
                 addItem(
-                    tLastID = 414 + i,
+                    Dye_Colors[i],
                     Dyes.get(i).mName + " Dye",
                     "",
                     Dyes.get(i)
                         .name(),
                     new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 1L)));
         }
+
         ItemList.Plank_Oak
-            .set(addItem(tLastID = 470, "Oak Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            .set(addItem(Plank_Oak.ID, "Oak Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Oak.ID, 75);
         ItemList.Plank_Spruce.set(
-            addItem(tLastID = 471, "Spruce Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Spruce.ID, "Spruce Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Spruce.ID, 75);
         ItemList.Plank_Birch.set(
-            addItem(tLastID = 472, "Birch Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Birch.ID, "Birch Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Birch.ID, 75);
         ItemList.Plank_Jungle.set(
-            addItem(tLastID = 473, "Jungle Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Jungle.ID, "Jungle Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Jungle.ID, 75);
         ItemList.Plank_Acacia.set(
-            addItem(tLastID = 474, "Acacia Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Acacia.ID, "Acacia Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Acacia.ID, 75);
         ItemList.Plank_DarkOak.set(
-            addItem(tLastID = 475, "Dark Oak Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_DarkOak.ID, "Dark Oak Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_DarkOak.ID, 75);
         ItemList.Plank_Larch.set(
-            addItem(tLastID = 476, "Larch Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Larch.ID, "Larch Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Larch.ID, 75);
         ItemList.Plank_Teak
-            .set(addItem(tLastID = 477, "Teak Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            .set(addItem(Plank_Teak.ID, "Teak Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Teak.ID, 75);
         ItemList.Plank_Acacia_Green.set(
             addItem(
-                tLastID = 478,
+                Plank_Acacia_Green.ID,
                 "Green Acacia Plank",
                 aTextCover,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+        setBurnValue(32000 + Plank_Acacia_Green.ID, 75);
         ItemList.Plank_Lime
-            .set(addItem(tLastID = 479, "Lime Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            .set(addItem(Plank_Lime.ID, "Lime Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Lime.ID, 75);
         ItemList.Plank_Chestnut.set(
-            addItem(tLastID = 480, "Chestnut Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Chestnut.ID, "Chestnut Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Chestnut.ID, 75);
         ItemList.Plank_Wenge.set(
-            addItem(tLastID = 481, "Wenge Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Wenge.ID, "Wenge Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Wenge.ID, 75);
         ItemList.Plank_Baobab.set(
-            addItem(tLastID = 482, "Baobab Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Baobab.ID, "Baobab Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Baobab.ID, 75);
         ItemList.Plank_Sequoia.set(
-            addItem(tLastID = 483, "Sequoia Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Sequoia.ID, "Sequoia Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Sequoia.ID, 75);
         ItemList.Plank_Kapok.set(
-            addItem(tLastID = 484, "Kapok Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Kapok.ID, "Kapok Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Kapok.ID, 75);
         ItemList.Plank_Ebony.set(
-            addItem(tLastID = 485, "Ebony Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Ebony.ID, "Ebony Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Ebony.ID, 75);
         ItemList.Plank_Mahagony.set(
-            addItem(tLastID = 486, "Mahagony Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Mahagony.ID, "Mahagony Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Mahagony.ID, 75);
         ItemList.Plank_Balsa.set(
-            addItem(tLastID = 487, "Balsa Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Balsa.ID, "Balsa Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Balsa.ID, 75);
         ItemList.Plank_Willow.set(
-            addItem(tLastID = 488, "Willow Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Willow.ID, "Willow Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Willow.ID, 75);
         ItemList.Plank_Walnut.set(
-            addItem(tLastID = 489, "Walnut Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Walnut.ID, "Walnut Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Walnut.ID, 75);
         ItemList.Plank_Greenheart.set(
             addItem(
-                tLastID = 490,
+                Plank_Greenheart.ID,
                 "Greenheart Plank",
                 aTextCover,
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+        setBurnValue(32000 + Plank_Greenheart.ID, 75);
         ItemList.Plank_Cherry.set(
-            addItem(tLastID = 491, "Cherry Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Cherry.ID, "Cherry Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Cherry.ID, 75);
         ItemList.Plank_Mahoe.set(
-            addItem(tLastID = 492, "Mahoe Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Mahoe.ID, "Mahoe Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Mahoe.ID, 75);
         ItemList.Plank_Poplar.set(
-            addItem(tLastID = 493, "Poplar Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Poplar.ID, "Poplar Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Poplar.ID, 75);
         ItemList.Plank_Palm
-            .set(addItem(tLastID = 494, "Palm Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            .set(addItem(Plank_Palm.ID, "Palm Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Palm.ID, 75);
         ItemList.Plank_Papaya.set(
-            addItem(tLastID = 495, "Papaya Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Papaya.ID, "Papaya Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Papaya.ID, 75);
         ItemList.Plank_Pine
-            .set(addItem(tLastID = 496, "Pine Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            .set(addItem(Plank_Pine.ID, "Pine Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Pine.ID, 75);
         ItemList.Plank_Plum
-            .set(addItem(tLastID = 497, "Plum Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            .set(addItem(Plank_Plum.ID, "Plum Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Plum.ID, 75);
         ItemList.Plank_Maple.set(
-            addItem(tLastID = 498, "Maple Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Maple.ID, "Maple Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Maple.ID, 75);
         ItemList.Plank_Citrus.set(
-            addItem(tLastID = 499, "Citrus Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 75);
+            addItem(Plank_Citrus.ID, "Citrus Plank", aTextCover, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
+        setBurnValue(32000 + Plank_Citrus.ID, 75);
 
-        ItemList.SFMixture.set(addItem(tLastID = 270, "Super Fuel Binder", "Raw Material"));
-        ItemList.MSFMixture.set(addItem(tLastID = 271, "Magic Super Fuel Binder", "Raw Material"));
+        ItemList.SFMixture.set(addItem(SFMixture.ID, "Super Fuel Binder", "Raw Material"));
+        ItemList.MSFMixture.set(addItem(MSFMixture.ID, "Magic Super Fuel Binder", "Raw Material"));
 
         GT_ModHandler.addCraftingRecipe(
             ItemList.Plank_Oak.get(2L),
@@ -1990,7 +2391,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Crop_Drop_Plumbilia.set(
             addItem(
-                tLastID = 500,
+                Crop_Drop_Plumbilia.ID,
                 "Plumbilia Leaf",
                 "Source of Lead",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
@@ -1998,7 +2399,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L)));
         ItemList.Crop_Drop_Argentia.set(
             addItem(
-                tLastID = 501,
+                Crop_Drop_Argentia.ID,
                 "Argentia Leaf",
                 "Source of Silver",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
@@ -2006,21 +2407,21 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)));
         ItemList.Crop_Drop_Indigo.set(
             addItem(
-                tLastID = 502,
+                Crop_Drop_Indigo.ID,
                 "Indigo Blossom",
                 "Used for making Blue Dye",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 1L)));
         ItemList.Crop_Drop_Ferru.set(
             addItem(
-                tLastID = 503,
+                Crop_Drop_Ferru.ID,
                 "Ferru Leaf",
                 "Source of Iron",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L)));
         ItemList.Crop_Drop_Aurelia.set(
             addItem(
-                tLastID = 504,
+                Crop_Drop_Aurelia.ID,
                 "Aurelia Leaf",
                 "Source of Gold",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
@@ -2028,7 +2429,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)));
         ItemList.Crop_Drop_TeaLeaf.set(
             addItem(
-                tLastID = 505,
+                Crop_Drop_TeaLeaf.ID,
                 "Tea Leaf",
                 "Source of Tea",
                 "cropTea",
@@ -2037,7 +2438,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Crop_Drop_OilBerry.set(
             addItem(
-                tLastID = 510,
+                Crop_Drop_OilBerry.ID,
                 "Oil Berry",
                 "Oil in Berry form",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
@@ -2045,7 +2446,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)));
         ItemList.Crop_Drop_BobsYerUncleRanks.set(
             addItem(
-                tLastID = 511,
+                Crop_Drop_BobsYerUncleRanks.ID,
                 "Bobs-Yer-Uncle-Berry",
                 "Source of Emeralds",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
@@ -2053,7 +2454,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 1L)));
         ItemList.Crop_Drop_UUMBerry.set(
             addItem(
-                tLastID = 512,
+                Crop_Drop_UUMBerry.ID,
                 "UUM Berry",
                 "UUM in Berry form",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
@@ -2061,7 +2462,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)));
         ItemList.Crop_Drop_UUABerry.set(
             addItem(
-                tLastID = 513,
+                Crop_Drop_UUABerry.ID,
                 "UUA Berry",
                 "UUA in Berry form",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
@@ -2070,7 +2471,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Crop_Drop_MilkWart.set(
             addItem(
-                tLastID = 520,
+                Crop_Drop_MilkWart.ID,
                 "Milk Wart",
                 "Source of Milk",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
@@ -2079,7 +2480,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Crop_Drop_Coppon.set(
             addItem(
-                tLastID = 530,
+                Crop_Drop_Coppon.ID,
                 "Coppon Fiber",
                 "ORANGE WOOOOOOOL!!!",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
@@ -2088,41 +2489,41 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Crop_Drop_Tine.set(
             addItem(
-                tLastID = 540,
+                Crop_Drop_Tine.ID,
                 "Tine Twig",
                 "Source of Tin",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 100);
+        setBurnValue(32000 + Crop_Drop_Tine.ID, 100);
 
         ItemList.Crop_Drop_Mica.set(
             addItem(
-                tLastID = 538,
+                Crop_Drop_Mica.ID,
                 "Micadia Twig",
                 "Source of Mica",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 1L)));
-        setBurnValue(32000 + tLastID, 240);
+        setBurnValue(32000 + Crop_Drop_Mica.ID, 240);
 
-        ItemList.Crop_Drop_Bauxite.set(addItem(tLastID = 521, "Bauxia Leaf", "Source of Aluminium"));
-        ItemList.Crop_Drop_Ilmenite.set(addItem(tLastID = 522, "Titania Leaf", "Source of Titanium"));
-        ItemList.Crop_Drop_Pitchblende.set(addItem(tLastID = 523, "Reactoria Leaf", "Source of Uranium"));
-        ItemList.Crop_Drop_Uraninite.set(addItem(tLastID = 524, "Uranium Leaf", "Source of Uranite"));
-        ItemList.Crop_Drop_Thorium.set(addItem(tLastID = 526, "Thunder Leaf", "Source of Thorium"));
-        ItemList.Crop_Drop_Nickel.set(addItem(tLastID = 527, "Nickelback Leaf", "Source of Nickel"));
-        ItemList.Crop_Drop_Zinc.set(addItem(tLastID = 528, "Galvania Leaf", "Source of Zinc"));
-        ItemList.Crop_Drop_Manganese.set(addItem(tLastID = 529, "Pyrolusium Leaf", "Source of Manganese"));
-        ItemList.Crop_Drop_Scheelite.set(addItem(tLastID = 531, "Scheelinium Leaf", "Source of Tungsten"));
-        ItemList.Crop_Drop_Platinum.set(addItem(tLastID = 532, "Platina Leaf", "Source of Platinum"));
-        ItemList.Crop_Drop_Iridium.set(addItem(tLastID = 533, "Quantaria Leaf", "Source of Iridium"));
-        ItemList.Crop_Drop_Osmium.set(addItem(tLastID = 534, "Quantaria Leaf", "Source of Osmium"));
-        ItemList.Crop_Drop_Naquadah.set(addItem(tLastID = 535, "Stargatium Leaf", "Source of Naquadah"));
+        ItemList.Crop_Drop_Bauxite.set(addItem(Crop_Drop_Bauxite.ID, "Bauxia Leaf", "Source of Aluminium"));
+        ItemList.Crop_Drop_Ilmenite.set(addItem(Crop_Drop_Ilmenite.ID, "Titania Leaf", "Source of Titanium"));
+        ItemList.Crop_Drop_Pitchblende.set(addItem(Crop_Drop_Pitchblende.ID, "Reactoria Leaf", "Source of Uranium"));
+        ItemList.Crop_Drop_Uraninite.set(addItem(Crop_Drop_Uraninite.ID, "Uranium Leaf", "Source of Uranite"));
+        ItemList.Crop_Drop_Thorium.set(addItem(Crop_Drop_Thorium.ID, "Thunder Leaf", "Source of Thorium"));
+        ItemList.Crop_Drop_Nickel.set(addItem(Crop_Drop_Nickel.ID, "Nickelback Leaf", "Source of Nickel"));
+        ItemList.Crop_Drop_Zinc.set(addItem(Crop_Drop_Zinc.ID, "Galvania Leaf", "Source of Zinc"));
+        ItemList.Crop_Drop_Manganese.set(addItem(Crop_Drop_Manganese.ID, "Pyrolusium Leaf", "Source of Manganese"));
+        ItemList.Crop_Drop_Scheelite.set(addItem(Crop_Drop_Scheelite.ID, "Scheelinium Leaf", "Source of Tungsten"));
+        ItemList.Crop_Drop_Platinum.set(addItem(Crop_Drop_Platinum.ID, "Platina Leaf", "Source of Platinum"));
+        ItemList.Crop_Drop_Iridium.set(addItem(Crop_Drop_Iridium.ID, "Quantaria Leaf", "Source of Iridium"));
+        ItemList.Crop_Drop_Osmium.set(addItem(Crop_Drop_Osmium.ID, "Quantaria Leaf", "Source of Osmium"));
+        ItemList.Crop_Drop_Naquadah.set(addItem(Crop_Drop_Naquadah.ID, "Stargatium Leaf", "Source of Naquadah"));
 
         ItemList.Crop_Drop_Chilly.set(
             addItem(
-                tLastID = 550,
+                Crop_Drop_Chilly.ID,
                 "Chilly Pepper",
                 "It is red and hot",
                 "cropChilipepper",
@@ -2132,7 +2533,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
         ItemList.Crop_Drop_Lemon.set(
             addItem(
-                tLastID = 551,
+                Crop_Drop_Lemon.ID,
                 "Lemon",
                 "Don't make Lemonade",
                 "cropLemon",
@@ -2142,7 +2543,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
         ItemList.Crop_Drop_Tomato.set(
             addItem(
-                tLastID = 552,
+                Crop_Drop_Tomato.ID,
                 "Tomato",
                 "Solid Ketchup",
                 "cropTomato",
@@ -2152,7 +2553,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
         ItemList.Crop_Drop_MTomato.set(
             addItem(
-                tLastID = 553,
+                Crop_Drop_MTomato.ID,
                 "Max Tomato",
                 "Full Health in one Tomato",
                 "cropTomato",
@@ -2173,7 +2574,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
         ItemList.Crop_Drop_Grapes.set(
             addItem(
-                tLastID = 554,
+                Crop_Drop_Grapes.ID,
                 "Grapes",
                 "Source of Wine",
                 "cropGrape",
@@ -2183,7 +2584,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
         ItemList.Crop_Drop_Onion.set(
             addItem(
-                tLastID = 555,
+                Crop_Drop_Onion.ID,
                 "Onion",
                 "Taking over the whole Taste",
                 "cropOnion",
@@ -2193,7 +2594,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
         ItemList.Crop_Drop_Cucumber.set(
             addItem(
-                tLastID = 556,
+                Crop_Drop_Cucumber.ID,
                 "Cucumber",
                 "Not a Sea Cucumber!",
                 "cropCucumber",
@@ -2203,7 +2604,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
         ItemList.Crop_Drop_Rape.set(
             addItem(
-                tLastID = 557,
+                Crop_Drop_Rape.ID,
                 "Rape",
                 "Time to oil up!",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
@@ -2212,7 +2613,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Food_Cheese.set(
             addItem(
-                tLastID = 558,
+                Food_Cheese.ID,
                 "Cheese",
                 "Click the Cheese",
                 "foodCheese",
@@ -2220,7 +2621,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 2L)));
         ItemList.Food_Dough.set(
             addItem(
-                tLastID = 559,
+                Food_Dough.ID,
                 "Dough",
                 "For making Breads",
                 "foodDough",
@@ -2229,7 +2630,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
         ItemList.Food_Flat_Dough.set(
             addItem(
-                tLastID = 560,
+                Food_Flat_Dough.ID,
                 "Flattened Dough",
                 "For making Pizza",
                 new GT_FoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
@@ -2237,7 +2638,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
         ItemList.Food_Raw_Bread.set(
             addItem(
-                tLastID = 561,
+                Food_Raw_Bread.ID,
                 "Dough",
                 "In Bread Shape",
                 new GT_FoodStat(1, 0.2F, EnumAction.eat, null, false, true, false),
@@ -2245,7 +2646,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
         ItemList.Food_Raw_Bun.set(
             addItem(
-                tLastID = 562,
+                Food_Raw_Bun.ID,
                 "Dough",
                 "In Bun Shape",
                 new GT_FoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
@@ -2253,7 +2654,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
         ItemList.Food_Raw_Baguette.set(
             addItem(
-                tLastID = 563,
+                Food_Raw_Baguette.ID,
                 "Dough",
                 "In Baguette Shape",
                 new GT_FoodStat(1, 0.3F, EnumAction.eat, null, false, true, false),
@@ -2261,7 +2662,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
         ItemList.Food_Baked_Bun.set(
             addItem(
-                tLastID = 564,
+                Food_Baked_Bun.ID,
                 "Bun",
                 "Do not teleport Bread!",
                 new GT_FoodStat(3, 0.5F, EnumAction.eat, null, false, true, false),
@@ -2270,7 +2671,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Baked_Baguette.set(
             addItem(
-                tLastID = 565,
+                Food_Baked_Baguette.ID,
                 "Baguette",
                 "I teleported nothing BUT Bread!!!",
                 new GT_FoodStat(8, 0.5F, EnumAction.eat, null, false, true, false),
@@ -2279,7 +2680,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Sliced_Bread.set(
             addItem(
-                tLastID = 566,
+                Food_Sliced_Bread.ID,
                 "Sliced Bread",
                 "Just half a Bread",
                 new GT_FoodStat(2, 0.3F, EnumAction.eat, null, false, true, false),
@@ -2288,7 +2689,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Sliced_Bun.set(
             addItem(
-                tLastID = 567,
+                Food_Sliced_Bun.ID,
                 "Sliced Bun",
                 "Just half a Bun",
                 new GT_FoodStat(1, 0.3F, EnumAction.eat, null, false, true, false),
@@ -2297,7 +2698,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Sliced_Baguette.set(
             addItem(
-                tLastID = 568,
+                Food_Sliced_Baguette.ID,
                 "Sliced Baguette",
                 "Just half a Baguette",
                 new GT_FoodStat(4, 0.3F, EnumAction.eat, null, false, true, false),
@@ -2306,7 +2707,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)));
         ItemList.Food_Raw_Cake.set(
             addItem(
-                tLastID = 569,
+                Food_Raw_Cake.ID,
                 "Cake Bottom",
                 "For making Cake",
                 new GT_FoodStat(2, 0.2F, EnumAction.eat, null, false, true, false),
@@ -2314,7 +2715,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
         ItemList.Food_Baked_Cake.set(
             addItem(
-                tLastID = 570,
+                Food_Baked_Cake.ID,
                 "Baked Cake Bottom",
                 "I know I promised you an actual Cake, but well...",
                 new GT_FoodStat(3, 0.3F, EnumAction.eat, null, false, true, false),
@@ -2322,28 +2723,28 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L)));
         ItemList.Food_Sliced_Lemon.set(
             addItem(
-                tLastID = 571,
+                Food_Sliced_Lemon.ID,
                 "Lemon Slice",
                 "Ideal to put on your Drink",
                 new GT_FoodStat(1, 0.075F, EnumAction.eat, null, false, true, false),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L)));
         ItemList.Food_Sliced_Tomato.set(
             addItem(
-                tLastID = 572,
+                Food_Sliced_Tomato.ID,
                 "Tomato Slice",
                 "Solid Ketchup",
                 new GT_FoodStat(1, 0.05F, EnumAction.eat, null, false, true, false),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L)));
         ItemList.Food_Sliced_Onion.set(
             addItem(
-                tLastID = 573,
+                Food_Sliced_Onion.ID,
                 "Onion Slice",
                 "ONIONS, UNITE!",
                 new GT_FoodStat(1, 0.05F, EnumAction.eat, null, false, true, false),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L)));
         ItemList.Food_Sliced_Cucumber.set(
             addItem(
-                tLastID = 574,
+                Food_Sliced_Cucumber.ID,
                 "Cucumber Slice",
                 "QUEWWW-CUMMM-BERRR!!!",
                 new GT_FoodStat(1, 0.05F, EnumAction.eat, null, false, true, false),
@@ -2351,7 +2752,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Food_Sliced_Cheese.set(
             addItem(
-                tLastID = 576,
+                Food_Sliced_Cheese.ID,
                 "Cheese Slice",
                 "ALIEN ATTACK!!!, throw the CHEEEEESE!!!",
                 new GT_FoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
@@ -2359,28 +2760,28 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Cover_AdvancedRedstoneTransmitterExternal.set(
             addItem(
-                tLastID = 577,
+                Cover_AdvancedRedstoneTransmitterExternal.ID,
                 "Advanced Redstone Transmitter (External)",
                 "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneTransmitterInternal.set(
             addItem(
-                tLastID = 578,
+                Cover_AdvancedRedstoneTransmitterInternal.ID,
                 "Advanced Redstone Transmitter (Internal)",
                 "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneReceiverExternal.set(
             addItem(
-                tLastID = 579,
+                Cover_AdvancedRedstoneReceiverExternal.ID,
                 "Advanced Redstone Receiver (External)",
                 "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneReceiverInternal.set(
             addItem(
-                tLastID = 580,
+                Cover_AdvancedRedstoneReceiverInternal.ID,
                 "Advanced Redstone Receiver (Internal)",
                 "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
@@ -2388,7 +2789,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Cover_WirelessFluidDetector.set(
             addItem(
-                tLastID = 581,
+                Cover_WirelessFluidDetector.ID,
                 "Wireless Fluid Detector Cover",
                 "Transfers Fluid Amount as Redstone wirelessly/n Can only connect with advanced wireless covers",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
@@ -2397,7 +2798,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)));
         ItemList.Cover_WirelessItemDetector.set(
             addItem(
-                tLastID = 582,
+                Cover_WirelessItemDetector.ID,
                 "Wireless Item Detector Cover",
                 "Transfers Item Amount as Redstone wirelessly/n Can only connect with advanced wireless covers",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
@@ -2407,7 +2808,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Cover_WirelessNeedsMaintainance.set(
             addItem(
-                tLastID = 583,
+                Cover_WirelessNeedsMaintainance.ID,
                 "Wireless Needs Maintenance Cover",
                 "Transfers Maintenance Issues as Redstone wirelessly/n Can only connect with advanced wireless covers",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 4L),
@@ -2415,7 +2816,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Cover_WirelessActivityDetector.set(
             addItem(
-                tLastID = 584,
+                Cover_WirelessActivityDetector.ID,
                 "Wireless Activity Detector Cover",
                 "Transfers Activity as Redstone wirelessly/n Can only connect with advanced wireless covers",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L),
@@ -2724,7 +3125,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         }
         ItemList.Display_ITS_FREE.set(
             addItem(
-                tLastID = 765,
+                Display_ITS_FREE.ID,
                 "ITS FREE",
                 "(or at least almost free)",
                 SubTag.INVISIBLE,
