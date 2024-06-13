@@ -210,41 +210,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         ItemList.Circuit_Parts_InductorXSMD
             .set(addItem(Circuit_Parts_InductorXSMD.ID, "Optical SMD Inductor", "Highly Advanced Electronic Component", o));
 
-        GT_OreDictUnificator
-            .set(OrePrefixes.componentCircuit, Materials.Resistor, ItemList.Circuit_Parts_Resistor.get(1L));
-        GT_OreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Diode, ItemList.Circuit_Parts_Diode.get(1L));
-        GT_OreDictUnificator
-            .set(OrePrefixes.componentCircuit, Materials.Transistor, ItemList.Circuit_Parts_Transistor.get(1L));
-        GT_OreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Inductor, ItemList.Circuit_Parts_Coil.get(1L));
-        GT_OreDictUnificator
-            .set(OrePrefixes.componentCircuit, Materials.Capacitor, ItemList.Circuit_Parts_Capacitor.get(1L));
-
-        GT_OreDictUnificator.addAssociation(
-            OrePrefixes.componentCircuit,
-            Materials.Resistor,
-            ItemList.Circuit_Parts_ResistorSMD.get(1L),
-            true);
-        GT_OreDictUnificator.addAssociation(
-            OrePrefixes.componentCircuit,
-            Materials.Diode,
-            ItemList.Circuit_Parts_DiodeSMD.get(1L),
-            true);
-        GT_OreDictUnificator.addAssociation(
-            OrePrefixes.componentCircuit,
-            Materials.Transistor,
-            ItemList.Circuit_Parts_TransistorSMD.get(1L),
-            true);
-        GT_OreDictUnificator.addAssociation(
-            OrePrefixes.componentCircuit,
-            Materials.Capacitor,
-            ItemList.Circuit_Parts_CapacitorSMD.get(1L),
-            true);
-        GT_OreDictUnificator.addAssociation(
-            OrePrefixes.componentCircuit,
-            Materials.Inductor,
-            ItemList.Circuit_Parts_InductorSMD.get(1L),
-            true);
-
         /*
          * ICs Lenses made from perfect crystals first instead of plates Monocrystalline silicon ingot
          * (normal+glowstone+naquadah) EBF, normal silicon no EBF need anymore wafer(normal+glowstone+naquadah) cut mono
@@ -356,7 +321,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A very simple Circuit",
                 OrePrefixes.circuit.get(Materials.Primitive),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.NandChip.get(1), ULV);
+
         // Vacuum Tube Item01
         // Basic Circuit IC2
         // Good Circuit Item01
@@ -369,7 +334,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "Good Circuit",
                 OrePrefixes.circuit.get(Materials.Good),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Integrated_Good.get(1), MV);
+
         // Good Integrated Circuit Item01
         // Advanced Circuit IC2
 
@@ -380,7 +345,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A Basic Circuit",
                 OrePrefixes.circuit.get(Materials.Basic),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Microprocessor.get(1), LV);
+
         ItemList.Circuit_Processor.set(
             addItem(
                 80,
@@ -388,11 +353,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A Good Circuit",
                 OrePrefixes.circuit.get(Materials.Good),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Processor.get(1), MV);
-        // ItemList.Circuit_Computer.set(addItem(tLastID = 81, "Processor Assembly", "Advanced Circuit", new
-        // Object[]{OrePrefixes.circuit.get(Materials.Advanced), SubTag.NO_UNIFICATION}));
-        // Workstation/ Item01 Datacircuit
-        // Mainframe Item01 DataProcessor
 
         ItemList.Circuit_Nanoprocessor.set(
             addItem(
@@ -401,7 +361,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Advanced Circuit",
                 OrePrefixes.circuit.get(Materials.Advanced),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Nanoprocessor.get(1), HV);
+
         ItemList.Circuit_Nanocomputer.set(
             addItem(
                 83,
@@ -409,7 +369,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Extreme Circuit",
                 OrePrefixes.circuit.get(Materials.Data),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Nanocomputer.get(1), EV);
+
         ItemList.Circuit_Elitenanocomputer.set(
             addItem(
                 84,
@@ -417,8 +377,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Elite Circuit",
                 OrePrefixes.circuit.get(Materials.Elite),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Elitenanocomputer.get(1), IV);
-        // Nanoprocessor Mainframe Item01 Energy Flow Circuit
 
         // Quantum circuits
         ItemList.Circuit_Quantumprocessor.set(
@@ -428,7 +386,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Extreme Circuit",
                 OrePrefixes.circuit.get(Materials.Data),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Quantumprocessor.get(1), EV);
+
         ItemList.Circuit_Quantumcomputer.set(
             addItem(
                 86,
@@ -436,7 +394,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Elite Circuit",
                 OrePrefixes.circuit.get(Materials.Elite),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Quantumcomputer.get(1), IV);
+
         ItemList.Circuit_Masterquantumcomputer.set(
             addItem(
                 87,
@@ -444,7 +402,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A Master Circuit",
                 OrePrefixes.circuit.get(Materials.Master),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Masterquantumcomputer.get(1), LuV);
+
         ItemList.Circuit_Quantummainframe.set(
             addItem(
                 88,
@@ -452,7 +410,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Ultimate Circuit",
                 OrePrefixes.circuit.get(Materials.Ultimate),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Quantummainframe.get(1), ZPM);
+
 
         // Crystal circuits
         ItemList.Circuit_Crystalprocessor.set(
@@ -462,7 +420,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Elite Circuit",
                 OrePrefixes.circuit.get(Materials.Elite),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Crystalprocessor.get(1), IV);
+
         ItemList.Circuit_Crystalcomputer.set(
             addItem(
                 96,
@@ -470,7 +428,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A Master Circuit",
                 OrePrefixes.circuit.get(Materials.Master),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Crystalcomputer.get(1), LuV);
+
         ItemList.Circuit_Ultimatecrystalcomputer.set(
             addItem(
                 90,
@@ -478,7 +436,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Ultimate Circuit",
                 OrePrefixes.circuit.get(Materials.Ultimate),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Ultimatecrystalcomputer.get(1), ZPM);
+
         ItemList.Circuit_Crystalmainframe.set(
             addItem(
                 91,
@@ -486,7 +444,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A Super Circuit",
                 OrePrefixes.circuit.get(Materials.SuperconductorUHV),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Crystalmainframe.get(1), UV);
+
 
         // ???? Scared to remove.
         ItemList.Circuit_Ultimate.set(ItemList.Circuit_Ultimatecrystalcomputer.get(1L)); // maybe should be removed
@@ -499,7 +457,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A Master Circuit",
                 OrePrefixes.circuit.get(Materials.Master),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Neuroprocessor.get(1), LuV);
+
         ItemList.Circuit_Wetwarecomputer.set(
             addItem(
                 93,
@@ -507,7 +465,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Ultimate Circuit",
                 OrePrefixes.circuit.get(Materials.Ultimate),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Wetwarecomputer.get(1), ZPM);
+
         ItemList.Circuit_Wetwaresupercomputer.set(
             addItem(
                 94,
@@ -515,7 +473,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A Super Circuit",
                 OrePrefixes.circuit.get(Materials.SuperconductorUHV),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Wetwaresupercomputer.get(1), UV);
+
         ItemList.Circuit_Wetwaremainframe.set(
             addItem(
                 95,
@@ -523,7 +481,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Infinite Circuit",
                 OrePrefixes.circuit.get(Materials.Infinite),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Wetwaremainframe.get(1), UHV);
+
 
         // Bioware circuits.
         ItemList.Circuit_Bioprocessor.set(
@@ -533,7 +491,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Ultimate Circuit",
                 OrePrefixes.circuit.get(Materials.Ultimate),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Bioprocessor.get(1), ZPM);
+
         ItemList.Circuit_Biowarecomputer.set(
             addItem(
                 98,
@@ -541,7 +499,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A Super Circuit",
                 OrePrefixes.circuit.get(Materials.SuperconductorUHV),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Biowarecomputer.get(1), UV);
+
         ItemList.Circuit_Biowaresupercomputer.set(
             addItem(
                 99,
@@ -549,7 +507,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Infinite Circuit",
                 OrePrefixes.circuit.get(Materials.Infinite),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Biowaresupercomputer.get(1), UHV);
+
         ItemList.Circuit_Biomainframe.set(
             addItem(
                 120,
@@ -557,7 +515,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A Bio Circuit",
                 OrePrefixes.circuit.get(Materials.Bio),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_Biomainframe.get(1), UEV);
+
 
         ItemList.Circuit_Board_Coated_Basic.set(addItem(100, "Circuit Board", "A basic Circuit Board", o));
         ItemList.Circuit_Board_Phenolic_Good.set(addItem(101, "Good Circuit Board", "A good Circuit Board", o));
@@ -582,7 +540,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Optical Circuit",
                 OrePrefixes.circuit.get(Materials.SuperconductorUHV),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_OpticalProcessor.get(1), UV);
+
         ItemList.Circuit_OpticalAssembly.set(
             addItem(
                 155,
@@ -590,7 +548,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Optical Circuit",
                 OrePrefixes.circuit.get(Materials.Infinite),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_OpticalAssembly.get(1), UHV);
+
         ItemList.Circuit_OpticalComputer.set(
             addItem(
                 156,
@@ -598,7 +556,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Optical Circuit",
                 OrePrefixes.circuit.get(Materials.Bio),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_OpticalComputer.get(1), UEV);
+
         ItemList.Circuit_OpticalMainframe.set(
             addItem(
                 157,
@@ -606,7 +564,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Optical Circuit",
                 OrePrefixes.circuit.get(Materials.Optical),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_OpticalMainframe.get(1), UIV);
+
 
         // Exotic circuits
         ItemList.Circuit_ExoticProcessor.set(
@@ -616,7 +574,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Exotic Circuit",
                 OrePrefixes.circuit.get(Materials.Infinite),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_ExoticProcessor.get(1), UHV);
+
         ItemList.Circuit_ExoticAssembly.set(
             addItem(
                 167,
@@ -624,7 +582,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Exotic Circuit",
                 OrePrefixes.circuit.get(Materials.Bio),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_ExoticAssembly.get(1), UEV);
+
         ItemList.Circuit_ExoticComputer.set(
             addItem(
                 168,
@@ -632,7 +590,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Exotic Circuit",
                 OrePrefixes.circuit.get(Materials.Optical),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_ExoticComputer.get(1), UIV);
+
         ItemList.Circuit_ExoticMainframe.set(
             addItem(
                 169,
@@ -640,7 +598,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "An Exotic Circuit",
                 OrePrefixes.circuit.get(Materials.Exotic),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_ExoticMainframe.get(1), UMV);
+
 
         // Cosmic circuits
         ItemList.Circuit_CosmicProcessor.set(
@@ -650,7 +608,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A Cosmic Circuit",
                 OrePrefixes.circuit.get(Materials.Bio),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_CosmicProcessor.get(1), UEV);
+
         ItemList.Circuit_CosmicAssembly.set(
             addItem(
                 171,
@@ -658,7 +616,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A Cosmic Circuit",
                 OrePrefixes.circuit.get(Materials.Optical),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_CosmicAssembly.get(1), UIV);
+
         ItemList.Circuit_CosmicComputer.set(
             addItem(
                 172,
@@ -666,7 +624,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A Cosmic Circuit",
                 OrePrefixes.circuit.get(Materials.Exotic),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_CosmicComputer.get(1), UMV);
+
         ItemList.Circuit_CosmicMainframe.set(
             addItem(
                 173,
@@ -674,7 +632,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A Cosmic Circuit",
                 OrePrefixes.circuit.get(Materials.Cosmic),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_CosmicMainframe.get(1), UXV);
+
 
         // Transcendent circuits
         ItemList.Circuit_TranscendentProcessor.set(
@@ -684,7 +642,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A circuit operating outside of known spacetime",
                 OrePrefixes.circuit.get(Materials.Optical),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_TranscendentProcessor.get(1), UIV);
+
         ItemList.Circuit_TranscendentAssembly.set(
             addItem(
                 175,
@@ -692,7 +650,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A circuit operating outside of known spacetime",
                 OrePrefixes.circuit.get(Materials.Exotic),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_TranscendentAssembly.get(1), UMV);
+
         ItemList.Circuit_TranscendentComputer.set(
             addItem(
                 176,
@@ -700,7 +658,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A circuit operating outside of known spacetime",
                 OrePrefixes.circuit.get(Materials.Cosmic),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_TranscendentComputer.get(1), UXV);
+
         ItemList.Circuit_TranscendentMainframe.set(
             addItem(
                 177,
@@ -708,7 +666,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "A circuit operating outside of known spacetime",
                 OrePrefixes.circuit.get(Materials.Transcendent),
                 SubTag.NO_UNIFICATION));
-        registerTieredTooltip(ItemList.Circuit_TranscendentMainframe.get(1), MAX);
+
 
         ItemList.Tube_Wires.set(addItem(110, "Tube Wires", "For the Vacuum Tubes", o));
 
@@ -737,18 +695,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 512L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 512L)));
 
-        GregTech_API.registerCover(
-            ItemList.Cover_SolarPanel_UHV.get(1L),
-            TextureFactory.of(SOLARPANEL_UHV),
-            new GT_Cover_SolarPanel(2097152));
-        GregTech_API.registerCover(
-            ItemList.Cover_SolarPanel_UEV.get(1L),
-            TextureFactory.of(SOLARPANEL_UEV),
-            new GT_Cover_SolarPanel(8388608));
-        GregTech_API.registerCover(
-            ItemList.Cover_SolarPanel_UIV.get(1L),
-            TextureFactory.of(SOLARPANEL_UIV),
-            new GT_Cover_SolarPanel(33554432));
 
         ItemList.ULV_Coil.set(addItem(140, "Ultra Low Voltage Coil", "Primitive Coil", o));
         ItemList.LV_Coil.set(addItem(141, "Low Voltage Coil", "Basic Coil", o));
@@ -957,38 +903,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "Night upgrade for Industrial Apiary/n Maximum Installed: 1/n * Internal Darkness/n * Energy Consumption +5%",
                 OrePrefixes.apiaryUpgrade.name()));
 
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_1.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_2.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_3.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_4.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_5.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_6.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_7.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_8.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_8_Upgraded.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_PRODUCTION.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_PLAINS.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_LIGHT.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_FLOWERING.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_WINTER.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_DRYER.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_AUTOMATION.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_HUMIDIFIER.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_HELL.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_POLLEN.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_DESERT.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_COOLER.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_LIFESPAN.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_SEAL.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_STABILIZER.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_JUNGLE.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_TERRITORY.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_OCEAN.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_SKY.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_HEATER.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_SIEVE.get(1L));
-        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_UNLIGHT.get(1L));
-
         ItemList.NuclearStar.set(
             addItem(
                 230,
@@ -1007,10 +921,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                     "Works across dimensions or if machine is dismantled",
                     "Removing this cover will destroy the linked card",
                     GT_Values.AuthorQuerns)));
-        GregTech_API.registerCover(
-            ItemList.Cover_Metrics_Transmitter.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)),
-            new GT_Cover_Metrics_Transmitter(TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)));
 
         ItemList.Optical_Cpu_Containment_Housing.set(addItem(727, "Optical CPU Containment Housing", "CPU Housing", o));
         ItemList.Optically_Perfected_CPU.set(addItem(726, "Optically Perfected CPU", "Perfected CPU!", o));
@@ -1153,6 +1063,142 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 whiteDwarfIDs,
                 "White Dwarf Extruder Shape (Drill Head)",
                 "White Dwarf Extruder Shape for a Drill Head"));
+        registerAllTieredTooltips();
+        initOrePrefixes();
+        initOreDictUnificatorEntries();
+        registerCovers();
+    }
+
+    private void registerAllTieredTooltips(){
+        registerTieredTooltip(ItemList.NandChip.get(1), ULV);
+        registerTieredTooltip(ItemList.Circuit_Integrated_Good.get(1), MV);
+        registerTieredTooltip(ItemList.Circuit_Microprocessor.get(1), LV);
+        registerTieredTooltip(ItemList.Circuit_Processor.get(1), MV);
+        registerTieredTooltip(ItemList.Circuit_Nanoprocessor.get(1), HV);
+        registerTieredTooltip(ItemList.Circuit_Nanocomputer.get(1), EV);
+        registerTieredTooltip(ItemList.Circuit_Elitenanocomputer.get(1), IV);
+        registerTieredTooltip(ItemList.Circuit_Quantumprocessor.get(1), EV);
+        registerTieredTooltip(ItemList.Circuit_Quantumcomputer.get(1), IV);
+        registerTieredTooltip(ItemList.Circuit_Masterquantumcomputer.get(1), LuV);
+        registerTieredTooltip(ItemList.Circuit_Quantummainframe.get(1), ZPM);
+        registerTieredTooltip(ItemList.Circuit_Crystalprocessor.get(1), IV);
+        registerTieredTooltip(ItemList.Circuit_Crystalcomputer.get(1), LuV);
+        registerTieredTooltip(ItemList.Circuit_Ultimatecrystalcomputer.get(1), ZPM);
+        registerTieredTooltip(ItemList.Circuit_Crystalmainframe.get(1), UV);
+        registerTieredTooltip(ItemList.Circuit_Neuroprocessor.get(1), LuV);
+        registerTieredTooltip(ItemList.Circuit_Wetwarecomputer.get(1), ZPM);
+        registerTieredTooltip(ItemList.Circuit_Wetwaresupercomputer.get(1), UV);
+        registerTieredTooltip(ItemList.Circuit_Wetwaremainframe.get(1), UHV);
+        registerTieredTooltip(ItemList.Circuit_Bioprocessor.get(1), ZPM);
+        registerTieredTooltip(ItemList.Circuit_Biowarecomputer.get(1), UV);
+        registerTieredTooltip(ItemList.Circuit_Biowaresupercomputer.get(1), UHV);
+        registerTieredTooltip(ItemList.Circuit_Biomainframe.get(1), UEV);
+        registerTieredTooltip(ItemList.Circuit_OpticalProcessor.get(1), UV);
+        registerTieredTooltip(ItemList.Circuit_OpticalAssembly.get(1), UHV);
+        registerTieredTooltip(ItemList.Circuit_OpticalComputer.get(1), UEV);
+        registerTieredTooltip(ItemList.Circuit_OpticalMainframe.get(1), UIV);
+        registerTieredTooltip(ItemList.Circuit_ExoticProcessor.get(1), UHV);
+        registerTieredTooltip(ItemList.Circuit_ExoticAssembly.get(1), UEV);
+        registerTieredTooltip(ItemList.Circuit_ExoticComputer.get(1), UIV);
+        registerTieredTooltip(ItemList.Circuit_ExoticMainframe.get(1), UMV);
+        registerTieredTooltip(ItemList.Circuit_CosmicProcessor.get(1), UEV);
+        registerTieredTooltip(ItemList.Circuit_CosmicAssembly.get(1), UIV);
+        registerTieredTooltip(ItemList.Circuit_CosmicComputer.get(1), UMV);
+        registerTieredTooltip(ItemList.Circuit_CosmicMainframe.get(1), UXV);
+        registerTieredTooltip(ItemList.Circuit_TranscendentProcessor.get(1), UIV);
+        registerTieredTooltip(ItemList.Circuit_TranscendentAssembly.get(1), UMV);
+        registerTieredTooltip(ItemList.Circuit_TranscendentComputer.get(1), UXV);
+        registerTieredTooltip(ItemList.Circuit_TranscendentMainframe.get(1), MAX);
+    }
+
+    private void initOreDictUnificatorEntries(){
+        GT_OreDictUnificator
+            .set(OrePrefixes.componentCircuit, Materials.Resistor, ItemList.Circuit_Parts_Resistor.get(1L));
+        GT_OreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Diode, ItemList.Circuit_Parts_Diode.get(1L));
+        GT_OreDictUnificator
+            .set(OrePrefixes.componentCircuit, Materials.Transistor, ItemList.Circuit_Parts_Transistor.get(1L));
+        GT_OreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Inductor, ItemList.Circuit_Parts_Coil.get(1L));
+        GT_OreDictUnificator
+            .set(OrePrefixes.componentCircuit, Materials.Capacitor, ItemList.Circuit_Parts_Capacitor.get(1L));
+
+        GT_OreDictUnificator.addAssociation(
+            OrePrefixes.componentCircuit,
+            Materials.Resistor,
+            ItemList.Circuit_Parts_ResistorSMD.get(1L),
+            true);
+        GT_OreDictUnificator.addAssociation(
+            OrePrefixes.componentCircuit,
+            Materials.Diode,
+            ItemList.Circuit_Parts_DiodeSMD.get(1L),
+            true);
+        GT_OreDictUnificator.addAssociation(
+            OrePrefixes.componentCircuit,
+            Materials.Transistor,
+            ItemList.Circuit_Parts_TransistorSMD.get(1L),
+            true);
+        GT_OreDictUnificator.addAssociation(
+            OrePrefixes.componentCircuit,
+            Materials.Capacitor,
+            ItemList.Circuit_Parts_CapacitorSMD.get(1L),
+            true);
+        GT_OreDictUnificator.addAssociation(
+            OrePrefixes.componentCircuit,
+            Materials.Inductor,
+            ItemList.Circuit_Parts_InductorSMD.get(1L),
+            true);
+
+    }
+    private void initOrePrefixes(){
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_1.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_2.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_3.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_4.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_5.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_6.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_7.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_8.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_8_Upgraded.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_PRODUCTION.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_PLAINS.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_LIGHT.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_FLOWERING.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_WINTER.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_DRYER.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_AUTOMATION.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_HUMIDIFIER.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_HELL.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_POLLEN.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_DESERT.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_COOLER.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_LIFESPAN.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_SEAL.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_STABILIZER.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_JUNGLE.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_TERRITORY.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_OCEAN.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_SKY.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_HEATER.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_SIEVE.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_UNLIGHT.get(1L));
+    }
+
+    private void registerCovers(){
+        GregTech_API.registerCover(
+            ItemList.Cover_Metrics_Transmitter.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)),
+            new GT_Cover_Metrics_Transmitter(TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)));
+        GregTech_API.registerCover(
+            ItemList.Cover_SolarPanel_UHV.get(1L),
+            TextureFactory.of(SOLARPANEL_UHV),
+            new GT_Cover_SolarPanel(2097152));
+        GregTech_API.registerCover(
+            ItemList.Cover_SolarPanel_UEV.get(1L),
+            TextureFactory.of(SOLARPANEL_UEV),
+            new GT_Cover_SolarPanel(8388608));
+        GregTech_API.registerCover(
+            ItemList.Cover_SolarPanel_UIV.get(1L),
+            TextureFactory.of(SOLARPANEL_UIV),
+            new GT_Cover_SolarPanel(33554432));
     }
 
     @Override
