@@ -21,6 +21,42 @@ import static gregtech.client.GT_TooltipHandler.Tier.UV;
 import static gregtech.client.GT_TooltipHandler.Tier.UXV;
 import static gregtech.client.GT_TooltipHandler.Tier.ZPM;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Bio;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Plastic;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Wetware;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_CapacitorASMD;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_CapacitorSMD;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_CapacitorXSMD;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_Coil;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_DiodeASMD;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_DiodeSMD;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_DiodeXSMD;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_GlassFiber;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_Glass_Tube;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_InductorASMD;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_InductorSMD;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_InductorXSMD;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_PetriDish;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_Reinforced_Glass_Tube;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_ResistorASMD;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_ResistorSMD;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_ResistorXSMD;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_TransistorASMD;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_TransistorSMD;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Parts_TransistorXSMD;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Ingot;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Ingot2;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Ingot3;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Ingot4;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Ingot5;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Ingot6;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Wafer;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Wafer2;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Wafer3;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Wafer4;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Wafer5;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Wafer6;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Silicon_Wafer7;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -34,6 +70,50 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.covers.GT_Cover_Metrics_Transmitter;
 import gregtech.common.covers.GT_Cover_SolarPanel;
+
+enum ID_MetaItem_03{
+    Circuit_Board_Wetware(6),
+    Circuit_Board_Plastic(7),
+    Circuit_Board_Bio(8),
+    Circuit_Parts_ResistorSMD(11),
+    Circuit_Parts_Glass_Tube(12),
+    Circuit_Parts_Coil(14),
+    Circuit_Parts_DiodeSMD(16),
+    Circuit_Parts_TransistorSMD(18),
+    Circuit_Parts_CapacitorSMD(20),
+    Circuit_Parts_GlassFiber(21),
+    Circuit_Parts_PetriDish(22),
+    Circuit_Parts_Reinforced_Glass_Tube(23),
+    Circuit_Parts_ResistorASMD(24),
+    Circuit_Parts_DiodeASMD(25),
+    Circuit_Parts_TransistorASMD(26),
+    Circuit_Parts_CapacitorASMD(27),
+    Circuit_Parts_ResistorXSMD(178),
+    Circuit_Parts_DiodeXSMD(179),
+    Circuit_Parts_TransistorXSMD(180),
+    Circuit_Parts_CapacitorXSMD(181),
+    Circuit_Parts_InductorSMD(182),
+    Circuit_Parts_InductorASMD(183),
+    Circuit_Parts_InductorXSMD(184),
+    Circuit_Silicon_Ingot(30),
+    Circuit_Silicon_Ingot2(31),
+    Circuit_Silicon_Ingot3(32),
+    Circuit_Silicon_Ingot4(150),
+    Circuit_Silicon_Ingot5(152),
+    Circuit_Silicon_Ingot6(721),
+    Circuit_Silicon_Wafer(33),
+    Circuit_Silicon_Wafer2(34),
+    Circuit_Silicon_Wafer3(35),
+    Circuit_Silicon_Wafer4(151),
+    Circuit_Silicon_Wafer5(153),
+    Circuit_Silicon_Wafer6(722),
+    Circuit_Silicon_Wafer7(723),
+    ;
+    final int ID;
+    ID_MetaItem_03(int ID){
+        this.ID = ID;
+    }
+}
 
 public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
@@ -58,9 +138,9 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
          * + sulfuric acid wetware lifesupport board / fiberglass CB + teflon +
          */
         ItemList.Circuit_Board_Wetware
-            .set(addItem(6, "Wetware Lifesupport Circuit Board", "The Board that keeps life", o));
-        ItemList.Circuit_Board_Plastic.set(addItem(7, "Plastic Circuit Board", "A Good Board", o));
-        ItemList.Circuit_Board_Bio.set(addItem(8, "Bio Circuit Board", "Bio genetic mutated Board", o));
+            .set(addItem(Circuit_Board_Wetware.ID, "Wetware Lifesupport Circuit Board", "The Board that keeps life", o));
+        ItemList.Circuit_Board_Plastic.set(addItem(Circuit_Board_Plastic.ID, "Plastic Circuit Board", "A Good Board", o));
+        ItemList.Circuit_Board_Bio.set(addItem(Circuit_Board_Bio.ID, "Bio Circuit Board", "Bio genetic mutated Board", o));
 
         /*
          * electronic components: vacuum tube (glass tube + red alloy cables) basic electronic circuits normal+smd coils
@@ -68,67 +148,67 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
          */
         ItemList.Circuit_Parts_ResistorSMD.set(
             addItem(
-                11,
+                Circuit_Parts_ResistorSMD.ID,
                 "SMD Resistor",
                 "Electronic Component",
                 OrePrefixes.componentCircuit.get(Materials.Resistor),
                 SubTag.NO_UNIFICATION));
-        ItemList.Circuit_Parts_Glass_Tube.set(addItem(12, "Glass Tube", "", o));
-        ItemList.Circuit_Parts_Coil.set(addItem(14, "Small Coil", "Basic Electronic Component", o));
+        ItemList.Circuit_Parts_Glass_Tube.set(addItem(Circuit_Parts_Glass_Tube.ID, "Glass Tube", "", o));
+        ItemList.Circuit_Parts_Coil.set(addItem(Circuit_Parts_Coil.ID, "Small Coil", "Basic Electronic Component", o));
         ItemList.Circuit_Parts_DiodeSMD.set(
             addItem(
-                16,
+                Circuit_Parts_DiodeSMD.ID,
                 "SMD Diode",
                 "Electronic Component",
                 OrePrefixes.componentCircuit.get(Materials.Diode),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_TransistorSMD.set(
             addItem(
-                18,
+                Circuit_Parts_TransistorSMD.ID,
                 "SMD Transistor",
                 "Electronic Component",
                 OrePrefixes.componentCircuit.get(Materials.Transistor),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_CapacitorSMD.set(
             addItem(
-                20,
+                Circuit_Parts_CapacitorSMD.ID,
                 "SMD Capacitor",
                 "Electronic Component",
                 OrePrefixes.componentCircuit.get(Materials.Capacitor),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_GlassFiber
-            .set(addItem(21, "Glass Fiber", Materials.BorosilicateGlass.mChemicalFormula, o));
-        ItemList.Circuit_Parts_PetriDish.set(addItem(22, "Petri Dish", "For cultivating cells", o));
-        ItemList.Circuit_Parts_Reinforced_Glass_Tube.set(addItem(23, "Reinforced Glass Tube", "", o));
+            .set(addItem(Circuit_Parts_GlassFiber.ID, "Glass Fiber", Materials.BorosilicateGlass.mChemicalFormula, o));
+        ItemList.Circuit_Parts_PetriDish.set(addItem(Circuit_Parts_PetriDish.ID, "Petri Dish", "For cultivating cells", o));
+        ItemList.Circuit_Parts_Reinforced_Glass_Tube.set(addItem(Circuit_Parts_Reinforced_Glass_Tube.ID, "Reinforced Glass Tube", "", o));
 
         ItemList.Circuit_Parts_ResistorASMD
-            .set(addItem(24, "Advanced SMD Resistor", "Advanced Electronic Component", o));
-        ItemList.Circuit_Parts_DiodeASMD.set(addItem(25, "Advanced SMD Diode", "Advanced Electronic Component", o));
+            .set(addItem(Circuit_Parts_ResistorASMD.ID, "Advanced SMD Resistor", "Advanced Electronic Component", o));
+        ItemList.Circuit_Parts_DiodeASMD.set(addItem(Circuit_Parts_DiodeASMD.ID, "Advanced SMD Diode", "Advanced Electronic Component", o));
         ItemList.Circuit_Parts_TransistorASMD
-            .set(addItem(26, "Advanced SMD Transistor", "Advanced Electronic Component", o));
+            .set(addItem(Circuit_Parts_TransistorASMD.ID, "Advanced SMD Transistor", "Advanced Electronic Component", o));
         ItemList.Circuit_Parts_CapacitorASMD
-            .set(addItem(27, "Advanced SMD Capacitor", "Advanced Electronic Component", o));
+            .set(addItem(Circuit_Parts_CapacitorASMD.ID, "Advanced SMD Capacitor", "Advanced Electronic Component", o));
 
         ItemList.Circuit_Parts_ResistorXSMD
-            .set(addItem(178, "Optical SMD Resistor", "Highly Advanced Electronic Component", o));
+            .set(addItem(Circuit_Parts_ResistorXSMD.ID, "Optical SMD Resistor", "Highly Advanced Electronic Component", o));
         ItemList.Circuit_Parts_DiodeXSMD
-            .set(addItem(179, "Optical SMD Diode", "Highly Advanced Electronic Component", o));
+            .set(addItem(Circuit_Parts_DiodeXSMD.ID, "Optical SMD Diode", "Highly Advanced Electronic Component", o));
         ItemList.Circuit_Parts_TransistorXSMD
-            .set(addItem(180, "Optical SMD Transistor", "Highly Advanced Electronic Component", o));
+            .set(addItem(Circuit_Parts_TransistorXSMD.ID, "Optical SMD Transistor", "Highly Advanced Electronic Component", o));
         ItemList.Circuit_Parts_CapacitorXSMD
-            .set(addItem(181, "Optical SMD Capacitor", "Highly Advanced Electronic Component", o));
+            .set(addItem(Circuit_Parts_CapacitorXSMD.ID, "Optical SMD Capacitor", "Highly Advanced Electronic Component", o));
 
         ItemList.Circuit_Parts_InductorSMD.set(
             addItem(
-                182,
+                Circuit_Parts_InductorSMD.ID,
                 "SMD Inductor",
                 "Electronic Component",
                 OrePrefixes.componentCircuit.get(Materials.Inductor),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_InductorASMD
-            .set(addItem(183, "Advanced SMD Inductor", "Advanced Electronic Component", o));
+            .set(addItem(Circuit_Parts_InductorASMD.ID, "Advanced SMD Inductor", "Advanced Electronic Component", o));
         ItemList.Circuit_Parts_InductorXSMD
-            .set(addItem(184, "Optical SMD Inductor", "Highly Advanced Electronic Component", o));
+            .set(addItem(Circuit_Parts_InductorXSMD.ID, "Optical SMD Inductor", "Highly Advanced Electronic Component", o));
 
         GT_OreDictUnificator
             .set(OrePrefixes.componentCircuit, Materials.Resistor, ItemList.Circuit_Parts_Resistor.get(1L));
@@ -174,24 +254,24 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
          * nanotube interconnected circuit (H-IC + nanotubes)
          * quantum chips
          */
-        ItemList.Circuit_Silicon_Ingot.set(addItem(30, "Monocrystalline Silicon Boule", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Ingot.set(addItem(Circuit_Silicon_Ingot.ID, "Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Ingot2
-            .set(addItem(31, "Phosphorus doped Monocrystalline Silicon Boule", "Raw Circuit", o));
+            .set(addItem(Circuit_Silicon_Ingot2.ID, "Phosphorus doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Ingot3
-            .set(addItem(32, "Naquadah doped Monocrystalline Silicon Boule", "Raw Circuit", o));
+            .set(addItem(Circuit_Silicon_Ingot3.ID, "Naquadah doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Ingot4
-            .set(addItem(150, "Europium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
+            .set(addItem(Circuit_Silicon_Ingot4.ID, "Europium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Ingot5
-            .set(addItem(152, "Americium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Ingot6.set(addItem(721, "Optically Enriched Crystalline Boule", "Raw Circuit", o));
+            .set(addItem(Circuit_Silicon_Ingot5.ID, "Americium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Ingot6.set(addItem(Circuit_Silicon_Ingot6.ID, "Optically Enriched Crystalline Boule", "Raw Circuit", o));
 
-        ItemList.Circuit_Silicon_Wafer.set(addItem(33, "Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Wafer2.set(addItem(34, "Phosphorus doped Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Wafer3.set(addItem(35, "Naquadah doped Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Wafer4.set(addItem(151, "Europium doped Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Wafer5.set(addItem(153, "Americium doped Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Wafer6.set(addItem(722, "Photonically Prepared Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Wafer7.set(addItem(723, "Photonically Enhanced Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer.set(addItem(Circuit_Silicon_Wafer.ID, "Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer2.set(addItem(Circuit_Silicon_Wafer2.ID, "Phosphorus doped Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer3.set(addItem(Circuit_Silicon_Wafer3.ID, "Naquadah doped Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer4.set(addItem(Circuit_Silicon_Wafer4.ID, "Europium doped Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer5.set(addItem(Circuit_Silicon_Wafer5.ID, "Americium doped Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer6.set(addItem(Circuit_Silicon_Wafer6.ID, "Photonically Prepared Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer7.set(addItem(Circuit_Silicon_Wafer7.ID, "Photonically Enhanced Wafer", "Raw Circuit", o));
 
         ItemList.Circuit_Wafer_ILC.set(addItem(36, "Integrated Logic Circuit (Wafer)", "Raw Circuit", o));
         ItemList.Circuit_Chip_ILC.set(addItem(37, "Integrated Logic Circuit", "Integrated Circuit", o));
