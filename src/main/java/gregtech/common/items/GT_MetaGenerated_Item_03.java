@@ -36,6 +36,7 @@ import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Phenolic_Good;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Plastic;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Plastic_Advanced;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Wetware;
+import static gregtech.common.items.ID_MetaItem_03.Circuit_Board_Wetware_Extreme;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_BioCPU;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_Biocell;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Chip_CPU;
@@ -702,7 +703,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
             .set(addItem(Circuit_Board_Multifiberglass_Elite.ID, "Elite Circuit Board", "A elite Circuit Board", o));
         ItemList.Circuit_Board_Wetware_Extreme.set(
             addItem(
-                Circuit_Board_Multifiberglass_Elite.ID,
+                Circuit_Board_Wetware_Extreme.ID,
                 "Extreme Wetware Lifesupport Circuit Board",
                 "The Board that keeps life",
                 o));
