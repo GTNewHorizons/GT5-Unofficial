@@ -608,7 +608,6 @@ public class GT_Achievements {
             case "gt.blockcasings.15" -> issueAchievement(player, "conducting");
         }
 
-
         if (!stack.getUnlocalizedName()
             .startsWith("gt.blockmachines.")) {
             return;
