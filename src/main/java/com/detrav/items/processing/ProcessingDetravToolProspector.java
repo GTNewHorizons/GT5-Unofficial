@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.detrav.items.DetravMetaGeneratedTool01;
-import com.detrav.xmod.Dreamcraft;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -108,8 +107,6 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
                             OreDictionary.getOres("cellHydrogenPeroxide").get(0), 'H',
                             OrePrefixes.toolHeadDrill.get(material), 'P', OrePrefixes.plate.get(material), 'C',
                             OrePrefixes.circuit.get(Materials.Infinite), 'X', ItemList.Sensor_UHV });
-
-            if (isDreamcraftLoaded) Dreamcraft.registerOre(material);
 
         } catch (Exception ignored) {}
 
