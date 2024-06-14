@@ -1,7 +1,6 @@
 package com.detrav.items.processing;
 
 import static com.detrav.DetravScannerMod.DEBUG_ENABLED;
-import static com.detrav.DetravScannerMod.isDreamcraftLoaded;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
