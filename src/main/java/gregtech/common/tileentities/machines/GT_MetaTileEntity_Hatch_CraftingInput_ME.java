@@ -186,7 +186,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
         public boolean isItemEmpty() {
             updateSlotItems();
-            return itemInventory.isEmpty();
+            return itemInventory.isEmpty() && sharedItemGetter.getSharedItem().length == 0;
         }
 
         public boolean isFluidEmpty() {
