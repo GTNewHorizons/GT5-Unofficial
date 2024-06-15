@@ -422,7 +422,7 @@ public enum ID_MetaItem_01 {
     Duct_Tape(764),
     McGuffium_239(765);
 
-    final int ID;
+    public final int ID;
 
     ID_MetaItem_01(int ID) {
         this.ID = ID;
