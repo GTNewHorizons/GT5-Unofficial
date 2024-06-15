@@ -1,9 +1,9 @@
 package com.detrav;
 
+import static com.detrav.Tags.VERSION;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.config.Configuration;
-
-import org.apache.logging.log4j.LogManager;
 
 import com.detrav.net.DetravNetwork;
 import com.detrav.proxies.CommonProxy;
@@ -23,20 +23,16 @@ import gregtech.api.GregTech_API;
 
 @Mod(
         modid = DetravScannerMod.MODID,
-        version = DetravScannerMod.VERSION,
+        version = VERSION,
         dependencies = "required-after:IC2;required-after:gregtech;after:miscutils;after:bartworks")
 public class DetravScannerMod {
 
     public static final String MODID = "detravscannermod";
-    public static final String VERSION = "GRADLETOKEN_VERSION";
-    public static final String DEBUGOVERRIDE = "@false";
-    public static final boolean DEBUGBUILD = Boolean.parseBoolean(DEBUGOVERRIDE.substring(1));
+    public static final boolean DEBUG_ENABLED = Boolean.parseBoolean(System.getProperty("com.detrav.debug", "false"));
     public static final CreativeTabs TAB_DETRAV = new DetravCreativeTab();
     public static boolean isDreamcraftLoaded = false;
     public static boolean isBartWorksLoaded = false;
     public static boolean isGTppLoaded = false;
-
-    public static final org.apache.logging.log4j.Logger Logger = LogManager.getLogger("GT Scanner Mod");
 
     @SidedProxy(clientSide = "com.detrav.proxies.ClientProxy", serverSide = "com.detrav.proxies.ServerProxy")
     public static CommonProxy proxy;
@@ -77,5 +73,4 @@ public class DetravScannerMod {
         if (isGTppLoaded) GTppHelper.generate_OreIDs();
         FluidColors.makeColors();
     }
-
 }

@@ -1,6 +1,10 @@
 package com.detrav.items.behaviours;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.SplittableRandom;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -140,7 +144,7 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
                         break;
                     }
                 }
-                if (DetravScannerMod.DEBUGBUILD) aPlayer.addChatMessage(
+                if (DetravScannerMod.DEBUG_ENABLED) aPlayer.addChatMessage(
                         new ChatComponentText(
                                 EnumChatFormatting.YELLOW + "Chunk at "
                                         + aX
@@ -348,7 +352,7 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
 
             return;
         } else {
-            if (DetravScannerMod.DEBUGBUILD)
+            if (DetravScannerMod.DEBUG_ENABLED)
                 aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + " Failed on this chunk"));
             badluck++;
             if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts / 4);
@@ -366,7 +370,7 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
                                                                                                                          // the
                                                                                                                          // ore
         if (!ores.containsKey(oreDistance)) {
-            if (DetravScannerMod.DEBUGBUILD) aPlayer.addChatMessage(
+            if (DetravScannerMod.DEBUG_ENABLED) aPlayer.addChatMessage(
                     new ChatComponentText(EnumChatFormatting.GREEN + " Adding to oremap " + oreDistance));
             ores.put(oreDistance, 1);
         } else {
