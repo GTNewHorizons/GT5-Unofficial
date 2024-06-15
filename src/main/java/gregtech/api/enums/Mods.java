@@ -53,6 +53,7 @@ public enum Mods {
     CraftTweaker(Names.CRAFT_TWEAKER),
     CropLoadCore(Names.CROP_LOAD_CORE),
     CropsPlusPlus(Names.CROPS_PLUS_PLUS),
+    DetravScannerMod(Names.DETRAV_SCANNER_MOD),
     DraconicEvolution(Names.DRACONIC_EVOLUTION),
     ElectroMagicTools(Names.ELECTRO_MAGIC_TOOLS),
     EnderIO(Names.ENDER_I_O),
@@ -232,6 +233,7 @@ public enum Mods {
         public static final String CRAFT_TWEAKER = "MineTweaker3";
         public static final String CROP_LOAD_CORE = "croploadcore";
         public static final String CROPS_PLUS_PLUS = "berriespp";
+        public static final String DETRAV_SCANNER_MOD = "detravscannermod";
         public static final String DRACONIC_EVOLUTION = "DraconicEvolution";
         public static final String ELECTRO_MAGIC_TOOLS = "EMT";
         public static final String ENDER_I_O = "EnderIO";
