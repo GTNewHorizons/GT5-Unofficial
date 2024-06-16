@@ -723,7 +723,6 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         outputParticle = 1; // Photon
 
-
         FluidStack primaryFluid = fluidList.get(0);
 
         int fluidTemperature;
@@ -776,7 +775,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
             stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.inscoolant"));
             return false;
-        
+
         }
 
         primaryFluid.amount -= CONSUMED_FLUID;

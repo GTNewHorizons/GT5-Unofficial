@@ -326,7 +326,6 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
             machineFocus = 90;
         }
 
-
         inputFocus = this.getInputInformation()
             .getFocus();
 
@@ -346,18 +345,16 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
                 .maxSourceEnergy()) * machineEnergy,
             100_000); // TODO more complex calculation than just
         // addition
-        
 
         inputRate = this.getInputInformation()
             .getRate();
         outputRate = inputRate; // Cannot increase rate with this multiblock
 
-        
         if (Util.coolantFluidCheck(primFluid, fluidConsumed)) {
 
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.inscoolant"));
             return false;
-        
+
         }
 
         primFluid.amount -= fluidConsumed;
@@ -369,7 +366,6 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
         if (Objects.isNull(fluidOutput)) return false;
 
         this.addFluidOutputs(new FluidStack[] { fluidOutput });
-        
 
         outputAfterRecipe();
 
@@ -669,7 +665,6 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
             env,
             false,
             true);
-
 
         return finalOutput;
     }

@@ -179,7 +179,6 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
         return new ITexture[] { casingTexturePages[0][47] };
     }
 
-
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
@@ -255,14 +254,11 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
         tItemsWithFocusItem.add(tFocusItemZeroDamage);
         tItemsWithFocusItem.addAll(tItems);
 
-
         long tVoltage = this.getMaxInputVoltage();
-
 
         ItemStack[] tItemsArray = tItems.toArray(new ItemStack[0]);
 
         ItemStack[] tItemsWithFocusItemArray = tItemsWithFocusItem.toArray(new ItemStack[0]);
-
 
         RecipeTC tRecipe = (RecipeTC) BeamlineRecipeAdder2.instance.TargetChamberRecipes.findRecipeQuery()
             .items(tItemsWithFocusItemArray)
@@ -281,14 +277,12 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
             })
             .find();
 
-
         if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, new FluidStack[] {}, tItemsWithFocusItemArray))
             return false;
 
         if (tRecipe.focusItem != null) {
             if (tRecipe.focusItem.getItem() != tFocusItem.getItem()) return false;
         }
-
 
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
@@ -301,7 +295,6 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
         inputRate = inputInfo.getRate();
         inputParticle = inputInfo.getParticleId();
         inputFocus = inputInfo.getFocus();
-
 
         if (inputEnergy < tRecipe.minEnergy || inputEnergy > tRecipe.maxEnergy) return false;
 

@@ -3,11 +3,11 @@ package com.elisis.gtnhlanth.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 public class Util {
 
@@ -46,10 +46,10 @@ public class Util {
         }
         return results;
     }
-    
+
     public static boolean coolantFluidCheck(FluidStack inStack, int fluidToConsume) {
-    	return (inStack.amount < fluidToConsume
-                || (!inStack.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1)) && inStack.getFluid()
-                    .getTemperature() > 200));
+        return (inStack.amount < fluidToConsume
+            || (!inStack.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1)) && inStack.getFluid()
+                .getTemperature() > 200));
     }
 }
