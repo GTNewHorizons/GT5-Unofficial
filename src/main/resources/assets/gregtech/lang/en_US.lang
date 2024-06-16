@@ -71,6 +71,8 @@ GT5U.LHE.threshold=threshold
 GT5U.fusion.req=EU Required
 GT5U.fusion.plasma=Plasma Output
 
+GT5U.tpm.parallelwindow=Open Parallel Configuration Window
+
 GT5U.EBF.heat=Heat capacity
 GT5U.coil.None=None
 GT5U.coil.ULV=None
