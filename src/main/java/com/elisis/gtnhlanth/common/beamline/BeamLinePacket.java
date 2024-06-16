@@ -41,7 +41,6 @@ public class BeamLinePacket extends DataPacket<BeamInformation> {
 
     @Override
     public boolean extraCheck() {
-        // TODO Auto-generated method stub
         return true;
     }
 

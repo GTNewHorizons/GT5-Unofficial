@@ -36,6 +36,7 @@ import com.elisis.gtnhlanth.common.hatch.TileHatchOutputBeamline;
 import com.elisis.gtnhlanth.common.register.LanthItemList;
 import com.elisis.gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import com.elisis.gtnhlanth.util.DescTextLocalization;
+import com.elisis.gtnhlanth.util.Util;
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -712,10 +713,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
         if (!inputParticle.canAccelerate()) {
             stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
             return false;
-            // GT_Log.out.print("Accelerate");
         }
-
-        // GT_Log.out.print("Got this far");
 
         mMaxProgresstime = TickTime.SECOND;
 
@@ -725,7 +723,6 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         outputParticle = 1; // Photon
 
-        // GT_Log.out.print("euT " + mEUt);
 
         FluidStack primaryFluid = fluidList.get(0);
 
@@ -775,18 +772,11 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
             return false;
         }
 
-        // GT_Log.out.print("Voltage factor " + voltageFactor);
-
-        // outputAmount = inputParticle.getCharge() / Particle.ELECTRON.getCharge() * 100;
-
-        if (primaryFluid.amount < CONSUMED_FLUID
-            || (!primaryFluid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1)) && primaryFluid.getFluid()
-                .getTemperature() > 200)) {
-
-            // GT_Log.out.print("Primary fluid amount: " + primaryFluid.amount);
+        if (Util.coolantFluidCheck(primaryFluid, CONSUMED_FLUID)) {
 
             stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.inscoolant"));
             return false;
+        
         }
 
         primaryFluid.amount -= CONSUMED_FLUID;
@@ -1069,7 +1059,6 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
-        // TODO Auto-generated method stub
         return false;
     }
 

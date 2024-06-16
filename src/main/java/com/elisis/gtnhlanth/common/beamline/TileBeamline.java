@@ -49,8 +49,7 @@ public class TileBeamline extends MetaPipeEntity implements IConnectsToBeamline 
                 connectionCount = 0;
 
                 for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-                    ForgeDirection d1;
-                    d1 = dir.getOpposite();
+                    ForgeDirection d1 = dir.getOpposite();
                     TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(dir);
                     if (tTileEntity instanceof IConnectsToBeamline) {
                         if (((IConnectsToBeamline) tTileEntity).canConnect(d1)) {
