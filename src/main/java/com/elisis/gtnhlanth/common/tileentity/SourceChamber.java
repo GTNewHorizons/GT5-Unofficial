@@ -177,19 +177,12 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
         long tVoltageMaxTier = this.getMaxInputVoltage(); // Used to keep old math the same
         long tVoltageActual = GT_Values.VP[(int) this.getInputVoltageTier()];
 
-        /*
-         * for (GT_Recipe stack : BeamlineRecipeAdder.instance.SourceChamberRecipes.mRecipeList) {
-         * GT_Log.out.print("Recipe item " + Arrays.toString(stack.mInputs)); }
-         */
-
         RecipeSC tRecipe = (RecipeSC) BeamlineRecipeAdder2.instance.SourceChamberRecipes
             .findRecipe(this.getBaseMetaTileEntity(), false, tVoltageActual, new FluidStack[] {}, tItems);
 
         if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, new FluidStack[] {}, tItems)) return false; // Consumes
                                                                                                              // input
                                                                                                              // item
-
-        // GT_Log.out.print("Recipe good!");
 
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
@@ -213,8 +206,6 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
             (-maxMaterialEnergy) * Math.pow(1.001, -(tRecipe.energyRatio) * (tVoltageMaxTier - tRecipe.mEUt))
                 + maxMaterialEnergy,
             maxParticleEnergy);
-
-        // GT_Log.out.print(outputEnergy);
 
         if (outputEnergy <= 0) {
             stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.scerror"));

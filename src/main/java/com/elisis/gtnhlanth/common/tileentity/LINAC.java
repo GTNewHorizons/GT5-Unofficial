@@ -33,6 +33,7 @@ import com.elisis.gtnhlanth.common.hatch.TileHatchOutputBeamline;
 import com.elisis.gtnhlanth.common.register.LanthItemList;
 import com.elisis.gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import com.elisis.gtnhlanth.util.DescTextLocalization;
+import com.elisis.gtnhlanth.util.Util;
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.gtnewhorizon.structurelib.StructureLib;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -244,10 +245,6 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
 
-        // GT_Log.out.print("Hatches " + mInputHatches.size());
-
-        // GT_Log.out.print("AAAAA in checkRecipe");
-
         float tempFactor = 0;
         // Focus as determined by multi properties
         float machineFocus = 0;
@@ -279,15 +276,8 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
             return false;
         }
 
-        /*
-         * int aaa = 0; for (FluidStack input : tFluidInputs) { GT_Log.out.print(aaa + "fluid " +
-         * input.getLocalizedName()); aaa++; }
-         */
-
         // Coolant input
         FluidStack primFluid = tFluidInputs.get(0);
-
-        // GT_Log.out.print("ABFluid " + primFluid.getUnlocalizedName());
 
         // 1b (1000L)/m/operation
         final int fluidConsumed = 1000 * length;
@@ -317,8 +307,6 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
         // Consume the input tier's corresponding practical voltage instead of the maximum suggested by the logic
         mEUt = (int) -GT_Values.VP[(int) this.getInputVoltageTier()];
 
-        // GT_Log.out.print("Can accelerate");
-
         // Particle stays the same with this multiblock
         outputParticle = particleId;
 
@@ -337,8 +325,6 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
         if (machineFocus > 90) { // Max of 90
             machineFocus = 90;
         }
-
-        // GT_Log.out.print("machine focus " + machineFocus);
 
         inputFocus = this.getInputInformation()
             .getFocus();
@@ -364,44 +350,20 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
             .getRate();
         outputRate = inputRate; // Cannot increase rate with this multiblock
 
-        if (primFluid.amount < fluidConsumed
-            || (!primFluid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1)) && primFluid.getFluid()
-                .getTemperature() > 200)) {
+        if (Util.coolantFluidCheck(primFluid, fluidConsumed)) {
 
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.inscoolant"));
             return false;
-        }
 
-        // GT_Log.out.print("Fluid ok");
+        }
 
         primFluid.amount -= fluidConsumed;
 
-        /*
-         * Materials fluidMat = Materials.getGtMaterialFromFluid(primFluid.getFluid()); if
-         * (fluidMat.equals(Materials.LiquidNitrogen)) { fluidOutput = Materials.Nitrogen.getGas(fluidConsumed); } else
-         * if (fluidMat.equals(Materials.LiquidOxygen)) { fluidOutput = Materials.Oxygen.getGas(fluidConsumed); }
-         */
-        /*
-         * String fluidName = primFluid.getUnlocalizedName(); if
-         * (fluidName.equals(Materials.LiquidNitrogen.getFluid(1).getUnlocalizedName())) { fluidOutput =
-         * Materials.Nitrogen.getGas(fluidConsumed); }
-         */
-
-        // GT_Log.out.print(primFluid.getLocalizedName());
-        /*
-         * if (primFluid.isFluidEqual(Materials.LiquidNitrogen.getGas(1L))) fluidOutput =
-         * Materials.Nitrogen.getGas(fluidConsumed); // TODO more fluids if
-         * (primFluid.isFluidEqual(Materials.LiquidOxygen.getGas(1L))) fluidOutput =
-         * Materials.Oxygen.getGas(fluidConsumed); if (primFluid.isFluidEqual(Materials.SuperCoolant.getFluid(1L))) { }
-         */
-        // GT_Log.out.print("ABFluid " + primFluid.getLocalizedName());
         FluidStack fluidOutput = new FluidStack(
             BeamlineRecipeLoader.coolantMap.get(primFluid.getFluid()),
             fluidConsumed);
 
         if (Objects.isNull(fluidOutput)) return false;
-
-        // GT_Log.out.print("Fluid out ok");
 
         this.addFluidOutputs(new FluidStack[] { fluidOutput });
 
@@ -447,13 +409,6 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
         super.stopMachine(reason);
 
     }
-
-    /*
-     * @Override protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-     * super.drawTexts(screenElements, inventorySlot); screenElements.widget( new
-     * TextWidget(StatCollector.translateToLocal("gtnhlanth.error.nocoolant")) // No coolant present in machine!
-     * .setDefaultColor(EnumChatFormatting.WHITE).setEnabled(this.getStoredFluids().size() == 0)); }
-     */
 
     @Override
     public String[] getInfoData() {
@@ -584,7 +539,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
                                                                 // Will it matter? No :boubs_glasses:
 
             if (in.q == null) return new BeamInformation(0, 0, 0, 0);
-            // if (in.q == null) return new BeamInformation(10000, 10, 0, 90); // TODO temporary for testing purposes
+            // if (in.q == null) return new BeamInformation(10000, 10, 0, 90); // temporary for testing purposes
 
             return in.q.getContent();
         }
@@ -694,8 +649,6 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
 
         for (int i = -8; i > -lLength - 1; i -= 2) {
 
-            // GT_Log.out.print("Building inner piece! i = " + i);
-
             build = survivialBuildPiece(STRUCTURE_PIECE_LAYER, stackSize, 3, 6, i, elementBudget, env, false, true);
 
             if (build >= 0) return build;
@@ -712,9 +665,6 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
             env,
             false,
             true);
-
-        // if (finalOutput >= 0) // Prevent repeating messages
-        // StructureLib.addClientSideChatMessages("Length " + (11 + lLength) + " blocks.");
 
         return finalOutput;
     }

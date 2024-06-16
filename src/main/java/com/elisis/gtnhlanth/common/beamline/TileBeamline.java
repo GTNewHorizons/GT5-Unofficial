@@ -49,8 +49,7 @@ public class TileBeamline extends MetaPipeEntity implements IConnectsToBeamline 
                 connectionCount = 0;
 
                 for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-                    ForgeDirection d1;
-                    d1 = dir.getOpposite();
+                    ForgeDirection d1 = dir.getOpposite();
                     TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(dir);
                     if (tTileEntity instanceof IConnectsToBeamline) {
                         if (((IConnectsToBeamline) tTileEntity).canConnect(d1)) {
@@ -111,9 +110,6 @@ public class TileBeamline extends MetaPipeEntity implements IConnectsToBeamline 
 
     @Override
     public IConnectsToBeamline getNext(IConnectsToBeamline source) {
-        if (connectionCount != 2) {
-            return null;
-        }
 
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 
@@ -239,7 +235,7 @@ public class TileBeamline extends MetaPipeEntity implements IConnectsToBeamline 
     @Override
     public String[] getDescription() {
         return new String[] { StatCollector.translateToLocal("beamline.pipe.desc.0"), // Beamline pipe
-            EnumChatFormatting.AQUA + StatCollector.translateToLocal("beamline.pipe.desc.1"), // Do not cross, split
+            EnumChatFormatting.AQUA + StatCollector.translateToLocal("beamline.pipe.desc.1"), // Does not cross, split
                                                                                               // or turn
             "Added by " + EnumChatFormatting.GREEN + "GTNH: Lanthanides"
 
