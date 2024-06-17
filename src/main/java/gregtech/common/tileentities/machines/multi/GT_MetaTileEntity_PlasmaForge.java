@@ -728,7 +728,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
     public CheckRecipeResult checkProcessing() {
         CheckRecipeResult recipe_process = super.checkProcessing();
         if (recipe_process.wasSuccessful()) {
-            running_time = Math.min(running_time + mMaxProgresstime, (long) max_efficiency_time_in_ticks);
+            running_time = running_time + mMaxProgresstime;
         }
         return recipe_process;
     }
@@ -1095,7 +1095,8 @@ public class GT_MetaTileEntity_PlasmaForge extends
             .addTooltip(translateToLocal("GT5U.tpm.parallelwindow"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(174, 129)
-            .setSize(16, 16));
+            .setSize(16, 16)
+            .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> convergence, (val) -> convergence = val), builder));
         super.addUIWidgets(builder, buildContext);
     }
 
