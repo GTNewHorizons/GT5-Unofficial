@@ -14,12 +14,19 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_OFF;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_ON;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -28,14 +35,28 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.github.technus.tectech.thing.gui.TecTechUITextures;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.math.Size;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -43,6 +64,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -72,9 +94,35 @@ public class GT_MetaTileEntity_PlasmaForge extends
     private static final double maximum_discount = 0.5d;
 
     // Valid fuels which the discount will get applied to.
-    private static final FluidStack[] valid_fuels = { MaterialsUEVplus.ExcitedDTEC.getFluid(1L),
-        MaterialsUEVplus.ExcitedDTRC.getFluid(1L), MaterialsUEVplus.ExcitedDTPC.getFluid(1L),
-        MaterialsUEVplus.ExcitedDTCC.getFluid(1L), MaterialsUEVplus.ExcitedDTSC.getFluid(1L) };
+    private static final FluidStack[] valid_fuels = { MaterialsUEVplus.ExcitedDTCC.getFluid(1L),
+        MaterialsUEVplus.ExcitedDTPC.getFluid(1L), MaterialsUEVplus.ExcitedDTRC.getFluid(1L),
+        MaterialsUEVplus.ExcitedDTEC.getFluid(1L), MaterialsUEVplus.ExcitedDTSC.getFluid(1L) };
+
+    private static final HashMap<Fluid, Pair<Long, Float>> FUEL_ENERGY_VALUES = new HashMap<>() {
+
+        {
+            put(
+                MaterialsUEVplus.ExcitedDTCC.getFluid(1L)
+                    .getFluid(),
+                Pair.of(14_514_983L, 1 / 8f));
+            put(
+                MaterialsUEVplus.ExcitedDTPC.getFluid(1L)
+                    .getFluid(),
+                Pair.of(66_768_460L, 1 / 4f));
+            put(
+                MaterialsUEVplus.ExcitedDTRC.getFluid(1L)
+                    .getFluid(),
+                Pair.of(269_326_451L, 1 / 2f));
+            put(
+                MaterialsUEVplus.ExcitedDTEC.getFluid(1L)
+                    .getFluid(),
+                Pair.of(1_073_007_393L, 1f));
+            put(
+                MaterialsUEVplus.ExcitedDTSC.getFluid(1L)
+                    .getFluid(),
+                Pair.of(4_276_767_521L, 2f));
+        }
+    };
 
     private static final int min_input_hatch = 0;
     private static final int max_input_hatch = 7;
@@ -89,7 +137,9 @@ public class GT_MetaTileEntity_PlasmaForge extends
     private double discount = 1;
     private int mHeatingCapacity = 0;
     private long running_time = 0;
+    private boolean convergence = false;
     private HeatingCoilLevel mCoilLevel;
+    private GT_OverclockCalculator overclockCalculator;
 
     @SuppressWarnings("SpellCheckingInspection")
     private static final String[][] structure_string = new String[][] { { "                                 ",
@@ -690,14 +740,18 @@ public class GT_MetaTileEntity_PlasmaForge extends
             @Nonnull
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
-                return super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
+                overclockCalculator = super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(mHeatingCapacity);
+                if (discount == maximum_discount && convergence) {
+                    overclockCalculator = overclockCalculator.enablePerfectOC();
+                }
+                return overclockCalculator;
             }
 
             @NotNull
             @Override
             protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
-                return super.createParallelHelper(recipeAfterDiscount(recipe));
+                return super.createParallelHelper(recipeAfterAdjustments(recipe));
             }
 
             @Override
@@ -709,16 +763,25 @@ public class GT_MetaTileEntity_PlasmaForge extends
     }
 
     @Nonnull
-    protected GT_Recipe recipeAfterDiscount(@Nonnull GT_Recipe recipe) {
+    protected GT_Recipe recipeAfterAdjustments(@Nonnull GT_Recipe recipe) {
         GT_Recipe tRecipe = recipe.copy();
+        boolean adjusted = false;
         outside: for (int i = 0; i < recipe.mFluidInputs.length; i++) {
             for (FluidStack fuel : valid_fuels) {
                 if (tRecipe.mFluidInputs[i].isFluidEqual(fuel)) {
                     recalculateDiscount();
+                    if (discount == maximum_discount && convergence && overclockCalculator != null) {
+                        calculateCatalystIncrease(tRecipe, i, false);
+                    }
                     tRecipe.mFluidInputs[i].amount = (int) Math.round(tRecipe.mFluidInputs[i].amount * discount);
+                    adjusted = true;
                     break outside;
                 }
             }
+        }
+        if (!adjusted && discount == maximum_discount && convergence && overclockCalculator != null) {
+            recalculateDiscount();
+            calculateCatalystIncrease(tRecipe, 0, true);
         }
         return tRecipe;
     }
@@ -881,6 +944,58 @@ public class GT_MetaTileEntity_PlasmaForge extends
         discount = Math.max(maximum_discount, discount);
     }
 
+    private int catalystTypeForRecipesWithoutCatalyst = 1;
+
+    private void calculateCatalystIncrease(GT_Recipe recipe, int index, boolean withoutCatalyst) {
+        long machineConsumption = overclockCalculator.getConsumption();
+        int numberOfOverclocks = (int) Math.ceil(calculateTier(machineConsumption) - GT_Utility.getTier(recipe.mEUt));
+        double recipeDuration = recipe.mDuration / Math.pow(4, numberOfOverclocks);
+        long extraPowerNeeded = (long) ((Math.pow(2, numberOfOverclocks) - 1) * machineConsumption * recipeDuration);
+        int inputFluids = recipe.mFluidInputs.length;
+        int outputFluids = recipe.mFluidOutputs.length;
+        int extraCatalystNeeded;
+        Fluid validFuel;
+        if (!withoutCatalyst) {
+            validFuel = recipe.mFluidInputs[index].getFluid();
+            extraCatalystNeeded = (int) (extraPowerNeeded / FUEL_ENERGY_VALUES.get(validFuel)
+                .getLeft());
+            recipe.mFluidInputs[index].amount += extraCatalystNeeded;
+            for (int j = 0; j < outputFluids; j++) {
+                if (recipe.mFluidOutputs[j]
+                    .isFluidEqual(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1))) {
+                    recipe.mFluidOutputs[j].amount += (int) (extraCatalystNeeded * FUEL_ENERGY_VALUES.get(validFuel)
+                        .getRight());
+                }
+            }
+        } else {
+            validFuel = valid_fuels[catalystTypeForRecipesWithoutCatalyst].getFluid();
+            extraCatalystNeeded = (int) (extraPowerNeeded / FUEL_ENERGY_VALUES.get(validFuel)
+                .getLeft());
+            FluidStack[] newInputFluids = new FluidStack[inputFluids + 1];
+            for (int i = 0; i < inputFluids; i++) {
+                newInputFluids[i] = recipe.mFluidInputs[i].copy();
+            }
+            newInputFluids[inputFluids] = new FluidStack(validFuel, extraCatalystNeeded / 2);
+            recipe.mFluidInputs = newInputFluids;
+
+            FluidStack[] newOutputFluids = new FluidStack[outputFluids + 1];
+            for (int i = 0; i < outputFluids; i++) {
+                newOutputFluids[i] = recipe.mFluidOutputs[i].copy();
+            }
+            newOutputFluids[outputFluids] = new FluidStack(
+                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1),
+                (int) (extraCatalystNeeded * FUEL_ENERGY_VALUES.get(validFuel)
+                    .getRight()));
+            recipe.mFluidOutputs = newOutputFluids;
+        }
+    }
+
+    private static final double LN2 = Math.log(2);
+
+    private double calculateTier(long voltage) {
+        return (1 + Math.max(0, (Math.log(voltage) / LN2) - 5) / 2);
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && !aBaseMetaTileEntity.isAllowedToWork()) {
@@ -952,10 +1067,82 @@ public class GT_MetaTileEntity_PlasmaForge extends
         return SoundResource.GT_MACHINES_PLASMAFORGE_LOOP.resourceLocation;
     }
 
+    private static final int CATALYST_WINDOW_ID = 10;
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        buildContext.addSyncedWindow(CATALYST_WINDOW_ID, this::createCatalystWindow);
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (clickData.mouseButton == 0) {
+                convergence = !convergence;
+            } else if (clickData.mouseButton == 1 && !widget.isClient()) {
+                widget.getContext()
+                    .openSyncedWindow(CATALYST_WINDOW_ID);
+            }
+        })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (convergence) {
+                    ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON);
+                } else {
+                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .addTooltip(translateToLocal("GT5U.tpm.parallelwindow"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(174, 129)
+            .setSize(16, 16));
+        super.addUIWidgets(builder, buildContext);
+    }
+
+    protected ModularWindow createCatalystWindow(final EntityPlayer player) {
+        final int WIDTH = 58;
+        final int HEIGHT = 52;
+        final int PARENT_WIDTH = getGUIWidth();
+        final int PARENT_HEIGHT = getGUIHeight();
+        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(true);
+        builder.setPos(
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
+                .add(
+                    Alignment.BottomRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
+                        .add(WIDTH - 3, 0)
+                        .subtract(0, 10)));
+        builder.widget(
+            TextWidget.localised("GTPP.CC.parallel")
+                .setPos(3, 4)
+                .setSize(150, 20))
+            .widget(
+                new NumericWidget().setSetter(val -> catalystTypeForRecipesWithoutCatalyst = (int) val)
+                    .setGetter(() -> catalystTypeForRecipesWithoutCatalyst)
+                    .setBounds(1, 5)
+                    .setDefaultValue(1)
+                    .setScrollValues(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(50, 18)
+                    .setPos(4, 25)
+                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                    .attachSyncer(
+                        new FakeSyncWidget.IntegerSyncer(
+                            () -> catalystTypeForRecipesWithoutCatalyst,
+                            (val) -> catalystTypeForRecipesWithoutCatalyst = val),
+                        builder));
+        return builder.build();
+    }
+
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setLong("eRunningTime", running_time);
         aNBT.setDouble("eLongDiscountValue", discount);
+        aNBT.setInteger("catalystType", catalystTypeForRecipesWithoutCatalyst);
+        aNBT.setBoolean("convergence", convergence);
         super.saveNBTData(aNBT);
     }
 
@@ -963,6 +1150,8 @@ public class GT_MetaTileEntity_PlasmaForge extends
     public void loadNBTData(final NBTTagCompound aNBT) {
         running_time = aNBT.getLong("eRunningTime");
         discount = aNBT.getDouble("eLongDiscountValue");
+        catalystTypeForRecipesWithoutCatalyst = aNBT.getInteger("catalystType");
+        convergence = aNBT.getBoolean("convergence");
         super.loadNBTData(aNBT);
     }
 
