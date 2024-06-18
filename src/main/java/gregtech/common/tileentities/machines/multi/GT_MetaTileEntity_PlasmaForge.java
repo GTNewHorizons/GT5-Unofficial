@@ -582,13 +582,25 @@ public class GT_MetaTileEntity_PlasmaForge extends
                     + GT_Utility.formatNumbers(max_efficiency_time_in_ticks / (3600 * 20))
                     + EnumChatFormatting.GRAY
                     + " hours of continuous run time to fully breach dimensional")
-            .addInfo("boundaries and achieve maximum efficiency. This reduces fuel")
             .addInfo(
-                "consumption by up to " + EnumChatFormatting.RED
+                "boundaries and achieve maximum efficiency, reducing fuel consumption by up to "
+                    + EnumChatFormatting.RED
                     + GT_Utility.formatNumbers(100 * maximum_discount)
                     + "%"
                     + EnumChatFormatting.GRAY
-                    + ". Supports overclocking beyond MAX voltage.")
+                    + ".")
+            .addInfo("Multidimensional spaces can be perfectly aligned and synchronized in this state, ")
+            .addInfo(
+                "allowing " + EnumChatFormatting.GOLD
+                    + "Dimensional Convergence "
+                    + EnumChatFormatting.GRAY
+                    + "to occur.")
+            .addInfo(
+                "When active, it allows the forge to perform " + EnumChatFormatting.RED
+                    + "Perfect Overclocks"
+                    + EnumChatFormatting.GRAY
+                    + ",")
+            .addInfo("but the extra power cost is instead added in form of increased catalyst amounts.")
             .addInfo(
                 "When no recipe is running, fuel discount decays x" + EnumChatFormatting.RED
                     + GT_Utility.formatNumbers(efficiency_decay_rate)
@@ -1092,7 +1104,8 @@ public class GT_MetaTileEntity_PlasmaForge extends
                 }
                 return ret.toArray(new IDrawable[0]);
             })
-            .addTooltip(translateToLocal("GT5U.tpm.parallelwindow"))
+            .addTooltip(translateToLocal("GT5U.DTPF.convergencebutton"))
+            .addTooltip(EnumChatFormatting.GRAY + translateToLocal("GT5U.DTPF.convergencebuttontooltip"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(174, 129)
             .setSize(16, 16)
@@ -1116,9 +1129,9 @@ public class GT_MetaTileEntity_PlasmaForge extends
                         .add(WIDTH - 3, 0)
                         .subtract(0, 10)));
         builder.widget(
-            TextWidget.localised("GTPP.CC.parallel")
+            TextWidget.localised("GT5U.DTPF.catalysttier")
                 .setPos(3, 4)
-                .setSize(150, 20))
+                .setSize(50, 20))
             .widget(
                 new NumericWidget().setSetter(val -> catalystTypeForRecipesWithoutCatalyst = (int) val)
                     .setGetter(() -> catalystTypeForRecipesWithoutCatalyst)
@@ -1130,6 +1143,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
                     .setSize(50, 18)
                     .setPos(4, 25)
                     .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                    .addTooltip(translateToLocal("GT5U.DTPF.catalystinfotooltip"))
                     .attachSyncer(
                         new FakeSyncWidget.IntegerSyncer(
                             () -> catalystTypeForRecipesWithoutCatalyst,
