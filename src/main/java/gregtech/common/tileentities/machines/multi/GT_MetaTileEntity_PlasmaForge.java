@@ -576,7 +576,8 @@ public class GT_MetaTileEntity_PlasmaForge extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addInfo("Transcending Dimensional Boundaries.")
+        tt.addMachineType("Plasma Forge, DTPF")
+            .addInfo("Transcending Dimensional Boundaries.")
             .addInfo(
                 "Takes " + EnumChatFormatting.RED
                     + GT_Utility.formatNumbers(max_efficiency_time_in_ticks / (3600 * 20))
@@ -946,6 +947,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
                 + GT_Utility.formatNumbers(100 * (1 - discount))
                 + EnumChatFormatting.RESET
                 + "%",
+            "Convergence: " + (convergence ? EnumChatFormatting.GREEN + "Active" : EnumChatFormatting.RED + "Inactive"),
             "-----------------------------------------" };
     }
 
