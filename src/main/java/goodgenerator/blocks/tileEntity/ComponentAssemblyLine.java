@@ -223,6 +223,8 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMultiB
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
                     + "limits the recipes the machine can perform. See the NEI pages for details.")
+            .addInfo("Using casings above the required recipe tier provides a speed bonus:")
+            .addInfo(EnumChatFormatting.YELLOW + "Halves recipe time per tier above recipe")
             .addInfo(
                 "Supports " + EnumChatFormatting.BLUE
                     + "Tec"
