@@ -791,6 +791,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
                 }
             }
         }
+        // Convergence adjusts the recipe even if it has no catalyst input
         if (!adjusted && discount == maximum_discount && convergence && overclockCalculator != null) {
             recalculateDiscount();
             calculateCatalystIncrease(tRecipe, 0, true);
@@ -962,6 +963,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
         long machineConsumption = overclockCalculator.getConsumption();
         int numberOfOverclocks = (int) Math.ceil(calculateTier(machineConsumption) - GT_Utility.getTier(recipe.mEUt));
         double recipeDuration = recipe.mDuration / Math.pow(4, numberOfOverclocks);
+        // Power difference between regular and perfect OCs for this recipe duration
         long extraPowerNeeded = (long) ((Math.pow(2, numberOfOverclocks) - 1) * machineConsumption * recipeDuration);
         int inputFluids = recipe.mFluidInputs.length;
         int outputFluids = recipe.mFluidOutputs.length;
@@ -972,6 +974,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
             extraCatalystNeeded = (int) (extraPowerNeeded / FUEL_ENERGY_VALUES.get(validFuel)
                 .getLeft());
             recipe.mFluidInputs[index].amount += extraCatalystNeeded;
+            // Increase present catalyst and residue by calculated amount
             for (int j = 0; j < outputFluids; j++) {
                 if (recipe.mFluidOutputs[j]
                     .isFluidEqual(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1))) {
@@ -980,6 +983,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
                 }
             }
         } else {
+            // Add chosen catalyst as recipe input
             validFuel = valid_fuels[catalystTypeForRecipesWithoutCatalyst].getFluid();
             extraCatalystNeeded = (int) (extraPowerNeeded / FUEL_ENERGY_VALUES.get(validFuel)
                 .getLeft());
@@ -989,7 +993,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
             }
             newInputFluids[inputFluids] = new FluidStack(validFuel, extraCatalystNeeded / 2);
             recipe.mFluidInputs = newInputFluids;
-
+            // Add residue as recipe output
             FluidStack[] newOutputFluids = new FluidStack[outputFluids + 1];
             for (int i = 0; i < outputFluids; i++) {
                 newOutputFluids[i] = recipe.mFluidOutputs[i].copy();
