@@ -152,7 +152,7 @@ public final class CoverInfo {
     }
 
     public void onCoverUnload() {
-        getCoverBehavior().onCoverUnload(coveredTile.get());
+        getCoverBehavior().onCoverUnload(coverSide, coverID, coverData, coveredTile.get());
     }
 
     public void onBaseTEDestroyed() {

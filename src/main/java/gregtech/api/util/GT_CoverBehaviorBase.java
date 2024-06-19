@@ -195,10 +195,6 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         return doCoverThingsImpl(side, aInputRedstone, aCoverID, forceCast(aCoverVariable), aTileEntity, aTimer);
     }
 
-    public void onCoverUnload(ICoverable aTileEntity) {
-
-    }
-
     /**
      * Called when someone rightclicks this Cover.
      * <p/>
@@ -257,6 +253,14 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     public final String getDescription(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
         ICoverable aTileEntity) {
         return getDescriptionImpl(side, aCoverID, forceCast(aCoverVariable), aTileEntity);
+    }
+
+    /**
+     * Called when Base TE being unloaded.
+     */
+    public void onCoverUnload(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
+        ICoverable aTileEntity) {
+        onCoverUnloadImpl(side, aCoverID, forceCast(aCoverVariable), aTileEntity);
     }
 
     /**
@@ -584,6 +588,9 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     protected void onDroppedImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {}
 
     protected void onBaseTEDestroyedImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {}
+
+    protected void onCoverUnloadImpl(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
+        ICoverable aTileEntity) {}
 
     protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID, T aCoverVariable,
         ICoverable aTileEntity, long aTimer) {

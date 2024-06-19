@@ -194,15 +194,20 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return true;
     }
 
-    protected boolean onCoverUnload() {
+    protected void onCoverUnload() {
         byte validCoversMask = this.validCoversMask;
-        if (validCoversMask == 0) return true;
+        if (validCoversMask == 0) return;
 
         for (int i = Integer.numberOfTrailingZeros(validCoversMask); i < 6; i++) {
             if (((validCoversMask >>> i) & 1) == 0) continue;
             onCoverUnloadAtSide(ForgeDirection.VALID_DIRECTIONS[i]);
         }
-        return true;
+    }
+
+    public void onCoverUnloadAtSide(ForgeDirection side) {
+        final CoverInfo coverInfo = getCoverInfoAtSide(side);
+        if (!coverInfo.isValid()) return;
+        coverInfo.onCoverUnload();
     }
 
     public boolean tickCoverAtSide(ForgeDirection side) {
@@ -223,12 +228,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
 
         return true;
-    }
-
-    public void onCoverUnloadAtSide(ForgeDirection side) {
-        final CoverInfo coverInfo = getCoverInfoAtSide(side);
-        if (!coverInfo.isValid()) return;
-        coverInfo.onCoverUnload();
     }
 
     public abstract boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCoverID);
