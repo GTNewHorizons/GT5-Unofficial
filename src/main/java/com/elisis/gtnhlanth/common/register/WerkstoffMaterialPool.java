@@ -1919,7 +1919,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff Permalloy = new Werkstoff(
         new short[] { 195, 230, 225 },
         "Permalloy",
-        subscriptNumbers("NiFeMo"),
+        subscriptNumbers("Ni4FeMo"),
         new Werkstoff.Stats().setCentrifuge(true),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1937,18 +1937,21 @@ public class WerkstoffMaterialPool implements Runnable {
         new short[] { 210, 230, 225 },
         "Mu-metal",
         subscriptNumbers("?NiFeCuCrMo?"),
-        new Werkstoff.Stats().setBlastFurnace(true)
-            .setMass(180),
+        new Werkstoff.Stats().setBlastFurnace(true).setCentrifuge(true)
+            .setMass(180).setSpeedOverride(3),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
             .addMetalItems()
             .addMultipleIngotMetalWorkingItems()
-            .addSimpleMetalWorkingItems()
             .addCraftingMetalWorkingItems()
             .enforceUnification(),
         offsetID3b + 1,
-        TextureSet.SET_METALLIC);
+        TextureSet.SET_METALLIC,
+        new Pair<>(WerkstoffMaterialPool.Permalloy, 9),
+        new Pair<>(Materials.Copper, 1),
+        new Pair<>(Materials.Chrome, 1)
+    		);
 
     public static final Werkstoff Thorium234 = new Werkstoff(
         new short[] { 0, 40, 0 },
@@ -2037,7 +2040,10 @@ public class WerkstoffMaterialPool implements Runnable {
             .addGems()
             .addSimpleMetalWorkingItems(),
         offsetID3b + 8,
-        TextureSet.SET_GEM_HORIZONTAL);
+        TextureSet.SET_GEM_HORIZONTAL,
+        new Pair<>(Materials.Lanthanum, 1),
+        new Pair<>(Materials.Boron, 6)
+    		);
 
     public static final Werkstoff LanthanumOxide = new Werkstoff(
         new short[] { 105, 209, 180 },
