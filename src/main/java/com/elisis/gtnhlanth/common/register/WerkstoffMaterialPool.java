@@ -1937,8 +1937,10 @@ public class WerkstoffMaterialPool implements Runnable {
         new short[] { 210, 230, 225 },
         "Mu-metal",
         subscriptNumbers("?NiFeCuCrMo?"),
-        new Werkstoff.Stats().setBlastFurnace(true).setCentrifuge(true)
-            .setMass(180).setSpeedOverride(3),
+        new Werkstoff.Stats().setBlastFurnace(true)
+            .setCentrifuge(true)
+            .setMass(180)
+            .setSpeedOverride(3),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
@@ -1950,8 +1952,7 @@ public class WerkstoffMaterialPool implements Runnable {
         TextureSet.SET_METALLIC,
         new Pair<>(WerkstoffMaterialPool.Permalloy, 9),
         new Pair<>(Materials.Copper, 1),
-        new Pair<>(Materials.Chrome, 1)
-    		);
+        new Pair<>(Materials.Chrome, 1));
 
     public static final Werkstoff Thorium234 = new Werkstoff(
         new short[] { 0, 40, 0 },
@@ -2042,8 +2043,7 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID3b + 8,
         TextureSet.SET_GEM_HORIZONTAL,
         new Pair<>(Materials.Lanthanum, 1),
-        new Pair<>(Materials.Boron, 6)
-    		);
+        new Pair<>(Materials.Boron, 6));
 
     public static final Werkstoff LanthanumOxide = new Werkstoff(
         new short[] { 105, 209, 180 },
