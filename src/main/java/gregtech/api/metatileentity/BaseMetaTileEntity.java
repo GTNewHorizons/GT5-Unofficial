@@ -980,9 +980,9 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     @Override
     public void onChunkUnload() {
         if (canAccessData()) {
+            onCoverUnload();
             mMetaTileEntity.onUnload();
         }
-
         super.onChunkUnload();
         onChunkUnloadAE();
     }
@@ -2276,7 +2276,9 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
     @Override
     public void onBlockDestroyed() {
-        if (canAccessData()) getMetaTileEntity().onBlockDestroyed();
+        if (canAccessData()) {
+            getMetaTileEntity().onBlockDestroyed();
+        }
     }
 
     @Override
