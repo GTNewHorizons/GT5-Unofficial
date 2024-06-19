@@ -75,6 +75,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
 
 public abstract class GT_MetaTileEntity_FusionComputer
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_FusionComputer>
@@ -95,7 +96,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                             { "               ", "      ihi      ", "    hh   hh    ", "   h       h   ",
                                 "  h         h  ", "  h         h  ", " i           i ", " h           h ",
                                 " i           i ", "  h         h  ", "  h         h  ", "   h       h   ",
-                                "    hh   hh    ", "      ihi      ", "               ", },
+                                "    hh   hh    ", "      idi      ", "               ", },
                             { "      xhx      ", "    hhccchh    ", "   eccxhxcce   ", "  eceh   hece  ",
                                 " hce       ech ", " hch       hch ", "xcx         xcx", "hch         hch",
                                 "xcx         xcx", " hch       hch ", " hce       ech ", "  eceh   hece  ",
@@ -133,6 +134,15 @@ public abstract class GT_MetaTileEntity_FusionComputer
                             .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
                             .casingIndex(53)
                             .dot(3)
+                            .buildAndChain(t.getCasing(), t.getCasingMeta())))
+                .addElement(
+                    'd',
+                    lazy(
+                        t -> buildHatchAdder(GT_MetaTileEntity_FusionComputer.class)
+                            .adder(GT_MetaTileEntity_FusionComputer::addDroneHatch)
+                            .hatchId(9401)
+                            .casingIndex(53)
+                            .dot(4)
                             .buildAndChain(t.getCasing(), t.getCasingMeta())))
                 .build();
         }
@@ -255,6 +265,15 @@ public abstract class GT_MetaTileEntity_FusionComputer
         if (tHatch.getTierForStructure() < tier()) return false;
         tHatch.updateTexture(aBaseCasingIndex);
         return mOutputHatches.add(tHatch);
+    }
+
+    private boolean addDroneHatch(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
+        if (aBaseMetaTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (!(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DroneDownLink tHatch)) return false;
+        tHatch.updateTexture(aBaseCasingIndex);
+        return addToMachineList(aBaseMetaTileEntity, aBaseCasingIndex);
     }
 
     public abstract Block getCasing();
