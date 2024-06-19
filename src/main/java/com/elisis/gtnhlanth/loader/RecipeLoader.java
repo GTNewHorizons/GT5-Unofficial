@@ -253,7 +253,7 @@ public class RecipeLoader {
             Materials.Chrome.getDust(1),
             null,
             null,
-            WerkstoffMaterialPool.MuMetal.get(OrePrefixes.ingot, 9),
+            WerkstoffMaterialPool.MuMetal.get(OrePrefixes.ingot, 11),
             null,
             null,
             null,
