@@ -151,6 +151,10 @@ public final class CoverInfo {
             .doCoverThings(coverSide, aRedstone, coverID, coverData, coveredTile.get(), aTickTimer);
     }
 
+    public void onCoverUnload() {
+        getCoverBehavior().onCoverUnload(coveredTile.get());
+    }
+
     public void onBaseTEDestroyed() {
         getCoverBehavior().onBaseTEDestroyed(coverSide, coverID, coverData, coveredTile.get());
     }

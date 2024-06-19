@@ -195,6 +195,10 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         return doCoverThingsImpl(side, aInputRedstone, aCoverID, forceCast(aCoverVariable), aTileEntity, aTimer);
     }
 
+    public void onCoverUnload(ICoverable aTileEntity) {
+
+    }
+
     /**
      * Called when someone rightclicks this Cover.
      * <p/>
