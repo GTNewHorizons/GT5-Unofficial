@@ -8,6 +8,8 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,6 +41,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
@@ -47,6 +50,7 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMultiB
     implements ISurvivalConstructable {
 
     private int casingTier;
+    private float speedBonus;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<ComponentAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
         .<ComponentAssemblyLine>builder()
@@ -219,6 +223,8 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMultiB
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
                     + "limits the recipes the machine can perform. See the NEI pages for details.")
+            .addInfo("Using casings above the required recipe tier provides a speed bonus:")
+            .addInfo(EnumChatFormatting.YELLOW + "Halves recipe time per tier above recipe")
             .addInfo(
                 "Supports " + EnumChatFormatting.BLUE
                     + "Tec"
@@ -310,6 +316,13 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMultiB
                     return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
+
+            @Nonnull
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+                speedBonus = (float) (1 / Math.pow(2, casingTier + 1 - recipe.mSpecialValue));
+                return super.createOverclockCalculator(recipe).setSpeedBoost(speedBonus);
             }
         };
     }
