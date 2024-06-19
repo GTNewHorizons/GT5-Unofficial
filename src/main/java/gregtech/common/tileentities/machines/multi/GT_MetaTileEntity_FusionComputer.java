@@ -112,7 +112,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                     lazy(
                         t -> buildHatchAdder(GT_MetaTileEntity_FusionComputer.class)
                             .atLeast(
-                                ImmutableMap.of(InputHatch.withAdder(GT_MetaTileEntity_FusionComputer::addInjector), 2))
+                                ImmutableMap.of(InputHatch.withAdder(GT_MetaTileEntity_FusionComputer::addInjector), 1))
                             .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
                             .casingIndex(53)
                             .dot(1)
@@ -233,9 +233,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, 7, 1, 12) && mInputHatches.size() > 1
-            && !mOutputHatches.isEmpty()
-            && !mEnergyHatches.isEmpty();
+        return checkPiece(STRUCTURE_PIECE_MAIN, 7, 1, 12) && !mOutputHatches.isEmpty() && !mEnergyHatches.isEmpty();
     }
 
     private boolean addEnergyInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
