@@ -620,13 +620,11 @@ public class GT_TileEntity_CircuitAssemblyLine extends
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(
-            EnumChatFormatting.GREEN
-                + StatCollector.translateToLocal("chat.cal.mode." + tag.getInteger(RUNNING_MODE_KEY)));
+                StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " " + EnumChatFormatting.WHITE + StatCollector.translateToLocal("chat.cal.mode." + tag.getInteger(RUNNING_MODE_KEY)));
         if (tag.hasKey("ImprintedWith") && tag.getInteger(RUNNING_MODE_KEY) == 0) currenttip.add(
             StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
                 + EnumChatFormatting.YELLOW
                 + tag.getString("ImprintedWith"));
-
     }
 
     @Override

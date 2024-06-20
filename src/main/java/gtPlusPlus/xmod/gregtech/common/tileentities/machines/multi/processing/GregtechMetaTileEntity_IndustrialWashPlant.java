@@ -17,14 +17,22 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -65,6 +73,8 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
 
     private int mMode = 0;
     private int mCasing;
+
+    public String nameMode = "Ore Washer";
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialWashPlant> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialWashPlant(final int aID, final String aName, final String aNameRegional) {
@@ -334,11 +344,13 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mMode", mMode);
+        aNBT.setString("nameMode", nameMode);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
+        nameMode = aNBT.getString("nameMode");
         if (aNBT.hasKey("mChemicalMode")) {
             boolean aTempMode = aNBT.getBoolean("mChemicalMode");
             if (aTempMode) {
@@ -362,11 +374,33 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
         }
         if (mMode == 0) {
             PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Ore Washer Mode.");
+            nameMode = "Ore Washer";
         } else if (mMode == 1) {
             PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Simple Washer Mode.");
+            nameMode = "Simple Washer";
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Chemical Bath Mode.");
+            nameMode = "Chemical Bath";
         }
         mLastRecipe = null;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+                                int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setString("nameMode", nameMode);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                + EnumChatFormatting.WHITE
+                + tag.getString("nameMode")
+                + EnumChatFormatting.RESET);
     }
 }

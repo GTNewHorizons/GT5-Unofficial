@@ -12,12 +12,20 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -44,6 +52,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
     extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialPlatePress> implements ISurvivalConstructable {
 
     private boolean mFormingMode = false;
+    public String nameMode = "Forming Press";
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialPlatePress> STRUCTURE_DEFINITION = null;
 
@@ -205,8 +214,10 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
         mFormingMode = !mFormingMode;
         if (mFormingMode) {
             PlayerUtils.messagePlayer(aPlayer, "Now running in Forming Press Mode.");
+            nameMode = "Forming Press";
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Now running in Bending Mode.");
+            nameMode = "Bending";
         }
         mLastRecipe = null;
     }
@@ -214,5 +225,25 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
     @Override
     public boolean isInputSeparationEnabled() {
         return true;
+    }
+
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+                                int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setString("nameMode", nameMode);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                + EnumChatFormatting.WHITE
+                + tag.getString("nameMode")
+                + EnumChatFormatting.RESET);
     }
 }
