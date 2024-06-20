@@ -346,8 +346,16 @@ public class GT_Loader_OreDictionary implements Runnable {
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitULV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
+            Materials.Basic,
+            GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitLV", 1L));
+        GT_OreDictUnificator.registerOre(
+            OrePrefixes.circuit,
             Materials.Good,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitMV", 1L));
+        GT_OreDictUnificator.registerOre(
+            OrePrefixes.circuit,
+            Materials.Advanced,
+            GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitHV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
             Materials.Data,
