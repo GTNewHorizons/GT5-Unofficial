@@ -13,14 +13,19 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -43,6 +48,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GregtechMetaTileEntity_IndustrialArcFurnace
     extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialArcFurnace> implements ISurvivalConstructable {
@@ -51,6 +58,7 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace
     private static final int mCasingTextureID = TAE.getIndexFromPage(3, 3);
     public static String mCasingName = "Tempered Arc Furnace Casing";
     private boolean mPlasmaMode = false;
+    public String nameMode = "Electric";
     private int mSize = 0;
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialArcFurnace> STRUCTURE_DEFINITION = null;
@@ -291,6 +299,7 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace
                         + EnumChatFormatting.LIGHT_PURPLE
                         + "Plasma"
                         + EnumChatFormatting.RESET);
+                nameMode = "Plasma";
             } else {
                 PlayerUtils.messagePlayer(
                     aPlayer,
@@ -301,6 +310,7 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace
                         + EnumChatFormatting.YELLOW
                         + "Electric"
                         + EnumChatFormatting.RESET);
+                nameMode = "Electric";
             }
         } else {
             PlayerUtils.messagePlayer(
@@ -333,5 +343,24 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace
     @Override
     public void onMachineBlockUpdate() {
         mUpdate = 100;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setString("nameMode", nameMode);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                + EnumChatFormatting.WHITE
+                + tag.getString("nameMode")
+                + EnumChatFormatting.RESET);
     }
 }

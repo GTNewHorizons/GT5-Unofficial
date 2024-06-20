@@ -14,14 +14,20 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -57,6 +63,8 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GregtechMetaTileEntity_MassFabricator
     extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_MassFabricator> implements ISurvivalConstructable {
@@ -70,6 +78,7 @@ public class GregtechMetaTileEntity_MassFabricator
     public static String mCasingName3 = "Matter Generation Coil";
 
     private int mMode = 0;
+    public String nameMode = "Mass Fabricator";
 
     private static final int MODE_SCRAP = 1;
     private static final int MODE_UU = 0;
@@ -313,12 +322,15 @@ public class GregtechMetaTileEntity_MassFabricator
         if (aMode > 1) {
             this.mMode = MODE_UU;
             PlayerUtils.messagePlayer(aPlayer, "Mode [" + this.mMode + "]: Matter/AmpliFabricator");
+            nameMode = "Mass Fabricator";
         } else if (aMode == 1) {
             this.mMode = MODE_SCRAP;
             PlayerUtils.messagePlayer(aPlayer, "Mode [" + this.mMode + "]: Recycler");
+            nameMode = "Recycler";
         } else {
             this.mMode = MODE_SCRAP;
             PlayerUtils.messagePlayer(aPlayer, "Mode [" + this.mMode + "]: Recycler");
+            nameMode = "Recycler";
         }
         mLastRecipe = null;
     }
@@ -326,12 +338,33 @@ public class GregtechMetaTileEntity_MassFabricator
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mMode", mMode);
+        aNBT.setString("nameMode", nameMode);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         mMode = aNBT.getInteger("mMode");
+        nameMode = aNBT.getString("nameMode");
         super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setString("nameMode", nameMode);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                + EnumChatFormatting.WHITE
+                + tag.getString("nameMode")
+                + EnumChatFormatting.RESET);
     }
 }

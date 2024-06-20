@@ -504,11 +504,16 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("mode")) {
-            currentTip.add("Mode: " + EnumChatFormatting.YELLOW + switch (tag.getInteger("mode")) {
-                case 1 -> "Fluid";
-                case 2 -> "Misc";
-                default -> "Metal";
-            } + EnumChatFormatting.RESET);
+            currentTip.add(
+                StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                    + EnumChatFormatting.WHITE
+                    + switch (tag.getInteger("mode")) {
+                    case 1 -> "Fluid";
+                    case 2 -> "Misc";
+                    default -> "Metal";
+                    }
+                    + EnumChatFormatting.RESET);
+
         }
     }
 }

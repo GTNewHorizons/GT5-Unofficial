@@ -15,12 +15,18 @@ import static gregtech.api.util.GT_StructureUtility.ofCoil;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -48,6 +54,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GregtechMetaTileEntity_IndustrialDehydrator
     extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialDehydrator> implements ISurvivalConstructable {
@@ -56,6 +64,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
     private static String mCasingName = "Vacuum Casing";
     private HeatingCoilLevel mHeatingCapacity;
     private boolean mDehydratorMode = false;
+    public String nameMode = "Vacuum Furnace";
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialDehydrator> STRUCTURE_DEFINITION = null;
 
@@ -224,6 +233,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mDehydratorMode = !mDehydratorMode;
         String aMode = mDehydratorMode ? "Dehydrator" : "Vacuum Furnace";
+        nameMode = aMode;
         PlayerUtils.messagePlayer(aPlayer, "Mode: " + aMode);
         mLastRecipe = null;
     }
@@ -232,12 +242,14 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mDehydratorMode", mDehydratorMode);
+        aNBT.setString("nameMode", nameMode);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mDehydratorMode = aNBT.getBoolean("mDehydratorMode");
+        nameMode = aNBT.getString("nameMode");
     }
 
     public HeatingCoilLevel getCoilLevel() {
@@ -246,5 +258,24 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
 
     public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
         mHeatingCapacity = aCoilLevel;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setString("nameMode", nameMode);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                + EnumChatFormatting.WHITE
+                + tag.getString("nameMode")
+                + EnumChatFormatting.RESET);
     }
 }
