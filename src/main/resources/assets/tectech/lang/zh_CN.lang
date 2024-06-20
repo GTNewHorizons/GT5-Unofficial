@@ -585,6 +585,7 @@ gt.blockmachines.multimachine.tm.teslaCoil.cfgo.5=能量容量显示
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.6=已存储能量显示
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7=充能进度显示
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=扫描时间显示
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9=最高输出电流显示
 
 gt.blockmachines.multimachine.em.switch.name=QoS网络交换机
 gt.blockmachines.multimachine.em.switch.hint=1 - 基础仓室、光学接口或电子计算机机械方块
@@ -806,7 +807,7 @@ gt.blockmachines.debug.tt.writer.desc.2=ABC轴沿机器正面确定
 #Example: ID:3
 tt.keyword.ID=ID
 #Example: 32EU at 1A
-tt.keyword.at= 
+tt.keyword.at=
 # Structure is too complex
 tt.keyword.Structure.StructureTooComplex=结构太复杂了！
 # Any X

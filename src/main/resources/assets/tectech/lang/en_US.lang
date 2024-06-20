@@ -684,6 +684,7 @@ gt.blockmachines.multimachine.tm.teslaCoil.cfgo.5=Energy Capacity display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.6=Energy Stored display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7=Energy Fraction display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=Scan time display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9=Output max display
 
 gt.blockmachines.multimachine.em.switch.name=Network Switch With QoS
 gt.blockmachines.multimachine.em.switch.hint=1 - Classic/Data Hatches or Computer casing
