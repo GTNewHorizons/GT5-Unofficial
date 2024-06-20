@@ -17,8 +17,6 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -76,6 +74,8 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<PreciseAssembler>
     implements IConstructable, ISurvivalConstructable {
@@ -504,14 +504,14 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-                                int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setString("nameMode", getNameMode());
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-                             IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
@@ -520,6 +520,5 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
                 + tag.getString("nameMode")
                 + EnumChatFormatting.RESET);
     }
-
 
 }

@@ -508,9 +508,10 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
                 StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                     + EnumChatFormatting.WHITE
                     + switch (tag.getInteger("mode")) {
-                        case 1 -> "Fluid";
-                        case 2 -> "Misc";
-                        default -> "Metal";}
+                    case 1 -> "Fluid";
+                    case 2 -> "Misc";
+                    default -> "Metal";
+                    }
                     + EnumChatFormatting.RESET);
 
         }
