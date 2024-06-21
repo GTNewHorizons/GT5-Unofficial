@@ -499,7 +499,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("nameMode", String.valueOf(mMode));
+        tag.setInteger("mode", mMode.ordinal());
     }
 
     @Override
@@ -510,7 +510,8 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
         currentTip.add(
             StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + tag.getString("nameMode")
+                + StatCollector
+                    .translateToLocal("GT5U.GTPP_MULTI_ADV_DISTILLATION_TOWER.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
     }
 }

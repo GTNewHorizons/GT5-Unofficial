@@ -74,7 +74,6 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
     private int mMode = 0;
     private int mCasing;
 
-    public String nameMode = "Ore Washer";
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialWashPlant> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialWashPlant(final int aID, final String aName, final String aNameRegional) {
@@ -344,13 +343,11 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mMode", mMode);
-        aNBT.setString("nameMode", nameMode);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        nameMode = aNBT.getString("nameMode");
         if (aNBT.hasKey("mChemicalMode")) {
             boolean aTempMode = aNBT.getBoolean("mChemicalMode");
             if (aTempMode) {
@@ -374,13 +371,10 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
         }
         if (mMode == 0) {
             PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Ore Washer Mode.");
-            nameMode = "Ore Washer";
         } else if (mMode == 1) {
             PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Simple Washer Mode.");
-            nameMode = "Simple Washer";
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Chemical Bath Mode.");
-            nameMode = "Chemical Bath";
         }
         mLastRecipe = null;
     }
@@ -389,7 +383,7 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("nameMode", nameMode);
+        tag.setInteger("mode", mMode);
     }
 
     @Override
@@ -400,7 +394,7 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
         currentTip.add(
             StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + tag.getString("nameMode")
+                + StatCollector.translateToLocal("GT5U.GTPP_MULTI_WASH_PLANT.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
     }
 }

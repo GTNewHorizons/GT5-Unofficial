@@ -496,17 +496,11 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
         return true;
     }
 
-    public String getNameMode() {
-        if (mode == 0) {
-            return "Precise";
-        } else return "Normal";
-    }
-
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("nameMode", getNameMode());
+        tag.setInteger("mode", mode);
     }
 
     @Override
@@ -517,7 +511,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
         currentTip.add(
             StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + tag.getString("nameMode")
+                + StatCollector.translateToLocal("GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
     }
 

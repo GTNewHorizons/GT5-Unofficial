@@ -52,7 +52,6 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
     extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialPlatePress> implements ISurvivalConstructable {
 
     private boolean mFormingMode = false;
-    public String nameMode = "Forming Press";
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialPlatePress> STRUCTURE_DEFINITION = null;
 
@@ -214,10 +213,8 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
         mFormingMode = !mFormingMode;
         if (mFormingMode) {
             PlayerUtils.messagePlayer(aPlayer, "Now running in Forming Press Mode.");
-            nameMode = "Forming Press";
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Now running in Bending Mode.");
-            nameMode = "Bending";
         }
         mLastRecipe = null;
     }
@@ -231,7 +228,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("nameMode", nameMode);
+        tag.setBoolean("mode", mFormingMode);
     }
 
     @Override
@@ -242,7 +239,8 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
         currentTip.add(
             StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + tag.getString("nameMode")
+                + StatCollector
+                    .translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_PLATE_PRESS.mode." + (tag.getBoolean("mode") ? 1 : 0))
                 + EnumChatFormatting.RESET);
     }
 }
