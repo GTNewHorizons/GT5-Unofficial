@@ -72,7 +72,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
     private ArrayList<TileHatchInputBeamline> mInputBeamline = new ArrayList<>();
     private ArrayList<TileHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
-    private static final int CASING_INDEX = 49;
+    private static final int CASING_INDEX = GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings5, 14);
 
     private static final byte MIN_GLASS_TIER = 6;
 
