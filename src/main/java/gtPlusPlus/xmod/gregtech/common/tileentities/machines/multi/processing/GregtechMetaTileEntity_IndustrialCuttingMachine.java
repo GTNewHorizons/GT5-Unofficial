@@ -54,7 +54,6 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
     GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialCuttingMachine> implements ISurvivalConstructable {
 
     private boolean mCuttingMode = true;
-    public String nameMode = "Cutting";
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialCuttingMachine> STRUCTURE_DEFINITION = null;
 
@@ -217,7 +216,6 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mCuttingMode = !mCuttingMode;
         String aMode = mCuttingMode ? "Cutting" : "Slicing";
-        nameMode = aMode;
         PlayerUtils.messagePlayer(aPlayer, "Mode: " + aMode);
         mLastRecipe = null;
     }
@@ -226,13 +224,11 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mCuttingMode", mCuttingMode);
-        aNBT.setString("nameMode", nameMode);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        nameMode = aNBT.getString("nameMode");
         if (aNBT.hasKey("mCuttingMode")) {
             mCuttingMode = aNBT.getBoolean("mCuttingMode");
         } else {
@@ -244,7 +240,7 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("nameMode", nameMode);
+        tag.setBoolean("mode", mCuttingMode);
     }
 
     @Override
@@ -255,7 +251,8 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
         currentTip.add(
             StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + tag.getString("nameMode")
+                + StatCollector
+                    .translateToLocal("GT5U.GTPP_MULTI_CUTTING_MACHINE.mode." + (tag.getBoolean("mode") ? 1 : 0))
                 + EnumChatFormatting.RESET);
     }
 }

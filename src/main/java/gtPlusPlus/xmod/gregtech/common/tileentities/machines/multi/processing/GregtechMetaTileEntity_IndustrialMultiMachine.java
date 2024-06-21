@@ -376,13 +376,6 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", mInternalMode);
-    }
-
-    @Override
     protected CheckRecipeResult doCheckRecipe() {
 
         if (mInternalMode != 2 || !isInputSeparationEnabled()) {
@@ -499,6 +492,13 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     }
 
     @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("mode", mInternalMode);
+    }
+
+    @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
@@ -507,13 +507,9 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
             currentTip.add(
                 StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                     + EnumChatFormatting.WHITE
-                    + switch (tag.getInteger("mode")) {
-                    case 1 -> "Fluid";
-                    case 2 -> "Misc";
-                    default -> "Metal";
-                    }
+                    + StatCollector
+                        .translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_MULTI_MACHINE.mode." + tag.getInteger("mode"))
                     + EnumChatFormatting.RESET);
-
         }
     }
 }

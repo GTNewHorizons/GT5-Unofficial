@@ -78,7 +78,6 @@ public class GregtechMetaTileEntity_MassFabricator
     public static String mCasingName3 = "Matter Generation Coil";
 
     private int mMode = 0;
-    public String nameMode = "Mass Fabricator";
 
     private static final int MODE_SCRAP = 1;
     private static final int MODE_UU = 0;
@@ -322,15 +321,12 @@ public class GregtechMetaTileEntity_MassFabricator
         if (aMode > 1) {
             this.mMode = MODE_UU;
             PlayerUtils.messagePlayer(aPlayer, "Mode [" + this.mMode + "]: Matter/AmpliFabricator");
-            nameMode = "Mass Fabricator";
         } else if (aMode == 1) {
             this.mMode = MODE_SCRAP;
             PlayerUtils.messagePlayer(aPlayer, "Mode [" + this.mMode + "]: Recycler");
-            nameMode = "Recycler";
         } else {
             this.mMode = MODE_SCRAP;
             PlayerUtils.messagePlayer(aPlayer, "Mode [" + this.mMode + "]: Recycler");
-            nameMode = "Recycler";
         }
         mLastRecipe = null;
     }
@@ -338,14 +334,12 @@ public class GregtechMetaTileEntity_MassFabricator
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mMode", mMode);
-        aNBT.setString("nameMode", nameMode);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         mMode = aNBT.getInteger("mMode");
-        nameMode = aNBT.getString("nameMode");
         super.loadNBTData(aNBT);
     }
 
@@ -353,7 +347,7 @@ public class GregtechMetaTileEntity_MassFabricator
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("nameMode", nameMode);
+        tag.setInteger("mode", mMode);
     }
 
     @Override
@@ -364,7 +358,7 @@ public class GregtechMetaTileEntity_MassFabricator
         currentTip.add(
             StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + tag.getString("nameMode")
+                + StatCollector.translateToLocal("GT5U.GTPP_MULTI_MASS_FABRICATOR.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
     }
 }

@@ -64,7 +64,6 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
     private static String mCasingName = "Vacuum Casing";
     private HeatingCoilLevel mHeatingCapacity;
     private boolean mDehydratorMode = false;
-    public String nameMode = "Vacuum Furnace";
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialDehydrator> STRUCTURE_DEFINITION = null;
 
@@ -233,7 +232,6 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mDehydratorMode = !mDehydratorMode;
         String aMode = mDehydratorMode ? "Dehydrator" : "Vacuum Furnace";
-        nameMode = aMode;
         PlayerUtils.messagePlayer(aPlayer, "Mode: " + aMode);
         mLastRecipe = null;
     }
@@ -242,14 +240,12 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mDehydratorMode", mDehydratorMode);
-        aNBT.setString("nameMode", nameMode);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mDehydratorMode = aNBT.getBoolean("mDehydratorMode");
-        nameMode = aNBT.getString("nameMode");
     }
 
     public HeatingCoilLevel getCoilLevel() {
@@ -264,7 +260,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("nameMode", nameMode);
+        tag.setBoolean("mode", mDehydratorMode);
     }
 
     @Override
@@ -275,7 +271,8 @@ public class GregtechMetaTileEntity_IndustrialDehydrator
         currentTip.add(
             StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + tag.getString("nameMode")
+                + StatCollector
+                    .translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_DEHYDRATOR.mode." + (tag.getBoolean("mode") ? 1 : 0))
                 + EnumChatFormatting.RESET);
     }
 }
