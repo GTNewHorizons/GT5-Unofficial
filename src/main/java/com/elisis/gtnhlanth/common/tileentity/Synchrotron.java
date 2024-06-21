@@ -74,7 +74,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
     public ArrayList<AntennaCasing> mAntennaCasings = new ArrayList<>();
 
-    private static final int CASING_INDEX = 49;
+    private static final int CASING_INDEX = GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings5, 14);
 
     private static final byte MIN_GLASS_TIER = 6;
 
@@ -564,7 +564,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
         int aColorIndex, boolean active, boolean aRedstone) {
         // Placeholder
         if (side == facing) {
-            if (active) return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
+            if (active) return new ITexture[] { casingTexturePages[1][14], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
                 .extFacing()
                 .build(),
@@ -573,7 +573,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
+            return new ITexture[] { casingTexturePages[1][14], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER)
                 .extFacing()
                 .build(),
@@ -583,7 +583,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[0][47] };
+        return new ITexture[] { casingTexturePages[1][14] };
     }
 
     @Override

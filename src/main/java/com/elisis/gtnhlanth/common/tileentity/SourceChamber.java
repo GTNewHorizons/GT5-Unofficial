@@ -17,12 +17,6 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-
 import com.elisis.gtnhlanth.common.beamline.BeamInformation;
 import com.elisis.gtnhlanth.common.beamline.BeamLinePacket;
 import com.elisis.gtnhlanth.common.beamline.Particle;
@@ -36,6 +30,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -47,6 +42,11 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<SourceChamber>
     implements ISurvivalConstructable {
@@ -55,6 +55,8 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
 
     private ArrayList<TileHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
+    private static final int CASING_INDEX = GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings5, 14);
+    
     private float outputEnergy;
     private int outputRate;
     private int outputParticle;
@@ -74,26 +76,26 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
             .addElement(
                 'b',
                 buildHatchAdder(SourceChamber.class).hatchClass(TileHatchOutputBeamline.class)
-                    .casingIndex(47)
+                    .casingIndex(CASING_INDEX)
                     .dot(4)
                     .adder(SourceChamber::addBeamLineOutputHatch)
                     .build())
             .addElement(
                 'i',
                 buildHatchAdder(SourceChamber.class).atLeast(InputBus)
-                    .casingIndex(47)
+                    .casingIndex(CASING_INDEX)
                     .dot(1)
                     .build())
             .addElement(
                 'o',
                 buildHatchAdder(SourceChamber.class).atLeast(OutputBus)
-                    .casingIndex(47)
+                    .casingIndex(CASING_INDEX)
                     .dot(2)
                     .build())
             .addElement(
                 'd',
                 buildHatchAdder(SourceChamber.class).atLeast(Maintenance, Energy)
-                    .casingIndex(47)
+                    .casingIndex(CASING_INDEX)
                     .dot(3)
                     .buildAndChain(ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0)))
 
@@ -385,7 +387,7 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
 
         // Placeholder
         if (side == facing) {
-            if (active) return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
+            if (active) return new ITexture[] { casingTexturePages[1][14], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
                 .extFacing()
                 .build(),
@@ -394,7 +396,7 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
+            return new ITexture[] { casingTexturePages[1][14], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER)
                 .extFacing()
                 .build(),
@@ -404,6 +406,6 @@ public class SourceChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Sour
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[0][47] };
+        return new ITexture[] { casingTexturePages[1][14] };
     }
 }
