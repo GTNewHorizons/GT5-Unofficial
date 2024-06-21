@@ -62,7 +62,8 @@ public class TargetChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<Targ
     private ArrayList<TileBusInputFocus> mInputFocus = new ArrayList<>();
 
     private static final int CASING_INDEX_FRONT = GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings3, 10); // Grate
-    private static final int CASING_INDEX_CENTRE = GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings5, 14); // Shielded Acc.
+    private static final int CASING_INDEX_CENTRE = GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings5, 14); // Shielded
+                                                                                                                      // Acc.
 
     private float inputEnergy;
     private float inputRate;
