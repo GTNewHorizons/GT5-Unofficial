@@ -59,12 +59,17 @@ import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.recipe.maps.MicrowaveBackend;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.recipe.maps.PrinterBackend;
+import gregtech.api.recipe.maps.PurificationUnitClarifierFrontend;
+import gregtech.api.recipe.maps.PurificationUnitFlocculatorFrontend;
+import gregtech.api.recipe.maps.PurificationUnitOzonationFrontend;
+import gregtech.api.recipe.maps.PurificationUnitPhAdjustmentFrontend;
 import gregtech.api.recipe.maps.RecyclerBackend;
 import gregtech.api.recipe.maps.ReplicatorBackend;
 import gregtech.api.recipe.maps.SpaceProjectFrontend;
 import gregtech.api.recipe.maps.TranscendentPlasmaMixerFrontend;
 import gregtech.api.recipe.maps.UnpackagerBackend;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
+import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -1153,6 +1158,56 @@ public final class RecipeMaps {
             Comparator
                 .<GT_Recipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(PCBFactoryTierKey.INSTANCE, 1))
                 .thenComparing(GT_Recipe::compareTo))
+        .build();
+    public static final RecipeMap<RecipeMapBackend> purificationClarifierRecipes = RecipeMapBuilder
+        .of("gt.recipe.purificationplantclarifier")
+        .maxIO(1, 4, 1, 1)
+        .minInputs(0, 1)
+        .frontend(PurificationUnitClarifierFrontend::new)
+        .disableOptimize()
+        .build();
+    public static final RecipeMap<RecipeMapBackend> purificationOzonationRecipes = RecipeMapBuilder
+        .of("gt.recipe.purificationplantozonation")
+        .maxIO(0, 4, 2, 1)
+        .minInputs(0, 2)
+        .progressBar(GT_UITextures.PROGRESSBAR_BATH)
+        .neiRecipeComparator(
+            Comparator
+                .<GT_Recipe, Float>comparing(
+                    recipe -> recipe.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f))
+                .thenComparing(GT_Recipe::compareTo))
+        .frontend(PurificationUnitOzonationFrontend::new)
+        .disableOptimize()
+        .build();
+    public static final RecipeMap<RecipeMapBackend> purificationFlocculationRecipes = RecipeMapBuilder
+        .of("gt.recipe.purificationplantflocculation")
+        .maxIO(0, 3, 2, 2)
+        .minInputs(0, 1)
+        .progressBar(GT_UITextures.PROGRESSBAR_BATH)
+        .neiRecipeComparator(
+            Comparator
+                .<GT_Recipe, Float>comparing(
+                    recipe -> recipe.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f))
+                .thenComparing(GT_Recipe::compareTo))
+        .frontend(PurificationUnitFlocculatorFrontend::new)
+        .disableOptimize()
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> purificationPhAdjustmentRecipes = RecipeMapBuilder
+        .of("gt.recipe.purificationplantphadjustment")
+        .maxIO(0, 0, 1, 1)
+        .minInputs(0, 1)
+        .progressBar(GT_UITextures.PROGRESSBAR_MIXER)
+        .frontend(PurificationUnitPhAdjustmentFrontend::new)
+        .disableOptimize()
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> purificationPlasmaHeatingRecipes = RecipeMapBuilder
+        .of("gt.recipe.purificationplantplasmaheating")
+        .maxIO(0, 0, 1, 1)
+        .minInputs(0, 1)
+        .progressBar(GT_UITextures.PROGRESSBAR_BOILER_HEAT)
+        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> ic2NuclearFakeRecipes = RecipeMapBuilder.of("gt.recipe.ic2nuke")
         .maxIO(1, 1, 0, 0)

@@ -121,6 +121,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_PH_SENSOR;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_COAL_BOILER;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_LAVA_BOILER;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_SOLAR_BOILER;
@@ -313,6 +314,13 @@ import static gregtech.api.enums.MetaTileEntityIDs.PUMP_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_PLANT_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_CLARIFIER;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_FLOCCULATOR;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_OZONATION;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_PH_ADJUSTMENT;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_PLASMA_HEATER;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_UV_TREATMENT;
 import static gregtech.api.enums.MetaTileEntityIDs.PYROLYSE_OVEN_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_IV;
@@ -581,6 +589,14 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Transcenden
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationPlant;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitClarifier;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitFlocculation;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitOzonation;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitPhAdjustment;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitPlasmaHeater;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitUVTreatment;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_pHSensor;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Bronze;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Steel;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_Compressor_Bronze;
@@ -842,7 +858,41 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 DTPF_CONTROLLER.ID,
                 "multimachine.plasmaforge",
                 "Dimensionally Transcendent Plasma Forge").getStackForm(1L));
-
+        ItemList.Machine_Multi_PurificationPlant.set(
+            new GT_MetaTileEntity_PurificationPlant(
+                PURIFICATION_PLANT_CONTROLLER.ID,
+                "multimachine.purificationplant",
+                "Water Purification Plant").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitClarifier.set(
+            new GT_MetaTileEntity_PurificationUnitClarifier(
+                PURIFICATION_UNIT_CLARIFIER.ID,
+                "multimachine.purificationunitclarifier",
+                "Clarifier Purification Unit").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitFlocculator.set(
+            new GT_MetaTileEntity_PurificationUnitFlocculation(
+                PURIFICATION_UNIT_FLOCCULATOR.ID,
+                "multimachine.purificationunitflocculator",
+                "Flocculation Purification Unit").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitPhAdjustment.set(
+            new GT_MetaTileEntity_PurificationUnitPhAdjustment(
+                PURIFICATION_UNIT_PH_ADJUSTMENT.ID,
+                "multimachine.purificationunitphadjustment",
+                "pH Adjustment Purification Unit").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitOzonation.set(
+            new GT_MetaTileEntity_PurificationUnitOzonation(
+                PURIFICATION_UNIT_OZONATION.ID,
+                "multimachine.purificationunitozonation",
+                "Ozonation Purification Unit").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitPlasmaHeater.set(
+            new GT_MetaTileEntity_PurificationUnitPlasmaHeater(
+                PURIFICATION_UNIT_PLASMA_HEATER.ID,
+                "multimachine.purificationunitplasmaheater",
+                "Plasma Heater Purification Unit").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitUVTreatment.set(
+            new GT_MetaTileEntity_PurificationUnitUVTreatment(
+                PURIFICATION_UNIT_UV_TREATMENT.ID,
+                "multimachine.purificationunituvtreatment",
+                "Ultraviolet Treatment Purification Unit").getStackForm(1L));
         ItemList.Machine_Multi_LargeBoiler_Bronze.set(
             new GT_MetaTileEntity_LargeBoiler_Bronze(
                 LARGE_BRONZE_BOILER_CONTROLLER.ID,
@@ -4117,6 +4167,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "hatch.dataaccess.auto",
                 "Automatable Data Access Hatch",
                 8).getStackForm(1L));
+        ItemList.Hatch_pHSensor.set(
+            new GT_MetaTileEntity_pHSensor(HATCH_PH_SENSOR.ID, "hatch.phsensor", "pH Sensor Hatch", 7).getStackForm(1));
         generateWiresAndPipes();
     }
 
