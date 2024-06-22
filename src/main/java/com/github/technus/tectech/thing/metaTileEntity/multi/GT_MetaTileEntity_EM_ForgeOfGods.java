@@ -145,6 +145,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     private static final int MILESTONE_WINDOW_ID = 13;
     private static final int INDIVIDUAL_MILESTONE_WINDOW_ID = 14;
     private static final int MANUAL_INSERTION_WINDOW_ID = 15;
+    private static final int GENERAL_INFO_WINDOW_ID = 16;
     private static final int TEXTURE_INDEX = 960;
     private static final int[] FIRST_SPLIT_UPGRADES = new int[] { 12, 13, 14 };
     private static final Integer[] UPGRADE_MATERIAL_ID_CONVERSION = { 0, 5, 7, 11, 26, 29, 30 };
@@ -558,6 +559,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         buildContext.addSyncedWindow(MILESTONE_WINDOW_ID, this::createMilestoneWindow);
         buildContext.addSyncedWindow(INDIVIDUAL_MILESTONE_WINDOW_ID, this::createIndividualMilestoneWindow);
         buildContext.addSyncedWindow(MANUAL_INSERTION_WINDOW_ID, this::createManualInsertionWindow);
+        buildContext.addSyncedWindow(GENERAL_INFO_WINDOW_ID, this::createGeneralInfoWindow);
         builder.widget(
             new ButtonWidget().setOnClick(
                 (clickData, widget) -> {
@@ -635,10 +637,21 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     button.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
                     button.add(TecTechUITextures.OVERLAY_BUTTON_FLAG);
                     return button.toArray(new IDrawable[0]);
+
                 })
                 .addTooltip(translateToLocal("fog.button.milestones.tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(174, 91));
+                .setPos(174, 91))
+            .widget(
+                new ButtonWidget().setOnClick(
+                    (clickData, widget) -> {
+                        if (!widget.isClient()) widget.getContext()
+                            .openSyncedWindow(GENERAL_INFO_WINDOW_ID);
+                    })
+                    .setSize(18, 18)
+                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.clickhere"))
+                    .setPos(172, 67)
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 
     @Override
@@ -2017,6 +2030,164 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         return builder.build();
     }
 
+    protected ModularWindow createGeneralInfoWindow(final EntityPlayer player) {
+        final Scrollable scrollable = new Scrollable().setVerticalScroll();
+        final int WIDTH = 300;
+        final int HEIGHT = 300;
+        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+
+        builder.setDraggable(true);
+        scrollable.widget(
+            new TextWidget(EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.FOG.introduction"))
+                .setDefaultColor(EnumChatFormatting.DARK_PURPLE)
+                .setTextAlignment(Alignment.TopCenter)
+                .setPos(7, 13)
+                .setSize(280, 15))
+            .widget(
+                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.introductioninfotext"))
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(7, 30)
+                    .setSize(280, 50))
+            .widget(
+                new TextWidget(
+                    EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.FOG.tableofcontents"))
+                        .setDefaultColor(EnumChatFormatting.AQUA)
+                        .setTextAlignment(Alignment.CenterLeft)
+                        .setPos(7, 80)
+                        .setSize(150, 15))
+            .widget(
+                new ButtonWidget().setOnClick((clickData, widget) -> scrollable.setVerticalScrollOffset(150))
+                    .setBackground(
+                        new Text(EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.FOG.fuel"))
+                            .alignment(Alignment.CenterLeft)
+                            .color(0x55ffff))
+                    .setPos(7, 95)
+                    .setSize(150, 15))
+            .widget(
+                new ButtonWidget().setOnClick((clickData, widget) -> scrollable.setVerticalScrollOffset(434))
+                    .setBackground(
+                        new Text(
+                            EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.FOG.modules"))
+                                .alignment(Alignment.CenterLeft)
+                                .color(0x55ffff))
+                    .setPos(7, 110)
+                    .setSize(150, 15))
+            .widget(
+                new ButtonWidget().setOnClick((clickData, widget) -> scrollable.setVerticalScrollOffset(1088))
+                    .setBackground(
+                        new Text(
+                            EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.FOG.upgrades"))
+                                .alignment(Alignment.CenterLeft)
+                                .color(0x55ffff))
+                    .setPos(7, 125)
+                    .setSize(150, 15))
+            .widget(
+                new ButtonWidget().setOnClick((clickData, widget) -> scrollable.setVerticalScrollOffset(1412))
+                    .setBackground(
+                        new Text(
+                            EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.FOG.milestones"))
+                                .alignment(Alignment.CenterLeft)
+                                .color(0x55ffff))
+                    .setPos(7, 140)
+                    .setSize(150, 15))
+            .widget(
+                TextWidget.dynamicText(this::inversionHeaderText)
+                    .setDefaultColor(EnumChatFormatting.WHITE)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(7, 155)
+                    .setSize(150, 15))
+            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                if (inversion) {
+                    scrollable.setVerticalScrollOffset(1766);
+                }
+            })
+                .setPlayClickSound(inversion)
+                .setPos(7, 155)
+                .setSize(150, 15)
+                .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> inversion, (val) -> inversion = val), scrollable))
+            .widget(
+                new TextWidget(
+                    EnumChatFormatting.BOLD + "§N" + translateToLocal("gt.blockmachines.multimachine.FOG.fuel"))
+                        .setDefaultColor(EnumChatFormatting.DARK_PURPLE)
+                        .setTextAlignment(Alignment.TopCenter)
+                        .setPos(127, 160)
+                        .setSize(40, 15))
+            .widget(
+                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfotext"))
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(7, 177)
+                    .setSize(280, 250))
+            .widget(
+                new TextWidget(
+                    EnumChatFormatting.BOLD + "§N" + translateToLocal("gt.blockmachines.multimachine.FOG.modules"))
+                        .setDefaultColor(EnumChatFormatting.DARK_PURPLE)
+                        .setTextAlignment(Alignment.TopCenter)
+                        .setPos(7, 444)
+                        .setSize(280, 15))
+            .widget(
+                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.moduleinfotext"))
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(7, 461)
+                    .setSize(280, 620))
+            .widget(
+                new TextWidget(
+                    EnumChatFormatting.BOLD + "§N" + translateToLocal("gt.blockmachines.multimachine.FOG.upgrades"))
+                        .setDefaultColor(EnumChatFormatting.DARK_PURPLE)
+                        .setTextAlignment(Alignment.TopCenter)
+                        .setPos(7, 1098)
+                        .setSize(280, 15))
+            .widget(
+                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.upgradeinfotext"))
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(7, 1115)
+                    .setSize(280, 290))
+            .widget(
+                new TextWidget(
+                    EnumChatFormatting.BOLD + "§N" + translateToLocal("gt.blockmachines.multimachine.FOG.milestones"))
+                        .setDefaultColor(EnumChatFormatting.DARK_PURPLE)
+                        .setTextAlignment(Alignment.TopCenter)
+                        .setPos(7, 1422)
+                        .setSize(280, 15))
+            .widget(
+                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.milestoneinfotext"))
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(7, 1439)
+                    .setSize(280, 320))
+            .widget(
+                TextWidget.dynamicText(this::inversionHeaderText)
+                    .setDefaultColor(EnumChatFormatting.WHITE)
+                    .setTextAlignment(Alignment.TopCenter)
+                    .setPos(7, 1776)
+                    .setSize(280, 15))
+            .widget(
+                TextWidget.dynamicText(this::inversionInfoText)
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(7, 1793)
+                    .setSize(280, 160))
+            .widget(
+                new TextWidget("").setPos(7, 1965)
+                    .setSize(10, 10));
+
+        builder.widget(
+            new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_GLOW_WHITE)
+                .setPos(0, 0)
+                .setSize(300, 300))
+            .widget(
+                scrollable.setSize(292, 292)
+                    .setPos(4, 4))
+            .widget(
+                ButtonWidget.closeWindowButton(true)
+                    .setPos(284, 4));
+
+        return builder.build();
+    }
+
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
@@ -2120,7 +2291,8 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     private Text inversionStatusText() {
         String inversionStatus = "";
         if (inversion) {
-            inversionStatus = EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.FOG.inversion");
+            inversionStatus = EnumChatFormatting.BOLD
+                + translateToLocal("gt.blockmachines.multimachine.FOG.inversionactive");
         }
         return new Text(inversionStatus);
     }
@@ -2287,7 +2459,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 progress = totalRecipesProcessed;
             }
             case 2 -> {
-                suffix = translateToLocal("gt.blockmachines.multimachine.FOG.fuel");
+                suffix = translateToLocal("gt.blockmachines.multimachine.FOG.fuelconsumed");
                 progress = totalFuelConsumed;
             }
             case 3 -> {
@@ -2384,7 +2556,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 }
             case 2:
                 if (milestoneProgress[2] < 7 || inversion) {
-                    suffix = translateToLocal("gt.blockmachines.multimachine.FOG.fuel");
+                    suffix = translateToLocal("gt.blockmachines.multimachine.FOG.fuelconsumed");
                     if (inversion) {
                         max = FUEL_MILESTONE_T7_CONSTANT * (milestoneProgress[2] - 5);
                     } else {
@@ -2410,6 +2582,24 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         } else {
             return new Text(progressText + ": " + EnumChatFormatting.GRAY + max + " " + suffix);
         }
+    }
+
+    private Text inversionHeaderText() {
+        return inversion
+            ? new Text(
+                EnumChatFormatting.BOLD + "§k2"
+                    + EnumChatFormatting.RESET
+                    + EnumChatFormatting.WHITE
+                    + EnumChatFormatting.BOLD
+                    + translateToLocal("gt.blockmachines.multimachine.FOG.inversion")
+                    + EnumChatFormatting.BOLD
+                    + "§k2")
+            : new Text("");
+    }
+
+    private Text inversionInfoText() {
+        return inversion ? new Text(translateToLocal("gt.blockmachines.multimachine.FOG.inversioninfotext"))
+            : new Text("");
     }
 
     private List<String> upgradeMaterialRequirements() {
