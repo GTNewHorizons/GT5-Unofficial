@@ -52,8 +52,6 @@ import gregtech.api.multitileentity.base.NonTickableMultiTileEntity;
 import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_HasModes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.CoverInfo;
@@ -62,7 +60,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MultiBlockPart extends NonTickableMultiTileEntity
-    implements IMultiBlockPart, IMTE_HasModes, PowerLogicHost, IMultiTileEntity.IMTE_AddToolTips, GUIHost {
+    implements IMultiBlockPart, PowerLogicHost, GUIHost {
 
     public static final int NOTHING = 0, ENERGY_IN = B[0], ENERGY_OUT = B[1], FLUID_IN = B[2], FLUID_OUT = B[3],
         ITEM_IN = B[4], ITEM_OUT = B[5];
@@ -98,7 +96,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     public void setTarget(IMultiBlockController newTarget, int aAllowedModes) {
-        IMultiBlockController currentTarget = getTarget(false);
+        final IMultiBlockController currentTarget = getTarget(false);
         if (currentTarget != null && currentTarget != newTarget) {
             for (MultiTileCasingPurpose purpose : registeredPurposes) {
                 unregisterPurpose(purpose);
@@ -331,25 +329,25 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     /**
-     * True if `aMode` is one of the allowed modes
+     * True if `mode` is one of the allowed modes
      */
-    public boolean hasMode(int aMode) {
+    public boolean hasMode(int mode) {
         // This is not sent to the client
-        return (allowedModes & aMode) != 0;
+        return (allowedModes & mode) != 0;
     }
 
     /**
      * Returns true if the part has any of the modes provided, and that mode is the currently selected mode
      */
-    public boolean modeSelected(int... aModes) {
-        for (int aMode : aModes) {
-            if (hasMode(aMode) && mode == getModeOrdinal(aMode)) return true;
+    public boolean modeSelected(int... modes) {
+        for (int mode : modes) {
+            if (hasMode(mode) && this.mode == getModeOrdinal(mode)) return true;
         }
         return false;
     }
 
     @Override
-    public boolean breakBlock() {
+    public boolean onBlockBroken() {
         final IMultiBlockController tTarget = getTarget(false);
         if (tTarget != null) {
             unregisterCovers(tTarget);

@@ -201,12 +201,12 @@ public class GT_StructureUtilityMuTE {
                     GT_FML_LOGGER.error("NULL CONTAINER");
                     return false;
                 }
-                final IMultiTileEntity te = ((IMultiTileEntity) tContainer.mTileEntity);
+                final IMultiTileEntity te = ((IMultiTileEntity) tContainer.tileEntity);
                 if (!(te instanceof MultiBlockPart)) {
                     GT_FML_LOGGER.error("Not a multiblock part");
                     return false;
                 }
-                if (world.setBlock(x, y, z, tContainer.mBlock, 15 - tContainer.mBlockMetaData, 2)) {
+                if (world.setBlock(x, y, z, tContainer.block, 15 - tContainer.blockMetaData, 2)) {
                     tContainer.setMultiTile(world, x, y, z);
                     ((MultiBlockPart) te).setTarget((IMultiBlockController) t, modes);
 
@@ -263,7 +263,7 @@ public class GT_StructureUtilityMuTE {
             // but it should be properly fixed in the future
             if (registryId == GT_Values.W) {
                 MultiTileEntityRegistry registry = MultiTileEntityRegistry.getRegistry(registryName);
-                registryId = Block.getIdFromBlock(registry.mBlock);
+                registryId = Block.getIdFromBlock(registry.getBlock());
             }
             return registryId;
         }

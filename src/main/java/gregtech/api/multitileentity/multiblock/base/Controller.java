@@ -60,7 +60,6 @@ import gregtech.api.logic.PowerLogic;
 import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_AddToolTips;
 import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
@@ -75,9 +74,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /**
  * Multi Tile Entities - or MuTEs - don't have dedicated hatches, but their casings can become hatches.
  */
-public abstract class Controller<C extends Controller<C, P>, P extends MuTEProcessingLogic<P>>
-    extends MultiTileBasicMachine<P>
-    implements IAlignment, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable {
+public abstract class Controller<C extends Controller<C, P>, P extends MuTEProcessingLogic<P>> extends
+    MultiTileBasicMachine<P> implements IAlignment, IMultiBlockController, IDescribable, ISurvivalConstructable {
 
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
