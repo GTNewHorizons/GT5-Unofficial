@@ -2217,7 +2217,9 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
 
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
-        return new String[] { "Forge of Gods multiblock" };
+        return new String[] { EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
+            translateToLocal("gt.blockmachines.multimachine.FOG.hint.0"),
+            translateToLocal("gt.blockmachines.multimachine.FOG.hint.1") };
     }
 
     public int getFuelType() {
