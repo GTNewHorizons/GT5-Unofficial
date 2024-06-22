@@ -1,30 +1,24 @@
 package gregtech.api.multitileentity;
 
-import static gregtech.api.util.GT_Util.setTileEntity;
-
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
+import gregtech.api.multitileentity.base.MultiTileEntity;
+import gregtech.api.util.GT_Util;
 
 public class MultiTileEntityContainer {
 
-    public final TileEntity mTileEntity;
-    public final MultiTileEntityBlock mBlock;
-    public final byte mBlockMetaData;
+    public final MultiTileEntity tileEntity;
+    public final MultiTileEntityBlock block;
+    public final byte blockMetaData;
 
-    public MultiTileEntityContainer(TileEntity aTileEntity, MultiTileEntityBlock aBlock, byte aBlockMetaData) {
-        mBlockMetaData = aBlockMetaData;
-        mTileEntity = aTileEntity;
-        mBlock = aBlock;
+    public MultiTileEntityContainer(MultiTileEntity tileEntity, MultiTileEntityBlock block, byte blockMetaData) {
+        this.blockMetaData = blockMetaData;
+        this.tileEntity = tileEntity;
+        this.block = block;
     }
 
     public void setMultiTile(World aWorld, int aX, int aY, int aZ) {
-        // This is some complicated Bullshit Greg had to do to make his MTEs work right.
-        ((IMultiTileEntity) mTileEntity).setShouldRefresh(false);
-        setTileEntity(aWorld, aX, aY, aZ, mTileEntity, false);
-        setTileEntity(aWorld, aX, aY, aZ, mBlock, mBlockMetaData, 0, false);
-        ((IMultiTileEntity) mTileEntity).setShouldRefresh(true);
-        setTileEntity(aWorld, aX, aY, aZ, mTileEntity, true);
+        GT_Util.setBlock(aWorld, aX, aY, aZ, block, blockMetaData, 0, false);
+        GT_Util.setTileEntity(aWorld, aX, aY, aZ, tileEntity, true);
     }
 }

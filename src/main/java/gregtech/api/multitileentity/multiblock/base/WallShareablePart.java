@@ -55,7 +55,7 @@ public class WallShareablePart extends MultiBlockPart {
     }
 
     @Override
-    public boolean breakBlock() {
+    public boolean onBlockBroken() {
         for (final ChunkCoordinates coordinates : targetPositions) {
             IMultiBlockController target = getTarget(coordinates, false);
             if (target == null) {

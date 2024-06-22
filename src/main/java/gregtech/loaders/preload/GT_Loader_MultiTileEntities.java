@@ -39,33 +39,43 @@ import gregtech.common.tileentities.machines.multiblock.Macerator;
 
 public class GT_Loader_MultiTileEntities implements Runnable {
 
+    // MuTE Registry Names
     public static final String COMPONENT_CASING_REGISTRY_NAME = "gt.multitileentity.component.casings";
     public static final String UPGRADE_CASING_REGISTRY_NAME = "gt.multitileentity.upgrade.casings";
     public static final String CASING_REGISTRY_NAME = "gt.multitileentity.casings";
     public static final String MACHINE_REGISTRY_NAME = "gt.multitileentity.controllers";
+
+    // MuTE Registries
     public static final MultiTileEntityRegistry MACHINE_REGISTRY = new MultiTileEntityRegistry(MACHINE_REGISTRY_NAME);
-    public static final MultiTileEntityBlock MACHINE_BLOCK = MultiTileEntityBlock
-        .getOrCreate("GregTech", "machine", Material.iron, Block.soundTypeMetal, "wrench", 0, 0, 15, true, true);
     public static final MultiTileEntityRegistry CASING_REGISTRY = new MultiTileEntityRegistry(CASING_REGISTRY_NAME);
-    public static final MultiTileEntityBlock CASING_BLOCK = MultiTileEntityBlock
-        .getOrCreate("GregTech", "casing", Material.iron, Block.soundTypeMetal, "wrench", 0, 0, 15, true, true);
     public static final MultiTileEntityRegistry COMPONENT_CASING_REGISTRY = new MultiTileEntityRegistry(
         COMPONENT_CASING_REGISTRY_NAME);
-
     public static final MultiTileEntityRegistry UPGRADE_CASING_REGISTRY = new MultiTileEntityRegistry(
         UPGRADE_CASING_REGISTRY_NAME);
 
-    public static final MultiTileEntityBlock COMPONENT_CASING_BLOCK = MultiTileEntityBlock.getOrCreate(
-        "GregTech",
-        "componentCasing",
-        Material.iron,
-        Block.soundTypeMetal,
-        "wrench",
-        0,
-        0,
-        15,
-        true,
-        true);
+    // MuTE Blocks
+    public static final MultiTileEntityBlock MACHINE_BLOCK = new MultiTileEntityBlock(Material.iron).modID("gregtech")
+        .materialName("machine")
+        .tool("wrench")
+        .sound(Block.soundTypeMetal)
+        .opaque(true)
+        .normalCube(true)
+        .register();
+    public static final MultiTileEntityBlock CASING_BLOCK = new MultiTileEntityBlock(Material.iron).modID("gregtech")
+        .materialName("casing")
+        .tool("wrench")
+        .sound(Block.soundTypeMetal)
+        .opaque(true)
+        .normalCube(true)
+        .register();
+    public static final MultiTileEntityBlock COMPONENT_CASING_BLOCK = new MultiTileEntityBlock(Material.iron)
+        .modID("gregtech")
+        .materialName("componentCasing")
+        .tool("wrench")
+        .sound(Block.soundTypeMetal)
+        .opaque(true)
+        .normalCube(true)
+        .register();
 
     @Override
     public void run() {
