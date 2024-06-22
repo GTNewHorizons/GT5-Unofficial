@@ -793,6 +793,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.2"))
                     .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.3"))
                     .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.4"))
+                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.5"))
                     .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(
                 TextWidget.localised("gt.blockmachines.multimachine.FOG.fueltype")

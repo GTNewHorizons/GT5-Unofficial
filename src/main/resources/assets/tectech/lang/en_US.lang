@@ -1008,7 +1008,8 @@ gt.blockmachines.multimachine.FOG.fuelinfo.0=The Stellar Fuel Consumption Factor
 gt.blockmachines.multimachine.FOG.fuelinfo.1=Dimensionally Transcendent Residue: factor*300*1.15^factor
 gt.blockmachines.multimachine.FOG.fuelinfo.2=Condensed Raw Stellar Plasma Mixture: factor*2*1.08^factor
 gt.blockmachines.multimachine.FOG.fuelinfo.3=Magnetohydrodynamically Constrained Star Matter: factor/25
-gt.blockmachines.multimachine.FOG.fuelinfo.4=Upgrades can influence these formulas, the changes are listed in the respective upgrades' descriptions.
+gt.blockmachines.multimachine.FOG.fuelinfo.4=This factor also determines the base heat of the multiblock: Heat=log1.5(factor)*1000+12601
+gt.blockmachines.multimachine.FOG.fuelinfo.5=Upgrades can influence these formulas, the changes are listed in the respective upgrades' descriptions.
 gt.blockmachines.multimachine.FOG.fueltype=Click to Select Fuel Type
 gt.blockmachines.multimachine.FOG.fuelusage=Fuel Usage
 gt.blockmachines.multimachine.FOG.plasmamultistep=Multi-Step plasma
