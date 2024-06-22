@@ -180,7 +180,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
             @NotNull
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
-                calculateDiscounts(coilLevel, glassTier, recipe);
+                calculateEnergyDiscount(coilLevel, recipe);
                 return super.createOverclockCalculator(recipe).setSpeedBoost(speedBonus)
                     .setEUtDiscount(energyDiscount);
             }
@@ -222,6 +222,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
                 }
             }
         }
+        calculateSpeedBonus(coilLevel, glassTier);
         return true;
     }
 
@@ -240,18 +241,22 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
         return false;
     }
 
-    public void calculateDiscounts(HeatingCoilLevel lvl, int glassTier, GT_Recipe recipe) {
-
+    private void calculateSpeedBonus(HeatingCoilLevel lvl, int glassTier) {
         int bonusTier = lvl != null ? Math.min(lvl.getTier() - 3, glassTier - 2) : 0;
-        int recipeTier = GT_Utility.getTier(recipe.mEUt);
         if (bonusTier < 0) {
             speedBonus = 1;
+            return;
+        }
+        speedBonus = 1 - 0.05f * bonusTier;
+    }
+
+    private void calculateEnergyDiscount(HeatingCoilLevel lvl, GT_Recipe recipe) {
+        int recipeTier = GT_Utility.getTier(recipe.mEUt);
+        int tierDifference = lvl != null ? lvl.getTier() + 1 - recipeTier : 0;
+        if (tierDifference < 0) {
             energyDiscount = 1;
             return;
         }
-
-        speedBonus = 1 - 0.05f * bonusTier;
-        int tierDifference = lvl != null ? lvl.getTier() + 1 - recipeTier : 0;
         energyDiscount = (float) Math.pow(0.95, tierDifference);
     }
 
