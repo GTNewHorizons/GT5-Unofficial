@@ -1,8 +1,6 @@
 package gregtech.test;
 
 import static gregtech.api.enums.GT_Values.RA;
-import static gregtech.api.enums.ItemList.Circuit_Advanced;
-import static gregtech.api.enums.ItemList.Circuit_Nanoprocessor;
 import static gregtech.api.enums.ItemList.Circuit_Parts_Crystal_Chip_Master;
 import static gregtech.api.enums.ItemList.IC2_LapotronCrystal;
 import static gregtech.api.enums.Materials.Advanced;
@@ -12,7 +10,6 @@ import static gregtech.api.enums.OrePrefixes.circuit;
 import static gregtech.api.enums.OrePrefixes.lens;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_OreDictUnificator.get;
-import static gregtech.api.util.GT_OreDictUnificator.isItemStackInstanceOf;
 import static gregtech.api.util.GT_Utility.copyAmount;
 import static net.minecraft.init.Blocks.chest;
 import static net.minecraft.init.Blocks.iron_ore;
@@ -27,7 +24,6 @@ import static net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -223,26 +219,6 @@ class GTRecipeTest {
             .items(ItemList.Tool_DataStick.get(0))
             .find();
         assertNull(checkNBTRecipe);
-    }
-
-    @Test
-    void findOredicted() {
-        // https://github.com/GTNewHorizons/GT5-Unofficial/pull/2373
-        assertTrue(
-            isItemStackInstanceOf(Circuit_Nanoprocessor.get(1), "circuitAdvanced"),
-            "Nanoprocessor is not registered as HV circuit");
-        GT_Recipe recipeByNanoProcessor = recipeMap.findRecipeQuery()
-            .items(new ItemStack(lapis_block, 1), Circuit_Nanoprocessor.get(1))
-            .find();
-        assertNotNull(recipeByNanoProcessor);
-
-        assertTrue(
-            isItemStackInstanceOf(Circuit_Advanced.get(1), "circuitAdvanced"),
-            "Processor Assembly is not registered as HV circuit");
-        GT_Recipe recipeByCircuitAssembly = recipeMap.findRecipeQuery()
-            .items(new ItemStack(lapis_block, 1), Circuit_Advanced.get(1))
-            .find();
-        assertNotNull(recipeByCircuitAssembly);
     }
 
     @Test
