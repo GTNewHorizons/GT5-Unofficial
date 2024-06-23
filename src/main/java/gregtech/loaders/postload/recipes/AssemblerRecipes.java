@@ -65,6 +65,23 @@ public class AssemblerRecipes implements Runnable {
         this.loadOutputHatchesRecipes();
         this.withIC2NuclearControl();
 
+        // If Cleanroom is enabled, add an assembler recipe
+        if (GT_Mod.gregtechproxy.mEnableCleanroom) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_HV.get(1L),
+                    ItemList.Component_Filter.get(2L),
+                    GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L),
+                    ItemList.Electric_Motor_HV.get(1L),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
+                    GT_Utility.getIntegratedCircuit(1))
+                .itemOutputs(ItemList.Machine_Multi_Cleanroom.get(1L))
+                .fluidInputs(Materials.StainlessSteel.getMolten(864L))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(assemblerRecipes);
+        }
+
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
