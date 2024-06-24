@@ -605,63 +605,90 @@ public class GT_Achievements {
             case "gt.blockcasings.15" -> issueAchievement(player, "conducting");
         }
 
-        if (stack.getUnlocalizedName()
+        if (!stack.getUnlocalizedName()
             .startsWith("gt.blockmachines.")) {
-            if (stack.getUnlocalizedName()
-                .startsWith("gt.blockmachines.basicmachine.arcfurnace.tier.")) {
-                issueAchievement(player, "recycling");
-            } else if (stack.getUnlocalizedName()
-                .startsWith("gt.blockmachines.basicmachine.disassembler.tier.")) {
-                    issueAchievement(player, "repair");
-
-                }
-
-            else if (stack.getUnlocalizedName()
-                .startsWith("gt.blockmachines.automation.superbuffer.tier.")) {
-                    issueAchievement(player, "superbuffer");
-                } else if (stack.getUnlocalizedName()
-                    .startsWith("gt.blockmachines.quantum.tank.tier.")) {
-                        issueAchievement(player, "whereistheocean");
-                    } else if (stack.getUnlocalizedName()
-                        .startsWith("gt.blockmachines.quantum.chest.tier.")) {
-                            issueAchievement(player, "newstorage");
-                        } else if (stack.getUnlocalizedName()
-                            .startsWith("gt.blockmachines.basicmachine.hammer.tier.")) {
-                                issueAchievement(player, "cheapermac");
-                            } else if (stack.getUnlocalizedName()
-                                .startsWith("gt.blockmachines.automation.chestbuffer.tier.")) {
-                                    issueAchievement(player, "buffer");
-                                    issueAchievement(player, "buildBatBox");
-                                    if (stack.getUnlocalizedName()
-                                        .startsWith("gt.blockmachines.automation.chestbuffer.tier.3")) {
-                                        issueAchievement(player, "buildMFE");
-                                    }
-                                } else if (stack.getUnlocalizedName()
-                                    .startsWith("gt.blockmachines.basicgenerator.steamturbine.tier.")) {
-                                        issueAchievement(player, "steampower");
-                                        issueAchievement(player, "buildGenerator");
-                                    } else if (stack.getUnlocalizedName()
-                                        .startsWith("gt.blockmachines.basicmachine.assembler.tier.")) {
-                                            issueAchievement(player, "avengers");
-                                        } else if (stack.getUnlocalizedName()
-                                            .startsWith("gt.blockmachines.batterybuffer.")) {
-                                                issueAchievement(player, "batterys");
-                                            } else if (stack.getUnlocalizedName()
-                                                .startsWith("gt.blockmachines.basicmachine.amplifab.tier.")) {
-                                                    issueAchievement(player, "amplifier");
-                                                } else if (stack.getUnlocalizedName()
-                                                    .startsWith("gt.blockmachines.basicmachine.massfab.tier.")) {
-                                                        issueAchievement(player, "universal");
-                                                        issueAchievement(player, "buildMassFab");
-                                                    } else if (stack.getUnlocalizedName()
-                                                        .startsWith("gt.blockmachines.basicgenerator.naquadah.tier.")) {
-                                                            issueAchievement(player, "alienpower");
-                                                        } else if (stack.getUnlocalizedName()
-                                                            .startsWith(
-                                                                "gt.blockmachines.basicmachine.replicator.tier.")) {
-                                                                    issueAchievement(player, "replication");
-                                                                }
+            return;
         }
+
+        // from here, it only concerns "gt.blockmachines." kind of achievements
+        if (stack.getUnlocalizedName()
+            .startsWith("gt.blockmachines.basicmachine.arcfurnace.tier.")) {
+            issueAchievement(player, "recycling");
+            return;
+        }
+        if (stack.getUnlocalizedName()
+            .startsWith("gt.blockmachines.basicmachine.disassembler.tier.")) {
+            issueAchievement(player, "repair");
+            return;
+        }
+        if (stack.getUnlocalizedName()
+            .startsWith("gt.blockmachines.automation.superbuffer.tier.")) {
+            issueAchievement(player, "superbuffer");
+            return;
+        }
+        if (stack.getUnlocalizedName()
+            .startsWith("gt.blockmachines.quantum.tank.tier.")) {
+            issueAchievement(player, "whereistheocean");
+            return;
+        }
+        if (stack.getUnlocalizedName()
+            .startsWith("gt.blockmachines.quantum.chest.tier.")) {
+            issueAchievement(player, "newstorage");
+            return;
+        }
+        if (stack.getUnlocalizedName()
+            .startsWith("gt.blockmachines.basicmachine.hammer.tier.")) {
+            issueAchievement(player, "cheapermac");
+            return;
+        }
+        if (stack.getUnlocalizedName()
+            .startsWith("gt.blockmachines.automation.chestbuffer.tier.")) {
+            issueAchievement(player, "buffer");
+            issueAchievement(player, "buildBatBox");
+            if (stack.getUnlocalizedName()
+                .startsWith("gt.blockmachines.automation.chestbuffer.tier.3")) {
+                issueAchievement(player, "buildMFE");
+            }
+            return;
+        }
+        if (stack.getUnlocalizedName()
+            .startsWith("gt.blockmachines.basicgenerator.steamturbine.tier.")) {
+            issueAchievement(player, "steampower");
+            issueAchievement(player, "buildGenerator");
+            return;
+        }
+        if (stack.getUnlocalizedName()
+            .startsWith("gt.blockmachines.basicmachine.assembler.tier.")) {
+            issueAchievement(player, "avengers");
+            return;
+        }
+        if (stack.getUnlocalizedName()
+            .startsWith("gt.blockmachines.batterybuffer.")) {
+            issueAchievement(player, "batterys");
+            return;
+        }
+        if (stack.getUnlocalizedName()
+            .startsWith("gt.blockmachines.basicmachine.amplifab.tier.")) {
+            issueAchievement(player, "amplifier");
+            return;
+        }
+        if (stack.getUnlocalizedName()
+            .startsWith("gt.blockmachines.basicmachine.massfab.tier.")) {
+            issueAchievement(player, "universal");
+            issueAchievement(player, "buildMassFab");
+            return;
+        }
+        if (stack.getUnlocalizedName()
+            .startsWith("gt.blockmachines.basicgenerator.naquadah.tier.")) {
+            issueAchievement(player, "alienpower");
+            return;
+        }
+        if (stack.getUnlocalizedName()
+            .startsWith("gt.blockmachines.basicmachine.replicator.tier.")) {
+            issueAchievement(player, "replication");
+            return;
+        }
+
     }
 
     @SubscribeEvent
