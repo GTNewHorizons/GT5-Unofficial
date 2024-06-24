@@ -29,7 +29,7 @@ public class ProcessingCircuit implements gregtech.api.interfaces.IOreRecipeRegi
             case "Basic" -> {
                 GT_ModHandler.removeRecipeByOutputDelayed(aStack);
                 GT_ModHandler.addCraftingRecipe(
-                    aStack,
+                    GT_ModHandler.getIC2Item("electronicCircuit", 1L),
                     GT_ModHandler.RecipeBits.BUFFERED,
                     new Object[] { "RIR", "VBV", "CCC", 'R', ItemList.Circuit_Parts_Resistor.get(1), 'C',
                         GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.RedAlloy, 1), 'V',
