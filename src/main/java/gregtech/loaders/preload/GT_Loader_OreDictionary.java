@@ -268,6 +268,8 @@ public class GT_Loader_OreDictionary implements Runnable {
         GT_OreDictUnificator.registerOre(OreDictNames.craftingBook, new ItemStack(Items.written_book, 1, 32767));
         GT_OreDictUnificator.registerOre(OreDictNames.craftingBook, new ItemStack(Items.enchanted_book, 1, 32767));
 
+        GT_OreDictUnificator.addToBlacklist(GT_ModHandler.getIC2Item("electronicCircuit", 1L));
+        GT_OreDictUnificator.addToBlacklist(GT_ModHandler.getIC2Item("advancedCircuit", 1L));
         GT_OreDictUnificator
             .registerOre(OrePrefixes.circuit, Materials.Basic, GT_ModHandler.getIC2Item("electronicCircuit", 1L));
         GT_OreDictUnificator
@@ -346,8 +348,16 @@ public class GT_Loader_OreDictionary implements Runnable {
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitULV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
+            Materials.Basic,
+            GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitLV", 1L));
+        GT_OreDictUnificator.registerOre(
+            OrePrefixes.circuit,
             Materials.Good,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitMV", 1L));
+        GT_OreDictUnificator.registerOre(
+            OrePrefixes.circuit,
+            Materials.Advanced,
+            GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitHV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
             Materials.Data,
