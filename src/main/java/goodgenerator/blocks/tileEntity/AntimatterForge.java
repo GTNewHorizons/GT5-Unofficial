@@ -70,6 +70,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+<<<<<<< HEAD
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -77,6 +78,15 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockCasingsAbstract;
+=======
+import gregtech.api.util.GT_HatchElementBuilder;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_ParallelHelper;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.GT_Block_Casings_Abstract;
+>>>>>>> ef58e42a27 (Add antimatter)
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
 public class AntimatterForge extends MTEExtendedPowerMultiBlockBase

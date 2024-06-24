@@ -10,6 +10,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.blocks.myFluids.FluidsBuilder;
+<<<<<<< HEAD
 import goodgenerator.blocks.regularBlock.BlockCasing;
 import goodgenerator.blocks.regularBlock.BlockComplexTextureCasing;
 import goodgenerator.blocks.regularBlock.BlockFrame;
@@ -40,6 +41,38 @@ import goodgenerator.blocks.tileEntity.MTEPreciseAssembler;
 import goodgenerator.blocks.tileEntity.MTESupercriticalFluidTurbine;
 import goodgenerator.blocks.tileEntity.MTEUniversalChemicalFuelEngine;
 import goodgenerator.blocks.tileEntity.MTEYottaFluidTank;
+=======
+import goodgenerator.blocks.regularBlock.Casing;
+import goodgenerator.blocks.regularBlock.ComplexTextureCasing;
+import goodgenerator.blocks.regularBlock.Frame;
+import goodgenerator.blocks.regularBlock.TEBlock;
+import goodgenerator.blocks.regularBlock.TurbineCasing;
+import goodgenerator.blocks.tileEntity.ComponentAssemblyLine;
+import goodgenerator.blocks.tileEntity.AntimatterForge;
+import goodgenerator.blocks.tileEntity.CoolantTower;
+import goodgenerator.blocks.tileEntity.EssentiaHatch;
+import goodgenerator.blocks.tileEntity.EssentiaOutputHatch;
+import goodgenerator.blocks.tileEntity.EssentiaOutputHatch_ME;
+import goodgenerator.blocks.tileEntity.ExtremeHeatExchanger;
+import goodgenerator.blocks.tileEntity.FuelRefineFactory;
+import goodgenerator.blocks.tileEntity.GTMetaTileEntity.DieselGenerator;
+import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronAccelerator;
+import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronSensor;
+import goodgenerator.blocks.tileEntity.GTMetaTileEntity.YOTTAHatch;
+import goodgenerator.blocks.tileEntity.LargeEssentiaGenerator;
+import goodgenerator.blocks.tileEntity.LargeEssentiaSmeltery;
+import goodgenerator.blocks.tileEntity.LargeFusionComputer1;
+import goodgenerator.blocks.tileEntity.LargeFusionComputer2;
+import goodgenerator.blocks.tileEntity.LargeFusionComputer3;
+import goodgenerator.blocks.tileEntity.LargeFusionComputer4;
+import goodgenerator.blocks.tileEntity.LargeFusionComputer5;
+import goodgenerator.blocks.tileEntity.MultiNqGenerator;
+import goodgenerator.blocks.tileEntity.NeutronActivator;
+import goodgenerator.blocks.tileEntity.PreciseAssembler;
+import goodgenerator.blocks.tileEntity.SupercriticalFluidTurbine;
+import goodgenerator.blocks.tileEntity.UniversalChemicalFuelEngine;
+import goodgenerator.blocks.tileEntity.YottaFluidTank;
+>>>>>>> ef58e42a27 (Add antimatter)
 import goodgenerator.client.render.BlockRenderHandler;
 import goodgenerator.crossmod.ic2.CropsLoader;
 import goodgenerator.crossmod.nei.NEIConfig;
@@ -223,6 +256,7 @@ public class Loaders {
         new String[] { GoodGenerator.MOD_ID + ":fuison/1", GoodGenerator.MOD_ID + ":fuison/2",
             GoodGenerator.MOD_ID + ":fuison/3", GoodGenerator.MOD_ID + ":fuison/4",
             GoodGenerator.MOD_ID + ":fuison/5" });
+<<<<<<< HEAD
     public static final Block antimatterContainmentCasing = new BlockFrame(
         "antimatterContainmentCasing",
         new String[] { GoodGenerator.MOD_ID + ":antimatterContainmentCasing" });
@@ -233,6 +267,18 @@ public class Loaders {
         "protomatterActivationCoil",
         new String[] { GoodGenerator.MOD_ID + ":protomatterActivationCoil" }); 
     public static final Block essentiaFilterCasing = new BlockCasing(
+=======
+    public static final Block antimatterContainmentCasing = new Frame(
+        "antimatterContainmentCasing",
+        new String[] { GoodGenerator.MOD_ID + ":antimatterContainmentCasing" });
+    public static final Block magneticFluxCasing = new Casing(
+        "magneticFluxCasing",
+        new String[] { GoodGenerator.MOD_ID + ":magneticFluxCasing" });
+    public static final Block protomatterActivationCoil = new Casing(
+        "protomatterActivationCoil",
+        new String[] { GoodGenerator.MOD_ID + ":protomatterActivationCoil" }); 
+    public static final Block essentiaFilterCasing = new Casing(
+>>>>>>> ef58e42a27 (Add antimatter)
         "essentiaFilterCasing",
         new String[] { GoodGenerator.MOD_ID + ":essentiaFilterCasing" });
     public static Block essentiaHatch;
@@ -356,10 +402,17 @@ public class Loaders {
             MetaTileEntityIDs.ComponentAssemblyLine.ID,
             "ComponentAssemblyLine",
             "Component Assembly Line").getStackForm(1L);
+<<<<<<< HEAD
         CrackRecipeAdder.registerPipe(MetaTileEntityIDs.PipeIncoloy903.ID, GGMaterial.incoloy903, 15000, 8000, true);
         CrackRecipeAdder.registerWire(MetaTileEntityIDs.WireSignalium.ID, GGMaterial.signalium, 12, 131072, 16, true);
         CrackRecipeAdder.registerWire(MetaTileEntityIDs.WireLumiium.ID, GGMaterial.lumiium, 8, 524288, 64, true);
         Loaders.AMForge = new AntimatterForge(MetaTileEntityIDs.AntimatterForge.ID, "AntimatterForge", "Semi-Stable Antimatter Stabilization Sequencer")
+=======
+        CrackRecipeAdder.registerPipe(IDs_GoodGenerator.PipeIncoloy903.ID, MyMaterial.incoloy903, 15000, 8000, true);
+        CrackRecipeAdder.registerWire(IDs_GoodGenerator.WireSignalium.ID, MyMaterial.signalium, 12, 131072, 16, true);
+        CrackRecipeAdder.registerWire(IDs_GoodGenerator.WireLumiium.ID, MyMaterial.lumiium, 8, 524288, 64, true);
+        Loaders.AMForge = new AntimatterForge(IDOffset + 250, "AntimatterForge", "Semi-Stable Antimatter Stabilization Sequencer")
+>>>>>>> ef58e42a27 (Add antimatter)
         .getStackForm(1L);
     }
 
@@ -382,6 +435,7 @@ public class Loaders {
         GameRegistry.registerBlock(yottaFluidTankCell, GGItemBlocks.class, "yottaFluidTankCells");
         GameRegistry.registerBlock(yottaFluidTankCasing, GGItemBlocks.class, "yottaFluidTankCasing");
         GameRegistry
+<<<<<<< HEAD
             .registerBlock(supercriticalFluidTurbineCasing, GGItemBlocks.class, "supercriticalFluidTurbineCasing");
         GameRegistry.registerBlock(componentAssemblylineCasing, GGItemBlocks.class, "componentAssemblylineCasing");
         GameRegistry.registerBlock(pressureResistantWalls, GGItemBlocks.class, "pressureResistantWalls");
@@ -391,6 +445,17 @@ public class Loaders {
         GameRegistry.registerBlock(antimatterContainmentCasing, GGItemBlocks.class, "antimatterContainmentCasing");
         GameRegistry.registerBlock(magneticFluxCasing, GGItemBlocks.class, "magneticFluxCasing");
         GameRegistry.registerBlock(protomatterActivationCoil, GGItemBlocks.class, "protomatterActivationCoil");
+=======
+            .registerBlock(supercriticalFluidTurbineCasing, MyItemBlocks.class, "supercriticalFluidTurbineCasing");
+        GameRegistry.registerBlock(componentAssemblylineCasing, MyItemBlocks.class, "componentAssemblylineCasing");
+        GameRegistry.registerBlock(pressureResistantWalls, MyItemBlocks.class, "pressureResistantWalls");
+        GameRegistry.registerBlock(impreciseUnitCasing, MyItemBlocks.class, "impreciseUnitCasing");
+        GameRegistry.registerBlock(preciseUnitCasing, MyItemBlocks.class, "preciseUnitCasing");
+        GameRegistry.registerBlock(compactFusionCoil, MyItemBlocks.class, "compactFusionCoil");
+        GameRegistry.registerBlock(antimatterContainmentCasing, MyItemBlocks.class, "antimatterContainmentCasing");
+        GameRegistry.registerBlock(magneticFluxCasing, MyItemBlocks.class, "magneticFluxCasing");
+        GameRegistry.registerBlock(protomatterActivationCoil, MyItemBlocks.class, "protomatterActivationCoil");
+>>>>>>> ef58e42a27 (Add antimatter)
         GameRegistry.registerItem(radiationProtectionPlate, "radiationProtectionPlate", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(wrappedUraniumIngot, "wrappedUraniumIngot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityUraniumNugget, "highDensityUraniumNugget", GoodGenerator.MOD_ID);
