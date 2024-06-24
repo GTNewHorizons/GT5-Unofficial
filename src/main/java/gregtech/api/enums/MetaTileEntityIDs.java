@@ -1914,6 +1914,7 @@ public enum MetaTileEntityIDs {
     LargeEssentiaSmeltery(32024),
     CoolantTower(32025),
     ComponentAssemblyLine(32026),
+    AntimatterForge(32027),
     WireLumiium(32737),
     WireSignalium(32749),;
 

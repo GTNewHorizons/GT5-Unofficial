@@ -2,9 +2,9 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.util.GTStructureUtility.filterByMTETier;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
 
 import java.util.List;
 
@@ -23,15 +23,15 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import bartworks.common.loaders.ItemRegistry;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
+import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -44,9 +44,9 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.loader.Loaders;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_HatchElement;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.HatchElement;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -55,13 +55,13 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.objects.GT_ChunkManager;
-import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.objects.GTChunkManager;
+import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.overclockdescriber.FusionOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
@@ -69,38 +69,38 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_HatchElementBuilder;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.HatchElementBuilder;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
-public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase
+public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
-    public static final String MAIN_NAME = "antimatterForge";
-    public static final int M = 1_000_000;
+    public static final String MAINNAME = "antimatterForge";
+    public static final int M = 1000000;
     private boolean isLoadedChunk;
-    public GT_Recipe mLastRecipe;
+    public GTRecipe mLastRecipe;
     public int para;
     protected OverclockDescriber overclockDescriber;
-    private static final ClassValue<IStructureDefinition<AntimatterForge>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<AntimatterForge>>() {
+    private static final ClassValue<IStructureDefinition<AntimatterForge>> STRUCTUREDEFINITION = new ClassValue<IStructureDefinition<AntimatterForge>>() {
 
         @Override
         protected IStructureDefinition<AntimatterForge> computeValue(Class<?> type) {
             return StructureDefinition.<AntimatterForge>builder()
-                .addShape(MAIN_NAME, transpose(new String[][] { L0, L1, L2, L3, L2, L1, L0 }))
+                .addShape(MAINNAME, transpose(new String[][] { L0, L1, L2, L3, L2, L1, L0 }))
                 .addElement('H', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
                 .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(), x.getCasingMeta())))
-                .addElement('B', lazy(x -> ofBlock(x.getGlassBlock(), x.getGlassMeta())))
                 .addElement(
                     'I',
                     lazy(
-                        x -> GT_HatchElementBuilder.<AntimatterForge>builder()
+                        x -> HatchElementBuilder.<AntimatterForge>builder()
                             .atLeast(
-                                GT_HatchElement.InputHatch.or(GT_HatchElement.InputBus))
+                                HatchElement.InputHatch.or(HatchElement.InputBus))
                             .adder(AntimatterForge::addFluidIO)
                             .casingIndex(x.textureIndex())
                             .dot(1)
@@ -109,9 +109,9 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
                 .addElement(
                     'J',
                     lazy(
-                        x -> GT_HatchElementBuilder.<AntimatterForge>builder()
+                        x -> HatchElementBuilder.<AntimatterForge>builder()
                             .atLeast(
-                                GT_HatchElement.OutputHatch)
+                                HatchElement.OutputHatch)
                             .adder(AntimatterForge::addFluidIO)
                             .casingIndex(x.textureIndex())
                             .dot(2)
@@ -120,8 +120,8 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
                 .addElement(
                     'E',
                     lazy(
-                        x -> GT_HatchElementBuilder.<AntimatterForge>builder()
-                            .anyOf(GT_HatchElement.Energy)
+                        x -> HatchElementBuilder.<AntimatterForge>builder()
+                            .anyOf(HatchElement.Energy)
                             .adder(AntimatterForge::addEnergyInjector)
                             .casingIndex(x.textureIndex())
                             .hatchItemFilterAnd(x2 -> filterByMTETier(x2.hatchTier(), Integer.MAX_VALUE))
@@ -137,11 +137,11 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             52,
             TextureFactory.of(
                 TextureFactory.builder()
-                    .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW)
+                    .addIcon(MACHINE_CASING_ANTIMATTER)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
+                    .addIcon(MACHINE_CASING_ANTIMATTER_GLOW)
                     .extFacing()
                     .glow()
                     .build()));
@@ -159,7 +159,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
-        return new AntimatterForge(this.MAIN_NAME);
+        return new AntimatterForge(this.MAINNAME);
     }
 
     protected OverclockDescriber createOverclockDescriber() {
@@ -167,8 +167,8 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Antimatter Forge")
             .addInfo("Dimensions not included!")
             .toolTipFinisher("Good Generator");
@@ -183,7 +183,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
 
     @Override
     public IStructureDefinition<AntimatterForge> getStructureDefinition() {
-        return STRUCTURE_DEFINITION.get(getClass());
+        return STRUCTUREDEFINITION.get(getClass());
     }
 
     public int tier() {
@@ -192,7 +192,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
 
     @Override
     public long maxEUStore() {
-        return 100_000_000;
+        return 100000000;
     }
 
     /**
@@ -201,7 +201,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
      */
 
     public long capableStartupCanonical() {
-        return 160_000_000;
+        return 160000000;
     }
 
     public Block getCasingBlock() {
@@ -268,7 +268,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
         return side != getBaseMetaTileEntity().getFrontFacing();
     }
 
@@ -283,57 +283,57 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(MAIN_NAME, 23, 3, 40);
+        return checkPiece(MAINNAME, 23, 3, 40);
     }
 
     @Override
     public void construct(ItemStack itemStack, boolean b) {
-        buildPiece(MAIN_NAME, itemStack, b, 23, 3, 40);
+        buildPiece(MAINNAME, itemStack, b, 23, 3, 40);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(MAIN_NAME, stackSize, 23, 3, 40, realBudget, env, false, true);
+        return survivialBuildPiece(MAINNAME, stackSize, 23, 3, 40, realBudget, env, false, true);
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && !aBaseMetaTileEntity.isAllowedToWork()) {
             // if machine has stopped, stop chunkloading
-            GT_ChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
+            GTChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
             this.isLoadedChunk = false;
         } else if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && !this.isLoadedChunk) {
             // load a 3x3 area when machine is running
-            GT_ChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
+            GTChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
             int offX = aBaseMetaTileEntity.getFrontFacing().offsetX;
             int offZ = aBaseMetaTileEntity.getFrontFacing().offsetZ;
-            GT_ChunkManager.requestChunkLoad(
+            GTChunkManager.requestChunkLoad(
                 (TileEntity) aBaseMetaTileEntity,
                 new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() + offZ));
-            GT_ChunkManager.requestChunkLoad(
+            GTChunkManager.requestChunkLoad(
                 (TileEntity) aBaseMetaTileEntity,
                 new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() + 1 + offZ));
-            GT_ChunkManager.requestChunkLoad(
+            GTChunkManager.requestChunkLoad(
                 (TileEntity) aBaseMetaTileEntity,
                 new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() + offZ));
-            GT_ChunkManager.requestChunkLoad(
+            GTChunkManager.requestChunkLoad(
                 (TileEntity) aBaseMetaTileEntity,
                 new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() - 1 + offZ));
-            GT_ChunkManager.requestChunkLoad(
+            GTChunkManager.requestChunkLoad(
                 (TileEntity) aBaseMetaTileEntity,
                 new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() + 1 + offZ));
-            GT_ChunkManager.requestChunkLoad(
+            GTChunkManager.requestChunkLoad(
                 (TileEntity) aBaseMetaTileEntity,
                 new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() + offZ));
-            GT_ChunkManager.requestChunkLoad(
+            GTChunkManager.requestChunkLoad(
                 (TileEntity) aBaseMetaTileEntity,
                 new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() - 1 + offZ));
-            GT_ChunkManager.requestChunkLoad(
+            GTChunkManager.requestChunkLoad(
                 (TileEntity) aBaseMetaTileEntity,
                 new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() + 1 + offZ));
-            GT_ChunkManager.requestChunkLoad(
+            GTChunkManager.requestChunkLoad(
                 (TileEntity) aBaseMetaTileEntity,
                 new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() - 1 + offZ));
             this.isLoadedChunk = true;
@@ -362,8 +362,8 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
                     }
 
                     long energyLimit = getSingleHatchPower();
-                    List<GT_MetaTileEntity_Hatch> hatches = getExoticAndNormalEnergyHatchList();
-                    for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(hatches)) {
+                    List<MTEHatch> hatches = getExoticAndNormalEnergyHatchList();
+                    for (MTEHatch hatch : filterValidMTEs(hatches)) {
                         long consumableEnergy = Math.min(hatch.getEUVar(), energyLimit);
                         long receivedEnergy = Math
                             .min(consumableEnergy, maxEUStore() - aBaseMetaTileEntity.getStoredEU());
@@ -427,27 +427,27 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
      * @return The power one hatch can deliver to the reactor
      */
     protected long getSingleHatchPower() {
-        return GT_Values.V[tier()] * getMaxPara() * extraPara(100) / 32;
+        return GTValues.V[tier()] * getMaxPara() * extraPara(100) / 32;
     }
 
     public boolean turnCasingActive(boolean status) {
         if (this.mEnergyHatches != null) {
-            for (GT_MetaTileEntity_Hatch_Energy hatch : this.mEnergyHatches) {
+            for (MTEHatchEnergy hatch : this.mEnergyHatches) {
                 hatch.updateTexture(status ? 52 : 53);
             }
         }
         //if (this.eEnergyMulti != null) {
-        //    for (GT_MetaTileEntity_Hatch_EnergyMulti hatch : this.eEnergyMulti) {
+        //    for (MTEHatchEnergyMulti hatch : this.eEnergyMulti) {
         //        hatch.updateTexture(status ? 52 : 53);
         //    }
         //}
         if (this.mOutputHatches != null) {
-            for (GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
+            for (MTEHatchOutput hatch : this.mOutputHatches) {
                 hatch.updateTexture(status ? 52 : 53);
             }
         }
         if (this.mInputHatches != null) {
-            for (GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
+            for (MTEHatchInput hatch : this.mInputHatches) {
                 hatch.updateTexture(status ? 52 : 53);
             }
         }
@@ -463,12 +463,12 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) return new ITexture[] { TextureFactory.builder()
-            .addIcon(MACHINE_CASING_FUSION_GLASS)
+            .addIcon(MACHINE_CASING_ANTIMATTER)
             .extFacing()
             .build(), getTextureOverlay() };
         if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(52) };
         return new ITexture[] { TextureFactory.builder()
-            .addIcon(MACHINE_CASING_FUSION_GLASS)
+            .addIcon(MACHINE_CASING_ANTIMATTER)
             .extFacing()
             .build() };
     }
@@ -499,25 +499,25 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
 
             @NotNull
             @Override
-            protected GT_ParallelHelper createParallelHelper(@NotNull GT_Recipe recipe) {
+            protected ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
                 // When the fusion first loads and is still processing, it does the recipe check without consuming.
                 return super.createParallelHelper(recipe).setConsumption(!mRunningOnLoad);
             }
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return overclockDescriber.createCalculator(super.createOverclockCalculator(recipe), recipe);
             }
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (!mRunningOnLoad) {
                     if (recipe.mSpecialValue > maxEUStore()) {
                         return CheckRecipeResultRegistry.insufficientStartupPower(recipe.mSpecialValue);
                     }
-                    if (recipe.mEUt > GT_Values.V[tier()]) {
+                    if (recipe.mEUt > GTValues.V[tier()]) {
                         return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                     }
                 }
@@ -544,13 +544,13 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GT_Values.V[tier()]);
-        logic.setAvailableAmperage(getSingleHatchPower() * 32 / GT_Values.V[tier()]);
+        logic.setAvailableVoltage(GTValues.V[tier()]);
+        logic.setAvailableAmperage(getSingleHatchPower() * 32 / GTValues.V[tier()]);
     }
 
     @Override
     public void onRemoval() {
-        if (this.isLoadedChunk) GT_ChunkManager.releaseTicket((TileEntity) getBaseMetaTileEntity());
+        if (this.isLoadedChunk) GTChunkManager.releaseTicket((TileEntity) getBaseMetaTileEntity());
         super.onRemoval();
     }
 
@@ -565,11 +565,11 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     private boolean addEnergyInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy tHatch) {
+        if (aMetaTileEntity instanceof MTEHatchEnergy tHatch) {
             if (tHatch.getTierForStructure() < hatchTier()) return false;
             tHatch.updateTexture(aBaseCasingIndex);
             return mEnergyHatches.add(tHatch);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti tHatch) {
+        } else if (aMetaTileEntity instanceof MTEHatchEnergyMulti tHatch) {
             if (tHatch.getTierForStructure() < hatchTier()) return false;
             tHatch.updateTexture(aBaseCasingIndex);
             //return eEnergyMulti.add(tHatch);
@@ -580,16 +580,16 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     private boolean addFluidIO(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch hatch) {
+        if (aMetaTileEntity instanceof MTEHatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input tInput) {
+        if (aMetaTileEntity instanceof MTEHatchInput tInput) {
             if (tInput.getTierForStructure() < hatchTier()) return false;
             tInput.mRecipeMap = getRecipeMap();
             return mInputHatches.add(tInput);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output tOutput) {
+        if (aMetaTileEntity instanceof MTEHatchOutput tOutput) {
             if (tOutput.getTierForStructure() < hatchTier()) return false;
             return mOutputHatches.add(tOutput);
         }
@@ -631,25 +631,25 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         return new String[] { EnumChatFormatting.BLUE + "Fusion Reactor MK " + EnumChatFormatting.RESET + tier,
             StatCollector.translateToLocal("scanner.info.UX.0") + ": "
                 + EnumChatFormatting.LIGHT_PURPLE
-                + GT_Utility.formatNumbers(this.para)
+                + GTUtility.formatNumbers(this.para)
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.fusion.req") + ": "
                 + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(-lEUt)
+                + GTUtility.formatNumbers(-lEUt)
                 + EnumChatFormatting.RESET
                 + "EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(baseMetaTileEntity != null ? baseMetaTileEntity.getStoredEU() : 0)
+                + GTUtility.formatNumbers(baseMetaTileEntity != null ? baseMetaTileEntity.getStoredEU() : 0)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(maxEUStore())
+                + GTUtility.formatNumbers(maxEUStore())
                 + EnumChatFormatting.RESET
                 + " EU",
             StatCollector.translateToLocal("GT5U.fusion.plasma") + ": "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(plasmaOut)
+                + GTUtility.formatNumbers(plasmaOut)
                 + EnumChatFormatting.RESET
                 + "L/t" };
     }
@@ -691,7 +691,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         "                                               ",
         "                                               ",
         "                    FCCCCCF                    ",
-        "                   FFCJJJCFF                   ",
+        "                   FFFJJJFFF                   ",
         "                FFF FCCCCCF FFF                ",
         "              FF               FF              ",
         "            FF                   FF            ",
@@ -709,11 +709,11 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         "    F                                     F    ",
         "   F                                       F   ",
         "  FFF                                     FFF  ",
-        "  CCC                                     CCC  ",
+        "  CFC                                     CFC  ",
         "  CJC                                     CJC  ",
         "  CJC                                     CJC  ",
         "  CJC                                     CJC  ",
-        "  CCC                                     CCC  ",
+        "  CFC                                     CFC  ",
         "  FFF                                     FFF  ",
         "   F                                       F   ",
         "    F                                     F    ",
@@ -731,18 +731,18 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         "            FF                   FF            ",
         "              FF               FF              ",
         "                FFF FCCCCCF FFF                ",
-        "                   FFCJJJCFF                   ",
+        "                   FFFJJJFFF                   ",
         "                    FCCCCCF                    ",
         "                                               ",
         "                                               "};
     
         public static final String[] L1 = {
             "                                               ",
-            "                    FCBBBCF                    ",
+            "                    FCCCCCF                    ",
             "                   CC     CC                   ",
             "                CCCCC     CCCCC                ",
             "              CCCCCCC     CCCCCCC              ",
-            "            CCCCCCC FCBBBCF CCCCCCC            ",
+            "            CCCCCCC FCCCCCF CCCCCCC            ",
             "           CCCCC               CCCCC           ",
             "          CCCC                   CCCC          ",
             "         CCC                       CCC         ",
@@ -759,9 +759,9 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "  CCC                                     CCC  ",
             " FCCCF                                   FCCCF ",
             " C   C                                   C   C ",
-            " B   B                                   B   B ",
-            " B   B                                   B   B ",
-            " B   B                                   B   B ",
+            " C   C                                   C   C ",
+            " C   C                                   C   C ",
+            " C   C                                   C   C ",
             " C   C                                   C   C ",
             " FCCCF                                   FCCCF ",
             "  CCC                                     CCC  ",
@@ -778,11 +778,11 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "         CCC                       CCC         ",
             "          CCCC                   CCCC          ",
             "           CCCCC               CCCCC           ",
-            "            CCCCCCC FCBBBCF CCCCCCC            ",
+            "            CCCCCCC FCCCCCF CCCCCCC            ",
             "              CCCCCCC     CCCCCCC              ",
             "                CCCCC     CCCCC                ",
             "                   CC     CC                   ",
-            "                    FCBBBCF                    ",
+            "                    FCCCCCF                    ",
             "                                               "
         };
     
@@ -837,13 +837,13 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         };
     
         public static final String[] L3 = {
-            "                   FFCEEECFF                   ",
+            "                   FFFEEEFFF                   ",
             "                FFFCC     CCFFF                ",
             "              FFCCCHHHHHHHHHCCCFF              ",
             "            FFCCHHHHHHHHHHHHHHHCCFF            ",
             "           FCCHHHHHHHHHHHHHHHHHHHCCF           ",
             "          FCHHHHHHHCC     CCHHHHHHHCF          ",
-            "         FCHHHHHCCCFFCIBICFFCCCHHHHHCF         ",
+            "         FCHHHHHCCCFFFIIIFFFCCCHHHHHCF         ",
             "        FCHHHHCCFFF         FFFCCHHHHCF        ",
             "       FCHHHCCFF               FFCCHHHCF       ",
             "      FCHHHCFF                   FFCHHHCF      ",
@@ -858,11 +858,11 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             " FCHHHCF                               FCHHHCF ",
             "FCHHHCF                                 FCHHHCF",
             "FCHHHCF                                 FCHHHCF",
-            "C HHH C                                 C HHH C",
+            "F HHH F                                 F HHH F",
             "E HHH I                                 I HHH E",
-            "E HHH B                                 B HHH E",
             "E HHH I                                 I HHH E",
-            "C HHH C                                 C HHH C",
+            "E HHH I                                 I HHH E",
+            "F HHH F                                 F HHH F",
             "FCHHHCF                                 FCHHHCF",
             "FCHHHCF                                 FCHHHCF",
             " FCHHHCF                               FCHHHCF ",
@@ -877,12 +877,12 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "      FCHHHCFF                   FFCHHHCF      ",
             "       FCHHHCCFF               FFCCHHHCF       ",
             "        FCHHHHCCFFF         FFFCCHHHHCF        ",
-            "         FCHHHHHCCCFFCI~ICFFCCCHHHHHCF         ",
+            "         FCHHHHHCCCFFFI~IFFFCCCHHHHHCF         ",
             "          FCHHHHHHHCC     CCHHHHHHHCF          ",
             "           FCCHHHHHHHHHHHHHHHHHHHCCF           ",
             "            FFCCHHHHHHHHHHHHHHHCCFF            ",
             "              FFCCCHHHHHHHHHCCCFF              ",
             "                FFFCC     CCFFF                ",
-            "                   FFCEEECFF                   "
+            "                   FFFEEEFFF                   "
         };
     }
