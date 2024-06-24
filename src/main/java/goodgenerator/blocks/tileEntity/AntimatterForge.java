@@ -75,6 +75,7 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
 public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase
@@ -94,7 +95,6 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
                 .addShape(MAIN_NAME, transpose(new String[][] { L0, L1, L2, L3, L2, L1, L0 }))
                 .addElement('H', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
                 .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(), x.getCasingMeta())))
-                .addElement('B', lazy(x -> ofBlock(x.getGlassBlock(), x.getGlassMeta())))
                 .addElement(
                     'I',
                     lazy(
@@ -137,11 +137,11 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             52,
             TextureFactory.of(
                 TextureFactory.builder()
-                    .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW)
+                    .addIcon(MACHINE_CASING_ANTIMATTER)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
+                    .addIcon(MACHINE_CASING_ANTIMATTER_GLOW)
                     .extFacing()
                     .glow()
                     .build()));
@@ -463,12 +463,12 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) return new ITexture[] { TextureFactory.builder()
-            .addIcon(MACHINE_CASING_FUSION_GLASS)
+            .addIcon(MACHINE_CASING_ANTIMATTER)
             .extFacing()
             .build(), getTextureOverlay() };
         if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(52) };
         return new ITexture[] { TextureFactory.builder()
-            .addIcon(MACHINE_CASING_FUSION_GLASS)
+            .addIcon(MACHINE_CASING_ANTIMATTER)
             .extFacing()
             .build() };
     }
@@ -691,7 +691,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         "                                               ",
         "                                               ",
         "                    FCCCCCF                    ",
-        "                   FFCJJJCFF                   ",
+        "                   FFFJJJFFF                   ",
         "                FFF FCCCCCF FFF                ",
         "              FF               FF              ",
         "            FF                   FF            ",
@@ -709,11 +709,11 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         "    F                                     F    ",
         "   F                                       F   ",
         "  FFF                                     FFF  ",
-        "  CCC                                     CCC  ",
+        "  CFC                                     CFC  ",
         "  CJC                                     CJC  ",
         "  CJC                                     CJC  ",
         "  CJC                                     CJC  ",
-        "  CCC                                     CCC  ",
+        "  CFC                                     CFC  ",
         "  FFF                                     FFF  ",
         "   F                                       F   ",
         "    F                                     F    ",
@@ -731,18 +731,18 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         "            FF                   FF            ",
         "              FF               FF              ",
         "                FFF FCCCCCF FFF                ",
-        "                   FFCJJJCFF                   ",
+        "                   FFFJJJFFF                   ",
         "                    FCCCCCF                    ",
         "                                               ",
         "                                               "};
     
         public static final String[] L1 = {
             "                                               ",
-            "                    FCBBBCF                    ",
+            "                    FCCCCCF                    ",
             "                   CC     CC                   ",
             "                CCCCC     CCCCC                ",
             "              CCCCCCC     CCCCCCC              ",
-            "            CCCCCCC FCBBBCF CCCCCCC            ",
+            "            CCCCCCC FCCCCCF CCCCCCC            ",
             "           CCCCC               CCCCC           ",
             "          CCCC                   CCCC          ",
             "         CCC                       CCC         ",
@@ -759,9 +759,9 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "  CCC                                     CCC  ",
             " FCCCF                                   FCCCF ",
             " C   C                                   C   C ",
-            " B   B                                   B   B ",
-            " B   B                                   B   B ",
-            " B   B                                   B   B ",
+            " C   C                                   C   C ",
+            " C   C                                   C   C ",
+            " C   C                                   C   C ",
             " C   C                                   C   C ",
             " FCCCF                                   FCCCF ",
             "  CCC                                     CCC  ",
@@ -778,11 +778,11 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "         CCC                       CCC         ",
             "          CCCC                   CCCC          ",
             "           CCCCC               CCCCC           ",
-            "            CCCCCCC FCBBBCF CCCCCCC            ",
+            "            CCCCCCC FCCCCCF CCCCCCC            ",
             "              CCCCCCC     CCCCCCC              ",
             "                CCCCC     CCCCC                ",
             "                   CC     CC                   ",
-            "                    FCBBBCF                    ",
+            "                    FCCCCCF                    ",
             "                                               "
         };
     
@@ -837,13 +837,13 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         };
     
         public static final String[] L3 = {
-            "                   FFCEEECFF                   ",
+            "                   FFFEEEFFF                   ",
             "                FFFCC     CCFFF                ",
             "              FFCCCHHHHHHHHHCCCFF              ",
             "            FFCCHHHHHHHHHHHHHHHCCFF            ",
             "           FCCHHHHHHHHHHHHHHHHHHHCCF           ",
             "          FCHHHHHHHCC     CCHHHHHHHCF          ",
-            "         FCHHHHHCCCFFCIBICFFCCCHHHHHCF         ",
+            "         FCHHHHHCCCFFFIIIFFFCCCHHHHHCF         ",
             "        FCHHHHCCFFF         FFFCCHHHHCF        ",
             "       FCHHHCCFF               FFCCHHHCF       ",
             "      FCHHHCFF                   FFCHHHCF      ",
@@ -858,11 +858,11 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             " FCHHHCF                               FCHHHCF ",
             "FCHHHCF                                 FCHHHCF",
             "FCHHHCF                                 FCHHHCF",
-            "C HHH C                                 C HHH C",
+            "F HHH F                                 F HHH F",
             "E HHH I                                 I HHH E",
-            "E HHH B                                 B HHH E",
             "E HHH I                                 I HHH E",
-            "C HHH C                                 C HHH C",
+            "E HHH I                                 I HHH E",
+            "F HHH F                                 F HHH F",
             "FCHHHCF                                 FCHHHCF",
             "FCHHHCF                                 FCHHHCF",
             " FCHHHCF                               FCHHHCF ",
@@ -877,12 +877,12 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "      FCHHHCFF                   FFCHHHCF      ",
             "       FCHHHCCFF               FFCCHHHCF       ",
             "        FCHHHHCCFFF         FFFCCHHHHCF        ",
-            "         FCHHHHHCCCFFCI~ICFFCCCHHHHHCF         ",
+            "         FCHHHHHCCCFFFI~IFFFCCCHHHHHCF         ",
             "          FCHHHHHHHCC     CCHHHHHHHCF          ",
             "           FCCHHHHHHHHHHHHHHHHHHHCCF           ",
             "            FFCCHHHHHHHHHHHHHHHCCFF            ",
             "              FFCCCHHHHHHHHHCCCFF              ",
             "                FFFCC     CCFFF                ",
-            "                   FFCEEECFF                   "
+            "                   FFFEEEFFF                   "
         };
     }
