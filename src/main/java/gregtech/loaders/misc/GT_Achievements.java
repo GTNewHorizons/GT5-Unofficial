@@ -33,6 +33,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.ID_MetaTool_01;
 import ic2.core.Ic2Items;
 import thaumcraft.api.ThaumcraftApiHelper;
 
@@ -75,19 +76,15 @@ public class GT_Achievements {
             0,
             4,
             GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(GT_MetaGenerated_Tool_01.HARDHAMMER, 1, Materials.Iron, Materials.Wood, null),
+                .getToolWithStats(ID_MetaTool_01.HARDHAMMER.ID, 1, Materials.Iron, Materials.Wood, null),
             "flintpick",
             false);
         registerAchievement(
             "driltime",
             2,
             4,
-            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.DRILL_LV,
-                1,
-                Materials.BlueSteel,
-                Materials.StainlessSteel,
-                null),
+            GT_MetaGenerated_Tool_01.INSTANCE
+                .getToolWithStats(ID_MetaTool_01.DRILL_LV.ID, 1, Materials.BlueSteel, Materials.StainlessSteel, null),
             "tools",
             false);
         registerAchievement(
@@ -95,7 +92,7 @@ public class GT_Achievements {
             2,
             6,
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.CHAINSAW_LV,
+                ID_MetaTool_01.CHAINSAW_LV.ID,
                 1,
                 Materials.BlueSteel,
                 Materials.StainlessSteel,
@@ -107,7 +104,7 @@ public class GT_Achievements {
             3,
             5,
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.DRILL_HV,
+                ID_MetaTool_01.DRILL_HV.ID,
                 1,
                 Materials.TungstenSteel,
                 Materials.TungstenSteel,
@@ -119,7 +116,7 @@ public class GT_Achievements {
             3,
             7,
             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                GT_MetaGenerated_Tool_01.JACKHAMMER,
+                ID_MetaTool_01.JACKHAMMER.ID,
                 1,
                 Materials.TungstenSteel,
                 Materials.TungstenSteel,
@@ -132,7 +129,7 @@ public class GT_Achievements {
             -2,
             4,
             GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(GT_MetaGenerated_Tool_01.UNIVERSALSPADE, 1, Materials.Steel, Materials.Iron, null),
+                .getToolWithStats(ID_MetaTool_01.UNIVERSALSPADE.ID, 1, Materials.Steel, Materials.Iron, null),
             "tools",
             false);
         registerAchievement("recycling", -4, 4, ItemList.Machine_LV_ArcFurnace.get(1), "unitool", false);
