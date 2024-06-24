@@ -2172,7 +2172,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             addItem(
                 Crop_Drop_Rape.ID,
                 "Rape",
-                "Time to oil up!",
+                "Also known as Canola.",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MESSIS, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.HERBA, 1L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)));
