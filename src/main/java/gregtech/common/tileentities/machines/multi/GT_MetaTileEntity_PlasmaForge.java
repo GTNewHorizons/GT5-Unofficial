@@ -62,6 +62,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -595,9 +596,18 @@ public class GT_MetaTileEntity_PlasmaForge extends
                 "allowing " + EnumChatFormatting.GOLD
                     + "Dimensional Convergence "
                     + EnumChatFormatting.GRAY
-                    + "to occur.")
+                    + "to occur. To reach the required stability threshold,")
             .addInfo(
-                "When active, it allows the forge to perform " + EnumChatFormatting.RED
+                "a " + EnumChatFormatting.AQUA
+                    + "Transdimensional Alignment Matrix "
+                    + EnumChatFormatting.GRAY
+                    + "must be placed in the controller.")
+            .addInfo(
+                "When " + EnumChatFormatting.GOLD
+                    + "convergence "
+                    + EnumChatFormatting.GRAY
+                    + "is active, it allows the forge to perform "
+                    + EnumChatFormatting.RED
                     + "Perfect Overclocks"
                     + EnumChatFormatting.GRAY
                     + ",")
@@ -1064,6 +1074,13 @@ public class GT_MetaTileEntity_PlasmaForge extends
             if (mMaxProgresstime == 0) {
                 running_time = Math.max(0, running_time - (long) efficiency_decay_rate);
             }
+            if (aTick % 100 == 0) {
+                ItemStack controllerStack = this.getControllerSlot();
+                if (convergence && (controllerStack == null
+                    || !controllerStack.isItemEqual(ItemList.Transdimensional_Alignment_Matrix.get(1)))) {
+                    convergence = false;
+                }
+            }
         }
     }
 
@@ -1091,8 +1108,12 @@ public class GT_MetaTileEntity_PlasmaForge extends
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(CATALYST_WINDOW_ID, this::createCatalystWindow);
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            ItemStack controllerStack = this.getControllerSlot();
             if (clickData.mouseButton == 0) {
-                convergence = !convergence;
+                if (controllerStack != null
+                    && controllerStack.isItemEqual(ItemList.Transdimensional_Alignment_Matrix.get(1))) {
+                    convergence = !convergence;
+                }
             } else if (clickData.mouseButton == 1 && !widget.isClient()) {
                 widget.getContext()
                     .openSyncedWindow(CATALYST_WINDOW_ID);
@@ -1111,7 +1132,8 @@ public class GT_MetaTileEntity_PlasmaForge extends
                 return ret.toArray(new IDrawable[0]);
             })
             .addTooltip(translateToLocal("GT5U.DTPF.convergencebutton"))
-            .addTooltip(EnumChatFormatting.GRAY + translateToLocal("GT5U.DTPF.convergencebuttontooltip"))
+            .addTooltip(EnumChatFormatting.GRAY + translateToLocal("GT5U.DTPF.convergencebuttontooltip.0"))
+            .addTooltip(EnumChatFormatting.GRAY + translateToLocal("GT5U.DTPF.convergencebuttontooltip.1"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(174, 129)
             .setSize(16, 16)
