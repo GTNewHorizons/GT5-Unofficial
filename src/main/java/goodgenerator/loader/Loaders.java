@@ -263,23 +263,19 @@ public class Loaders {
     // public static Item Isotope = new NuclearMetaItemGenerator();
 
     public static void GTMetaTileRegister() {
-        Loaders.MAR = new MultiNqGenerator(IDs_GoodGenerator.MultiNqGenerator.ID, "NaG", "Large Naquadah Reactor").getStackForm(1L);
-        Loaders.FRF = new FuelRefineFactory(IDs_GoodGenerator.FuelRefineFactory.ID, "FRF", "Naquadah Fuel Refinery").getStackForm(1L);
+        Loaders.MAR = new MultiNqGenerator(IDs_GoodGenerator.MultiNqGenerator.ID, "NaG", "Large Naquadah Reactor")
+            .getStackForm(1L);
+        Loaders.FRF = new FuelRefineFactory(IDs_GoodGenerator.FuelRefineFactory.ID, "FRF", "Naquadah Fuel Refinery")
+            .getStackForm(1L);
         Loaders.UCFE = new UniversalChemicalFuelEngine(
             IDs_GoodGenerator.UniversalChemicalFuelEngine.ID,
             "UniversalChemicalFuelEngine",
             "Universal Chemical Fuel Engine").getStackForm(1L);
-        int[] neutronAcceleratorIDs = new int[]{
-            IDs_GoodGenerator.NeutronAcceleratorULV.ID,
-            IDs_GoodGenerator.NeutronAcceleratorLV.ID,
-            IDs_GoodGenerator.NeutronAcceleratorMV.ID,
-            IDs_GoodGenerator.NeutronAcceleratorHV.ID,
-            IDs_GoodGenerator.NeutronAcceleratorEV.ID,
-            IDs_GoodGenerator.NeutronAcceleratorIV.ID,
-            IDs_GoodGenerator.NeutronAcceleratorLuV.ID,
-            IDs_GoodGenerator.NeutronAcceleratorZPM.ID,
-            IDs_GoodGenerator.NeutronAcceleratorUV.ID,
-        };
+        int[] neutronAcceleratorIDs = new int[] { IDs_GoodGenerator.NeutronAcceleratorULV.ID,
+            IDs_GoodGenerator.NeutronAcceleratorLV.ID, IDs_GoodGenerator.NeutronAcceleratorMV.ID,
+            IDs_GoodGenerator.NeutronAcceleratorHV.ID, IDs_GoodGenerator.NeutronAcceleratorEV.ID,
+            IDs_GoodGenerator.NeutronAcceleratorIV.ID, IDs_GoodGenerator.NeutronAcceleratorLuV.ID,
+            IDs_GoodGenerator.NeutronAcceleratorZPM.ID, IDs_GoodGenerator.NeutronAcceleratorUV.ID, };
         for (int i = 0; i < 9; i++) {
             Loaders.NeutronAccelerators[i] = new NeutronAccelerator(
                 neutronAcceleratorIDs[i],
@@ -287,18 +283,28 @@ public class Loaders {
                 "Neutron Accelerator " + GT_Values.VN[i],
                 i).getStackForm(1L);
         }
-        Loaders.NS = new NeutronSensor(IDs_GoodGenerator.NeutronSensor.ID, "Neutron Sensor", "Neutron Sensor", 5).getStackForm(1L);
-        Loaders.NA = new NeutronActivator(IDs_GoodGenerator.NeutronActivator.ID, "NeutronActivator", "Neutron Activator").getStackForm(1L);
-        Loaders.YFT = new YottaFluidTank(IDs_GoodGenerator.YottaFluidTank.ID, "YottaFluidTank", "YOTTank").getStackForm(1L);
-        Loaders.YFH = new YOTTAHatch(IDs_GoodGenerator.YottaHatch.ID, "YottaFluidTankHatch", "YOTHatch", 5).getStackForm(1L);
+        Loaders.NS = new NeutronSensor(IDs_GoodGenerator.NeutronSensor.ID, "Neutron Sensor", "Neutron Sensor", 5)
+            .getStackForm(1L);
+        Loaders.NA = new NeutronActivator(
+            IDs_GoodGenerator.NeutronActivator.ID,
+            "NeutronActivator",
+            "Neutron Activator").getStackForm(1L);
+        Loaders.YFT = new YottaFluidTank(IDs_GoodGenerator.YottaFluidTank.ID, "YottaFluidTank", "YOTTank")
+            .getStackForm(1L);
+        Loaders.YFH = new YOTTAHatch(IDs_GoodGenerator.YottaHatch.ID, "YottaFluidTankHatch", "YOTHatch", 5)
+            .getStackForm(1L);
         Loaders.SCTurbine = new SupercriticalFluidTurbine(
             IDs_GoodGenerator.SupercriticalFluidTurbine.ID,
             "SupercriticalSteamTurbine",
             "SC Steam Turbine").getStackForm(1L);
-        Loaders.XHE = new ExtremeHeatExchanger(IDs_GoodGenerator.ExtremeHeatExchanger.ID, "ExtremeHeatExchanger", "Extreme Heat Exchanger")
-            .getStackForm(1L);
-        Loaders.PA = new PreciseAssembler(IDs_GoodGenerator.PreciseAssembler.ID, "PreciseAssembler", "Precise Auto-Assembler MT-3662")
-            .getStackForm(1L);
+        Loaders.XHE = new ExtremeHeatExchanger(
+            IDs_GoodGenerator.ExtremeHeatExchanger.ID,
+            "ExtremeHeatExchanger",
+            "Extreme Heat Exchanger").getStackForm(1L);
+        Loaders.PA = new PreciseAssembler(
+            IDs_GoodGenerator.PreciseAssembler.ID,
+            "PreciseAssembler",
+            "Precise Auto-Assembler MT-3662").getStackForm(1L);
         Loaders.LFC[0] = new LargeFusionComputer1(
             IDs_GoodGenerator.LargeFusionComputer1.ID,
             "LargeFusionComputer1",
@@ -315,8 +321,10 @@ public class Loaders {
             IDs_GoodGenerator.LargeFusionComputer4.ID,
             "LargeFusionComputer4",
             "Compact Fusion Computer MK-IV Prototype").getStackForm(1L);
-        Loaders.LFC[4] = new LargeFusionComputer5(IDs_GoodGenerator.LargeFusionComputer5.ID, "LargeFusionComputer5", "Compact Fusion Computer MK-V")
-            .getStackForm(1L);
+        Loaders.LFC[4] = new LargeFusionComputer5(
+            IDs_GoodGenerator.LargeFusionComputer5.ID,
+            "LargeFusionComputer5",
+            "Compact Fusion Computer MK-V").getStackForm(1L);
         Loaders.Generator_Diesel[0] = new DieselGenerator(
             IDs_GoodGenerator.DieselGeneratorEV.ID,
             "basicgenerator.diesel.tier.04",
@@ -327,7 +335,8 @@ public class Loaders {
             "basicgenerator.diesel.tier.05",
             "Ultimate Chemical Energy Releaser",
             5).getStackForm(1L);
-        Loaders.CT = new CoolantTower(IDs_GoodGenerator.CoolantTower.ID, "CoolantTower", "Coolant Tower").getStackForm(1L);
+        Loaders.CT = new CoolantTower(IDs_GoodGenerator.CoolantTower.ID, "CoolantTower", "Coolant Tower")
+            .getStackForm(1L);
         Loaders.CompAssline = new ComponentAssemblyLine(
             IDs_GoodGenerator.ComponentAssemblyLine.ID,
             "ComponentAssemblyLine",
@@ -402,10 +411,14 @@ public class Loaders {
             GameRegistry.registerTileEntity(EssentiaHatch.class, "EssentiaHatch");
             GameRegistry.registerTileEntity(EssentiaOutputHatch.class, "EssentiaOutputHatch");
             GameRegistry.registerTileEntity(EssentiaOutputHatch_ME.class, "EssentiaOutputHatch_ME");
-            Loaders.LEG = new LargeEssentiaGenerator(IDs_GoodGenerator.LargeEssentiaGenerator.ID, "LargeEssentiaGenerator", "Large Essentia Generator")
-                .getStackForm(1L);
-            Loaders.LES = new LargeEssentiaSmeltery(IDs_GoodGenerator.LargeEssentiaSmeltery.ID, "LargeEssentiaSmeltery", "Large Essentia Smeltery")
-                .getStackForm(1L);
+            Loaders.LEG = new LargeEssentiaGenerator(
+                IDs_GoodGenerator.LargeEssentiaGenerator.ID,
+                "LargeEssentiaGenerator",
+                "Large Essentia Generator").getStackForm(1L);
+            Loaders.LES = new LargeEssentiaSmeltery(
+                IDs_GoodGenerator.LargeEssentiaSmeltery.ID,
+                "LargeEssentiaSmeltery",
+                "Large Essentia Smeltery").getStackForm(1L);
             essentiaHatch = new TEBlock("essentiaHatch", new String[] { GoodGenerator.MOD_ID + ":essentiaHatch" }, 1);
             essentiaOutputHatch = new TEBlock(
                 "essentiaOutputHatch",

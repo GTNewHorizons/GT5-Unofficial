@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.items;
 
 public enum Ids_MetaGeneratedGregtechItems {
+
     Shape_Extruder_WindmillShaft(40),
     Pellet_RTG_PU238(41),
     Pellet_RTG_SR90(42),
@@ -37,6 +38,7 @@ public enum Ids_MetaGeneratedGregtechItems {
     TransmissionComponent_UHV(150),
     Distillus_Upgrade_Chip(151),
     Maceration_Upgrade_Chip(152);
+
     public final int ID;
 
     Ids_MetaGeneratedGregtechItems(int ID) {
