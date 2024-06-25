@@ -257,7 +257,8 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
     public static GT_MetaGenerated_Item_03 INSTANCE;
 
     public GT_MetaGenerated_Item_03() {
-        super("metaitem.03",
+        super(
+            "metaitem.03",
             OrePrefixes.___placeholder___,
             OrePrefixes.___placeholder___,
             OrePrefixes.___placeholder___,

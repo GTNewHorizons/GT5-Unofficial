@@ -168,61 +168,84 @@ public enum GregtechOrePrefixes {
         this.mTextureIndex = (short) aTextureindex;
 
         // TODO - Utilise some form of way to check if it's gt 5.9 if so, use string switch.
-        if (this.name().startsWith("ore")) {
+        if (this.name()
+            .startsWith("ore")) {
             getTcAspectStack(TC_Aspects.TERRA.name(), 1).addToAspectList(this.mAspects);
             return;
         }
-        if (this.name().startsWith("wire") || this.name().startsWith("cable")) {
+        if (this.name()
+            .startsWith("wire")
+            || this.name()
+                .startsWith("cable")) {
             getTcAspectStack(TC_Aspects.ELECTRUM.name(), 1).addToAspectList(this.mAspects);
             return;
         }
-        if (this.name().startsWith("dust")) {
+        if (this.name()
+            .startsWith("dust")) {
             getTcAspectStack(TC_Aspects.PERDITIO.name(), 1).addToAspectList(this.mAspects);
             return;
         }
-        if (this.name().startsWith("crushed")) {
+        if (this.name()
+            .startsWith("crushed")) {
             getTcAspectStack(TC_Aspects.PERFODIO.name(), 1).addToAspectList(this.mAspects);
             return;
         }
-        if (this.name().startsWith("ingot") || this.name().startsWith("nugget")) {
+        if (this.name()
+            .startsWith("ingot")
+            || this.name()
+                .startsWith("nugget")) {
             getTcAspectStack(TC_Aspects.METALLUM.name(), 1).addToAspectList(this.mAspects);
             return;
         }
-        if (this.name().startsWith("armor")) {
+        if (this.name()
+            .startsWith("armor")) {
             getTcAspectStack(TC_Aspects.TUTAMEN.name(), 1).addToAspectList(this.mAspects);
             return;
         }
-        if (this.name().startsWith("stone")) {
+        if (this.name()
+            .startsWith("stone")) {
             getTcAspectStack(TC_Aspects.TERRA.name(), 1).addToAspectList(this.mAspects);
             return;
         }
-        if (this.name().startsWith("pipe")) {
+        if (this.name()
+            .startsWith("pipe")) {
             getTcAspectStack(TC_Aspects.ITER.name(), 1).addToAspectList(this.mAspects);
             return;
         }
-        if (this.name().startsWith("gear")) {
+        if (this.name()
+            .startsWith("gear")) {
             getTcAspectStack(TC_Aspects.MOTUS.name(), 1).addToAspectList(this.mAspects);
             getTcAspectStack(TC_Aspects.MACHINA.name(), 1).addToAspectList(this.mAspects);
             return;
         }
-        if (this.name().startsWith("frame") || this.name().startsWith("plate")) {
+        if (this.name()
+            .startsWith("frame")
+            || this.name()
+                .startsWith("plate")) {
             getTcAspectStack(TC_Aspects.FABRICO.name(), 1).addToAspectList(this.mAspects);
             return;
         }
-        if (this.name().startsWith("tool")) {
+        if (this.name()
+            .startsWith("tool")) {
             getTcAspectStack(TC_Aspects.INSTRUMENTUM.name(), 2).addToAspectList(this.mAspects);
             return;
         }
-        if (this.name().startsWith("gem") || this.name().startsWith("crystal") ||
-            this.name().startsWith("lens")) {
+        if (this.name()
+            .startsWith("gem")
+            || this.name()
+                .startsWith("crystal")
+            || this.name()
+                .startsWith("lens")) {
             getTcAspectStack(TC_Aspects.VITREUS.name(), 1).addToAspectList(this.mAspects);
             return;
         }
-        if (this.name().startsWith("circuit")) {
+        if (this.name()
+            .startsWith("circuit")) {
             getTcAspectStack("COGNITIO", 1);
             return;
         }
-        if (this.name().startsWith("battery")) {
+        if (this.name()
+            .startsWith("battery")) {
             getTcAspectStack(TC_Aspects.ELECTRUM.name(), 1).addToAspectList(this.mAspects);
         }
     }

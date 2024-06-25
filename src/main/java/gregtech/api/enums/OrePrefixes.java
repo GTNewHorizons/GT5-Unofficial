@@ -31,9 +31,9 @@ import it.unimi.dsi.fastutil.objects.ObjectSet;
 
 public enum OrePrefixes {
 
-    //used for removed prefixes to prevent id shifts
-    ___placeholder___("Placeholder", "", "", false, false, false, false, false, false, false, false, false, false,
-        0, 0, 1, -1),
+    // used for removed prefixes to prevent id shifts
+    ___placeholder___("Placeholder", "", "", false, false, false, false, false, false, false, false, false, false, 0, 0,
+        1, -1),
 
     @Deprecated
     pulp("Pulps", "", "", false, false, false, false, false, false, false, false, false, false,
