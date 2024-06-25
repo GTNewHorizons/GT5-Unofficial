@@ -1,6 +1,7 @@
 package goodgenerator.loader;
 
 public enum IDs_GoodGenerator {
+
     DieselGeneratorEV(1113),
     DieselGeneratorIV(1114),
     MultiNqGenerator(12732),
@@ -35,10 +36,11 @@ public enum IDs_GoodGenerator {
     WireSignalium(32749),
     WireLumiium(32737),
 
-
     ;
+
     public final int ID;
-    IDs_GoodGenerator(int ID){
+
+    IDs_GoodGenerator(int ID) {
         this.ID = ID;
     }
 }

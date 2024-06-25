@@ -56,7 +56,6 @@ import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_X32;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_Overflow;
 
-
 public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 
     public static final MetaGeneratedGregtechItems INSTANCE;
@@ -72,8 +71,11 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
     public void generateMetaItems() {
 
         // Extruder Shape
-        GregtechItemList.Shape_Extruder_WindmillShaft
-            .set(this.addItem(Shape_Extruder_WindmillShaft.ID, "Extruder Shape (Shaft)", "Extruder Shape for making Windmill Shafts"));
+        GregtechItemList.Shape_Extruder_WindmillShaft.set(
+            this.addItem(
+                Shape_Extruder_WindmillShaft.ID,
+                "Extruder Shape (Shaft)",
+                "Extruder Shape for making Windmill Shafts"));
 
         // Batteries
         GregtechItemList.Battery_RE_EV_Sodium.set(
@@ -240,10 +242,14 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         GregtechItemList.Laser_Lens_Special
             .set(this.addItem(Laser_Lens_Special.ID, "Quantum Anomaly", "Probably should shoot it with lasers"));
 
-        GregtechItemList.Battery_Casing_Gem_1.set(this.addItem(Battery_Casing_Gem_1.ID, "Containment Unit I", "Used in crafting"));
-        GregtechItemList.Battery_Casing_Gem_2.set(this.addItem(Battery_Casing_Gem_2.ID, "Containment Unit II", "Used in crafting"));
-        GregtechItemList.Battery_Casing_Gem_3.set(this.addItem(Battery_Casing_Gem_3.ID, "Advanced Containment Unit", "Used in crafting"));
-        GregtechItemList.Battery_Casing_Gem_4.set(this.addItem(Battery_Casing_Gem_4.ID, "Exotic Containment Unit", "Used in crafting"));
+        GregtechItemList.Battery_Casing_Gem_1
+            .set(this.addItem(Battery_Casing_Gem_1.ID, "Containment Unit I", "Used in crafting"));
+        GregtechItemList.Battery_Casing_Gem_2
+            .set(this.addItem(Battery_Casing_Gem_2.ID, "Containment Unit II", "Used in crafting"));
+        GregtechItemList.Battery_Casing_Gem_3
+            .set(this.addItem(Battery_Casing_Gem_3.ID, "Advanced Containment Unit", "Used in crafting"));
+        GregtechItemList.Battery_Casing_Gem_4
+            .set(this.addItem(Battery_Casing_Gem_4.ID, "Exotic Containment Unit", "Used in crafting"));
 
         GregtechItemList.Battery_Gem_4.set(
             this.addItem(
@@ -259,7 +265,10 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
          */
 
         GregtechItemList.Laser_Lens_WoodsGlass.set(
-            this.addItem(Laser_Lens_WoodsGlass.ID, "Wood's Glass Lens", "Allows UV & IF to pass through, blocks visible light spectrums"));
+            this.addItem(
+                Laser_Lens_WoodsGlass.ID,
+                "Wood's Glass Lens",
+                "Allows UV & IF to pass through, blocks visible light spectrums"));
 
         GregtechItemList[] aTransParts = new GregtechItemList[] { GregtechItemList.TransmissionComponent_LV,
             GregtechItemList.TransmissionComponent_MV, GregtechItemList.TransmissionComponent_HV,
@@ -267,21 +276,13 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
             GregtechItemList.TransmissionComponent_LuV, GregtechItemList.TransmissionComponent_ZPM,
             GregtechItemList.TransmissionComponent_UV, GregtechItemList.TransmissionComponent_UHV, };
 
-        int[] IDs = new int[]{
-            TransmissionComponent_LV.ID,
-            TransmissionComponent_MV.ID,
-            TransmissionComponent_HV.ID,
-            TransmissionComponent_EV.ID,
-            TransmissionComponent_IV.ID,
-            TransmissionComponent_LuV.ID,
-            TransmissionComponent_ZPM.ID,
-            TransmissionComponent_UV.ID,
-            TransmissionComponent_UHV.ID,
-        };
+        int[] IDs = new int[] { TransmissionComponent_LV.ID, TransmissionComponent_MV.ID, TransmissionComponent_HV.ID,
+            TransmissionComponent_EV.ID, TransmissionComponent_IV.ID, TransmissionComponent_LuV.ID,
+            TransmissionComponent_ZPM.ID, TransmissionComponent_UV.ID, TransmissionComponent_UHV.ID, };
         for (int tier = 1; tier < aTransParts.length + 1; tier++) {
             aTransParts[tier - 1].set(
                 this.addItem(
-                    IDs[tier-1],
+                    IDs[tier - 1],
                     "Transmission Component (" + GT_Values.VN[tier] + ")",
                     "",
                     getTcAspectStack(TC_Aspects.ELECTRUM, tier),
@@ -290,10 +291,13 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         }
 
         // Distillus Chip
-        GregtechItemList.Distillus_Upgrade_Chip
-            .set(this.addItem(Distillus_Upgrade_Chip.ID, "Distillus Upgrade Chip", "Used to upgrade Distillus to Tier 2"));
-        GregtechItemList.Maceration_Upgrade_Chip
-            .set(this.addItem(Maceration_Upgrade_Chip.ID, "Maceration Upgrade Chip", "Used to upgrade Maceration Stack to Tier 2"));
+        GregtechItemList.Distillus_Upgrade_Chip.set(
+            this.addItem(Distillus_Upgrade_Chip.ID, "Distillus Upgrade Chip", "Used to upgrade Distillus to Tier 2"));
+        GregtechItemList.Maceration_Upgrade_Chip.set(
+            this.addItem(
+                Maceration_Upgrade_Chip.ID,
+                "Maceration Upgrade Chip",
+                "Used to upgrade Maceration Stack to Tier 2"));
 
         setAllElectricStats();
         registerTieredTooltips();
@@ -301,7 +305,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         registerCovers();
     }
 
-    private void setAllElectricStats(){
+    private void setAllElectricStats() {
         this.setElectricStats(32000 + Battery_RE_EV_Cadmium.ID, 4800000L, GT_Values.V[4], 4L, -3L, true);
         this.setElectricStats(32000 + Battery_RE_EV_Sodium.ID, 3200000L, GT_Values.V[4], 4L, -3L, true);
         this.setElectricStats(32000 + Battery_RE_EV_Lithium.ID, 6400000L, GT_Values.V[4], 4L, -3L, true);
@@ -309,16 +313,22 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         this.setElectricStats(32000 + Battery_Gem_2.ID, GT_Values.V[7] * 20 * 300 / 4, GT_Values.V[7], 7L, -3L, false);
         this.setElectricStats(32000 + Battery_Gem_3.ID, GT_Values.V[8] * 20 * 300 / 4, GT_Values.V[8], 8L, -3L, false);
         this.setElectricStats(32000 + Battery_Casing_Gem_4.ID, (64000000000L * 16), GT_Values.V[9], 9L, -3L, false);
-        this.setElectricStats(32000 + Gregtech_Computer_Cube.ID, GT_Values.V[6] * 10 * 60 * 20, GT_Values.V[5], 5L, -3L, false);
+        this.setElectricStats(
+            32000 + Gregtech_Computer_Cube.ID,
+            GT_Values.V[6] * 10 * 60 * 20,
+            GT_Values.V[5],
+            5L,
+            -3L,
+            false);
     }
 
-    private void registerTieredTooltips(){
+    private void registerTieredTooltips() {
         registerTieredTooltip(GregtechItemList.Battery_RE_EV_Sodium.get(1), EV);
         registerTieredTooltip(GregtechItemList.Battery_RE_EV_Cadmium.get(1), EV);
         registerTieredTooltip(GregtechItemList.Battery_RE_EV_Lithium.get(1), EV);
     }
 
-    private void registerFuelRTGRecipes(){
+    private void registerFuelRTGRecipes() {
         CORE.RA.addFuelForRTG(GregtechItemList.Pellet_RTG_PU238.get(1), MathUtils.roundToClosestInt(87.7f), 64);
         CORE.RA.addFuelForRTG(GregtechItemList.Pellet_RTG_SR90.get(1), MathUtils.roundToClosestInt(28.8f), 32);
         CORE.RA.addFuelForRTG(GregtechItemList.Pellet_RTG_PO210.get(1), 1, 512);
@@ -326,7 +336,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         CORE.RA.addFuelForRTG(GT_ModHandler.getIC2Item("RTGPellets", 1), MathUtils.roundToClosestInt(2.6f), 8);
     }
 
-    private void registerCovers(){
+    private void registerCovers() {
         GregTech_API.registerCover(
             GregtechItemList.Cover_Overflow_LV.get(1L),
             new GT_MultiTexture(
