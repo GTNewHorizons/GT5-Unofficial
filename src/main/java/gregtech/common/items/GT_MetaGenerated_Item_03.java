@@ -204,6 +204,7 @@ import static gregtech.common.items.ID_MetaItem_03.Optically_Compatible_Memory;
 import static gregtech.common.items.ID_MetaItem_03.Optically_Perfected_CPU;
 import static gregtech.common.items.ID_MetaItem_03.Spinneret;
 import static gregtech.common.items.ID_MetaItem_03.Timepiece;
+import static gregtech.common.items.ID_MetaItem_03.Transdimensional_Alignment_Matrix;
 import static gregtech.common.items.ID_MetaItem_03.Tube_Wires;
 import static gregtech.common.items.ID_MetaItem_03.UHV_Coil;
 import static gregtech.common.items.ID_MetaItem_03.ULV_Coil;
@@ -1109,6 +1110,12 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
             .set(addItem(Optically_Compatible_Memory.ID, "Optically Compatible Memory", "Its in the name!", o));
 
         ItemList.Timepiece.set(addItem(Timepiece.ID, "Timepiece", "Beware of the kid with the hat", o));
+        ItemList.Transdimensional_Alignment_Matrix.set(
+            addItem(
+                Transdimensional_Alignment_Matrix.ID,
+                "Transdimensional Alignment Matrix",
+                "Device supporting the alignment of transdimensional spaces.",
+                o));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(
