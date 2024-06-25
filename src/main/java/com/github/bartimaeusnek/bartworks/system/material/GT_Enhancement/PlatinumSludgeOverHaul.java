@@ -61,7 +61,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.OrePrefixes.cell;
-import static gregtech.api.enums.OrePrefixes.crateGtDust;
 import static gregtech.api.enums.OrePrefixes.crushed;
 import static gregtech.api.enums.OrePrefixes.crushedCentrifuged;
 import static gregtech.api.enums.OrePrefixes.crushedPurified;
@@ -1067,12 +1066,6 @@ public class PlatinumSludgeOverHaul {
 
             for (Object o : lists) {
                 if (!((List) o).isEmpty()) stacks.add(((List) o).get(0));
-            }
-
-            for (Object stack : stacks) {
-                if (stack instanceof ItemStack
-                    && GT_Utility.areStacksEqual(GT_OreDictUnificator.get(crateGtDust, mat, 1), (ItemStack) stack))
-                    return true;
             }
 
             boolean allSame = false;
