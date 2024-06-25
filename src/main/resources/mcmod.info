@@ -12,10 +12,6 @@
 		"credits": "",
 		"logoFile": "assets/gtnhintergalactic/textures/gui/picture/space_elevator_logo.png",
 		"screenshots": [],
-		"parent": "",
-		"requiredMods": [],
-		"dependencies": ["GT5-Unofficial", "TecTech", "ModularUI", "GalaxySpace", "GalactiCraft"],
-		"dependants": [],
-		"useDependencyInformation": true
+		"parent": ""
 	}]
 }

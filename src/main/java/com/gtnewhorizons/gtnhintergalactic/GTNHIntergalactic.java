@@ -29,7 +29,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
                 + "required-after:gtnhlib@[0.0.8.1,);"
                 + "required-after:tectech;"
                 + "required-after:structurelib;"
-                + "required-after:galaxyspace;"
+                + "required-after:GalaxySpace;"
                 + "after:bartworks;"
                 + "after:GoodGenerator;"
                 + "after:miscutils;"
