@@ -11,10 +11,6 @@
 		"authorList": ["GWYOG", "bartimaeusnek"],
 		"credits": "",
 		"logoFile": "",
-		"screenshots": [],
-		"requiredMods": ["Forge", "gregtech", "NotEnoughItems"],
-		"dependencies": ["gregtech", "NotEnoughItems"],
-		"dependants": [],
-		"useDependencyInformation": true
+		"screenshots": []
 	}]
 }
