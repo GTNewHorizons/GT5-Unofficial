@@ -604,7 +604,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
                     + "must be placed in the controller.")
             .addInfo(
                 "When " + EnumChatFormatting.GOLD
-                    + "convergence "
+                    + "Convergence "
                     + EnumChatFormatting.GRAY
                     + "is active, it allows the forge to perform "
                     + EnumChatFormatting.RED
