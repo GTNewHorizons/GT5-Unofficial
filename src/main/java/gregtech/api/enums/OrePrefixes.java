@@ -31,6 +31,10 @@ import it.unimi.dsi.fastutil.objects.ObjectSet;
 
 public enum OrePrefixes {
 
+    // used for removed prefixes to prevent id shifts
+    ___placeholder___("Placeholder", "", "", false, false, false, false, false, false, false, false, false, false, 0, 0,
+        1, -1),
+
     @Deprecated
     pulp("Pulps", "", "", false, false, false, false, false, false, false, false, false, false,
         B[0] | B[1] | B[2] | B[3], -1, 64, -1),
@@ -230,18 +234,6 @@ public enum OrePrefixes {
     /** 3/4 of a Plate or Gem used to shape a Lense. Normally only used on Transparent Materials. */
     lens("Lenses", "", " Lens", true, true, false, false, false, false, true, true, false, false, B[2], (M * 3) / 4, 64,
         24),
-    /** consisting out of 16 Dusts. */
-    crateGtDust("Crates of Dust", "Crate of ", " Dust", true, true, false, true, false, false, false, true, false,
-        false, B[0] | B[1] | B[2] | B[3], -1, 64, 96),
-    /** consisting out of 16 Plates. */
-    crateGtPlate("Crates of Plates", "Crate of ", " Plate", true, true, false, true, false, false, false, true, false,
-        false, B[1] | B[2], -1, 64, 99),
-    /** consisting out of 16 Ingots. */
-    crateGtIngot("Crates of Ingots", "Crate of ", " Ingot", true, true, false, true, false, false, false, true, false,
-        false, B[1], -1, 64, 97),
-    /** consisting out of 16 Gems. */
-    crateGtGem("Crates of Gems", "Crate of ", " Gem", true, true, false, true, false, false, false, true, false, false,
-        B[2], -1, 64, 98),
     /** Hot Cell full of Plasma, which can be used in the Plasma Generator. */
     cellPlasma("Cells of Plasma", "", " Plasma Cell", true, true, true, true, false, false, false, true, false, false,
         B[5], M * 1, 64, 31),
@@ -858,10 +850,6 @@ public enum OrePrefixes {
         dust.mGeneratedItems.addAll(dustRefined.mGeneratedItems);
         dustTiny.mGeneratedItems.addAll(dust.mGeneratedItems);
         dustSmall.mGeneratedItems.addAll(dust.mGeneratedItems);
-        crateGtDust.mGeneratedItems.addAll(dust.mGeneratedItems);
-        crateGtIngot.mGeneratedItems.addAll(ingot.mGeneratedItems);
-        crateGtGem.mGeneratedItems.addAll(gem.mGeneratedItems);
-        crateGtPlate.mGeneratedItems.addAll(plate.mGeneratedItems);
         // -----
 
         toolHeadFile.mCondition = new ICondition.And<>(
@@ -1074,10 +1062,6 @@ public enum OrePrefixes {
             OrePrefixes.gemFlawless,
             OrePrefixes.gemExquisite,
             OrePrefixes.gearGt,
-            OrePrefixes.crateGtDust,
-            OrePrefixes.crateGtIngot,
-            OrePrefixes.crateGtGem,
-            OrePrefixes.crateGtPlate,
             OrePrefixes.itemCasing,
             OrePrefixes.nanite));
     /**
@@ -1133,8 +1117,6 @@ public enum OrePrefixes {
             new TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2).addToAspectList(mAspects);
         } else if (name().startsWith("gem") || name().startsWith("crystal") || name().startsWith("lens")) {
             new TC_AspectStack(TC_Aspects.VITREUS, 1).addToAspectList(mAspects);
-        } else if (name().startsWith("crate")) {
-            new TC_AspectStack(TC_Aspects.ITER, 2).addToAspectList(mAspects);
         } else if (name().startsWith("circuit")) {
             new TC_AspectStack(TC_Aspects.COGNITIO, 1).addToAspectList(mAspects);
         } else if (name().startsWith("computer")) {
@@ -1299,20 +1281,6 @@ public enum OrePrefixes {
     @SuppressWarnings("incomplete-switch")
     public String getDefaultLocalNameFormatForItem(Materials aMaterial) {
         // Certain Materials have slightly different Localizations.
-        switch (this) {
-            case crateGtDust -> {
-                return mLocalizedMaterialPre + OrePrefixes.dust.getDefaultLocalNameFormatForItem(aMaterial);
-            }
-            case crateGtIngot -> {
-                return mLocalizedMaterialPre + OrePrefixes.ingot.getDefaultLocalNameFormatForItem(aMaterial);
-            }
-            case crateGtGem -> {
-                return mLocalizedMaterialPre + OrePrefixes.gem.getDefaultLocalNameFormatForItem(aMaterial);
-            }
-            case crateGtPlate -> {
-                return mLocalizedMaterialPre + OrePrefixes.plate.getDefaultLocalNameFormatForItem(aMaterial);
-            }
-        }
         switch (aMaterial.mName) {
             case "Glass", "BorosilicateGlass" -> {
                 if (name().startsWith("gem")) return mLocalizedMaterialPre + "%material" + " Crystal";

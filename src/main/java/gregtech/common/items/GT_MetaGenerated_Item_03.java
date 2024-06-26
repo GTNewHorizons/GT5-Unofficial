@@ -259,10 +259,10 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
     public GT_MetaGenerated_Item_03() {
         super(
             "metaitem.03",
-            OrePrefixes.crateGtDust,
-            OrePrefixes.crateGtIngot,
-            OrePrefixes.crateGtGem,
-            OrePrefixes.crateGtPlate,
+            OrePrefixes.___placeholder___,
+            OrePrefixes.___placeholder___,
+            OrePrefixes.___placeholder___,
+            OrePrefixes.___placeholder___,
             OrePrefixes.nanite,
             OrePrefixes.rawOre);
         INSTANCE = this;
