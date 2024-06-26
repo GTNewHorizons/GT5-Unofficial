@@ -30,6 +30,7 @@ import static gregtech.common.items.ID_MetaTool_01.WIRECUTTER;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTEnergy;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -352,7 +353,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
                     if (output == null) continue; // This sapling has no output in this mode.
 
                     // Find a tool to use in this mode.
-                    int toolMultiplier = useToolForMode(mode);
+                    int toolMultiplier = getToolMultiplier(mode);
                     if (toolMultiplier < 0) continue; // No valid tool for this mode found.
 
                     // Increase output by the relevant multipliers.
@@ -378,6 +379,10 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
                 duration = TICKS_PER_OPERATION;
                 calculatedEut = GT_Values.VP[tier];
 
+                for (Mode mode : Mode.values()) {
+                    useToolForMode(mode);
+                }
+
                 return SimpleCheckRecipeResult.ofSuccess("growing_trees");
             }
         };
@@ -389,16 +394,34 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
      * Attempts to find a tool appropriate for the given mode, and damage/discharge it by one use.
      *
      * @param mode The mode to use. This specifies which tools are valid.
-     * @return Production multiplier based on the tool used, or -1 if no appropriate tool was found.
      */
-    private int useToolForMode(Mode mode) {
-        for (ItemStack stack : getStoredInputs()) {
+    private void useToolForMode(Mode mode) {
+        ArrayList<ItemStack> storageInputs = getStoredInputs();
+        Collections.reverse(storageInputs);
+
+        for (ItemStack stack : storageInputs) {
             int toolMultiplier = getToolMultiplier(stack, mode);
             if (toolMultiplier < 0) continue;
-            boolean canDamage = GT_ModHandler
-                .damageOrDechargeItem(stack, TOOL_DAMAGE_PER_OPERATION, TOOL_CHARGE_PER_OPERATION, null);
+            GT_ModHandler.damageOrDechargeItem(stack, TOOL_DAMAGE_PER_OPERATION, TOOL_CHARGE_PER_OPERATION, null);
+            return;
+        }
+    }
+
+    /**
+     * Attempts to find a tool appropriate for the given mode.
+     *
+     * @param mode The mode to use. This specifies which tools are valid.
+     * @return Production multiplier based on the tool used, or -1 if no appropriate tool was found.
+     */
+    private int getToolMultiplier(Mode mode) {
+        ArrayList<ItemStack> storageInputs = getStoredInputs();
+        Collections.reverse(storageInputs);
+
+        for (ItemStack stack : storageInputs) {
+            int toolMultiplier = getToolMultiplier(stack, mode);
+            if (toolMultiplier < 0) continue;
+            boolean canDamage = GT_ModHandler.damageOrDechargeItem(stack, 0, 0, null);
             if (canDamage) {
-                // Tool was used.
                 if (GT_ModHandler.isElectricItem(stack)
                     && !GT_ModHandler.canUseElectricItem(stack, TOOL_CHARGE_PER_OPERATION)) {
                     // Tool is out of charge, move it to output.
@@ -411,7 +434,6 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
                 depleteInput(stack);
                 addOutput(stack);
             }
-
         }
         return -1;
     }
