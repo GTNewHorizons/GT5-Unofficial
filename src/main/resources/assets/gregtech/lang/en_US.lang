@@ -243,6 +243,7 @@ GT5U.machines.autoretract.disabled=Auto retract disabled
 GT5U.machines.radius=radius
 GT5U.machines.blocks=Blocks
 GT5U.machines.chunks=Chunks
+GT5U.machines.water_pump=Humidity:
 GT5U.machines.miner=Miner
 GT5U.machines.powersource.power=power
 GT5U.machines.powersource.steam=steam

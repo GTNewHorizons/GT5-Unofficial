@@ -11,9 +11,20 @@ import static gregtech.api.enums.Textures.BlockIcons.TEXTURE_METAL_PANEL_E_A;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import java.util.List;
+
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -38,6 +49,8 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.blocks.GT_Block_Casings9;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_WaterPump>
     implements ISurvivalConstructable {
@@ -60,27 +73,27 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
         return "Water Pump";
     }
 
-    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String tier1 = "tier1";
+    private static final String tier2 = "tier2";
 
     private static IStructureDefinition<GregtechMetaTileEntity_WaterPump> STRUCTURE_DEFINITION = null;
-
-    // spotless:off
-    private final String[][] shape = new String[][] {
-        { " A ", " A ", "AAA", " A " },
-        { " A ", "   ", "A A", " A " },
-        { "C~C", "CCC", "CCC", "CCC" } };
-
-    // spotless:on
 
     private static final int horizontalOffSet = 1;
     private static final int verticalOffSet = 2;
     private static final int depthOffSet = 0;
 
-    private static int COUNT_OF_WATER = 10_000;
+    private static final int COUNT_OF_WATER = 10_000;
     private static final int PROGRESSION_TIME = 20;
 
+
+    private int mTier = 1, mSetTier = 1;
+
+    private float CURRENT_HUMIDITY;
+
+    private static final Fluid water = FluidRegistry.getFluid("water");
+
     private FluidStack[] getWater() {
-        return new FluidStack[] { FluidRegistry.getFluidStack("water", getHumidity()) };
+        return new FluidStack[] { new FluidStack(water, getWaterCount()) };
     }
 
     private int mCasing;
@@ -90,9 +103,26 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffSet, verticalOffSet, depthOffSet)) return false;
-
-        return mCasing >= 10;
+        mTier = 1;
+        switch (mSetTier) {
+            case 1 -> {
+                if (!checkPiece(tier1, horizontalOffSet, verticalOffSet, depthOffSet)) {
+                    return false;
+                }
+                mTier = 1;
+            }
+            case 2 -> {
+                if (!checkPiece(tier2, horizontalOffSet, verticalOffSet, depthOffSet)) {
+                    return false;
+                }
+                mTier = 2;
+            }
+            default -> {
+                return false;
+            }
+        }
+        CURRENT_HUMIDITY = getHumidity();
+        return mTier > 0;
     }
 
     private boolean canSeeSky() {
@@ -107,15 +137,14 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
                     .getZCoord());
     }
 
-    private int getHumidity() {
-        float rate = 0f;
-        BiomeGenBase biomeRate = this.getBaseMetaTileEntity()
+    private float getHumidity() {
+        return this.getBaseMetaTileEntity()
             .getWorld()
-            .getBiomeGenForCoords(getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getZCoord());
-        float humidity = biomeRate.rainfall;
-        rate += humidity;
-        rate *= COUNT_OF_WATER;
-        return (int) rate;
+            .getBiomeGenForCoords(getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getZCoord()).rainfall;
+    }
+
+    private int getWaterCount() {
+        return (int) (CURRENT_HUMIDITY * COUNT_OF_WATER);
     }
 
     @Override
@@ -134,8 +163,26 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
 
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_WaterPump>builder()
 
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+                .addShape(
+                    tier1,
+                    transpose(
+                        new String[][] {
+                            // spotless:off
+                        { " A ", " A ", "AAA", " A " },
+                        { " A ", "   ", "A A", " A " },
+                        { "C~C", "CCC", "CCC", "CCC" } }))
+                        // spotless:on
+                .addShape(
+                    tier2,
+                    transpose(
+                        new String[][] {
+                            // spotless:off
+                        { " D ", " D ", "DDD", " D " },
+                        { " D ", "   ", "D D", " D " },
+                        { "C~C", "CCC", "CCC", "CCC" } }))
+                        // spotless:on
                 .addElement('A', ofFrame(Materials.Bronze))
+                .addElement('D', ofFrame(Materials.Steel))
                 .addElement(
                     'C',
                     buildHatchAdder(GregtechMetaTileEntity_WaterPump.class).atLeast(OutputHatch)
@@ -150,22 +197,39 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        this.buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, horizontalOffSet, verticalOffSet, depthOffSet);
+        switch (mSetTier) {
+            case 1 -> this.buildPiece(tier1, stackSize, hintsOnly, horizontalOffSet, verticalOffSet, depthOffSet);
+            case 2 -> this.buildPiece(tier2, stackSize, hintsOnly, horizontalOffSet, verticalOffSet, depthOffSet);
+        }
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivialBuildPiece(
-            STRUCTURE_PIECE_MAIN,
-            stackSize,
-            horizontalOffSet,
-            verticalOffSet,
-            depthOffSet,
-            elementBudget,
-            env,
-            false,
-            true);
+        int built = 0;
+        switch (mSetTier) {
+            case 1 -> built += this.survivialBuildPiece(
+                tier1,
+                stackSize,
+                horizontalOffSet,
+                verticalOffSet,
+                depthOffSet,
+                elementBudget,
+                env,
+                false,
+                true);
+            case 2 -> built += this.survivialBuildPiece(
+                tier2,
+                stackSize,
+                horizontalOffSet,
+                verticalOffSet,
+                depthOffSet,
+                elementBudget,
+                env,
+                false,
+                true);
+        }
+        return built;
     }
 
     @Override
@@ -244,7 +308,64 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
     }
 
     @Override
-    public boolean isBatchModeEnabled() {
-        return false;
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if ((aTick & 6000) == 0) CURRENT_HUMIDITY = getHumidity();
+        }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.machines.tier") + ": "
+                + EnumChatFormatting.BLUE
+                + tag.getInteger("getTier")
+                + EnumChatFormatting.RESET);
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.machines.water_pump") + " "
+                + EnumChatFormatting.BLUE
+                + tag.getFloat("humidity") + " %"
+                + EnumChatFormatting.RESET);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setFloat("humidity", CURRENT_HUMIDITY * 100);
+        tag.setInteger("getTier", getTier());
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("mSetTier", mSetTier);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        mSetTier = aNBT.getInteger("mSetTier");
+    }
+
+    @Override
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        mSetTier++;
+        if (mSetTier > 2) mSetTier = 1;
+        PlayerUtils.messagePlayer(aPlayer, "Tier: " + mSetTier);
+    }
+
+    private int getTier() {
+        return mSetTier;
+    }
+
+    @Override
+    public boolean isCorrectMachinePart(ItemStack aStack) {
+        return true;
     }
 }
