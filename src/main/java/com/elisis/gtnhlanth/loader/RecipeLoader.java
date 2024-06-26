@@ -807,7 +807,6 @@ public class RecipeLoader {
                 WerkstoffMaterialPool.ConditionedBastnasiteMud.getFluidOrGas(1000))
             .itemInputs(Materials.Saltpeter.getDust(1))
             .fluidOutputs(WerkstoffMaterialPool.DiltedRareEarthBastnasiteMud.getFluidOrGas(11000))
-            .itemOutputs(WerkstoffMaterialPool.Gangue.get(OrePrefixes.dust, 1))
             .eut(1920)
             .duration(1000)
             .specialValue(10)
@@ -1011,7 +1010,7 @@ public class RecipeLoader {
             null,
             Materials.Samarium.getDust(1),
             WerkstoffLoader.Thorianit.get(OrePrefixes.dust, 2),
-            WerkstoffMaterialPool.Gangue.get(OrePrefixes.dust, 4),
+            null,
             null,
             null,
             null,
@@ -2625,7 +2624,7 @@ public class RecipeLoader {
             114);
         GT_Values.RA.stdBuilder()
             .itemInputs(DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1))
-            .itemOutputs(SamariumOxide.get(OrePrefixes.dust, 1), Gangue.get(OrePrefixes.dust, 1))
+            .itemOutputs(SamariumOxide.get(OrePrefixes.dust, 1))
             .specialValue(1200)
             .eut(514)
             .duration(2 * SECONDS)
@@ -2636,7 +2635,7 @@ public class RecipeLoader {
         // null,
         // null,
         // SamariumOxide.get(OrePrefixes.dust, 1),
-        // Gangue.get(OrePrefixes.dust, 1),
+        // null,
         // 40,
         // 514,
         // 1200);
