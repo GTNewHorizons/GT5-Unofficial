@@ -54,6 +54,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
         for (int i = 0; i < 32000; i++) {
             OrePrefixes tPrefix = mGeneratedPrefixList[i / 1000];
             if (tPrefix == null) continue;
+            if (tPrefix == OrePrefixes.___placeholder___) continue;
             Materials tMaterial = GregTech_API.sGeneratedMaterials[i % 1000];
             if (tMaterial == null) continue;
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {

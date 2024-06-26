@@ -759,8 +759,8 @@ public class RECIPES_Machines {
         CORE.RA.addSixSlotAssemblingRecipe(
             new ItemStack[] { ItemUtils.getSimpleStack(CI.robotArm_LV, 4 * (1)),
                 ItemList.Cover_Controller.get(1, CI.electricMotor_MV), CI.machineHull_MV,
-                ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(1), 2),
-                ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(2), 2) },
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 2) },
             ELEMENT.getInstance().IRON.getFluidStack(144 * 4),
             ItemUtils.getSimpleStack(ModBlocks.blockCircuitProgrammer),
             60 * 10 * 1,
@@ -790,7 +790,7 @@ public class RECIPES_Machines {
 
         // Super Jukebox
         CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { CI.machineHull_LV, ItemUtils.getItemStackOfAmountFromOreDict("circuitBasic", 4),
+            new ItemStack[] { CI.machineHull_LV, GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 4),
                 ItemUtils.getItemStackOfAmountFromOreDict("plateTumbaga", 8),
                 ItemUtils.getSimpleStack(Blocks.jukebox) },
             ELEMENT.getInstance().COPPER.getFluidStack(144 * 2),
