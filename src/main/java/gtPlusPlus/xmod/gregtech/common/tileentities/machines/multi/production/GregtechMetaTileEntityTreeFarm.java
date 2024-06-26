@@ -12,6 +12,21 @@ import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.common.items.ID_MetaTool_01.BRANCHCUTTER;
+import static gregtech.common.items.ID_MetaTool_01.BUZZSAW_HV;
+import static gregtech.common.items.ID_MetaTool_01.BUZZSAW_LV;
+import static gregtech.common.items.ID_MetaTool_01.BUZZSAW_MV;
+import static gregtech.common.items.ID_MetaTool_01.CHAINSAW_HV;
+import static gregtech.common.items.ID_MetaTool_01.CHAINSAW_LV;
+import static gregtech.common.items.ID_MetaTool_01.CHAINSAW_MV;
+import static gregtech.common.items.ID_MetaTool_01.KNIFE;
+import static gregtech.common.items.ID_MetaTool_01.POCKET_BRANCHCUTTER;
+import static gregtech.common.items.ID_MetaTool_01.POCKET_KNIFE;
+import static gregtech.common.items.ID_MetaTool_01.POCKET_MULTITOOL;
+import static gregtech.common.items.ID_MetaTool_01.POCKET_SAW;
+import static gregtech.common.items.ID_MetaTool_01.POCKET_WIRECUTTER;
+import static gregtech.common.items.ID_MetaTool_01.SAW;
+import static gregtech.common.items.ID_MetaTool_01.WIRECUTTER;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTEnergy;
 
 import java.util.ArrayList;
@@ -55,6 +70,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.ID_MetaTool_01;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -282,7 +298,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 
     /**
      * Return the output multiplier for a given power tier.
-     * 
+     *
      * @param tier Power tier the machine runs on.
      * @return Factor to multiply all outputs by.
      */
@@ -371,7 +387,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 
     /**
      * Attempts to find a tool appropriate for the given mode, and damage/discharge it by one use.
-     * 
+     *
      * @param mode The mode to use. This specifies which tools are valid.
      * @return Production multiplier based on the tool used, or -1 if no appropriate tool was found.
      */
@@ -402,7 +418,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 
     /**
      * Calculate output multiplier for a given tool and mode.
-     * 
+     *
      * @param toolStack The tool to use.
      * @param mode      The mode to use.
      * @return Output multiplier for the given tool used in the given mode. If the tool is not appropriate for this
@@ -410,34 +426,30 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
      */
     public static int getToolMultiplier(ItemStack toolStack, Mode mode) {
         Item tool = toolStack.getItem();
+        int damage = toolStack.getItemDamage();
         switch (mode) {
             case LOG:
                 if (tool instanceof GT_MetaGenerated_Tool_01) {
-                    switch (toolStack.getItemDamage()) {
-                        case GT_MetaGenerated_Tool_01.SAW:
-                        case GT_MetaGenerated_Tool_01.POCKET_SAW:
-                        case GT_MetaGenerated_Tool_01.POCKET_MULTITOOL:
-                            return 1;
-                        case GT_MetaGenerated_Tool_01.BUZZSAW_LV:
-                        case GT_MetaGenerated_Tool_01.BUZZSAW_MV:
-                        case GT_MetaGenerated_Tool_01.BUZZSAW_HV:
-                            return 2;
-                        case GT_MetaGenerated_Tool_01.CHAINSAW_LV:
-                        case GT_MetaGenerated_Tool_01.CHAINSAW_MV:
-                        case GT_MetaGenerated_Tool_01.CHAINSAW_HV:
-                            return 4;
+
+                    if (damage == SAW.ID || damage == POCKET_SAW.ID || damage == POCKET_MULTITOOL.ID) {
+                        return 1;
+                    }
+
+                    if (damage == BUZZSAW_LV.ID || damage == BUZZSAW_MV.ID || damage == BUZZSAW_HV.ID) {
+                        return 2;
+                    }
+
+                    if (damage == CHAINSAW_LV.ID || damage == CHAINSAW_MV.ID || damage == CHAINSAW_HV.ID) {
+                        return 4;
                     }
                 }
                 break;
 
             case SAPLING:
-                if (tool instanceof GT_MetaGenerated_Tool_01) {
-                    switch (toolStack.getItemDamage()) {
-                        case GT_MetaGenerated_Tool_01.BRANCHCUTTER:
-                        case GT_MetaGenerated_Tool_01.POCKET_BRANCHCUTTER:
-                        case GT_MetaGenerated_Tool_01.POCKET_MULTITOOL:
-                            return 1;
-                    }
+                if (tool instanceof GT_MetaGenerated_Tool_01
+                    && (damage == BRANCHCUTTER.ID || damage == POCKET_BRANCHCUTTER.ID
+                        || damage == POCKET_MULTITOOL.ID)) {
+                    return 1;
                 }
                 if (tool instanceof IToolGrafter && tool.isDamageable()) {
                     return 3;
@@ -450,12 +462,11 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
                     return 1;
                 }
                 if (tool instanceof GT_MetaGenerated_Tool_01) {
-                    switch (toolStack.getItemDamage()) {
-                        case GT_MetaGenerated_Tool_01.POCKET_MULTITOOL:
-                            return 1;
-                        case GT_MetaGenerated_Tool_01.WIRECUTTER:
-                        case GT_MetaGenerated_Tool_01.POCKET_WIRECUTTER:
-                            return 2;
+                    if (damage == POCKET_MULTITOOL.ID) {
+                        return 1;
+                    }
+                    if (damage == WIRECUTTER.ID || damage == POCKET_WIRECUTTER.ID) {
+                        return 2;
                     }
                 }
                 if (tool instanceof MetaGeneratedGregtechTools) {
@@ -466,13 +477,9 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
                 break;
 
             case FRUIT:
-                if (tool instanceof GT_MetaGenerated_Tool_01) {
-                    switch (toolStack.getItemDamage()) {
-                        case GT_MetaGenerated_Tool_01.KNIFE:
-                        case GT_MetaGenerated_Tool_01.POCKET_KNIFE:
-                        case GT_MetaGenerated_Tool_01.POCKET_MULTITOOL:
-                            return 1;
-                    }
+                if (tool instanceof GT_MetaGenerated_Tool_01
+                    && (damage == KNIFE.ID || damage == POCKET_KNIFE.ID || damage == POCKET_MULTITOOL.ID)) {
+                    return 1;
                 }
                 break;
         }
@@ -582,7 +589,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
      * <li>yield: Affects fruit output.</li>
      * </ul>
      * See {@link forestry.core.genetics.alleles.EnumAllele} for detailed numeric values for each allele.
-     * 
+     *
      * @param sapling A sapling to farm. Must be a Forestry sapling with a valid genome.
      * @return A map of outputs for each mode. Outputs for some modes might be null.
      */
@@ -650,7 +657,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
      * Registers outputs for a sapling. This method assumes that output in mode SAPLING is the same as the input
      * sapling. Output amount is further modified by mode, machine tier, and tool used. Recipes are added in
      * {@link gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_TreeFarm}.
-     * 
+     *
      * @param sapling The input sapling to farm, and also the output in mode SAPLING.
      * @param log     ItemStack to output in mode LOG.
      * @param leaves  ItemStack to output in mode LEAVES.
@@ -723,32 +730,32 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
         GT_MetaGenerated_Tool toolInstance = GT_MetaGenerated_Tool_01.INSTANCE;
         altToolsForNEI = new ItemStack[][] {
             // Mode.LOG
-            { toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.SAW, 1, null, null, null),
-                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.POCKET_SAW, 1, null, null, null),
-                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.BUZZSAW_LV, 1, null, null, null),
-                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.CHAINSAW_LV, 1, null, null, null),
-                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.BUZZSAW_MV, 1, null, null, null),
-                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.CHAINSAW_MV, 1, null, null, null),
-                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.BUZZSAW_HV, 1, null, null, null),
-                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.CHAINSAW_HV, 1, null, null, null), },
+            { toolInstance.getToolWithStats(SAW.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(POCKET_SAW.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(ID_MetaTool_01.BUZZSAW_LV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(CHAINSAW_LV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(ID_MetaTool_01.BUZZSAW_MV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(CHAINSAW_MV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(ID_MetaTool_01.BUZZSAW_HV.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(CHAINSAW_HV.ID, 1, null, null, null), },
             // Mode.SAPLING
-            { toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.BRANCHCUTTER, 1, null, null, null),
-                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.POCKET_BRANCHCUTTER, 1, null, null, null),
+            { toolInstance.getToolWithStats(ID_MetaTool_01.BRANCHCUTTER.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(ID_MetaTool_01.POCKET_BRANCHCUTTER.ID, 1, null, null, null),
                 GT_ModHandler.getModItem(Mods.Forestry.ID, "grafter", 1, 0), },
             // Mode.LEAVES
             { new ItemStack(Items.shears),
-                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.WIRECUTTER, 1, null, null, null),
-                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.POCKET_WIRECUTTER, 1, null, null, null),
+                toolInstance.getToolWithStats(ID_MetaTool_01.WIRECUTTER.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(ID_MetaTool_01.POCKET_WIRECUTTER.ID, 1, null, null, null),
                 MetaGeneratedGregtechTools.getInstance()
                     .getToolWithStats(MetaGeneratedGregtechTools.ELECTRIC_SNIPS, 1, null, null, null), },
             // Mode.FRUIT
-            { toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.KNIFE, 1, null, null, null),
-                toolInstance.getToolWithStats(GT_MetaGenerated_Tool_01.POCKET_KNIFE, 1, null, null, null), } };
+            { toolInstance.getToolWithStats(ID_MetaTool_01.KNIFE.ID, 1, null, null, null),
+                toolInstance.getToolWithStats(ID_MetaTool_01.POCKET_KNIFE.ID, 1, null, null, null), } };
     }
 
     /**
      * Add a recipe for this tree to NEI. These recipes are only used in NEI, they are never used for processing logic.
-     * 
+     *
      * @return True if the recipe was added successfully.
      */
     public static boolean addFakeRecipeToNEI(ItemStack saplingIn, ItemStack log, ItemStack saplingOut, ItemStack leaves,

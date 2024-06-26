@@ -10,7 +10,6 @@ import gregtech.loaders.oreprocessing.ProcessingCell;
 import gregtech.loaders.oreprocessing.ProcessingCircuit;
 import gregtech.loaders.oreprocessing.ProcessingCompressed;
 import gregtech.loaders.oreprocessing.ProcessingCrafting;
-import gregtech.loaders.oreprocessing.ProcessingCrate;
 import gregtech.loaders.oreprocessing.ProcessingCrop;
 import gregtech.loaders.oreprocessing.ProcessingCrushedOre;
 import gregtech.loaders.oreprocessing.ProcessingCrystallized;
@@ -65,7 +64,6 @@ public class GT_Loader_OreProcessing implements Runnable {
         new ProcessingBlock();
         new ProcessingBolt();
         new ProcessingCell();
-        new ProcessingCrate();
         new ProcessingCircuit();
         new ProcessingCompressed();
         new ProcessingCrafting();

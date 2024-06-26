@@ -359,49 +359,6 @@ public class GT_BookAndLootLoader implements Runnable {
             .addItem("strongholdCrossing", new WeightedRandomChestContent(ItemList.McGuffium_239.get(1L), 1, 1, 10));
 
         ChestGenHooks.addItem(
-            "strongholdCrossing",
-            new WeightedRandomChestContent(
-                GT_OreDictUnificator.get(OrePrefixes.crateGtIngot, Materials.DamascusSteel, 1L),
-                4,
-                8,
-                6));
-        ChestGenHooks.addItem(
-            "strongholdCrossing",
-            new WeightedRandomChestContent(
-                GT_OreDictUnificator.get(OrePrefixes.crateGtIngot, Materials.Steel, 1L),
-                8,
-                16,
-                12));
-        ChestGenHooks.addItem(
-            "strongholdCrossing",
-            new WeightedRandomChestContent(
-                GT_OreDictUnificator.get(OrePrefixes.crateGtIngot, Materials.Bronze, 1L),
-                8,
-                16,
-                12));
-        ChestGenHooks.addItem(
-            "strongholdCrossing",
-            new WeightedRandomChestContent(
-                GT_OreDictUnificator.get(OrePrefixes.crateGtIngot, Materials.Manganese, 1L),
-                4,
-                8,
-                12));
-        ChestGenHooks.addItem(
-            "strongholdCrossing",
-            new WeightedRandomChestContent(
-                GT_OreDictUnificator.get(OrePrefixes.crateGtDust, Materials.Neodymium, 1L),
-                4,
-                8,
-                6));
-        ChestGenHooks.addItem(
-            "strongholdCrossing",
-            new WeightedRandomChestContent(
-                GT_OreDictUnificator.get(OrePrefixes.crateGtDust, Materials.Chrome, 1L),
-                2,
-                4,
-                6));
-
-        ChestGenHooks.addItem(
             "strongholdCorridor",
             new WeightedRandomChestContent(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.DamascusSteel, 1L),
