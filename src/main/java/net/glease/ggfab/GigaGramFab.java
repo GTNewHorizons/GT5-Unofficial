@@ -2,6 +2,13 @@ package net.glease.ggfab;
 
 import static gregtech.api.enums.ToolDictNames.*;
 import static gregtech.common.items.GT_MetaGenerated_Tool_01.*;
+import static gregtech.common.items.ID_MetaTool_01.CROWBAR;
+import static gregtech.common.items.ID_MetaTool_01.FILE;
+import static gregtech.common.items.ID_MetaTool_01.HARDHAMMER;
+import static gregtech.common.items.ID_MetaTool_01.SCREWDRIVER;
+import static gregtech.common.items.ID_MetaTool_01.SOFTMALLET;
+import static gregtech.common.items.ID_MetaTool_01.WIRECUTTER;
+import static gregtech.common.items.ID_MetaTool_01.WRENCH;
 import static net.glease.ggfab.api.GGFabRecipeMaps.toolCastRecipes;
 
 import net.glease.ggfab.api.GigaGramFabAPI;
@@ -105,16 +112,27 @@ public class GigaGramFab {
                             .getStackForm(1L));
             long plate = OrePrefixes.plate.mMaterialAmount, ingot = OrePrefixes.ingot.mMaterialAmount,
                 screw = OrePrefixes.screw.mMaterialAmount, rod = OrePrefixes.stick.mMaterialAmount;
-            GigaGramFabAPI.addSingleUseToolType(craftingToolFile, INSTANCE.mToolStats.get(FILE), 2 * plate);
-            GigaGramFabAPI.addSingleUseToolType(craftingToolWrench, INSTANCE.mToolStats.get(WRENCH), 6 * ingot);
-            GigaGramFabAPI.addSingleUseToolType(craftingToolCrowbar, INSTANCE.mToolStats.get(CROWBAR), 3 * rod);
+            GigaGramFabAPI.addSingleUseToolType(craftingToolFile, INSTANCE.mToolStats.get((short) FILE.ID), 2 * plate);
+            GigaGramFabAPI
+                .addSingleUseToolType(craftingToolWrench, INSTANCE.mToolStats.get((short) WRENCH.ID), 6 * ingot);
+            GigaGramFabAPI
+                .addSingleUseToolType(craftingToolCrowbar, INSTANCE.mToolStats.get((short) CROWBAR.ID), 3 * rod);
             GigaGramFabAPI.addSingleUseToolType(
                 craftingToolWireCutter,
-                INSTANCE.mToolStats.get(WIRECUTTER),
+                INSTANCE.mToolStats.get((short) WIRECUTTER.ID),
                 3 * plate + 2 * rod + screw);
-            GigaGramFabAPI.addSingleUseToolType(craftingToolHardHammer, INSTANCE.mToolStats.get(HARDHAMMER), 6 * ingot);
-            GigaGramFabAPI.addSingleUseToolType(craftingToolSoftHammer, INSTANCE.mToolStats.get(SOFTMALLET), 6 * ingot);
-            GigaGramFabAPI.addSingleUseToolType(craftingToolScrewdriver, INSTANCE.mToolStats.get(SCREWDRIVER), 2 * rod);
+            GigaGramFabAPI.addSingleUseToolType(
+                craftingToolHardHammer,
+                INSTANCE.mToolStats.get((short) HARDHAMMER.ID),
+                6 * ingot);
+            GigaGramFabAPI.addSingleUseToolType(
+                craftingToolSoftHammer,
+                INSTANCE.mToolStats.get((short) SOFTMALLET.ID),
+                6 * ingot);
+            GigaGramFabAPI.addSingleUseToolType(
+                craftingToolScrewdriver,
+                INSTANCE.mToolStats.get((short) SCREWDRIVER.ID),
+                2 * rod);
             GT_ProcessingArray_Manager.addRecipeMapToPA("ggfab.toolcast", toolCastRecipes);
         });
         GregTech_API.sBeforeGTPostload.add(new ComponentRecipeLoader());

@@ -320,7 +320,7 @@ public class GT_MetaTileEntity_MultiFurnace
                 + " EU",
             StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(-mEUt)
+                + GT_Utility.formatNumbers(-lEUt)
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
