@@ -996,7 +996,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
             }
         } else {
             // Add chosen catalyst as recipe input
-            validFuel = valid_fuels[catalystTypeForRecipesWithoutCatalyst].getFluid();
+            validFuel = valid_fuels[catalystTypeForRecipesWithoutCatalyst - 1].getFluid();
             extraCatalystNeeded = (int) (extraPowerNeeded / FUEL_ENERGY_VALUES.get(validFuel)
                 .getLeft());
             FluidStack[] newInputFluids = new FluidStack[inputFluids + 1];
