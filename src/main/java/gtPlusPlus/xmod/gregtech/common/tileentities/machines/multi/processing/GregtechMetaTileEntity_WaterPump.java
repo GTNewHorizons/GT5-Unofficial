@@ -1,40 +1,29 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.TEXTURE_METAL_PANEL_E;
+import static gregtech.api.enums.Textures.BlockIcons.TEXTURE_METAL_PANEL_E_A;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
-import static net.minecraftforge.common.util.ForgeDirection.UP;
 
-import javax.annotation.Nonnull;
-
-import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import kubatech.loaders.MobHandlerLoader;
-import kubatech.network.CustomTileEntityPacket;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeEntityCrusher;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.WorldProviderHell;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import net.minecraft.world.biome.BiomeGenBase;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -42,13 +31,12 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.common.blocks.*;
+import gregtech.api.util.VoidProtectionHelper;
+import gregtech.common.blocks.GT_Block_Casings9;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 
 public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_WaterPump>
@@ -72,66 +60,62 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
         return "Water Pump";
     }
 
-    private static final String STRUCTUR_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private static IStructureDefinition<GregtechMetaTileEntity_WaterPump> STRUCTURE_DEFINITION = null;
 
-    private final String[][] shape = new String[][] { { " A ", " A ", "AAA", " A " }, { " A ", "   ", "A A", " A " },
+    // spotless:off
+    private final String[][] shape = new String[][] {
+        { " A ", " A ", "AAA", " A " },
+        { " A ", "   ", "A A", " A " },
         { "C~C", "CCC", "CCC", "CCC" } };
+
+    // spotless:on
 
     private static final int horizontalOffSet = 1;
     private static final int verticalOffSet = 2;
     private static final int depthOffSet = 0;
 
+    private static int COUNT_OF_WATER = 10_000;
+    private static final int PROGRESSION_TIME = 20;
+
+    private FluidStack[] getWater() {
+        return new FluidStack[] { FluidRegistry.getFluidStack("water", getHumidity()) };
+    }
+
+
+
     private int mCasing;
-
-    public Fluid getFluidToGenerate() {
-        return FluidRegistry.WATER;
-    }
-
-    public int getAmountOfFluidToGenerate() {
-        return 5_000;
-    }
-    public FluidStack mFluid;
-
-    public FluidStack setFillableStack(FluidStack aFluid) {
-        mFluid = aFluid;
-        return mFluid;
-    }
-    public boolean canTankBeFilled() {
-        return true;
-    }
-
-    public FluidStack getFillableStack() {
-        return mFluid;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     protected static String getNickname() {
         return "EvgenWarGold";
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTUR_PIECE_MAIN, horizontalOffSet, verticalOffSet, depthOffSet)) return false;
-        if (mCasing >= 10) {
-            return true;
-        }
-        return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffSet, verticalOffSet, depthOffSet)) return false;
+
+        return mCasing >= 10;
+    }
+
+    private boolean canSeeSky() {
+        return this.getBaseMetaTileEntity()
+            .getWorld()
+            .canBlockSeeTheSky(
+                this.getBaseMetaTileEntity()
+                    .getXCoord(),
+                this.getBaseMetaTileEntity()
+                    .getYCoord() + 2,
+                this.getBaseMetaTileEntity()
+                    .getZCoord());
+    }
+
+    private int getHumidity() {
+        float rate = 0f;
+        BiomeGenBase biomeRate = this.getBaseMetaTileEntity().getWorld().getBiomeGenForCoords(getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getZCoord());
+        float humidity = biomeRate.rainfall;
+        rate += humidity;
+        rate *= COUNT_OF_WATER;
+        return (int) rate;
     }
 
     @Override
@@ -150,7 +134,7 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
 
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_WaterPump>builder()
 
-                .addShape(STRUCTUR_PIECE_MAIN, transpose(shape))
+                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
                 .addElement('A', ofFrame(Materials.Bronze))
                 .addElement(
                     'C',
@@ -166,14 +150,14 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        this.buildPiece(STRUCTUR_PIECE_MAIN, stackSize, hintsOnly, horizontalOffSet, verticalOffSet, depthOffSet);
+        this.buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, horizontalOffSet, verticalOffSet, depthOffSet);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         return this.survivialBuildPiece(
-            STRUCTUR_PIECE_MAIN,
+            STRUCTURE_PIECE_MAIN,
             stackSize,
             horizontalOffSet,
             verticalOffSet,
@@ -187,7 +171,7 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection == UP) {
+        if (sideDirection == ForgeDirection.UP) {
             return new ITexture[] { TextureFactory.of(TEXTURE_METAL_PANEL_E_A) };
         }
         if (sideDirection == facingDirection) {
@@ -207,7 +191,6 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
         return 1;
     }
 
-
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
@@ -217,11 +200,9 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
-        }.setEuModifier(0F).setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setEuModifier(0F)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
-
-
-
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
@@ -238,61 +219,32 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
         return tt;
     }
 
-
-
     @SuppressWarnings("unlikely-arg-type")
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
-        this.mOutputFluids = new FluidStack[] { FluidRegistry.getFluidStack("xpjuice", 5000) };
-        this.mMaxProgresstime = 20;
-        addFluidToHatch(2);
-        this.updateSlots();
-        return CheckRecipeResultRegistry.SUCCESSFUL;
-    }
+        if (!canSeeSky()) {
+            return CheckRecipeResultRegistry.NO_SEE_SKY;
+        }
 
-    public boolean addFluidToHatch(long aTick) {
-        int aFillAmount = this.fill(FluidUtils.getFluidStack(getFluidToGenerate(), getAmountOfFluidToGenerate()), true);
-        return aFillAmount > 0;
+        this.mMaxProgresstime = PROGRESSION_TIME;
+        mOutputFluids = getWater();
+
+        VoidProtectionHelper voidProtection = new VoidProtectionHelper().setMachine(this)
+            .setFluidOutputs(mOutputFluids)
+            .build();
+
+        if (voidProtection.isFluidFull()) {
+            mOutputFluids = new FluidStack[] {};
+            return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
+        } else {
+            this.updateSlots();
+            return CheckRecipeResultRegistry.SUCCESSFUL;
+        }
     }
 
     @Override
-    public int fill(FluidStack aFluid, boolean doFill) {
-        if (aFluid == null || aFluid.getFluid()
-            .getID() <= 0 || aFluid.amount <= 0 || aFluid.getFluid() != getFluidToGenerate() || !canTankBeFilled()) {
-            return 0;
-        }
-
-        if (getFillableStack() == null || getFillableStack().getFluid()
-            .getID() <= 0) {
-            if (aFluid.amount <= getCapacity()) {
-                if (doFill) {
-                    setFillableStack(aFluid.copy());
-                    getBaseMetaTileEntity().markDirty();
-                }
-                return aFluid.amount;
-            }
-            if (doFill) {
-                setFillableStack(aFluid.copy());
-                getFillableStack().amount = getCapacity();
-                getBaseMetaTileEntity().markDirty();
-            }
-            return getCapacity();
-        }
-
-        if (!getFillableStack().isFluidEqual(aFluid)) return 0;
-
-        int space = getCapacity() - getFillableStack().amount;
-        if (aFluid.amount <= space) {
-            if (doFill) {
-                getFillableStack().amount += aFluid.amount;
-                getBaseMetaTileEntity().markDirty();
-            }
-            return aFluid.amount;
-        }
-        if (doFill) getFillableStack().amount = getCapacity();
-        return space;
+    public boolean isBatchModeEnabled() {
+        return false;
     }
-
-
 }
