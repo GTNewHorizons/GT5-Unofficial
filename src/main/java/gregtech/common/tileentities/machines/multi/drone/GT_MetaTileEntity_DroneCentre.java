@@ -406,6 +406,11 @@ public class GT_MetaTileEntity_DroneCentre extends
         droneMap.remove(getBaseMetaTileEntity().getWorld().provider.dimensionId, this);
     }
 
+    @Override
+    public void onUnload() {
+        droneMap.remove(getBaseMetaTileEntity().getWorld().provider.dimensionId, this);
+    }
+
     public List<DroneConnection> getConnectionList() {
         return connectionList;
     }
