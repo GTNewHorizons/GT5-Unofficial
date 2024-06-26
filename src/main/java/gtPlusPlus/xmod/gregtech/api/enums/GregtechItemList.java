@@ -405,6 +405,10 @@ public enum GregtechItemList implements GregtechItemContainer {
     Casing_Vacuum_Furnace,
     Controller_Vacuum_Furnace,
 
+    // Water pump
+    Casing_Wooden,
+    WaterPump,
+
     // Large Rocket Engine
     Casing_RocketEngine,
     Controller_RocketEngine,
@@ -445,6 +449,8 @@ public enum GregtechItemList implements GregtechItemContainer {
     Controller_SteamMaceratorMulti,
     // Bit Steam Washer
     Controller_SteamWasherMulti,
+    // Water pump
+    Controller_SteamWaterPump,
     // Big Steam Centrifuge
     Controller_SteamCentrifugeMulti,
     // Big Steam Compressor
