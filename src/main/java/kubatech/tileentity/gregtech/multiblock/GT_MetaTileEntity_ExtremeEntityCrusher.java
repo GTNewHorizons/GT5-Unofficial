@@ -272,7 +272,7 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
             .addInfo("Recipe time is based on mob health.")
             .addInfo("You can additionally put a weapon inside the GUI.")
             .addInfo("It will speed up the process and apply the looting level from the weapon (maximum 4 levels).")
-            .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside does nothing!")
+            .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside the structure does nothing!")
             .addInfo("Also produces 120 Liquid XP per operation.")
             .addInfo("If the mob spawns infernal, it will drain 8 times more power.")
             .addInfo("You can prevent infernal spawns by shift clicking with a screwdriver.")
