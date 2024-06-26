@@ -12,6 +12,7 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,7 +24,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import net.minecraft.world.biome.BiomeGenBase;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -83,8 +83,6 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
         return new FluidStack[] { FluidRegistry.getFluidStack("water", getHumidity()) };
     }
 
-
-
     private int mCasing;
 
     protected static String getNickname() {
@@ -111,7 +109,9 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
 
     private int getHumidity() {
         float rate = 0f;
-        BiomeGenBase biomeRate = this.getBaseMetaTileEntity().getWorld().getBiomeGenForCoords(getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getZCoord());
+        BiomeGenBase biomeRate = this.getBaseMetaTileEntity()
+            .getWorld()
+            .getBiomeGenForCoords(getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getZCoord());
         float humidity = biomeRate.rainfall;
         rate += humidity;
         rate *= COUNT_OF_WATER;
