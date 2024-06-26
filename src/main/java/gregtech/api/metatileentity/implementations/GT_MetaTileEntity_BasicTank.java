@@ -169,9 +169,6 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
             }
 
             final int inputSlot = getInputSlot();
-            if (mInventory[inputSlot] == null) {
-                return;
-            }
 
             if (doesEmptyContainers()) {
                 FluidStack tFluid = GT_Utility.getFluidForFilledItem(mInventory[inputSlot], true);
