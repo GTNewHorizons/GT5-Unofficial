@@ -168,7 +168,6 @@ import gregtech.api.util.GT_Shaped_Recipe;
 import gregtech.api.util.GT_Shapeless_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.items.GT_MetaGenerated_Item_98;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.ID_MetaTool_01;

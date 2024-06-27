@@ -100,32 +100,59 @@ public enum ItemList implements IItemContainer {
     IC2_AdvBattery,
     IC2_EnergyCrystal,
     IC2_LapotronCrystal,
+    @Deprecated
     Arrow_Head_Glass_Emtpy,
+    @Deprecated
     Arrow_Head_Glass_Poison,
+    @Deprecated
     Arrow_Head_Glass_Poison_Long,
+    @Deprecated
     Arrow_Head_Glass_Poison_Strong,
+    @Deprecated
     Arrow_Head_Glass_Slowness,
+    @Deprecated
     Arrow_Head_Glass_Slowness_Long,
+    @Deprecated
     Arrow_Head_Glass_Weakness,
+    @Deprecated
     Arrow_Head_Glass_Weakness_Long,
+    @Deprecated
     Arrow_Head_Glass_Holy_Water,
+    @Deprecated
     Arrow_Wooden_Glass_Emtpy,
+    @Deprecated
     Arrow_Wooden_Glass_Poison,
+    @Deprecated
     Arrow_Wooden_Glass_Poison_Long,
+    @Deprecated
     Arrow_Wooden_Glass_Poison_Strong,
+    @Deprecated
     Arrow_Wooden_Glass_Slowness,
+    @Deprecated
     Arrow_Wooden_Glass_Slowness_Long,
+    @Deprecated
     Arrow_Wooden_Glass_Weakness,
+    @Deprecated
     Arrow_Wooden_Glass_Weakness_Long,
+    @Deprecated
     Arrow_Wooden_Glass_Holy_Water,
+    @Deprecated
     Arrow_Plastic_Glass_Emtpy,
+    @Deprecated
     Arrow_Plastic_Glass_Poison,
+    @Deprecated
     Arrow_Plastic_Glass_Poison_Long,
+    @Deprecated
     Arrow_Plastic_Glass_Poison_Strong,
+    @Deprecated
     Arrow_Plastic_Glass_Slowness,
+    @Deprecated
     Arrow_Plastic_Glass_Slowness_Long,
+    @Deprecated
     Arrow_Plastic_Glass_Weakness,
+    @Deprecated
     Arrow_Plastic_Glass_Weakness_Long,
+    @Deprecated
     Arrow_Plastic_Glass_Holy_Water,
     Shape_Empty,
 

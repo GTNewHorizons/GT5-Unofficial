@@ -252,7 +252,6 @@ import gregtech.common.covers.redstone.GT_Cover_WirelessDoesWorkDetector;
 import gregtech.common.covers.redstone.GT_Cover_WirelessFluidDetector;
 import gregtech.common.covers.redstone.GT_Cover_WirelessItemDetector;
 import gregtech.common.covers.redstone.GT_Cover_WirelessMaintenanceDetector;
-import gregtech.common.items.behaviors.Behaviour_Arrow;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 
@@ -2424,13 +2423,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
     @Override
     public boolean onLeftClickEntity(ItemStack aStack, EntityPlayer aPlayer, Entity aEntity) {
         super.onLeftClickEntity(aStack, aPlayer, aEntity);
-        int aDamage = aStack.getItemDamage();
-        if ((aDamage >= 25000) && (aDamage < 27000)) {
-            if (aDamage >= 26000) {
-                return Behaviour_Arrow.DEFAULT_PLASTIC.onLeftClickEntity(this, aStack, aPlayer, aEntity);
-            }
-            return Behaviour_Arrow.DEFAULT_WOODEN.onLeftClickEntity(this, aStack, aPlayer, aEntity);
-        }
         return false;
     }
 
@@ -2438,33 +2430,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
     public boolean hasProjectile(SubTag aProjectileType, ItemStack aStack) {
         int aDamage = aStack.getItemDamage();
         return ((aDamage >= 25000) && (aDamage < 27000)) || (super.hasProjectile(aProjectileType, aStack));
-    }
-
-    @Override
-    public EntityArrow getProjectile(SubTag aProjectileType, ItemStack aStack, World aWorld, double aX, double aY,
-        double aZ) {
-        int aDamage = aStack.getItemDamage();
-        if ((aDamage >= 25000) && (aDamage < 27000)) {
-            if (aDamage >= 26000) {
-                return Behaviour_Arrow.DEFAULT_PLASTIC.getProjectile(this, aProjectileType, aStack, aWorld, aX, aY, aZ);
-            }
-            return Behaviour_Arrow.DEFAULT_WOODEN.getProjectile(this, aProjectileType, aStack, aWorld, aX, aY, aZ);
-        }
-        return super.getProjectile(aProjectileType, aStack, aWorld, aX, aY, aZ);
-    }
-
-    @Override
-    public EntityArrow getProjectile(SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity,
-        float aSpeed) {
-        int aDamage = aStack.getItemDamage();
-        if ((aDamage >= 25000) && (aDamage < 27000)) {
-            if (aDamage >= 26000) {
-                return Behaviour_Arrow.DEFAULT_PLASTIC
-                    .getProjectile(this, aProjectileType, aStack, aWorld, aEntity, aSpeed);
-            }
-            return Behaviour_Arrow.DEFAULT_WOODEN.getProjectile(this, aProjectileType, aStack, aWorld, aEntity, aSpeed);
-        }
-        return super.getProjectile(aProjectileType, aStack, aWorld, aEntity, aSpeed);
     }
 
     @Override
@@ -3042,18 +3007,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
         return (aDoShowAllItems) || (!aPrefix.name()
             .startsWith("toolHead"));
-    }
-
-    @Override
-    public ItemStack onDispense(IBlockSource aSource, ItemStack aStack) {
-        int aDamage = aStack.getItemDamage();
-        if ((aDamage >= 25000) && (aDamage < 27000)) {
-            if (aDamage >= 26000) {
-                return Behaviour_Arrow.DEFAULT_PLASTIC.onDispense(this, aSource, aStack);
-            }
-            return Behaviour_Arrow.DEFAULT_WOODEN.onDispense(this, aSource, aStack);
-        }
-        return super.onDispense(aSource, aStack);
     }
 
     @Override
