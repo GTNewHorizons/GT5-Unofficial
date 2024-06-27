@@ -169,11 +169,13 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
 
     @Override
     public IAEFluidStack injectItems(IAEFluidStack input, Actionable type, BaseActionSource src) {
-        long amt = fill(null, input, false);
-        if (amt == input.getStackSize()) {
-            if (type.equals(Actionable.MODULATE)) fill(null, input, true);
-            return null;
+        long amt = fill(null, input, type.equals(Actionable.MODULATE));
+        if (amt == 0) {
+            return input;
         }
+        input = input.copy();
+        input.decStackSize(amt);
+        if (input.getStackSize() <= 0) return null;
         return input;
     }
 
@@ -262,7 +264,7 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
                     final BigInteger delta = host.mStorage.subtract(host.mStorageCurrent);
                     returned = delta.intValueExact();
                 }
-                host.mStorageCurrent = host.mStorage;
+                if (doFill) host.mStorageCurrent = host.mStorage;
                 return returned;
             }
         }
@@ -291,7 +293,7 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
                     final BigInteger delta = host.mStorage.subtract(host.mStorageCurrent);
                     returned = delta.longValueExact();
                 }
-                host.mStorageCurrent = host.mStorage;
+                if (doFill) host.mStorageCurrent = host.mStorage;
                 return returned;
             }
         }

@@ -124,7 +124,7 @@ public class BioRecipeLoader {
         for (FluidStack fluidStack : easyFluids) {
             if (CropsPlusPlus.isModLoaded()) {
                 BWRecipes.instance.addBacterialVatRecipe(
-                    new ItemStack[] { new ItemStack(Items.sugar, 64) },
+                    new ItemStack[] { GT_Utility.getIntegratedCircuit(2), new ItemStack(Items.sugar, 64) },
                     new FluidStack[] { new FluidStack(fluidStack, 100) },
                     BioCultureLoader.CommonYeast,
                     new FluidStack[] { FluidRegistry.getFluidStack("potion.ghp", 1) },

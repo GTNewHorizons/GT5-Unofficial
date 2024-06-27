@@ -23,6 +23,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.ID_MetaTool_01;
 
 public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeRegistrator { // TODO COMPARE WITH OLD TOOL
                                                                                            // HEAD??? generator
@@ -84,7 +85,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
             case toolHeadAxe -> {
                 GT_ModHandler.addShapelessCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE
-                        .getToolWithStats(GT_MetaGenerated_Tool_01.AXE, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                        .getToolWithStats(ID_MetaTool_01.AXE.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                     new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                 if (GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L) != null) {
                     GT_Values.RA.stdBuilder()
@@ -93,12 +94,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, aMaterial, 1L),
                             GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(
-                            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.AXE,
-                                1,
-                                aMaterial,
-                                aMaterial.mHandleMaterial,
-                                null))
+                            GT_MetaGenerated_Tool_01.INSTANCE
+                                .getToolWithStats(ID_MetaTool_01.AXE.ID, 1, aMaterial, aMaterial.mHandleMaterial, null))
                         .duration(10 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
                         .addTo(assemblerRecipes);
@@ -116,7 +113,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
             case toolHeadBuzzSaw -> {
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.BUZZSAW_LV,
+                        ID_MetaTool_01.BUZZSAW_LV.ID,
                         1,
                         aMaterial,
                         Materials.Steel,
@@ -128,7 +125,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.BUZZSAW_LV,
+                        ID_MetaTool_01.BUZZSAW_LV.ID,
                         1,
                         aMaterial,
                         Materials.Steel,
@@ -140,7 +137,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.BUZZSAW_LV,
+                        ID_MetaTool_01.BUZZSAW_LV.ID,
                         1,
                         aMaterial,
                         Materials.Steel,
@@ -152,7 +149,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.BUZZSAW_MV,
+                        ID_MetaTool_01.BUZZSAW_MV.ID,
                         1,
                         aMaterial,
                         Materials.Aluminium,
@@ -165,7 +162,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_MV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.BUZZSAW_MV,
+                        ID_MetaTool_01.BUZZSAW_MV.ID,
                         1,
                         aMaterial,
                         Materials.Aluminium,
@@ -178,7 +175,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_MV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.BUZZSAW_MV,
+                        ID_MetaTool_01.BUZZSAW_MV.ID,
                         1,
                         aMaterial,
                         Materials.Aluminium,
@@ -191,7 +188,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_MV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.BUZZSAW_HV,
+                        ID_MetaTool_01.BUZZSAW_HV.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -205,7 +202,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_HV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.BUZZSAW_HV,
+                        ID_MetaTool_01.BUZZSAW_HV.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -219,7 +216,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_HV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.BUZZSAW_HV,
+                        ID_MetaTool_01.BUZZSAW_HV.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -239,7 +236,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
             case toolHeadChainsaw -> {
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.CHAINSAW_LV,
+                        ID_MetaTool_01.CHAINSAW_LV.ID,
                         1,
                         aMaterial,
                         Materials.Steel,
@@ -251,7 +248,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.CHAINSAW_LV,
+                        ID_MetaTool_01.CHAINSAW_LV.ID,
                         1,
                         aMaterial,
                         Materials.Steel,
@@ -263,7 +260,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.CHAINSAW_LV,
+                        ID_MetaTool_01.CHAINSAW_LV.ID,
                         1,
                         aMaterial,
                         Materials.Steel,
@@ -275,7 +272,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.CHAINSAW_MV,
+                        ID_MetaTool_01.CHAINSAW_MV.ID,
                         1,
                         aMaterial,
                         Materials.Aluminium,
@@ -288,7 +285,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_MV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.CHAINSAW_MV,
+                        ID_MetaTool_01.CHAINSAW_MV.ID,
                         1,
                         aMaterial,
                         Materials.Aluminium,
@@ -301,7 +298,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_MV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.CHAINSAW_MV,
+                        ID_MetaTool_01.CHAINSAW_MV.ID,
                         1,
                         aMaterial,
                         Materials.Aluminium,
@@ -314,7 +311,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_MV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.CHAINSAW_HV,
+                        ID_MetaTool_01.CHAINSAW_HV.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -328,7 +325,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_HV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.CHAINSAW_HV,
+                        ID_MetaTool_01.CHAINSAW_HV.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -342,7 +339,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_HV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.CHAINSAW_HV,
+                        ID_MetaTool_01.CHAINSAW_HV.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -363,7 +360,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
             case toolHeadDrill -> {
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.DRILL_LV,
+                        ID_MetaTool_01.DRILL_LV.ID,
                         1,
                         aMaterial,
                         Materials.Steel,
@@ -375,7 +372,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.DRILL_LV,
+                        ID_MetaTool_01.DRILL_LV.ID,
                         1,
                         aMaterial,
                         Materials.Steel,
@@ -387,7 +384,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.DRILL_LV,
+                        ID_MetaTool_01.DRILL_LV.ID,
                         1,
                         aMaterial,
                         Materials.Steel,
@@ -399,7 +396,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.DRILL_MV,
+                        ID_MetaTool_01.DRILL_MV.ID,
                         1,
                         aMaterial,
                         Materials.Aluminium,
@@ -412,7 +409,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_MV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.DRILL_MV,
+                        ID_MetaTool_01.DRILL_MV.ID,
                         1,
                         aMaterial,
                         Materials.Aluminium,
@@ -425,7 +422,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_MV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.DRILL_MV,
+                        ID_MetaTool_01.DRILL_MV.ID,
                         1,
                         aMaterial,
                         Materials.Aluminium,
@@ -438,7 +435,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_MV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.DRILL_HV,
+                        ID_MetaTool_01.DRILL_HV.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -452,7 +449,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_HV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.DRILL_HV,
+                        ID_MetaTool_01.DRILL_HV.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -466,7 +463,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_HV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.DRILL_HV,
+                        ID_MetaTool_01.DRILL_HV.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -480,7 +477,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_HV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.JACKHAMMER,
+                        ID_MetaTool_01.JACKHAMMER.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -494,7 +491,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_HV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.JACKHAMMER,
+                        ID_MetaTool_01.JACKHAMMER.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -508,7 +505,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_HV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.JACKHAMMER,
+                        ID_MetaTool_01.JACKHAMMER.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -549,19 +546,15 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
             case toolHeadFile -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            GT_MetaGenerated_Tool_01.FILE,
-                            1,
-                            aMaterial,
-                            aMaterial.mHandleMaterial,
-                            null),
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(ID_MetaTool_01.FILE.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
                     if ((!aMaterial.contains(SubTag.NO_SMASHING)) && (!aMaterial.contains(SubTag.BOUNCY))) {
                         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                             GT_ModHandler.addCraftingRecipe(
                                 GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                    GT_MetaGenerated_Tool_01.FILE,
+                                    ID_MetaTool_01.FILE.ID,
                                     1,
                                     aMaterial,
                                     aMaterial.mHandleMaterial,
@@ -581,7 +574,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GT_Utility.getIntegratedCircuit(15))
                         .itemOutputs(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.FILE,
+                                ID_MetaTool_01.FILE.ID,
                                 1,
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
@@ -594,12 +587,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
             case toolHeadHoe -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            GT_MetaGenerated_Tool_01.HOE,
-                            1,
-                            aMaterial,
-                            aMaterial.mHandleMaterial,
-                            null),
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(ID_MetaTool_01.HOE.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                 }
                 if (GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L) != null) {
@@ -609,12 +598,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, aMaterial, 1L),
                             GT_Utility.getIntegratedCircuit(16))
                         .itemOutputs(
-                            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.HOE,
-                                1,
-                                aMaterial,
-                                aMaterial.mHandleMaterial,
-                                null))
+                            GT_MetaGenerated_Tool_01.INSTANCE
+                                .getToolWithStats(ID_MetaTool_01.HOE.ID, 1, aMaterial, aMaterial.mHandleMaterial, null))
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                         .addTo(assemblerRecipes);
@@ -633,12 +618,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            GT_MetaGenerated_Tool_01.PICKAXE,
-                            1,
-                            aMaterial,
-                            aMaterial.mHandleMaterial,
-                            null),
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(ID_MetaTool_01.PICKAXE.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
                     if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
@@ -660,7 +641,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GT_Utility.getIntegratedCircuit(5))
                         .itemOutputs(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.PICKAXE,
+                                ID_MetaTool_01.PICKAXE.ID,
                                 1,
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
@@ -674,12 +655,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            GT_MetaGenerated_Tool_01.PLOW,
-                            1,
-                            aMaterial,
-                            aMaterial.mHandleMaterial,
-                            null),
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(ID_MetaTool_01.PLOW.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
                     if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
@@ -700,7 +677,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GT_Utility.getIntegratedCircuit(6))
                         .itemOutputs(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.PLOW,
+                                ID_MetaTool_01.PLOW.ID,
                                 1,
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
@@ -714,12 +691,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            GT_MetaGenerated_Tool_01.SAW,
-                            1,
-                            aMaterial,
-                            aMaterial.mHandleMaterial,
-                            null),
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(ID_MetaTool_01.SAW.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
                     if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
@@ -740,12 +713,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GT_OreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial, 1L),
                             GT_Utility.getIntegratedCircuit(7))
                         .itemOutputs(
-                            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SAW,
-                                1,
-                                aMaterial,
-                                aMaterial.mHandleMaterial,
-                                null))
+                            GT_MetaGenerated_Tool_01.INSTANCE
+                                .getToolWithStats(ID_MetaTool_01.SAW.ID, 1, aMaterial, aMaterial.mHandleMaterial, null))
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                         .addTo(assemblerRecipes);
@@ -755,12 +724,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            GT_MetaGenerated_Tool_01.SENSE,
-                            1,
-                            aMaterial,
-                            aMaterial.mHandleMaterial,
-                            null),
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(ID_MetaTool_01.SENSE.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
                     if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
@@ -782,7 +747,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GT_Utility.getIntegratedCircuit(8))
                         .itemOutputs(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SENSE,
+                                ID_MetaTool_01.SENSE.ID,
                                 1,
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
@@ -794,12 +759,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
             }
             case toolHeadShovel -> {
                 GT_ModHandler.addShapelessCraftingRecipe(
-                    GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.SHOVEL,
-                        1,
-                        aMaterial,
-                        aMaterial.mHandleMaterial,
-                        null),
+                    GT_MetaGenerated_Tool_01.INSTANCE
+                        .getToolWithStats(ID_MetaTool_01.SHOVEL.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                     new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                 if (GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L) != null) {
                     GT_Values.RA.stdBuilder()
@@ -809,7 +770,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GT_Utility.getIntegratedCircuit(9))
                         .itemOutputs(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SHOVEL,
+                                ID_MetaTool_01.SHOVEL.ID,
                                 1,
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
@@ -832,12 +793,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            GT_MetaGenerated_Tool_01.SWORD,
-                            1,
-                            aMaterial,
-                            aMaterial.mHandleMaterial,
-                            null),
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(ID_MetaTool_01.SWORD.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
                     if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(
@@ -859,7 +816,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GT_Utility.getIntegratedCircuit(10))
                         .itemOutputs(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.SWORD,
+                                ID_MetaTool_01.SWORD.ID,
                                 1,
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
@@ -872,7 +829,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
             case toolHeadUniversalSpade -> {
                 GT_ModHandler.addShapelessCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE
-                        .getToolWithStats(GT_MetaGenerated_Tool_01.UNIVERSALSPADE, 1, aMaterial, aMaterial, null),
+                        .getToolWithStats(ID_MetaTool_01.UNIVERSALSPADE.ID, 1, aMaterial, aMaterial, null),
                     new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial), OrePrefixes.screw.get(aMaterial),
                         ToolDictNames.craftingToolScrewdriver });
                 if (GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L) != null
@@ -885,7 +842,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GT_Utility.getIntegratedCircuit(11))
                         .itemOutputs(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.UNIVERSALSPADE,
+                                ID_MetaTool_01.UNIVERSALSPADE.ID,
                                 1,
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
@@ -902,7 +859,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
             case toolHeadWrench -> {
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.WRENCH_LV,
+                        ID_MetaTool_01.WRENCH_LV.ID,
                         1,
                         aMaterial,
                         Materials.Steel,
@@ -914,7 +871,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.WRENCH_LV,
+                        ID_MetaTool_01.WRENCH_LV.ID,
                         1,
                         aMaterial,
                         Materials.Steel,
@@ -926,7 +883,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.WRENCH_LV,
+                        ID_MetaTool_01.WRENCH_LV.ID,
                         1,
                         aMaterial,
                         Materials.Steel,
@@ -938,7 +895,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.WRENCH_MV,
+                        ID_MetaTool_01.WRENCH_MV.ID,
                         1,
                         aMaterial,
                         Materials.Aluminium,
@@ -951,7 +908,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_MV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.WRENCH_MV,
+                        ID_MetaTool_01.WRENCH_MV.ID,
                         1,
                         aMaterial,
                         Materials.Aluminium,
@@ -964,7 +921,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_MV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.WRENCH_MV,
+                        ID_MetaTool_01.WRENCH_MV.ID,
                         1,
                         aMaterial,
                         Materials.Aluminium,
@@ -977,7 +934,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_MV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.WRENCH_HV,
+                        ID_MetaTool_01.WRENCH_HV.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -991,7 +948,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_HV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.WRENCH_HV,
+                        ID_MetaTool_01.WRENCH_HV.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -1005,7 +962,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_HV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.WRENCH_HV,
+                        ID_MetaTool_01.WRENCH_HV.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -1019,7 +976,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_HV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.SCREWDRIVER_LV,
+                        ID_MetaTool_01.SCREWDRIVER_LV.ID,
                         1,
                         aMaterial,
                         Materials.Steel,
@@ -1032,7 +989,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_LV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.SCREWDRIVER_LV,
+                        ID_MetaTool_01.SCREWDRIVER_LV.ID,
                         1,
                         aMaterial,
                         Materials.Steel,
@@ -1045,7 +1002,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_LV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.SCREWDRIVER_LV,
+                        ID_MetaTool_01.SCREWDRIVER_LV.ID,
                         1,
                         aMaterial,
                         Materials.Steel,
@@ -1058,7 +1015,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_LV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.SCREWDRIVER_MV,
+                        ID_MetaTool_01.SCREWDRIVER_MV.ID,
                         1,
                         aMaterial,
                         Materials.Aluminium,
@@ -1072,7 +1029,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_MV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.SCREWDRIVER_MV,
+                        ID_MetaTool_01.SCREWDRIVER_MV.ID,
                         1,
                         aMaterial,
                         Materials.Aluminium,
@@ -1086,7 +1043,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_MV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.SCREWDRIVER_MV,
+                        ID_MetaTool_01.SCREWDRIVER_MV.ID,
                         1,
                         aMaterial,
                         Materials.Aluminium,
@@ -1099,7 +1056,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.gearGtSmall.get(Materials.Aluminium), 'B', ItemList.Battery_RE_MV_Sodium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.SCREWDRIVER_HV,
+                        ID_MetaTool_01.SCREWDRIVER_HV.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -1113,7 +1070,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_HV_Lithium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.SCREWDRIVER_HV,
+                        ID_MetaTool_01.SCREWDRIVER_HV.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -1127,7 +1084,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_HV_Cadmium.get(1L) });
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                        GT_MetaGenerated_Tool_01.SCREWDRIVER_HV,
+                        ID_MetaTool_01.SCREWDRIVER_HV.ID,
                         1,
                         aMaterial,
                         Materials.StainlessSteel,
@@ -1155,8 +1112,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GT_Utility.getIntegratedCircuit(14))
                         .itemOutputs(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                aProducesSoftMallet ? GT_MetaGenerated_Tool_01.SOFTMALLET
-                                    : GT_MetaGenerated_Tool_01.HARDHAMMER,
+                                aProducesSoftMallet ? ID_MetaTool_01.SOFTMALLET.ID : ID_MetaTool_01.HARDHAMMER.ID,
                                 1,
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
@@ -1168,8 +1124,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)) {
                     GT_ModHandler.addShapelessCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            aProducesSoftMallet ? GT_MetaGenerated_Tool_01.SOFTMALLET
-                                : GT_MetaGenerated_Tool_01.HARDHAMMER,
+                            aProducesSoftMallet ? ID_MetaTool_01.SOFTMALLET.ID : ID_MetaTool_01.HARDHAMMER.ID,
                             1,
                             aMaterial,
                             aMaterial.mHandleMaterial,
@@ -1178,8 +1133,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                     GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            aProducesSoftMallet ? GT_MetaGenerated_Tool_01.SOFTMALLET
-                                : GT_MetaGenerated_Tool_01.HARDHAMMER,
+                            aProducesSoftMallet ? ID_MetaTool_01.SOFTMALLET.ID : ID_MetaTool_01.HARDHAMMER.ID,
                             1,
                             aMaterial,
                             aMaterial.mHandleMaterial,
@@ -1191,8 +1145,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             'S', OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                     GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            aProducesSoftMallet ? GT_MetaGenerated_Tool_01.SOFTMALLET
-                                : GT_MetaGenerated_Tool_01.HARDHAMMER,
+                            aProducesSoftMallet ? ID_MetaTool_01.SOFTMALLET.ID : ID_MetaTool_01.HARDHAMMER.ID,
                             1,
                             aMaterial,
                             aMaterial.mHandleMaterial,

@@ -6444,19 +6444,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 new Object[] { "FFF", "RHR", "MCM", 'H', ItemList.Hull_HV, 'F', ItemList.Component_Filter, 'R',
                     OrePrefixes.rotor.get(Materials.StainlessSteel), 'M', ItemList.Electric_Motor_HV, 'C',
                     OrePrefixes.circuit.get(Materials.Advanced) });
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Hull_HV.get(1L),
-                    ItemList.Component_Filter.get(2L),
-                    GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L),
-                    ItemList.Electric_Motor_HV.get(1L),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
-                    GT_Utility.getIntegratedCircuit(1))
-                .itemOutputs(ItemList.Machine_Multi_Cleanroom.get(1L))
-                .fluidInputs(Materials.StainlessSteel.getMolten(864L))
-                .duration(60 * SECONDS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(assemblerRecipes);
         } else {
             if (NotEnoughItems.isModLoaded()) {
                 API.hideItem(ItemList.Machine_Multi_Cleanroom.get(1L));

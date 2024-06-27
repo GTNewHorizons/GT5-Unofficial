@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.*;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -26,6 +27,10 @@ import org.jetbrains.annotations.NotNull;
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -75,7 +80,6 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     protected final ArrayList<YOTTAHatch> mYottaHatch = new ArrayList<>();
 
     private static final BigInteger ONE_HUNDRED = BigInteger.valueOf(100);
-    private static final BigInteger FIVE = BigInteger.valueOf(5);
 
     /** Tank capacity */
     public BigInteger mStorage = BigInteger.ZERO;
@@ -103,6 +107,21 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     public static final BigInteger MAX_INT_BIGINT = BigInteger.valueOf(Integer.MAX_VALUE);
 
     protected boolean voidExcessEnabled = false;
+
+    protected Parameters.Group.ParameterIn tickRateSettings;
+
+    /** Name of the tick rate setting */
+    private static final INameFunction<YottaFluidTank> TICK_RATE_SETTING_NAME = (base,
+        p) -> translateToLocal("gt.blockmachines.YottaFluidTank.cfgi.0");
+    /** Status of the tick rate setting */
+    private static final IStatusFunction<YottaFluidTank> TICK_RATE_STATUS = (base, p) -> LedStatus
+        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        tickRateSettings = parametrization.getGroup(9, true)
+            .makeInParameter(1, 20, TICK_RATE_SETTING_NAME, TICK_RATE_STATUS);
+    }
 
     public YottaFluidTank(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
@@ -270,12 +289,6 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             if (mFluid == null) {
                 mStorageCurrent = BigInteger.ZERO;
             }
-            mWrench = true;
-            mScrewdriver = true;
-            mSolderingTool = true;
-            mSoftHammer = true;
-            mHardHammer = true;
-            mCrowbar = true;
             return true;
         }
         return false;
@@ -449,8 +462,9 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         super.onRunningTick(aStack);
         if (this.getBaseMetaTileEntity()
             .isServerSide()) {
+            long tickRate = Math.min(100L, Math.max(1L, (long) tickRateSettings.get()));
             ++workTickCounter;
-            if (workTickCounter < 20) {
+            if (workTickCounter < tickRate) {
                 return true;
             }
             workTickCounter = 0;
@@ -490,11 +504,14 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             }
 
             if (mFluid != null) {
-                // Try to drain 1% of the tank per tick, so 20% per second aka 1/5
-                int outputAmount = mStorageCurrent.divide(FIVE)
+                // Try to drain 1% of the tank per tick
+                int outputAmount = mStorageCurrent.divide(ONE_HUNDRED)
                     .min(MAX_INT_BIGINT)
                     .max(BigInteger.ONE)
                     .intValueExact();
+                if (outputAmount != 1) outputAmount = (int) Math.min(Integer.MAX_VALUE, (long) outputAmount * tickRate);
+                else outputAmount = Math.min(mStorageCurrent.intValueExact(), outputAmount * (int) tickRate);
+
                 final int originalOutputAmount = outputAmount;
 
                 for (final GT_MetaTileEntity_Hatch outputHatch : mOutputHatches) {
@@ -705,5 +722,10 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             .setSize(16, 16)
             .addTooltip(StatCollector.translateToLocal("gui.YOTTank.button.locking"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY);
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

@@ -762,11 +762,12 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         if (tag.getBoolean("incompleteStructure")) {
             currentTip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
         }
-        currentTip.add(
-            (tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
-                + "  Efficiency: "
-                + tag.getFloat("efficiency")
-                + "%");
+        String efficiency = RESET + "  Efficiency: " + tag.getFloat("efficiency") + "%";
+        if (tag.getBoolean("hasProblems")) {
+            currentTip.add(RED + "** HAS PROBLEMS **" + efficiency);
+        } else if (!tag.getBoolean("incompleteStructure")) {
+            currentTip.add(GREEN + "Running Fine" + efficiency);
+        }
         currentTip.add("Mode: " + tag.getString("machineType"));
         currentTip.add(
             String.format(
