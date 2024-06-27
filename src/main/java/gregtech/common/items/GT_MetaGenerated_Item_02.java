@@ -211,20 +211,16 @@ import static gregtech.common.items.ID_MetaItem_02.ThermosCan_Lait_au_cafe;
 import static gregtech.common.items.ID_MetaItem_02.ThermosCan_Sweet_Tea;
 import static gregtech.common.items.ID_MetaItem_02.ThermosCan_Tea;
 
-import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
-import net.minecraft.world.World;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
