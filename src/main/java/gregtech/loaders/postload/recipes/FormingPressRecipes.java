@@ -142,13 +142,6 @@ public class FormingPressRecipes implements Runnable {
             .addTo(formingPressRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.glass, 1, 32767), ItemList.Shape_Mold_Arrow.get(0L))
-            .itemOutputs(ItemList.Arrow_Head_Glass_Emtpy.get(1L))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(4)
-            .addTo(formingPressRecipes);
-
-        GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Cupronickel, 1L),
                 ItemList.Shape_Mold_Credit.get(0L))
