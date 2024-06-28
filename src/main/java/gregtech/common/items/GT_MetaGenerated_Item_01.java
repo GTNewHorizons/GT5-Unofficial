@@ -670,7 +670,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.CompressedFireclay.set(addItem(Compressed_Fireclay.ID, "Compressed Fireclay", "Brick-shaped"));
         ItemList.Firebrick.set(addItem(Firebrick.ID, "Firebrick", "Heat resistant"));
 
-
         ItemList.Shape_Empty.set(
             addItem(
                 Shape_Empty.ID,

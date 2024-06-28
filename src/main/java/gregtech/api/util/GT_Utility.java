@@ -4388,7 +4388,6 @@ public class GT_Utility {
         }
     }
 
-
     public static String toSubscript(long no) {
         char[] chars = Long.toString(no)
             .toCharArray();

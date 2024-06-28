@@ -1549,16 +1549,17 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     @SubscribeEvent
     public void onEntitySpawningEvent(EntityJoinWorldEvent aEvent) {
-        if (aEvent.entity == null){
+        if (aEvent.entity == null) {
             return;
         }
 
-        if (aEvent.entity.worldObj.isRemote){
+        if (aEvent.entity.worldObj.isRemote) {
             return;
         }
 
         if ((aEvent.entity instanceof EntityItem)) {
-            ((EntityItem) aEvent.entity).setEntityItemStack(GT_OreDictUnificator.get(true, ((EntityItem) aEvent.entity).getEntityItem(), true));
+            ((EntityItem) aEvent.entity)
+                .setEntityItemStack(GT_OreDictUnificator.get(true, ((EntityItem) aEvent.entity).getEntityItem(), true));
         }
     }
 
