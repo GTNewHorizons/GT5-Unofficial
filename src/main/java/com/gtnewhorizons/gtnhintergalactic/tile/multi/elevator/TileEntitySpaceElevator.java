@@ -651,18 +651,6 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
         return GT_MetaTileEntity_EM_infuser.activitySound;
     }
 
-    /**
-     * Fix all maintenance issues of this controller
-     */
-    protected void fixAllIssues() {
-        mWrench = true;
-        mScrewdriver = true;
-        mSoftHammer = true;
-        mHardHammer = true;
-        mSolderingTool = true;
-        mCrowbar = true;
-    }
-
     // endregion
 
     // region Recipe
@@ -932,4 +920,9 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
     }
 
     // endregion
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
 }

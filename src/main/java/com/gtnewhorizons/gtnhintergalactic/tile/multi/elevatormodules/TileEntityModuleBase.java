@@ -261,18 +261,6 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
     }
 
     /**
-     * Fix all maintenance issues of this controller
-     */
-    protected void fixAllIssues() {
-        mWrench = true;
-        mScrewdriver = true;
-        mSoftHammer = true;
-        mHardHammer = true;
-        mSolderingTool = true;
-        mCrowbar = true;
-    }
-
-    /**
      * Get the tier of the module
      *
      * @return Module tier
@@ -427,5 +415,10 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
     protected void parametersInstantiation_EM() {
         Parameters.Group hatch_0 = parametrization.getGroup(0, false);
         energyDisplay = hatch_0.makeOutParameter(0, 0, ENERGY_DISPLAY_NAME, ENERGY_STATUS);
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }
