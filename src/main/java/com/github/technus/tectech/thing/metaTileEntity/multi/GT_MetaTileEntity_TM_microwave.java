@@ -187,7 +187,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                                 null,
                                 null,
                                 new ItemStack[] { ((EntityItem) entity).getEntityItem() });
-                            if (tRecipe == null || tRecipe.mInputs[0].stackSize != 1) {
+                            if (tRecipe == null || tRecipe.mInputs.length == 0 || tRecipe.mInputs[0].stackSize != 1) {
                                 itemsToOutput.add(((EntityItem) entity).getEntityItem());
                             } else {
                                 ItemStack newStuff = tRecipe.getOutput(0)
