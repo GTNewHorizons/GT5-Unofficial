@@ -33,6 +33,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.ID_MetaTool_01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.general.ItemAirFilter;
@@ -825,11 +826,11 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
         if (sGregTurbines == null) {
             sGregTurbines = new ItemStack[3];
             sGregTurbines[0] = GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01")
-                .getToolWithStats(GT_MetaGenerated_Tool_01.TURBINE_SMALL, 1, Materials.Iron, Materials.Iron, null);
+                .getToolWithStats(ID_MetaTool_01.TURBINE_SMALL.ID, 1, Materials.Iron, Materials.Iron, null);
             sGregTurbines[1] = GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01")
-                .getToolWithStats(GT_MetaGenerated_Tool_01.TURBINE_SMALL, 1, Materials.Bronze, Materials.Bronze, null);
+                .getToolWithStats(ID_MetaTool_01.TURBINE_SMALL.ID, 1, Materials.Bronze, Materials.Bronze, null);
             sGregTurbines[2] = GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01")
-                .getToolWithStats(GT_MetaGenerated_Tool_01.TURBINE_SMALL, 1, Materials.Steel, Materials.Steel, null);
+                .getToolWithStats(ID_MetaTool_01.TURBINE_SMALL.ID, 1, Materials.Steel, Materials.Steel, null);
         } else {
             return sGregTurbines[aTier];
         }
