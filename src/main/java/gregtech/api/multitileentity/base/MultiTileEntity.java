@@ -47,7 +47,7 @@ import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
-import gregtech.api.multitileentity.MultiTileEntityBlockRegistryInternal;
+import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityClassContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
@@ -171,12 +171,11 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     @Override
     public void copyTextures() {
         // Loading an instance
-        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
-            .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
-        if (!(tCanonicalTileEntity instanceof MultiTileEntity)) {
+        final TileEntity referenceTileEntity = MultiTileEntityRegistry
+            .getReferenceTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
+        if (!(referenceTileEntity instanceof MultiTileEntity canonicalEntity)) {
             return;
         }
-        final MultiTileEntity canonicalEntity = (MultiTileEntity) tCanonicalTileEntity;
         baseTexture = canonicalEntity.baseTexture;
         topOverlayTexture = canonicalEntity.topOverlayTexture;
         bottomOverlayTexture = canonicalEntity.bottomOverlayTexture;
@@ -225,7 +224,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
                 if (tClass != null) {
                     // Add the Default Parameters. Useful for things that differ between different tiers/types of the
                     // same machine
-                    nbt = GT_Util.fuseNBT(nbt, tClass.parameters);
+                    nbt = GT_Util.fuseNBT(nbt, tClass.getParameters());
                 }
             }
         }
@@ -996,8 +995,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public boolean getSubItems(MultiTileEntityBlockRegistryInternal block, Item item, CreativeTabs tab,
-        List<ItemStack> list, short aID) {
+    public boolean getSubItems(MultiTileEntityBlock block, Item item, CreativeTabs tab, List<ItemStack> list,
+        short aID) {
         return true;
     }
 
@@ -1377,5 +1376,10 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         timedPacket.clearData();
         getTimedPacketData(timedPacket);
         GT_Values.NW.sendPacketToAllPlayersInRange(worldObj, timedPacket, getXCoord(), getZCoord());
+    }
+
+    @Override
+    public void onChunkUnload() {
+        super.onChunkUnload();
     }
 }

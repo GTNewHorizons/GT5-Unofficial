@@ -12,8 +12,6 @@ public interface IMultiBlockPart extends IMultiTileEntity, ItemInventoryLogicHos
 
     ChunkCoordinates getTargetPos();
 
-    void setTargetPos(ChunkCoordinates aTargetPos);
-
     void setLockedInventoryIndex(int aIndex);
 
     int getLockedInventoryIndex();
