@@ -167,7 +167,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "
                 + EnumChatFormatting.BLUE
-                + tag.getInteger("paralell")
+                + tag.getInteger("parallel")
                 + EnumChatFormatting.RESET);
     }
 
@@ -176,7 +176,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
-        tag.setInteger("paralell", getMaxParallelRecipes());
+        tag.setInteger("parallel", getMaxParallelRecipes());
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -347,8 +347,11 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Steam Washer")
             .addInfo("Runs recipes up to LV tier")
-            .addInfo("Washing up to Tier 1 - 8 and Tier 2 - 16 things at a time")
-            .addInfo("Multi consumes x2 amount of steam on Tier 2")
+            .addInfo("33.3% faster than a single block steam machine would run.")
+            .addInfo(
+                "On Tier 1, it uses only 66.6% of the steam/s required compared to what a single block steam machine would use.")
+            .addInfo("The steam consumption doubles from Tier 1 to Tier 2.")
+            .addInfo("Washes up to 8 x Tier things at a time.")
             .addSeparator()
             .beginStructureBlock(5, 5, 9, false)
             .addCasingInfoMin(tMachineCasing, 55, false)
