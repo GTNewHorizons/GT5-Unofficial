@@ -87,6 +87,7 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
     private int mSetTier = 1;
 
     private float CURRENT_HUMIDITY;
+    private boolean CAN_SEE_SKY;
 
     private static final Fluid water = FluidRegistry.getFluid("water");
 
@@ -205,6 +206,7 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
         if (this.mOutputHatches.size() != 1) return false;
 
         CURRENT_HUMIDITY = getHumidity();
+        CAN_SEE_SKY = canSeeSky();
         return mCountCasing >= 10;
     }
 
@@ -263,11 +265,13 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
-    @SuppressWarnings("unlikely-arg-type")
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
-        if (!canSeeSky()) return CheckRecipeResultRegistry.NO_SEE_SKY;
+        if (!CAN_SEE_SKY) {
+            CAN_SEE_SKY = canSeeSky();
+            return CheckRecipeResultRegistry.NO_SEE_SKY;
+        }
 
         mMaxProgresstime = PROGRESSION_TIME;
         mOutputFluids = getWater();
@@ -277,7 +281,7 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
             .build();
 
         if (voidProtection.isFluidFull()) {
-            mOutputFluids = new FluidStack[] {};
+            mOutputFluids = null;
             mMaxProgresstime = 0;
             return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
         } else {
@@ -290,7 +294,10 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            if ((aTick & 6000) == 0) CURRENT_HUMIDITY = getHumidity();
+            if ((aTick % 1200) == 0) {
+                CURRENT_HUMIDITY = getHumidity();
+                CAN_SEE_SKY = canSeeSky();
+            }
         }
     }
 
@@ -359,5 +366,10 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return false;
     }
 }
