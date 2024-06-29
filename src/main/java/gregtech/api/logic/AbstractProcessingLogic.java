@@ -31,7 +31,7 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
     protected int duration;
     protected long availableVoltage;
     protected long availableAmperage;
-    protected int overClockTimeReduction = 1;
+    protected int overClockTimeReduction = 2;
     protected int overClockPowerIncrease = 2;
     protected boolean protectItems;
     protected boolean protectFluids;
@@ -164,8 +164,8 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
      * Parameters represent number of bit shift, so 1 -> 2x, 2 -> 4x.
      */
     public P setOverclock(int timeReduction, int powerIncrease) {
-        this.overClockTimeReduction = timeReduction;
-        this.overClockPowerIncrease = powerIncrease;
+        // this.overClockTimeReduction = timeReduction;
+        // this.overClockPowerIncrease = powerIncrease;
         return getThis();
     }
 
@@ -180,7 +180,7 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
      * Sets whether the multi should use amperage to OC or not
      */
     public P setAmperageOC(boolean amperageOC) {
-        this.amperageOC = amperageOC;
+        this.amperageOC = true; // amperageOC;
         return getThis();
     }
 

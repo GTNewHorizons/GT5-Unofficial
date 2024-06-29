@@ -76,7 +76,7 @@ public class GT_OverclockCalculator {
     /**
      * How much the duration would be divided by per overclock made that isn't an overclock from HEAT
      */
-    private double durationDecreasePerOC = 2;
+    private double durationDecreasePerOC = 4;
     /**
      * Whether to give EUt Discount when the duration goes below one tick
      */
