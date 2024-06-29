@@ -1,20 +1,14 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.TEXTURE_METAL_PANEL_E;
-import static gregtech.api.enums.Textures.BlockIcons.TEXTURE_METAL_PANEL_E_A;
+import static gregtech.api.enums.GT_Values.AuthorEvgenWarGold;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.List;
 
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -38,6 +32,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -46,8 +41,10 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.blocks.GT_Block_Casings9;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -73,20 +70,18 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
         return "Water Pump";
     }
 
-    private static final String tier1 = "tier1";
-    private static final String tier2 = "tier2";
-
     private static IStructureDefinition<GregtechMetaTileEntity_WaterPump> STRUCTURE_DEFINITION = null;
 
     private static final int horizontalOffSet = 1;
     private static final int verticalOffSet = 2;
     private static final int depthOffSet = 0;
+    private static final String tier1 = "tier1";
+    private static final String tier2 = "tier2";
 
-    private static final int COUNT_OF_WATER = 10_000;
+    private static final int COUNT_OF_WATER_WITH_HUMIDITY = 5_000;
     private static final int PROGRESSION_TIME = 20;
 
-
-    private int mTier = 1, mSetTier = 1;
+    private int mSetTier = 1;
 
     private float CURRENT_HUMIDITY;
 
@@ -96,34 +91,7 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
         return new FluidStack[] { new FluidStack(water, getWaterCount()) };
     }
 
-    private int mCasing;
-
-    protected static String getNickname() {
-        return "EvgenWarGold";
-    }
-
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mTier = 1;
-        switch (mSetTier) {
-            case 1 -> {
-                if (!checkPiece(tier1, horizontalOffSet, verticalOffSet, depthOffSet)) {
-                    return false;
-                }
-                mTier = 1;
-            }
-            case 2 -> {
-                if (!checkPiece(tier2, horizontalOffSet, verticalOffSet, depthOffSet)) {
-                    return false;
-                }
-                mTier = 2;
-            }
-            default -> {
-                return false;
-            }
-        }
-        CURRENT_HUMIDITY = getHumidity();
-        return mTier > 0;
-    }
+    private int mCountCasing;
 
     private boolean canSeeSky() {
         return this.getBaseMetaTileEntity()
@@ -144,17 +112,7 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
     }
 
     private int getWaterCount() {
-        return (int) (CURRENT_HUMIDITY * COUNT_OF_WATER);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean getDefaultHasMaintenanceChecks() {
-        return false;
+        return (int) (CURRENT_HUMIDITY * COUNT_OF_WATER_WITH_HUMIDITY * mSetTier);
     }
 
     @Override
@@ -171,7 +129,7 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
                         { " A ", " A ", "AAA", " A " },
                         { " A ", "   ", "A A", " A " },
                         { "C~C", "CCC", "CCC", "CCC" } }))
-                        // spotless:on
+                            // spotless:on
                 .addShape(
                     tier2,
                     transpose(
@@ -180,7 +138,7 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
                         { " D ", " D ", "DDD", " D " },
                         { " D ", "   ", "D D", " D " },
                         { "C~C", "CCC", "CCC", "CCC" } }))
-                        // spotless:on
+                            // spotless:on
                 .addElement('A', ofFrame(Materials.Bronze))
                 .addElement('D', ofFrame(Materials.Steel))
                 .addElement(
@@ -188,7 +146,7 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
                     buildHatchAdder(GregtechMetaTileEntity_WaterPump.class).atLeast(OutputHatch)
                         .casingIndex(((GT_Block_Casings9) GregTech_API.sBlockCasings9).getTextureIndex(2))
                         .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(GregTech_API.sBlockCasings9, 2))))
+                        .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(GregTech_API.sBlockCasings9, 2))))
                 .build();
 
         }
@@ -197,9 +155,10 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        switch (mSetTier) {
-            case 1 -> this.buildPiece(tier1, stackSize, hintsOnly, horizontalOffSet, verticalOffSet, depthOffSet);
-            case 2 -> this.buildPiece(tier2, stackSize, hintsOnly, horizontalOffSet, verticalOffSet, depthOffSet);
+        if (stackSize.stackSize == 1) {
+            this.buildPiece(tier1, stackSize, hintsOnly, horizontalOffSet, verticalOffSet, depthOffSet);
+        } else {
+            this.buildPiece(tier2, stackSize, hintsOnly, horizontalOffSet, verticalOffSet, depthOffSet);
         }
     }
 
@@ -207,8 +166,9 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         int built = 0;
-        switch (mSetTier) {
-            case 1 -> built += this.survivialBuildPiece(
+        if (stackSize.stackSize == 1) {
+            mSetTier = 1;
+            built += this.survivialBuildPiece(
                 tier1,
                 stackSize,
                 horizontalOffSet,
@@ -218,7 +178,9 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
                 env,
                 false,
                 true);
-            case 2 -> built += this.survivialBuildPiece(
+        } else {
+            mSetTier = 2;
+            built += this.survivialBuildPiece(
                 tier2,
                 stackSize,
                 horizontalOffSet,
@@ -232,32 +194,62 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
         return built;
     }
 
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        if (mSetTier >= 2) {
+            if (!checkPiece(tier2, horizontalOffSet, verticalOffSet, depthOffSet)) return false;
+        } else if (!checkPiece(tier1, horizontalOffSet, verticalOffSet, depthOffSet)) return false;
+
+        if (this.mOutputHatches.size() != 1) return false;
+
+        CURRENT_HUMIDITY = getHumidity();
+        return mCountCasing >= 10;
+    }
+
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection == ForgeDirection.UP) {
-            return new ITexture[] { TextureFactory.of(TEXTURE_METAL_PANEL_E_A) };
-        }
         if (sideDirection == facingDirection) {
-            return new ITexture[] { TextureFactory.of(TEXTURE_METAL_PANEL_E),
-                TextureFactory.of(
-                    TextureFactory.of(OVERLAY_FRONT_STEAM_WASHER),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_STEAM_WASHER_ACTIVE)
-                        .glow()
-                        .build()) };
+            if (active) return new ITexture[] {
+                Textures.BlockIcons
+                    .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings9, 2)),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_WATER_PUMP_ACTIVE)
+                    .extFacing()
+                    .build() };
+            return new ITexture[] {
+                Textures.BlockIcons
+                    .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings9, 2)),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_WATER_PUMP)
+                    .extFacing()
+                    .build() };
         }
-        return new ITexture[] { TextureFactory.of(TEXTURE_METAL_PANEL_E) };
+        return new ITexture[] { Textures.BlockIcons
+            .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings9, 2)) };
     }
 
     @Override
-    public int getMaxParallelRecipes() {
-        return 1;
-    }
-
-    @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Water Pump")
+            .addInfo("Generates water based on biomes humidity")
+            .addInfo("Has 2 tiers: Bronze and Steel")
+            .addInfo("Steel tier extracts water 2x more water")
+            .addInfo("Tiers can be configurated with a screwdriver")
+            .addInfo(
+                EnumChatFormatting.AQUA + "Generation water: " + EnumChatFormatting.WHITE + "(Humidity * 50) * Tier")
+            .addSeparator()
+            .beginStructureBlock(3, 3, 5, false)
+            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1)
+            .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Bronze Frame Box")
+            .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Wooden Casing")
+            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2)
+            .addStructureInfo("10" + EnumChatFormatting.GRAY + " Steel Frame Box")
+            .addStructureInfo(EnumChatFormatting.GOLD + "10 " + EnumChatFormatting.GRAY + " Wooden Casing")
+            .toolTipFinisher(AuthorEvgenWarGold);
+        return tt;
     }
 
     @Override
@@ -268,30 +260,13 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
-    @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Steam Washer")
-            .addInfo("Runs recipes up to LV tier")
-            .addInfo("Washing up to Tier 1 - 8 and Tier 2 - 16 things at a time")
-            .addInfo("Multi consumes x2 amount of steam on Tier 2")
-            .addSeparator()
-            .beginStructureBlock(5, 5, 9, false)
-            .addInputHatch("Any casing", 1)
-            .toolTipFinisher(getNickname());
-        return tt;
-    }
-
     @SuppressWarnings("unlikely-arg-type")
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
-        if (!canSeeSky()) {
-            return CheckRecipeResultRegistry.NO_SEE_SKY;
-        }
+        if (!canSeeSky()) return CheckRecipeResultRegistry.NO_SEE_SKY;
 
-        this.mMaxProgresstime = PROGRESSION_TIME;
+        mMaxProgresstime = PROGRESSION_TIME;
         mOutputFluids = getWater();
 
         VoidProtectionHelper voidProtection = new VoidProtectionHelper().setMachine(this)
@@ -300,9 +275,10 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
 
         if (voidProtection.isFluidFull()) {
             mOutputFluids = new FluidStack[] {};
+            mMaxProgresstime = 0;
             return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
         } else {
-            this.updateSlots();
+            updateSlots();
             return CheckRecipeResultRegistry.SUCCESSFUL;
         }
     }
@@ -324,12 +300,13 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
         currenttip.add(
             StatCollector.translateToLocal("GT5U.machines.tier") + ": "
                 + EnumChatFormatting.BLUE
-                + tag.getInteger("getTier")
+                + tag.getInteger("mSetTier")
                 + EnumChatFormatting.RESET);
         currenttip.add(
             StatCollector.translateToLocal("GT5U.machines.water_pump") + " "
                 + EnumChatFormatting.BLUE
-                + tag.getFloat("humidity") + " %"
+                + tag.getFloat("humidity")
+                + " %"
                 + EnumChatFormatting.RESET);
     }
 
@@ -338,7 +315,7 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setFloat("humidity", CURRENT_HUMIDITY * 100);
-        tag.setInteger("getTier", getTier());
+        tag.setInteger("mSetTier", mSetTier);
     }
 
     @Override
@@ -357,15 +334,27 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mSetTier++;
         if (mSetTier > 2) mSetTier = 1;
+        mUpdated = true;
         PlayerUtils.messagePlayer(aPlayer, "Tier: " + mSetTier);
     }
 
-    private int getTier() {
-        return mSetTier;
+    @Override
+    public int getMaxEfficiency(ItemStack aStack) {
+        return 0;
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return 1;
+    }
+
+    @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
     }
 }
