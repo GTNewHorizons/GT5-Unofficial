@@ -334,7 +334,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
             @Nonnull
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 return GT_OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.33F * tierMachine)
+                    .setEUtDiscount(1.33F)
                     .setSpeedBoost(1.5F);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
@@ -349,7 +349,6 @@ public class GregtechMetaTileEntity_SteamCentrifuge
             .addInfo("33.3% faster than a single block steam machine would run.")
             .addInfo(
                 "On Tier 1, it uses only 66.6% of the steam/s required compared to what a single block steam machine would use.")
-            .addInfo("The steam consumption doubles from Tier 1 to Tier 2.")
             .addInfo("Centrifuges up to 8 x Tier things at a time.")
             .addSeparator()
             .beginStructureBlock(5, 5, 5, false)

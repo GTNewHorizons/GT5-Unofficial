@@ -104,7 +104,6 @@ public class GregtechMetaTileEntity_SteamCompressor
             .addInfo("Controller Block for the Steam Compressor")
             .addInfo("33.3% faster than using a single block Steam Compressor.")
             .addInfo("Uses only 66.6% of the steam/s compared to a single block Steam Compressor.")
-            .addInfo("The steam consumption doubles from Tier 1 to Tier 2.")
             .addInfo("Compresses up to 8 x Tier things at a time.")
             .addSeparator()
             .beginStructureBlock(3, 3, 4, true)
@@ -219,7 +218,7 @@ public class GregtechMetaTileEntity_SteamCompressor
             @Nonnull
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 return GT_OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.33F * tierMachine)
+                    .setEUtDiscount(1.33F)
                     .setSpeedBoost(1.5F);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
