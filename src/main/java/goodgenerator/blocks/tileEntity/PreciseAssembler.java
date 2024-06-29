@@ -22,7 +22,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -86,6 +89,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
     protected int machineTier;
     protected int mode;
     protected int energyHatchTier;
+    private static final int CASING_INDEX = 1541;
 
     public PreciseAssembler(String name) {
         super(name);
@@ -119,19 +123,21 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
                             Muffler,
                             ExoticEnergy.or(Energy))
                         .adder(PreciseAssembler::addToPAssList)
-                        .casingIndex(1539)
+                        .casingIndex(CASING_INDEX)
                         .dot(1)
                         .buildAndChain(
                             onElementPass(
                                 x -> x.casingAmount++,
                                 StructureUtility.ofBlocksTiered(
-                                    (block, meta) -> block == Loaders.preciseUnitCasing ? meta : -2,
-                                    IntStream.range(0, 3)
-                                        .mapToObj(
-                                            meta -> org.apache.commons.lang3.tuple.Pair
-                                                .of(Loaders.preciseUnitCasing, meta))
-                                        .collect(Collectors.toList()),
-                                    -1,
+                                    (block, meta) -> block == Loaders.impreciseUnitCasing ? -1
+                                        : block == Loaders.preciseUnitCasing ? meta : -2,
+                                    ImmutableList.of(
+                                        Pair.of(Loaders.impreciseUnitCasing, 0),
+                                        Pair.of(Loaders.preciseUnitCasing, 0),
+                                        Pair.of(Loaders.preciseUnitCasing, 1),
+                                        Pair.of(Loaders.preciseUnitCasing, 2),
+                                        Pair.of(Loaders.preciseUnitCasing, 3)),
+                                    -2,
                                     PreciseAssembler::setCasingTier,
                                     PreciseAssembler::getCasingTier))))
                 .addElement('F', ofFrame(Materials.TungstenSteel))
@@ -291,16 +297,16 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.machineTier = -1;
         this.casingAmount = 0;
-        this.casingTier = -1;
+        this.casingTier = -2;
         this.energyHatchTier = 0;
         if (checkPiece(mName, 4, 4, 0)) {
             energyHatchTier = checkEnergyHatchTier();
-            if (casingTier >= 0) {
-                reUpdate(1539 + casingTier);
+            if (casingTier >= -1) {
+                reUpdate(CASING_INDEX + casingTier);
             }
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
             return casingAmount >= 42 && machineTier >= 0
-                && casingTier >= 0
+                && casingTier >= -1
                 && mMaintenanceHatches.size() == 1
                 && !mMufflerHatches.isEmpty();
         }
@@ -321,7 +327,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
             .addInfo("Precise Electronic Unit Casing won't limit recipe in Normal Mode.")
             .addInfo("But gives more parallel with more advanced one.")
             .addInfo("It is 100% faster in Normal Mode.")
-            .addInfo("MK-I = 32x, MK-II = 64x, MK-III = 128x")
+            .addInfo("Imprecise (MK-0) = 16x, MK-I = 32x, MK-II = 64x, MK-III = 128x, MK-IV = 256x")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addInfo("The structure is too complex!")
             .addInfo(BLUE_PRINT_INFO)
@@ -434,7 +440,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
     @Override
     public void receiveClientEvent(byte aEventID, byte aValue) {
         super.receiveClientEvent(aEventID, aValue);
-        if (aEventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA && (aValue & 0x80) == 0) {
+        if (aEventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA && ((aValue & 0x80) == 0 || aValue == -1)) {
             casingTier = aValue;
         }
     }
@@ -442,19 +448,19 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
-        int t = Math.max(getCasingTier(), 0);
+        int t = Math.max(getCasingTier(), -1);
         if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1539 + t),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + t),
                 TextureFactory.of(textureFontOn), TextureFactory.builder()
                     .addIcon(textureFontOn_Glow)
                     .glow()
                     .build() };
-            else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1539 + t),
+            else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + t),
                 TextureFactory.of(textureFontOff), TextureFactory.builder()
                     .addIcon(textureFontOff_Glow)
                     .glow()
                     .build() };
-        } else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1539 + t) };
+        } else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + t) };
     }
 
     @Override
