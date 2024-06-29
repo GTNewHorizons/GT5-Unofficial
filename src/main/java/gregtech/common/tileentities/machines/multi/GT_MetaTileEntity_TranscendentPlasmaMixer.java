@@ -10,6 +10,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_OFF;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_ON;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
@@ -17,15 +18,18 @@ import static gregtech.common.misc.WirelessNetworkManager.processInitialSettings
 import static gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PlasmaForge.DIM_BRIDGE_CASING;
 import static gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PlasmaForge.DIM_INJECTION_CASING;
 import static gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PlasmaForge.DIM_TRANS_CASING;
-import static java.lang.Math.max;
 import static net.minecraft.util.EnumChatFormatting.GOLD;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -36,8 +40,20 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.math.Size;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -51,7 +67,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
-import gregtech.common.items.GT_IntegratedCircuit_Item;
 
 public class GT_MetaTileEntity_TranscendentPlasmaMixer
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_TranscendentPlasmaMixer>
@@ -99,11 +114,10 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Transcendent Mixer")
             .addInfo("Assisting in all your DTPF needs.")
-            .addInfo("This multiblock will run in parallel according to the circuit provided to the")
-            .addInfo("controller slot. E.g. 3x Circuit #16 = 48x parallel. All inputs will scale,")
-            .addInfo("except time. All EU is deducted from wireless EU networks only.")
+            .addInfo("This multiblock will run in parallel according to the amount set")
+            .addInfo("in the parallel menu. All inputs will scale, except time.")
+            .addInfo("All EU is deducted from wireless EU networks only.")
             .addInfo(AuthorColen)
-            .addInfo("Controller slot and circuit slot are separate.")
             .addSeparator()
             .beginStructureBlock(5, 7, 5, false)
             .addStructureInfo(GOLD + "1+ " + GRAY + "Input Hatch")
@@ -187,13 +201,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
             protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 return GT_OverclockCalculator.ofNoOverclock(recipe);
             }
-        }.setMaxParallelSupplier(() -> {
-            ItemStack controllerStack = getControllerSlot();
-            if (controllerStack != null && controllerStack.getItem() instanceof GT_IntegratedCircuit_Item) {
-                multiplier = controllerStack.stackSize * max(1, controllerStack.getItemDamage());
-            }
-            return multiplier;
-        });
+        }.setMaxParallelSupplier(() -> multiplier);
     }
 
     @Override
@@ -267,6 +275,67 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
             // Adds player to the wireless network if they do not already exist on it.
             ownerUUID = processInitialSettings(aBaseMetaTileEntity);
         }
+    }
+
+    private static final int PARALLEL_WINDOW_ID = 10;
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        buildContext.addSyncedWindow(PARALLEL_WINDOW_ID, this::createParallelWindow);
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient()) {
+                widget.getContext()
+                    .openSyncedWindow(PARALLEL_WINDOW_ID);
+            }
+        })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(GT_UITextures.BUTTON_STANDARD);
+                ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .addTooltip(translateToLocal("GT5U.tpm.parallelwindow"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(174, 129)
+            .setSize(16, 16));
+        super.addUIWidgets(builder, buildContext);
+    }
+
+    protected ModularWindow createParallelWindow(final EntityPlayer player) {
+        final int WIDTH = 158;
+        final int HEIGHT = 52;
+        final int PARENT_WIDTH = getGUIWidth();
+        final int PARENT_HEIGHT = getGUIHeight();
+        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(true);
+        builder.setPos(
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
+                .add(
+                    Alignment.BottomRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
+                        .add(WIDTH - 3, 0)
+                        .subtract(0, 10)));
+        builder.widget(
+            TextWidget.localised("GTPP.CC.parallel")
+                .setPos(3, 4)
+                .setSize(150, 20))
+            .widget(
+                new NumericWidget().setSetter(val -> multiplier = (int) val)
+                    .setGetter(() -> multiplier)
+                    .setBounds(1, Integer.MAX_VALUE)
+                    .setDefaultValue(1)
+                    .setScrollValues(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(150, 18)
+                    .setPos(4, 25)
+                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                    .attachSyncer(
+                        new FakeSyncWidget.IntegerSyncer(() -> multiplier, (val) -> multiplier = val),
+                        builder));
+        return builder.build();
     }
 
     @Override
