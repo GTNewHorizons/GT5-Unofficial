@@ -97,7 +97,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         mVoltage = aVoltage;
         mInsulated = aInsulated;
         mCanShock = aCanShock;
-        mCableLossPerMeter = aCableLossPerMeter;
+        mCableLossPerMeter = 0;
     }
 
     public GT_MetaPipeEntity_Cable(String aName, float aThickNess, Materials aMaterial, long aCableLossPerMeter,
@@ -109,7 +109,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         mVoltage = aVoltage;
         mInsulated = aInsulated;
         mCanShock = aCanShock;
-        mCableLossPerMeter = aCableLossPerMeter;
+        mCableLossPerMeter = 0;
     }
 
     @Override
