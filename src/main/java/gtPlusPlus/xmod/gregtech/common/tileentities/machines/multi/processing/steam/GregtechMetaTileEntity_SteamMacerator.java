@@ -109,7 +109,6 @@ public class GregtechMetaTileEntity_SteamMacerator
             .addInfo("Controller Block for the Steam Macerator")
             .addInfo("33.3% faster than using a single block Steam Macerator.")
             .addInfo("Uses only 66.6% of the steam/s required compared to a single block Steam Macerator on Tier 1.")
-            .addInfo("The steam consumption doubles from Tier 1 to Tier 2.")
             .addInfo("Macerates up to 8 x Tier things at a time.")
             .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
@@ -228,7 +227,7 @@ public class GregtechMetaTileEntity_SteamMacerator
             @Nonnull
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 return GT_OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.33F * tierMachine)
+                    .setEUtDiscount(1.33F)
                     .setSpeedBoost(1.5F);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
