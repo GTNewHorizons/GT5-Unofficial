@@ -21,7 +21,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
-import gregtech.api.multitileentity.MultiTileEntityBlockRegistryInternal;
+import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 
 /*
@@ -169,8 +169,7 @@ public interface IMultiTileEntity extends ICoverable, ITurnable, IDebugableTileE
     boolean recolourBlock(ForgeDirection side, byte aColor);
 
     /** Adds to the Creative Tab. return false to prevent it from being added. */
-    boolean getSubItems(MultiTileEntityBlockRegistryInternal block, Item item, CreativeTabs tab, List<ItemStack> list,
-        short aID);
+    boolean getSubItems(MultiTileEntityBlock block, Item item, CreativeTabs tab, List<ItemStack> list, short aID);
 
     ItemStack getPickBlock(MovingObjectPosition aTarget);
 

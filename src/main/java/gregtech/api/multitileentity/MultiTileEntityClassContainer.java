@@ -21,15 +21,11 @@ public class MultiTileEntityClassContainer {
     private String localized;
     private String categoryName;
 
-    public final short muteID;
-    public Class<? extends MultiTileEntity> muteClass;
-    public MultiTileEntityBlock block;
-    public MultiTileEntity referenceTileEntity;
-    public NBTTagCompound parameters;
+    private final short muteID;
+    private final Class<? extends MultiTileEntity> muteClass;
+    private MultiTileEntity referenceTileEntity;
+    private NBTTagCompound parameters;
 
-    // These have defaults
-    public byte blockMetaData = 1;
-    public byte maxStackSize = 64;
     public boolean hidden = false;
 
     public MultiTileEntityClassContainer(MultiTileEntityRegistry aRegistry, int aID,
@@ -72,23 +68,8 @@ public class MultiTileEntityClassContainer {
         return this;
     }
 
-    public MultiTileEntityClassContainer meta(int aMeta) {
-        blockMetaData = (byte) aMeta;
-        return this;
-    }
-
-    public MultiTileEntityClassContainer stackSize(int aStackSize) {
-        maxStackSize = (byte) aStackSize;
-        return this;
-    }
-
     public MultiTileEntityClassContainer hide() {
         hidden = true;
-        return this;
-    }
-
-    public MultiTileEntityClassContainer setBlock(MultiTileEntityBlock aBlock) {
-        block = aBlock;
         return this;
     }
 
@@ -175,6 +156,26 @@ public class MultiTileEntityClassContainer {
          */
         parameters = GT_Util.fuseNBT(parameters, GT_Util.makeNBT(aTags));
         return this;
+    }
+
+    public WeakReference<MultiTileEntityRegistry> getRegistry() {
+        return registry;
+    }
+
+    public Class<? extends MultiTileEntity> getMuteClass() {
+        return muteClass;
+    }
+
+    public short getMuteID() {
+        return muteID;
+    }
+
+    public MultiTileEntity getReferenceTileEntity() {
+        return referenceTileEntity;
+    }
+
+    public NBTTagCompound getParameters() {
+        return parameters;
     }
 
     private void verifyDescendentOf(Class<?> cls) {

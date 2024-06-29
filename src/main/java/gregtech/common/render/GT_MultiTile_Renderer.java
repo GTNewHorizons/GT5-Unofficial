@@ -16,7 +16,7 @@ import gregtech.GT_Mod;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.ModelRenderLogic;
 import gregtech.api.logic.interfaces.ModelRenderLogicHost;
-import gregtech.api.multitileentity.MultiTileEntityBlockRegistryInternal;
+import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityClassContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
@@ -35,7 +35,7 @@ public class GT_MultiTile_Renderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
-        if (!(block instanceof MultiTileEntityBlockRegistryInternal muteBlock)) {
+        if (!(block instanceof MultiTileEntityBlock muteBlock)) {
             return;
         }
 
@@ -49,7 +49,8 @@ public class GT_MultiTile_Renderer implements ISimpleBlockRenderingHandler {
         renderer.setRenderBoundsFromBlock(muteBlock);
 
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            ITexture texture = classContainer.referenceTileEntity.getTexture(side);
+            final ITexture texture = classContainer.getReferenceTileEntity()
+                .getTexture(side);
             if (texture == null) continue;
             switch (side) {
                 case DOWN -> renderYNegative(null, renderer, 0, 0, 0, block, texture, side);

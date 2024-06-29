@@ -48,6 +48,7 @@ import gregtech.api.logic.NullPowerLogic;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
+import gregtech.api.multitileentity.WeakTargetRef;
 import gregtech.api.multitileentity.base.NonTickableMultiTileEntity;
 import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
@@ -70,7 +71,9 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     protected Set<MultiTileCasingPurpose> registeredPurposes = new HashSet<>();
 
-    protected ChunkCoordinates targetPosition = null;
+    protected final WeakTargetRef<IMultiBlockController> controller = new WeakTargetRef<>(
+        IMultiBlockController.class,
+        false);
 
     protected int allowedModes = NOTHING; // BITMASK - Modes allowed for this part
     protected int mode = 0; // Mode selected for this part
@@ -95,17 +98,17 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         return lockedInventory;
     }
 
-    public void setTarget(IMultiBlockController newTarget, int aAllowedModes) {
-        final IMultiBlockController currentTarget = getTarget(false);
-        if (currentTarget != null && currentTarget != newTarget) {
+    public void setTarget(IMultiBlockController newController, int aAllowedModes) {
+        final IMultiBlockController currentController = getTarget(false);
+        if (currentController != null && currentController != newController) {
             for (MultiTileCasingPurpose purpose : registeredPurposes) {
                 unregisterPurpose(purpose);
             }
         }
-        targetPosition = (newTarget == null ? null : newTarget.getCoords());
+
         allowedModes = aAllowedModes;
-        if (newTarget != null) {
-            registerCovers(newTarget);
+        if (newController != currentController) {
+            registerCovers(newController);
             registerPurposes();
         }
     }
@@ -156,26 +159,11 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     public IMultiBlockController getTarget(boolean aCheckValidity) {
-        if (targetPosition == null) {
-            return null;
+        final IMultiBlockController res = controller.get();
+        if (res != null && aCheckValidity) {
+            return res.checkStructure(false) ? res : null;
         }
-
-        if (!worldObj.blockExists(targetPosition.posX, targetPosition.posY, targetPosition.posZ)) {
-            return null;
-        }
-        final TileEntity te = worldObj.getTileEntity(targetPosition.posX, targetPosition.posY, targetPosition.posZ);
-        IMultiBlockController target = null;
-        if (te instanceof IMultiBlockController targetFound) {
-            target = targetFound;
-        } else {
-            targetPosition = null;
-            return null;
-        }
-
-        if (aCheckValidity) {
-            return target != null && target.checkStructure(false) ? target : null;
-        }
-        return target;
+        return res;
     }
 
     public void registerCovers(IMultiBlockController controller) {
@@ -232,10 +220,9 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (aNBT.hasKey(NBT.ALLOWED_MODES)) allowedModes = aNBT.getInteger(NBT.ALLOWED_MODES);
         if (aNBT.hasKey(NBT.MODE)) setMode(aNBT.getByte(NBT.MODE));
         if (aNBT.hasKey(NBT.TARGET)) {
-            targetPosition = new ChunkCoordinates(
-                aNBT.getInteger(NBT.TARGET_X),
-                aNBT.getShort(NBT.TARGET_Y),
-                aNBT.getInteger(NBT.TARGET_Z));
+            controller
+                .setPosition(aNBT.getInteger(NBT.TARGET_X), aNBT.getShort(NBT.TARGET_Y), aNBT.getInteger(NBT.TARGET_Z));
+            controller.setWorld(worldObj);
         }
         if (aNBT.hasKey(NBT.LOCKED_INVENTORY)) {
             lockedInventory = UUID.fromString(aNBT.getString(NBT.LOCKED_INVENTORY));
@@ -255,27 +242,31 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     @Override
-    public void writeMultiTileNBT(NBTTagCompound aNBT) {
-        if (allowedModes != NOTHING) aNBT.setInteger(NBT.ALLOWED_MODES, allowedModes);
-        if (mode != 0) aNBT.setInteger(NBT.MODE, mode);
-        if (targetPosition != null) {
-            aNBT.setBoolean(NBT.TARGET, true);
-            aNBT.setInteger(NBT.TARGET_X, targetPosition.posX);
-            aNBT.setShort(NBT.TARGET_Y, (short) targetPosition.posY);
-            aNBT.setInteger(NBT.TARGET_Z, targetPosition.posZ);
+    public void writeMultiTileNBT(NBTTagCompound nbt) {
+        if (allowedModes != NOTHING) nbt.setInteger(NBT.ALLOWED_MODES, allowedModes);
+        if (mode != 0) nbt.setInteger(NBT.MODE, mode);
+
+        final ChunkCoordinates pos = controller.getPosition();
+        if (pos.posY >= 0) {
+            // Valid position
+            nbt.setBoolean(NBT.TARGET, true);
+            nbt.setInteger(NBT.TARGET_X, pos.posX);
+            nbt.setShort(NBT.TARGET_Y, (short) pos.posY);
+            nbt.setInteger(NBT.TARGET_Z, pos.posZ);
         }
+
         if (lockedInventory != null) {
-            aNBT.setString(NBT.LOCKED_INVENTORY, lockedInventory.toString());
+            nbt.setString(NBT.LOCKED_INVENTORY, lockedInventory.toString());
         }
         if (mLockedInventoryIndex != 0) {
-            aNBT.setInteger(NBT.LOCKED_INVENTORY_INDEX, mLockedInventoryIndex);
+            nbt.setInteger(NBT.LOCKED_INVENTORY_INDEX, mLockedInventoryIndex);
         }
-        configurationTank.writeToNBT(aNBT, NBT.LOCKED_FLUID);
+        configurationTank.writeToNBT(nbt, NBT.LOCKED_FLUID);
     }
 
     @Override
-    public void setLockedInventoryIndex(int aIndex) {
-        mLockedInventoryIndex = aIndex;
+    public void setLockedInventoryIndex(int index) {
+        mLockedInventoryIndex = index;
     }
 
     @Override
@@ -284,15 +275,8 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     @Override
-    public void setTargetPos(ChunkCoordinates aTargetPos) {
-        targetPosition = aTargetPos;
-        IMultiBlockController target = getTarget(false);
-        setTarget(target, allowedModes);
-    }
-
-    @Override
     public ChunkCoordinates getTargetPos() {
-        return targetPosition;
+        return controller.getPosition();
     }
 
     @Override

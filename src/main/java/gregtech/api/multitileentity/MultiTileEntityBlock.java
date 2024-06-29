@@ -14,6 +14,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -24,7 +25,6 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
@@ -62,11 +62,14 @@ import gregtech.common.render.GT_MultiTile_Renderer;
  * MultiTileEntityBlock ported from GT6
  */
 @Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = "ChiselAPI")
-public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITileEntityProvider, IFacade {
+public class MultiTileEntityBlock extends BlockContainer implements IDebugableBlock, ITileEntityProvider, IFacade {
+
+    private MultiTileEntityRegistry registry;
 
     private static boolean LOCK = false;
 
-    private boolean registered = false, normalCube;
+    private boolean registered = false;
+    private boolean normalCube;
     protected String internalName, toolName, materialName, modID;
 
     public String getName() {
@@ -125,7 +128,7 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
         internalName = getName();
         lightOpacity = isOpaqueCube() ? 255 : 0;
 
-        GameRegistry.registerBlock(this, ItemBlock.class, internalName);
+        GameRegistry.registerBlock(this, MultiTileEntityItem.class, internalName);
         return this;
     }
 
@@ -382,6 +385,18 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
         return 0;
     }
 
+    public MultiTileEntityRegistry getRegistry() {
+        return registry;
+    }
+
+    public void setRegistry(MultiTileEntityRegistry registry) {
+        this.registry = registry;
+    }
+
+    public boolean isRegistered() {
+        return registered;
+    }
+
     @Override
     protected boolean canSilkHarvest() {
         return false;
@@ -389,11 +404,13 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
 
     @Override
     public final String getLocalizedName() {
+        // return StatCollector.translateToLocal(registry.getInternalName() + ".name");
         return StatCollector.translateToLocal(internalName + ".name");
     }
 
     @Override
     public final String getUnlocalizedName() {
+        // return registry.getInternalName();
         return internalName;
     }
 
@@ -571,12 +588,7 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
     }
 
     @Override
-    public final TileEntity createTileEntity(World world, int meta) {
-        return null;
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world, int i) {
-        return null;
+    public TileEntity createNewTileEntity(World world, int meta) {
+        return registry.getNewTileEntity(meta);
     }
 }

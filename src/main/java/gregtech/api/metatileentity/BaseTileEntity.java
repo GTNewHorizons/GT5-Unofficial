@@ -1,10 +1,7 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.api.enums.GT_Values.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GT_Values.GT;
 import static gregtech.api.enums.GT_Values.NW;
-import static gregtech.api.enums.GT_Values.SIDE_DOWN;
-import static gregtech.api.enums.GT_Values.SIDE_UP;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +23,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
