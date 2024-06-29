@@ -239,7 +239,7 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
             .addInfo("Generates water based on biomes humidity")
             .addInfo("Has 2 tiers: Bronze and Steel")
             .addInfo("Steel tier extracts water 2x more water")
-            .addInfo("Tiers can be configurated with a screwdriver")
+            .addInfo("Tiers can be configured with a screwdriver")
             .addInfo(
                 EnumChatFormatting.AQUA + "Generation water: " + EnumChatFormatting.WHITE + "(Humidity * 50) * Tier")
             .addSeparator()
