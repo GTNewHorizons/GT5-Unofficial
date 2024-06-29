@@ -379,7 +379,9 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
                 calculatedEut = GT_Values.VP[tier];
 
                 for (Mode mode : Mode.values()) {
-                    useToolForMode(mode, true);
+                    if (outputPerMode.get(mode) != null) {
+                        useToolForMode(mode, true);
+                    }
                 }
 
                 return SimpleCheckRecipeResult.ofSuccess("growing_trees");
