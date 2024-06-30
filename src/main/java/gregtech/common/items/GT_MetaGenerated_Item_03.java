@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_METRICS_TRANSMITTER;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
@@ -1114,7 +1115,10 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
             addItem(
                 Transdimensional_Alignment_Matrix.ID,
                 "Transdimensional Alignment Matrix",
-                "Device supporting the alignment of transdimensional spaces.",
+                String.join(
+                    "/n ",
+                    "Device supporting the alignment of transdimensional spaces.",
+                    "Enables Dimensional Convergence on the DTPF."),
                 o));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
@@ -1258,6 +1262,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "White Dwarf Extruder Shape (Drill Head)",
                 "White Dwarf Extruder Shape for a Drill Head"));
         registerAllTieredTooltips();
+        registerAllAnimatedTooltips();
         initOrePrefixes();
         initOreDictUnificatorEntries();
         registerCovers();
@@ -1303,6 +1308,10 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         registerTieredTooltip(ItemList.Circuit_TranscendentAssembly.get(1), UMV);
         registerTieredTooltip(ItemList.Circuit_TranscendentComputer.get(1), UXV);
         registerTieredTooltip(ItemList.Circuit_TranscendentMainframe.get(1), MAX);
+    }
+
+    private void registerAllAnimatedTooltips() {
+        addItemTooltip(ItemList.Transdimensional_Alignment_Matrix.get(1), GT_Values.AuthorCloud);
     }
 
     private void initOreDictUnificatorEntries() {
