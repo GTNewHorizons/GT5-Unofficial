@@ -68,6 +68,12 @@ GT5U.LHE.steam=(in steam)
 GT5U.LHE.superheated=Superheated
 GT5U.LHE.threshold=threshold
 
+GT5U.DTPF.convergencebutton=Allow Convergence
+GT5U.DTPF.convergencebuttontooltip.0=Requires Transdimensional Aligment Matrix in controller slot
+GT5U.DTPF.convergencebuttontooltip.1=Right Click to open catalyst selection menu
+GT5U.DTPF.catalysttier=Catalyst Tier
+GT5U.DTPF.catalystinfotooltip=Tier of additional catalyst to use for recipes without catalyst in them, from 1-Crude to 5-Stellar
+
 GT5U.fusion.req=EU Required
 GT5U.fusion.plasma=Plasma Output
 
@@ -1432,7 +1438,7 @@ fluid.Monomethylhydrazine=Monomethylhydrazine
 fluid.binnibacteriafluid=binnibacteriafluid
 fluid.barnadafisarboriatorisfluid=barnadafisarboriatorisfluid
 fluid.GelatinMixture=GelatinMixture
-fluid.sludge=Sludge
+fluid.sludge=sludge
 fluid.Formaldehyde=Formaldehyde
 fluid.tcetieisfucusserratusfluid=tcetieisfucusserratusfluid
 fluid.MeatExtract=MeatExtract
