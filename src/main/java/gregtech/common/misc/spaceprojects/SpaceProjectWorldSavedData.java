@@ -19,7 +19,6 @@ import static gregtech.common.misc.spaceprojects.enums.JsonVariables.UPGRADE_PRO
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +44,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
@@ -108,7 +106,8 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             }
         }
         if (spaceTeamProjects == null || aNBT.hasKey("spaceTeamProjects")) {
-            spaceTeamProjects = GSON_SPACE_PROJECT.fromJson(aNBT.getString("spaceTeamProjects"), spaceTeamProjects.getClass());
+            spaceTeamProjects = GSON_SPACE_PROJECT
+                .fromJson(aNBT.getString("spaceTeamProjects"), spaceTeamProjects.getClass());
         }
 
         if (!aNBT.hasKey("spaceTeams")) {
@@ -122,7 +121,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
                 spaceTeams = null;
             }
         }
-        if(spaceTeams == null || aNBT.hasKey("spaceTeams")) {
+        if (spaceTeams == null || aNBT.hasKey("spaceTeams")) {
             spaceTeams = GSON_TEAMS.fromJson(aNBT.getString("spaceTeam"), spaceTeams.getClass());
         }
 
