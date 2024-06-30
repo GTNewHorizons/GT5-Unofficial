@@ -5086,7 +5086,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 512L,
                 i);
             addItemBehavior(32000 + Spray_Colors[i], behaviourSprayColor);
-            addItemBehavior(32001 + Spray_Colors_Used[i], behaviourSprayColor);
+            addItemBehavior(32000 + Spray_Colors_Used[i], behaviourSprayColor);
         }
     }
 
