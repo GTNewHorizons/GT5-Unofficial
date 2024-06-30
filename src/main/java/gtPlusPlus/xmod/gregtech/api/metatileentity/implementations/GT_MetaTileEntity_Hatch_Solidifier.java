@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -21,60 +20,17 @@ import gregtech.api.util.GT_Utility;
 public class GT_MetaTileEntity_Hatch_Solidifier extends GT_MetaTileEntity_Hatch_Input {
 
     static final int moldSlot = 2;
-    static final Item[] solidifierMolds = { ItemList.Shape_Mold_Bottle.get(1)
-        .getItem(),
-        ItemList.Shape_Mold_Plate.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Ingot.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Casing.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Gear.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Gear_Small.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Credit.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Nugget.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Block.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Ball.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Cylinder.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Anvil.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Arrow.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Rod.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Bolt.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Round.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Screw.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Ring.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Rod_Long.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Rotor.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Turbine_Blade.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Pipe_Tiny.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Pipe_Small.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Pipe_Medium.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Pipe_Large.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_Pipe_Huge.get(1)
-            .getItem(),
-        ItemList.Shape_Mold_ToolHeadDrill.get(1)
-            .getItem() };
+    static final ItemStack[] solidifierMolds = { ItemList.Shape_Mold_Bottle.get(1), ItemList.Shape_Mold_Plate.get(1),
+        ItemList.Shape_Mold_Ingot.get(1), ItemList.Shape_Mold_Casing.get(1), ItemList.Shape_Mold_Gear.get(1),
+        ItemList.Shape_Mold_Gear_Small.get(1), ItemList.Shape_Mold_Credit.get(1), ItemList.Shape_Mold_Nugget.get(1),
+        ItemList.Shape_Mold_Block.get(1), ItemList.Shape_Mold_Ball.get(1), ItemList.Shape_Mold_Cylinder.get(1),
+        ItemList.Shape_Mold_Anvil.get(1), ItemList.Shape_Mold_Arrow.get(1), ItemList.Shape_Mold_Rod.get(1),
+        ItemList.Shape_Mold_Bolt.get(1), ItemList.Shape_Mold_Round.get(1), ItemList.Shape_Mold_Screw.get(1),
+        ItemList.Shape_Mold_Ring.get(1), ItemList.Shape_Mold_Rod_Long.get(1), ItemList.Shape_Mold_Rotor.get(1),
+        ItemList.Shape_Mold_Turbine_Blade.get(1), ItemList.Shape_Mold_Pipe_Tiny.get(1),
+        ItemList.Shape_Mold_Pipe_Small.get(1), ItemList.Shape_Mold_Pipe_Medium.get(1),
+        ItemList.Shape_Mold_Pipe_Large.get(1), ItemList.Shape_Mold_Pipe_Huge.get(1),
+        ItemList.Shape_Mold_ToolHeadDrill.get(1) };
 
     public GT_MetaTileEntity_Hatch_Solidifier(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -116,13 +72,13 @@ public class GT_MetaTileEntity_Hatch_Solidifier extends GT_MetaTileEntity_Hatch_
     @Override
     public boolean isItemValidForSlot(int aIndex, ItemStack aStack) {
         if (aIndex == moldSlot && aStack != null) {
-            Item inputItem = aStack.getItem();
-
-            for (final Item item : solidifierMolds) {
-                if (inputItem == item) {
+            for (final ItemStack itemStack : solidifierMolds) {
+                if (GT_Utility.areStacksEqual(itemStack, aStack, true)) {
                     return true;
                 }
             }
+        } else if (aIndex != moldSlot) {
+            return super.isItemValidForSlot(aIndex, aStack);
         }
 
         return false;
