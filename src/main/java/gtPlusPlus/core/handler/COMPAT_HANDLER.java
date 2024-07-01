@@ -9,6 +9,11 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneButtonPanel;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneCircuitBlock;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneLamp;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneStrengthDisplay;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneStrengthScale;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -178,6 +183,11 @@ public class COMPAT_HANDLER {
         GregtechIndustrialRockBreaker.run();
         GregtechIndustrialChisel.run();
         GregtechIndustrialFluidHeater.run();
+        GregtechRedstoneButtonPanel.run();
+        GregtechRedstoneCircuitBlock.run();
+        GregtechRedstoneLamp.run();
+        GregtechRedstoneStrengthDisplay.run();
+        GregtechRedstoneStrengthScale.run();
     }
 
     // InterMod
