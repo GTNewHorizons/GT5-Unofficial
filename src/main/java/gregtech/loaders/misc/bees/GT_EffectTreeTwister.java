@@ -40,14 +40,15 @@ public class GT_EffectTreeTwister extends GT_AlleleEffect {
     }
 
     public GT_EffectTreeTwister() {
-        super("effectTreetwister", false);
+        super("effectTreetwister", false, 0);
     }
 
     public IEffectData validateStorage(IEffectData storedData) {
         return storedData; // unused for this effect
     }
 
-    public IEffectData doEffect(IBeeGenome genome, IEffectData storedData, IBeeHousing housing) {
+    @Override
+    protected IEffectData doEffectTickThrottled(IBeeGenome genome, IEffectData storedData, IBeeHousing housing) {
         if (TF_TRANS_SAPLING == null || BARN_SAPLING == null) {
             return storedData;
         }
