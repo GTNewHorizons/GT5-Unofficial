@@ -63,6 +63,8 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     private static final int MAX_PARALLELS = 256;
     private HeatingCoilLevel coilLevel;
     private byte glassTier = -1;
+    private float speedBonus = 1;
+    private float energyDiscount = 1;
     private boolean hasNormalCoils;
 
     private static final IStructureDefinition<GregTechMetaTileEntity_MegaAlloyBlastSmelter> STRUCTURE_DEFINITION = StructureDefinition
@@ -178,8 +180,9 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
             @NotNull
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
-                return super.createOverclockCalculator(recipe)
-                    .setSpeedBoost((float) (1.0 - getCoilDiscount(coilLevel)));
+                calculateEnergyDiscount(coilLevel, recipe);
+                return super.createOverclockCalculator(recipe).setSpeedBoost(speedBonus)
+                    .setEUtDiscount(energyDiscount);
             }
         }.setMaxParallel(MAX_PARALLELS);
     }
@@ -219,6 +222,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
                 }
             }
         }
+        calculateSpeedBonus(coilLevel, glassTier);
         return true;
     }
 
@@ -237,13 +241,23 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
         return false;
     }
 
-    public double getCoilDiscount(HeatingCoilLevel lvl) {
-        // Since there are only 14 tiers (starting from 0), this is what the function is.
-        double unRounded = (lvl != null ? lvl.getTier() : 0) / 130.0D;
-        if (unRounded < 0) return 0F;
-        double rounded = Math.floor(unRounded * 1000) / 1000;
+    private void calculateSpeedBonus(HeatingCoilLevel lvl, int glassTier) {
+        int bonusTier = lvl != null ? Math.min(lvl.getTier() - 3, glassTier - 2) : 0;
+        if (bonusTier < 0) {
+            speedBonus = 1;
+            return;
+        }
+        speedBonus = 1 - 0.05f * bonusTier;
+    }
 
-        return Math.max(0, rounded);
+    private void calculateEnergyDiscount(HeatingCoilLevel lvl, GT_Recipe recipe) {
+        int recipeTier = GT_Utility.getTier(recipe.mEUt);
+        int tierDifference = lvl != null ? lvl.getTier() + 1 - recipeTier : 0;
+        if (tierDifference < 0) {
+            energyDiscount = 1;
+            return;
+        }
+        energyDiscount = (float) Math.pow(0.95, tierDifference);
     }
 
     @Override
@@ -281,8 +295,17 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
                     + " parallels.")
-            .addInfo("Every coil tier above cupronickel grants a speed bonus, based on this function:")
-            .addInfo("Bonus = TIER / 150, rounded to the nearest thousandth.")
+            .addInfo(
+                "Every coil tier above TPV grants a speed bonus if the equivalent or better glass tier is present.")
+            .addInfo(
+                EnumChatFormatting.YELLOW + "Speed Bonus"
+                    + EnumChatFormatting.GRAY
+                    + ": 5% lower recipe time per tier (additive)")
+            .addInfo("Furthermore, an energy discount is granted for using coils above the recipe tier.")
+            .addInfo(
+                EnumChatFormatting.YELLOW + "Energy Discount"
+                    + EnumChatFormatting.GRAY
+                    + ": 5% lower energy consumption per tier (multiplicative)")
             .addInfo(
                 EnumChatFormatting.ITALIC
                     + "Can also use normal ABS coils in their place instead, if you don't like the bonuses :)"
@@ -313,8 +336,8 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
         long storedEnergy = 0;
         long maxEnergy = 0;
         int paras = getBaseMetaTileEntity().isActive() ? processingLogic.getCurrentParallels() : 0;
-        int discountP = (int) (getCoilDiscount(coilLevel) * 1000) / 10;
-
+        int moreSpeed = (int) ((1 - speedBonus) * 100);
+        int lessEnergy = (int) ((1 - energyDiscount) * 100);
         for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(mExoticEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
@@ -361,7 +384,8 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
                 + GT_Values.VN[GT_Utility.getTier(getAverageInputVoltage())]
                 + EnumChatFormatting.RESET,
             "Parallels: " + EnumChatFormatting.BLUE + paras + EnumChatFormatting.RESET,
-            "Coil Discount: " + EnumChatFormatting.BLUE + discountP + "%" + EnumChatFormatting.RESET,
+            "Speed Bonus: " + EnumChatFormatting.BLUE + moreSpeed + "%" + EnumChatFormatting.RESET,
+            "Energy Discount: " + EnumChatFormatting.BLUE + lessEnergy + "%" + EnumChatFormatting.RESET,
             "-----------------------------------------" };
     }
 
