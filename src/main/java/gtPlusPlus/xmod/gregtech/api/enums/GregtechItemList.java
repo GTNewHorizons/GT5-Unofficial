@@ -822,8 +822,7 @@ public enum GregtechItemList implements GregtechItemContainer {
     RedstoneCircuitBlock,
     RedstoneLamp,
     RedstoneStrengthDisplay,
-    RedstoneStrengthScale
-    ;
+    RedstoneStrengthScale;
 
     public static final GregtechItemList[] DYE_ONLY_ITEMS = { Energy_Buffer_1by1_EV, Energy_Buffer_1by1_EV };
     private ItemStack mStack;

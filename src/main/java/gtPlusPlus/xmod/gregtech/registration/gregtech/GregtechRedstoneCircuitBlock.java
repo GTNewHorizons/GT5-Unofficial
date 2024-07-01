@@ -10,9 +10,8 @@ public class GregtechRedstoneCircuitBlock {
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Redstone Circuit Block.");
         if (CORE.ConfigSwitches.enableMachine_RedstoneBlocks) {
-            GregtechItemList.RedstoneCircuitBlock.set(
-                new GT_MetaTileEntity_RedstoneCircuitBlock(
-                    31801).getStackForm(1L));
+            GregtechItemList.RedstoneCircuitBlock
+                .set(new GT_MetaTileEntity_RedstoneCircuitBlock(31801).getStackForm(1L));
         }
     }
 }

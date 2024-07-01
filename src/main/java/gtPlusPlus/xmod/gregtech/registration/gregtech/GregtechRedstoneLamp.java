@@ -10,9 +10,7 @@ public class GregtechRedstoneLamp {
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Redstone Lamp.");
         if (CORE.ConfigSwitches.enableMachine_RedstoneBlocks) {
-            GregtechItemList.RedstoneLamp.set(
-                new GT_MetaTileEntity_RedstoneLamp(
-                    31803).getStackForm(1L));
+            GregtechItemList.RedstoneLamp.set(new GT_MetaTileEntity_RedstoneLamp(31803).getStackForm(1L));
         }
     }
 }

@@ -5,8 +5,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.GT_MetaTileEntity_RedstoneStrengthDisplay;
 
-
-public class GregtechRedstoneStrengthDisplay{
+public class GregtechRedstoneStrengthDisplay {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Redstone Strength Display.");

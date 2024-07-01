@@ -55,7 +55,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
     }
 
     public GT_MetaTileEntity_RedstoneCircuitBlock(final String aName, String[] aDescription,
-                                                  final ITexture[][][] aTextures) {
+        final ITexture[][][] aTextures) {
         super(aName, 1, 5, aDescription, aTextures);
     }
 
@@ -282,13 +282,15 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
     public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         // Only Calc server-side
-        if (!this.getBaseMetaTileEntity().isServerSide()) {
+        if (!this.getBaseMetaTileEntity()
+            .isServerSide()) {
             return;
         }
         // Emit Redstone
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             byte aRedstone = getBaseMetaTileEntity().getOutputRedstoneSignal(side);
-            this.getBaseMetaTileEntity().setInternalOutputRedstoneSignal(side, aRedstone);
+            this.getBaseMetaTileEntity()
+                .setInternalOutputRedstoneSignal(side, aRedstone);
         }
     }
 
@@ -312,7 +314,8 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 
     private static void initCovers() {
         for (GT_ItemStack aKey : GregTech_API.sCovers.keySet()) {
-            ItemStack aStack = aKey.toStack().copy();
+            ItemStack aStack = aKey.toStack()
+                .copy();
             if (aStack != null) {
                 sCoversItems.put(GT_Utility.stackToInt(aStack), aStack);
             }
@@ -355,13 +358,13 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-                                  ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-                                 ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -434,12 +437,10 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-                                 final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return this.mTextures[(aActive || hasRedstoneSignal() ? 5 : 0)
-            + (side == facing ? 0
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive || hasRedstoneSignal() ? 5 : 0) + (side == facing ? 0
             : side == facing.getOpposite() ? 1
-            : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex
-            + 1];
+                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex + 1];
     }
 
     private GT_RenderedTexture getBase() {
@@ -488,43 +489,55 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new DrawableWidget().setDrawable(GTPP_UITextures.PICTURE_REDSTONE_CIRCUIT_SCREEN).setPos(43, 5)
+            new DrawableWidget().setDrawable(GTPP_UITextures.PICTURE_REDSTONE_CIRCUIT_SCREEN)
+                .setPos(43, 5)
                 .setSize(108, 72));
         for (int i = 0; i < 4; i++) {
             final int index = i;
             builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                        ItemStack tStack = widget.getContext().getPlayer().inventory.getItemStack();
-                        if (tStack == null) {
-                            changeGateData(
-                                index,
-                                clickData.mouseButton == 0 ? clickData.shift ? +128 : +1 : clickData.shift ? -128 : -1);
-                        } else {
-                            tStack = GT_Utility.copy(tStack);
-                            if (clickData.mouseButton != 0) tStack.setItemDamage(OreDictionary.WILDCARD_VALUE);
-                            stackGateData(index, tStack);
-                        }
-                    }).setBackground(GT_UITextures.BUTTON_STANDARD, GTPP_UITextures.OVERLAY_BUTTON_PLUS_MINUS)
-                    .setPos(7, 5 + i * 18).setSize(18, 18))
-                .widget(SlotWidget.phantom(inventoryHandler, i + 1).disableInteraction().setPos(25, 5 + i * 18));
+                ItemStack tStack = widget.getContext()
+                    .getPlayer().inventory.getItemStack();
+                if (tStack == null) {
+                    changeGateData(
+                        index,
+                        clickData.mouseButton == 0 ? clickData.shift ? +128 : +1 : clickData.shift ? -128 : -1);
+                } else {
+                    tStack = GT_Utility.copy(tStack);
+                    if (clickData.mouseButton != 0) tStack.setItemDamage(OreDictionary.WILDCARD_VALUE);
+                    stackGateData(index, tStack);
+                }
+            })
+                .setBackground(GT_UITextures.BUTTON_STANDARD, GTPP_UITextures.OVERLAY_BUTTON_PLUS_MINUS)
+                .setPos(7, 5 + i * 18)
+                .setSize(18, 18))
+                .widget(
+                    SlotWidget.phantom(inventoryHandler, i + 1)
+                        .disableInteraction()
+                        .setPos(25, 5 + i * 18));
         }
         builder.widget(
-                new CycleButtonWidget().setToggle(() -> bOutput, val -> bOutput = val)
-                    .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                    .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY).addTooltip("Toggle EU Output")
-                    .setPos(151, 5).setSize(18, 18))
+            new CycleButtonWidget().setToggle(() -> bOutput, val -> bOutput = val)
+                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY)
+                .addTooltip("Toggle EU Output")
+                .setPos(151, 5)
+                .setSize(18, 18))
             .widget(
                 new CycleButtonWidget()
-                    .setToggle(
-                        () -> getBaseMetaTileEntity().isActive(),
-                        val -> getBaseMetaTileEntity().setActive(val))
+                    .setToggle(() -> getBaseMetaTileEntity().isActive(), val -> getBaseMetaTileEntity().setActive(val))
                     .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                     .setStaticTexture(GTPP_UITextures.OVERLAY_BUTTON_ACTIVE_STATE)
-                    .addTooltip("Toggle Active State").setPos(151, 23).setSize(18, 18))
+                    .addTooltip("Toggle Active State")
+                    .setPos(151, 23)
+                    .setSize(18, 18))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                    if (clickData.mouseButton == 0) switchGateForward(clickData.shift);
-                    else switchGateBackward(clickData.shift);
-                }).setBackground(GT_UITextures.BUTTON_STANDARD, GTPP_UITextures.OVERLAY_BUTTON_CHANGE_MODE)
-                .addTooltip("Change Redstone Circuit").setPos(151, 41).setSize(18, 18));
+                if (clickData.mouseButton == 0) switchGateForward(clickData.shift);
+                else switchGateBackward(clickData.shift);
+            })
+                .setBackground(GT_UITextures.BUTTON_STANDARD, GTPP_UITextures.OVERLAY_BUTTON_CHANGE_MODE)
+                .addTooltip("Change Redstone Circuit")
+                .setPos(151, 41)
+                .setSize(18, 18));
 
         builder.widget(new FakeSyncWidget.IntegerSyncer(() -> mGate, val -> mGate = val));
         for (int i = 0; i < mGateData.length; i++) {
@@ -542,41 +555,62 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
             } else {
                 return GTPP_UITextures.PICTURE_ELECTRICITY_FINE;
             }
-        }).setPos(140, 9).setSize(7, 7)).widget(
-            new FakeSyncWidget.IntegerSyncer(
-                () -> getBaseMetaTileEntity().getErrorDisplayID(),
-                val -> getBaseMetaTileEntity().setErrorDisplayID(val)));
+        })
+            .setPos(140, 9)
+            .setSize(7, 7))
+            .widget(
+                new FakeSyncWidget.IntegerSyncer(
+                    () -> getBaseMetaTileEntity().getErrorDisplayID(),
+                    val -> getBaseMetaTileEntity().setErrorDisplayID(val)));
 
         builder.widget(TextWidget.dynamicString(() -> {
-                GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
-                if (tCircuit != null) return tCircuit.getName();
-                return "";
-            }).setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 8))
+            GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
+            if (tCircuit != null) return tCircuit.getName();
+            return "";
+        })
+            .setSynced(false)
+            .setDefaultColor(COLOR_TEXT_WHITE.get())
+            .setPos(46, 8))
             .widget(TextWidget.dynamicString(() -> {
                 GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) return tCircuit.getDescription();
                 return "";
-            }).setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 19))
+            })
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setPos(46, 19))
             .widget(TextWidget.dynamicString(() -> {
                 GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) return tCircuit.getDataDescription(mGateData, 0);
                 return "";
-            }).setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 33))
+            })
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setPos(46, 33))
             .widget(TextWidget.dynamicString(() -> {
                 GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) return tCircuit.getDataDescription(mGateData, 1);
                 return "";
-            }).setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 44))
+            })
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setPos(46, 44))
             .widget(TextWidget.dynamicString(() -> {
                 GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) return tCircuit.getDataDescription(mGateData, 2);
                 return "";
-            }).setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 55))
+            })
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setPos(46, 55))
             .widget(TextWidget.dynamicString(() -> {
                 GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) return tCircuit.getDataDescription(mGateData, 3);
                 return "";
-            }).setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 66))
+            })
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setPos(46, 66))
             .widget(TextWidget.dynamicString(() -> {
                 GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
@@ -584,7 +618,10 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
                     return tString == null ? GT_Utility.parseNumberToString(mGateData[0]) : tString;
                 }
                 return "";
-            }).setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(99, 33))
+            })
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setPos(99, 33))
             .widget(TextWidget.dynamicString(() -> {
                 GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
@@ -592,7 +629,10 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
                     return tString == null ? GT_Utility.parseNumberToString(mGateData[1]) : tString;
                 }
                 return "";
-            }).setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(99, 44))
+            })
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setPos(99, 44))
             .widget(TextWidget.dynamicString(() -> {
                 GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
@@ -600,7 +640,10 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
                     return tString == null ? GT_Utility.parseNumberToString(mGateData[2]) : tString;
                 }
                 return "";
-            }).setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(99, 55))
+            })
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setPos(99, 55))
             .widget(TextWidget.dynamicString(() -> {
                 GT_CircuitryBehavior tCircuit = GregTech_API.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
@@ -608,6 +651,9 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
                     return tString == null ? GT_Utility.parseNumberToString(mGateData[3]) : tString;
                 }
                 return "";
-            }).setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(99, 66));
+            })
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setPos(99, 66));
     }
 }

@@ -26,7 +26,7 @@ public class GT_MetaTileEntity_RedstoneStrengthScale extends GT_MetaTileEntity_R
     }
 
     public GT_MetaTileEntity_RedstoneStrengthScale(final String aName, String[] aDescription,
-                                                   final ITexture[][][] aTextures) {
+        final ITexture[][][] aTextures) {
         super(aName, aDescription, aTextures);
     }
 
@@ -42,15 +42,13 @@ public class GT_MetaTileEntity_RedstoneStrengthScale extends GT_MetaTileEntity_R
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-                                 final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
                 new GT_RenderedTexture(sIconList[mType * 16 + mRedstoneStrength]) };
         }
-        return this.mTextures[(aActive || hasRedstoneSignal() ? 5 : 0)
-            + (side == facing ? 0
+        return this.mTextures[(aActive || hasRedstoneSignal() ? 5 : 0) + (side == facing ? 0
             : side == facing.getOpposite() ? 1
-            : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex
-            + 1];
+                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex + 1];
     }
 }

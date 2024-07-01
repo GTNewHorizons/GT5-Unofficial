@@ -10,9 +10,7 @@ public class GregtechRedstoneButtonPanel {
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Redstone Button Panel.");
         if (CORE.ConfigSwitches.enableMachine_RedstoneBlocks) {
-            GregtechItemList.RedstoneButtonPanel.set(
-                new GT_MetaTileEntity_RedstoneButtonPanel(
-                    31800).getStackForm(1L));
+            GregtechItemList.RedstoneButtonPanel.set(new GT_MetaTileEntity_RedstoneButtonPanel(31800).getStackForm(1L));
         }
     }
 }

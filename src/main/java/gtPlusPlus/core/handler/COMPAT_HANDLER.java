@@ -9,11 +9,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneButtonPanel;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneCircuitBlock;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneLamp;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneStrengthDisplay;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneStrengthScale;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -89,6 +84,11 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechPollutionDevices;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechPowerSubStation;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechQuantumForceTransformer;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRTG;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneButtonPanel;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneCircuitBlock;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneLamp;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneStrengthDisplay;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneStrengthScale;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRocketFuelGenerator;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSemiFluidgenerators;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSimpleWasher;
