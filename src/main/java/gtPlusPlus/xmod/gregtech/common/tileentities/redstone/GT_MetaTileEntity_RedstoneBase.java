@@ -31,7 +31,7 @@ public abstract class GT_MetaTileEntity_RedstoneBase extends GT_MetaTileEntity_T
                                           ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
-
+    
     @Override
     public final boolean isSimpleMachine() {
         return false;

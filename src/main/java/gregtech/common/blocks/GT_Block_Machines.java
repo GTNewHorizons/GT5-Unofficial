@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import gregtech.api.metatileentity.MetaTileEntity;
+import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.GT_MetaTileEntity_RedstoneBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -169,8 +171,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             default -> ForgeDirection.UNKNOWN;
         };
         final TileEntity machineEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return machineEntity instanceof CoverableTileEntity cte && cte.getCoverInfoAtSide(forgeSide)
-            .getCoverID() != 0;
+        return machineEntity instanceof BaseMetaTileEntity bmte && (bmte.getCoverInfoAtSide(forgeSide).getCoverID() != 0 || bmte.getMetaTileEntity() instanceof GT_MetaTileEntity_RedstoneBase);
     }
 
     @Override
