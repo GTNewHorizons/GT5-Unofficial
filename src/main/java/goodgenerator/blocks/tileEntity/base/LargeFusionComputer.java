@@ -2,6 +2,7 @@ package goodgenerator.blocks.tileEntity.base;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
@@ -64,6 +65,7 @@ import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
 
 public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     implements IConstructable, ISurvivalConstructable, IOverclockDescriptionProvider {
@@ -106,6 +108,14 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                             .dot(2)
                             .buildAndChain(x.getCasingBlock(), x.getCasingMeta())))
                 .addElement('F', lazy(x -> ofFrame(x.getFrameBox())))
+                .addElement(
+                    'D',
+                    lazy(
+                        x -> buildHatchAdder(LargeFusionComputer.class).adder(LargeFusionComputer::addDroneHatch)
+                            .hatchId(9401)
+                            .casingIndex(x.textureIndex())
+                            .dot(3)
+                            .buildAndChain(x.getCasingBlock(), x.getCasingMeta())))
                 .build();
         }
     };
@@ -525,6 +535,15 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
         return false;
     }
 
+    private boolean addDroneHatch(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
+        if (aBaseMetaTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (!(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DroneDownLink tHatch)) return false;
+        tHatch.updateTexture(aBaseCasingIndex);
+        return addToMachineList(aBaseMetaTileEntity, aBaseCasingIndex);
+    }
+
     @Override
     public IStructureDefinition<LargeFusionComputer> getStructure_EM() {
         return STRUCTURE_DEFINITION.get(getClass());
@@ -692,7 +711,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
         "    CCHCC                             CCHCC    ", "    CCHCC                             CCHCC    ",
         "     CCHCE                           ECHCC     ", "      ECHCC                         CCHCE      ",
         "       CCHCE                       ECHCC       ", "        CCHCCC                   CCCHCC        ",
-        "         CCHCCCC               CCCCHCC         ", "          ECHHCCCCC FCCCCCF CCCCCHHCE          ",
+        "         CCHCCCC               CCCCHCC         ", "          ECHHCCCCC FCCDCCF CCCCCHHCE          ",
         "           CCCHHCCCCC     CCCCCHHCCC           ", "            CCCCHHHCC     CCHHHCCCC            ",
         "              CCCCCHHHHHHHHHCCCCC              ", "                CCCCC     CCCCC                ",
         "                   CC     CC                   ", "                    FCCCCCF                    ", };
