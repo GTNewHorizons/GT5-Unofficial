@@ -85,6 +85,7 @@ import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.misc.GT_Command;
 import gregtech.common.misc.spaceprojects.commands.SPM_Command;
 import gregtech.common.misc.spaceprojects.commands.SP_Command;
+import gregtech.common.misc.spaceprojects.commands.SpaceProject_Command;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import gregtech.crossmod.holoinventory.HoloInventory;
@@ -756,6 +757,7 @@ public class GT_Mod implements IGT_Mod {
         aEvent.registerServerCommand(new GT_Command());
         aEvent.registerServerCommand(new SP_Command());
         aEvent.registerServerCommand(new SPM_Command());
+        aEvent.registerServerCommand(new SpaceProject_Command());
         // Sets a new Machine Block Update Thread everytime a world is loaded
         GT_Runnable_MachineBlockUpdate.initExecutorService();
     }
