@@ -690,10 +690,6 @@ public class GT_CraftingRecipeLoader implements Runnable {
             GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Rubber, 1L),
             bits_no_remove_buffered,
             new Object[] { "k", "X", 'X', OrePrefixes.plate.get(Materials.Rubber) });
-        GT_ModHandler.addCraftingRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.toolHeadArrow, Materials.Flint, 1L),
-            bits_no_remove_buffered,
-            new Object[] { "f", "X", 'X', new ItemStack(Items.flint, 1, 32767) });
 
         GT_ModHandler.addCraftingRecipe(
             new ItemStack(Items.arrow, 1),

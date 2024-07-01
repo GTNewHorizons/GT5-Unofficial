@@ -6,7 +6,6 @@ import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
@@ -29,7 +28,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                                                                                            // HEAD??? generator
 
     public ProcessingToolHead() {
-        OrePrefixes.toolHeadArrow.add(this);
         OrePrefixes.toolHeadAxe.add(this);
         OrePrefixes.toolHeadBuzzSaw.add(this);
         OrePrefixes.toolHeadChainsaw.add(this);
@@ -59,29 +57,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
         boolean aProducesSoftMallet = aMaterial.contains(SubTag.BOUNCY) || aMaterial.contains(SubTag.WOOD)
             || aMaterial.contains(SubTag.SOFT);
         switch (aPrefix) {
-            case toolHeadArrow -> {
-                if (aMaterial.mStandardMoltenFluid != null)
-                    if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(ItemList.Shape_Mold_Arrow.get(0L))
-                            .itemOutputs(GT_Utility.copyAmount(1, aStack))
-                            .fluidInputs(aMaterial.getMolten(36L))
-                            .duration(16 * TICKS)
-                            .eut(8)
-                            .addTo(fluidSolidifierRecipes);
-                    }
-                if (aSpecialRecipeReq2) {
-                    GT_ModHandler.addCraftingRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.toolHeadArrow, aMaterial, 1L),
-                        GT_Proxy.tBits,
-                        new Object[] { "Xf", 'X', OrePrefixes.gemChipped.get(aMaterial) });
-                    GT_ModHandler.addCraftingRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.toolHeadArrow, aMaterial, 3L),
-                        GT_Proxy.tBits,
-                        new Object[] { (aMaterial.contains(SubTag.WOOD) ? 115 : 'x') + "Pf", 'P',
-                            OrePrefixes.plate.get(aMaterial) });
-                }
-            }
             case toolHeadAxe -> {
                 GT_ModHandler.addShapelessCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE
