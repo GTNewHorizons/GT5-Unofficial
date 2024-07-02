@@ -119,6 +119,7 @@ public class CORE {
         public static boolean enableMultiblock_IndustrialCentrifuge = true;
         public static boolean enableMultiblock_IndustrialCokeOven = true;
         public static boolean enableMultiblock_IndustrialElectrolyzer = true;
+        public static boolean enableMultiblock_WaterPump = true;
         public static boolean enableMultiblock_IndustrialMacerationStack = true;
         public static boolean enableMultiblock_IndustrialPlatePress = true;
         public static boolean enableMultiblock_IndustrialWireMill = true;
