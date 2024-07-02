@@ -793,7 +793,9 @@ public class GT_MetaTileEntity_PlasmaForge extends
             for (FluidStack fuel : valid_fuels) {
                 if (tRecipe.mFluidInputs[i].isFluidEqual(fuel)) {
                     recalculateDiscount();
-                    if (discount == maximum_discount && convergence && overclockCalculator != null) {
+                    if (discount == maximum_discount && convergence
+                        && overclockCalculator != null
+                        && overclockCalculator.getCalculationStatus()) {
                         calculateCatalystIncrease(tRecipe, i, false);
                     }
                     tRecipe.mFluidInputs[i].amount = (int) Math.round(tRecipe.mFluidInputs[i].amount * discount);
@@ -803,7 +805,10 @@ public class GT_MetaTileEntity_PlasmaForge extends
             }
         }
         // Convergence adjusts the recipe even if it has no catalyst input
-        if (!adjusted && discount == maximum_discount && convergence && overclockCalculator != null) {
+        if (!adjusted && discount == maximum_discount
+            && convergence
+            && overclockCalculator != null
+            && overclockCalculator.getCalculationStatus()) {
             recalculateDiscount();
             calculateCatalystIncrease(tRecipe, 0, true);
         }
