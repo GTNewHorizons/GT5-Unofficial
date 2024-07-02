@@ -820,7 +820,12 @@ public enum GregtechItemList implements GregtechItemContainer {
     SimpleDustWasher_IV,
     SimpleDustWasher_ZPM,
 
-    ;
+    // Redstone Utilities
+    RedstoneButtonPanel,
+    RedstoneCircuitBlock,
+    RedstoneLamp,
+    RedstoneStrengthDisplay,
+    RedstoneStrengthScale;
 
     public static final GregtechItemList[] DYE_ONLY_ITEMS = { Energy_Buffer_1by1_EV, Energy_Buffer_1by1_EV };
     private ItemStack mStack;
