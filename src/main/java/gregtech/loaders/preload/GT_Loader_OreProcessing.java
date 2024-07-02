@@ -2,7 +2,6 @@ package gregtech.loaders.preload;
 
 import gregtech.api.util.GT_Log;
 import gregtech.loaders.oreprocessing.ProcessingAll;
-import gregtech.loaders.oreprocessing.ProcessingArrows;
 import gregtech.loaders.oreprocessing.ProcessingBeans;
 import gregtech.loaders.oreprocessing.ProcessingBlock;
 import gregtech.loaders.oreprocessing.ProcessingBolt;
@@ -59,7 +58,6 @@ public class GT_Loader_OreProcessing implements Runnable {
     public void run() {
         GT_Log.out.println("GT_Mod: Register Ore processing.");
         new ProcessingAll();
-        new ProcessingArrows();
         new ProcessingBeans();
         new ProcessingBlock();
         new ProcessingBolt();
