@@ -1251,6 +1251,24 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.QuarkGluonPlasma, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        GT_FluidFactory.builder("PhononMedium")
+            .withLocalizedName(MaterialsUEVplus.PhononMedium.mLocalizedName)
+            .withStateAndTemperature(LIQUID, 500)
+            .buildAndRegister()
+            .configureMaterials(MaterialsUEVplus.PhononMedium)
+            .registerBContainers(
+                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PhononMedium, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GT_FluidFactory.builder("PhononCrystalSolution")
+            .withLocalizedName(MaterialsUEVplus.PhononCrystalSolution.mLocalizedName)
+            .withStateAndTemperature(LIQUID, 500)
+            .buildAndRegister()
+            .configureMaterials(MaterialsUEVplus.PhononCrystalSolution)
+            .registerBContainers(
+                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PhononCrystalSolution, 1L),
+                ItemList.Cell_Empty.get(1L));
+
         GT_FluidFactory.builder("fieryblood")
             .withLocalizedName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)

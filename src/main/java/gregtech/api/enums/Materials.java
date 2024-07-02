@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -1915,6 +1916,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         TengamAttuned.mChemicalFormula = "M";
         MaterialsUEVplus.ExcitedDTSC.mChemicalFormula = "[-Stellar-Stellar-]";
         MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.mChemicalFormula = "Stellar";
+        MaterialsUEVplus.QuarkGluonPlasma.mChemicalFormula = EnumChatFormatting.OBFUSCATED + "X" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + "g" + EnumChatFormatting.OBFUSCATED + "X";
+        MaterialsUEVplus.PhononCrystalSolution.mChemicalFormula = "\u2722";
+        MaterialsUEVplus.PhononMedium.mChemicalFormula = "\u2722\u2082((C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085)\u2083";
     }
 
     private static void initSubTags() {

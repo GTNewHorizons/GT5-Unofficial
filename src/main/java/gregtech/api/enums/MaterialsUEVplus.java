@@ -590,6 +590,54 @@ public class MaterialsUEVplus {
         1,
         Dyes._NULL);
 
+    public static Materials PhononMedium = new Materials(
+        145,
+        TextureSet.SET_FLUID,
+        1.0F,
+        0,
+        2,
+        16,
+        255,
+        255,
+        255,
+        0,
+        "PhononMedium",
+        "Lossless Phonon Transfer Medium",
+        -1,
+        -1,
+        500,
+        1,
+        false,
+        true,
+        1,
+        1,
+        1,
+        Dyes._NULL);
+
+    public static Materials PhononCrystalSolution = new Materials(
+        146,
+        TextureSet.SET_FLUID,
+        1.0F,
+        0,
+        2,
+        16,
+        255,
+        255,
+        255,
+        0,
+        "PhononCrystalSolution",
+        "Saturated Phononic Crystal Solution",
+        -1,
+        -1,
+        500,
+        1,
+        false,
+        true,
+        1,
+        1,
+        1,
+        Dyes._NULL);
+
     /**
      * called by Materials. Can be safely called multiple times. exists to allow Materials ensure this class is
      * initialized

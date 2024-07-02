@@ -240,6 +240,8 @@ import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Tu
 import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Wire;
 import static gregtech.common.items.ID_MetaItem_03.WovenKevlar;
 import static gregtech.common.items.ID_MetaItem_03.ZPM_Coil;
+import static gregtech.common.items.ID_MetaItem_03.Thermal_Superconductor;
+import static gregtech.common.items.ID_MetaItem_03.Relativistic_Heat_Capacitor;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -1120,6 +1122,10 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                     "Device supporting the alignment of transdimensional spaces.",
                     "Enables Dimensional Convergence on the DTPF."),
                 o));
+
+        ItemList.Thermal_Superconductor.set(addItem(Thermal_Superconductor.ID, "Thermal Superconductor", "With the power of second sound!", o));
+
+        ItemList.Relativistic_Heat_Capacitor.set(addItem(Relativistic_Heat_Capacitor.ID, "Relativistic Heat Capacitor", "Thermal Resonance?", o));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(
