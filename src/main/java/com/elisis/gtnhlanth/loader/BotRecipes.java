@@ -1,7 +1,16 @@
 package com.elisis.gtnhlanth.loader;
 
-import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.*;
-import static gregtech.api.enums.OrePrefixes.*;
+import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.AmmoniumNitrate;
+import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.Nitromethane;
+import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.OXylene;
+import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.Phosgene;
+import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.SodiumTungstate;
+import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.TungstenTrioxide;
+import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.TungsticAcid;
+import static gregtech.api.enums.OrePrefixes.cell;
+import static gregtech.api.enums.OrePrefixes.dust;
+import static gregtech.api.enums.OrePrefixes.ingotHot;
+import static gregtech.api.enums.OrePrefixes.item;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;

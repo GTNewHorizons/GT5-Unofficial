@@ -21,6 +21,7 @@ public class NEI_Config implements IConfigureNEI {
     @Override
     public void loadConfig() {
         isAdded = false;
+
         isAdded = true;
     }
 }

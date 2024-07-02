@@ -1,6 +1,7 @@
 package com.elisis.gtnhlanth.common.register;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.subscriptNumbers;
+import static com.github.bartimaeusnek.bartworks.util.BW_Util.superscriptNumbers;
 
 import java.util.Arrays;
 
@@ -13,9 +14,12 @@ import gregtech.api.enums.TextureSet;
 @SuppressWarnings({ "unchecked" })
 public class WerkstoffMaterialPool implements Runnable {
 
+    // Current highest ID = 11_499
+
     private static final int offsetID = 11_000;
     private static final int offsetID2 = 11_100;
     private static final int offsetID3 = 11_300;
+    private static final int offsetID3b = 11_350;
     private static final int offsetID4 = 11_400;
     private static final int offsetID5 = 11_460;
 
@@ -41,7 +45,7 @@ public class WerkstoffMaterialPool implements Runnable {
                                    // hafnium
                                    // synthesis
         offsetID,
-        TextureSet.SET_DULL);
+        TextureSet.SET_METALLIC);
 
     public static final Werkstoff LowPurityHafnium = new Werkstoff(
         new short[] { 240, 223, 208 },
@@ -50,8 +54,7 @@ public class WerkstoffMaterialPool implements Runnable {
         new Werkstoff.Stats(),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(), // Perhaps use hafnia liquid in elemental hafnium
-                         // synthesis
+            .onlyDust(),
         offsetID + 1,
         TextureSet.SET_DULL);
 
@@ -62,8 +65,7 @@ public class WerkstoffMaterialPool implements Runnable {
         new Werkstoff.Stats(),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(), // Perhaps use hafnia liquid in elemental hafnium
-                         // synthesis
+            .onlyDust(),
         offsetID + 2,
         TextureSet.SET_DULL);
 
@@ -116,13 +118,13 @@ public class WerkstoffMaterialPool implements Runnable {
         "Zirconium",
         subscriptNumbers("Zr"),
         new Werkstoff.Stats().setBlastFurnace(true),
-        Werkstoff.Types.COMPOUND,
+        Werkstoff.Types.ELEMENT,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
-            .addMetalItems()
-            .enforceUnification(),
+            .addMetalItems(),
+        // .enforceUnification(),
         offsetID + 7,
-        TextureSet.SET_DULL);
+        TextureSet.SET_METALLIC);
 
     public static final Werkstoff Zirconia = new Werkstoff(
         new short[] { 177, 152, 101 },
@@ -133,7 +135,7 @@ public class WerkstoffMaterialPool implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust(),
         offsetID + 8,
-        TextureSet.SET_DULL);
+        TextureSet.SET_SHINY);
 
     public static final Werkstoff ZirconiumTetrachloride = new Werkstoff(
         new short[] { 179, 164, 151 },
@@ -1047,6 +1049,17 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID3 + 16,
         TextureSet.SET_FLUID);
 
+    public static final Werkstoff MolybdenumTrioxide = new Werkstoff(
+        new short[] { 236, 255, 248 },
+        "Molybdenum Trioxide",
+        subscriptNumbers("MoO3"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust(),
+        offsetID3 + 17,
+        TextureSet.SET_DULL);
+
     // TODO Samarium Processing Line Material regist
 
     public static final Werkstoff MuddySamariumRareEarthSolution = new Werkstoff(
@@ -1893,8 +1906,147 @@ public class WerkstoffMaterialPool implements Runnable {
     // new Pair<>(Oxygen, 3),
     // new Pair<>(Hydrogen, 35));
 
-    public static void runInit() {
+    public static final Werkstoff Permalloy = new Werkstoff(
+        new short[] { 195, 230, 225 },
+        "Permalloy",
+        subscriptNumbers("Ni4FeMo"),
+        new Werkstoff.Stats().setCentrifuge(true),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust()
+            .addMetalItems()
+            .addMixerRecipes((short) 3)
+            .enforceUnification(),
+        offsetID3b,
+        TextureSet.SET_DULL,
+        new Pair<>(Materials.Nickel, 4),
+        new Pair<>(Materials.Iron, 1),
+        new Pair<>(Materials.Molybdenum, 1));
 
+    public static final Werkstoff MuMetal = new Werkstoff(
+        new short[] { 210, 230, 225 },
+        "Mu-metal",
+        subscriptNumbers("?NiFeCuCrMo?"),
+        new Werkstoff.Stats().setBlastFurnace(true)
+            .setCentrifuge(true)
+            .setMass(180)
+            .setSpeedOverride(3),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust()
+            .addMetalItems()
+            .addMultipleIngotMetalWorkingItems()
+            .addCraftingMetalWorkingItems()
+            .enforceUnification(),
+        offsetID3b + 1,
+        TextureSet.SET_METALLIC,
+        new Pair<>(WerkstoffMaterialPool.Permalloy, 9),
+        new Pair<>(Materials.Copper, 1),
+        new Pair<>(Materials.Chrome, 1));
+
+    public static final Werkstoff Thorium234 = new Werkstoff(
+        new short[] { 0, 40, 0 },
+        "Thorium 234",
+        superscriptNumbers("Th234"),
+        new Werkstoff.Stats().setBlastFurnace(true)
+            .setRadioactive(true),
+        Werkstoff.Types.ISOTOPE,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust(),
+        offsetID3b + 2,
+        TextureSet.SET_DULL);
+
+    public static final Werkstoff SiliconNitride = new Werkstoff(
+        new short[] { 132, 140, 120 },
+        "Silicon Nitride",
+        subscriptNumbers("Si3N4"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust()
+            .addMetalItems()
+            .enforceUnification(),
+        offsetID3b + 3,
+        TextureSet.SET_DULL);
+
+    public static final Werkstoff Fluoroform = new Werkstoff(
+        new short[] { 0, 0, 0 },
+        "Fluoroform",
+        subscriptNumbers("CHF3"),
+        new Werkstoff.Stats().setElektrolysis(true),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().disable()
+            .addCells(),
+        offsetID3b + 4,
+        TextureSet.SET_FLUID,
+        new Pair<>(Materials.Carbon, 1),
+        new Pair<>(Materials.Hydrogen, 1),
+        new Pair<>(Materials.Fluorine, 3));
+
+    public static final Werkstoff FluoroformOxygenMix = new Werkstoff(
+        new short[] { 0, 0, 0 },
+        "Reactive-Ion Etching Mixture",
+        subscriptNumbers("CHF3/O2"),
+        new Werkstoff.Stats().setCentrifuge(true),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .addCells(),
+        offsetID3b + 5,
+        TextureSet.SET_FLUID);
+
+    public static final Werkstoff BoronTrioxide = new Werkstoff(
+        new short[] { 238, 222, 209 },
+        "Boron Trioxide",
+        subscriptNumbers("B2O3"),
+        new Werkstoff.Stats().setElektrolysis(true),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust(),
+        offsetID3b + 6,
+        TextureSet.SET_DULL,
+        new Pair<>(Materials.Boron, 2),
+        new Pair<>(Materials.Oxygen, 3));
+
+    public static final Werkstoff BoronTrichloride = new Werkstoff(
+        new short[] { 154, 96, 208 },
+        "Boron Trichloride",
+        subscriptNumbers("BCl3"),
+        new Werkstoff.Stats().setElektrolysis(true),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().disable()
+            .addCells(),
+        offsetID3b + 7,
+        TextureSet.SET_FLUID,
+        new Pair<>(Materials.Boron, 1),
+        new Pair<>(Materials.Chlorine, 3));
+
+    public static final Werkstoff LanthanumHexaboride = new Werkstoff(
+        new short[] { 140, 110, 120 },
+        "Lanthanum Hexaboride",
+        subscriptNumbers("LaB6"),
+        new Werkstoff.Stats().setMass(200),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust()
+            .addGems()
+            .addSimpleMetalWorkingItems(),
+        offsetID3b + 8,
+        TextureSet.SET_GEM_HORIZONTAL,
+        new Pair<>(Materials.Lanthanum, 1),
+        new Pair<>(Materials.Boron, 6));
+
+    public static final Werkstoff LanthanumOxide = new Werkstoff(
+        new short[] { 105, 209, 180 },
+        "Lanthanum Oxide",
+        subscriptNumbers("La2O3"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust(),
+        offsetID3b + 9,
+        TextureSet.SET_DULL);
+
+    public static void runInit() {
         addSubTags();
     }
 

@@ -1,6 +1,11 @@
 package goodgenerator.loader;
 
-import static goodgenerator.items.MyMaterial.*;
+import static goodgenerator.items.MyMaterial.plutoniumBasedLiquidFuel;
+import static goodgenerator.items.MyMaterial.plutoniumBasedLiquidFuelExcited;
+import static goodgenerator.items.MyMaterial.thoriumBasedLiquidFuelDepleted;
+import static goodgenerator.items.MyMaterial.thoriumBasedLiquidFuelExcited;
+import static goodgenerator.items.MyMaterial.uraniumBasedLiquidFuel;
+import static goodgenerator.items.MyMaterial.uraniumBasedLiquidFuelExcited;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
