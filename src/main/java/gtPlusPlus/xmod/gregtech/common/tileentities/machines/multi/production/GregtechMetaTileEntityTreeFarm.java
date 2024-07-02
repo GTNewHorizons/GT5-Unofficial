@@ -352,7 +352,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
                     if (output == null) continue; // This sapling has no output in this mode.
 
                     // Find a tool to use in this mode.
-                    int toolMultiplier = useToolForMode(mode);
+                    int toolMultiplier = useToolForMode(mode, false);
                     if (toolMultiplier < 0) continue; // No valid tool for this mode found.
 
                     // Increase output by the relevant multipliers.
@@ -378,40 +378,47 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
                 duration = TICKS_PER_OPERATION;
                 calculatedEut = GT_Values.VP[tier];
 
+                for (Mode mode : Mode.values()) {
+                    if (outputPerMode.get(mode) != null) {
+                        useToolForMode(mode, true);
+                    }
+                }
+
                 return SimpleCheckRecipeResult.ofSuccess("growing_trees");
             }
         };
     }
 
-    /* Handling tools. */
-
     /**
      * Attempts to find a tool appropriate for the given mode, and damage/discharge it by one use.
      *
-     * @param mode The mode to use. This specifies which tools are valid.
-     * @return Production multiplier based on the tool used, or -1 if no appropriate tool was found.
+     * @param mode         The mode to use. This specifies which tools are valid.
+     * @param shouldDamage if true, then the tool will have reduced durability/charge
      */
-    private int useToolForMode(Mode mode) {
-        for (ItemStack stack : getStoredInputs()) {
+
+    private int useToolForMode(Mode mode, boolean shouldDamage) {
+        final ArrayList<ItemStack> inputs = getStoredInputs();
+        final int inputsSize = inputs.size();
+        for (int i = inputsSize - 1; i >= 0; i--) {
+            ItemStack stack = inputs.get(i);
+
             int toolMultiplier = getToolMultiplier(stack, mode);
-            if (toolMultiplier < 0) continue;
-            boolean canDamage = GT_ModHandler
-                .damageOrDechargeItem(stack, TOOL_DAMAGE_PER_OPERATION, TOOL_CHARGE_PER_OPERATION, null);
-            if (canDamage) {
-                // Tool was used.
-                if (GT_ModHandler.isElectricItem(stack)
+            if (toolMultiplier < 0) {
+                continue;
+            }
+            boolean canDamage = shouldDamage
+                ? GT_ModHandler.damageOrDechargeItem(stack, TOOL_DAMAGE_PER_OPERATION, TOOL_CHARGE_PER_OPERATION, null)
+                : GT_ModHandler.damageOrDechargeItem(stack, 0, 0, null);
+            if (shouldDamage) {
+                if (!canDamage || GT_ModHandler.isElectricItem(stack)
                     && !GT_ModHandler.canUseElectricItem(stack, TOOL_CHARGE_PER_OPERATION)) {
-                    // Tool is out of charge, move it to output.
                     depleteInput(stack);
                     addOutput(stack);
                 }
-                return toolMultiplier;
-            } else {
-                // Correct item type, but the tool could not be used.
-                depleteInput(stack);
-                addOutput(stack);
             }
-
+            if (canDamage) {
+                return toolMultiplier;
+            }
         }
         return -1;
     }

@@ -1,7 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.GregTech_API.sBlockCasings1;
 import static gregtech.api.GregTech_API.sBlockCasings2;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
@@ -102,8 +104,7 @@ public class GregtechMetaTileEntity_SteamCompressor
             .addInfo("Controller Block for the Steam Compressor")
             .addInfo("33.3% faster than using a single block Steam Compressor.")
             .addInfo("Uses only 66.6% of the steam/s compared to a single block Steam Compressor.")
-            .addInfo("Compresses up to Tier 1 - 8 and Tier 2 - 16 things at a time")
-            .addInfo("Multi consumes x2 amount of steam on Tier 2")
+            .addInfo("Compresses up to 8 x Tier things at a time.")
             .addSeparator()
             .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
@@ -217,7 +218,7 @@ public class GregtechMetaTileEntity_SteamCompressor
             @Nonnull
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 return GT_OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.33F * tierMachine)
+                    .setEUtDiscount(1.33F)
                     .setSpeedBoost(1.5F);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
@@ -247,7 +248,7 @@ public class GregtechMetaTileEntity_SteamCompressor
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "
                 + EnumChatFormatting.BLUE
-                + tag.getInteger("paralell")
+                + tag.getInteger("parallel")
                 + EnumChatFormatting.RESET);
     }
 
@@ -256,7 +257,7 @@ public class GregtechMetaTileEntity_SteamCompressor
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
-        tag.setInteger("paralell", getMaxParallelRecipes());
+        tag.setInteger("parallel", getMaxParallelRecipes());
     }
 
     @Override

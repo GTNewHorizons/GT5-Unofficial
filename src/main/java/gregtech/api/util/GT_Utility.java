@@ -172,6 +172,8 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
+import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -4074,6 +4076,27 @@ public class GT_Utility {
         return -1;
     }
 
+    public static Map<GT_Utility.ItemId, Long> convertItemListToMap(Collection<ItemStack> itemStacks) {
+        Map<GT_Utility.ItemId, Long> result = new Object2LongOpenHashMap<>();
+        for (ItemStack itemStack : itemStacks) {
+            if (itemStack != null && itemStack.stackSize > 0) {
+                GT_Utility.ItemId itemId = GT_Utility.ItemId.createNoCopy(itemStack);
+                result.merge(itemId, (long) itemStack.stackSize, Long::sum);
+            }
+        }
+        return result;
+    }
+
+    public static Map<Fluid, Long> convertFluidListToMap(Collection<FluidStack> fluidStacks) {
+        Map<Fluid, Long> result = new Reference2LongOpenHashMap<>();
+        for (FluidStack fluidStack : fluidStacks) {
+            if (fluidStack != null && fluidStack.amount > 0) {
+                result.merge(fluidStack.getFluid(), (long) fluidStack.amount, Long::sum);
+            }
+        }
+        return result;
+    }
+
     /**
      * @return Supplied collection that doesn't contain invalid MetaTileEntities
      */
@@ -4946,6 +4969,7 @@ public class GT_Utility {
             return tag;
         }
 
+        @Nonnull
         public ItemStack getItemStack() {
             ItemStack itemStack = new ItemStack(item(), 1, metaData());
             itemStack.setTagCompound(nbt());
