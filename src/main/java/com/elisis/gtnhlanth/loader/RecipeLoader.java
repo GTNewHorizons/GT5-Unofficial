@@ -40,7 +40,6 @@ import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.FilledY
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.GadoliniumChlorideConcentrate;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.GadoliniumExtractingNanoResin;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.GadoliniumOreConcentrate;
-import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.Gangue;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.HolmiumChlorideConcentrate;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.HolmiumExtractingNanoResin;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.HolmiumOreConcentrate;
