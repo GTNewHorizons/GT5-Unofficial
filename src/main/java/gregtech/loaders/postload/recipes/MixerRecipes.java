@@ -1497,7 +1497,7 @@ public class MixerRecipes implements Runnable {
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(mixerRecipes);
-            
+
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     EnumCube.COKE_BLOCK.getItem(4),
