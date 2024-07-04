@@ -76,7 +76,7 @@ public class GT_MetaTileEntity_LargeBoiler_Titanium extends GT_MetaTileEntity_La
 
     @Override
     public int getEUt() {
-        return 4000;
+        return 64000;
     }
 
     @Override
