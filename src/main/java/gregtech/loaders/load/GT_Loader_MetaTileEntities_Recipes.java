@@ -6051,6 +6051,11 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             bitsd,
             new Object[] { aTextWireCoil, aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_Firebox_TungstenSteel,
                 'C', OrePrefixes.circuit.get(Materials.Elite), 'W', OrePrefixes.cableGt01.get(Materials.Aluminium) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Machine_Multi_LargeBoiler_RhodiumPalladium.get(1L),
+            bitsd,
+            new Object[] { aTextWireCoil, aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_Firebox_RhodiumPalladium,
+                'C', OrePrefixes.circuit.get(Materials.Master), 'W', OrePrefixes.cableGt01.get(Materials.Tungsten) });
 
         GT_ModHandler.addCraftingRecipe(
             ItemList.Generator_Diesel_LV.get(1L),
