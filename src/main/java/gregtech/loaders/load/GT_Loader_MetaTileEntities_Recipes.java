@@ -6045,12 +6045,12 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             ItemList.Machine_Multi_LargeBoiler_Titanium.get(1L),
             bitsd,
             new Object[] { aTextWireCoil, aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_Firebox_Titanium, 'C',
-                OrePrefixes.circuit.get(Materials.Data), 'W', OrePrefixes.cableGt01.get(Materials.Gold) });
+                OrePrefixes.circuit.get(Materials.Elite), 'W', OrePrefixes.cableGt01.get(Materials.Gold) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Machine_Multi_LargeBoiler_TungstenSteel.get(1L),
             bitsd,
             new Object[] { aTextWireCoil, aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_Firebox_TungstenSteel,
-                'C', OrePrefixes.circuit.get(Materials.Elite), 'W', OrePrefixes.cableGt01.get(Materials.Aluminium) });
+                'C', OrePrefixes.circuit.get(Materials.Master), 'W', OrePrefixes.cableGt01.get(Materials.Aluminium) });
 
         GT_ModHandler.addCraftingRecipe(
             ItemList.Generator_Diesel_LV.get(1L),
