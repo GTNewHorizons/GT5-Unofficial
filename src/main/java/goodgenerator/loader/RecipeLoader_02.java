@@ -1272,7 +1272,7 @@ public class RecipeLoader_02 {
                     GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Osmiridium, 2),
                     MyMaterial.marM200.get(OrePrefixes.plateDouble, 2),
                     GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1),
-                    WerkstoffLoader.Ruthenium.get(OrePrefixes.bolt, 32),
+                    ELEMENT.getInstance().RUTHENIUM.getBolt(32),
                     GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Platinum, 8))
                 .fluidInputs(MyMaterial.zircaloy4.getMolten(576))
                 .itemOutputs(ItemRefer.Imprecise_Electronic_Unit.get(2))
