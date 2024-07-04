@@ -2,6 +2,9 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import static gregtech.api.enums.GT_Values.L;
 import static gregtech.api.enums.GT_Values.M;
+import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -125,7 +128,8 @@ public class RecipeGen_Recycling implements Runnable {
                     // Maceration
                     if (ItemUtils.checkForInvalidItems(tempStack)) {
                         // mValidItems[mSlotIndex++] = tempStack;
-                        if ((mDust != null) && GT_ModHandler.addPulverisationRecipe(tempStack, mDust)) {
+                        if (mDust != null) {
+                            RA.stdBuilder().itemInputs(tempStack).itemOutputs(mDust).eut(2).duration(20*SECONDS).addTo(maceratorRecipes);
                             Logger.WARNING(
                                 "Recycle Recipe: " + material.getLocalizedName()
                                     + " - Success - Recycle "

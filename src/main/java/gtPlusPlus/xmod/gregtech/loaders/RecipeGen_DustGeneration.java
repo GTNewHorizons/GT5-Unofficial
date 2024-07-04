@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import java.util.HashSet;
 import java.util.Set;
 
+import gregtech.api.util.GT_RecipeBuilder;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -22,6 +23,10 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
+
+import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
@@ -113,11 +118,11 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
         final ItemStack materialFrameBox = material.getFrameBox(1);
 
         if (ItemUtils.checkForInvalidItems(materialBlock)) {
-            GT_ModHandler.addPulverisationRecipe(materialBlock, material.getDust(9));
+            RA.stdBuilder().itemInputs(materialBlock).itemOutputs(material.getDust(9)).eut(2).duration(20*SECONDS).addTo(maceratorRecipes);
         }
 
         if (ItemUtils.checkForInvalidItems(materialFrameBox)) {
-            GT_ModHandler.addPulverisationRecipe(materialFrameBox, material.getDust(2));
+            RA.stdBuilder().itemInputs(materialFrameBox).itemOutputs(material.getDust(2)).eut(2).duration(20*SECONDS).addTo(maceratorRecipes);
         }
 
         if (ItemUtils.checkForInvalidItems(smallDust) && ItemUtils.checkForInvalidItems(tinyDust)) {
@@ -208,7 +213,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
                     input = ItemUtils.cleanItemStackArray(input);
 
                     // Add mixer Recipe
-                    if (GT_Values.RA.addMixerRecipe(
+                    if (RA.addMixerRecipe(
                         input[0],
                         input[1],
                         input[2],
@@ -313,7 +318,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
                     // Add mixer Recipe
                     try {
-                        if (GT_Values.RA.addMixerRecipe(
+                        if (RA.addMixerRecipe(
                             input1,
                             input2,
                             input3,
@@ -350,7 +355,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
         AutoMap<Boolean> aResults = new AutoMap<>();
         // Small Dust
         aResults.put(
-            GT_Values.RA.addBoxingRecipe(
+            RA.addBoxingRecipe(
                 GT_Utility.copyAmount(4L, new Object[] { aMatInfo.getSmallDust(4) }),
                 ItemList.Schematic_Dust.get(0L, new Object[0]),
                 aMatInfo.getDust(1),
@@ -358,7 +363,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
                 4));
         // Tiny Dust
         aResults.put(
-            GT_Values.RA.addBoxingRecipe(
+            RA.addBoxingRecipe(
                 GT_Utility.copyAmount(9L, new Object[] { aMatInfo.getTinyDust(9) }),
                 ItemList.Schematic_Dust.get(0L, new Object[0]),
                 aMatInfo.getDust(1),
@@ -376,8 +381,11 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
     private void addMacerationRecipe(Material aMatInfo) {
         try {
             Logger.MATERIALS("Adding Maceration recipe for " + aMatInfo.getLocalizedName() + " Ingot -> Dusts");
-            final int chance = (aMatInfo.vTier * 10) / MathUtils.randInt(10, 20);
-            GT_ModHandler.addPulverisationRecipe(aMatInfo.getIngot(1), aMatInfo.getDust(1), null, chance);
+            int chance = (aMatInfo.vTier * 10) / MathUtils.randInt(10, 20);
+            chance = chance <= 0 ? 1000 : 100 * chance; // comes from RA1 -> RA2 conversion
+
+            RA.stdBuilder().itemInputs(aMatInfo.getIngot(1))
+                .itemOutputs(aMatInfo.getDust(1)).outputChances(chance).eut(2).duration(20*SECONDS).addTo(maceratorRecipes);
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -430,7 +438,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
             }
             long aVoltage = aMatInfo.vVoltageMultiplier;
 
-            return GT_Values.RA.addBlastRecipe(
+            return RA.addBlastRecipe(
                 input1,
                 input2,
                 GT_Values.NF,

@@ -11,6 +11,7 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -628,35 +629,73 @@ public class GT_ModHandler {
 
     @Deprecated
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1) {
-        return addPulverisationRecipe(aInput, aOutput1, null, 0, false);
+        RA.stdBuilder()
+            .itemInputs(aInput)
+            .itemOutputs(aOutput1)
+            .eut(2)
+            .duration(20*SECONDS)
+            .addTo(maceratorRecipes);
+        return true;
     }
 
     @Deprecated
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2) {
-        return addPulverisationRecipe(aInput, aOutput1, aOutput2, 100, false);
+        RA.stdBuilder()
+            .itemInputs(aInput)
+            .itemOutputs(aOutput1, aOutput2)
+            .eut(2)
+            .duration(20*SECONDS)
+            .addTo(maceratorRecipes);
+        return true;
     }
 
     @Deprecated
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2,
         int aChance) {
-        return addPulverisationRecipe(aInput, aOutput1, aOutput2, aChance, false);
+        RA.stdBuilder()
+            .itemInputs(aInput)
+            .itemOutputs(aOutput1, aOutput2)
+            .outputChances(100_00, aChance*100)
+            .eut(2)
+            .duration(20*SECONDS)
+            .addTo(maceratorRecipes);
+        return true;
     }
 
     @Deprecated
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, boolean aOverwrite) {
-        return addPulverisationRecipe(aInput, aOutput1, null, 0, aOverwrite);
+        RA.stdBuilder()
+            .itemInputs(aInput)
+            .itemOutputs(aOutput1)
+            .eut(2)
+            .duration(20*SECONDS)
+            .addTo(maceratorRecipes);
+        return true;
     }
 
     @Deprecated
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2,
         boolean aOverwrite) {
-        return addPulverisationRecipe(aInput, aOutput1, aOutput2, 100, aOverwrite);
+        RA.stdBuilder()
+            .itemInputs(aInput)
+            .itemOutputs(aOutput1, aOutput2)
+            .eut(2)
+            .duration(20*SECONDS)
+            .addTo(maceratorRecipes);
+        return true;
     }
 
     @Deprecated
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aChance,
         boolean aOverwrite) {
-        return addPulverisationRecipe(aInput, aOutput1, aOutput2, aChance, null, 0, aOverwrite);
+        RA.stdBuilder()
+            .itemInputs(aInput)
+            .itemOutputs(aOutput1, aOutput2)
+            .outputChances(100_00, aChance*100)
+            .eut(2)
+            .duration(20*SECONDS)
+            .addTo(maceratorRecipes);
+        return true;
     }
 
     /**
@@ -670,12 +709,13 @@ public class GT_ModHandler {
         if (GT_Utility.isStackInvalid(aInput) || GT_Utility.isStackInvalid(aOutput1)) return false;
 
         if (GT_Utility.getContainerItem(aInput, false) == null) {
-            RA.addPulveriserRecipe(
-                aInput,
-                new ItemStack[] { aOutput1, aOutput2, aOutput3 },
-                new int[] { 10000, aChance2 <= 0 ? 1000 : 100 * aChance2, aChance3 <= 0 ? 1000 : 100 * aChance3 },
-                400,
-                2);
+            RA.stdBuilder()
+                .itemInputs(aInput)
+                .itemOutputs(aOutput1, aOutput2, aOutput3)
+                .outputChances(100_00, aChance2 <= 0 ? 10_00 : 1_00 * aChance2, aChance3 <= 0 ? 10_00 : 1_00 * aChance3)
+                .eut(2)
+                .duration(20*SECONDS)
+                .addTo(maceratorRecipes);
         }
         return true;
     }
@@ -684,15 +724,13 @@ public class GT_ModHandler {
     public static boolean addPulverisationRecipe(ItemStack aInputItem, ItemStack[] aOutputArray, int[] aChanceArray,
         int aEUt, int aRecipeDurationInTicks) {
 
-        ItemStack[] aUnifiedOutputArray = new ItemStack[aOutputArray.length];
-        int counter = 0;
-
-        for (ItemStack item : aOutputArray) {
-            aUnifiedOutputArray[counter] = GT_OreDictUnificator.get(true, item);
-            counter++;
-        }
-
-        RA.addPulveriserRecipe(aInputItem, aOutputArray, aChanceArray, aRecipeDurationInTicks, aEUt);
+        RA.stdBuilder()
+            .itemInputs(aInputItem)
+            .itemOutputs(aOutputArray)
+            .outputChances(aChanceArray)
+            .eut(aEUt)
+            .duration(aRecipeDurationInTicks)
+            .addTo(maceratorRecipes);
 
         return true;
     }

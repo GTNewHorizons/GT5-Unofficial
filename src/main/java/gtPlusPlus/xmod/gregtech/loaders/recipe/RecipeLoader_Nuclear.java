@@ -1,7 +1,9 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
+import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -568,10 +570,8 @@ public class RecipeLoader_Nuclear {
     }
 
     private static void macerator() {
-
-        GT_ModHandler.addPulverisationRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("pelletZirconium", 1),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustZrCl4", 5));
+        RA.stdBuilder().itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("pelletZirconium", 1))
+            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustZrCl4", 5)).eut(2).duration(20*SECONDS).addTo(maceratorRecipes);
     }
 
     private static void mixerRecipes() {
