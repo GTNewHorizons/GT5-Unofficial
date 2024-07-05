@@ -37,6 +37,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.render.items.CosmicNeutroniumRenderer;
 import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
 import gregtech.common.render.items.GaiaSpiritRenderer;
+import gregtech.common.render.items.GlitchEffectRenderer;
 import gregtech.common.render.items.InfinityRenderer;
 import gregtech.common.render.items.TranscendentMetalRenderer;
 import gregtech.common.render.items.UniversiumRenderer;
@@ -1916,9 +1917,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         TengamAttuned.mChemicalFormula = "M";
         MaterialsUEVplus.ExcitedDTSC.mChemicalFormula = "[-Stellar-Stellar-]";
         MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.mChemicalFormula = "Stellar";
-        MaterialsUEVplus.QuarkGluonPlasma.mChemicalFormula = EnumChatFormatting.OBFUSCATED + "X" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + "g" + EnumChatFormatting.OBFUSCATED + "X";
-        MaterialsUEVplus.PhononCrystalSolution.mChemicalFormula = "\u2722";
-        MaterialsUEVplus.PhononMedium.mChemicalFormula = "\u2722\u2082((C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085)\u2083";
+        MaterialsUEVplus.QuarkGluonPlasma.mChemicalFormula = EnumChatFormatting.OBFUSCATED + "X"
+            + EnumChatFormatting.RESET
+            + EnumChatFormatting.GRAY
+            + "g"
+            + EnumChatFormatting.OBFUSCATED
+            + "X";
+        MaterialsUEVplus.PhononCrystalSolution.mChemicalFormula = "\u223F";
+        MaterialsUEVplus.PhononMedium.mChemicalFormula = "\u223F\u2082((C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085)\u2083";
+        MaterialsUEVplus.SixPhasedCopper.mChemicalFormula = "\u2722";
     }
 
     private static void initSubTags() {
@@ -2457,6 +2464,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.Universium.renderer = new UniversiumRenderer();
         MaterialsUEVplus.Eternity.renderer = new InfinityRenderer();
         MaterialsUEVplus.MagMatter.renderer = new InfinityRenderer();
+        MaterialsUEVplus.SixPhasedCopper.renderer = new GlitchEffectRenderer();
     }
 
     private static void fillGeneratedMaterialsMap() {
