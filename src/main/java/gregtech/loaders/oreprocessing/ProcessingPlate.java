@@ -2,6 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.enums.GT_Values.L;
 import static gregtech.api.enums.GT_Values.NI;
+import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -15,6 +16,7 @@ import static gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLIS
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
@@ -552,20 +554,20 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(alloySmelterRecipes);
             }
             case "plateAlloyAdvanced" -> {
-                GT_ModHandler.addAlloySmelterRecipe(
-                    GT_Utility.copyAmount(1, aStack),
-                    new ItemStack(Blocks.glass, 3, W),
-                    GT_ModHandler.getIC2Item("reinforcedGlass", 4L),
-                    400,
-                    4,
-                    false);
-                GT_ModHandler.addAlloySmelterRecipe(
-                    GT_Utility.copyAmount(1, aStack),
-                    Materials.Glass.getDust(3),
-                    GT_ModHandler.getIC2Item("reinforcedGlass", 4L),
-                    400,
-                    4,
-                    false);
+                RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1, aStack),
+                        new ItemStack(Blocks.glass, 3, WILDCARD))
+                    .itemOutputs(GT_ModHandler.getIC2Item("reinforcedGlass", 4L))
+                    .duration(20*SECONDS)
+                    .eut(4)
+                    .addTo(alloySmelterRecipes);
+                RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1, aStack),
+                        Materials.Glass.getDust(3))
+                    .itemOutputs(GT_ModHandler.getIC2Item("reinforcedGlass", 4L))
+                    .duration(20*SECONDS)
+                    .eut(4)
+                    .addTo(alloySmelterRecipes);
             }
             case "plateAlloyIridium" ->
 
