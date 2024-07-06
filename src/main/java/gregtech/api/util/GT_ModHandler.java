@@ -577,33 +577,6 @@ public class GT_ModHandler {
     }
 
     /**
-     * LiquidTransposer Recipe for both directions
-     */
-    @Deprecated
-    public static boolean addLiquidTransposerRecipe(ItemStack aEmptyContainer, FluidStack aLiquid,
-        ItemStack aFullContainer, int aMJ) {
-        return true;
-    }
-
-    /**
-     * LiquidTransposer Recipe for filling Containers
-     */
-    @Deprecated
-    public static boolean addLiquidTransposerFillRecipe(ItemStack aEmptyContainer, FluidStack aLiquid,
-        ItemStack aFullContainer, int aMJ) {
-        return true;
-    }
-
-    /**
-     * LiquidTransposer Recipe for emptying Containers
-     */
-    @Deprecated
-    public static boolean addLiquidTransposerEmptyRecipe(ItemStack aFullContainer, FluidStack aLiquid,
-        ItemStack aEmptyContainer, int aMJ) {
-        return true;
-    }
-
-    /**
      * IC2-Extractor Recipe. Overloads old Recipes automatically
      */
     @Deprecated
@@ -616,14 +589,6 @@ public class GT_ModHandler {
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(extractorRecipes);
-        return true;
-    }
-
-    /**
-     * RC-BlastFurnace Recipes
-     */
-    @Deprecated
-    public static boolean addRCBlastFurnaceRecipe(ItemStack aInput, ItemStack aOutput, int aTime) {
         return true;
     }
 
@@ -735,19 +700,6 @@ public class GT_ModHandler {
         return true;
     }
 
-    @Deprecated
-    public static boolean addImmersiveEngineeringRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2,
-        int aChance2, ItemStack aOutput3, int aChance3) {
-        return true;
-    }
-
-    @Deprecated
-    public static boolean addMagneticraftRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aChance2,
-        ItemStack aOutput3, int aChance3) {
-        return true;
-    }
-
-
     /**
      * Induction Smelter Recipes and Alloy Smelter Recipes
      */
@@ -762,14 +714,6 @@ public class GT_ModHandler {
             .duration(aDuration)
             .eut(aEUt)
             .addTo(alloySmelterRecipes);
-        return true;
-    }
-
-    /**
-     * Induction Smelter Recipes for TE
-     */
-    public static boolean addInductionSmelterRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1,
-        ItemStack aOutput2, int aEnergy, int aChance) {
         return true;
     }
 
@@ -2528,55 +2472,5 @@ public class GT_ModHandler {
          * Don't remove shapeless recipes with this output
          */
         public static long DONT_REMOVE_SHAPELESS = B[13];
-    }
-
-    /**
-     * Copy of the original Helper Class of Thermal Expansion, just to make sure it works even when other Mods include
-     * TE-APIs
-     */
-    public static class ThermalExpansion {
-
-        public static void addFurnaceRecipe(int energy, ItemStack input, ItemStack output) {}
-
-        public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput) {}
-
-        public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput,
-            ItemStack secondaryOutput) {}
-
-        public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput,
-            ItemStack secondaryOutput, int secondaryChance) {}
-
-        public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput) {}
-
-        public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput,
-            ItemStack secondaryOutput) {}
-
-        public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput,
-            ItemStack secondaryOutput, int secondaryChance) {}
-
-        public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput,
-            ItemStack primaryOutput) {}
-
-        public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput,
-            ItemStack primaryOutput, ItemStack secondaryOutput) {}
-
-        public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput,
-            ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {}
-
-        public static void addSmelterBlastOre(Materials aMaterial) {}
-
-        public static void addCrucibleRecipe(int energy, ItemStack input, FluidStack output) {}
-
-        public static void addTransposerFill(int energy, ItemStack input, ItemStack output, FluidStack fluid,
-            boolean reversible) {}
-
-        public static void addTransposerExtract(int energy, ItemStack input, ItemStack output, FluidStack fluid,
-            int chance, boolean reversible) {}
-
-        public static void addMagmaticFuel(String fluidName, int energy) {}
-
-        public static void addCompressionFuel(String fluidName, int energy) {}
-
-        public static void addCoolant(String fluidName, int energy) {}
     }
 }
