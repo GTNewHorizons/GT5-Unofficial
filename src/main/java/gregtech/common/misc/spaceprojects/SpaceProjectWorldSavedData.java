@@ -105,6 +105,9 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
                 spaceTeamProjects = null;
             }
         }
+        if (spaceTeamProjects == null) {
+            spaceTeamProjects = new HashMap<>();
+        }
         if (spaceTeamProjects == null || aNBT.hasKey("spaceTeamProjects")) {
             spaceTeamProjects = GSON_SPACE_PROJECT
                 .fromJson(aNBT.getString("spaceTeamProjects"), spaceTeamProjects.getClass());
@@ -120,6 +123,9 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             } catch (Exception e) {
                 spaceTeams = null;
             }
+        }
+        if (spaceTeams == null) {
+            spaceTeams = new HashMap<>();
         }
         if (spaceTeams == null || aNBT.hasKey("spaceTeams")) {
             spaceTeams = GSON_TEAMS.fromJson(aNBT.getString("spaceTeam"), spaceTeams.getClass());
