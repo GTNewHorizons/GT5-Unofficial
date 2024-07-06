@@ -764,7 +764,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         inputRate = this.getInputInformation()
             .getRate();
-        outputRate = (int) (inputRate * getOutputRatetio(voltageFactor));
+        outputRate = (int) (inputRate * getOutputRatetio(voltageFactor, this.antennaeTier));
 
         if (outputRate == 0) {
             stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.low_input_rate"));
@@ -847,7 +847,9 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
     private static float getVoltageFactor(long mEU, int antennaTier) {
 
         // float factor = (float) Math.pow(1.00004, -mEU * Math.pow(antennaTier, 1.0/3.0) + 80000);
-        float factor = (float) -Math.pow(1.1, -mEU / 10 * Math.pow(antennaTier, 2.0 / 3.0)) + 1;
+        float factor = (float) -Math.pow(1.1, -mEU / 2000 * Math.pow(antennaTier, 2.0 / 3.0)) + 1; // Strictly improves
+                                                                                                   // with higher tier
+                                                                                                   // antenna
         return factor;
 
     }
@@ -883,8 +885,10 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
     }
 
     // Punny, right?
-    private static float getOutputRatetio(float voltageFactor) {
-        return voltageFactor / 10; // TODO this is terrible and boring
+    private static float getOutputRatetio(float voltageFactor, int antennaTier) {
+        return (float) (voltageFactor / 10 / Math.pow(2.5, antennaTier)); // Scale ratio with antenna tier, such a high
+                                                                          // exponential should be fine so long as there
+                                                                          // are only few antenna tiers
     }
 
     @Override

@@ -39,30 +39,31 @@ dependencies {
     api("com.github.GTNewHorizons:NotEnoughItems:2.6.11-GTNH:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.3.1:dev")
     api("com.github.GTNewHorizons:ModularUI:1.2.0:dev")
-    api("com.github.GTNewHorizons:waila:1.8.0:dev")
+    api("com.github.GTNewHorizons:waila:1.8.1:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-405-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.3.9-gtnh:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.3.12-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.6.0:dev')
     api('com.github.GTNewHorizons:ThaumicTinkerer:2.10.0:dev')
     api("com.github.GTNewHorizons:Mobs-Info:0.2.7-GTNH:dev")
-    api("com.github.GTNewHorizons:ForestryMC:4.9.7:dev")
+
     devOnlyNonPublishable("com.github.GTNewHorizons:Infernal-Mobs:1.8.1-GTNH:dev")
     runtimeOnly("com.github.GTNewHorizons:Draconic-Evolution:1.3.5-GTNH:dev") // needed?
 
     implementation('com.github.GTNewHorizons:GTNEIOrePlugin:1.3.1:dev') { transitive = false }
     implementation("com.github.GTNewHorizons:Avaritia:1.49:dev")
+    implementation("com.github.GTNewHorizons:ForestryMC:4.9.7:dev") { transitive = false }
 
     compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-alpha52:api') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.0:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.39:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.8.6:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.8.9:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.10.1-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.15.8:dev") { transitive = false }
 
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.26:deobf") {transitive = false}
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.7.4:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:EnderCore:0.4.6:dev") { transitive = false }
-    implementation("com.github.GTNewHorizons:Galacticraft:3.1.5-GTNH:dev") { transitive = false }
+    implementation("com.github.GTNewHorizons:Galacticraft:3.1.7-GTNH:dev") { transitive = false }
     implementation("com.github.GTNewHorizons:TinkersConstruct:1.12.4-GTNH:dev")
     compileOnly("com.github.GTNewHorizons:Chisel:2.15.0-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.2.1:dev") { transitive = false }
@@ -86,7 +87,6 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:SC2:2.1.1:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.4.0:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:BlockRenderer6343:1.2.10:dev'){transitive=false}
 
     shadowImplementation('com.github.GTNewHorizons:AVRcore:1.0.1')
 
