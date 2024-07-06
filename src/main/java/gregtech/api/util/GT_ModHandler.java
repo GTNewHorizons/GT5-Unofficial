@@ -747,13 +747,6 @@ public class GT_ModHandler {
         return true;
     }
 
-    /**
-     * Adds a Recipe to the Sawmills of ThermalCraft
-     */
-    @Deprecated
-    public static boolean addSawmillRecipe(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2) {
-        return true;
-    }
 
     /**
      * Induction Smelter Recipes and Alloy Smelter Recipes
