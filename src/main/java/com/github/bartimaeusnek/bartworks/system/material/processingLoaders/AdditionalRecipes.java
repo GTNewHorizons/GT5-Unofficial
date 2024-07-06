@@ -28,12 +28,14 @@ import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
 
 import java.util.Arrays;
 import java.util.List;
@@ -383,20 +385,26 @@ public class AdditionalRecipes {
             800,
             (int) TierEU.RECIPE_MV,
             722);
-        GT_Values.RA.addFusionReactorRecipe(
-            Materials.Plutonium.getMolten(48),
-            Materials.Beryllium.getMolten(48),
-            WerkstoffLoader.Californium.getMolten(48),
-            240,
-            49152,
-            480000000);
-        GT_Values.RA.addFusionReactorRecipe(
-            WerkstoffLoader.Californium.getMolten(32),
-            WerkstoffLoader.Calcium.getMolten(720),
-            WerkstoffLoader.Oganesson.getFluidOrGas(720),
-            420,
-            49152,
-            600000000);
+
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(Materials.Plutonium.getMolten(48),
+                Materials.Beryllium.getMolten(48))
+            .fluidOutputs(WerkstoffLoader.Californium.getMolten(48))
+            .duration(12*SECONDS)
+            .eut(49152)
+            .metadata(FUSION_THRESHOLD, 480_000_000)
+            .addTo(fusionRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(
+                WerkstoffLoader.Californium.getMolten(32),
+                WerkstoffLoader.Calcium.getMolten(720))
+            .fluidOutputs(WerkstoffLoader.Oganesson.getFluidOrGas(720))
+            .duration(24*SECONDS)
+            .eut(49152)
+            .metadata(FUSION_THRESHOLD, 600_000_000)
+            .addTo(fusionRecipes);
+
         GT_Values.RA.addDistillationTowerRecipe(
             Materials.LiquidAir.getFluid(100000000),
             new FluidStack[] { Materials.Nitrogen.getGas(78084000), Materials.Oxygen.getGas(20946000),

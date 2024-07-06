@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -9,6 +10,11 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.core.material.ELEMENT;
+
+import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
 
 public class RecipeLoader_GTNH {
 
@@ -20,26 +26,37 @@ public class RecipeLoader_GTNH {
             100,
             30);
         // MK4
-        GT_Values.RA.addFusionReactorRecipe(
-            Materials.Plutonium241.getMolten(144),
-            Materials.Helium.getGas(1000),
-            ELEMENT.getInstance().CURIUM.getFluidStack(144),
-            96,
-            98304,
-            500000000);
-        GT_Values.RA.addFusionReactorRecipe(
-            ELEMENT.getInstance().CURIUM.getFluidStack(144),
-            Materials.Helium.getPlasma(144),
-            ELEMENT.getInstance().CALIFORNIUM.getFluidStack(144),
-            128,
-            196608,
-            750000000);
-        GT_Values.RA.addFusionReactorRecipe(
-            Materials.Plutonium241.getMolten(144),
-            Materials.Calcium.getPlasma(144),
-            Materials.Flerovium.getMolten(144),
-            160,
-            196608,
-            1000000000);
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(
+                Materials.Plutonium241.getMolten(144),
+                Materials.Helium.getGas(1000)
+            )
+            .fluidOutputs(ELEMENT.getInstance().CURIUM.getFluidStack(144))
+            .duration(4*SECONDS+16*TICKS)
+            .eut(98304)
+            .metadata(FUSION_THRESHOLD,500_000_000)
+            .addTo(fusionRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(ELEMENT.getInstance().CURIUM.getFluidStack(144),
+                Materials.Helium.getPlasma(144))
+            .fluidOutputs(ELEMENT.getInstance().CALIFORNIUM.getFluidStack(144))
+            .duration(6*SECONDS+8*TICKS)
+            .eut(196608)
+            .metadata(FUSION_THRESHOLD,750_000_000)
+            .addTo(fusionRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(
+                Materials.Plutonium241.getMolten(144),
+                Materials.Calcium.getPlasma(144)
+            )
+            .fluidOutputs(
+                Materials.Flerovium.getMolten(144)
+            )
+            .duration(8*SECONDS)
+            .eut(196608)
+            .metadata(FUSION_THRESHOLD,1_000_000_000)
+            .addTo(fusionRecipes);
     }
 }
