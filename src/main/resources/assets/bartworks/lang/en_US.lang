@@ -32,6 +32,7 @@ tile.BWHeatedWaterPump.0.name=Simple Stirling Water Pump
 item.BWrawtube.name=Elongated Glass Tube
 item.BWmotor.name=Simple Stirling Motor
 item.BWstove.name=Simple Heated Stove
+gt.blockmachines.creativeScanner.desc.1=Finishes Scanning instantly. Does not require power.
 
 itemGroup.BioTab=BartWorks BioEngineering
 filled.item.petriDish.name=Petri Dish with a Culture
@@ -72,7 +73,7 @@ tooltip.LESU.1.name=Multiple Controllers!
 
 tooltip.windmeter.0.name=A simple Windmeter to choose a place for the Windmill.
 tooltip.windmeter.1.name=Uses left:
-tooltip.windmeter.2.name=non existant
+tooltip.windmeter.2.name=nonexistent
 tooltip.windmeter.3.name=pretty low
 tooltip.windmeter.4.name=common
 tooltip.windmeter.5.name=rather strong

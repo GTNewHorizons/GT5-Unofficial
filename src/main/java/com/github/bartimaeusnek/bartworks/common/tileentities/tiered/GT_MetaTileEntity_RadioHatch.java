@@ -66,6 +66,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.ID_MetaTool_01;
 
 public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
     implements RecipeMapWorkable, IAddGregtechLogo {
@@ -435,7 +436,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
             .widget(
                 new ItemDrawable(
                     GT_MetaGenerated_Tool_01.INSTANCE
-                        .getToolWithStats(GT_MetaGenerated_Tool_01.SCREWDRIVER, 1, null, null, null)).asWidget()
+                        .getToolWithStats(ID_MetaTool_01.SCREWDRIVER.ID, 1, null, null, null)).asWidget()
                             .setPos(154, 6));
     }
 

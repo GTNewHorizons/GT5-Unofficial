@@ -208,7 +208,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
         return tryOutputAll(list, l -> Collections.singletonList((ItemStack) l));
     }
 
-    protected boolean tryOutputAll(List<?> list, Function<Object, List<ItemStack>> mappingFunction) {
+    protected <Y> boolean tryOutputAll(List<Y> list, Function<Y, List<ItemStack>> mappingFunction) {
         if (list == null || list.isEmpty() || mappingFunction == null) return false;
         int emptySlots = 0;
         boolean ignoreEmptiness = false;
@@ -224,6 +224,10 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
         boolean wasSomethingRemoved = false;
         while (!list.isEmpty()) {
             List<ItemStack> toOutputNow = mappingFunction.apply(list.get(0));
+            if (toOutputNow == null) {
+                list.remove(0);
+                continue;
+            }
             if (!ignoreEmptiness && emptySlots < toOutputNow.size()) break;
             emptySlots -= toOutputNow.size();
             list.remove(0);

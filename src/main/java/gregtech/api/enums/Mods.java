@@ -14,6 +14,7 @@ public enum Mods {
     AFSU(Names.A_F_S_U),
     AdvancedSolarPanel(Names.ADVANCED_SOLAR_PANEL),
     AdventureBackpack(Names.ADVENTURE_BACKPACK),
+    AkashicTome(Names.AKASHIC_TOME),
     AppleCore(Names.APPLE_CORE),
     AppliedEnergistics2(Names.APPLIED_ENERGISTICS2),
     ArchitectureCraft(Names.ARCHITECTURE_CRAFT),
@@ -53,6 +54,7 @@ public enum Mods {
     CraftTweaker(Names.CRAFT_TWEAKER),
     CropLoadCore(Names.CROP_LOAD_CORE),
     CropsPlusPlus(Names.CROPS_PLUS_PLUS),
+    DetravScannerMod(Names.DETRAV_SCANNER_MOD),
     DraconicEvolution(Names.DRACONIC_EVOLUTION),
     ElectroMagicTools(Names.ELECTRO_MAGIC_TOOLS),
     EnderIO(Names.ENDER_I_O),
@@ -193,6 +195,7 @@ public enum Mods {
         public static final String A_F_S_U = "AFSU";
         public static final String ADVANCED_SOLAR_PANEL = "AdvancedSolarPanel";
         public static final String ADVENTURE_BACKPACK = "adventurebackpack";
+        public static final String AKASHIC_TOME = "akashictome";
         public static final String APPLE_CORE = "AppleCore";
         public static final String APPLIED_ENERGISTICS2 = "appliedenergistics2";
         public static final String ARCHITECTURE_CRAFT = "ArchitectureCraft";
@@ -232,6 +235,7 @@ public enum Mods {
         public static final String CRAFT_TWEAKER = "MineTweaker3";
         public static final String CROP_LOAD_CORE = "croploadcore";
         public static final String CROPS_PLUS_PLUS = "berriespp";
+        public static final String DETRAV_SCANNER_MOD = "detravscannermod";
         public static final String DRACONIC_EVOLUTION = "DraconicEvolution";
         public static final String ELECTRO_MAGIC_TOOLS = "EMT";
         public static final String ENDER_I_O = "EnderIO";

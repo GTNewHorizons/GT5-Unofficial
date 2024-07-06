@@ -7,7 +7,6 @@ import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -138,13 +137,6 @@ public class FormingPressRecipes implements Runnable {
             .itemInputs(ItemList.Food_Dough_Sugar.get(4L), ItemList.Shape_Mold_Cylinder.get(0L))
             .itemOutputs(ItemList.Food_Raw_Cake.get(1L))
             .duration(19 * SECONDS + 4 * TICKS)
-            .eut(4)
-            .addTo(formingPressRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.glass, 1, 32767), ItemList.Shape_Mold_Arrow.get(0L))
-            .itemOutputs(ItemList.Arrow_Head_Glass_Emtpy.get(1L))
-            .duration(3 * SECONDS + 4 * TICKS)
             .eut(4)
             .addTo(formingPressRecipes);
 

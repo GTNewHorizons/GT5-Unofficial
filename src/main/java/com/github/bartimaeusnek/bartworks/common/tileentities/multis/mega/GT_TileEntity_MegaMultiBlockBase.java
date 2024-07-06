@@ -6,7 +6,6 @@ import java.util.Arrays;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -33,15 +32,6 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
 
     public GT_TileEntity_MegaMultiBlockBase(String aName) {
         super(aName);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        // Migration code
-        if (aNBT.hasKey("lEUt")) {
-            this.lEUt = aNBT.getLong("lEUt");
-        }
     }
 
     protected String[] getExtendedInfoData() {

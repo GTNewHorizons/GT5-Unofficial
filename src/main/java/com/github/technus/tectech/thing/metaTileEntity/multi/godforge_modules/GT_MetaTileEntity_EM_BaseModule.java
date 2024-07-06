@@ -128,7 +128,6 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && isConnected) {
             super.onPostTick(aBaseMetaTileEntity, aTick);
-            if (aTick % 400 == 0) fixAllIssues();
             if (mEfficiency < 0) mEfficiency = 0;
         }
     }
@@ -267,15 +266,6 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
         recipeTally += amount;
     }
 
-    protected void fixAllIssues() {
-        mWrench = true;
-        mScrewdriver = true;
-        mSoftHammer = true;
-        mHardHammer = true;
-        mSolderingTool = true;
-        mCrowbar = true;
-    }
-
     public int getTier() {
         return tier;
     }
@@ -297,7 +287,6 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        fixAllIssues();
         return structureCheck_EM(STRUCTURE_PIECE_MAIN, 3, 3, 0);
     }
 
@@ -493,5 +482,10 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
                 new TT_RenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF) };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TEXTURE_INDEX) };
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

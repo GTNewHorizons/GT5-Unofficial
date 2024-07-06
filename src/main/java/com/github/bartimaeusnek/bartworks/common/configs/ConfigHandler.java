@@ -36,14 +36,12 @@ public class ConfigHandler {
     public static int ross128batier = 3;
     public static int landerType = 3;
     public static int ross128bRuinChance = 512;
-    public static int creativeScannerID;
     public static int bioVatMaxParallelBonus = 1000;
     public static int cutoffTier = 5;
     public static int[][][] metasForTiers;
 
     public static long energyPerCell = 1000000L;
 
-    public static boolean newStuff = true;
     public static boolean BioLab = true;
     public static boolean Ross128Enabled = true;
 
@@ -120,9 +118,6 @@ public class ConfigHandler {
                 false,
                 "Enables the classic Mode (all recipes in normal machines are doable in MV")
             .getBoolean(false);
-        ConfigHandler.creativeScannerID = ConfigHandler.c
-            .get("System", "Creative Debug Scanner", 0, "ID for the Creative Debug Scanner Block")
-            .getInt(0);
 
         ConfigHandler.tooltips = ConfigHandler.c
             .get("System", "BartWorksToolTips", true, "If you wish to enable extra tooltips")

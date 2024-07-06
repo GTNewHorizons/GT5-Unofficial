@@ -18,10 +18,10 @@ import java.util.HashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -77,22 +77,22 @@ public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Ca
     public String[] getDescription() {
         return new String[] { "Primitive Laser Cable intended for Low Power Applications", "Does not auto-connect",
             "Does not turn or bend",
-            ChatColorHelper.WHITE + "Must be "
-                + ChatColorHelper.YELLOW
+            EnumChatFormatting.WHITE + "Must be "
+                + EnumChatFormatting.YELLOW
                 + "c"
-                + ChatColorHelper.RED
+                + EnumChatFormatting.RED
                 + "o"
-                + ChatColorHelper.BLUE
+                + EnumChatFormatting.BLUE
                 + "l"
-                + ChatColorHelper.DARKPURPLE
+                + EnumChatFormatting.DARK_PURPLE
                 + "o"
-                + ChatColorHelper.GOLD
+                + EnumChatFormatting.GOLD
                 + "r"
-                + ChatColorHelper.DARKRED
+                + EnumChatFormatting.DARK_RED
                 + "e"
-                + ChatColorHelper.DARKGREEN
+                + EnumChatFormatting.DARK_GREEN
                 + "d"
-                + ChatColorHelper.WHITE
+                + EnumChatFormatting.WHITE
                 + " in order to work",
             BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
     }

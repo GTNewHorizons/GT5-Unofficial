@@ -240,7 +240,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     public double getCoilDiscount(HeatingCoilLevel lvl) {
         // Since there are only 14 tiers (starting from 0), this is what the function is.
         double unRounded = (lvl != null ? lvl.getTier() : 0) / 130.0D;
-        if (unRounded < 0) return 1F;
+        if (unRounded < 0) return 0F;
         double rounded = Math.floor(unRounded * 1000) / 1000;
 
         return Math.max(0, rounded);

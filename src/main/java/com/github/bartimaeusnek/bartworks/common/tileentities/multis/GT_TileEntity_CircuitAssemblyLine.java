@@ -13,7 +13,7 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
-import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
+import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.Energy;
@@ -200,7 +200,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             .addOutputBus("As specified in final slice on layer 1", 4)
             .addOtherStructurePart("EV+ Tier Glass", "As specified on layer 2", 5)
             .addMaintenanceHatch("Any layer 1 casing", 2)
-            .toolTipFinisher(ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
         return tt;
     }
 
@@ -574,6 +574,11 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     }
 
     @Override
+    protected boolean supportsSlotAutomation(int aSlot) {
+        return aSlot == getControllerSlotIndex();
+    }
+
+    @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ) {
         if (!aPlayer.isSneaking()) {
@@ -615,13 +620,13 @@ public class GT_TileEntity_CircuitAssemblyLine extends
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(
-            EnumChatFormatting.GREEN
+            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                + EnumChatFormatting.WHITE
                 + StatCollector.translateToLocal("chat.cal.mode." + tag.getInteger(RUNNING_MODE_KEY)));
         if (tag.hasKey("ImprintedWith") && tag.getInteger(RUNNING_MODE_KEY) == 0) currenttip.add(
             StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
                 + EnumChatFormatting.YELLOW
                 + tag.getString("ImprintedWith"));
-
     }
 
     @Override

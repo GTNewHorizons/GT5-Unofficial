@@ -32,11 +32,27 @@ public class GT_Cover_TM_TeslaCoil extends GT_CoverBehavior {
     }
 
     @Override
+    public void onCoverUnload(ICoverable aTileEntity) {
+        if (!aTileEntity.isClientSide()) {
+            teslaSimpleNodeSetRemove(
+                new TeslaCoverConnection(
+                    aTileEntity.getIGregTechTileEntityOffset(0, 0, 0),
+                    getTeslaReceptionCapability()));
+        }
+    }
+
+    @Override
     public boolean onCoverRemoval(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         boolean aForced) {
         teslaSimpleNodeSetRemove(
             new TeslaCoverConnection(aTileEntity.getIGregTechTileEntityOffset(0, 0, 0), getTeslaReceptionCapability()));
         return super.onCoverRemoval(side, aCoverID, aCoverVariable, aTileEntity, aForced);
+    }
+
+    @Override
+    public void onBaseTEDestroyed(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+        teslaSimpleNodeSetRemove(
+            new TeslaCoverConnection(aTileEntity.getIGregTechTileEntityOffset(0, 0, 0), getTeslaReceptionCapability()));
     }
 
     @Override
