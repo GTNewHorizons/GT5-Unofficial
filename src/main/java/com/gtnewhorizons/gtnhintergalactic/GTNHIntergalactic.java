@@ -98,9 +98,6 @@ public class GTNHIntergalactic {
                     case "GalaxySpace:spaceelevatorcable":
                         mapping.remap(IGBlocks.SpaceElevatorCable);
                         break;
-                    default:
-                        mapping.warn();
-                        break;
                 }
             } else if (mapping.type == GameRegistry.Type.ITEM) {
                 switch (mapping.name) {
@@ -118,9 +115,6 @@ public class GTNHIntergalactic {
                         break;
                     case "GalaxySpace:item.MiningDrone":
                         mapping.remap(IGItems.MiningDrones);
-                        break;
-                    default:
-                        mapping.warn();
                         break;
                 }
             }
