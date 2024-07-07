@@ -21,12 +21,13 @@ public interface IGregtech_RecipeAdder {
      * @param aEUt         = EU needed for heating up (must be >= 0)
      * @return true if the Recipe got added, otherwise false.
      */
+    @Deprecated
     boolean addCokeOvenRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput,
         ItemStack aOutput, int aDuration, int aEUt);
-
+    @Deprecated
     boolean addCokeOvenRecipe(int aCircuit, ItemStack aInput2, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs,
         ItemStack[] aOutputs, int aDuration, int aEUt);
-
+    @Deprecated
     boolean addCokeOvenRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack[] aFluidInputs,
         FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUt);
 
@@ -67,7 +68,7 @@ public interface IGregtech_RecipeAdder {
      * @param aEUt      = EU per tick needed for heating up (must be >= 0)
      * @return true if the Recipe got added, otherwise false.
      */
-
+    @Deprecated
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aOutput, int aChance, int aDuration, int aEUt);
 
     /**
@@ -81,7 +82,7 @@ public interface IGregtech_RecipeAdder {
      * @param aEUt        = EU per tick needed for heating up (must be >= 0)
      * @return true if the Recipe got added, otherwise false.
      */
-
+    @Deprecated
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, int aChance,
         int aDuration, int aEUt);
 
@@ -96,7 +97,7 @@ public interface IGregtech_RecipeAdder {
      * @param aEUt        = EU per tick needed for heating up (must be >= 0)
      * @return true if the Recipe got added, otherwise false.
      */
-
+    @Deprecated
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput, int aChance,
         int aDuration, int aEUt);
 
@@ -112,13 +113,13 @@ public interface IGregtech_RecipeAdder {
      * @param aEUt         = EU per tick needed for heating up (must be >= 0)
      * @return true if the Recipe got added, otherwise false.
      */
-
+    @Deprecated
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput,
         ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt);
-
+    @Deprecated
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, int aChance,
         int aDuration, int aEUt, int aSpecialValue);
-
+    @Deprecated
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput,
         ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt, int aSpecialValue, boolean aOptimizeRecipe);
 
@@ -134,13 +135,13 @@ public interface IGregtech_RecipeAdder {
      * @param aEUt         = EU per tick needed for heating up (must be >= 0)
      * @return true if the Recipe got added, otherwise false.
      */
-
+    @Deprecated
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput,
         ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt);
-
+    @Deprecated
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput, int aChance,
         int aDuration, int aEUt, int aSpecialValue);
-
+    @Deprecated
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput,
         ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt, int aSpecialValue, boolean aOptimizeRecipe);
 
@@ -157,7 +158,7 @@ public interface IGregtech_RecipeAdder {
      * @param aSpecialValue = Power produced in EU/t per dynamo
      * @return true if the Recipe got added, otherwise false.
      */
-
+    @Deprecated
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput,
         ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt, int aSpecialValue);
 
@@ -188,7 +189,7 @@ public interface IGregtech_RecipeAdder {
 
     /**
      * Adds a custom Semifluid fuel for the GT++ SemiFluid Generators.
-     * 
+     *
      * @param aFuelItem  - A Fluidstack to be consumed.
      * @param aFuelValue - Fuel value in thousands (1 = 1000)
      * @return - Was the Fuel added?
@@ -197,7 +198,7 @@ public interface IGregtech_RecipeAdder {
 
     /**
      * Adds a custom Semifluid fuel for the GT++ SemiFluid Generators.
-     * 
+     *
      * @param aFuelItem  - A Fluidstack to be consumed.
      * @param aFuelValue - Fuel value in thousands (1 = 1000)
      * @return - Was the Fuel added?
@@ -223,12 +224,13 @@ public interface IGregtech_RecipeAdder {
         FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3,
         ItemStack aOutput4, int aDuration, int aEUt);
 
+    @Deprecated
     boolean addMultiblockCentrifugeRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs,
         ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial);
-
+    @Deprecated
     boolean addMultiblockElectrolyzerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs,
         ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial);
-
+    @Deprecated
     boolean addAdvancedFreezerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs,
         ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial);
 
@@ -309,10 +311,10 @@ public interface IGregtech_RecipeAdder {
     @Deprecated
     boolean addFluidCannerRecipe(ItemStack aContainer, ItemStack aFullContainer, FluidStack rFluidIn,
         FluidStack rFluidOut, int aTime, int aEu);
-
+    @Deprecated
     boolean addVacuumFurnaceRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput,
         FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt, int aLevel);
-
+    @Deprecated
     boolean addVacuumFurnaceRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack[] aOutputs,
         FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aLevel);
 
