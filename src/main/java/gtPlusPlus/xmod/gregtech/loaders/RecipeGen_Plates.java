@@ -21,6 +21,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
@@ -109,17 +110,16 @@ public class RecipeGen_Plates extends RecipeGen_Base {
             Logger.WARNING("Alloy Smelter Recipe: " + material.getLocalizedName() + " - Success");
                 }
         // Cutting Machine
-        if (ItemUtils.checkForInvalidItems(block) && ItemUtils.checkForInvalidItems(plate_Single))
-            if (GT_Values.RA.addCutterRecipe(
-                block,
-                plate_SingleNine,
-                null,
-                (int) Math.max(material.getMass() * 10L, 1L),
-                material.vVoltageMultiplier)) {
-                    Logger.WARNING("Cutting Machine Recipe: " + material.getLocalizedName() + " - Success");
-                } else {
-                    Logger.WARNING("Cutting Machine Recipe: " + material.getLocalizedName() + " - Failed");
-                }
+        if (ItemUtils.checkForInvalidItems(block) && ItemUtils.checkForInvalidItems(plate_Single)){
+            GT_Values.RA.stdBuilder()
+                .itemInputs(block)
+                .itemOutputs(plate_SingleNine)
+                .duration(Math.max(material.getMass() * 10L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(cutterRecipes);
+
+            Logger.WARNING("Cutting Machine Recipe: " + material.getLocalizedName() + " - Success");
+        }
 
         // Making Double Plates
         if (ItemUtils.checkForInvalidItems(ingotStackTwo) && ItemUtils.checkForInvalidItems(plate_Double)) {

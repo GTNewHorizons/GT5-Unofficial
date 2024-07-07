@@ -6,6 +6,8 @@ import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.RemoteIO;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import java.util.List;
 
@@ -2886,8 +2888,12 @@ public class RECIPES_Machines {
         }
         // Add recipes for new ones
         for (int i = 0; i < aMaxTier; i++) {
-            GT_Values.RA
-                .addCutterRecipe(CI.getTieredMachineCasing(i), aTier[i], null, 20 * 5 * i, (int) GT_Values.V[i]);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(CI.getTieredMachineCasing(i))
+                .itemOutputs(aTier[i])
+                .duration(i*5*SECONDS)
+                .eut(GT_Values.V[i])
+                .addTo(cutterRecipes);
         }
     }
 

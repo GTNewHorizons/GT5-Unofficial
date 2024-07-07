@@ -15,6 +15,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
@@ -65,17 +66,16 @@ public class RecipeGen_MetalRecipe extends RecipeGen_Base {
                     Logger.WARNING("Lathe Rod Recipe: " + material.getLocalizedName() + " - Failed");
                 }
 
-        if (ItemUtils.checkForInvalidItems(material.getRod(1)) && ItemUtils.checkForInvalidItems(material.getBolt(1)))
-            if (GT_Values.RA.addCutterRecipe(
-                material.getRod(1),
-                material.getBolt(4),
-                null,
-                (int) Math.max(material.getMass() * 2L, 1L),
-                material.vVoltageMultiplier)) {
-                    Logger.WARNING("Cut Bolt Recipe: " + material.getLocalizedName() + " - Success");
-                } else {
-                    Logger.WARNING("Cut Bolt Recipe: " + material.getLocalizedName() + " - Failed");
-                }
+        if (ItemUtils.checkForInvalidItems(material.getRod(1)) && ItemUtils.checkForInvalidItems(material.getBolt(1))){
+            GT_Values.RA.stdBuilder()
+                .itemInputs(material.getRod(1))
+                .itemOutputs(material.getBolt(4))
+                .duration(Math.max(material.getMass() * 2L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(cutterRecipes);
+
+            Logger.WARNING("Cut Bolt Recipe: " + material.getLocalizedName() + " - Success");
+        }
 
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
             && ItemUtils.checkForInvalidItems(material.getHotIngot(1)))
@@ -101,12 +101,13 @@ public class RecipeGen_MetalRecipe extends RecipeGen_Base {
                 Logger.WARNING("Hammer Long Rod Recipe: " + material.getLocalizedName() + " - Failed");
             }
 
-            GT_Values.RA.addCutterRecipe(
-                material.getLongRod(1),
-                material.getRod(2),
-                null,
-                (int) Math.max(material.getMass(), 1L),
-                4);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(material.getLongRod(1))
+                .itemOutputs(material.getRod(2))
+                .duration( Math.max(material.getMass(), 1L))
+                .eut(4)
+                .addTo(cutterRecipes);
+
         }
 
         if (ItemUtils.checkForInvalidItems(material.getBolt(1)) && ItemUtils.checkForInvalidItems(material.getScrew(1)))
