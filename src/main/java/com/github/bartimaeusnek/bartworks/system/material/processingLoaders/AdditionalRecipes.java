@@ -27,6 +27,7 @@ import static gregtech.api.enums.OrePrefixes.gemFlawed;
 import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
@@ -35,6 +36,7 @@ import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
@@ -281,16 +283,18 @@ public class AdditionalRecipes {
             WerkstoffLoader.AdemicSteel.get(dust),
             null);
         // Thorium/Yttrium Glas
-        GT_Values.RA.addBlastRecipe(
-            WerkstoffLoader.YttriumOxide.get(dustSmall, 2),
-            WerkstoffLoader.Thorianit.get(dustSmall, 2),
-            Materials.Glass.getMolten(144),
-            null,
-            new ItemStack(ItemRegistry.bw_glasses[0], 1, 12),
-            null,
-            800,
-            (int) TierEU.RECIPE_IV,
-            3663);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffLoader.YttriumOxide.get(dustSmall, 2),
+                WerkstoffLoader.Thorianit.get(dustSmall, 2)
+            )
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 12))
+            .fluidInputs(Materials.Glass.getMolten(144))
+            .duration(40*SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .metadata(COIL_HEAT, 3663)
+            .addTo(blastFurnaceRecipes);
+
         // Thorianite recipes
         GT_Values.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.Thorianit.get(crushedPurified))
@@ -347,16 +351,16 @@ public class AdditionalRecipes {
             .addTo(UniversalChemical);
 
         // Prasiolite
-        GT_Values.RA.addBlastRecipe(
-            GT_OreDictUnificator.get(dust, Materials.Quartzite, 40L),
-            Materials.Amethyst.getDust(10),
-            GT_Values.NF,
-            GT_Values.NF,
-            WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed, 20),
-            GT_Values.NI,
-            800,
-            (int) TierEU.RECIPE_MV,
-            500);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(dust, Materials.Quartzite, 40L),
+                Materials.Amethyst.getDust(10)
+            )
+            .itemOutputs(WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed, 20))
+            .duration(40*SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .metadata(COIL_HEAT, 500)
+            .addTo(blastFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(dust, Materials.Quartzite, 40L))
@@ -380,7 +384,7 @@ public class AdditionalRecipes {
             .addTo(UniversalChemical);
 
         // Zr + 2O =Y22O3= ZrO2
-        RecipeMaps.blastFurnaceRecipes.addRecipe(
+        blastFurnaceRecipes.addRecipe(
             false,
             new ItemStack[] { WerkstoffLoader.Zirconium.get(dust, 10), WerkstoffLoader.YttriumOxide.get(dust, 0) },
             new ItemStack[] { WerkstoffLoader.CubicZirconia.get(gemFlawed, 40) },
@@ -392,16 +396,19 @@ public class AdditionalRecipes {
             (int) TierEU.RECIPE_HV,
             2953);
         // Tellurium
-        GT_Values.RA.addBlastRecipe(
-            GT_OreDictUnificator.get(crushed, Materials.Lead, 10L),
-            GT_Utility.getIntegratedCircuit(17),
-            GT_Values.NF,
-            GT_Values.NF,
-            Materials.Lead.getIngots(10),
-            Materials.Tellurium.getNuggets(20),
-            800,
-            (int) TierEU.RECIPE_MV,
-            722);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(crushed, Materials.Lead, 10L),
+                GT_Utility.getIntegratedCircuit(17)
+            )
+            .itemOutputs(
+                Materials.Lead.getIngots(10),
+                Materials.Tellurium.getNuggets(20)
+            )
+            .duration(40*SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .metadata(COIL_HEAT, 722)
+            .addTo(blastFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
             .fluidInputs(Materials.Plutonium.getMolten(48),

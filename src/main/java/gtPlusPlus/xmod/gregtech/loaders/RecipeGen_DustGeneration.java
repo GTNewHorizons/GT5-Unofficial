@@ -25,8 +25,10 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
 import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 
 public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
@@ -438,16 +440,20 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
             }
             long aVoltage = aMatInfo.vVoltageMultiplier;
 
-            return RA.addBlastRecipe(
-                input1,
-                input2,
-                GT_Values.NF,
-                GT_Values.NF,
-                output1,
-                output2,
-                timeTaken,
-                (int) aVoltage,
-                tempRequired);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    input1,
+                    input2
+                )
+                .itemOutputs(
+                    output1,
+                    output2
+                )
+                .duration(timeTaken)
+                .eut(aVoltage)
+                .metadata(COIL_HEAT, tempRequired)
+                .addTo(blastFurnaceRecipes);
+            return true;
         } catch (Throwable t) {
             t.printStackTrace();
             return false;

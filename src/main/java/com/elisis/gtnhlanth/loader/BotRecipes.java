@@ -2,11 +2,14 @@ package com.elisis.gtnhlanth.loader;
 
 import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.*;
 import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
 import java.util.HashSet;
@@ -116,32 +119,42 @@ public class BotRecipes {
 
         ItemStack WO3 = TungstenTrioxide.get(dust, 4);
         // H2WO4 = WO3 + H2O
-        GT_Values.RA.addBlastRecipe(H2WO4, null, null, null, WO3, null, 200, 480, 1200);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(H2WO4)
+            .itemOutputs(WO3)
+            .duration(10*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .metadata(COIL_HEAT, 1200)
+            .addTo(blastFurnaceRecipes);
 
         // WO3 + 6H = W + 3H2O
-        GT_Values.RA.addBlastRecipe(
-            WO3,
-            C2,
-            Materials.Hydrogen.getGas(6000),
-            GT_ModHandler.getSteam(3000),
-            Materials.Tungsten.getDust(1),
-            null,
-            100,
-            1920,
-            1000);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WO3,
+                C2
+            )
+            .itemOutputs(Materials.Tungsten.getDust(1))
+            .fluidInputs(Materials.Hydrogen.getGas(6000))
+            .fluidOutputs( GT_ModHandler.getSteam(3000))
+            .duration(5*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .metadata(COIL_HEAT, 1000)
+            .addTo(blastFurnaceRecipes);
+
 
         WO3.stackSize = 8;
         // 2WO3 + 3C = 2W + 3CO2
-        GT_Values.RA.addBlastRecipe(
-            WO3,
-            Materials.Carbon.getDust(3),
-            null,
-            Materials.CarbonDioxide.getGas(3000),
-            GT_OreDictUnificator.get(ingotHot, Materials.Tungsten, 2L),
-            null,
-            8000,
-            1920,
-            3000);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WO3,
+                Materials.Carbon.getDust(3)
+            )
+            .itemOutputs(GT_OreDictUnificator.get(ingotHot, Materials.Tungsten, 2L))
+            .fluidOutputs(Materials.CarbonDioxide.getGas(3000))
+            .duration(6*MINUTES+40*SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .metadata(COIL_HEAT, 3000)
+            .addTo(blastFurnaceRecipes);
 
         // rocket fuels
         // LMP103S

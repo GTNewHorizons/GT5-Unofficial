@@ -1,12 +1,14 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
@@ -71,27 +73,24 @@ public class RecipeLoader_Nuclear {
 
     private static void blastFurnace() {
 
-        GT_Values.RA.addBlastRecipe(
-            FLUORIDES.LITHIUM_FLUORIDE.getDust(4),
-            FLUORIDES.BERYLLIUM_FLUORIDE.getDust(3),
-            GT_Values.NF,
-            GT_Values.NF,
-            NUCLIDE.Li2BeF4.getDust(7),
-            null,
-            140 * 20,
-            2000,
-            3000);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                FLUORIDES.LITHIUM_FLUORIDE.getDust(4),
+                FLUORIDES.BERYLLIUM_FLUORIDE.getDust(3)
+            )
+            .itemOutputs(NUCLIDE.Li2BeF4.getDust(7))
+            .duration(2*MINUTES+20*SECONDS)
+            .eut(2000)
+            .metadata(COIL_HEAT, 3000)
+            .addTo(blastFurnaceRecipes);
 
-        GT_Values.RA.addBlastRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("dustZrCl4", 1),
-            null,
-            GT_Values.NF,
-            GT_Values.NF,
-            ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 1),
-            null,
-            60 * 20,
-            340,
-            300);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("dustZrCl4", 1))
+            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 1))
+            .duration(1*MINUTES)
+            .eut(340)
+            .metadata(COIL_HEAT, 300)
+            .addTo(blastFurnaceRecipes);
     }
 
     private static void centrifugeRecipes() {
