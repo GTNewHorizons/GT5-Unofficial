@@ -31,6 +31,7 @@ import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
+import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 public class RecipeGen_Ore extends RecipeGen_Base {
@@ -289,48 +290,58 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 
         try {
             // .08 compat
-            if (GT_ModHandler.addThermalCentrifugeRecipe(
-                material.getCrushed(1),
-                new int[] { 10000, 1111, 10000 },
-                (int) Math.min(5000L, Math.abs(material.getMass() * 20L)),
-                material.getCrushedCentrifuged(1),
-                matDustB,
-                dustStone)) {
-                Logger.MATERIALS(
-                    "[ThermalCentrifuge] Added Recipe: 'Crushed ore to Centrifuged Ore' | Input: "
-                        + material.getCrushed(1)
-                            .getDisplayName()
-                        + " | Outputs: "
-                        + material.getCrushedCentrifuged(1)
-                            .getDisplayName()
-                        + ", "
-                        + matDustB.getDisplayName()
-                        + ", "
-                        + dustStone.getDisplayName()
-                        + ".");
-            }
+            GT_Values.RA.stdBuilder()
+                .itemInputs(material.getCrushed(1))
+                .itemOutputs(
+                    material.getCrushedCentrifuged(1),
+                    matDustB,
+                    dustStone
+                )
+                .outputChances(100_00, 11_11, 100_00)
+                .duration(25*SECONDS)
+                .eut(48)
+                .addTo(thermalCentrifugeRecipes);
+
+            Logger.MATERIALS(
+                "[ThermalCentrifuge] Added Recipe: 'Crushed ore to Centrifuged Ore' | Input: "
+                    + material.getCrushed(1)
+                        .getDisplayName()
+                    + " | Outputs: "
+                    + material.getCrushedCentrifuged(1)
+                        .getDisplayName()
+                    + ", "
+                    + matDustB.getDisplayName()
+                    + ", "
+                    + dustStone.getDisplayName()
+                    + ".");
+
         } catch (Throwable t) {}
         try {
-            if (GT_ModHandler.addThermalCentrifugeRecipe(
-                material.getCrushedPurified(1),
-                new int[] { 10000, 1111, 10000 },
-                (int) Math.min(5000L, Math.abs(material.getMass() * 20L)),
-                material.getCrushedCentrifuged(1),
-                matDustA,
-                dustStone)) {
-                Logger.MATERIALS(
-                    "[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore' | Input: "
-                        + material.getCrushedPurified(1)
-                            .getDisplayName()
-                        + " | Outputs: "
-                        + material.getCrushedCentrifuged(1)
-                            .getDisplayName()
-                        + ", "
-                        + matDustA.getDisplayName()
-                        + ", "
-                        + dustStone.getDisplayName()
-                        + ".");
-            }
+            GT_Values.RA.stdBuilder()
+                .itemInputs(material.getCrushedPurified(1))
+                .itemOutputs(
+                    material.getCrushedCentrifuged(1),
+                    matDustA,
+                    dustStone
+                )
+                .outputChances(100_00,11_11,100_00)
+                .duration(25*SECONDS)
+                .eut(48)
+                .addTo(thermalCentrifugeRecipes);
+
+            Logger.MATERIALS(
+                "[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore' | Input: "
+                    + material.getCrushedPurified(1)
+                        .getDisplayName()
+                    + " | Outputs: "
+                    + material.getCrushedCentrifuged(1)
+                        .getDisplayName()
+                    + ", "
+                    + matDustA.getDisplayName()
+                    + ", "
+                    + dustStone.getDisplayName()
+                    + ".");
+
         } catch (Throwable t) {}
 
         /**

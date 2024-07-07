@@ -31,6 +31,7 @@ import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.electroMagneticSeparatorRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -98,17 +99,18 @@ public class CrushedLoader implements IWerkstoffRunnable {
             werkstoff.get(crushedPurified),
             werkstoff.getOreByProduct(0, dust),
             GT_OreDictUnificator.get(dust, Materials.Stone, 1L));
-        GT_ModHandler.addThermalCentrifugeRecipe(
-            werkstoff.get(crushed),
-            new int[] { 10000, 1111, 10000 },
-            (int) Math.min(
-                5000L,
-                Math.abs(
-                    werkstoff.getStats()
-                        .getProtons() * 20L)),
-            werkstoff.get(crushedCentrifuged),
-            werkstoff.getOreByProduct(1, dust),
-            GT_OreDictUnificator.get(dust, Materials.Stone, 1L));
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(werkstoff.get(crushed))
+            .itemOutputs(
+                werkstoff.get(crushedCentrifuged),
+                werkstoff.getOreByProduct(1, dust),
+                GT_OreDictUnificator.get(dust, Materials.Stone, 1L)
+            )
+            .outputChances(100_00, 11_11, 100_00)
+            .duration(25*SECONDS)
+            .eut(48)
+            .addTo(thermalCentrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(werkstoff.get(crushedPurified))
@@ -125,16 +127,16 @@ public class CrushedLoader implements IWerkstoffRunnable {
             .duration(20*SECONDS)
             .addTo(maceratorRecipes);
 
-        GT_ModHandler.addThermalCentrifugeRecipe(
-            werkstoff.get(crushedPurified),
-            new int[] { 10000, 1111 },
-            (int) Math.min(
-                5000L,
-                Math.abs(
-                    werkstoff.getStats()
-                        .getProtons() * 20L)),
-            werkstoff.get(crushedCentrifuged),
-            werkstoff.getOreByProduct(1, dust));
+        GT_Values.RA.stdBuilder()
+            .itemInputs(werkstoff.get(crushedPurified))
+            .itemOutputs(
+                werkstoff.get(crushedCentrifuged),
+                werkstoff.getOreByProduct(1, dust)
+            )
+            .outputChances(100_00, 11_11)
+            .duration(25*SECONDS)
+            .eut(48)
+            .addTo(thermalCentrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(werkstoff.get(crushedCentrifuged))

@@ -535,14 +535,15 @@ public class RecipeLoader {
             .metadata(COIL_HEAT, 1500)
             .addTo(blastFurnaceRecipes);
 
-        GT_Values.RA.addThermalCentrifugeRecipe(
-            WerkstoffMaterialPool.ThoriumPhosphateConcentrate.get(OrePrefixes.dust),
-            Materials.Thorium.getDust(1),
-            Materials.Phosphate.getDust(1),
-            null,
-            new int[] { 10000, 10000 },
-            200,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.ThoriumPhosphateConcentrate.get(OrePrefixes.dust))
+            .itemOutputs(
+                Materials.Thorium.getDust(1),
+                Materials.Phosphate.getDust(1)
+            )
+            .duration(10*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(thermalCentrifugeRecipes);
 
         GT_Values.RA.addChemicalBathRecipe(
             WerkstoffMaterialPool.MonaziteRareEarthFiltrate.get(OrePrefixes.dust, 1),

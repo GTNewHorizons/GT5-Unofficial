@@ -21,6 +21,8 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 public class RecipeGen_Fluorite extends RecipeGen_Base {
 
@@ -171,25 +173,31 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
             tVoltageMultiplier / 2)) {
             Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate Centrifuged ore to Pure Dust'");
         }
-        if (GT_ModHandler.addThermalCentrifugeRecipe(
-            material.getCrushedPurified(1),
-            (int) Math.min(5000L, Math.abs(material.getMass() * 20L)),
-            material.getCrushedCentrifuged(1),
-            tinyDustA,
-            dustStone)) {
-            Logger.MATERIALS(
-                "[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore' | Input: "
-                    + material.getCrushedPurified(1)
-                        .getDisplayName()
-                    + " | Outputs: "
-                    + material.getCrushedCentrifuged(1)
-                        .getDisplayName()
-                    + ", "
-                    + tinyDustA.getDisplayName()
-                    + ", "
-                    + dustStone.getDisplayName()
-                    + ".");
-        }
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(material.getCrushedPurified(1))
+            .itemOutputs(
+                material.getCrushedCentrifuged(1),
+                tinyDustA,
+                dustStone
+            )
+            .duration(25*SECONDS)
+            .eut(48)
+            .addTo(thermalCentrifugeRecipes);
+
+        Logger.MATERIALS(
+            "[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore' | Input: "
+                + material.getCrushedPurified(1)
+                    .getDisplayName()
+                + " | Outputs: "
+                + material.getCrushedCentrifuged(1)
+                    .getDisplayName()
+                + ", "
+                + tinyDustA.getDisplayName()
+                + ", "
+                + dustStone.getDisplayName()
+                + ".");
+
 
         GT_Values.RA.addChemicalBathRecipe(
             FLUORIDES.FLUORITE.getCrushed(2),
