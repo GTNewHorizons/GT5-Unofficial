@@ -3,6 +3,7 @@ package com.elisis.gtnhlanth.loader;
 import static com.elisis.gtnhlanth.api.recipe.LanthanidesRecipeMaps.digesterRecipes;
 import static com.elisis.gtnhlanth.api.recipe.LanthanidesRecipeMaps.dissolutionTankRecipes;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.*;
+import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
@@ -24,6 +25,7 @@ import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.common.items.GT_MetaGenerated_Item_01.registerCauldronCleaningFor;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
@@ -370,20 +372,14 @@ public class RecipeLoader {
 
         // Cerium
         // Ce2O3 = 2Ce + 3O
-        GT_Values.RA.addElectrolyzerRecipe(
-            WerkstoffMaterialPool.CeriumIIIOxide.get(OrePrefixes.dust, 5),
-            null,
-            null,
-            Materials.Oxygen.getFluid(3000),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cerium, 2),
-            null,
-            null,
-            null,
-            null,
-            null,
-            new int[] { 10000 },
-            150,
-            120);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.CeriumIIIOxide.get(OrePrefixes.dust, 5))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cerium, 2))
+            .fluidOutputs(Materials.Oxygen.getFluid(3000))
+            .duration(7*SECONDS+10*TICKS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(electrolyzerRecipes);
+
 
         // CHAIN BEGIN
         // MONAZITE
@@ -667,37 +663,25 @@ public class RecipeLoader {
             8400);
 
         // 4 EuO = 2 Eu + 2O2
-        GT_Values.RA.addElectrolyzerRecipe(
-            WerkstoffMaterialPool.EuropiumOxide.get(OrePrefixes.dust, 2),
-            null,
-            null,
-            Materials.Oxygen.getGas(1000L),
-            Materials.Europium.getDust(1),
-            null,
-            null,
-            null,
-            null,
-            null,
-            new int[] { 10000, 10000 },
-            300,
-            33000);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.EuropiumOxide.get(OrePrefixes.dust, 2))
+            .itemOutputs(Materials.Europium.getDust(1))
+            .fluidOutputs( Materials.Oxygen.getGas(1000L))
+            .duration(15*SECONDS)
+            .eut(33_000)
+            .addTo(electrolyzerRecipes);
 
         // EuS = Eu + S
         // TODO old recipe. for compat only. remove material and recipe half a year later, i.e. after September 2023.
-        GT_Values.RA.addElectrolyzerRecipe(
-            WerkstoffMaterialPool.EuropiumSulfide.get(OrePrefixes.dust, 2),
-            null,
-            null,
-            null,
-            Materials.Europium.getDust(1),
-            Materials.Sulfur.getDust(1),
-            null,
-            null,
-            null,
-            null,
-            new int[] { 10000, 10000 },
-            600,
-            33000);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.EuropiumSulfide.get(OrePrefixes.dust, 2))
+            .itemOutputs(
+                Materials.Europium.getDust(1),
+                Materials.Sulfur.getDust(1)
+            )
+            .duration(30*SECONDS)
+            .eut(33_000)
+            .addTo(electrolyzerRecipes);
 
         GT_Values.RA.addBlastRecipe(
             WerkstoffMaterialPool.MonaziteRarerEarthSediment.get(OrePrefixes.dust, 1),

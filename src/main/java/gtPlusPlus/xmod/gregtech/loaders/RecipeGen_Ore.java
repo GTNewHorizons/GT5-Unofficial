@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
+import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -24,7 +28,10 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
+import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 public class RecipeGen_Ore extends RecipeGen_Base {
 
@@ -710,20 +717,23 @@ public class RecipeGen_Ore extends RecipeGen_Base {
             Logger.MATERIALS("[Electrolyzer] Fail 2.");
             return false;
         }
-        GT_Values.RA.addElectrolyzerRecipe(
-            aInput1,
-            aInput2,
-            aFluidInput,
-            aFluidOutput,
-            aOutput1,
-            aOutput2,
-            aOutput3,
-            aOutput4,
-            aOutput5,
-            aOutput6,
-            aChances,
-            aDuration,
-            aEUt);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(aInput1, aInput2)
+            .itemOutputs(
+                aOutput1,
+                aOutput2,
+                aOutput3,
+                aOutput4,
+                aOutput5,
+                aOutput6
+            )
+            .outputChances(aChances)
+            .fluidInputs(aFluidInput)
+            .fluidOutputs(aFluidOutput)
+            .duration(aDuration)
+            .eut(aEUt)
+            .addTo(electrolyzerRecipes);
+
         Logger.MATERIALS("[Electrolyzer] Recipe added.");
         return true;
     }
