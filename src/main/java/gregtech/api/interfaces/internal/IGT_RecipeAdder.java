@@ -84,49 +84,8 @@ public interface IGT_RecipeAdder {
     @Deprecated
     boolean addForgeHammerRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt);
 
-    // Allows fluids as well as multiple items.
-    @Deprecated
-    boolean addForgeHammerRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray, ItemStack[] ItemOutputArray,
-        FluidStack[] FluidOutputArray, int aDuration, int aEUt);
-
-    /**
-     * Adds a Wiremill Recipe
-     *
-     * @param aInput    must be != null
-     * @param aOutput   must be != null
-     * @param aDuration must be > 0
-     * @param aEUt      should be > 0
-     */
-    @Deprecated
-    boolean addWiremillRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt);
-
     @Deprecated
     boolean addWiremillRecipe(ItemStack aInput, ItemStack aCircuit, ItemStack aOutput, int aDuration, int aEUt);
-
-    /**
-     * Adds a Polariser Recipe
-     *
-     * @param aInput    must be != null
-     * @param aOutput   must be != null
-     * @param aDuration must be > 0
-     * @param aEUt      should be > 0
-     */
-    @Deprecated
-    boolean addPolarizerRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt);
-
-    /**
-     * Adds a Plate Bending Machine Recipe
-     *
-     * @param aInput    must be != null
-     * @param aOutput   must be != null
-     * @param aDuration must be > 0
-     * @param aEUt      should be > 0
-     */
-    @Deprecated
-    boolean addBenderRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addBenderRecipe(ItemStack aInput, ItemStack aCircuit, ItemStack aOutput, int aDuration, int aEUt);
 
     /**
      * Adds a Extruder Machine Recipe
@@ -141,59 +100,6 @@ public interface IGT_RecipeAdder {
     boolean addExtruderRecipe(ItemStack aInput, ItemStack aShape, ItemStack aOutput, int aDuration, int aEUt);
 
     /**
-     * Adds a Slicer Machine Recipe
-     *
-     * @param aInput    must be != null
-     * @param aShape    must be != null, Set the stackSize to 0 if you don't want to let it consume this Item.
-     * @param aOutput   must be != null
-     * @param aDuration must be > 0
-     * @param aEUt      should be > 0
-     */
-    @Deprecated
-    boolean addSlicerRecipe(ItemStack aInput, ItemStack aShape, ItemStack aOutput, int aDuration, int aEUt);
-
-    /**
-     * @param aInput      must be != null
-     * @param aFluidInput must be != null
-     * @param aOutput1    must be != null
-     * @param aDuration   must be > 0
-     * @param aEUt        should be > 0
-     * @return if the recipe was successfully added
-     */
-    @Deprecated
-    boolean addOreWasherRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3,
-        FluidStack aFluidInput, int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addOreWasherRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3,
-        FluidStack aFluidInput, int[] aChances, int aDuration, int aEUt);
-
-    /**
-     * Adds an Implosion Compressor Recipe
-     *
-     * @param aInput1  must be != null
-     * @param aInput2  amount of ITNT, should be > 0
-     * @param aOutput1 must be != null
-     * @param aOutput2 can be null
-     */
-    @Deprecated
-    boolean addImplosionRecipe(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2);
-
-    /**
-     * Adds a Grinder Recipe
-     *
-     * @param aInput1  must be != null
-     * @param aInput2  id for the Cell needed for this Recipe
-     * @param aOutput1 must be != null
-     * @param aOutput2 can be null
-     * @param aOutput3 can be null
-     * @param aOutput4 can be null
-     */
-    @Deprecated
-    boolean addGrinderRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, ItemStack aOutput2,
-        ItemStack aOutput3, ItemStack aOutput4);
-
-    /**
      * Adds a Distillation Tower Recipe
      *
      * @param aInput   must be != null
@@ -204,28 +110,6 @@ public interface IGT_RecipeAdder {
     boolean addDistillationTowerRecipe(FluidStack aInput, FluidStack[] aOutputs, ItemStack aOutput2, int aDuration,
         int aEUt);
 
-    @Deprecated
-    boolean addDistillationTowerRecipe(FluidStack aInput, ItemStack[] aCircuit, FluidStack[] aOutputs,
-        ItemStack aOutput2, int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addSimpleArcFurnaceRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs, int[] aChances,
-        int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addPlasmaArcFurnaceRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs, int[] aChances,
-        int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addPlasmaArcFurnaceRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs,
-        FluidStack aFluidPutput, int[] aChances, int aDuration, int aEUt);
-
-    /**
-     * Adds a Distillation Tower Recipe
-     */
-    @Deprecated
-    boolean addDistillationRecipe(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2,
-        ItemStack aOutput3, ItemStack aOutput4, int aDuration, int aEUt);
 
     /**
      * Adds a Lathe Machine Recipe
@@ -234,56 +118,10 @@ public interface IGT_RecipeAdder {
     boolean addLatheRecipe(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt);
 
     /**
-     * Adds a Cutter Recipe
-     */
-    @Deprecated
-    boolean addCutterRecipe(ItemStack aInput, FluidStack aLubricant, ItemStack aOutput1, ItemStack aOutput2,
-        int aDuration, int aEUt);
-
-    /**
-     * Adds Cutter Recipes with default Lubricants
-     */
-    @Deprecated
-    boolean addCutterRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addCutterRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt,
-        boolean aCleanroom);
-
-    @Deprecated
-    boolean addCutterRecipe(ItemStack aInput, ItemStack aCircuit, ItemStack aOutput1, ItemStack aOutput2, int aDuration,
-        int aEUt);
-
-    @Deprecated
-    boolean addCutterRecipe(ItemStack aInput, ItemStack aCircuit, ItemStack aOutput1, ItemStack aOutput2, int aDuration,
-        int aEUt, boolean aCleanroom);
-
-    @Deprecated
-    boolean addCutterRecipe(ItemStack[] aInputs, ItemStack[] aOutputs, int aDuration, int aEUt, int aSpecial);
-
-    @Deprecated
-    boolean addCutterRecipe(ItemStack[] aInputs, ItemStack[] aOutputs, int aDuration, int aEUt, boolean aCleanroom);
-
-    /**
      * Adds a Boxing Recipe
      */
     @Deprecated
     boolean addBoxingRecipe(ItemStack aContainedItem, ItemStack aEmptyBox, ItemStack aFullBox, int aDuration, int aEUt);
-
-    /**
-     * @param aInput    must be != null
-     * @param aOutput1  must be != null
-     * @param aDuration must be > 0
-     * @param aEUt      should be > 0
-     * @return if the recipe was successfully added
-     */
-    @Deprecated
-    boolean addThermalCentrifugeRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3,
-        int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addThermalCentrifugeRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3,
-        int[] aChances, int aDuration, int aEUt);
 
     /**
      * Adds an Unboxing Recipe
@@ -309,58 +147,6 @@ public interface IGT_RecipeAdder {
     boolean addVacuumFreezerRecipe(FluidStack aInput1, FluidStack aOutput1, int aDuration, int aEUt);
 
     @Deprecated
-    boolean addVacuumFreezerRecipe(ItemStack[] aItemInput, FluidStack[] aFluidInput, ItemStack[] aItemOutput,
-        FluidStack[] aFluidOutput, int aDuration, int aEUt);
-
-    /**
-     * Adds a Fuel for My Generators
-     *
-     * @param aInput1  must be != null
-     * @param aOutput1 can be null
-     * @param aEU      EU per MilliBucket. If no Liquid Form of this Container is available, then it will give you
-     *                 EU*1000 per Item.
-     * @param aType    0 = Diesel; 1 = Gas Turbine; 2 = Thermal; 3 = Dense Fluid; 4 = Plasma; 5 = Magic; And if
-     *                 something is unclear or missing, then look at the GT_Recipe-Class
-     */
-    @Deprecated
-    boolean addFuel(ItemStack aInput1, ItemStack aOutput1, int aEU, int aType);
-
-    /**
-     * Adds an Amplifier Recipe for the Amplifabricator
-     */
-    @Deprecated
-    boolean addAmplifier(ItemStack aAmplifierItem, int aDuration, int aAmplifierAmountOutputted);
-
-    /**
-     * Adds a Recipe for the Brewing Machine (intentionally limited to Fluid IDs)
-     */
-    @Deprecated
-    boolean addBrewingRecipe(ItemStack aIngredient, Fluid aInput, Fluid aOutput, boolean aHidden);
-
-    @Deprecated
-    boolean addBrewingRecipe(ItemStack aIngredient, Fluid aInput, Fluid aOutput, int aDuration, int aEUt,
-        boolean aHidden);
-
-    @Deprecated
-    boolean addBrewingRecipeCustom(ItemStack aIngredient, FluidStack aInput, FluidStack aOutput, int aDuration,
-        int aEUt, boolean aHidden);
-
-    /**
-     * Adds a Recipe for the Fermenter
-     */
-    @Deprecated
-    boolean addFermentingRecipe(FluidStack aInput, FluidStack aOutput, int aDuration, boolean aHidden);
-
-    @Deprecated
-    boolean addFermentingRecipe(FluidStack aInput, FluidStack aOutput, int aDuration, int aEUT, boolean aHidden);
-
-    /**
-     * Adds a Recipe for the Fluid Heater
-     */
-    @Deprecated
-    boolean addFluidHeaterRecipe(ItemStack aCircuit, FluidStack aOutput, int aDuration, int aEUt);
-
-    @Deprecated
     boolean addFluidHeaterRecipe(ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt);
 
     /**
@@ -374,34 +160,12 @@ public interface IGT_RecipeAdder {
     boolean addDistilleryRecipe(ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt,
         boolean aHidden);
 
-    @Deprecated
-    boolean addDistilleryRecipe(int circuitConfig, FluidStack aInput, FluidStack aOutput, ItemStack aSolidOutput,
-        int aDuration, int aEUt, boolean aHidden);
-
-    @Deprecated
-    boolean addDistilleryRecipe(int aCircuit, FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt,
-        boolean aHidden);
-
     /**
      * Adds a Recipe for the Fluid Solidifier
      */
     @Deprecated
     boolean addFluidSolidifierRecipe(ItemStack aMold, FluidStack aInput, ItemStack aOutput, int aDuration, int aEUt);
 
-    /**
-     * Adds a Recipe for the Fluid Solidifier
-     */
-    @Deprecated
-    boolean addFluidSolidifierRecipe(final ItemStack[] itemInputs, final FluidStack[] fluidInputs,
-        final ItemStack[] itemOutputs, final FluidStack[] fluidOutputs, final int EUPerTick,
-        final int aDurationInTicks);
-
-    /**
-     * Adds a Recipe for Fluid Smelting
-     */
-    @Deprecated
-    boolean addFluidSmelterRecipe(ItemStack aInput, ItemStack aRemains, FluidStack aOutput, int aChance, int aDuration,
-        int aEUt);
 
     /**
      * Adds a Recipe for Fluid Smelting
@@ -411,32 +175,11 @@ public interface IGT_RecipeAdder {
         int aEUt, boolean hidden);
 
     /**
-     * Adds a Recipe for Fluid Extraction
-     */
-    @Deprecated
-    boolean addFluidExtractionRecipe(ItemStack aInput, ItemStack aRemains, FluidStack aOutput, int aChance,
-        int aDuration, int aEUt);
-
-    /**
-     * Adds a Recipe for the Fluid Canner
-     */
-    @Deprecated
-    boolean addFluidCannerRecipe(ItemStack aInput, ItemStack aOutput, FluidStack aFluidInput, FluidStack aFluidOutput);
-
-    @Deprecated
-    boolean addFluidCannerRecipe(ItemStack aInput, ItemStack aOutput, FluidStack aFluidInput, FluidStack aFluidOutput,
-        int aDuration, int aEUt);
-
-    /**
      * Adds a Recipe for the Chemical Bath
      */
     @Deprecated
     boolean addChemicalBathRecipe(ItemStack aInput, FluidStack aBathingFluid, ItemStack aOutput1, ItemStack aOutput2,
         ItemStack aOutput3, int[] aChances, int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addChemicalBathRecipe(ItemStack aInput, FluidStack aBathingFluid, FluidStack aFluidOutput,
-        ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, int[] aChances, int aDuration, int aEUt);
 
     /**
      * Adds a Recipe for the Electromagnetic Separator
@@ -450,13 +193,6 @@ public interface IGT_RecipeAdder {
      */
     @Deprecated
     boolean addExtractorRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt);
-
-    /**
-     * Adds a Recipe for the Printer
-     */
-    @Deprecated
-    boolean addPrinterRecipe(ItemStack aInput, FluidStack aFluid, ItemStack aSpecialSlot, ItemStack aOutput,
-        int aDuration, int aEUt);
 
     /**
      * Adds a Recipe for the Autoclave
@@ -477,17 +213,6 @@ public interface IGT_RecipeAdder {
     boolean addAutoclaveRecipe(ItemStack aInput, ItemStack aCircuit, FluidStack aFluidIn, FluidStack aFluidOut,
         ItemStack aOutput, int aChance, int aDuration, int aEUt, boolean aCleanroom);
 
-    @Deprecated
-    boolean addAutoclaveSpaceRecipe(ItemStack aInput, FluidStack aFluid, ItemStack aOutput, int aChance, int aDuration,
-        int aEUt, boolean aCleanroom);
-
-    @Deprecated
-    boolean addAutoclaveSpaceRecipe(ItemStack aInput, ItemStack aCircuit, FluidStack aFluid, ItemStack aOutput,
-        int aChance, int aDuration, int aEUt, boolean aCleanroom);
-
-    @Deprecated
-    boolean addAutoclave4Recipe(ItemStack aInput, ItemStack aCircuit, FluidStack aFluidIn, FluidStack aFluidOut,
-        ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt, boolean aCleanroom);
 
     /**
      * Adds a Recipe for the Mixer
@@ -518,79 +243,10 @@ public interface IGT_RecipeAdder {
         FluidStack[] FluidOutputArray, int aDuration, int aEUt);
 
     /**
-     * Adds a Recipe for the Laser Engraver.
-     */
-    @Deprecated
-    boolean addLaserEngraverRecipe(ItemStack aItemToEngrave, ItemStack aLens, ItemStack aEngravedItem, int aDuration,
-        int aEUt);
-
-    /**
-     * Adds a Recipe for the Laser Engraver.
-     */
-    @Deprecated
-    boolean addLaserEngraverRecipe(ItemStack aItemToEngrave, ItemStack aLens, ItemStack aEngravedItem, int aDuration,
-        int aEUt, boolean aCleanroom);
-
-    /**
-     * Adds a Generalised Laser Engraver Recipe.
-     *
-     * @param ItemInputArray   Array of input items.
-     * @param FluidInputArray  Array of output items.
-     * @param OutputItemArray  Array of input fluids.
-     * @param FluidOutputArray Array of output items.
-     * @param aDuration        Must be > 0. Duration in ticks.
-     * @param aEUt             Should be > 0. EU/t.
-     * @param aCleanroom       Boolean for usage of cleanroom in recipe.
-     */
-    @Deprecated
-    boolean addLaserEngraverRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray,
-        ItemStack[] OutputItemArray, FluidStack[] FluidOutputArray, int aDuration, int aEUt, boolean aCleanroom);
-
-    /**
-     * Adds a Recipe for the Forming Press
-     */
-    @Deprecated
-    boolean addFormingPressRecipe(ItemStack aItemToImprint, ItemStack aForm, ItemStack aImprintedItem, int aDuration,
-        int aEUt);
-
-    // Allows more than 2 inputs and multiple outputs
-    @Deprecated
-    boolean addFormingPressRecipe(ItemStack[] ItemInputArray, ItemStack[] OutputItemArray, int aDuration, int aEUt);
-
-    /**
      * Adds a Recipe for the Sifter. (up to 9 Outputs)
      */
     @Deprecated
     boolean addSifterRecipe(ItemStack aItemToSift, ItemStack[] aSiftedItems, int[] aChances, int aDuration, int aEUt);
-
-    /**
-     * Adds a Generalised Sifter Recipe.
-     *
-     * @param ItemInputArray   Array of input items.
-     * @param FluidInputArray  Array of output items.
-     * @param OutputItemArray  Array of input fluids.
-     * @param FluidOutputArray Array of output items.
-     * @param aChances         Array of output chances.
-     * @param aDuration        Must be > 0. Duration in ticks.
-     * @param aEUt             Should be > 0. EU/t.
-     * @param aCleanroom       Boolean for usage of cleanroom in recipe.
-     */
-    @Deprecated
-    boolean addSifterRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray, ItemStack[] OutputItemArray,
-        FluidStack[] FluidOutputArray, int[] aChances, int aDuration, int aEUt, boolean aCleanroom);
-
-    /**
-     * Adds a Recipe for the Arc Furnace. (up to 4 Outputs)
-     */
-    @Deprecated
-    boolean addArcFurnaceRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt);
-
-    /**
-     * Adds a Recipe for the Arc Furnace. (up to 4 Outputs)
-     */
-    @Deprecated
-    boolean addArcFurnaceRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt,
-        boolean hidden);
 
     /**
      * Adds a Recipe for the GT Pulveriser. (up to 4 Outputs)
@@ -605,20 +261,8 @@ public interface IGT_RecipeAdder {
     boolean addPulveriserRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt,
         boolean hidden);
 
-    /**
-     * Adds a Distillation Tower Recipe Every Fluid also gets separate distillation recipes
-     *
-     * @param aInput   must be != null
-     * @param aOutputs must be != null 1-5 Fluids
-     * @param aOutput2 can be null
-     */
-    @Deprecated
-    boolean addUniversalDistillationRecipe(FluidStack aInput, FluidStack[] aOutputs, ItemStack aOutput2, int aDuration,
-        int aEUt);
 
-    @Deprecated
-    boolean addUniversalDistillationRecipewithCircuit(FluidStack aInput, ItemStack[] aCircuit, FluidStack[] aOutputs,
-        ItemStack aOutput2, int aDuration, int aEUt);
+
 
     /**
      * Adds Pyrolyse Recipe
@@ -637,16 +281,6 @@ public interface IGT_RecipeAdder {
     boolean addPyrolyseRecipe(ItemStack aInput, FluidStack aFluidInput, int intCircuit, ItemStack aOutput,
         FluidStack aFluidOutput, int aDuration, int aEUt);
 
-    /**
-     * Adds Oil Cracking Recipe
-     *
-     * @param aInput    input item stack
-     * @param aOutput   output item stack
-     * @param aDuration recipe duration
-     * @param aEUt      recipe EU/t expenditure
-     */
-    @Deprecated
-    boolean addCrackingRecipe(FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt);
 
     /**
      * Adds Oil Cracking Recipe
@@ -662,19 +296,6 @@ public interface IGT_RecipeAdder {
     boolean addCrackingRecipe(int circuitConfig, FluidStack aInput, FluidStack aInput2, FluidStack aOutput,
         int aDuration, int aEUt);
 
-    /**
-     * Adds a Sound to the Sonictron9001 you should NOT call this in the preInit-Phase!
-     *
-     * @param aItemStack = The Item you want to display for this Sound
-     * @param aSoundName = The Name of the Sound in the resources/newsound-folder like Vanillasounds
-     * @return true if the Sound got added, otherwise false.
-     */
-    @Deprecated
-    boolean addSonictronSound(ItemStack aItemStack, String aSoundName);
-
-    @Deprecated
-    boolean addChemicalBathRecipe(ItemStack aInput, FluidStack aBathingFluid, ItemStack aOutput1, ItemStack aOutput2,
-        ItemStack aOutput3, FluidStack aFluidOutput, int[] aChances, int aDuration, int aEUt);
 
     /**
      * Add a Nano Forge Recipe. The Nano Forge's main use is to make nanites/nanorobots. Tier 1 Nano Forge - Can make
