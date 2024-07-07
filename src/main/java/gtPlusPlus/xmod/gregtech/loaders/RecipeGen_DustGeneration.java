@@ -27,6 +27,7 @@ import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 
@@ -354,29 +355,27 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
     }
 
     public static boolean generatePackagerRecipes(Material aMatInfo) {
-        AutoMap<Boolean> aResults = new AutoMap<>();
         // Small Dust
-        aResults.put(
-            RA.addBoxingRecipe(
-                GT_Utility.copyAmount(4L, new Object[] { aMatInfo.getSmallDust(4) }),
-                ItemList.Schematic_Dust.get(0L, new Object[0]),
-                aMatInfo.getDust(1),
-                100,
-                4));
-        // Tiny Dust
-        aResults.put(
-            RA.addBoxingRecipe(
-                GT_Utility.copyAmount(9L, new Object[] { aMatInfo.getTinyDust(9) }),
-                ItemList.Schematic_Dust.get(0L, new Object[0]),
-                aMatInfo.getDust(1),
-                100,
-                4));
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.copyAmount(4, aMatInfo.getSmallDust(4)),
+                ItemList.Schematic_Dust.get(0)
+            )
+            .itemOutputs(aMatInfo.getDust(1))
+            .duration(5*SECONDS)
+            .eut(4)
+            .addTo(packagerRecipes);
 
-        for (boolean b : aResults) {
-            if (!b) {
-                return false;
-            }
-        }
+        // Tiny Dust
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.copyAmount(4, aMatInfo.getTinyDust(9)),
+                ItemList.Schematic_Dust.get(0)
+            )
+            .itemOutputs(aMatInfo.getDust(1))
+            .duration(5*SECONDS)
+            .eut(4)
+            .addTo(packagerRecipes);
         return true;
     }
 

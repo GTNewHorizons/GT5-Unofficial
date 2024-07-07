@@ -1,6 +1,8 @@
 package gtPlusPlus.xmod.gregtech.recipes;
 
 import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -905,18 +907,29 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     @Override
     public boolean addpackagerRecipe(ItemStack aRecipeType, ItemStack aSmallDust, ItemStack aTinyDust,
         ItemStack aOutputStack1) {
-        AutoMap<Boolean> aResults = new AutoMap<>();
+
         // Dust 1
-        aResults.put(
-            GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(4L, aSmallDust), aRecipeType, aOutputStack1, 100, 4));
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.copyAmount(4, aSmallDust),
+                aRecipeType
+            )
+            .itemOutputs(aOutputStack1)
+            .duration(5*SECONDS)
+            .eut(4)
+            .addTo(packagerRecipes);
+
         // Dust 2
-        aResults.put(
-            GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(9L, aTinyDust), aRecipeType, aOutputStack1, 100, 4));
-        for (boolean b : aResults) {
-            if (!b) {
-                return false;
-            }
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.copyAmount(9, aTinyDust),
+                aRecipeType
+            )
+            .itemOutputs(aOutputStack1)
+            .duration(5*SECONDS)
+            .eut(4)
+            .addTo(packagerRecipes);
+
         return true;
     }
 
