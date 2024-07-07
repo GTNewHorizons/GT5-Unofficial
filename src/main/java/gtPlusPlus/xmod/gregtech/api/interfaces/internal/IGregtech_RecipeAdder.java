@@ -225,12 +225,6 @@ public interface IGregtech_RecipeAdder {
         ItemStack aOutput4, int aDuration, int aEUt);
 
     @Deprecated
-    boolean addMultiblockCentrifugeRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs,
-        ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial);
-    @Deprecated
-    boolean addMultiblockElectrolyzerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs,
-        ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial);
-    @Deprecated
     boolean addAdvancedFreezerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs,
         ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial);
 
@@ -260,29 +254,6 @@ public interface IGregtech_RecipeAdder {
     @Deprecated
     boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, Object[] aInputs,
         FluidStack[] aFluidInputs, ItemStack aOutput1, int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addChemicalRecipe(ItemStack input1, ItemStack input2, FluidStack inputFluid, FluidStack outputFluid,
-        ItemStack output, int time, int eu);
-
-    @Deprecated
-    boolean addChemicalRecipe(ItemStack input1, ItemStack input2, FluidStack inputFluid, FluidStack outputFluid,
-        ItemStack output, Object object, int time, int eu);
-
-    @Deprecated
-    boolean addChemicalRecipe(ItemStack input1, ItemStack input2, FluidStack inputFluid, FluidStack outputFluid,
-        ItemStack output, ItemStack object, int time);
-
-    @Deprecated
-    boolean addChemicalRecipe(ItemStack input1, ItemStack input2, int aCircuit, FluidStack inputFluid,
-        FluidStack outputFluid, ItemStack output, ItemStack output2, int time, int eu);
-
-    @Deprecated
-    boolean addMultiblockChemicalRecipe(ItemStack[] itemStacks, FluidStack[] fluidStacks, FluidStack[] fluidStacks2,
-        ItemStack[] outputs, int time, int eu);
-
-    @Deprecated
-    boolean addCompressorRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt);
 
     @Deprecated
     boolean addBrewingRecipe(ItemStack aIngredient, FluidStack aInput, FluidStack aOutput, int aTime, int aEu,

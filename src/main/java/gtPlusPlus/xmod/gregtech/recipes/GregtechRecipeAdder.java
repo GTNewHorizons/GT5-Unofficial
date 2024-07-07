@@ -441,69 +441,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     }
 
     @Override
-    public boolean addMultiblockCentrifugeRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs,
-        FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial) {
-        if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs)
-            || aEUtick <= 0) {
-            return false;
-        }
-
-        if (!ItemUtils.checkForInvalidItems(aInputs, aOutputs)) {
-            Logger.INFO("[Recipe] Error generating Large Centrifuge recipe.");
-            Logger.INFO("Inputs: " + ItemUtils.getArrayStackNames(aInputs));
-            Logger.INFO("Fluid Inputs: " + ItemUtils.getArrayStackNames(aFluidInputs));
-            Logger.INFO("Outputs: " + ItemUtils.getArrayStackNames(aOutputs));
-            Logger.INFO("Fluid Outputs: " + ItemUtils.getArrayStackNames(aFluidOutputs));
-            return false;
-        }
-
-        GT_Recipe aRecipe = new GT_Recipe(
-            false,
-            aInputs,
-            aOutputs,
-            null,
-            aChances,
-            aFluidInputs,
-            aFluidOutputs,
-            aDuration,
-            aEUtick,
-            aSpecial);
-        GTPPRecipeMaps.centrifugeNonCellRecipes.addRecipe(aRecipe);
-        return true;
-    }
-
-    @Override
-    public boolean addMultiblockElectrolyzerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs,
-        FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial) {
-        if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs)
-            || aEUtick <= 0) {
-            return false;
-        }
-        if (!ItemUtils.checkForInvalidItems(aInputs, aOutputs)) {
-            Logger.INFO("[Recipe] Error generating Large Electrolyzer recipe.");
-            Logger.INFO("Inputs: " + ItemUtils.getArrayStackNames(aInputs));
-            Logger.INFO("Fluid Inputs: " + ItemUtils.getArrayStackNames(aFluidInputs));
-            Logger.INFO("Outputs: " + ItemUtils.getArrayStackNames(aOutputs));
-            Logger.INFO("Fluid Outputs: " + ItemUtils.getArrayStackNames(aFluidOutputs));
-            return false;
-        }
-
-        GT_Recipe aRecipe = new GT_Recipe(
-            false,
-            aInputs,
-            aOutputs,
-            null,
-            aChances,
-            aFluidInputs,
-            aFluidOutputs,
-            aDuration,
-            aEUtick,
-            aSpecial);
-        GTPPRecipeMaps.electrolyzerNonCellRecipes.addRecipe(aRecipe);
-        return true;
-    }
-
-    @Override
     public boolean addAdvancedFreezerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs,
         ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial) {
         if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs)
@@ -613,51 +550,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         return RA.addAssemblylineRecipe(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
     }
 
-    @Override
-    public boolean addChemicalRecipe(ItemStack input1, ItemStack input2, FluidStack inputFluid, FluidStack outputFluid,
-        ItemStack output, int time, int eu) {
-        return addChemicalRecipe(input1, input2, inputFluid, outputFluid, output, null, time, eu);
-    }
-
-    @Override
-    public boolean addChemicalRecipe(ItemStack input1, ItemStack input2, FluidStack inputFluid, FluidStack outputFluid,
-        ItemStack output, Object object, int time, int eu) {
-        return RA.addChemicalRecipe(input1, input2, inputFluid, outputFluid, output, time, eu);
-    }
-
-    @Override
-    public boolean addChemicalRecipe(ItemStack input1, ItemStack input2, FluidStack inputFluid, FluidStack outputFluid,
-        ItemStack output, ItemStack output2, int time) {
-        return RA.addChemicalRecipe(input1, input2, inputFluid, outputFluid, output, output2, time);
-    }
-
-    @Override
-    public boolean addChemicalRecipe(ItemStack input1, ItemStack input2, int aCircuit, FluidStack inputFluid,
-        FluidStack outputFluid, ItemStack output, ItemStack output2, int time, int eu) {
-        if (aCircuit < 0 || aCircuit > 24) {
-            aCircuit = 22;
-        }
-        GT_Recipe aSpecialRecipe = new GT_Recipe(
-            false,
-            new ItemStack[] { input1, input2 },
-            new ItemStack[] { output, output2 },
-            CI.getNumberedCircuit(aCircuit),
-            new int[] {},
-            new FluidStack[] { inputFluid },
-            new FluidStack[] { outputFluid },
-            time,
-            eu,
-            0);
-        RecipeMaps.chemicalReactorRecipes.add(aSpecialRecipe);
-        return true;
-    }
-
-    @Override
-    public boolean addMultiblockChemicalRecipe(ItemStack[] itemStacks, FluidStack[] fluidStacks,
-        FluidStack[] fluidStacks2, ItemStack[] outputs, int time, int eu) {
-        return RA.addMultiblockChemicalRecipe(itemStacks, fluidStacks, fluidStacks2, outputs, time, eu);
-    }
-
     private boolean areItemsAndFluidsBothNull(final ItemStack[] items, final FluidStack[] fluids) {
         boolean itemsNull = true;
         if (items != null) {
@@ -678,27 +570,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
             }
         }
         return itemsNull && fluidsNull;
-    }
-
-    @Override
-    public boolean addCompressorRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt) {
-        if ((aInput1 == null) || (aOutput1 == null)) {
-            return false;
-        }
-        if (aDuration <= 0) {
-            return false;
-        }
-        RecipeMaps.compressorRecipes.addRecipe(
-            true,
-            new ItemStack[] { aInput1 },
-            new ItemStack[] { aOutput1 },
-            null,
-            null,
-            null,
-            aDuration,
-            aEUt,
-            0);
-        return true;
     }
 
     @Override
