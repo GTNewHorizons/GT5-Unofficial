@@ -3,10 +3,13 @@ package gtPlusPlus.core.item.chemistry;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GT_RecipeConstants;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -239,7 +242,13 @@ public class CoalTar extends ItemPackage {
         recipePhthalicAcidToPhthalicAnhydride();
 
         // Burn the coal gas!
-        GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalGas", 1), null, 96, 1);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalGas", 1))
+            .metadata(FUEL_VALUE, 96)
+            .metadata(FUEL_TYPE, GT_RecipeConstants.FuelType.GasTurbine.ordinal())
+            .duration(0)
+            .eut(0)
+            .addTo(GT_RecipeConstants.Fuel);
         CORE.RA.addSemifluidFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricCoalTarOil", 1), 64);
         CORE.RA.addSemifluidFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTarOil", 1), 32);
         CORE.RA.addSemifluidFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTar", 1), 16);
