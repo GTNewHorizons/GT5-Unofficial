@@ -21,6 +21,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 public class RecipeGen_Plates extends RecipeGen_Base {
@@ -43,7 +44,6 @@ public class RecipeGen_Plates extends RecipeGen_Base {
 
     private void generateRecipes(final Material material) {
 
-        final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 60 : 15;
         final ItemStack ingotStackOne = material.getIngot(1);
         final ItemStack ingotStackTwo = material.getIngot(2);
         final ItemStack ingotStackThree = material.getIngot(3);
@@ -60,16 +60,17 @@ public class RecipeGen_Plates extends RecipeGen_Base {
         Logger.WARNING("Generating Plate recipes for " + material.getLocalizedName());
 
         // Forge Hammer
-        if (ItemUtils.checkForInvalidItems(ingotStackTwo) && ItemUtils.checkForInvalidItems(plate_Single))
-            if (addForgeHammerRecipe(
-                ingotStackThree,
-                plate_SingleTwo,
-                (int) Math.max(material.getMass(), 1L),
-                material.vVoltageMultiplier)) {
-                    Logger.WARNING("Forge Hammer Recipe: " + material.getLocalizedName() + " - Success");
-                } else {
-                    Logger.WARNING("Forge Hammer Recipe: " + material.getLocalizedName() + " - Failed");
-                }
+        if (ItemUtils.checkForInvalidItems(ingotStackTwo) && ItemUtils.checkForInvalidItems(plate_Single)) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(ingotStackThree)
+                .itemOutputs(plate_SingleTwo)
+                .duration(Math.max(material.getMass(), 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(hammerRecipes);
+
+            Logger.WARNING("Forge Hammer Recipe: " + material.getLocalizedName() + " - Success");
+        }
+
         // Bender
         if (ItemUtils.checkForInvalidItems(ingotStackOne) && ItemUtils.checkForInvalidItems(plate_Single)) {
             GT_Values.RA.stdBuilder()
@@ -185,23 +186,5 @@ public class RecipeGen_Plates extends RecipeGen_Base {
             Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }
 
-    }
-
-    public static boolean addForgeHammerRecipe(final ItemStack aInput1, final ItemStack aOutput1, final int aDuration,
-        final int aEUt) {
-        if ((aInput1 == null) || (aOutput1 == null)) {
-            return false;
-        }
-        RecipeMaps.hammerRecipes.addRecipe(
-            true,
-            new ItemStack[] { aInput1 },
-            new ItemStack[] { aOutput1 },
-            null,
-            null,
-            null,
-            aDuration,
-            aEUt,
-            0);
-        return true;
     }
 }
