@@ -2829,12 +2829,12 @@ public class RecipeLoader {
             400,
             960);
 
-        GT_Values.RA.addFluidHeaterRecipe(
-            null,
-            WerkstoffMaterialPool.DilutedAcetone.getFluidOrGas(250),
-            Materials.Acetone.getFluid(150),
-            120,
-            120);
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(WerkstoffMaterialPool.DilutedAcetone.getFluidOrGas(250))
+            .fluidOutputs( Materials.Acetone.getFluid(150))
+            .duration(6*SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(vacuumFreezerRecipes);
 
         // PTMEG Manipulation
 
