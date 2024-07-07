@@ -8,6 +8,7 @@ import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
+import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import net.minecraft.item.ItemStack;
@@ -199,100 +200,127 @@ public class RecipeLoader_Nuclear {
         ItemStack aGtHydrofluoricAcid = ItemUtils
             .getItemStackOfAmountFromOreDictNoBroken("cellHydrofluoricAcid_GT5U", 2);
 
-        GT_Values.RA.addChemicalRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 6), // Input
-            ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5), // Input
-            null, // Fluid Input
-            null, // Fluid Output
-            ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 11),
-            600 * 20);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 6),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5)
+            )
+            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 11))
+            .duration(10*MINUTES)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
 
-        GT_Values.RA.addChemicalRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 3), // Input
-            null, // Input Stack 2
-            FluidUtils.getFluidStack("hydrofluoricacid", 500),
-            FluidUtils.getFluidStack("water", 1000), // Fluid Output
-            ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 2),
-            120 * 20);
+        GT_Values.RA.stdBuilder()
+            .itemInputs( ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 3))
+            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 2))
+            .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid", 500))
+            .fluidOutputs(FluidUtils.getFluidStack("water", 1000))
+            .duration(2*MINUTES)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
 
-        GT_Values.RA.addChemicalRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 8),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 16),
-            FluidUtils.getFluidStack("water", 8000),
-            FluidUtils.getFluidStack("lithiumhydroxide", 6912),
-            CI.emptyCells(8),
-            300 * 20);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 8),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 16)
+            )
+            .itemOutputs(CI.emptyCells(8))
+            .fluidInputs( FluidUtils.getFluidStack("water", 8000))
+            .fluidOutputs(FluidUtils.getFluidStack("lithiumhydroxide", 6912))
+            .duration(5*MINUTES)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
 
         // LFTR Fuel Related Compounds
         // Hydroxide
-        GT_Values.RA.addChemicalRecipe(
-            ItemUtils.getGregtechCircuit(3),
-            ELEMENT.getInstance().OXYGEN.getCell(1),
-            ELEMENT.getInstance().HYDROGEN.getFluidStack(1000),
-            MISC_MATERIALS.HYDROXIDE.getFluidStack(1000),
-            CI.emptyCells(1),
-            GT_Values.NI,
-            8 * 20,
-            30);
-        // Beryllium Hydroxide
-        GT_Values.RA.addChemicalRecipe(
-            ItemUtils.getGregtechCircuit(3),
-            ELEMENT.getInstance().BERYLLIUM.getDust(1),
-            MISC_MATERIALS.HYDROXIDE.getFluidStack(2000),
-            FLUORIDES.BERYLLIUM_HYDROXIDE.getFluidStack(432),
-            GT_Values.NI,
-            4 * 20,
-            30);
-        // Ammonium Bifluoride
-        GT_Values.RA.addChemicalRecipe(
-            ItemUtils.getGregtechCircuit(3),
-            ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
-            MISC_MATERIALS.AMMONIA.getFluidStack(1000),
-            FLUORIDES.AMMONIUM_BIFLUORIDE.getFluidStack(576),
-            CI.emptyCells(1),
-            20 * 20,
-            30);
-        if (aGtHydrofluoricAcid != null) {
-            // Ammonium Bifluoride
-            GT_Values.RA.addChemicalRecipe(
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 ItemUtils.getGregtechCircuit(3),
-                aGtHydrofluoricAcid,
-                MISC_MATERIALS.AMMONIA.getFluidStack(1000),
-                FLUORIDES.AMMONIUM_BIFLUORIDE.getFluidStack(576),
-                CI.emptyCells(2),
-                40 * 20,
-                30);
-        }
+                ELEMENT.getInstance().OXYGEN.getCell(1)
+            )
+            .itemOutputs(CI.emptyCells(1))
+            .fluidInputs(ELEMENT.getInstance().HYDROGEN.getFluidStack(1000))
+            .fluidOutputs(MISC_MATERIALS.HYDROXIDE.getFluidStack(1000))
+            .duration(8*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
+        // Beryllium Hydroxide
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getGregtechCircuit(3),
+                ELEMENT.getInstance().BERYLLIUM.getDust(1)
+            )
+            .fluidInputs(MISC_MATERIALS.HYDROXIDE.getFluidStack(2000))
+            .fluidOutputs(FLUORIDES.BERYLLIUM_HYDROXIDE.getFluidStack(432))
+            .duration(4*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
+        // Ammonium Bifluoride
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getGregtechCircuit(3),
+                ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1)
+            )
+            .itemOutputs(CI.emptyCells(1))
+            .fluidInputs(MISC_MATERIALS.AMMONIA.getFluidStack(1000))
+            .fluidOutputs(FLUORIDES.AMMONIUM_BIFLUORIDE.getFluidStack(576))
+            .duration(20*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
+        // Ammonium Bifluoride
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getGregtechCircuit(3),
+                aGtHydrofluoricAcid
+            )
+            .itemOutputs(CI.emptyCells(2))
+            .fluidInputs(MISC_MATERIALS.AMMONIA.getFluidStack(1000))
+            .fluidOutputs(FLUORIDES.AMMONIUM_BIFLUORIDE.getFluidStack(576))
+            .duration(40*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
         // Ammonium
         // To be deprecated now that it is no longer needed for ammonium bifluoride
-        GT_Values.RA.addChemicalRecipe(
-            ItemUtils.getGregtechCircuit(3),
-            ELEMENT.getInstance().HYDROGEN.getCell(1),
-            MISC_MATERIALS.AMMONIA.getFluidStack(1000),
-            MISC_MATERIALS.AMMONIUM.getFluidStack(2000),
-            CI.emptyCells(1),
-            GT_Values.NI,
-            20 * 20,
-            30);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getGregtechCircuit(3),
+                ELEMENT.getInstance().HYDROGEN.getCell(1)
+            )
+            .itemOutputs(CI.emptyCells(1))
+            .fluidInputs(MISC_MATERIALS.AMMONIA.getFluidStack(1000))
+            .fluidOutputs(MISC_MATERIALS.AMMONIUM.getFluidStack(2000))
+            .duration(20*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
 
         // Sodium Fluoride
-        GT_Values.RA.addChemicalRecipe(
-            CI.getNumberedBioCircuit(15),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3),
-            FluidUtils.getFluidStack("hydrofluoricacid", 500),
-            FluidUtils.getWater(1000),
-            FLUORIDES.SODIUM_FLUORIDE.getDust(2),
-            60 * 20);
-
-        if (FluidUtils.doesFluidExist("hydrofluoricacid_gt5u")) {
-            GT_Values.RA.addChemicalRecipe(
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 CI.getNumberedBioCircuit(15),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3),
-                FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 1000),
-                FluidUtils.getWater(1000),
-                FLUORIDES.SODIUM_FLUORIDE.getDust(2),
-                60 * 20);
-        }
+                ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3)
+            )
+            .itemOutputs(FLUORIDES.SODIUM_FLUORIDE.getDust(2))
+            .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid", 500))
+            .fluidOutputs(FluidUtils.getWater(1000))
+            .duration(1*MINUTES)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedBioCircuit(15),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3)
+            )
+            .itemOutputs(FLUORIDES.SODIUM_FLUORIDE.getDust(2))
+            .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 1000))
+            .fluidOutputs(FluidUtils.getWater(1000))
+            .duration(1*MINUTES)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
     }
 
     private static void dehydratorRecipes() {

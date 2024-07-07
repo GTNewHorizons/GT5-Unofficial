@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
@@ -128,22 +130,31 @@ public class RecipeLoader_GlueLine {
 
     private static void chemicalReactorRecipes() {
         // NaOH + HCN = NaCN + H2O
-        GT_Values.RA.addChemicalRecipe(
-            CI.getNumberedCircuit(17),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3),
-            MISC_MATERIALS.HYDROGEN_CYANIDE.getFluidStack(1000),
-            FluidUtils.getWater(1000),
-            MISC_MATERIALS.SODIUM_CYANIDE.getDust(3),
-            10 * 20);
-        // #addChemicalRecipe won't generate LCR recipe if config >= 10
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(17),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3) },
-            new FluidStack[] { MISC_MATERIALS.HYDROGEN_CYANIDE.getFluidStack(1000) },
-            new FluidStack[] { FluidUtils.getWater(1000) },
-            new ItemStack[] { MISC_MATERIALS.SODIUM_CYANIDE.getDust(3) },
-            10 * 20,
-            30);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedCircuit(17),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3)
+            )
+            .itemOutputs(MISC_MATERIALS.SODIUM_CYANIDE.getDust(3))
+            .fluidInputs(MISC_MATERIALS.HYDROGEN_CYANIDE.getFluidStack(1000))
+            .fluidOutputs(FluidUtils.getWater(1000))
+            .duration(10*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(chemicalReactorRecipes);
+
+        // #UniversalChemical recipemap won't generate LCR recipe if config >= 10
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedCircuit(17),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3)
+            )
+            .itemOutputs(MISC_MATERIALS.SODIUM_CYANIDE.getDust(3))
+            .fluidInputs(MISC_MATERIALS.HYDROGEN_CYANIDE.getFluidStack(1000))
+            .fluidOutputs(FluidUtils.getWater(1000))
+            .duration(10*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockChemicalReactorRecipes);
+
 
         // CaCO3 + 2HCl = CaCl2 + CO2 + H2O
         GT_Values.RA.stdBuilder()
@@ -157,21 +168,31 @@ public class RecipeLoader_GlueLine {
 
         // Cu + 2H2SO4 = CuSO4 + SO2 + 2H2O
         // SO2 + 2H2O -> diluted sulfuric acid
-        GT_Values.RA.addChemicalRecipe(
-            CI.getNumberedCircuit(19),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1),
-            FluidUtils.getFluidStack("sulfuricacid", 2000),
-            FluidUtils.getFluidStack("dilutedsulfuricacid", 1000),
-            MISC_MATERIALS.COPPER_SULFATE.getDust(6),
-            5 * 20);
-        // #addChemicalRecipe won't generate LCR recipe if config >= 10
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(19), ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1) },
-            new FluidStack[] { FluidUtils.getFluidStack("sulfuricacid", 2000) },
-            new FluidStack[] { FluidUtils.getFluidStack("dilutedsulfuricacid", 1000) },
-            new ItemStack[] { MISC_MATERIALS.COPPER_SULFATE.getDust(6) },
-            5 * 20,
-            30);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedCircuit(19),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1)
+            )
+            .itemOutputs(MISC_MATERIALS.COPPER_SULFATE.getDust(6))
+            .fluidInputs(FluidUtils.getFluidStack("sulfuricacid", 2000))
+            .fluidOutputs(FluidUtils.getFluidStack("dilutedsulfuricacid", 1000))
+            .duration(5*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(chemicalReactorRecipes);
+
+
+        // #UniversalChemical won't generate LCR recipe if config >= 10
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedCircuit(19),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1)
+            )
+            .itemOutputs(MISC_MATERIALS.COPPER_SULFATE.getDust(6))
+            .fluidInputs(FluidUtils.getFluidStack("sulfuricacid", 2000))
+            .fluidOutputs(FluidUtils.getFluidStack("dilutedsulfuricacid", 1000))
+            .duration(5*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockChemicalReactorRecipes);
     }
 
     private static void dehydratorRecipes() {

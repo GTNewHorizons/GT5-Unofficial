@@ -9,6 +9,7 @@ import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
@@ -26,6 +27,7 @@ import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gregtech.common.items.GT_MetaGenerated_Item_01.registerCauldronCleaningFor;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
@@ -79,22 +81,30 @@ public class RecipeLoader {
         /* ZIRCONIUM */
         // ZrCl4
         // ZrO2 + 4HCl = ZrCl4 + 2H2O
-        GT_Values.RA.addChemicalRecipe(
-            GT_Utility.getIntegratedCircuit(1),
-            WerkstoffMaterialPool.Zirconia.get(OrePrefixes.dust, 3),
-            Materials.HydrochloricAcid.getFluid(4000),
-            Materials.Water.getFluid(2000),
-            WerkstoffMaterialPool.ZirconiumTetrachloride.get(OrePrefixes.dust, 5),
-            300);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1),
+                WerkstoffMaterialPool.Zirconia.get(OrePrefixes.dust, 3)
+            )
+            .itemOutputs(WerkstoffMaterialPool.ZirconiumTetrachloride.get(OrePrefixes.dust, 5))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(4000))
+            .fluidOutputs( Materials.Water.getFluid(2000))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
 
         // ZrCl4-H2O
-        GT_Values.RA.addChemicalRecipe(
-            GT_Utility.getIntegratedCircuit(1),
-            WerkstoffMaterialPool.ZirconiumTetrachloride.get(OrePrefixes.dust, 5),
-            Materials.Water.getFluid(1000),
-            WerkstoffMaterialPool.ZirconiumTetrachlorideSolution.getFluidOrGas(1000),
-            null,
-            200);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1),
+                WerkstoffMaterialPool.ZirconiumTetrachloride.get(OrePrefixes.dust, 5)
+            )
+            .fluidInputs(Materials.Water.getFluid(1000))
+            .fluidOutputs(WerkstoffMaterialPool.ZirconiumTetrachlorideSolution.getFluidOrGas(1000))
+            .duration(10*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
 
         // Zr
         // ZrCl4·H2O + 2Mg = Zr + 2MgCl2
@@ -112,22 +122,29 @@ public class RecipeLoader {
         /* HAFNIUM */
         // HfCl4
         // HfO2 + 4HCl = HfCl4 + 2H2O
-        GT_Values.RA.addChemicalRecipe(
-            GT_Utility.getIntegratedCircuit(1),
-            WerkstoffMaterialPool.Hafnia.get(OrePrefixes.dust, 3),
-            Materials.HydrochloricAcid.getFluid(4000),
-            Materials.Water.getFluid(2000),
-            WerkstoffMaterialPool.HafniumTetrachloride.get(OrePrefixes.dust, 5),
-            300);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1),
+                WerkstoffMaterialPool.Hafnia.get(OrePrefixes.dust, 3)
+            )
+            .itemOutputs(WerkstoffMaterialPool.HafniumTetrachloride.get(OrePrefixes.dust, 5))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(4000))
+            .fluidOutputs(Materials.Water.getFluid(2000))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
 
         // HfCl4-H2O
-        GT_Values.RA.addChemicalRecipe(
-            GT_Utility.getIntegratedCircuit(1),
-            WerkstoffMaterialPool.HafniumTetrachloride.get(OrePrefixes.dust, 5),
-            Materials.Water.getFluid(1000),
-            WerkstoffMaterialPool.HafniumTetrachlorideSolution.getFluidOrGas(1000),
-            null,
-            200);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1),
+                WerkstoffMaterialPool.HafniumTetrachloride.get(OrePrefixes.dust, 5)
+            )
+            .fluidInputs(Materials.Water.getFluid(1000))
+            .fluidOutputs(WerkstoffMaterialPool.HafniumTetrachlorideSolution.getFluidOrGas(1000))
+            .duration(10*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
 
         // LP-Hf
         // HfCl4 + 2Mg = ??Hf?? + 2MgCl2
@@ -144,20 +161,26 @@ public class RecipeLoader {
 
         // HfI4
         // ??Hf?? + 4I = HfI4
-        GT_Values.RA.addChemicalRecipe(
-            GT_Utility.getIntegratedCircuit(1),
-            WerkstoffMaterialPool.LowPurityHafnium.get(OrePrefixes.dust, 1),
-            WerkstoffMaterialPool.Iodine.getFluidOrGas(4000),
-            null,
-            WerkstoffMaterialPool.HafniumIodide.get(OrePrefixes.dust, 5),
-            300);
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.LowPurityHafnium.get(OrePrefixes.dust, 1),
-            WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 4),
-            null,
-            null,
-            WerkstoffMaterialPool.HafniumIodide.get(OrePrefixes.dust, 5),
-            300);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1),
+                WerkstoffMaterialPool.LowPurityHafnium.get(OrePrefixes.dust, 1)
+            )
+            .itemOutputs(WerkstoffMaterialPool.HafniumIodide.get(OrePrefixes.dust, 5))
+            .fluidInputs(WerkstoffMaterialPool.Iodine.getFluidOrGas(4000))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.LowPurityHafnium.get(OrePrefixes.dust, 1),
+                WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 4)
+            )
+            .itemOutputs(WerkstoffMaterialPool.HafniumIodide.get(OrePrefixes.dust, 5))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
 
         // Hf
         // HfI4 = Hf + 4I
@@ -198,23 +221,25 @@ public class RecipeLoader {
 
         // Ammonium Nitrate
         // HNO3 + NH3 = NH4NO3
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            GT_Utility.getIntegratedCircuit(12),
-            Materials.NitricAcid.getCells(1),
-            Materials.Ammonia.getGas(1000),
-            WerkstoffMaterialPool.AmmoniumNitrate.getFluidOrGas(1000),
-            Materials.Empty.getCells(1),
-            null,
-            30,
-            400);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(12),
+                Materials.NitricAcid.getCells(1)
+            )
+            .itemOutputs(Materials.Empty.getCells(1))
+            .fluidInputs(Materials.Ammonia.getGas(1000))
+            .fluidOutputs( WerkstoffMaterialPool.AmmoniumNitrate.getFluidOrGas(1000))
+            .duration(1*SECONDS+10*TICKS)
+            .eut(400)
+            .addTo(chemicalReactorRecipes);
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(12) },
-            new FluidStack[] { Materials.NitricAcid.getFluid(1000), Materials.Ammonia.getGas(1000) },
-            new FluidStack[] { WerkstoffMaterialPool.AmmoniumNitrate.getFluidOrGas(1000) },
-            new ItemStack[] {},
-            30,
-            400);
+        GT_Values.RA.stdBuilder()
+            .itemInputs( GT_Utility.getIntegratedCircuit(12))
+            .fluidInputs( Materials.NitricAcid.getFluid(1000), Materials.Ammonia.getGas(1000))
+            .fluidOutputs( WerkstoffMaterialPool.AmmoniumNitrate.getFluidOrGas(1000))
+            .duration(1*SECONDS+10*TICKS)
+            .eut(400)
+            .addTo(multiblockChemicalReactorRecipes);
 
         // IODINE-START
         // SeaweedAsh
@@ -274,101 +299,106 @@ public class RecipeLoader {
             1200);
 
         // Mn + 2O = MnO2
-        GT_Values.RA.addChemicalRecipe(
-            Materials.Manganese.getDust(1),
-            GT_Utility.getIntegratedCircuit(1),
-            Materials.Oxygen.getGas(2000),
-            null,
-            Materials.Pyrolusite.getDust(3),
-            40,
-            30);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Manganese.getDust(1),
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(Materials.Pyrolusite.getDust(3))
+            .fluidInputs(Materials.Oxygen.getGas(2000))
+            .duration(2*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
 
         // 6KOH + 6Cl = KClO3 + 5KCl + 3H2O
-        GT_Values.RA.addChemicalRecipe(
-            GT_ModHandler.getModItem("dreamcraft", "item.PotassiumHydroxideDust", 18),
-            GT_Utility.getIntegratedCircuit(3),
-            Materials.Chlorine.getGas(6000),
-            Materials.Water.getFluid(3000),
-            Materials.RockSalt.getDust(10),
-            WerkstoffMaterialPool.PotassiumChlorate.get(OrePrefixes.dust, 5),
-            40,
-            30);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_ModHandler.getModItem("dreamcraft", "item.PotassiumHydroxideDust", 18),
+                GT_Utility.getIntegratedCircuit(3)
+            )
+            .itemOutputs(
+                Materials.RockSalt.getDust(10),
+                WerkstoffMaterialPool.PotassiumChlorate.get(OrePrefixes.dust, 5)
+            )
+            .fluidInputs(Materials.Chlorine.getGas(6000))
+            .fluidOutputs( Materials.Water.getFluid(3000))
+            .duration(2*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
 
-        /*
-         * //Fluorosilicic Acid GT_Values.RA.addChemicalRecipe( GT_Utility.getIntegratedCircuit(1),
-         * Materials.SiliconDioxide.getDust(1), Materials.HydrofluoricAcid.getFluid(6000),
-         * WerkstoffMaterialPool.FluorosilicicAcid.getFluidOrGas(1000), null, 300, 600 );
-         */
         // Sodium Fluorosilicate
         // 2NaCl + H2SiF6 = 2HCl + Na2SiF6
-        GT_Values.RA.addChemicalRecipe(
-            Materials.Empty.getCells(2),
-            Materials.Salt.getDust(4),
-            WerkstoffLoader.HexafluorosilicicAcid.getFluidOrGas(1000),
-            WerkstoffMaterialPool.SodiumFluorosilicate.getFluidOrGas(1000),
-            Materials.HydrochloricAcid.getCells(2),
-            600,
-            450);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Empty.getCells(2),
+                Materials.Salt.getDust(4)
+            )
+            .itemOutputs(Materials.HydrochloricAcid.getCells(2))
+            .fluidInputs(WerkstoffLoader.HexafluorosilicicAcid.getFluidOrGas(1000))
+            .fluidOutputs(WerkstoffMaterialPool.SodiumFluorosilicate.getFluidOrGas(1000))
+            .duration(30*SECONDS)
+            .eut(450)
+            .addTo(UniversalChemical);
     }
 
     public static void loadLanthanideRecipes() {
         // Methanol
         // CH4O + CO + 3O =V2O5= H2C2O4 + H2O
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { MyMaterial.vanadiumPentoxide.get(OrePrefixes.dustTiny, 1) },
-            new FluidStack[] { Materials.Methanol.getFluid(1000), Materials.CarbonMonoxide.getGas(1000),
-                Materials.Oxygen.getGas(3000) },
-            new FluidStack[] { MyMaterial.oxalate.getFluidOrGas(1000), Materials.Water.getFluid(1000) },
-            null,
-            450,
-            240);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(MyMaterial.vanadiumPentoxide.get(OrePrefixes.dustTiny, 1))
+            .fluidInputs(Materials.Methanol.getFluid(1000), Materials.CarbonMonoxide.getGas(1000),
+                Materials.Oxygen.getGas(3000) )
+            .fluidOutputs(MyMaterial.oxalate.getFluidOrGas(1000), Materials.Water.getFluid(1000))
+            .duration(22*SECONDS+10*TICKS)
+            .eut(240)
+            .addTo(multiblockChemicalReactorRecipes);
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(9),
-                MyMaterial.vanadiumPentoxide.get(OrePrefixes.dust, 1) },
-            new FluidStack[] { Materials.Methanol.getFluid(9000), Materials.CarbonMonoxide.getGas(9000),
-                Materials.Oxygen.getGas(27000) },
-            new FluidStack[] { MyMaterial.oxalate.getFluidOrGas(9000), Materials.Water.getFluid(9000) },
-            null,
-            4050,
-            240);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(9),
+                MyMaterial.vanadiumPentoxide.get(OrePrefixes.dust, 1)
+            )
+            .fluidInputs( Materials.Methanol.getFluid(9000), Materials.CarbonMonoxide.getGas(9000),
+                Materials.Oxygen.getGas(27000))
+            .fluidOutputs(MyMaterial.oxalate.getFluidOrGas(9000), Materials.Water.getFluid(9000))
+            .duration(3*MINUTES+22*SECONDS+10*TICKS)
+            .eut(240)
+            .addTo(multiblockChemicalReactorRecipes);
 
         // Ethanol
         // C2H6O + 5O =V2O5= H2C2O4 + 2H2O
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { MyMaterial.vanadiumPentoxide.get(OrePrefixes.dustTiny, 1) },
-            new FluidStack[] { Materials.Ethanol.getFluid(1000), Materials.Oxygen.getGas(5000) },
-            new FluidStack[] { MyMaterial.oxalate.getFluidOrGas(1000), Materials.Water.getFluid(2000) },
-            null,
-            450,
-            240);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(MyMaterial.vanadiumPentoxide.get(OrePrefixes.dustTiny, 1))
+            .itemOutputs()
+            .fluidInputs( Materials.Ethanol.getFluid(1000), Materials.Oxygen.getGas(5000))
+            .fluidOutputs( MyMaterial.oxalate.getFluidOrGas(1000), Materials.Water.getFluid(2000))
+            .duration(22*SECONDS+10*TICKS)
+            .eut(240)
+            .addTo(multiblockChemicalReactorRecipes);
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(9),
-                MyMaterial.vanadiumPentoxide.get(OrePrefixes.dust, 1) },
-            new FluidStack[] { Materials.Ethanol.getFluid(9000), Materials.Oxygen.getGas(45000) },
-            new FluidStack[] { MyMaterial.oxalate.getFluidOrGas(9000), Materials.Water.getFluid(18000) },
-            null,
-            4050,
-            240);
-
-        // GT_Values.RA.addChemicalRecipe(
-        // GT_Utility.getIntegratedCircuit(2),
-        // WerkstoffMaterialPool.CeriumDioxide
-        //
-        // )
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(9),
+                MyMaterial.vanadiumPentoxide.get(OrePrefixes.dust, 1) )
+            .fluidInputs( Materials.Ethanol.getFluid(9000), Materials.Oxygen.getGas(45000))
+            .fluidOutputs(MyMaterial.oxalate.getFluidOrGas(9000), Materials.Water.getFluid(18000))
+            .duration(3*MINUTES+22*SECONDS+10*TICKS)
+            .eut(240)
+            .addTo(multiblockChemicalReactorRecipes);
 
         // Cerium Oxalate
         // 2CeCl3 + 3H2C2O4 = 6HCl + Ce2(C2O4)3
-        GT_Values.RA.addChemicalRecipe(
-            GT_Utility.getIntegratedCircuit(1),
-            WerkstoffMaterialPool.CeriumChloride.get(OrePrefixes.dust, 8),
-            MyMaterial.oxalate.getFluidOrGas(3000),
-            Materials.HydrochloricAcid.getFluid(6000),
-            WerkstoffMaterialPool.CeriumOxalate.get(OrePrefixes.dust, 5),
-            null,
-            300,
-            450);
+                GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1),
+                WerkstoffMaterialPool.CeriumChloride.get(OrePrefixes.dust, 8)
+            )
+            .itemOutputs(WerkstoffMaterialPool.CeriumOxalate.get(OrePrefixes.dust, 5))
+            .fluidInputs(MyMaterial.oxalate.getFluidOrGas(3000))
+            .fluidOutputs(Materials.HydrochloricAcid.getFluid(6000))
+            .duration(15*SECONDS)
+            .eut(450)
+            .addTo(UniversalChemical);
 
         // Cerium
         // Ce2O3 = 2Ce + 3O
@@ -452,23 +482,23 @@ public class RecipeLoader {
             480,
             400);
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(13) },
-            new FluidStack[] { WerkstoffMaterialPool.DilutedMonaziteSulfate.getFluidOrGas(1000),
-                WerkstoffMaterialPool.AmmoniumNitrate.getFluidOrGas(200) },
-            null,
-            new ItemStack[] { WerkstoffMaterialPool.AcidicMonazitePowder.get(OrePrefixes.dustTiny, 3), },
-            480,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(13))
+            .itemOutputs(WerkstoffMaterialPool.AcidicMonazitePowder.get(OrePrefixes.dustTiny, 3))
+            .fluidInputs(WerkstoffMaterialPool.DilutedMonaziteSulfate.getFluidOrGas(1000),
+                WerkstoffMaterialPool.AmmoniumNitrate.getFluidOrGas(200))
+            .duration(24*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(14) },
-            new FluidStack[] { WerkstoffMaterialPool.DilutedMonaziteSulfate.getFluidOrGas(9000),
-                WerkstoffMaterialPool.AmmoniumNitrate.getFluidOrGas(1800) },
-            null,
-            new ItemStack[] { WerkstoffMaterialPool.AcidicMonazitePowder.get(OrePrefixes.dust, 3), },
-            4320,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(14))
+            .itemOutputs(WerkstoffMaterialPool.AcidicMonazitePowder.get(OrePrefixes.dust, 3))
+            .fluidInputs(WerkstoffMaterialPool.DilutedMonaziteSulfate.getFluidOrGas(9000),
+                WerkstoffMaterialPool.AmmoniumNitrate.getFluidOrGas(1800))
+            .duration(3*MINUTES+36*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
 
         GT_Values.RA.addSifterRecipe(
             WerkstoffMaterialPool.AcidicMonazitePowder.get(OrePrefixes.dust, 1),
@@ -546,14 +576,15 @@ public class RecipeLoader {
             120,
             1200);
 
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.DriedMonaziteRareEarthConcentrate.get(OrePrefixes.dust, 1),
-            null,
-            Materials.NitricAcid.getFluid(500),
-            WerkstoffMaterialPool.NitratedRareEarthMonaziteConcentrate.getFluidOrGas(1000),
-            null,
-            500,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.DriedMonaziteRareEarthConcentrate.get(OrePrefixes.dust, 1)
+            )
+            .fluidInputs(Materials.NitricAcid.getFluid(500))
+            .fluidOutputs(WerkstoffMaterialPool.NitratedRareEarthMonaziteConcentrate.getFluidOrGas(1000))
+            .duration(25*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
 
         GT_Values.RA.addMixerRecipe(
             Materials.Water.getCells(1),
@@ -591,25 +622,35 @@ public class RecipeLoader {
 
         // BEGIN Cerium
         // Cerium-rich mixture + 3HCl = CeCl3 + Monazite (to allow cerium processing without bastnazite/monazite)
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 15),
-            null,
-            Materials.HydrochloricAcid.getFluid(750),
-            Materials.Water.getFluid(750),
-            WerkstoffMaterialPool.CeriumChloride.get(OrePrefixes.dust, 1),
-            Materials.Monazite.getDust(1),
-            300,
-            450);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 15)
+            )
+            .itemOutputs(
+                WerkstoffMaterialPool.CeriumChloride.get(OrePrefixes.dust, 1),
+                Materials.Monazite.getDust(1)
+            )
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(750))
+            .fluidOutputs(Materials.Water.getFluid(750))
+            .duration(25*SECONDS)
+            .eut(450)
+            .addTo(UniversalChemical);
+
         // CeO2 + 3NH4Cl + H = 3NH3 + CeCl3 + 2H2O
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.CeriumDioxide.get(OrePrefixes.dust, 3),
-            WerkstoffLoader.AmmoniumChloride.get(OrePrefixes.cell, 3),
-            Materials.Hydrogen.getGas(1000),
-            Materials.Water.getGas(2000),
-            WerkstoffMaterialPool.CeriumChloride.get(OrePrefixes.dust, 4),
-            Materials.Ammonia.getCells(3),
-            300,
-            450);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.CeriumDioxide.get(OrePrefixes.dust, 3),
+                WerkstoffLoader.AmmoniumChloride.get(OrePrefixes.cell, 3)
+            )
+            .itemOutputs(
+                WerkstoffMaterialPool.CeriumChloride.get(OrePrefixes.dust, 4),
+                Materials.Ammonia.getCells(3)
+            )
+            .fluidInputs(Materials.Hydrogen.getGas(1000))
+            .fluidOutputs(Materials.Water.getGas(2000))
+            .duration(15*SECONDS)
+            .eut(450)
+            .addTo(UniversalChemical);
 
         // Ce2(C2O4)3 + 3C = Ce2O3 + 9CO
         GT_Values.RA.addBlastRecipe(
@@ -653,14 +694,15 @@ public class RecipeLoader {
             1920);
 
         // 5Eu2O3 + Eu = 4EuO
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.EuropiumIIIOxide.get(OrePrefixes.dust, 5),
-            Materials.Europium.getDust(1),
-            null,
-            null,
-            WerkstoffMaterialPool.EuropiumOxide.get(OrePrefixes.dust, 6),
-            300,
-            8400);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.EuropiumIIIOxide.get(OrePrefixes.dust, 5),
+                Materials.Europium.getDust(1)
+            )
+            .itemOutputs(WerkstoffMaterialPool.EuropiumOxide.get(OrePrefixes.dust, 6))
+            .duration(15*SECONDS)
+            .eut(8400)
+            .addTo(UniversalChemical);
 
         // 4 EuO = 2 Eu + 2O2
         GT_Values.RA.stdBuilder()
@@ -836,14 +878,14 @@ public class RecipeLoader {
             100,
             30);
 
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.WetRareEarthOxides.get(OrePrefixes.dust, 1),
-            null,
-            Materials.Fluorine.getGas(4000),
-            Materials.HydrofluoricAcid.getFluid(4000),
-            WerkstoffMaterialPool.CeriumOxidisedRareEarthOxides.get(OrePrefixes.dust, 1),
-            300,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.WetRareEarthOxides.get(OrePrefixes.dust, 1))
+            .itemOutputs(WerkstoffMaterialPool.CeriumOxidisedRareEarthOxides.get(OrePrefixes.dust, 1))
+            .fluidInputs(Materials.Fluorine.getGas(4000))
+            .fluidOutputs(Materials.HydrofluoricAcid.getFluid(4000))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(WerkstoffMaterialPool.CeriumOxidisedRareEarthOxides.get(OrePrefixes.dust, 1))
@@ -867,14 +909,14 @@ public class RecipeLoader {
             300,
             480);
 
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.NitratedBastnasiteRarerEarthOxides.get(OrePrefixes.cell, 1),
-            null,
-            Materials.Acetone.getFluid(1000),
-            WerkstoffMaterialPool.SaturatedBastnasiteRarerEarthOxides.getFluidOrGas(1000),
-            Materials.Empty.getCells(1),
-            700,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.NitratedBastnasiteRarerEarthOxides.get(OrePrefixes.cell, 1))
+            .itemOutputs(Materials.Empty.getCells(1))
+            .fluidInputs(Materials.Acetone.getFluid(1000))
+            .fluidOutputs(WerkstoffMaterialPool.SaturatedBastnasiteRarerEarthOxides.getFluidOrGas(1000))
+            .duration(35*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
 
         GT_Values.RA.stdBuilder()
             .itemOutputs(
@@ -889,36 +931,38 @@ public class RecipeLoader {
             .addTo(centrifugeRecipes);
 
         // Nd RE
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 2),
-            null,
-            Materials.HydrochloricAcid.getFluid(2000),
-            null,
-            WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dust, 1),
-            WerkstoffMaterialPool.NeodymiumOxide.get(OrePrefixes.dust, 1),
-            900,
-            800);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 2))
+            .itemOutputs(
+                WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dust, 1),
+                WerkstoffMaterialPool.NeodymiumOxide.get(OrePrefixes.dust, 1)
+            )
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(2000))
+            .duration(45*SECONDS)
+            .eut(800)
+            .addTo(UniversalChemical);
+
 
         // Sm RE
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.SamaricRareEarthConcentrate.get(OrePrefixes.dust, 1),
-            null,
-            Materials.HydrofluoricAcid.getFluid(2000),
-            null,
-            WerkstoffMaterialPool.FluorinatedSamaricConcentrate.get(OrePrefixes.dust, 1),
-            null,
-            300,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.SamaricRareEarthConcentrate.get(OrePrefixes.dust, 1))
+            .itemOutputs(WerkstoffMaterialPool.FluorinatedSamaricConcentrate.get(OrePrefixes.dust, 1))
+            .fluidInputs(Materials.HydrofluoricAcid.getFluid(2000))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
 
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.SamaricRareEarthConcentrate.get(OrePrefixes.dust, 1),
-            WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1),
-            Materials.HydrofluoricAcid.getFluid(2000),
-            null,
-            WerkstoffMaterialPool.FluorinatedSamaricConcentrate.get(OrePrefixes.dust, 2),
-            null,
-            350,
-            480);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.SamaricRareEarthConcentrate.get(OrePrefixes.dust, 1),
+                WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1)
+            )
+            .itemOutputs(WerkstoffMaterialPool.FluorinatedSamaricConcentrate.get(OrePrefixes.dust, 2))
+            .fluidInputs(Materials.HydrofluoricAcid.getFluid(2000))
+            .duration(17*SECONDS+10*TICKS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
 
         GT_Values.RA.addBlastRecipe(
             WerkstoffMaterialPool.FluorinatedSamaricConcentrate.get(OrePrefixes.dust, 8),
@@ -931,35 +975,39 @@ public class RecipeLoader {
             1920,
             1200);
 
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.SamariumTerbiumMixture.get(OrePrefixes.dust, 1),
-            BotWerkstoffMaterialPool.AmmoniumNitrate.get(OrePrefixes.dust, 9),
-            null,
-            null,
-            WerkstoffMaterialPool.NitratedSamariumTerbiumMixture.get(OrePrefixes.dust, 1),
-            null,
-            600,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.SamariumTerbiumMixture.get(OrePrefixes.dust, 1),
+                BotWerkstoffMaterialPool.AmmoniumNitrate.get(OrePrefixes.dust, 9))
+            .itemOutputs( WerkstoffMaterialPool.NitratedSamariumTerbiumMixture.get(OrePrefixes.dust, 1))
+            .duration(30*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
 
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.NitratedSamariumTerbiumMixture.get(OrePrefixes.dust, 4),
-            Materials.Copper.getDust(1),
-            null,
-            null,
-            WerkstoffMaterialPool.TerbiumNitrate.get(OrePrefixes.dust, 2),
-            WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 2), // Potentially make only Samarium
-            3200,
-            1920);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.NitratedSamariumTerbiumMixture.get(OrePrefixes.dust, 4),
+                Materials.Copper.getDust(1)
+            )
+            .itemOutputs(
+                WerkstoffMaterialPool.TerbiumNitrate.get(OrePrefixes.dust, 2),
+                WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 2) // Potentially make only Samarium
+            )
+            .duration(2*MINUTES+40*SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(UniversalChemical);
 
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 2),
-            Materials.Calcium.getDust(3),
-            null,
-            null,
-            WerkstoffMaterialPool.DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1),
-            Materials.TricalciumPhosphate.getDust(5),
-            300,
-            1920);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 2),
+                Materials.Calcium.getDust(3)
+            )
+            .itemOutputs(
+                WerkstoffMaterialPool.DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1),
+                Materials.TricalciumPhosphate.getDust(5)
+            )
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(UniversalChemical);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(WerkstoffMaterialPool.DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 6))
@@ -2599,44 +2647,52 @@ public class RecipeLoader {
     public static void addRandomChemCrafting() {
 
         // PTMEG Elastomer
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.Butanediol.get(OrePrefixes.cell, 1),
-            null,
-            WerkstoffMaterialPool.TolueneTetramethylDiisocyanate.getFluidOrGas(4000),
-            WerkstoffMaterialPool.PTMEGElastomer.getMolten(4000),
-            Materials.Empty.getCells(1),
-            1500,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.Butanediol.get(OrePrefixes.cell, 1)
+            )
+            .itemOutputs(Materials.Empty.getCells(1))
+            .fluidInputs(WerkstoffMaterialPool.TolueneTetramethylDiisocyanate.getFluidOrGas(4000))
+            .fluidOutputs(WerkstoffMaterialPool.PTMEGElastomer.getMolten(4000))
+            .duration(1*MINUTES+15*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
 
         // Toluene Tetramethyl Diisocyanate
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.TolueneDiisocyanate.get(OrePrefixes.cell, 3),
-            Materials.Hydrogen.getCells(2),
-            WerkstoffMaterialPool.Polytetrahydrofuran.getFluidOrGas(1000),
-            WerkstoffMaterialPool.TolueneTetramethylDiisocyanate.getFluidOrGas(2000),
-            Materials.Empty.getCells(5),
-            1200,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.TolueneDiisocyanate.get(OrePrefixes.cell, 3),
+                Materials.Hydrogen.getCells(2)
+            )
+            .itemOutputs(Materials.Empty.getCells(5))
+            .fluidInputs(WerkstoffMaterialPool.Polytetrahydrofuran.getFluidOrGas(1000))
+            .fluidOutputs(WerkstoffMaterialPool.TolueneTetramethylDiisocyanate.getFluidOrGas(2000))
+            .duration(1*MINUTES)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
 
         // PTHF
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.TungstophosphoricAcid.get(OrePrefixes.cell, 1),
-            Materials.Oxygen.getCells(1),
-            WerkstoffMaterialPool.Tetrahydrofuran.getFluidOrGas(144),
-            WerkstoffMaterialPool.Polytetrahydrofuran.getFluidOrGas(432),
-            Materials.Empty.getCells(2),
-            1000,
-            120);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.TungstophosphoricAcid.get(OrePrefixes.cell, 1),
+                Materials.Oxygen.getCells(1)
+            )
+            .itemOutputs(Materials.Empty.getCells(2))
+            .fluidInputs(WerkstoffMaterialPool.Tetrahydrofuran.getFluidOrGas(144))
+            .fluidOutputs(WerkstoffMaterialPool.Polytetrahydrofuran.getFluidOrGas(432))
+            .duration(50*SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(UniversalChemical);
 
         // THF
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.AcidicButanediol.get(OrePrefixes.cell, 1),
-            null,
-            Materials.Ethanol.getFluid(1000),
-            WerkstoffMaterialPool.Tetrahydrofuran.getFluidOrGas(1000),
-            Materials.Empty.getCells(1),
-            800,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.AcidicButanediol.get(OrePrefixes.cell, 1))
+            .itemOutputs(Materials.Empty.getCells(1))
+            .fluidInputs( Materials.Ethanol.getFluid(1000))
+            .fluidOutputs(WerkstoffMaterialPool.Tetrahydrofuran.getFluidOrGas(1000))
+            .duration(40*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
 
         // Acidicised Butanediol
         GT_Values.RA.addMixerRecipe(
@@ -2651,23 +2707,24 @@ public class RecipeLoader {
             2000);
 
         // Butanediol
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.MoTeOCatalyst.get(OrePrefixes.dustTiny, 1),
-            null,
-            Materials.Butane.getGas(1000),
-            WerkstoffMaterialPool.Butanediol.getFluidOrGas(1000),
-            null,
-            900,
-            1920);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.MoTeOCatalyst.get(OrePrefixes.dustTiny, 1))
+            .fluidInputs( Materials.Butane.getGas(1000))
+            .fluidOutputs(WerkstoffMaterialPool.Butanediol.getFluidOrGas(1000))
+            .duration(45*SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(UniversalChemical);
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(9),
-                WerkstoffMaterialPool.MoTeOCatalyst.get(OrePrefixes.dust, 1) },
-            new FluidStack[] { Materials.Butane.getGas(9000) },
-            new FluidStack[] { WerkstoffMaterialPool.Butanediol.getFluidOrGas(9000) },
-            null,
-            8100,
-            1920);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(9),
+                WerkstoffMaterialPool.MoTeOCatalyst.get(OrePrefixes.dust, 1)
+            )
+            .fluidInputs( Materials.Butane.getGas(9000))
+            .fluidOutputs(WerkstoffMaterialPool.Butanediol.getFluidOrGas(9000))
+            .duration(6*MINUTES+45*SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
         // Moly-Te-Oxide Catalyst
         GT_Values.RA.addMixerRecipe(
@@ -2682,45 +2739,56 @@ public class RecipeLoader {
             120);
 
         // Tungstophosphoric Acid
-        GT_Values.RA.addChemicalRecipe(
-            Materials.PhosphoricAcid.getCells(1),
-            Materials.HydrochloricAcid.getCells(24),
-            BotWerkstoffMaterialPool.SodiumTungstate.getFluidOrGas(12000),
-            WerkstoffMaterialPool.TungstophosphoricAcid.getFluidOrGas(1000),
-            Materials.Salt.getDust(24),
-            Materials.Empty.getCells(25),
-            500,
-            1024);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.PhosphoricAcid.getCells(1),
+                Materials.HydrochloricAcid.getCells(24)
+            )
+            .itemOutputs(
+                Materials.Salt.getDust(24),
+                Materials.Empty.getCells(25)
+            )
+            .fluidInputs(BotWerkstoffMaterialPool.SodiumTungstate.getFluidOrGas(12000))
+            .fluidOutputs(WerkstoffMaterialPool.TungstophosphoricAcid.getFluidOrGas(1000))
+            .duration(25*SECONDS)
+            .eut(1024)
+            .addTo(UniversalChemical);
 
         // Toluene Diisocyanate
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffMaterialPool.Diaminotoluene.get(OrePrefixes.cell, 1),
-            Materials.Empty.getCells(3),
-            BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(2000),
-            WerkstoffMaterialPool.TolueneDiisocyanate.getFluidOrGas(1000),
-            Materials.HydrochloricAcid.getCells(4),
-            900,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.Diaminotoluene.get(OrePrefixes.cell, 1),
+                Materials.Empty.getCells(3)
+            )
+            .itemOutputs()
+            .fluidInputs( BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(2000))
+            .fluidOutputs(WerkstoffMaterialPool.TolueneDiisocyanate.getFluidOrGas(1000))
+            .duration(45*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
 
         // Diaminotoluene
-        GT_Values.RA.addChemicalRecipe(
-            Materials.Hydrogen.getCells(4),
-            null,
-            WerkstoffMaterialPool.Dinitrotoluene.getFluidOrGas(1000),
-            WerkstoffMaterialPool.Diaminotoluene.getFluidOrGas(1000),
-            Materials.Empty.getCells(4),
-            300,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs( Materials.Hydrogen.getCells(4))
+            .itemOutputs()
+            .fluidInputs(WerkstoffMaterialPool.Dinitrotoluene.getFluidOrGas(1000))
+            .fluidOutputs(WerkstoffMaterialPool.Diaminotoluene.getFluidOrGas(1000))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
 
         // Dinitrotoluene
-        GT_Values.RA.addChemicalRecipe(
-            Materials.NitricAcid.getCells(2),
-            null,
-            Materials.Toluene.getFluid(1000),
-            WerkstoffMaterialPool.Dinitrotoluene.getFluidOrGas(1000),
-            Materials.Empty.getCells(2),
-            900,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.NitricAcid.getCells(2)
+            )
+            .itemOutputs(Materials.Empty.getCells(2))
+            .fluidInputs(Materials.Toluene.getFluid(1000))
+            .fluidOutputs(WerkstoffMaterialPool.Dinitrotoluene.getFluidOrGas(1000))
+            .duration(45*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
+
         // Digester Control Block
         GT_Values.RA.addAssemblerRecipe(
             new ItemStack[] { ItemList.Hull_IV.get(1L), ItemList.Super_Tank_EV.get(2L),

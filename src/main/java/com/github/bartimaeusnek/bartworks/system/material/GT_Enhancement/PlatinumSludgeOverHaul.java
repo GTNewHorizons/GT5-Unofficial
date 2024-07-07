@@ -253,13 +253,14 @@ public class PlatinumSludgeOverHaul {
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(9) },
-            new FluidStack[] { Materials.Ammonia.getGas(64000), Materials.HydrochloricAcid.getFluid(64000) },
-            new FluidStack[] { AmmoniumChloride.getFluidOrGas(64000) },
-            null,
-            60,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(9))
+            .fluidInputs(Materials.Ammonia.getGas(64000), Materials.HydrochloricAcid.getFluid(64000))
+            .fluidOutputs(AmmoniumChloride.getFluidOrGas(64000))
+            .duration(3*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
+
         // base solution
         for (Werkstoff w : Werkstoff.werkstoffHashSet) if (w.containsStuff(Materials.Sulfur)
             && (w.containsStuff(Materials.Copper) || w.containsStuff(Materials.Nickel))) {
@@ -480,23 +481,31 @@ public class PlatinumSludgeOverHaul {
             .eut(TierEU.RECIPE_LV)
             .addTo(sifterRecipes);
 
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            PDRawPowder.get(dust, 4),
-            Materials.Empty.getCells(1),
-            FormicAcid.getFluidOrGas(4000),
-            Materials.Ammonia.getGas(4000),
-            Materials.Palladium.getDust(2),
-            Materials.Ethylene.getCells(1),
-            250,
-            30);
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { PDRawPowder.get(dust, 4) },
-            new FluidStack[] { FormicAcid.getFluidOrGas(4000) },
-            new FluidStack[] { Materials.Ammonia.getGas(4000), Materials.Ethylene.getGas(1000),
-                Materials.Water.getFluid(1000) },
-            new ItemStack[] { Materials.Palladium.getDust(2) },
-            250,
-            30);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                PDRawPowder.get(dust, 4),
+                Materials.Empty.getCells(1)
+            )
+            .itemOutputs(
+                Materials.Palladium.getDust(2),
+                Materials.Ethylene.getCells(1)
+            )
+            .fluidInputs(FormicAcid.getFluidOrGas(4000))
+            .fluidOutputs( Materials.Ammonia.getGas(4000))
+            .duration(12*SECONDS+10*TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(chemicalReactorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(PDRawPowder.get(dust, 4) )
+            .itemOutputs(Materials.Palladium.getDust(2))
+            .fluidInputs( FormicAcid.getFluidOrGas(4000))
+            .fluidOutputs(Materials.Ammonia.getGas(4000), Materials.Ethylene.getGas(1000),
+                Materials.Water.getFluid(1000))
+            .duration(12*SECONDS+10*TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockChemicalReactorRecipes);
+
         // Na2SO4 + 2H = 2Na + H2SO4
 
         GT_Values.RA.stdBuilder()
@@ -507,9 +516,6 @@ public class PlatinumSludgeOverHaul {
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
-        // K2S2O7
-        // GT_Values.RA.addChemicalRecipe(Sodiumsulfate.get(dust), Materials.Potassium.getDust(2),
-        // Materials.Oxygen.getGas(3000), null, PotassiumDisulfate.get(dust,6), null, 30);
         // Rh/Os/Ir/Ru
         GT_Values.RA.stdBuilder()
             .itemInputs(PTResidue.get(dust), GT_Utility.getIntegratedCircuit(11))
@@ -639,13 +645,14 @@ public class PlatinumSludgeOverHaul {
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(3) },
-            new FluidStack[] { Materials.Water.getFluid(36000), RHSulfate.getFluidOrGas(39600) },
-            new FluidStack[] { Materials.Potassium.getMolten(7200), RHSulfateSolution.getFluidOrGas(39600) },
-            new ItemStack[] { LeachResidue.get(dust, 4) },
-            1200,
-            30);
+        GT_Values.RA.stdBuilder()
+            .itemInputs( GT_Utility.getIntegratedCircuit(3))
+            .itemOutputs(LeachResidue.get(dust, 4))
+            .fluidInputs(Materials.Water.getFluid(36000), RHSulfate.getFluidOrGas(39600))
+            .fluidOutputs( Materials.Potassium.getMolten(7200), RHSulfateSolution.getFluidOrGas(39600))
+            .duration(1*MINUTES)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockChemicalReactorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Zinc.getDust(1))

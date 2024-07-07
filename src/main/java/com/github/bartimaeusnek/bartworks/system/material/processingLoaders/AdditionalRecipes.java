@@ -36,6 +36,7 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
+import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
 import java.util.Arrays;
 import java.util.List;
@@ -306,31 +307,44 @@ public class AdditionalRecipes {
             .addTo(sifterRecipes);
 
         // 3ThO2 + 4Al = 3Th + 2Al2O3
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffLoader.Thorianit.get(dust, 9),
-            Materials.Aluminium.getDust(4),
-            null,
-            null,
-            Materials.Thorium.getDust(3),
-            Materials.Aluminiumoxide.getDust(10),
-            1000);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffLoader.Thorianit.get(dust, 9),
+                Materials.Aluminium.getDust(4)
+            )
+            .itemOutputs(
+                Materials.Thorium.getDust(3),
+                Materials.Aluminiumoxide.getDust(10)
+            )
+            .duration(50*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
         // ThO2 + 2Mg = Th + 2MgO
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffLoader.Thorianit.get(dust, 3),
-            Materials.Magnesium.getDust(2),
-            null,
-            null,
-            Materials.Thorium.getDust(1),
-            Materials.Magnesia.getDust(4),
-            1000);
-        GT_Values.RA.addChemicalRecipe(
-            WerkstoffLoader.Thorianit.get(crushed),
-            ItemList.Crop_Drop_Thorium.get(9),
-            Materials.Water.getFluid(1000),
-            Materials.Thorium.getMolten(144),
-            WerkstoffLoader.Thorianit.get(crushedPurified, 4),
-            96,
-            24);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffLoader.Thorianit.get(dust, 3),
+                Materials.Magnesium.getDust(2)
+            )
+            .itemOutputs(
+                Materials.Thorium.getDust(1),
+                Materials.Magnesia.getDust(4)
+            )
+            .duration(50*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffLoader.Thorianit.get(crushed),
+                ItemList.Crop_Drop_Thorium.get(9)
+            )
+            .itemOutputs(WerkstoffLoader.Thorianit.get(crushedPurified, 4))
+            .fluidInputs(Materials.Water.getFluid(1000))
+            .fluidOutputs(Materials.Thorium.getMolten(144))
+            .duration(4*SECONDS+16*TICKS)
+            .eut(24)
+            .addTo(UniversalChemical);
 
         // Prasiolite
         GT_Values.RA.addBlastRecipe(
@@ -354,14 +368,17 @@ public class AdditionalRecipes {
 
         // Cubic Circonia
         // 2Y + 3O = Y2O3
-        GT_Values.RA.addChemicalRecipe(
-            Materials.Yttrium.getDust(2),
-            GT_Utility.getIntegratedCircuit(5),
-            Materials.Oxygen.getGas(3000),
-            GT_Values.NF,
-            WerkstoffLoader.YttriumOxide.get(dust, 5),
-            4096,
-            (int) TierEU.RECIPE_LV);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Yttrium.getDust(2),
+                GT_Utility.getIntegratedCircuit(5)
+            )
+            .itemOutputs(WerkstoffLoader.YttriumOxide.get(dust, 5))
+            .fluidInputs(Materials.Oxygen.getGas(3000))
+            .duration(3*MINUTES+24*SECONDS+16*TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
         // Zr + 2O =Y22O3= ZrO2
         RecipeMaps.blastFurnaceRecipes.addRecipe(
             false,
