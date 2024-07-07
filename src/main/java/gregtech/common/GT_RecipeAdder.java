@@ -3,6 +3,7 @@ package gregtech.common;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
+import gregtech.api.enums.TierEU;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -41,28 +43,6 @@ import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
 
 public class GT_RecipeAdder implements IGT_RecipeAdder {
-    @Override
-    @Deprecated
-    public boolean addLatheRecipe(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt) {
-        if ((aInput1 == null) || (aOutput1 == null)) {
-            return false;
-        }
-        if (aDuration <= 0) {
-            return false;
-        }
-        RecipeMaps.latheRecipes.addRecipe(
-            true,
-            new ItemStack[] { aInput1 },
-            new ItemStack[] { aOutput1, aOutput2 },
-            null,
-            null,
-            null,
-            null,
-            aDuration,
-            aEUt,
-            0);
-        return true;
-    }
 
     @Override
     @Deprecated
@@ -240,70 +220,6 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return false;
     }
 
-    @Override
-    @Deprecated
-    public boolean addVacuumFreezerRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt) {
-        if ((aInput1 == null) || (aOutput1 == null)) {
-            return false;
-        }
-        if (aDuration <= 0) {
-            return false;
-        }
-        RecipeMaps.vacuumFreezerRecipes.addRecipe(
-            false,
-            new ItemStack[] { aInput1 },
-            new ItemStack[] { aOutput1 },
-            null,
-            null,
-            null,
-            aDuration,
-            aEUt,
-            0);
-        FluidStack tInputFluid = GT_Utility.getFluidForFilledItem(aInput1, true);
-        FluidStack tOutputFluid = GT_Utility.getFluidForFilledItem(aOutput1, true);
-        if (tInputFluid != null && tOutputFluid != null) {
-            addVacuumFreezerRecipe(tInputFluid, tOutputFluid, aDuration, aEUt);
-        }
-        return true;
-    }
-
-    @Override
-    @Deprecated
-    public boolean addVacuumFreezerRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration) {
-        if ((aInput1 == null) || (aOutput1 == null)) {
-            return false;
-        }
-        if (aDuration <= 0) {
-            return false;
-        }
-        addVacuumFreezerRecipe(aInput1, aOutput1, aDuration, 120);
-        FluidStack tInputFluid = GT_Utility.getFluidForFilledItem(aInput1, true);
-        FluidStack tOutputFluid = GT_Utility.getFluidForFilledItem(aOutput1, true);
-        if (tInputFluid != null && tOutputFluid != null) {
-            addVacuumFreezerRecipe(tInputFluid, tOutputFluid, aDuration, 120);
-        }
-        return true;
-    }
-
-    @Override
-    @Deprecated
-    public boolean addVacuumFreezerRecipe(FluidStack aInput1, FluidStack aOutput1, int aDuration, int aEUt) {
-        if ((aInput1 == null) || (aOutput1 == null)) {
-            return false;
-        }
-        RecipeMaps.vacuumFreezerRecipes.addRecipe(
-            false,
-            null,
-            null,
-            null,
-            new FluidStack[] { aInput1 },
-            new FluidStack[] { aOutput1 },
-            Math.max(1, aDuration),
-            aEUt,
-            0);
-        return true;
-    }
-
     @Deprecated
     @Override
     public boolean addForgeHammerRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt) {
@@ -314,48 +230,6 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             true,
             new ItemStack[] { aInput1 },
             new ItemStack[] { aOutput1 },
-            null,
-            null,
-            null,
-            aDuration,
-            aEUt,
-            0);
-        return true;
-    }
-
-
-
-    @Override
-    @Deprecated
-    public boolean addBoxingRecipe(ItemStack aContainedItem, ItemStack aEmptyBox, ItemStack aFullBox, int aDuration,
-        int aEUt) {
-        if ((aContainedItem == null) || (aFullBox == null)) {
-            return false;
-        }
-        RecipeMaps.packagerRecipes.addRecipe(
-            true,
-            new ItemStack[] { aContainedItem, aEmptyBox },
-            new ItemStack[] { aFullBox },
-            null,
-            null,
-            null,
-            aDuration,
-            aEUt,
-            0);
-        return true;
-    }
-
-    @Override
-    @Deprecated
-    public boolean addUnboxingRecipe(ItemStack aFullBox, ItemStack aContainedItem, ItemStack aEmptyBox, int aDuration,
-        int aEUt) {
-        if ((aFullBox == null) || (aContainedItem == null)) {
-            return false;
-        }
-        RecipeMaps.unpackagerRecipes.addRecipe(
-            true,
-            new ItemStack[] { aFullBox },
-            new ItemStack[] { aContainedItem, aEmptyBox },
             null,
             null,
             null,
@@ -569,63 +443,6 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
-
-
-    @Override
-    @Deprecated
-    public boolean addAutoclaveRecipe(ItemStack aInput, FluidStack aFluid, ItemStack aOutput, int aChance,
-        int aDuration, int aEUt, boolean aCleanroom) {
-        return addAutoclaveRecipe(aInput, aFluid, aOutput, aChance, aDuration, aEUt);
-    }
-
-    @Override
-    @Deprecated
-    public boolean addAutoclaveRecipe(ItemStack aInput, FluidStack aFluid, ItemStack aOutput, int aChance,
-        int aDuration, int aEUt) {
-        return addAutoclaveRecipe(aInput, null, aFluid, aOutput, aChance, aDuration, aEUt, false);
-    }
-
-    @Deprecated
-    public boolean addAutoclaveRecipe(ItemStack aInput, ItemStack aCircuit, FluidStack aFluid, ItemStack aOutput,
-        int aChance, int aDuration, int aEUt) {
-        return addAutoclaveRecipe(aInput, aCircuit, aFluid, aOutput, aChance, aDuration, aEUt, false);
-    }
-
-    @Override
-    @Deprecated
-    public boolean addAutoclaveRecipe(ItemStack aInput, ItemStack aCircuit, FluidStack aFluidIn, ItemStack aOutput,
-        int aChance, int aDuration, int aEUt, boolean aCleanroom) {
-        return addAutoclaveRecipe(aInput, aCircuit, aFluidIn, null, aOutput, aChance, aDuration, aEUt, aCleanroom);
-    }
-
-    @Override
-    @Deprecated
-    public boolean addAutoclaveRecipe(ItemStack aInput, ItemStack aCircuit, FluidStack aFluidIn, FluidStack aFluidOut,
-        ItemStack aOutput, int aChance, int aDuration, int aEUt, boolean aCleanroom) {
-        if ((aInput == null) || (aFluidIn == null) || (aOutput == null)) {
-            return false;
-        }
-        if (aDuration <= 0) {
-            return false;
-        }
-        if (!GT_Mod.gregtechproxy.mEnableCleanroom) {
-            aCleanroom = false;
-        }
-        RecipeMaps.autoclaveRecipes.addRecipe(
-            true,
-            new ItemStack[] { aInput, aCircuit },
-            new ItemStack[] { aOutput },
-            null,
-            new int[] { aChance },
-            new FluidStack[] { aFluidIn },
-            new FluidStack[] { aFluidOut },
-            aDuration,
-            aEUt,
-            aCleanroom ? -200 : 0);
-        return true;
-    }
-
-
     @Deprecated
     @Override
     public boolean addMixerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aInput3, ItemStack aInput4,
@@ -724,172 +541,6 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
 
         RecipeMaps.mixerNonCellRecipes
             .addRecipe(false, itemInputs, itemOutputs, null, null, fluidInputs, fluidOutputs, aDuration, aEUt, 0);
-        return true;
-    }
-
-    @Deprecated
-    @Override
-    public boolean addMixerRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray, ItemStack[] ItemOutputArray,
-        FluidStack[] FluidOutputArray, int aDuration, int aEUt) {
-        RecipeMaps.mixerRecipes.addRecipe(
-            false,
-            ItemInputArray,
-            ItemOutputArray,
-            null,
-            null,
-            FluidInputArray,
-            FluidOutputArray,
-            aDuration,
-            aEUt,
-            0);
-        List<ItemStack> tItemInputList;
-        if (ItemInputArray == null) {
-            tItemInputList = new ArrayList<>(1);
-        } else {
-            tItemInputList = new ArrayList<>(Arrays.asList(ItemInputArray));
-        }
-        List<FluidStack> tFluidInputList;
-        if (FluidInputArray != null) {
-            tFluidInputList = new ArrayList<>(Arrays.asList(FluidInputArray));
-        } else {
-            tFluidInputList = new ArrayList<>(1);
-        }
-        for (int i = 0; i < tItemInputList.size(); i++) {
-            if (tItemInputList.get(i) != null) {
-                if (GT_Utility.getFluidForFilledItem(tItemInputList.get(i), true) != null
-                    || GT_Utility.isCellEmpty(tItemInputList.get(i))) {
-                    tFluidInputList.add(GT_Utility.convertCellToFluid(tItemInputList.get(i)));
-                    tItemInputList.set(i, null);
-                }
-            }
-        }
-        List<ItemStack> tItemOutputList;
-        if (ItemOutputArray == null) {
-            tItemOutputList = new ArrayList<>(1);
-        } else {
-            tItemOutputList = new ArrayList<>(Arrays.asList(ItemOutputArray));
-        }
-        List<FluidStack> tFluidOutputList;
-        if (FluidOutputArray != null) {
-            tFluidOutputList = new ArrayList<>(Arrays.asList(FluidOutputArray));
-        } else {
-            tFluidOutputList = new ArrayList<>(1);
-        }
-        for (int i = 0; i < tItemOutputList.size(); i++) {
-            if (tItemOutputList.get(i) != null) {
-                if (GT_Utility.getFluidForFilledItem(tItemOutputList.get(i), true) != null
-                    || GT_Utility.isCellEmpty(tItemOutputList.get(i))) {
-                    tFluidInputList.add(GT_Utility.convertCellToFluid(tItemOutputList.get(i)));
-                    tItemOutputList.set(i, null);
-                }
-            }
-        }
-
-        ItemStack[] tItemInputArray = new ItemStack[tItemInputList.size()];
-        for (int i = 0; i < tItemInputArray.length; i++) tItemInputArray[i] = tItemInputList.get(i);
-
-        FluidStack[] tFluidInputArray = new FluidStack[tFluidInputList.size()];
-        for (int i = 0; i < tFluidInputArray.length; i++) tFluidInputArray[i] = tFluidInputList.get(i);
-
-        ItemStack[] tItemOutputArray = new ItemStack[tItemOutputList.size()];
-        for (int i = 0; i < tItemOutputArray.length; i++) tItemOutputArray[i] = tItemOutputList.get(i);
-
-        FluidStack[] tFluidOutputArray = new FluidStack[tFluidOutputList.size()];
-        for (int i = 0; i < tFluidOutputArray.length; i++) tFluidOutputArray[i] = tFluidOutputList.get(i);
-
-        RecipeMaps.mixerNonCellRecipes.addRecipe(
-            false,
-            tItemInputArray,
-            tItemOutputArray,
-            null,
-            null,
-            tFluidInputArray,
-            tFluidOutputArray,
-            aDuration,
-            aEUt,
-            0);
-        return true;
-    }
-
-    @Deprecated
-    @Override
-    public boolean addMixerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aInput3, ItemStack aInput4,
-        ItemStack aInput5, ItemStack aInput6, ItemStack aInput7, ItemStack aInput8, ItemStack aInput9,
-        FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3,
-        ItemStack aOutput4, int aDuration, int aEUt) {
-        if (((aInput1 == null) && (aFluidInput == null)) || ((aOutput1 == null) && (aFluidOutput == null))) {
-            return false;
-        }
-        if ((aOutput1 != null) && (aDuration <= 0)) {
-            return false;
-        }
-        if ((aFluidOutput != null) && (aDuration <= 0)) {
-            return false;
-        }
-        RecipeMaps.mixerRecipes.addRecipe(
-            true,
-            new ItemStack[] { aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9 },
-            new ItemStack[] { aOutput1, aOutput2, aOutput3, aOutput4 },
-            null,
-            null,
-            new FluidStack[] { aFluidInput },
-            new FluidStack[] { aFluidOutput },
-            aDuration,
-            aEUt,
-            0);
-        ItemStack[] itemInputs = { aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9 };
-        ItemStack[] itemOutputs = { aOutput1, aOutput2, aOutput3, aOutput4 };
-        FluidStack[] fluidInputs = { aFluidInput, null, null, null, null, null, null, null, null, null };
-        FluidStack[] fluidOutputs = { aFluidOutput, null, null, null, null };
-
-        byte iNumber = 0;
-        byte oNumber = 0;
-
-        for (ItemStack item : itemInputs) {
-            if (item != null) {
-                if (GT_Utility.getFluidForFilledItem(aInput1, true) != null || GT_Utility.isCellEmpty(item)) {
-                    fluidInputs[iNumber + 1] = GT_Utility.convertCellToFluid(item);
-                    itemInputs[iNumber] = null;
-                }
-            }
-            iNumber++;
-        }
-
-        for (ItemStack item : itemOutputs) {
-            if (item != null) {
-                if (GT_Utility.getFluidForFilledItem(item, true) != null || GT_Utility.isCellEmpty(item)) {
-                    fluidOutputs[oNumber + 1] = GT_Utility.convertCellToFluid(item);
-                    itemOutputs[oNumber] = null;
-                }
-            }
-            oNumber++;
-        }
-
-        RecipeMaps.mixerNonCellRecipes
-            .addRecipe(false, itemInputs, itemOutputs, null, null, fluidInputs, fluidOutputs, aDuration, aEUt, 0);
-        return true;
-    }
-
-    @Deprecated
-    @Override
-    public boolean addFluidHeaterRecipe(ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, int aDuration,
-        int aEUt) {
-        if ((aInput == null) || (aOutput == null)) {
-            return false;
-        }
-        if (aDuration <= 0) {
-            return false;
-        }
-        RecipeMaps.fluidHeaterRecipes.addRecipe(
-            true,
-            new ItemStack[] { aCircuit },
-            null,
-            null,
-            new FluidStack[] { aInput },
-            new FluidStack[] { aOutput },
-            aDuration,
-            aEUt,
-            0);
         return true;
     }
 
@@ -1177,28 +828,6 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         tRecipe.setPersistentHash(tPersistentHash);
         GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(tRecipe);
         GT_AssemblyLineUtils.addRecipeToCache(tRecipe);
-        return true;
-    }
-
-
-    @Override
-    @Deprecated
-    public boolean addNanoForgeRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack[] aOutputs,
-        FluidStack[] aFluidOutputs, int[] aChances, int aDuration, int aEUt, int aSpecialValue) {
-        if (aInputs == null || aOutputs == null || aSpecialValue == 0) return false;
-
-        RecipeMaps.nanoForgeRecipes.addRecipe(
-            new GT_Recipe(
-                false,
-                aInputs,
-                aOutputs,
-                null,
-                aChances,
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                aSpecialValue));
         return true;
     }
 

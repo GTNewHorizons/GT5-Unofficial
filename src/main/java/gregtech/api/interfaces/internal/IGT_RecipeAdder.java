@@ -110,45 +110,6 @@ public interface IGT_RecipeAdder {
     boolean addDistillationTowerRecipe(FluidStack aInput, FluidStack[] aOutputs, ItemStack aOutput2, int aDuration,
         int aEUt);
 
-
-    /**
-     * Adds a Lathe Machine Recipe
-     */
-    @Deprecated
-    boolean addLatheRecipe(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt);
-
-    /**
-     * Adds a Boxing Recipe
-     */
-    @Deprecated
-    boolean addBoxingRecipe(ItemStack aContainedItem, ItemStack aEmptyBox, ItemStack aFullBox, int aDuration, int aEUt);
-
-    /**
-     * Adds an Unboxing Recipe
-     */
-    @Deprecated
-    boolean addUnboxingRecipe(ItemStack aFullBox, ItemStack aContainedItem, ItemStack aEmptyBox, int aDuration,
-        int aEUt);
-
-    /**
-     * Adds a Vacuum Freezer Recipe
-     *
-     * @param aInput1   must be != null
-     * @param aOutput1  must be != null
-     * @param aDuration must be > 0
-     */
-    @Deprecated
-    boolean addVacuumFreezerRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration);
-
-    @Deprecated
-    boolean addVacuumFreezerRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addVacuumFreezerRecipe(FluidStack aInput1, FluidStack aOutput1, int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addFluidHeaterRecipe(ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt);
-
     /**
      * Adds a Recipe for the Distillery
      */
@@ -195,26 +156,6 @@ public interface IGT_RecipeAdder {
     boolean addExtractorRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt);
 
     /**
-     * Adds a Recipe for the Autoclave
-     */
-    @Deprecated
-    boolean addAutoclaveRecipe(ItemStack aInput, FluidStack aFluid, ItemStack aOutput, int aChance, int aDuration,
-        int aEUt);
-
-    @Deprecated
-    boolean addAutoclaveRecipe(ItemStack aInput, FluidStack aFluid, ItemStack aOutput, int aChance, int aDuration,
-        int aEUt, boolean aCleanroom);
-
-    @Deprecated
-    boolean addAutoclaveRecipe(ItemStack aInput, ItemStack aCircuit, FluidStack aFluid, ItemStack aOutput, int aChance,
-        int aDuration, int aEUt, boolean aCleanroom);
-
-    @Deprecated
-    boolean addAutoclaveRecipe(ItemStack aInput, ItemStack aCircuit, FluidStack aFluidIn, FluidStack aFluidOut,
-        ItemStack aOutput, int aChance, int aDuration, int aEUt, boolean aCleanroom);
-
-
-    /**
      * Adds a Recipe for the Mixer
      */
     @Deprecated
@@ -231,16 +172,6 @@ public interface IGT_RecipeAdder {
         ItemStack aInput5, ItemStack aInput6, ItemStack aInput7, ItemStack aInput8, ItemStack aInput9,
         FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput, int aDuration, int aEUt);
 
-    @Deprecated
-    boolean addMixerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aInput3, ItemStack aInput4,
-        ItemStack aInput5, ItemStack aInput6, ItemStack aInput7, ItemStack aInput8, ItemStack aInput9,
-        FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3,
-        ItemStack aOutput4, int aDuration, int aEUt);
-
-    // Use me only from now on!
-    @Deprecated
-    boolean addMixerRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray, ItemStack[] ItemOutputArray,
-        FluidStack[] FluidOutputArray, int aDuration, int aEUt);
 
     /**
      * Adds a Recipe for the Sifter. (up to 9 Outputs)
@@ -295,26 +226,6 @@ public interface IGT_RecipeAdder {
     @Deprecated
     boolean addCrackingRecipe(int circuitConfig, FluidStack aInput, FluidStack aInput2, FluidStack aOutput,
         int aDuration, int aEUt);
-
-
-    /**
-     * Add a Nano Forge Recipe. The Nano Forge's main use is to make nanites/nanorobots. Tier 1 Nano Forge - Can make
-     * partly biological, partly metal nanites TIer 2 Nano Forge - Can make mostly metal nanites with some biological
-     * aspects TIer 3 Nano Forge - Can make nanites entierly out of metal
-     *
-     * @param aInputs       must not be null
-     * @param aFluidInputs  can be null
-     * @param aOutputs      must not be null, the nanite or other output
-     * @param aFluidOutputs can be null
-     * @param aChances      can be null
-     * @param aDuration     recipe duration
-     * @param aEUt          recipe EU/t expenditure
-     * @param aSpecialValue defines the tier of nano forge required.
-     *
-     */
-    @Deprecated
-    boolean addNanoForgeRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack[] aOutputs,
-        FluidStack[] aFluidOutputs, int[] aChances, int aDuration, int aEUt, int aSpecialValue);
 
     /**
      * Add a breeder cell.
