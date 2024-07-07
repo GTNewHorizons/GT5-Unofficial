@@ -3,6 +3,8 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import java.util.HashSet;
 import java.util.Set;
 
+import gregtech.api.enums.TierEU;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTech_API;
@@ -18,6 +20,8 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
+import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 public class RecipeGen_Plates extends RecipeGen_Base {
 
@@ -67,27 +71,28 @@ public class RecipeGen_Plates extends RecipeGen_Base {
                     Logger.WARNING("Forge Hammer Recipe: " + material.getLocalizedName() + " - Failed");
                 }
         // Bender
-        if (ItemUtils.checkForInvalidItems(ingotStackOne) && ItemUtils.checkForInvalidItems(plate_Single))
-            if (addBenderRecipe(
-                ingotStackOne,
-                plate_Single,
-                (int) Math.max(material.getMass() * 1L, 1L),
-                material.vVoltageMultiplier)) {
-                    Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
-                } else {
-                    Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
-                }
-        if (ItemUtils.checkForInvalidItems(ingotStackOne) && ItemUtils.checkForInvalidItems(foil_SingleFour))
-            if (addBenderRecipe(
-                ingotStackOne,
-                CI.getNumberedCircuit(10),
-                foil_SingleFour,
-                (int) Math.max(material.getMass() * 2L, 1L),
-                material.vVoltageMultiplier)) {
-                    Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
-                } else {
-                    Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
-                }
+        if (ItemUtils.checkForInvalidItems(ingotStackOne) && ItemUtils.checkForInvalidItems(plate_Single)) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(ingotStackOne, GT_Utility.getIntegratedCircuit(1))
+                .itemOutputs(plate_Single)
+                .duration(Math.max(material.getMass() * 1L, 1L))
+                .eut( material.vVoltageMultiplier)
+                .addTo(benderRecipes);
+
+            Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+        }
+
+        if (ItemUtils.checkForInvalidItems(ingotStackOne) && ItemUtils.checkForInvalidItems(foil_SingleFour)) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(ingotStackOne, GT_Utility.getIntegratedCircuit(10))
+                .itemOutputs(foil_SingleFour)
+                .duration(Math.max(material.getMass() * 2L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(benderRecipes);
+
+            Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+        }
+
         // Alloy Smelter
         if (ItemUtils.checkForInvalidItems(ingotStackTwo) && ItemUtils.checkForInvalidItems(plate_Single)){
             GT_Values.RA.stdBuilder()
@@ -116,97 +121,70 @@ public class RecipeGen_Plates extends RecipeGen_Base {
                 }
 
         // Making Double Plates
-        if (ItemUtils.checkForInvalidItems(ingotStackTwo) && ItemUtils.checkForInvalidItems(plate_Double))
-            if (addBenderRecipe(
-                ingotStackTwo,
-                plate_Double,
-                (int) Math.max(material.getMass() * 2L, 1L),
-                material.vVoltageMultiplier)) {
-                    Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
-                } else {
-                    Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
-                }
+        if (ItemUtils.checkForInvalidItems(ingotStackTwo) && ItemUtils.checkForInvalidItems(plate_Double)) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(ingotStackTwo, GT_Utility.getIntegratedCircuit(2))
+                .itemOutputs(plate_Double)
+                .duration(Math.max(material.getMass() * 2L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(benderRecipes);
 
-        if (ItemUtils.checkForInvalidItems(plate_SingleTwo) && ItemUtils.checkForInvalidItems(plate_Double))
-            if (addBenderRecipe(
-                plate_SingleTwo,
-                plate_Double,
-                (int) Math.max(material.getMass() * 2L, 1L),
-                material.vVoltageMultiplier)) {
-                    Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
-                } else {
-                    Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
-                }
+            Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+        }
+
+
+        if (ItemUtils.checkForInvalidItems(plate_SingleTwo) && ItemUtils.checkForInvalidItems(plate_Double)) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(plate_SingleTwo, GT_Utility.getIntegratedCircuit(2))
+                .itemOutputs(plate_Double)
+                .duration(Math.max(material.getMass() * 2L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(benderRecipes);
+            Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
+        }
+
 
         // Bender
-        if (ItemUtils.checkForInvalidItems(material.getPlate(1)) && ItemUtils.checkForInvalidItems(material.getFoil(1)))
-            if (addBenderRecipe(
-                material.getPlate(1),
-                material.getFoil(4),
-                (int) Math.max(material.getMass(), 1L),
-                material.vVoltageMultiplier)) {
-                    GregTech_API.registerCover(
-                        material.getFoil(1),
-                        new GT_RenderedTexture(material.getTextureSet().mTextures[70], material.getRGBA(), false),
-                        null);
-                    Logger.WARNING("Bender Foil Recipe: " + material.getLocalizedName() + " - Success");
-                } else {
-                    Logger.WARNING("Bender Foil Recipe: " + material.getLocalizedName() + " - Failed");
-                }
+        if (ItemUtils.checkForInvalidItems(material.getPlate(1)) && ItemUtils.checkForInvalidItems(material.getFoil(1))) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(material.getPlate(1), GT_Utility.getIntegratedCircuit(1))
+                .itemOutputs(material.getFoil(4))
+                .duration(Math.max(material.getMass(), 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(benderRecipes);
+
+            GregTech_API.registerCover(
+                material.getFoil(1),
+                new GT_RenderedTexture(material.getTextureSet().mTextures[70], material.getRGBA(), false),
+                null);
+            Logger.WARNING("Bender Foil Recipe: " + material.getLocalizedName() + " - Success");
+        }
+
 
         // Making Dense Plates
-        if (ItemUtils.checkForInvalidItems(ingotStackNine) && ItemUtils.checkForInvalidItems(plate_Dense))
-            if (addBenderRecipe(
-                ingotStackNine,
-                plate_Dense,
-                (int) Math.max(material.getMass() * 2L, 1L),
-                material.vVoltageMultiplier)) {
-                    Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
-                } else {
-                    Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
-                }
+        if (ItemUtils.checkForInvalidItems(ingotStackNine) && ItemUtils.checkForInvalidItems(plate_Dense)) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(ingotStackNine, GT_Utility.getIntegratedCircuit(9))
+                .itemOutputs(plate_Dense)
+                .duration(Math.max(material.getMass() * 2L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(benderRecipes);
 
-        if (ItemUtils.checkForInvalidItems(plate_SingleNine) && ItemUtils.checkForInvalidItems(plate_Dense))
-            if (addBenderRecipe(
-                plate_SingleNine,
-                plate_Dense,
-                (int) Math.max(material.getMass() * 2L, 1L),
-                material.vVoltageMultiplier)) {
-                    Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
-                } else {
-                    Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Failed");
-                }
-    }
-
-    public static boolean addBenderRecipe(final ItemStack aInput1, final ItemStack aOutput1, int aDuration,
-        final int aEUt) {
-        return GT_Values.RA.addBenderRecipe(aInput1, aOutput1, aDuration, aEUt);
-    }
-
-    public static boolean addBenderRecipe(final ItemStack aInput1, final ItemStack aCircuit, final ItemStack aOutput1,
-        int aDuration, final int aEUt) {
-        return GT_Values.RA.addBenderRecipe(aInput1, aCircuit, aOutput1, aDuration, aEUt);
-    }
-
-    public static boolean addExtruderRecipe(final ItemStack aInput, final ItemStack aShape, final ItemStack aOutput,
-        int aDuration, final int aEUt) {
-        if ((aInput == null) || (aShape == null) || (aOutput == null)) {
-            return false;
+            Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }
-        if (aDuration <= 0) {
-            return false;
+
+
+        if (ItemUtils.checkForInvalidItems(plate_SingleNine) && ItemUtils.checkForInvalidItems(plate_Dense)) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(plate_SingleNine, GT_Utility.getIntegratedCircuit(9))
+                .itemOutputs(plate_Dense)
+                .duration(Math.max(material.getMass() * 2L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(benderRecipes);
+
+            Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }
-        RecipeMaps.extruderRecipes.addRecipe(
-            true,
-            new ItemStack[] { aInput, aShape },
-            new ItemStack[] { aOutput },
-            null,
-            null,
-            null,
-            aDuration,
-            aEUt,
-            0);
-        return true;
+
     }
 
     public static boolean addForgeHammerRecipe(final ItemStack aInput1, final ItemStack aOutput1, final int aDuration,
