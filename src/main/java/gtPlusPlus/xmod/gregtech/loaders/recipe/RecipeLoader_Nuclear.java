@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
@@ -61,14 +62,13 @@ public class RecipeLoader_Nuclear {
     }
 
     private static void autoclave() {
-
-        GT_Values.RA.addAutoclaveRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-            FluidUtils.getFluidStack("chlorine", 4000),
-            ItemUtils.getItemStackOfAmountFromOreDict("pelletZirconium", 1),
-            0,
-            15 * 20,
-            30);
+        GT_Values.RA.stdBuilder()
+            .itemInputs( ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1))
+            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pelletZirconium", 1))
+            .fluidInputs(FluidUtils.getFluidStack("chlorine", 4_000))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(autoclaveRecipes);
     }
 
     private static void blastFurnace() {

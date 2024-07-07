@@ -2,6 +2,7 @@ package com.elisis.gtnhlanth.loader;
 
 import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.*;
 import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
@@ -61,40 +62,41 @@ public class BotRecipes {
         ItemStack scheelite = Materials.Scheelite.getDust(6);
 
         // Li2WO4 + 2Na = Na2WO4 + 2Li
-        GT_Values.RA.addAutoclaveRecipe(
-            Materials.Tungstate.getDust(7),
-            Materials.Sodium.getDust(2),
-            Materials.Water.getFluid(4000),
-            sodiumTungsten,
-            Materials.Lithium.getDust(2),
-            10000,
-            100,
-            1920,
-            false);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Tungstate.getDust(7),
+                Materials.Sodium.getDust(2)
+            )
+            .itemOutputs(Materials.Lithium.getDust(2))
+            .fluidInputs(Materials.Water.getFluid(4000))
+            .fluidOutputs(sodiumTungsten)
+            .duration(5*SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(autoclaveRecipes);
 
         // MnWO4 + 2Na = Na2WO4 + Mn
-        GT_Values.RA.addAutoclaveRecipe(
-            WerkstoffLoader.Huebnerit.get(dust, 6),
-            Materials.Sodium.getDust(2),
-            Materials.Water.getFluid(4000),
-            sodiumTungsten,
-            Materials.Manganese.getDust(1),
-            10000,
-            100,
-            1920,
-            false);
+        GT_Values.RA.stdBuilder()
+            .itemInputs( WerkstoffLoader.Huebnerit.get(dust, 6),
+                Materials.Sodium.getDust(2))
+            .itemOutputs( Materials.Manganese.getDust(1))
+            .fluidInputs(Materials.Water.getFluid(4000))
+            .fluidOutputs(sodiumTungsten)
+            .duration(5*SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(autoclaveRecipes);
 
         // FeWO4 + 2Na = Na2WO4 + Fe
-        GT_Values.RA.addAutoclaveRecipe(
-            WerkstoffLoader.Ferberite.get(dust, 6),
-            Materials.Sodium.getDust(2),
-            Materials.Water.getFluid(4000),
-            sodiumTungsten,
-            Materials.Iron.getDust(1),
-            10000,
-            100,
-            1920,
-            false);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffLoader.Ferberite.get(dust, 6),
+                Materials.Sodium.getDust(2)
+            )
+            .itemOutputs(Materials.Iron.getDust(1))
+            .fluidInputs( Materials.Water.getFluid(4000))
+            .fluidOutputs(sodiumTungsten)
+            .duration(5*SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(autoclaveRecipes);
 
         // CaCl2 + Na2WO4 = 2NaCl + CaWO4
         ItemStack Ca2Cl = WerkstoffLoader.CalciumChloride.get(dust, 3);
