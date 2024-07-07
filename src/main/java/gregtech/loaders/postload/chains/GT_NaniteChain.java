@@ -4,11 +4,13 @@ import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.recipe.RecipeMaps.nanoForgeRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
+import static gregtech.api.util.GT_RecipeConstants.NANO_FORGE_TIER;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 
@@ -86,135 +88,129 @@ public class GT_NaniteChain {
          */
 
         // Carbon Nanites - Used to make more Nano Forge Controllers
-        GT_Values.RA.addNanoForgeRecipe(
-            new ItemStack[] { aUVTierLens, getModItem(BartWorks.ID, "bw.werkstoffblockscasingadvanced.01", 8, 31776),
-                ItemList.Circuit_Chip_SoC.get(64) },
-            new FluidStack[] { Materials.UUMatter.getFluid(200_000) },
-            new ItemStack[] { Materials.Carbon.getNanite(64), },
-            null,
-            null,
-            500 * 20,
-            10_000_000,
-            1);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                aUVTierLens, getModItem(BartWorks.ID, "bw.werkstoffblockscasingadvanced.01", 8, 31776),
+                ItemList.Circuit_Chip_SoC.get(64)
+            )
+            .itemOutputs(
+                Materials.Carbon.getNanite(64)
+            )
+            .fluidInputs(Materials.UUMatter.getFluid(200_000))
+            .metadata(NANO_FORGE_TIER, 1)
+            .duration(8*MINUTES+20*SECONDS)
+            .eut(10_000_000)
+            .addTo(nanoForgeRecipes);
 
         // Silver Nanites - Used in Tier 2 PCB Factory to improve board production
-        GT_Values.RA.addNanoForgeRecipe(
-            new ItemStack[] { aUEVTierLens, Materials.Silver.getBlocks(8), ItemList.Circuit_Chip_SoC.get(16) },
-            new FluidStack[] { Materials.UUMatter.getFluid(200000) },
-            new ItemStack[] { Materials.Silver.getNanite(1) },
-            null,
-            null,
-            750 * 20,
-            10_000_000,
-            2);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(aUEVTierLens, Materials.Silver.getBlocks(8), ItemList.Circuit_Chip_SoC.get(16) )
+            .itemOutputs(Materials.Silver.getNanite(1))
+            .fluidInputs(Materials.UUMatter.getFluid(200_000))
+            .metadata(NANO_FORGE_TIER, 2)
+            .duration(37*MINUTES+30*SECONDS)
+            .eut(10_000_000)
+            .addTo(nanoForgeRecipes);
 
         // Neutronium Nanites - Used to upgrade the Nano Forge to Tier 2
-        GT_Values.RA.addNanoForgeRecipe(
-            new ItemStack[] { aUHVTierLens, Materials.Neutronium.getBlocks(8), ItemList.Circuit_Chip_SoC2.get(64),
-                ItemList.Circuit_Chip_SoC2.get(32) },
-            new FluidStack[] { Materials.UUMatter.getFluid(200000) },
-            new ItemStack[] { Materials.Neutronium.getNanite(1) },
-            null,
-            null,
-            100 * 20,
-            100_000_000,
-            1);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(aUHVTierLens, Materials.Neutronium.getBlocks(8), ItemList.Circuit_Chip_SoC2.get(64),
+                ItemList.Circuit_Chip_SoC2.get(32) )
+            .itemOutputs(Materials.Neutronium.getNanite(1))
+            .fluidInputs(Materials.UUMatter.getFluid(200_000) )
+            .metadata(NANO_FORGE_TIER, 1)
+            .duration(1*MINUTES+40*SECONDS)
+            .eut(100_000_000)
+            .addTo(nanoForgeRecipes);
 
         // Glowstone Nanites - Used in the optical circuit line
-        GT_Values.RA.addNanoForgeRecipe(
-            new ItemStack[] { aUEVTierLens, getModItem(GTPlusPlus.ID, "blockCompressedObsidian", 8, 7), // Double
-                // compressed
-                // glowstone
-                // blocks
-                // (yes, it's
-                // not
-                // obsidian)
-                ItemList.Circuit_Chip_SoC2.get(64) },
-            new FluidStack[] { Materials.UUMatter.getFluid(50000) },
-            new ItemStack[] { Materials.Glowstone.getNanite(64) },
-            null,
-            null,
-            200 * 20,
-            50_000_000,
-            2);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                aUEVTierLens,
+                getModItem(GTPlusPlus.ID, "blockCompressedObsidian", 8, 7), // Double compressed glowstone blocks (yes, it's not obsidian)
+                ItemList.Circuit_Chip_SoC2.get(64)
+            )
+            .itemOutputs( Materials.Glowstone.getNanite(64))
+            .fluidInputs(Materials.UUMatter.getFluid(50_000))
+            .metadata(NANO_FORGE_TIER, 2)
+            .duration(3*MINUTES+20*SECONDS)
+            .eut(50_000_000)
+            .addTo(nanoForgeRecipes);
 
         // Gold Nanites - Used in Tier 3 PCB Factory to improve board production
-        GT_Values.RA.addNanoForgeRecipe(
-            new ItemStack[] { aUMVTierLens, Materials.Gold.getBlocks(8), ItemList.Circuit_Chip_SoC.get(16) },
-            new FluidStack[] { Materials.UUMatter.getFluid(300000) },
-            new ItemStack[] { Materials.Gold.getNanite(1) },
-            null,
-            null,
-            1_000 * 20,
-            100_000_000,
-            3);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                aUMVTierLens, Materials.Gold.getBlocks(8), ItemList.Circuit_Chip_SoC.get(16)
+            )
+            .itemOutputs(Materials.Gold.getNanite(1))
+            .fluidInputs( Materials.UUMatter.getFluid(300_000))
+            .metadata(NANO_FORGE_TIER, 3)
+            .duration(16*MINUTES+40*SECONDS)
+            .eut(100_000_000)
+            .addTo(nanoForgeRecipes);
 
         // Transcendent Metal Nanites - Used to upgrade the Nano Forge to Tier 3
-        GT_Values.RA.addNanoForgeRecipe(
-            new ItemStack[] { aUIVTierLens, MaterialsUEVplus.TranscendentMetal.getBlocks(8),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                aUIVTierLens, MaterialsUEVplus.TranscendentMetal.getBlocks(8),
                 ItemList.Circuit_Chip_SoC2.get(64), ItemList.Circuit_Chip_SoC2.get(64),
-                ItemList.Circuit_Chip_SoC2.get(64) },
-            new FluidStack[] { Materials.UUMatter.getFluid(2000000) },
-            new ItemStack[] { MaterialsUEVplus.TranscendentMetal.getNanite(1) },
-            null,
-            null,
-            750 * 20,
-            1_000_000_000,
-            2);
+                ItemList.Circuit_Chip_SoC2.get(64)
+            )
+            .itemOutputs(MaterialsUEVplus.TranscendentMetal.getNanite(1))
+            .fluidInputs(Materials.UUMatter.getFluid(2_000_000))
+            .metadata(NANO_FORGE_TIER, 2)
+            .duration(12*MINUTES+30*SECONDS)
+            .eut(1_000_000_000)
+            .addTo(nanoForgeRecipes);
 
         // White Dwarf Matter Nanites. Used to make Magnetohydrodynamically constrained star matter.
-        GT_Values.RA.addNanoForgeRecipe(
-            new ItemStack[] { aUMVTierLens, getModItem(BartWorks.ID, "gt.bwMetaGeneratedlens", 0, 36), // Magneto
-                // lens
-                getModItem(GTPlusPlus.ID, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any
-                // better naming
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                aUMVTierLens, getModItem(BartWorks.ID, "gt.bwMetaGeneratedlens", 0, 36), // Magneto lens
+                getModItem(GTPlusPlus.ID, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any better naming
                 MaterialsUEVplus.WhiteDwarfMatter.getBlocks(8), getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
                 getModItem(GoodGenerator.ID, "huiCircuit", 1, 4) // Paradox circuit
-            },
-            new FluidStack[] { Materials.UUMatter.getFluid(500_000), MaterialsUEVplus.RawStarMatter.getFluid(50_000),
-                MaterialsUEVplus.Space.getMolten(720), },
-            new ItemStack[] { MaterialsUEVplus.WhiteDwarfMatter.getNanite(4) },
-            null,
-            null,
-            750 * 20,
-            2_000_000_000,
-            3);
+            )
+            .itemOutputs(MaterialsUEVplus.WhiteDwarfMatter.getNanite(4))
+            .fluidInputs(Materials.UUMatter.getFluid(500_000), MaterialsUEVplus.RawStarMatter.getFluid(50_000),
+                MaterialsUEVplus.Space.getMolten(720))
+            .metadata(NANO_FORGE_TIER, 3)
+            .duration(12*MINUTES+30*SECONDS)
+            .eut(2_000_000_000)
+            .addTo(nanoForgeRecipes);
 
         // Black Dwarf Matter Nanites. Used to make Magnetohydrodynamically constrained star matter.
-        GT_Values.RA.addNanoForgeRecipe(
-            new ItemStack[] { aUMVTierLens, getModItem(BartWorks.ID, "gt.bwMetaGeneratedlens", 0, 36), // Magneto
-                // lens
-                getModItem(GTPlusPlus.ID, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any
-                // better naming
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                aUMVTierLens, getModItem(BartWorks.ID, "gt.bwMetaGeneratedlens", 0, 36), // Magneto lens
+                getModItem(GTPlusPlus.ID, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any better naming
                 MaterialsUEVplus.BlackDwarfMatter.getBlocks(8), getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
                 getModItem(GoodGenerator.ID, "huiCircuit", 1, 4) // Paradox circuit
-            },
-            new FluidStack[] { Materials.UUMatter.getFluid(500_000), MaterialsUEVplus.RawStarMatter.getFluid(50_000),
-                MaterialsUEVplus.Time.getMolten(720), },
-            new ItemStack[] { MaterialsUEVplus.BlackDwarfMatter.getNanite(4) },
-            null,
-            null,
-            750 * 20,
-            2_000_000_000,
-            3);
+            )
+            .itemOutputs( MaterialsUEVplus.BlackDwarfMatter.getNanite(4))
+            .fluidInputs(Materials.UUMatter.getFluid(500_000), MaterialsUEVplus.RawStarMatter.getFluid(50_000),
+                MaterialsUEVplus.Time.getMolten(720))
+            .metadata(NANO_FORGE_TIER, 3)
+            .duration(12*MINUTES+30*SECONDS)
+            .eut(2_000_000_000)
+            .addTo(nanoForgeRecipes);
 
         // Universium nanites.
-        GT_Values.RA.addNanoForgeRecipe(
-            new ItemStack[] { aUMVTierLens,
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                aUMVTierLens,
                 // Quantum Anomaly, couldn't find any better naming.
                 getModItem(GTPlusPlus.ID, "MU-metaitem.01", 0, 32105), MaterialsUEVplus.Universium.getBlocks(8),
-
                 ItemList.Optically_Perfected_CPU.get(16), ItemList.Optically_Compatible_Memory.get(16),
                 getModItem(GoodGenerator.ID, "huiCircuit", 1, 4) // Paradox circuit
-            },
-            new FluidStack[] { MaterialsUEVplus.SpaceTime.getMolten(144), Materials.Infinity.getMolten(576),
-                MaterialsUEVplus.PrimordialMatter.getFluid(64_000), },
-            new ItemStack[] { MaterialsUEVplus.Universium.getNanite(2) },
-            null,
-            null,
-            750 * 20,
-            2_000_000_000,
-            3);
+            )
+            .itemOutputs( MaterialsUEVplus.Universium.getNanite(2))
+            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(144), Materials.Infinity.getMolten(576),
+                MaterialsUEVplus.PrimordialMatter.getFluid(64_000))
+            .metadata(NANO_FORGE_TIER, 3)
+            .duration(12*MINUTES+30*SECONDS)
+            .eut(2_000_000_000)
+            .addTo(nanoForgeRecipes);
 
         // Eternity nanites
         GT_Values.RA.stdBuilder()
@@ -229,12 +225,12 @@ public class GT_NaniteChain {
             .itemOutputs(MaterialsUEVplus.Eternity.getNanite(4))
             .fluidInputs(
                 MaterialsUEVplus.Space.getMolten(1152),
-                MaterialsUEVplus.ExcitedDTSC.getFluid(50000),
+                MaterialsUEVplus.ExcitedDTSC.getFluid(50_000),
                 MaterialsUEVplus.PrimordialMatter.getFluid(64_000))
-            .duration(750 * GT_RecipeBuilder.SECONDS)
+            .metadata(NANO_FORGE_TIER, 3)
+            .duration(12*MINUTES+30*SECONDS)
             .eut(TierEU.RECIPE_MAX)
-            .specialValue(3)
-            .addTo(RecipeMaps.nanoForgeRecipes);
+            .addTo(nanoForgeRecipes);
 
     }
 }

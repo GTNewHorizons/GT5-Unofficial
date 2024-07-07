@@ -97,6 +97,12 @@ public class GT_RecipeConstants {
     public static final RecipeMetadataKey<Boolean> ON_FIRE = SimpleRecipeMetadataKey.create(Boolean.class, "on_fire");
 
     /**
+     * Nano Forge Tier.
+     */
+    public static final RecipeMetadataKey<Integer> NANO_FORGE_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "nano_forge_tier");
+
+    /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
      * Will override the fluid input with oxygen/plasma for the respective recipe maps, so there is no point setting it.
      */
@@ -328,5 +334,6 @@ public class GT_RecipeConstants {
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COIL_HEAT);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUSION_THRESHOLD);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUEL_VALUE);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NANO_FORGE_TIER);
     }
 }
