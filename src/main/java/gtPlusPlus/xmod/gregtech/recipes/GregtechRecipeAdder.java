@@ -726,25 +726,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     }
 
     @Override
-    public boolean addBlastRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs,
-        FluidStack[] aFluidOutputs, int time, long eu, int aHeat) {
-        GT_Recipe aSpecialRecipe = new GT_Recipe(
-            false,
-            aInputs,
-            aOutputs,
-            null,
-            new int[] {},
-            aInputFluids,
-            aFluidOutputs,
-            time,
-            (int) eu,
-            aHeat);
-
-        RecipeMaps.blastFurnaceRecipes.add(aSpecialRecipe);
-        return true;
-    }
-
-    @Override
     public boolean addPyrolyseRecipe(ItemStack aInput, FluidStack aFluidInput, int intCircuit, ItemStack aOutput,
         FluidStack aFluidOutput, int aDuration, int aEUt) {
         return RA.addPyrolyseRecipe(aInput, aFluidInput, intCircuit, aOutput, aFluidOutput, aDuration, aEUt);

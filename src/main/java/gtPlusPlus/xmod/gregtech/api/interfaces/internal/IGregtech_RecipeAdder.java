@@ -298,9 +298,6 @@ public interface IGregtech_RecipeAdder {
     boolean addChemicalPlantRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs,
         FluidStack[] aFluidOutputs, int[] aChances, int time, long eu, int aTier);
 
-    @Deprecated
-    boolean addBlastRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs,
-        FluidStack[] aFluidOutputs, int time, long eu, int aHeat);
 
     @Deprecated
     boolean addPyrolyseRecipe(ItemStack aInput, FluidStack aFluidInput, int intCircuit, ItemStack aOutput,

@@ -10,88 +10,6 @@ import gregtech.api.util.GT_RecipeBuilder;
 public interface IGT_RecipeAdder {
 
     /**
-     * Adds a Blast Furnace Recipe
-     *
-     * @param aInput1   must be != null
-     * @param aInput2   can be null
-     * @param aOutput1  must be != null
-     * @param aOutput2  can be null
-     * @param aDuration must be > 0
-     * @param aEUt      should be > 0
-     * @param aLevel    should be > 0 is the minimum Heat Level needed for this Recipe
-     */
-    @Deprecated
-    boolean addBlastRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, ItemStack aOutput2, int aDuration,
-        int aEUt, int aLevel);
-
-    /**
-     * Adds a Blast Furnace Recipe
-     *
-     * @param aInput1   must be != null
-     * @param aInput2   can be null
-     * @param aOutput1  must be != null
-     * @param aOutput2  can be null
-     * @param aDuration must be > 0
-     * @param aEUt      should be > 0
-     * @param aLevel    should be > 0 is the minimum Heat Level needed for this Recipe
-     */
-    @Deprecated
-    boolean addBlastRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput,
-        ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt, int aLevel);
-
-    @Deprecated
-    boolean addBlastRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aInput3, ItemStack aInput4,
-        FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3,
-        ItemStack aOutput4, int aDuration, int aEUt, int aLevel);
-
-    /**
-     * Adds a Plasma Forge Recipe
-     *
-     * @param ItemInputArray   Array of input items.
-     * @param FluidInputArray  Array of output items.
-     * @param OutputItemArray  Array of input fluids.
-     * @param FluidOutputArray Array of output items.
-     * @param aDuration        Must be > 0. Duration in ticks.
-     * @param aEUt             Should be > 0. EU/t.
-     * @param coil_heat_level  Should be > 0. Heat of the coils used.
-     */
-    @Deprecated
-    boolean addPlasmaForgeRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray, ItemStack[] OutputItemArray,
-        FluidStack[] FluidOutputArray, int aDuration, int aEUt, int coil_heat_level);
-
-    @Deprecated
-    boolean addPrimitiveBlastRecipe(ItemStack aInput1, ItemStack aInput2, int aCoalAmount, ItemStack aOutput1,
-        ItemStack aOutput2, int aDuration);
-
-    /**
-     * Adds a Canning Machine Recipe
-     *
-     * @param aInput1   must be != null
-     * @param aOutput1  must be != null
-     * @param aDuration must be > 0, 100 ticks is standard.
-     * @param aEUt      should be > 0, 1 EU/t is standard.
-     */
-    @Deprecated
-    boolean addCannerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, ItemStack aOutput2, int aDuration,
-        int aEUt);
-
-    /**
-     * Adds an Alloy Smelter Recipe
-     *
-     * @param aInput1   must be != null
-     * @param aInput2   can be null
-     * @param aOutput1  must be != null
-     * @param aDuration must be > 0
-     * @param aEUt      should be > 0
-     */
-    @Deprecated
-    boolean addAlloySmelterRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addAlloySmelterRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration, int aEUt,
-        boolean hidden);
-
-    /**
      * Adds an Assembler Recipe
      *
      * @param aInput1   must be != null
@@ -129,37 +47,8 @@ public interface IGT_RecipeAdder {
         int aDuration, int aEUt);
 
     @Deprecated
-    boolean addAssemblerRecipe(ItemStack aInput1, Object aOreDict, int aAmount, FluidStack aFluidInput,
-        ItemStack aOutput1, int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addAssemblerRecipe(ItemStack[] aInputs, Object aOreDict, int aAmount, FluidStack aFluidInput,
-        ItemStack aOutput1, int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addAssemblerRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, ItemStack aOutput1,
-        int aDuration, int aEUt, boolean aCleanroom);
-
-    @Deprecated
     boolean addAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt,
         boolean aCleanroom);
-
-    /**
-     * Adds an Circuit Assembler Recipe
-     *
-     * @param aInputs     must be 1-6 ItemStacks
-     * @param aFluidInput 0-1 fluids
-     * @param aOutput     must be != null
-     * @param aDuration   must be > 0
-     * @param aEUt        should be > 0
-     */
-    @Deprecated
-    boolean addCircuitAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration,
-        int aEUt);
-
-    @Deprecated
-    boolean addCircuitAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration,
-        int aEUt, boolean aCleanroom);
 
     /**
      * Adds an Assemblyline Recipe
