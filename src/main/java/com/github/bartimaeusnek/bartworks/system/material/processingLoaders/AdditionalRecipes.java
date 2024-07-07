@@ -28,6 +28,7 @@ import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
@@ -661,13 +662,16 @@ public class AdditionalRecipes {
 
         LoadItemContainers.run();
 
-        GT_Values.RA.addCannerRecipe(
-            ItemList.Large_Fluid_Cell_TungstenSteel.get(1L),
-            WerkstoffLoader.Tiberium.get(dust, 3),
-            BW_NonMeta_MaterialItems.TiberiumCell_1.get(1L),
-            null,
-            30,
-            16);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Large_Fluid_Cell_TungstenSteel.get(1L),
+                WerkstoffLoader.Tiberium.get(dust, 3)
+            )
+            .itemOutputs(BW_NonMeta_MaterialItems.TiberiumCell_1.get(1L))
+            .duration(1 * SECONDS+10*TICKS)
+            .eut(16)
+            .addTo(cannerRecipes);
+
         GT_Values.RA.addAssemblerRecipe(
             BW_NonMeta_MaterialItems.TiberiumCell_1.get(2L),
             GT_OreDictUnificator.get(stick, Materials.TungstenSteel, 4L),
