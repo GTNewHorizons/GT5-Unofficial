@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import java.util.HashSet;
 import java.util.Set;
 
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_RecipeConstants;
 import net.minecraft.item.ItemStack;
 
@@ -14,6 +15,8 @@ import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
+import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 
@@ -76,7 +79,12 @@ public class RecipeGen_Plasma extends RecipeGen_Base {
                 }
             }
             if (ItemUtils.checkForInvalidItems(new ItemStack[] { aCell, aPlasmaCell })) {
-                GT_Values.RA.addVacuumFreezerRecipe(aPlasmaCell, aCell, (int) Math.max(material.getMass() * 2L, 1L));
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(aPlasmaCell)
+                    .itemOutputs(aCell)
+                    .duration(Math.max(material.getMass() * 2L, 1L))
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(vacuumFreezerRecipes);
             }
         }
     }
