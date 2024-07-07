@@ -12,6 +12,13 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
+
 public class RecipeGen_MetalRecipe extends RecipeGen_Base {
 
     public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
@@ -34,12 +41,17 @@ public class RecipeGen_MetalRecipe extends RecipeGen_Base {
 
         Logger.WARNING("Generating Metal recipes for " + material.getLocalizedName());
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
-            && ItemUtils.checkForInvalidItems(material.getBlock(1)))
-            if (GT_ModHandler.addCompressionRecipe(material.getIngot(9), material.getBlock(1))) {
-                Logger.WARNING("Compress Block Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Compress Block Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+            && ItemUtils.checkForInvalidItems(material.getBlock(1))) {
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(material.getIngot(9))
+                .itemOutputs(material.getBlock(1))
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(compressorRecipes);
+            Logger.WARNING("Compress Block Recipe: " + material.getLocalizedName() + " - Success");
+
+        }
 
         if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getRod(1)))
             if (GT_Values.RA.addLatheRecipe(

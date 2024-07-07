@@ -930,25 +930,6 @@ public class GT_ModHandler {
     }
 
     /**
-     * IC2-Compressor Recipe. Overloads old Recipes automatically
-     */
-    @Deprecated
-    public static boolean addCompressionRecipe(ItemStack aInput, ItemStack aOutput) {
-        return addCompressionRecipe(aInput, aOutput, 300, 2);
-    }
-
-    /**
-     * IC2-Compressor Recipe. Overloads old Recipes automatically
-     */
-    @Deprecated
-    public static boolean addCompressionRecipe(ItemStack aInput, ItemStack aOutput, int duration, int EUPerTick) {
-        aOutput = GT_OreDictUnificator.get(true, aOutput);
-        if (aInput == null || aOutput == null || GT_Utility.areStacksEqual(aInput, aOutput, true)) return false;
-        RA.addCompressorRecipe(aInput, aOutput, duration, EUPerTick);
-        return true;
-    }
-
-    /**
      * @param aValue Scrap = 5000, Scrapbox = 45000, Diamond Dust 125000
      */
     public static boolean addIC2MatterAmplifier(ItemStack aAmplifier, int aValue) {
