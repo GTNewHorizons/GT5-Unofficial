@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -1099,7 +1101,12 @@ public class GregtechConduits {
         }
 
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aCable01, aWire01 })) {
-            GT_Values.RA.addUnboxingRecipe(aCable01, aWire01, null, 100, 8);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aCable01)
+                .itemOutputs(aWire01)
+                .duration(5*SECONDS)
+                .eut(8)
+                .addTo(unpackagerRecipes);
         }
 
         // Shapeless Down-Crafting
