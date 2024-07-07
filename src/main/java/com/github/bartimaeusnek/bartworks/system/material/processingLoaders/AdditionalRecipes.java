@@ -14,6 +14,7 @@
 package com.github.bartimaeusnek.bartworks.system.material.processingLoaders;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.CLEANROOM;
+import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.OrePrefixes.bolt;
 import static gregtech.api.enums.OrePrefixes.crushed;
@@ -31,6 +32,7 @@ import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
+import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -278,11 +280,12 @@ public class AdditionalRecipes {
     @SuppressWarnings("deprecation")
     public static void run() {
         runBWRecipes();
-        GT_Values.RA.addImplosionRecipe(
-            WerkstoffLoader.RawAdemicSteel.get(dust),
-            4,
-            WerkstoffLoader.AdemicSteel.get(dust),
-            null);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffLoader.RawAdemicSteel.get(dust))
+            .itemOutputs(WerkstoffLoader.AdemicSteel.get(dust))
+            .duration(1*SECONDS).eut(TierEU.RECIPE_LV).metadata(ADDITIVE_AMOUNT, 4).addTo(implosionRecipes);
+
         // Thorium/Yttrium Glas
         GT_Values.RA.stdBuilder()
             .itemInputs(
