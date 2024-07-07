@@ -24,6 +24,8 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+
 public class RecipeGen_Ore extends RecipeGen_Base {
 
     public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
@@ -345,40 +347,34 @@ public class RecipeGen_Ore extends RecipeGen_Base {
          * Centrifuge
          */
         // Purified Dust to Clean
-        if (GT_Values.RA.addCentrifugeRecipe(
-            material.getDustPurified(1),
-            null,
-            null, // In Fluid
-            null, // Out Fluid
-            matDust,
-            matDustA,
-            null,
-            null,
-            null,
-            null,
-            new int[] { 10000, 1111 }, // Chances
-            (int) Math.max(1L, material.getMass() * 8L), // Time
-            tVoltageMultiplier / 2)) { // Eu
-            Logger.MATERIALS("[Centrifuge] Added Recipe: Purified Dust to Clean Dust");
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(material.getDustPurified(1))
+            .itemOutputs(
+                matDust,
+                matDustA
+            )
+            .outputChances(100_00,11_11)
+            .eut(tVoltageMultiplier / 2)
+            .duration((int) Math.max(1L, material.getMass() * 8L))
+            .addTo(centrifugeRecipes);
+
+        Logger.MATERIALS("[Centrifuge] Added Recipe: Purified Dust to Clean Dust");
+
 
         // Impure Dust to Clean
-        if (GT_Values.RA.addCentrifugeRecipe(
-            material.getDustImpure(1),
-            null,
-            null, // In Fluid
-            null, // Out Fluid
-            matDust,
-            matDustB,
-            null,
-            null,
-            null,
-            null,
-            new int[] { 10000, 1111 }, // Chances
-            (int) Math.max(1L, material.getMass() * 8L), // Time
-            tVoltageMultiplier / 2)) { // Eu
-            Logger.MATERIALS("[Centrifuge] Added Recipe: Inpure Dust to Clean Dust");
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(material.getDustImpure(1))
+            .itemOutputs(
+                matDust,
+                matDustB
+            )
+            .outputChances(100_00,11_11)
+            .eut(tVoltageMultiplier / 2)
+            .duration((int) Math.max(1L, material.getMass() * 8L))
+            .addTo(centrifugeRecipes);
+
+        Logger.MATERIALS("[Centrifuge] Added Recipe: Inpure Dust to Clean Dust");
+
 
         /**
          * Electrolyzer

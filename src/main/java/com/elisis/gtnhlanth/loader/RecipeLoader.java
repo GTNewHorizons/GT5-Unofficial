@@ -22,6 +22,7 @@ import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.common.items.GT_MetaGenerated_Item_01.registerCauldronCleaningFor;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
@@ -183,20 +184,15 @@ public class RecipeLoader {
 
         // Zirconia-Hafnia
         // ??HfZr?? = HfO2 + ZrO2
-        GT_Values.RA.addCentrifugeRecipe(
-            WerkstoffMaterialPool.HafniaZirconiaBlend.get(OrePrefixes.dust, 1),
-            null,
-            null,
-            null,
-            WerkstoffMaterialPool.Hafnia.get(OrePrefixes.dust, 3),
-            WerkstoffMaterialPool.Zirconia.get(OrePrefixes.dust, 3),
-            null,
-            null,
-            null,
-            null,
-            new int[] { 10000, 10000 },
-            600,
-            1920);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.HafniaZirconiaBlend.get(OrePrefixes.dust, 1))
+            .itemOutputs(
+                WerkstoffMaterialPool.Hafnia.get(OrePrefixes.dust, 3),
+                WerkstoffMaterialPool.Zirconia.get(OrePrefixes.dust, 3)
+            )
+            .eut(TierEU.RECIPE_EV)
+            .duration(30*SECONDS)
+            .addTo(centrifugeRecipes);
 
         // Ammonium Nitrate
         // HNO3 + NH3 = NH4NO3
@@ -249,20 +245,13 @@ public class RecipeLoader {
             240);
 
         // Iodine
-        GT_Values.RA.addCentrifugeRecipe(
-            Materials.Benzene.getCells(1),
-            null,
-            WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(2000),
-            WerkstoffMaterialPool.SeaweedByproducts.getFluidOrGas(200),
-            Materials.Empty.getCells(1),
-            WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 1),
-            null,
-            null,
-            null,
-            null,
-            new int[] { 10000, 10000 },
-            760,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Benzene.getCells(1))
+            .fluidInputs(WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(2000))
+            .fluidOutputs(WerkstoffMaterialPool.SeaweedByproducts.getFluidOrGas(200))
+            .eut(TierEU.RECIPE_HV)
+            .duration(38*SECONDS)
+            .addTo(centrifugeRecipes);
 
         // IODINE-END
 
@@ -742,27 +731,19 @@ public class RecipeLoader {
             WerkstoffMaterialPool.SaturatedMonaziteRareEarthMixture.get(OrePrefixes.dust, 3),
             400,
             240);
-        /*
-         * GT_Values.RA.addCentrifugeRecipe(
-         * WerkstoffMaterialPool.SaturatedMonaziteRareEarthMixture.get(OrePrefixes.dust, 2), null, null,
-         * Materials.Chloromethane.getGas(200), WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dustSmall, 6),
-         * null, //TODO null, null, null, null, new int[] { 10000, //10000 }, 700, 1920 );
-         */
-        GT_Values.RA.addCentrifugeRecipe(
-            GT_Utility.getIntegratedCircuit(4),
-            WerkstoffMaterialPool.SaturatedMonaziteRareEarthMixture.get(OrePrefixes.dust, 8),
-            null,
-            Materials.Chloromethane.getGas(800),
-            WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 6),
-            null, // WerkstoffMaterialPool.UnknownBlend.get(OrePrefixes.dust, 2) TODO
-            null,
-            null,
-            null,
-            null,
-            new int[] { 10000, // 10000
-            },
-            6300,
-            1920);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(4),
+                WerkstoffMaterialPool.SaturatedMonaziteRareEarthMixture.get(OrePrefixes.dust, 8)
+            )
+            .itemOutputs(WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 6))
+            .fluidOutputs(Materials.Chloromethane.getGas(800))
+            .eut(TierEU.RECIPE_EV)
+            .duration(5*MINUTES+15*SECONDS)
+            .addTo(centrifugeRecipes);
+
+
 
         GT_Values.RA.addSifterRecipe(
             WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 9),
@@ -880,20 +861,16 @@ public class RecipeLoader {
             300,
             480);
 
-        GT_Values.RA.addCentrifugeRecipe(
-            WerkstoffMaterialPool.CeriumOxidisedRareEarthOxides.get(OrePrefixes.dust, 1),
-            null,
-            null,
-            null,
-            WerkstoffMaterialPool.BastnasiteRarerEarthOxides.get(OrePrefixes.dust, 1),
-            WerkstoffMaterialPool.CeriumDioxide.get(OrePrefixes.dust, 1),
-            null,
-            null,
-            null,
-            null,
-            new int[] { 10000, 9000 },
-            600,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.CeriumOxidisedRareEarthOxides.get(OrePrefixes.dust, 1))
+            .itemOutputs(
+                WerkstoffMaterialPool.BastnasiteRarerEarthOxides.get(OrePrefixes.dust, 1),
+                WerkstoffMaterialPool.CeriumDioxide.get(OrePrefixes.dust, 1)
+            )
+            .outputChances(100_00, 90_00)
+            .eut(TierEU.RECIPE_HV)
+            .duration(30*SECONDS)
+            .addTo(centrifugeRecipes);
 
         GT_Values.RA.addMixerRecipe(
             WerkstoffMaterialPool.BastnasiteRarerEarthOxides.get(OrePrefixes.dust, 1),
@@ -915,20 +892,17 @@ public class RecipeLoader {
             700,
             480);
 
-        GT_Values.RA.addCentrifugeRecipe(
-            null,
-            null,
-            WerkstoffMaterialPool.SaturatedBastnasiteRarerEarthOxides.getFluidOrGas(1000),
-            WerkstoffMaterialPool.DilutedAcetone.getFluidOrGas(750),
-            WerkstoffMaterialPool.NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 1),
-            WerkstoffMaterialPool.SamaricRareEarthConcentrate.get(OrePrefixes.dust, 1),
-            null,
-            null,
-            null,
-            null,
-            new int[] { 8000, 5000 },
-            900,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemOutputs(
+                WerkstoffMaterialPool.NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 1),
+                WerkstoffMaterialPool.SamaricRareEarthConcentrate.get(OrePrefixes.dust, 1)
+            )
+            .outputChances(80_00, 50_00)
+            .fluidInputs(WerkstoffMaterialPool.SaturatedBastnasiteRarerEarthOxides.getFluidOrGas(1000))
+            .fluidOutputs(WerkstoffMaterialPool.DilutedAcetone.getFluidOrGas(750))
+            .eut(TierEU.RECIPE_HV)
+            .duration(45*SECONDS)
+            .addTo(centrifugeRecipes);
 
         // Nd RE
         GT_Values.RA.addChemicalRecipe(
@@ -1003,20 +977,16 @@ public class RecipeLoader {
             300,
             1920);
 
-        GT_Values.RA.addCentrifugeRecipe(
-            WerkstoffMaterialPool.DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 6),
-            null,
-            null,
-            null,
-            Materials.Samarium.getDust(1),
-            WerkstoffLoader.Thorianit.get(OrePrefixes.dust, 2),
-            null,
-            null,
-            null,
-            null,
-            new int[] { 9000, 8000, 10000 },
-            200,
-            1920);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 6))
+            .itemOutputs(
+                Materials.Samarium.getDust(1),
+                WerkstoffLoader.Thorianit.get(OrePrefixes.dust, 2)
+            )
+            .outputChances(90_00,80_00)
+            .eut(TierEU.RECIPE_EV)
+            .duration(10*SECONDS)
+            .addTo(centrifugeRecipes);
 
         // TODO UV Tier Ion Extracting Method
 
