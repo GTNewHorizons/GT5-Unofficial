@@ -7,6 +7,7 @@ import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -623,16 +624,21 @@ public class RecipeLoader_Nuclear {
         // UF4 uses solid rule due to item form even though item form currently is inaccessible because item form may be
         // accessible in future and must be consistent
         // UF4 solid rule also assumes 1:144 item:fluid ratio in this case
-        GT_Values.RA.addMixerRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 4),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustUranium235", 1),
-            null,
-            null,
-            FluidUtils.getFluidStack("hydrofluoricacid", 10000),
-            FLUORIDES.URANIUM_TETRAFLUORIDE.getFluidStack(3600),
-            null,
-            3000,
-            500);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 4),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustUranium235", 1)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack("hydrofluoricacid", 10000)
+            )
+            .fluidOutputs(
+                FLUORIDES.URANIUM_TETRAFLUORIDE.getFluidStack(3600)
+            )
+            .duration(2 * MINUTES + 30 * SECONDS)
+            .eut(500)
+            .addTo(mixerRecipes);
+
     }
 
     private static void sifter() {

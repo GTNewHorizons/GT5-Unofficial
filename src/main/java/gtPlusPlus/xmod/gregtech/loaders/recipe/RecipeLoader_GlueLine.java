@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -231,35 +232,48 @@ public class RecipeLoader_GlueLine {
     }
 
     private static void mixerRecipes() {
-        GT_Values.RA.addMixerRecipe(
-             GT_Utility.getIntegratedCircuit(1),
-            MISC_MATERIALS.DICHLOROACETIC_ACID.getCell(1),
-            null,
-            null,
-            MISC_MATERIALS.TRICHLOROACETIC_ACID.getFluidStack(1000),
-            MISC_MATERIALS.CHLOROACETIC_MIXTURE.getFluidStack(2000),
-            CI.emptyCells(1),
-            100,
-            100);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1),
+                MISC_MATERIALS.DICHLOROACETIC_ACID.getCell(1)
+            )
+            .itemOutputs(
+                CI.emptyCells(1)
+            )
+            .fluidInputs(
+                MISC_MATERIALS.TRICHLOROACETIC_ACID.getFluidStack(1000)
+            )
+            .fluidOutputs(
+                MISC_MATERIALS.CHLOROACETIC_MIXTURE.getFluidStack(2000)
+            )
+            .duration(5 * SECONDS)
+            .eut(100)
+            .addTo(mixerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurTrioxide", 1),
+                GT_Utility.getIntegratedCircuit(2)
+            )
+            .itemOutputs(
+                CI.emptyCells(1)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack("sulfuricacid", 1000)
+            )
+            .fluidOutputs(
+                MISC_MATERIALS.SOLID_ACID_MIXTURE.getFluidStack(1000)
+            )
+            .duration(5 * SECONDS)
+            .eut(40)
+            .addTo(mixerRecipes);
 
-        GT_Values.RA.addMixerRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurTrioxide", 1),
-             GT_Utility.getIntegratedCircuit(2),
-            null,
-            null,
-            FluidUtils.getFluidStack("sulfuricacid", 1000),
-            MISC_MATERIALS.SOLID_ACID_MIXTURE.getFluidStack(1000),
-            CI.emptyCells(1),
-            100,
-            40);
     }
 
     private static void glueUsageRecipes() {
         // Braintech Tape recipe, PBI and superglue make 16 tape at once
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polybenzimidazole, 1L), GT_ModHandler.getIC2Item("carbonMesh", 1L),  GT_Utility.getIntegratedCircuit(10) }
-            )
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polybenzimidazole, 1L), GT_ModHandler.getIC2Item("carbonMesh", 1L), GT_Utility.getIntegratedCircuit(10))
             .itemOutputs(
                 ItemList.Duct_Tape.get(16L)
             )
@@ -272,8 +286,7 @@ public class RecipeLoader_GlueLine {
         // Maintenance Hatch recipe, using Braintech Tape
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                new ItemStack[] { ItemList.Hull_LV.get(1), ItemList.Duct_Tape.get(1),  GT_Utility.getIntegratedCircuit(1) }
-            )
+                ItemList.Hull_LV.get(1), ItemList.Duct_Tape.get(1), GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(
                 ItemList.Hatch_Maintenance.get(1)
             )
@@ -286,8 +299,7 @@ public class RecipeLoader_GlueLine {
         // Graphene recipes from later wafer tiers, using superglue instead of the bronze age glue
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64), ItemList.Circuit_Silicon_Wafer4.get(2L),  GT_Utility.getIntegratedCircuit(2) }
-            )
+                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64), ItemList.Circuit_Silicon_Wafer4.get(2L), GT_Utility.getIntegratedCircuit(2))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 64)
             )
@@ -299,8 +311,7 @@ public class RecipeLoader_GlueLine {
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64), ItemList.Circuit_Silicon_Wafer5.get(1L),  GT_Utility.getIntegratedCircuit(2) }
-            )
+                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64), ItemList.Circuit_Silicon_Wafer5.get(1L), GT_Utility.getIntegratedCircuit(2))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 64)
             )
@@ -312,31 +323,40 @@ public class RecipeLoader_GlueLine {
             .addTo(assemblerRecipes);
 
 
-        GT_Values.RA.addMixerRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 4L),
-            GT_Values.NI,
-            GT_Values.NI,
-            GT_Utility.getIntegratedCircuit(1),
-            MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(100),
-            null,
-            ItemList.SFMixture.get(32),
-            1600,
-            16);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 4L),
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                ItemList.SFMixture.get(32)
+            )
+            .fluidInputs(
+                MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(100)
+            )
+            .duration(1 * MINUTES + 20 * SECONDS)
+            .eut(16)
+            .addTo(mixerRecipes);
 
-        GT_Values.RA.addMixerRecipe(
-            ItemList.GelledToluene.get(1),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Polybenzimidazole, 1L),
-            GT_Values.NI,
-            GT_Values.NI,
-            GT_Utility.getIntegratedCircuit(1),
-            MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(100),
-            null,
-            ItemList.SFMixture.get(64),
-            1600,
-            16);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.GelledToluene.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Polybenzimidazole, 1L),
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                ItemList.SFMixture.get(64)
+            )
+            .fluidInputs(
+                MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(100)
+            )
+            .duration(1 * MINUTES + 20 * SECONDS)
+            .eut(16)
+            .addTo(mixerRecipes);
+
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.PolyvinylChloride, 8),
@@ -467,8 +487,7 @@ public class RecipeLoader_GlueLine {
         if (NewHorizonsCoreMod.isModLoaded() && GalacticraftCore.isModLoaded()) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    new ItemStack[] { ItemUtils.getItemStackFromFQRN("GalacticraftMars:item.itemBasicAsteroids:7", 1), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Titanium, 8), ItemUtils.getItemStackFromFQRN("dreamcraft:item.TungstenString", 8),  GT_Utility.getIntegratedCircuit(1) }
-                )
+                    ItemUtils.getItemStackFromFQRN("GalacticraftMars:item.itemBasicAsteroids:7", 1), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Titanium, 8), ItemUtils.getItemStackFromFQRN("dreamcraft:item.TungstenString", 8), GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(
                     ItemUtils.getItemStackFromFQRN("GalaxySpace:item.ThermalClothT2", 1)
                 )

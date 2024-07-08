@@ -27,6 +27,7 @@ import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
@@ -216,29 +217,24 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
                     input = ItemUtils.cleanItemStackArray(input);
 
                     // Add mixer Recipe
-                    if (RA.addMixerRecipe(
-                        input[0],
-                        input[1],
-                        input[2],
-                        input[3],
-                        oxygen,
-                        null,
-                        outputStacks,
-                        (int) Math.max(material.getMass() * 2L * 1, 1),
-                        material.vVoltageMultiplier)) // Was 6, but let's try 2. This makes Potin LV, for example.
-                    {
-                        Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
-                    } else {
-                        Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Failed");
-                    }
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                            input[0],
+                            input[1],
+                            input[2],
+                            input[3]
+                        )
+                        .itemOutputs(
+                            outputStacks
+                        )
+                        .fluidInputs(
+                            oxygen
+                        )
+                        .duration((int) Math.max(material.getMass() * 2L * 1, 1))
+                        .eut(material.vVoltageMultiplier)
+                        .addTo(mixerRecipes);
 
-                    // Add Shapeless recipe for low tier alloys.
-                    /*
-                     * if (tVoltageMultiplier <= 30){ if (RecipeUtils.addShapedGregtechRecipe(inputStacks,
-                     * outputStacks)){
-                     * Logger.WARNING("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Success"); } else {
-                     * Logger.WARNING("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Failed"); } }
-                     */
+                    Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
                 }
             }
         }
@@ -321,24 +317,26 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
                     // Add mixer Recipe
                     try {
-                        if (RA.addMixerRecipe(
-                            input1,
-                            input2,
-                            input3,
-                            input4,
-                            oxygen,
-                            null,
-                            outputStacks,
-                            (int) Math.max(material.getMass() * 2L * 1, 1),
-                            material.vVoltageMultiplier)) // Was 6, but let's try 2. This makes Potin LV, for
-                        // example.
-                        {
-                            Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
-                            return true;
-                        } else {
-                            Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Failed");
-                            return false;
-                        }
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(
+                                input1,
+                                input2,
+                                input3,
+                                input4
+                            )
+                            .itemOutputs(
+                                outputStacks
+                            )
+                            .fluidInputs(
+                                oxygen
+                            )
+                            .duration((int) Math.max(material.getMass() * 2L * 1, 1))
+                            .eut(material.vVoltageMultiplier)
+                            .addTo(mixerRecipes);
+
+                        Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
+                        return true;
+
                     } catch (Throwable t) {
                         t.printStackTrace();
                     }
