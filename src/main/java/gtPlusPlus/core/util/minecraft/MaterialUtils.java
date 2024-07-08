@@ -206,6 +206,7 @@ public class MaterialUtils {
         return aMeltingPoint < 1000 ? 0 : (MathUtils.roundToClosestInt(aMeltingPoint / 1000f));
     }
 
+    @Deprecated //use TierEU enum
     public static int getVoltageForTier(int aTier) {
         // aTier += 1; - Probably some logic to this, idk.
 

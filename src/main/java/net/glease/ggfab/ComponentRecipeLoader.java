@@ -1,6 +1,11 @@
 package net.glease.ggfab;
 
 import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.util.GT_RecipeBuilder.HOURS;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
+import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -18,21 +23,26 @@ class ComponentRecipeLoader implements Runnable {
 
     @Override
     public void run() {
-        Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
-            ? FluidRegistry.getFluid("molten.indalloy140")
-            : FluidRegistry.getFluid("molten.solderingalloy");
-        RA.addAssemblylineRecipe(
-            ItemList.Machine_Multi_Assemblyline.get(1L),
-            96000,
-            new Object[] { ItemList.Machine_Multi_Assemblyline.get(1L),
+        Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140");
+
+        GT_Values.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_Assemblyline.get(1L))
+            .metadata(RESEARCH_TIME, 1*HOURS+6*MINUTES)
+            .itemInputs(
+                ItemList.Machine_Multi_Assemblyline.get(1L),
                 new Object[] { OrePrefixes.circuit.get(Materials.Master), 2 },
                 new Object[] { OrePrefixes.circuit.get(Materials.Elite), 4 },
                 new Object[] { OrePrefixes.circuit.get(Materials.Data), 8 },
-                ItemList.Automation_ChestBuffer_LuV.get(1L), },
-            new FluidStack[] { new FluidStack(solderIndalloy, 1296), Materials.Lubricant.getFluid(2000) },
-            GGItemList.AdvAssLine.get(1L),
-            1200,
-            6000);
+                ItemList.Automation_ChestBuffer_LuV.get(1L)
+            )
+            .fluidInputs(
+                new FluidStack(solderIndalloy, 1296),
+                Materials.Lubricant.getFluid(2000))
+            .itemOutputs(GGItemList.AdvAssLine.get(1L))
+            .eut(6_000)
+            .duration(10*MINUTES)
+            .addTo(AssemblyLine);
+
         RA.addAssemblerRecipe(
             new ItemStack[] { ItemList.Hatch_Input_Bus_IV.get(1L), ItemList.Emitter_IV.get(1L),
                 ItemList.Sensor_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Enderium, 1L),
