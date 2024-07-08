@@ -122,7 +122,12 @@ public class BeamlineRecipeLoader {
                         GT_Utility.copyAmountUnsafe((int) Math.pow(2, index + 2), mask.getProducedItem()),
                         new ItemStack(LanthItemList.maskMap.get(mask), 0),
                         1,
-                        mask.getBaselineAmount() * (int) Math.pow(2, index - 1),
+                        mask.getBaselineAmount() * (int) Math.pow(Math.sqrt(3), index - 1), // 3x recipe amount increase
+                                                                                            // per 2 increases in wafer
+                                                                                            // tier. This greatly
+                                                                                            // incentivises the use of
+                                                                                            // higher tier boule wafer
+                                                                                            // recipes
                         mask.getMinEnergy(),
                         mask.getMaxEnergy(),
                         mask.getMinFocus(),
