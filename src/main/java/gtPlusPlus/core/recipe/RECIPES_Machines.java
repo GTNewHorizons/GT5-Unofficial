@@ -16,6 +16,7 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.List;
 
@@ -829,17 +830,17 @@ public class RECIPES_Machines {
     }
 
     private static void distillus() {
-
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(19), ItemList.Distillation_Tower.get(2),
-                GregtechItemList.GTPP_Casing_IV.get(16), CI.getTieredComponent(OrePrefixes.circuit, 6, 8) },
-            new FluidStack[] { ALLOY.AQUATIC_STEEL.getFluidStack(144 * 32), ALLOY.BABBIT_ALLOY.getFluidStack(144 * 16),
-                ALLOY.BRONZE.getFluidStack(144 * 64), ALLOY.KANTHAL.getFluidStack(144 * 16), },
-            new ItemStack[] { GregtechItemList.Machine_Adv_DistillationTower.get(1) },
-            new FluidStack[] {},
-            20 * 600,
-            (int) TierEU.RECIPE_LuV,
-            5);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(19), ItemList.Distillation_Tower.get(2), GregtechItemList.GTPP_Casing_IV.get(16), CI.getTieredComponent(OrePrefixes.circuit, 6, 8))
+            .itemOutputs(
+                GregtechItemList.Machine_Adv_DistillationTower.get(1))
+            .fluidInputs(
+                ALLOY.AQUATIC_STEEL.getFluidStack(144 * 32), ALLOY.BABBIT_ALLOY.getFluidStack(144 * 16), ALLOY.BRONZE.getFluidStack(144 * 64), ALLOY.KANTHAL.getFluidStack(144 * 16))
+            .duration(10 * MINUTES)
+            .eut( TierEU.RECIPE_LuV)
+            .specialValue(5)
+            .addTo(chemicalPlantRecipes);
     }
 
     private static void overflowValveCovers() {

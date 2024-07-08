@@ -2,9 +2,11 @@ package gtPlusPlus.xmod.forestry.bees.items.output;
 
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.List;
 
+import gregtech.api.enums.GT_Values;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -118,14 +120,16 @@ public class GTPP_Comb extends Item {
         Material aMat = aInputStack.mMaterial;
         long aEU = aMat.vVoltageMultiplier;
         int aTier = Math.max(aMat.vTier / 2, 1);
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { aInputStack.getStackForType(aTier), },
-            new FluidStack[] {},
-            aOutputs,
-            new FluidStack[] {},
-            aChances,
-            aTier * 20 * 60,
-            aEU,
-            aTier);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                aInputStack.getStackForType(aTier))
+            .itemOutputs(
+                aOutputs
+            )
+            .duration(aTier * 20 * 60)
+            .eut(aEU)
+            .specialValue(aTier)
+            .addTo(chemicalPlantRecipes);
+
     }
 }

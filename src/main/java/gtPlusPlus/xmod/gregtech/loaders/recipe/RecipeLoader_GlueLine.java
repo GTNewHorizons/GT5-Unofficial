@@ -13,6 +13,7 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -56,83 +57,97 @@ public class RecipeLoader_GlueLine {
 
     private static void chemicalPlantRecipes() {
         // CO + C3H6O2 = C4H6O3
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] {  GT_Utility.getIntegratedCircuit(17), ItemUtils.getSimpleStack(GenericChem.mBlueCatalyst, 0) },
-            new FluidStack[] { FluidUtils.getFluidStack("carbonmonoxide", 1000),
-                FluidUtils.getFluidStack("methylacetate", 1000), },
-            new ItemStack[] {},
-            new FluidStack[] { MISC_MATERIALS.ACETIC_ANHYDRIDE.getFluidStack(1000) },
-            10 * 20,
-            500,
-            3);
-
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] {  GT_Utility.getIntegratedCircuit(18) },
-            new FluidStack[] { FluidUtils.getFluidStack("aceticacid", 1000), FluidUtils.getFluidStack("chlorine", 1000),
-                MISC_MATERIALS.ACETIC_ANHYDRIDE.getFluidStack(1000) },
-            new ItemStack[] {},
-            new FluidStack[] { MISC_MATERIALS.CHLOROACETIC_MIXTURE.getFluidStack(1000),
-                MISC_MATERIALS.ACETIC_ANHYDRIDE.getFluidStack(950) },
-            150 * 20,
-            1000,
-            4);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(17), ItemUtils.getSimpleStack(GenericChem.mBlueCatalyst, 0))
+            .fluidInputs(
+                FluidUtils.getFluidStack("carbonmonoxide", 1000), FluidUtils.getFluidStack("methylacetate", 1000))
+            .fluidOutputs(
+                MISC_MATERIALS.ACETIC_ANHYDRIDE.getFluidStack(1000))
+            .duration(10 * SECONDS)
+            .eut(500)
+            .specialValue(3)
+            .addTo(chemicalPlantRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(18))
+            .fluidInputs(
+                FluidUtils.getFluidStack("aceticacid", 1000), FluidUtils.getFluidStack("chlorine", 1000), MISC_MATERIALS.ACETIC_ANHYDRIDE.getFluidStack(1000))
+            .fluidOutputs(
+                MISC_MATERIALS.CHLOROACETIC_MIXTURE.getFluidStack(1000), MISC_MATERIALS.ACETIC_ANHYDRIDE.getFluidStack(950))
+            .duration(2 * MINUTES + 30 * SECONDS)
+            .eut(1000)
+            .specialValue(4)
+            .addTo(chemicalPlantRecipes);
         // Na2CO3 + NaCN + C2H3O2Cl + 2HCl = C3H3NO2 + 3NaCl + CO2 + H2O
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] {  GT_Utility.getIntegratedCircuit(19), ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 6),
-                MISC_MATERIALS.SODIUM_CYANIDE.getDust(3) },
-            new FluidStack[] { MISC_MATERIALS.CHLOROACETIC_ACID.getFluidStack(1000),
-                FluidUtils.getFluidStack("hydrochloricacid_gt5u", 2000) },
-            new ItemStack[] { MISC_MATERIALS.CYANOACETIC_ACID.getDust(9), Materials.Salt.getDust(6) },
-            new FluidStack[] { Materials.CarbonDioxide.getGas(1000), GT_ModHandler.getWater(1000) },
-            20 * 20,
-            1000,
-            4);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(19), ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 6), MISC_MATERIALS.SODIUM_CYANIDE.getDust(3))
+            .itemOutputs(
+                MISC_MATERIALS.CYANOACETIC_ACID.getDust(9), Materials.Salt.getDust(6))
+            .fluidInputs(
+                MISC_MATERIALS.CHLOROACETIC_ACID.getFluidStack(1000), FluidUtils.getFluidStack("hydrochloricacid_gt5u", 2000))
+            .fluidOutputs(
+                Materials.CarbonDioxide.getGas(1000), GT_ModHandler.getWater(1000))
+            .duration(20 * SECONDS)
+            .eut(1000)
+            .specialValue(4)
+            .addTo(chemicalPlantRecipes);
         // CuSO4 + 5C3H3NO2 + 5C2H6O = CuSO4·5(H2O) + 5C5H7NO2
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] {  GT_Utility.getIntegratedCircuit(20), ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 0),
-                MISC_MATERIALS.COPPER_SULFATE.getDust(6), MISC_MATERIALS.CYANOACETIC_ACID.getDust(45) },
-            new FluidStack[] { Materials.Ethanol.getFluid(5000) },
-            new ItemStack[] { MISC_MATERIALS.COPPER_SULFATE_HYDRATED.getDust(11) },
-            new FluidStack[] { MISC_MATERIALS.ETHYL_CYANOACETATE.getFluidStack(5000) },
-            500 * 20,
-            6000,
-            5);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(20), ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 0), MISC_MATERIALS.COPPER_SULFATE.getDust(6), MISC_MATERIALS.CYANOACETIC_ACID.getDust(45))
+            .itemOutputs(
+                MISC_MATERIALS.COPPER_SULFATE_HYDRATED.getDust(11))
+            .fluidInputs(
+                Materials.Ethanol.getFluid(5000))
+            .fluidOutputs(
+                MISC_MATERIALS.ETHYL_CYANOACETATE.getFluidStack(5000))
+            .duration(8 * MINUTES + 20 * SECONDS)
+            .eut(6000)
+            .specialValue(5)
+            .addTo(chemicalPlantRecipes);
         // C3H3NO2 + C2H6O = C5H7NO2 + H2O
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] {  GT_Utility.getIntegratedCircuit(21), MISC_MATERIALS.CYANOACETIC_ACID.getDust(9) },
-            new FluidStack[] { Materials.Ethanol.getFluid(1000) },
-            new ItemStack[] {},
-            new FluidStack[] { MISC_MATERIALS.ETHYL_CYANOACETATE.getFluidStack(1000) },
-            1000 * 20,
-            6000,
-            5);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(21), MISC_MATERIALS.CYANOACETIC_ACID.getDust(9))
+            .fluidInputs(
+                Materials.Ethanol.getFluid(1000))
+            .fluidOutputs(
+                MISC_MATERIALS.ETHYL_CYANOACETATE.getFluidStack(1000))
+            .duration(16 * MINUTES + 40 * SECONDS)
+            .eut(6000)
+            .specialValue(5)
+            .addTo(chemicalPlantRecipes);
+
 
         BioRecipes.mFormaldehyde = FluidUtils.getFluidStack("fluid.formaldehyde", 1)
             .getFluid();
 
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] {  GT_Utility.getIntegratedCircuit(22), ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 0) },
-            new FluidStack[] { MISC_MATERIALS.ETHYL_CYANOACETATE.getFluidStack(100),
-                FluidUtils.getFluidStack(BioRecipes.mFormaldehyde, 100) },
-            new ItemStack[] {},
-            new FluidStack[] { MISC_MATERIALS.CYANOACRYLATE_POLYMER.getFluidStack(100), FluidUtils.getWater(1000) },
-            10 * 20,
-            8000,
-            5);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(22), ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 0))
+            .fluidInputs(
+                MISC_MATERIALS.ETHYL_CYANOACETATE.getFluidStack(100), FluidUtils.getFluidStack(BioRecipes.mFormaldehyde, 100))
+            .fluidOutputs(
+                MISC_MATERIALS.CYANOACRYLATE_POLYMER.getFluidStack(100), FluidUtils.getWater(1000))
+            .duration(10 * SECONDS)
+            .eut(8000)
+            .specialValue(5)
+            .addTo(chemicalPlantRecipes);
         // CH4 + NH3 + 3O = HCN + 3H2O
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] {  GT_Utility.getIntegratedCircuit(23), ItemUtils.getSimpleStack(GenericChem.mPinkCatalyst, 0) },
-            new FluidStack[] { FluidUtils.getFluidStack("methane", 2000), FluidUtils.getFluidStack("ammonia", 2000),
-                FluidUtils.getFluidStack("oxygen", 6000) },
-            new ItemStack[] {},
-            new FluidStack[] { MISC_MATERIALS.HYDROGEN_CYANIDE.getFluidStack(2000), FluidUtils.getWater(6000) },
-            10 * 20,
-            500,
-            3);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(23), ItemUtils.getSimpleStack(GenericChem.mPinkCatalyst, 0))
+            .fluidInputs(
+                FluidUtils.getFluidStack("methane", 2000), FluidUtils.getFluidStack("ammonia", 2000), FluidUtils.getFluidStack("oxygen", 6000))
+            .fluidOutputs(
+                MISC_MATERIALS.HYDROGEN_CYANIDE.getFluidStack(2000), FluidUtils.getWater(6000))
+            .duration(10 * SECONDS)
+            .eut(500)
+            .specialValue(3)
+            .addTo(chemicalPlantRecipes);
+
     }
 
     private static void chemicalReactorRecipes() {

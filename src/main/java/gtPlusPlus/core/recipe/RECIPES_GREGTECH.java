@@ -39,6 +39,7 @@ import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cyclotronRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.thermalBoilerRecipes;
 
@@ -142,126 +143,146 @@ public class RECIPES_GREGTECH {
         // 4 NO2 (g) + O2 (g) + 2 H2O (l) → 4 HNO3 (aq)
 
         // Advanced method for Nitric Acid Production
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(17), CI.getPinkCatalyst(0), },
-            new FluidStack[] { Materials.NitrogenDioxide.getGas(4000L), FluidUtils.getAir(4000),
-                FluidUtils.getWater(2000), },
-            new ItemStack[] {},
-            new FluidStack[] { FluidUtils.getFluidStack("nitricacid", 4000), },
-            10 * 20,
-            480,
-            3);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(17), CI.getPinkCatalyst(0))
+            .fluidInputs(
+                Materials.NitrogenDioxide.getGas(4000L), FluidUtils.getAir(4000), FluidUtils.getWater(2000))
+            .fluidOutputs(
+                FluidUtils.getFluidStack("nitricacid", 4000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .specialValue(3)
+            .addTo(chemicalPlantRecipes);
+
 
         // Advanced recipe for Fluorine Production
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(17), CI.getPurpleCatalyst(0),
-                ItemUtils.getSimpleStack(Blocks.sandstone, 64), ItemUtils.getSimpleStack(Blocks.sandstone, 64) },
-            new FluidStack[] { FluidUtils.getFluidStack("nitricacid", 4000), FluidUtils.getAir(8000) },
-            new ItemStack[] { FLUORIDES.FLUORITE.getOre(8), FLUORIDES.FLUORITE.getOre(4), FLUORIDES.FLUORITE.getOre(4),
-                FLUORIDES.FLUORITE.getOre(4), },
-            new FluidStack[] {},
-            new int[] { 0, 2500, 2000, 1500 },
-            10 * 20,
-            1024,
-            5);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(17), CI.getPurpleCatalyst(0), ItemUtils.getSimpleStack(Blocks.sandstone, 64), ItemUtils.getSimpleStack(Blocks.sandstone, 64))
+            .itemOutputs(
+                FLUORIDES.FLUORITE.getOre(8), FLUORIDES.FLUORITE.getOre(4), FLUORIDES.FLUORITE.getOre(4), FLUORIDES.FLUORITE.getOre(4))
+            .fluidInputs(
+                FluidUtils.getFluidStack("nitricacid", 4000), FluidUtils.getAir(8000))
+            .duration(10 * SECONDS)
+            .eut(1024)
+            .specialValue(5)
+            .addTo(chemicalPlantRecipes);
         // Advanced recipe for Fluorine Production
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(17), CI.getPurpleCatalyst(0),
-                ItemUtils.getSimpleStack(Blocks.sand, 64), ItemUtils.getSimpleStack(Blocks.sand, 64) },
-            new FluidStack[] { FluidUtils.getFluidStack("nitricacid", 5000), FluidUtils.getAir(12000) },
-            new ItemStack[] { FLUORIDES.FLUORITE.getOre(4), FLUORIDES.FLUORITE.getOre(2), FLUORIDES.FLUORITE.getOre(2),
-                FLUORIDES.FLUORITE.getOre(2), },
-            new FluidStack[] {},
-            new int[] { 7500, 1500, 1000, 500 },
-            10 * 20,
-            1024,
-            5);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(17), CI.getPurpleCatalyst(0), ItemUtils.getSimpleStack(Blocks.sand, 64), ItemUtils.getSimpleStack(Blocks.sand, 64))
+            .itemOutputs(
+                FLUORIDES.FLUORITE.getOre(4), FLUORIDES.FLUORITE.getOre(2), FLUORIDES.FLUORITE.getOre(2), FLUORIDES.FLUORITE.getOre(2))
+            .fluidInputs(
+                FluidUtils.getFluidStack("nitricacid", 5000), FluidUtils.getAir(12000))
+            .duration(10 * SECONDS)
+            .eut(1024)
+            .specialValue(5)
+            .addTo(chemicalPlantRecipes);
+
 
         // 3NO2 + H2O = 2HNO3 + NO
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(16), CI.getPinkCatalyst(0), },
-            new FluidStack[] { Materials.NitrogenDioxide.getGas(3000L), FluidUtils.getDistilledWater(1000) },
-            new ItemStack[] {},
-            new FluidStack[] { FluidUtils.getFluidStack("nitricacid", 2000), Materials.NitricOxide.getGas(1000L), },
-            10 * 20,
-            480,
-            2);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(16), CI.getPinkCatalyst(0))
+            .fluidInputs(
+                Materials.NitrogenDioxide.getGas(3000L), FluidUtils.getDistilledWater(1000))
+            .fluidOutputs(
+                FluidUtils.getFluidStack("nitricacid", 2000), Materials.NitricOxide.getGas(1000L))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .specialValue(2)
+            .addTo(chemicalPlantRecipes);
         // Produce Boric Acid
         // Na2B4O7·10H2O + 2HCl = 4B(OH)3 + 2NaCl + 5H2O
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(21),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustBorax", 23), },
-            new FluidStack[] { FluidUtils.getFluidStack(GenericChem.HydrochloricAcid, 2000) },
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustSalt", 4), },
-            new FluidStack[] { FluidUtils.getFluidStack("boricacid", 4000), FluidUtils.getWater(5000) },
-            30*SECONDS,
-            (int) TierEU.RECIPE_HV,
-            3);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(21), ItemUtils.getItemStackOfAmountFromOreDict("dustBorax", 23))
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustSalt", 4))
+            .fluidInputs(
+                FluidUtils.getFluidStack(GenericChem.HydrochloricAcid, 2000))
+            .fluidOutputs(
+                FluidUtils.getFluidStack("boricacid", 4000), FluidUtils.getWater(5000))
+            .duration(30*SECONDS)
+            .eut( TierEU.RECIPE_HV)
+            .specialValue(3)
+            .addTo(chemicalPlantRecipes);
+
 
         // Produce Th232
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(22), ELEMENT.getInstance().THORIUM.getDust(16) },
-            new FluidStack[] { FluidUtils.getDistilledWater(2000), FluidUtils.getFluidStack("boricacid", 1500) },
-            new ItemStack[] { ELEMENT.getInstance().THORIUM.getSmallDust(32),
-                ELEMENT.getInstance().THORIUM232.getDust(2), ELEMENT.getInstance().THORIUM232.getSmallDust(2),
-                ELEMENT.getInstance().URANIUM232.getDust(1), },
-            new FluidStack[] {},
-            new int[] { 0, 0, 1000, 250 },
-            5*MINUTES,
-            (int) TierEU.RECIPE_EV,
-            4);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(22), ELEMENT.getInstance().THORIUM.getDust(16))
+            .itemOutputs(
+                ELEMENT.getInstance().THORIUM.getSmallDust(32),ELEMENT.getInstance().THORIUM232.getDust(2), ELEMENT.getInstance().THORIUM232.getSmallDust(2),ELEMENT.getInstance().URANIUM232.getDust(1))
+            .fluidInputs(
+                FluidUtils.getDistilledWater(2000), FluidUtils.getFluidStack("boricacid", 1500))
+            .duration(5*MINUTES)
+            .eut( TierEU.RECIPE_EV)
+            .specialValue(4)
+            .addTo(chemicalPlantRecipes);
+
 
         // Modify Sapling into Pine Sapling
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedBioCircuit(6), ItemUtils.getSimpleStack(Blocks.sapling, 32) },
-            new FluidStack[] { FluidUtils.getFluidStack("fluid.geneticmutagen", 2000),
-                FluidUtils.getDistilledWater(8000) },
-            new ItemStack[] { ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Pine, 16) },
-            new FluidStack[] {},
-            120 * SECONDS,
-            64,
-            2);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedBioCircuit(6), ItemUtils.getSimpleStack(Blocks.sapling, 32))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Pine, 16))
+            .fluidInputs(
+                FluidUtils.getFluidStack("fluid.geneticmutagen", 2000), FluidUtils.getDistilledWater(8000))
+            .duration(120 * SECONDS)
+            .eut(64)
+            .specialValue(2)
+            .addTo(chemicalPlantRecipes);
+
 
         int aLaureniumTier = ALLOY.LAURENIUM.vTier;
         // Adding Recipes for Casings
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(12), CI.getTieredMachineCasing(aLaureniumTier - 1),
-                ALLOY.LAURENIUM.getPlate(8), CI.getGear(aLaureniumTier, 2) },
-            new FluidStack[] { CI.getTieredFluid(aLaureniumTier, 2 * 144),
-                CI.getAlternativeTieredFluid(aLaureniumTier - 1, 4 * 144),
-                CI.getTertiaryTieredFluid(aLaureniumTier - 2, 6 * 144) },
-            new ItemStack[] { GregtechItemList.Casing_Machine_Custom_3.get(1) },
-            new FluidStack[] {},
-            20 * SECONDS,
-            TierEU.RECIPE_IV,
-            5);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(12), CI.getTieredMachineCasing(aLaureniumTier - 1), ALLOY.LAURENIUM.getPlate(8), CI.getGear(aLaureniumTier, 2))
+            .itemOutputs(
+                GregtechItemList.Casing_Machine_Custom_3.get(1))
+            .fluidInputs(
+                CI.getTieredFluid(aLaureniumTier, 2 * 144),CI.getAlternativeTieredFluid(aLaureniumTier - 1, 4 * 144),CI.getTertiaryTieredFluid(aLaureniumTier - 2, 6 * 144))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .specialValue(5)
+            .addTo(chemicalPlantRecipes);
+
 
         int aBotmiumTier = ALLOY.BOTMIUM.vTier;
         // Adding Recipes for Casings
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(12), CI.getTieredMachineCasing(aBotmiumTier - 1),
-                ALLOY.BOTMIUM.getPlate(8), CI.getGear(aBotmiumTier, 2) },
-            new FluidStack[] { CI.getTieredFluid(aBotmiumTier, 2 * 144),
-                CI.getAlternativeTieredFluid(aBotmiumTier - 1, 4 * 144),
-                CI.getTertiaryTieredFluid(aBotmiumTier - 2, 6 * 144) },
-            new ItemStack[] { GregtechItemList.Casing_Machine_Custom_4.get(1) },
-            new FluidStack[] {},
-            20 * SECONDS,
-            TierEU.RECIPE_LuV,
-            6);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(12), CI.getTieredMachineCasing(aBotmiumTier - 1), ALLOY.BOTMIUM.getPlate(8), CI.getGear(aBotmiumTier, 2))
+            .itemOutputs(
+                GregtechItemList.Casing_Machine_Custom_4.get(1))
+            .fluidInputs(
+                CI.getTieredFluid(aBotmiumTier, 2 * 144),CI.getAlternativeTieredFluid(aBotmiumTier - 1, 4 * 144),CI.getTertiaryTieredFluid(aBotmiumTier - 2, 6 * 144))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .specialValue(6)
+            .addTo(chemicalPlantRecipes);
+
 
         // Refine GT HF into GT++ HF
         if (FluidUtils.doesHydrofluoricAcidGtExist()) {
-            CORE.RA.addChemicalPlantRecipe(
-                new ItemStack[] { CI.getNumberedAdvancedCircuit(22), },
-                new FluidStack[] { FluidUtils.getHydrofluoricAcid(2000), FluidUtils.getHydrofluoricAcidGT(5000) },
-                new ItemStack[] {},
-                new FluidStack[] { FluidUtils.getHydrofluoricAcid(4500) },
-                30 * 20,
-                480,
-                3);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    CI.getNumberedAdvancedCircuit(22))
+                .fluidInputs(
+                    FluidUtils.getHydrofluoricAcid(2000), FluidUtils.getHydrofluoricAcidGT(5000))
+                .fluidOutputs(
+                    FluidUtils.getHydrofluoricAcid(4500))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .specialValue(3)
+                .addTo(chemicalPlantRecipes);
+
         }
     }
 

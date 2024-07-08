@@ -5,6 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.fissionFuelProcessingRecipes;
 
 import net.minecraft.item.ItemStack;
@@ -211,16 +212,16 @@ public class RecipeLoader_NuclearFuelProcessing {
             .addTo(blastFurnaceRecipes);
         // Alternative recipe to the above, for chemplant, to not use cells
 
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] {},
-            new FluidStack[] { FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(1000), NUCLIDE.LiFBeF2.getFluidStack(1000),
-                ELEMENT.getInstance().HYDROGEN.getFluidStack(2000) },
-            new ItemStack[] {},
-            new FluidStack[] { NUCLIDE.LiFBeF2UF4.getFluidStack(3000),
-                FluidUtils.getFluidStack("hydrofluoricacid", 2000) },
-            300 * 10,
-            (int) TierEU.RECIPE_IV,
-            4);
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(
+                FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(1000), NUCLIDE.LiFBeF2.getFluidStack(1000), ELEMENT.getInstance().HYDROGEN.getFluidStack(2000))
+            .fluidOutputs(
+                NUCLIDE.LiFBeF2UF4.getFluidStack(3000), FluidUtils.getFluidStack("hydrofluoricacid", 2000))
+            .duration(2 * MINUTES + 30 * SECONDS)
+            .eut( TierEU.RECIPE_IV)
+            .specialValue(4)
+            .addTo(chemicalPlantRecipes);
+
 
         GT_Values.RA.stdBuilder()
             .itemInputs(

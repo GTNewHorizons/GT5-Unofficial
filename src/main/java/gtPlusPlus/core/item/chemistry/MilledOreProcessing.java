@@ -3,6 +3,8 @@ package gtPlusPlus.core.item.chemistry;
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.HashMap;
 
@@ -657,31 +659,33 @@ public class MilledOreProcessing extends ItemPackage {
             addRecipe(aCone, ItemUtils.getSimpleStack(aCrushedPine, 1), new int[] { 7500, 7500, 5000, 2500 }, 10, 60);
         }
 
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(16), ItemUtils.getSimpleStack(aCrushedPine, 64) },
-            new FluidStack[] { FluidUtils.getSteam(5000), },
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5) },
-            new FluidStack[] { FluidUtils.getFluidStack(PineOil, 500) },
-            new int[] { 2000, 2000, 2000, 2000 },
-            20 * 60,
-            120,
-            3);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(16), ItemUtils.getSimpleStack(aCrushedPine, 64))
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5),ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5))
+            .fluidInputs(
+                FluidUtils.getSteam(5000))
+            .fluidOutputs(
+                FluidUtils.getFluidStack(PineOil, 500))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .specialValue(3)
+            .addTo(chemicalPlantRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(18), ItemUtils.getSimpleStack(aCrushedPine, 64))
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5),ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5))
+            .fluidInputs(
+                FluidUtils.getSuperHeatedSteam(5000))
+            .fluidOutputs(
+                FluidUtils.getFluidStack(PineOil, 1500))
+            .duration(45 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .specialValue(4)
+            .addTo(chemicalPlantRecipes);
 
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(18), ItemUtils.getSimpleStack(aCrushedPine, 64) },
-            new FluidStack[] { FluidUtils.getSuperHeatedSteam(5000), },
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5) },
-            new FluidStack[] { FluidUtils.getFluidStack(PineOil, 1500) },
-            new int[] { 3000, 3000, 3000, 3000 },
-            20 * 45,
-            120,
-            4);
     }
 
     public boolean addRecipe(ItemStack aInput, ItemStack aOutput1, int[] aChances, int aTime, int aEU) {
@@ -696,15 +700,18 @@ public class MilledOreProcessing extends ItemPackage {
             return false;
         }
 
-        return CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(14), aInput },
-            new FluidStack[] {},
-            aOutputs,
-            new FluidStack[] {},
-            aChances,
-            aTime * 20,
-            aEU,
-            3);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(14), aInput)
+            .itemOutputs(
+                aOutputs
+            )
+            .duration(aTime * 20)
+            .eut(aEU)
+            .specialValue(3)
+            .addTo(chemicalPlantRecipes);
+
+        return true;
     }
 
     public static ItemStack[] cleanArray(ItemStack[] input) {
