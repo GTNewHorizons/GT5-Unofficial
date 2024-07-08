@@ -39,6 +39,7 @@ import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cyclotronRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.thermalBoilerRecipes;
 
 import net.minecraft.init.Blocks;
@@ -1564,163 +1565,212 @@ public class RECIPES_GREGTECH {
     private static void cyclotronRecipes() {
 
         // Polonium
-        CORE.RA.addCyclotronRecipe(
-            GT_Utility.getIntegratedCircuit(1),
-            FluidUtils.getFluidStack("molten.bismuth", 1),
-            new ItemStack[] { GregtechItemList.Pellet_RTG_PO210.get(1) },
-            null,
-            new int[] { 100 },
-            8*HOURS+20*MINUTES,
-            8160,
-            500 * 20);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                GregtechItemList.Pellet_RTG_PO210.get(1))
+            .outputChances(100)
+            .fluidInputs(
+                FluidUtils.getFluidStack("molten.bismuth", 1)
+            )
+            .duration(8*HOURS+20*MINUTES)
+            .eut(8160)
+            .specialValue(500 * 20)
+            .addTo(cyclotronRecipes);
+
 
         // Americium
-        CORE.RA.addCyclotronRecipe(
-            GT_Utility.getIntegratedCircuit(1),
-            FluidUtils.getFluidStack("molten.americium", 1),
-            new ItemStack[] { GregtechItemList.Pellet_RTG_AM241.get(4) },
-            null,
-            new int[] { 2500 },
-            8*HOURS+20*MINUTES,
-            4_080,
-            500 * 20); // PO Special Value
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                GregtechItemList.Pellet_RTG_AM241.get(4))
+            .outputChances(2500)
+            .fluidInputs(
+                FluidUtils.getFluidStack("molten.americium", 1)
+            )
+            .duration(8*HOURS+20*MINUTES)
+            .eut(4080)
+            .specialValue(500 * 20)
+            .addTo(cyclotronRecipes);
 
         // Strontium u235
-        CORE.RA.addCyclotronRecipe(
-            GT_Utility.getIntegratedCircuit(1),
-            FluidUtils.getFluidStack("molten.uranium235", 10),
-            new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) },
-            null,
-            new int[] { 570 },
-            8*HOURS+20*MINUTES,
-            4_080,
-            500 * 20); // PO Special Value
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                GregtechItemList.Pellet_RTG_SR90.get(1))
+            .outputChances(570)
+            .fluidInputs(
+                FluidUtils.getFluidStack("molten.uranium235", 10)
+            )
+            .duration(8*HOURS+20*MINUTES)
+            .eut(4080)
+            .specialValue(500 * 20)
+            .addTo(cyclotronRecipes);
 
         // Strontium u233
-        CORE.RA.addCyclotronRecipe(
-            GT_Utility.getIntegratedCircuit(1),
-            FluidUtils.getFluidStack("molten.uranium233", 10),
-            new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) },
-            null,
-            new int[] { 660 },
-            8*HOURS+20*MINUTES,
-            4_080,
-            500 * 20); // PO Special Value
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                GregtechItemList.Pellet_RTG_SR90.get(1))
+            .outputChances(660)
+            .fluidInputs(
+                FluidUtils.getFluidStack("molten.uranium233", 10)
+            )
+            .duration(8*HOURS+20*MINUTES)
+            .eut(4080)
+            .specialValue(500 * 20)
+            .addTo(cyclotronRecipes);
 
         // Strontium pu239
-        CORE.RA.addCyclotronRecipe(
-            GT_Utility.getIntegratedCircuit(1),
-            FluidUtils.getFluidStack("molten.plutonium", 10),
-            new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) },
-            null,
-            new int[] { 220 },
-            8*HOURS+20*MINUTES,
-            4_080,
-            500 * 20); // PO Special Value
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                GregtechItemList.Pellet_RTG_SR90.get(1))
+            .outputChances(220)
+            .fluidInputs(
+                FluidUtils.getFluidStack("molten.plutonium", 10)
+            )
+            .duration(8*HOURS+20*MINUTES)
+            .eut(4080)
+            .specialValue(500 * 20)
+            .addTo(cyclotronRecipes);
 
         // Plutonium
-        CORE.RA.addCyclotronRecipe(
-            GT_Utility.getIntegratedCircuit(1),
-            FluidUtils.getFluidStack("molten.plutonium238", 1),
-            new ItemStack[] { GregtechItemList.Pellet_RTG_PU238.get(2) },
-            null,
-            new int[] { 780 },
-            8*HOURS+20*MINUTES,
-            4_080,
-            500 * 20); // PO Special Value
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                GregtechItemList.Pellet_RTG_PU238.get(2))
+            .outputChances(780)
+            .fluidInputs(
+                FluidUtils.getFluidStack("molten.plutonium238", 1)
+            )
+            .duration(8*HOURS+20*MINUTES)
+            .eut(4080)
+            .specialValue(500 * 20)
+            .addTo(cyclotronRecipes);
 
         // Neptunium
-        CORE.RA.addCyclotronRecipe(
-            new ItemStack[] { ELEMENT.getInstance().URANIUM238.getDust(1) },
-            FluidUtils.getFluidStack("deuterium", 400),
-            new ItemStack[] { ItemUtils.getSimpleStack(ModItems.dustNeptunium238) },
-            null,
-            new int[] { 500 },
-            5*SECONDS,
-            2_000,
-            500 * 20); // PO Special Value
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ELEMENT.getInstance().URANIUM238.getDust(1))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(ModItems.dustNeptunium238))
+            .outputChances(500)
+            .fluidInputs(
+                FluidUtils.getFluidStack("deuterium", 400)
+            )
+            .duration(5*SECONDS)
+            .eut(2000)
+            .specialValue(500 * 20)
+            .addTo(cyclotronRecipes);
 
         /*
          * Particle Science
          */
 
         // Quark Smash
-        CORE.RA.addCyclotronRecipe(
-            GT_Utility.getIntegratedCircuit(3),
-            FluidUtils.getFluidStack("plasma.hydrogen", 100),
-            new ItemStack[] { Particle.getBaseParticle(Particle.UP), Particle.getBaseParticle(Particle.DOWN),
-                Particle.getBaseParticle(Particle.CHARM), Particle.getBaseParticle(Particle.STRANGE),
-                Particle.getBaseParticle(Particle.TOP), Particle.getBaseParticle(Particle.BOTTOM), },
-            null,
-            new int[] { 50, 50, 50, 50, 50, 50 },
-            45*MINUTES,
-            (int) TierEU.RECIPE_ZPM,
-            750 * 20);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(3)
+            )
+            .itemOutputs(
+                Particle.getBaseParticle(Particle.UP), Particle.getBaseParticle(Particle.DOWN),Particle.getBaseParticle(Particle.CHARM), Particle.getBaseParticle(Particle.STRANGE),Particle.getBaseParticle(Particle.TOP), Particle.getBaseParticle(Particle.BOTTOM))
+            .outputChances(50, 50, 50, 50, 50, 50)
+            .fluidInputs(
+                FluidUtils.getFluidStack("plasma.hydrogen", 100)
+            )
+            .duration(45*MINUTES)
+            .eut( TierEU.RECIPE_ZPM)
+            .specialValue(750 * 20)
+            .addTo(cyclotronRecipes);
         // Lepton Smash
-        CORE.RA.addCyclotronRecipe(
-            GT_Utility.getIntegratedCircuit(6),
-            FluidUtils.getFluidStack("plasma.helium", 1500),
-            new ItemStack[] { Particle.getBaseParticle(Particle.ELECTRON), Particle.getBaseParticle(Particle.MUON),
-                Particle.getBaseParticle(Particle.TAU), Particle.getBaseParticle(Particle.ELECTRON_NEUTRINO),
-                Particle.getBaseParticle(Particle.MUON_NEUTRINO), Particle.getBaseParticle(Particle.TAU_NEUTRINO), },
-            null,
-            new int[] { 600, 40, 20, 15, 10, 5 },
-            40*MINUTES,
-            (int) TierEU.RECIPE_ZPM,
-            750 * 20);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(6)
+            )
+            .itemOutputs(
+                Particle.getBaseParticle(Particle.ELECTRON), Particle.getBaseParticle(Particle.MUON),Particle.getBaseParticle(Particle.TAU), Particle.getBaseParticle(Particle.ELECTRON_NEUTRINO),Particle.getBaseParticle(Particle.MUON_NEUTRINO), Particle.getBaseParticle(Particle.TAU_NEUTRINO))
+            .outputChances(600, 40, 20, 15, 10, 5)
+            .fluidInputs(
+                FluidUtils.getFluidStack("plasma.helium", 1500)
+            )
+            .duration(40*MINUTES)
+            .eut( TierEU.RECIPE_ZPM)
+            .specialValue(750 * 20)
+            .addTo(cyclotronRecipes);
         // Boson Smash
-        CORE.RA.addCyclotronRecipe(
-            GT_Utility.getIntegratedCircuit(9),
-            FluidUtils.getFluidStack("plasma.helium", 1500),
-            new ItemStack[] { Particle.getBaseParticle(Particle.GLUON), Particle.getBaseParticle(Particle.PHOTON),
-                Particle.getBaseParticle(Particle.Z_BOSON), Particle.getBaseParticle(Particle.W_BOSON),
-                Particle.getBaseParticle(Particle.HIGGS_BOSON), },
-            null,
-            new int[] { 160, 260, 150, 150, 1 },
-            30*MINUTES,
-            (int) TierEU.RECIPE_ZPM,
-            750 * 20);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(9)
+            )
+            .itemOutputs(
+                Particle.getBaseParticle(Particle.GLUON), Particle.getBaseParticle(Particle.PHOTON),Particle.getBaseParticle(Particle.Z_BOSON), Particle.getBaseParticle(Particle.W_BOSON),Particle.getBaseParticle(Particle.HIGGS_BOSON))
+            .outputChances(160, 260, 150, 150, 1)
+            .fluidInputs(
+                FluidUtils.getFluidStack("plasma.helium", 1500)
+            )
+            .duration(30*MINUTES)
+            .eut( TierEU.RECIPE_ZPM)
+            .specialValue(750 * 20)
+            .addTo(cyclotronRecipes);
         // Mixed Smash 1
-        CORE.RA.addCyclotronRecipe(
-            GT_Utility.getIntegratedCircuit(12),
-            Materials.Americium.getPlasma(2500),
-            new ItemStack[] { Particle.getBaseParticle(Particle.GRAVITON), Particle.getBaseParticle(Particle.ETA_MESON),
-                Particle.getBaseParticle(Particle.PION), Particle.getBaseParticle(Particle.PROTON),
-                Particle.getBaseParticle(Particle.NEUTRON), Particle.getBaseParticle(Particle.LAMBDA),
-                Particle.getBaseParticle(Particle.OMEGA), Particle.getBaseParticle(Particle.HIGGS_BOSON), },
-            null,
-            new int[] { 50, 50, 50, 40, 30, 20, 20, 10 },
-            16*MINUTES+40*SECONDS,
-            (int) TierEU.RECIPE_UV,
-            750 * 20);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(12)
+            )
+            .itemOutputs(
+                Particle.getBaseParticle(Particle.GRAVITON), Particle.getBaseParticle(Particle.ETA_MESON),Particle.getBaseParticle(Particle.PION), Particle.getBaseParticle(Particle.PROTON),Particle.getBaseParticle(Particle.NEUTRON), Particle.getBaseParticle(Particle.LAMBDA),Particle.getBaseParticle(Particle.OMEGA), Particle.getBaseParticle(Particle.HIGGS_BOSON))
+            .outputChances(50, 50, 50, 40, 30, 20, 20, 10)
+            .fluidInputs(
+                Materials.Americium.getPlasma(2500)
+            )
+            .duration(16*MINUTES+40*SECONDS)
+            .eut( TierEU.RECIPE_UV)
+            .specialValue(750 * 20)
+            .addTo(cyclotronRecipes);
         // Mixed Smash 1
-        CORE.RA.addCyclotronRecipe(
-            GT_Utility.getIntegratedCircuit(12),
-            new FluidStack(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 2500),
-            new ItemStack[] { Particle.getBaseParticle(Particle.GRAVITON), Particle.getBaseParticle(Particle.ETA_MESON),
-                Particle.getBaseParticle(Particle.PION), Particle.getBaseParticle(Particle.PROTON),
-                Particle.getBaseParticle(Particle.NEUTRON), Particle.getBaseParticle(Particle.LAMBDA),
-                Particle.getBaseParticle(Particle.OMEGA), Particle.getBaseParticle(Particle.HIGGS_BOSON), },
-            null,
-            new int[] { 5000, 200, 200, 100, 80, 60, 40, 30 },
-            1*MINUTES+40*SECONDS,
-            (int) TierEU.RECIPE_UV,
-            750 * 20);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(12)
+            )
+            .itemOutputs(
+                Particle.getBaseParticle(Particle.GRAVITON), Particle.getBaseParticle(Particle.ETA_MESON),Particle.getBaseParticle(Particle.PION), Particle.getBaseParticle(Particle.PROTON),Particle.getBaseParticle(Particle.NEUTRON), Particle.getBaseParticle(Particle.LAMBDA),Particle.getBaseParticle(Particle.OMEGA), Particle.getBaseParticle(Particle.HIGGS_BOSON))
+            .outputChances(5000, 200, 200, 100, 80, 60, 40, 30)
+            .fluidInputs(
+                new FluidStack(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 2500)
+            )
+            .duration(1*MINUTES+40*SECONDS)
+            .eut( TierEU.RECIPE_UV)
+            .specialValue(750 * 20)
+            .addTo(cyclotronRecipes);
         // Graviton Smash
-        CORE.RA.addCyclotronRecipe(
-            GT_Utility.getIntegratedCircuit(15),
-            FluidUtils.getFluidStack("plasma.hydrogen", 100),
-            new ItemStack[] { Particle.getBaseParticle(Particle.GRAVITON), Particle.getBaseParticle(Particle.UNKNOWN) },
-            null,
-            new int[] { 1000, 100 },
-            1*MINUTES+30*SECONDS,
-            (int) TierEU.RECIPE_LuV,
-            1000 * 20);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(15)
+            )
+            .itemOutputs(
+                Particle.getBaseParticle(Particle.GRAVITON), Particle.getBaseParticle(Particle.UNKNOWN))
+            .outputChances(1000, 100)
+            .fluidInputs(
+                FluidUtils.getFluidStack("plasma.hydrogen", 100)
+            )
+            .duration(1*MINUTES+30*SECONDS)
+            .eut( TierEU.RECIPE_LuV)
+            .specialValue(1000 * 20)
+            .addTo(cyclotronRecipes);
+
 
         FluidStack aPlasma = Materials.Duranium.getMolten(40);
         FluidStack aPlasma_NULL = Materials._NULL.getPlasma(1);
@@ -1730,15 +1780,20 @@ public class RECIPES_GREGTECH {
         }
 
         // Quantum Anomaly
-        CORE.RA.addCyclotronRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(24), Particle.getBaseParticle(Particle.UNKNOWN), },
-            aPlasma,
-            new ItemStack[] { GregtechItemList.Laser_Lens_Special.get(1) },
-            null,
-            new int[] { 100 },
-            25*SECONDS,
-            (int) TierEU.RECIPE_UV,
-            500 * 20);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(24), Particle.getBaseParticle(Particle.UNKNOWN))
+            .itemOutputs(
+                GregtechItemList.Laser_Lens_Special.get(1))
+            .outputChances(100)
+            .fluidInputs(
+                aPlasma
+            )
+            .duration(25*SECONDS)
+            .eut( TierEU.RECIPE_UV)
+            .specialValue(500 * 20)
+            .addTo(cyclotronRecipes);
+
 
         /*
          * Ions
@@ -1759,17 +1814,18 @@ public class RECIPES_GREGTECH {
             // Ionize Plasma
             if ((aPlasma2 != null && !aPlasma2.isFluidEqual(aPlasma_NULL))
                 || (aPlasma3 != null && !aPlasma3.isFluidEqual(aPlasma_NULL))) {
-                CORE.RA.addCyclotronRecipe(
-                    GT_Utility.getIntegratedCircuit(1 + (tenCountA - 1)),
-                    aPlasma2 != null ? aPlasma2 : aPlasma3,
-                    new ItemStack[] { Particle.getIon(y, 1), Particle.getIon(y, 2), Particle.getIon(y, 3),
-                        Particle.getIon(y, -1), Particle.getIon(y, -2), Particle.getIon(y, -3), Particle.getIon(y, 1),
-                        Particle.getIon(y, 2), Particle.getIon(y, -1), },
-                    null,
-                    new int[] { 275, 250, 225, 275, 250, 225, 275, 250, 275 },
-                    20 * SECONDS * (IonCount++) * tenCountA,
-                    (int) TierEU.RECIPE_ZPM,
-                    1500 * 20 * tenCountA);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        GT_Utility.getIntegratedCircuit(1 + (tenCountA - 1))
+                    )
+                    .itemOutputs(
+                        Particle.getIon(y, 1), Particle.getIon(y, 2), Particle.getIon(y, 3),Particle.getIon(y, -1), Particle.getIon(y, -2), Particle.getIon(y, -3), Particle.getIon(y, 1),Particle.getIon(y, 2), Particle.getIon(y, -1))
+                    .outputChances(275, 250, 225, 275, 250, 225, 275, 250, 275)
+                    .duration(20 * SECONDS * (IonCount++) * tenCountA)
+                    .eut( TierEU.RECIPE_ZPM)
+                    .specialValue(1500 * 20 * tenCountA)
+                    .addTo(cyclotronRecipes);
+
             } else {
                 Logger.INFO("Plasma for " + y + " does not exist, please report this to Alkalus.");
             }
@@ -1783,74 +1839,78 @@ public class RECIPES_GREGTECH {
         }
 
         // Generate Hydrogen Ion Recipe
-        CORE.RA.addCyclotronRecipe(
-            GT_Utility.getIntegratedCircuit(24),
-            FluidUtils.getWildcardFluidStack("hydrogen", 1000),
-            new ItemStack[] { Particle.getIon("Hydrogen", 1), Particle.getIon("Hydrogen", 2),
-                Particle.getIon("Hydrogen", 3), Particle.getIon("Hydrogen", 1), Particle.getIon("Hydrogen", 2),
-                Particle.getIon("Hydrogen", 3), Particle.getIon("Hydrogen", -1), Particle.getIon("Hydrogen", -2),
-                Particle.getIon("Hydrogen", -3) },
-            null,
-            new int[] { 500, 500, 500, 500, 500, 500, 500, 500, 500 },
-            20 * SECONDS,
-            (int) TierEU.RECIPE_LuV,
-            2500);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(24)
+            )
+            .itemOutputs(
+                Particle.getIon("Hydrogen", 1), Particle.getIon("Hydrogen", 2),Particle.getIon("Hydrogen", 3), Particle.getIon("Hydrogen", 1), Particle.getIon("Hydrogen", 2),Particle.getIon("Hydrogen", 3), Particle.getIon("Hydrogen", -1), Particle.getIon("Hydrogen", -2),Particle.getIon("Hydrogen", -3))
+            .outputChances(500, 500, 500, 500, 500, 500, 500, 500, 500)
+            .fluidInputs(
+                FluidUtils.getWildcardFluidStack("hydrogen", 1000)
+            )
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_LuV)
+            .specialValue(2500)
+            .addTo(cyclotronRecipes);
         // Generate Hydrogen Plasma Recipe
-        CORE.RA.addCyclotronRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(21), Particle.getIon("Hydrogen", 0), },
-            FluidUtils.getFluidStack("hydrogen", 1000),
-            new ItemStack[] { Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.NEUTRON),
-                Particle.getBaseParticle(Particle.ELECTRON), Particle.getBaseParticle(Particle.UNKNOWN),
-                Particle.getBaseParticle(Particle.UNKNOWN), Particle.getBaseParticle(Particle.UNKNOWN), },
-            FluidUtils.getFluidStack("plasma.hydrogen", 100),
-            new int[] { 1250, 1250, 1250, 750, 750, 750 },
-            2*MINUTES,
-            (int) TierEU.RECIPE_LuV,
-            750 * 20);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(21), Particle.getIon("Hydrogen", 0))
+            .itemOutputs(
+                Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.NEUTRON),Particle.getBaseParticle(Particle.ELECTRON), Particle.getBaseParticle(Particle.UNKNOWN),Particle.getBaseParticle(Particle.UNKNOWN), Particle.getBaseParticle(Particle.UNKNOWN))
+            .outputChances(1250, 1250, 1250, 750, 750, 750)
+            .fluidInputs(
+                FluidUtils.getFluidStack("hydrogen", 1000)
+            )
+            .fluidOutputs(
+                FluidUtils.getFluidStack("plasma.hydrogen", 100)
+            )
+            .duration(2*MINUTES)
+            .eut( TierEU.RECIPE_LuV)
+            .specialValue(750 * 20)
+            .addTo(cyclotronRecipes);
         // Generate Protons Easily
-        CORE.RA.addCyclotronRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(20), Particle.getIon("Hydrogen", 0) },
-            FluidUtils.getWildcardFluidStack("hydrogen", 100),
-            new ItemStack[] { Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.PROTON),
-                Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.PROTON),
-                Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.PROTON),
-                Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.PROTON),
-                Particle.getBaseParticle(Particle.PROTON), },
-            null,
-            new int[] { 750, 750, 750, 750, 750, 750, 750, 750, 750 },
-            20 * SECONDS,
-            (int) TierEU.RECIPE_LuV,
-            1500);
-
-        CORE.RA.addCyclotronRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(22), Particle.getBaseParticle(Particle.UNKNOWN), },
-            FluidUtils.getWildcardFluidStack("hydrogen", 100),
-            new ItemStack[] { Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.PROTON),
-                Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.PROTON),
-                Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.PROTON),
-                Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.PROTON),
-                Particle.getBaseParticle(Particle.PROTON), },
-            null,
-            new int[] { 375, 375, 375, 375, 375, 375, 375, 375, 375 },
-            20 * SECONDS,
-            (int) TierEU.RECIPE_LuV,
-            1500);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(20), Particle.getIon("Hydrogen", 0))
+            .itemOutputs(
+                Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.PROTON),Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.PROTON),Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.PROTON),Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.PROTON),Particle.getBaseParticle(Particle.PROTON))
+            .outputChances(750, 750, 750, 750, 750, 750, 750, 750, 750)
+            .fluidInputs(
+                FluidUtils.getWildcardFluidStack("hydrogen", 100)
+            )
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_LuV)
+            .specialValue(1500)
+            .addTo(cyclotronRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(22), Particle.getBaseParticle(Particle.UNKNOWN))
+            .itemOutputs(
+                Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.PROTON),Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.PROTON),Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.PROTON),Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.PROTON),Particle.getBaseParticle(Particle.PROTON))
+            .outputChances(375, 375, 375, 375, 375, 375, 375, 375, 375)
+            .fluidInputs(
+                FluidUtils.getWildcardFluidStack("hydrogen", 100)
+            )
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_LuV)
+            .specialValue(1500)
+            .addTo(cyclotronRecipes);
         // Create Strange Dust
-        CORE.RA.addCyclotronRecipe(
-            new ItemStack[] { ELEMENT.getInstance().PLUTONIUM238.getDust(1), Particle.getBaseParticle(Particle.UNKNOWN),
-                Particle.getBaseParticle(Particle.UNKNOWN), Particle.getBaseParticle(Particle.UNKNOWN),
-                Particle.getBaseParticle(Particle.UNKNOWN), Particle.getBaseParticle(Particle.UNKNOWN),
-                Particle.getBaseParticle(Particle.UNKNOWN), Particle.getBaseParticle(Particle.UNKNOWN),
-                Particle.getBaseParticle(Particle.UNKNOWN), },
-            FluidUtils.getFluidStack(FluidUtils.getWildcardFluidStack("ender", 1000), 1000),
-            new ItemStack[] { ORES.DEEP_EARTH_REACTOR_FUEL_DEPOSIT.getDust(1) },
-            null,
-            new int[] { 2500 },
-            15*MINUTES,
-            (int) TierEU.RECIPE_ZPM,
-            250);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ELEMENT.getInstance().PLUTONIUM238.getDust(1), Particle.getBaseParticle(Particle.UNKNOWN),Particle.getBaseParticle(Particle.UNKNOWN), Particle.getBaseParticle(Particle.UNKNOWN),Particle.getBaseParticle(Particle.UNKNOWN), Particle.getBaseParticle(Particle.UNKNOWN),Particle.getBaseParticle(Particle.UNKNOWN), Particle.getBaseParticle(Particle.UNKNOWN),Particle.getBaseParticle(Particle.UNKNOWN))
+            .itemOutputs(
+                ORES.DEEP_EARTH_REACTOR_FUEL_DEPOSIT.getDust(1))
+            .outputChances(2500)
+            .fluidInputs(
+                FluidUtils.getFluidStack(FluidUtils.getWildcardFluidStack("ender", 1000), 1000)
+            )
+            .duration(15*MINUTES)
+            .eut( TierEU.RECIPE_ZPM)
+            .specialValue(250)
+            .addTo(cyclotronRecipes);
+
     }
 }
