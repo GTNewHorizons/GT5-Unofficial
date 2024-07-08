@@ -3,8 +3,12 @@ package gtPlusPlus.xmod.gregtech.loaders.recipe;
 import static advsolar.utils.MTRecipeManager.transformerRecipes;
 import static gregtech.api.enums.Mods.AdvancedSolarPanel;
 import static gregtech.api.enums.Mods.GalaxySpace;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.molecularTransformerRecipes;
 
 import advsolar.utils.MTRecipeRecord;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -31,49 +35,84 @@ public class RecipeLoader_MolecularTransformer {
             int aTicksRoundedUp = MathUtils.roundToClosestInt(Math.ceil(aTicks));
             Logger.INFO("Ticks: " + aTicksRoundedUp);
             Logger.INFO("Total EU equal or greater? " + ((aTicksRoundedUp * aEU) >= aRecipe.energyPerOperation));
-            CORE.RA.addMolecularTransformerRecipe(aRecipe.inputStack, aRecipe.outputStack, aTicksRoundedUp, aEU, 2);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aRecipe.inputStack
+                )
+                .itemOutputs(
+                    aRecipe.outputStack
+                )
+                .duration(aTicksRoundedUp)
+                .eut(aEU)
+                .addTo(molecularTransformerRecipes);
+
             Logger.INFO("=======================");
         }
 
         transformerRecipes.clear();
         if (AdvancedSolarPanel.isModLoaded() && GalaxySpace.isModLoaded()) {
 
-            CORE.RA.addMolecularTransformerRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L),
-                GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9),
-                600,
-                1920,
-                2);
-            CORE.RA.addMolecularTransformerRecipe(
-                GT_ModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 0),
-                GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9),
-                150,
-                7680,
-                2);
-            CORE.RA.addMolecularTransformerRecipe(
-                GT_ModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 1),
-                GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9),
-                38,
-                30720,
-                2);
-            CORE.RA.addMolecularTransformerRecipe(
-                GT_ModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 2),
-                GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9),
-                10,
-                122880,
-                2);
-            CORE.RA.addMolecularTransformerRecipe(
-                GT_ModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 3),
-                GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9),
-                3,
-                491520,
-                2);
-            CORE.RA.addMolecularTransformerRecipe(
-                GT_ModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 4),
-                GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9),
-                1,
-                1996080,
-                2);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L)
+                )
+                .itemOutputs(
+                    GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9)
+                )
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_EV)
+                .addTo(molecularTransformerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_ModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 0)
+                )
+                .itemOutputs(
+                    GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9)
+                )
+                .duration(7 * SECONDS + 10 * TICKS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(molecularTransformerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_ModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 1)
+                )
+                .itemOutputs(
+                    GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9)
+                )
+                .duration(1 * SECONDS + 18 * TICKS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(molecularTransformerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_ModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 2)
+                )
+                .itemOutputs(
+                    GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9)
+                )
+                .duration(10 * TICKS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(molecularTransformerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_ModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 3)
+                )
+                .itemOutputs(
+                    GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9)
+                )
+                .duration(3 * TICKS)
+                .eut(TierEU.RECIPE_UV)
+                .addTo(molecularTransformerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_ModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 4)
+                )
+                .itemOutputs(
+                    GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9)
+                )
+                .duration(1 * TICKS)
+                .eut(1996080)
+                .addTo(molecularTransformerRecipes);
+
         }
     }
 }
