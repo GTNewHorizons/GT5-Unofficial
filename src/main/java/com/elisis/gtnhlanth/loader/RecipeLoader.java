@@ -562,15 +562,20 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_HV)
             .addTo(thermalCentrifugeRecipes);
 
-        GT_Values.RA.addChemicalBathRecipe(
-            WerkstoffMaterialPool.MonaziteRareEarthFiltrate.get(OrePrefixes.dust, 1),
-            WerkstoffMaterialPool.AmmoniumNitrate.getFluidOrGas(320),
-            WerkstoffMaterialPool.NeutralizedMonaziteRareEarthFiltrate.get(OrePrefixes.dust, 1),
-            null,
-            null,
-            new int[] { 10000 },
-            120,
-            240);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.MonaziteRareEarthFiltrate.get(OrePrefixes.dust, 1)
+            )
+            .itemOutputs(
+                WerkstoffMaterialPool.NeutralizedMonaziteRareEarthFiltrate.get(OrePrefixes.dust, 1)
+            )
+            .fluidInputs(
+                WerkstoffMaterialPool.AmmoniumNitrate.getFluidOrGas(320)
+            )
+            .duration(6 * SECONDS)
+            .eut(240)
+            .addTo(chemicalBathRecipes);
+
 
         GT_Values.RA.addSifterRecipe(
             WerkstoffMaterialPool.NeutralizedMonaziteRareEarthFiltrate.get(OrePrefixes.dust, 1),
@@ -581,15 +586,20 @@ public class RecipeLoader {
             800,
             480);
 
-        GT_Values.RA.addChemicalBathRecipe(
-            WerkstoffMaterialPool.UraniumFiltrate.get(OrePrefixes.dust, 1),
-            Materials.HydrofluoricAcid.getFluid(100),
-            WerkstoffMaterialPool.NeutralizedUraniumFiltrate.get(OrePrefixes.dust, 1),
-            null,
-            null,
-            new int[] { 10000 },
-            360,
-            120);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.UraniumFiltrate.get(OrePrefixes.dust, 1)
+            )
+            .itemOutputs(
+                WerkstoffMaterialPool.NeutralizedUraniumFiltrate.get(OrePrefixes.dust, 1)
+            )
+            .fluidInputs(
+                Materials.HydrofluoricAcid.getFluid(100)
+            )
+            .duration(18 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(chemicalBathRecipes);
+
 
         GT_Values.RA.addSifterRecipe(
             WerkstoffMaterialPool.NeutralizedUraniumFiltrate.get(OrePrefixes.dust, 1),
@@ -902,15 +912,20 @@ public class RecipeLoader {
             .metadata(COIL_HEAT, 1400)
             .addTo(blastFurnaceRecipes);
 
-        GT_Values.RA.addChemicalBathRecipe(
-            WerkstoffMaterialPool.BastnasiteRareEarthOxidePowder.get(OrePrefixes.dust, 1),
-            Materials.HydrochloricAcid.getFluid(500),
-            WerkstoffMaterialPool.LeachedBastnasiteRareEarthOxides.get(OrePrefixes.dust, 1),
-            null,
-            null,
-            new int[] { 10000 },
-            200,
-            30);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.BastnasiteRareEarthOxidePowder.get(OrePrefixes.dust, 1)
+            )
+            .itemOutputs(
+                WerkstoffMaterialPool.LeachedBastnasiteRareEarthOxides.get(OrePrefixes.dust, 1)
+            )
+            .fluidInputs(
+                Materials.HydrochloricAcid.getFluid(500)
+            )
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(chemicalBathRecipes);
+
 
         GT_Values.RA.stdBuilder()
             .itemInputs(

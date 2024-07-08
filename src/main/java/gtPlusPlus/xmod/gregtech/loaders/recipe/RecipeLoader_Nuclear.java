@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
@@ -164,36 +165,56 @@ public class RecipeLoader_Nuclear {
     private static void chemicalBathRecipes() {
 
         int[] chances = { 9000, 6000, 3000 };
-        GT_Values.RA.addChemicalBathRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 12),
-            FluidUtils.getFluidStack("chlorine", 2400),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 3),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 4),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 5),
-            chances,
-            30 * 20,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 12)
+            )
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 3),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 4),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 5)
+            )
+            .outputChances(chances)
+            .fluidInputs(
+                FluidUtils.getFluidStack("chlorine", 2400)
+            )
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(chemicalBathRecipes);
+
 
         chances = new int[] { 9000, 3000, 1000 };
-        GT_Values.RA.addChemicalBathRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("dustRutile", 5),
-            FluidUtils.getFluidStack("chlorine", 4000),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 3),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustTitanium", 1),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 1),
-            chances,
-            30 * 20,
-            1024);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustRutile", 5)
+            )
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 3),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustTitanium", 1),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 1)
+            )
+            .outputChances(chances)
+            .fluidInputs(
+                FluidUtils.getFluidStack("chlorine", 4000)
+            )
+            .duration(30 * SECONDS)
+            .eut(1024)
+            .addTo(chemicalBathRecipes);
 
-        GT_Values.RA.addChemicalBathRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 3),
-            FluidUtils.getFluidStack("hydrofluoricacid", 500),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 2),
-            null,
-            null,
-            new int[] {},
-            9 * 20,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 3)
+            )
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 2)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack("hydrofluoricacid", 500)
+            )
+            .duration(9 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(chemicalBathRecipes);
+
     }
 
     private static void chemicalReactorRecipes() {

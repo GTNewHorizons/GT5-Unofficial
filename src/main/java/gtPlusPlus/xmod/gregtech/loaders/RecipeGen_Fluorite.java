@@ -21,6 +21,7 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
@@ -209,15 +210,23 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
                 + ".");
 
 
-        GT_Values.RA.addChemicalBathRecipe(
-            FLUORIDES.FLUORITE.getCrushed(2),
-            FluidUtils.getFluidStack("hydrogen", 2000),
-            FLUORIDES.FLUORITE.getCrushedPurified(8),
-            FLUORIDES.FLUORITE.getDustImpure(4),
-            FLUORIDES.FLUORITE.getDustPurified(2),
-            new int[] { 10000, 5000, 1000 },
-            30 * 20,
-            240);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                FLUORIDES.FLUORITE.getCrushed(2)
+            )
+            .itemOutputs(
+                FLUORIDES.FLUORITE.getCrushedPurified(8),
+                FLUORIDES.FLUORITE.getDustImpure(4),
+                FLUORIDES.FLUORITE.getDustPurified(2)
+            )
+            .outputChances(100_00, 50_00, 10_00)
+            .fluidInputs(
+                FluidUtils.getFluidStack("hydrogen", 2000)
+            )
+            .duration(30 * SECONDS)
+            .eut(240)
+            .addTo(chemicalBathRecipes);
+
 
         /**
          * Forge Hammer
