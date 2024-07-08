@@ -4,7 +4,9 @@ import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
+import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -990,109 +992,189 @@ public class GregtechConduits {
         // Wire mill
         if (ItemUtils
             .checkForInvalidItems(new ItemStack[] { aIngot, aWire01, aWire02, aWire04, aWire08, aWire12, aWire16 })) {
-            GT_Values.RA.addWiremillRecipe(
-                aMaterial.getIngot(1),
-                GT_Utility.getIntegratedCircuit(1),
-                aMaterial.getWire01(2),
-                100,
-                4);
-            GT_Values.RA.addWiremillRecipe(
-                aMaterial.getIngot(1),
-                GT_Utility.getIntegratedCircuit(2),
-                aMaterial.getWire02(1),
-                150,
-                4);
-            GT_Values.RA.addWiremillRecipe(
-                aMaterial.getIngot(2),
-                GT_Utility.getIntegratedCircuit(4),
-                aMaterial.getWire04(1),
-                200,
-                4);
-            GT_Values.RA.addWiremillRecipe(
-                aMaterial.getIngot(4),
-                GT_Utility.getIntegratedCircuit(8),
-                aMaterial.getWire08(1),
-                250,
-                4);
-            GT_Values.RA.addWiremillRecipe(
-                aMaterial.getIngot(6),
-                GT_Utility.getIntegratedCircuit(12),
-                aMaterial.getWire12(1),
-                300,
-                4);
-            GT_Values.RA.addWiremillRecipe(
-                aMaterial.getIngot(8),
-                GT_Utility.getIntegratedCircuit(16),
-                aMaterial.getWire16(1),
-                350,
-                4);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getIngot(1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    aMaterial.getWire01(2)
+                )
+                .duration(5 * SECONDS)
+                .eut(4)
+                .addTo(wiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getIngot(1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    aMaterial.getWire02(1)
+                )
+                .duration(7 * SECONDS + 10 * TICKS)
+                .eut(4)
+                .addTo(wiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getIngot(2),
+                    GT_Utility.getIntegratedCircuit(4)
+                )
+                .itemOutputs(
+                    aMaterial.getWire04(1)
+                )
+                .duration(10 * SECONDS)
+                .eut(4)
+                .addTo(wiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getIngot(4),
+                    GT_Utility.getIntegratedCircuit(8)
+                )
+                .itemOutputs(
+                    aMaterial.getWire08(1)
+                )
+                .duration(12 * SECONDS + 10 * TICKS)
+                .eut(4)
+                .addTo(wiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getIngot(6),
+                    GT_Utility.getIntegratedCircuit(12)
+                )
+                .itemOutputs(
+                    aMaterial.getWire12(1)
+                )
+                .duration(15 * SECONDS)
+                .eut(4)
+                .addTo(wiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getIngot(8),
+                    GT_Utility.getIntegratedCircuit(16)
+                )
+                .itemOutputs(
+                    aMaterial.getWire16(1)
+                )
+                .duration(17 * SECONDS + 10 * TICKS)
+                .eut(4)
+                .addTo(wiremillRecipes);
+
         }
 
         if (ItemUtils
             .checkForInvalidItems(new ItemStack[] { aRod, aWire01, aWire02, aWire04, aWire08, aWire12, aWire16 })) {
-            GT_Values.RA.addWiremillRecipe(
-                aMaterial.getRod(1),
-                GT_Utility.getIntegratedCircuit(1),
-                aMaterial.getWire01(1),
-                50,
-                4);
-            GT_Values.RA.addWiremillRecipe(
-                aMaterial.getRod(2),
-                GT_Utility.getIntegratedCircuit(2),
-                aMaterial.getWire02(1),
-                100,
-                4);
-            GT_Values.RA.addWiremillRecipe(
-                aMaterial.getRod(4),
-                GT_Utility.getIntegratedCircuit(4),
-                aMaterial.getWire04(1),
-                150,
-                4);
-            GT_Values.RA.addWiremillRecipe(
-                aMaterial.getRod(8),
-                GT_Utility.getIntegratedCircuit(8),
-                aMaterial.getWire08(1),
-                200,
-                4);
-            GT_Values.RA.addWiremillRecipe(
-                aMaterial.getRod(12),
-                GT_Utility.getIntegratedCircuit(12),
-                aMaterial.getWire12(1),
-                250,
-                4);
-            GT_Values.RA.addWiremillRecipe(
-                aMaterial.getRod(16),
-                GT_Utility.getIntegratedCircuit(16),
-                aMaterial.getWire16(1),
-                300,
-                4);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getRod(1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    aMaterial.getWire01(1)
+                )
+                .duration(2 * SECONDS + 10 * TICKS)
+                .eut(4)
+                .addTo(wiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getRod(2),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    aMaterial.getWire02(1)
+                )
+                .duration(5 * SECONDS)
+                .eut(4)
+                .addTo(wiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getRod(4),
+                    GT_Utility.getIntegratedCircuit(4)
+                )
+                .itemOutputs(
+                    aMaterial.getWire04(1)
+                )
+                .duration(7 * SECONDS + 10 * TICKS)
+                .eut(4)
+                .addTo(wiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getRod(8),
+                    GT_Utility.getIntegratedCircuit(8)
+                )
+                .itemOutputs(
+                    aMaterial.getWire08(1)
+                )
+                .duration(10 * SECONDS)
+                .eut(4)
+                .addTo(wiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getRod(12),
+                    GT_Utility.getIntegratedCircuit(12)
+                )
+                .itemOutputs(
+                    aMaterial.getWire12(1)
+                )
+                .duration(12 * SECONDS + 10 * TICKS)
+                .eut(4)
+                .addTo(wiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getRod(16),
+                    GT_Utility.getIntegratedCircuit(16)
+                )
+                .itemOutputs(
+                    aMaterial.getWire16(1)
+                )
+                .duration(15 * SECONDS)
+                .eut(4)
+                .addTo(wiremillRecipes);
+
         }
 
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aIngot, aFineWire })) {
-            GT_Values.RA.addWiremillRecipe(
-                aMaterial.getIngot(1),
-                GT_Utility.getIntegratedCircuit(3),
-                aMaterial.getFineWire(8),
-                100,
-                4);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getIngot(1),
+                    GT_Utility.getIntegratedCircuit(3)
+                )
+                .itemOutputs(
+                    aMaterial.getFineWire(8)
+                )
+                .duration(5 * SECONDS)
+                .eut(4)
+                .addTo(wiremillRecipes);
+
         }
 
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aRod, aFineWire })) {
-            GT_Values.RA.addWiremillRecipe(
-                aMaterial.getRod(1),
-                GT_Utility.getIntegratedCircuit(3),
-                aMaterial.getFineWire(4),
-                50,
-                4);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getRod(1),
+                    GT_Utility.getIntegratedCircuit(3)
+                )
+                .itemOutputs(
+                    aMaterial.getFineWire(4)
+                )
+                .duration(2 * SECONDS + 10 * TICKS)
+                .eut(4)
+                .addTo(wiremillRecipes);
+
         }
 
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aFineWire })) {
-            GT_Values.RA.addWiremillRecipe(
-                aMaterial.getWire01(1),
-                GT_Utility.getIntegratedCircuit(1),
-                aMaterial.getFineWire(4),
-                200,
-                8);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getWire01(1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    aMaterial.getFineWire(4)
+                )
+                .duration(10 * SECONDS)
+                .eut(8)
+                .addTo(wiremillRecipes);
+
         }
 
         // Extruder
