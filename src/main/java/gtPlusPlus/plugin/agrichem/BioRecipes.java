@@ -20,6 +20,7 @@ import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -446,14 +447,15 @@ public class BioRecipes {
                 GT_Values.NF,
                 1200);
         }
-        CORE.RA.addCokeOvenRecipe(
-            ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 2),
-            getBioChip(3),
-            null,
-            GT_Values.NF,
-            ItemUtils.getItemStackOfAmountFromOreDict("gemCharcoal", 3),
-            120,
-            16);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 2),
+                getBioChip(3)
+            )
+            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("gemCharcoal", 3))
+            .eut(16)
+            .duration(6*SECONDS)
+            .addTo(cokeOvenRecipes);
     }
 
     private static void recipeWoodBricks() {

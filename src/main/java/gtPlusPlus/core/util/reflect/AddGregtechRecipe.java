@@ -11,6 +11,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
 
 public final class AddGregtechRecipe {
 
@@ -56,17 +57,21 @@ public final class AddGregtechRecipe {
             }
         }
 
-        return CORE.RA.addCokeOvenRecipe(
-            aCircuitNumber,
-            aInputItem,
-            aRecipe.mFluidInputs,
-            aRecipe.mFluidOutputs,
-            aRecipe.mOutputs,
-            aModifiedTime,
-            aRecipe.mEUt);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(aCircuitNumber),
+                aInputItem
+            )
+            .itemOutputs(aRecipe.mOutputs)
+            .fluidInputs(aRecipe.mFluidInputs)
+            .fluidOutputs(aRecipe.mFluidOutputs)
+            .eut(aRecipe.mEUt)
+            .duration(aModifiedTime)
+            .addTo(cokeOvenRecipes);
+
+        return true;
     }
 
-    @Deprecated
     public static boolean addCokeAndPyrolyseRecipes(ItemStack input1, int circuitNumber, FluidStack inputFluid1,
         ItemStack output1, FluidStack outputFluid1, int timeInSeconds, int euTick) {
         // Seconds Conversion
