@@ -37,6 +37,7 @@ import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.thermalBoilerRecipes;
 
 import net.minecraft.init.Blocks;
@@ -686,140 +687,176 @@ public class RECIPES_GREGTECH {
     private static void blastSmelterRecipes() {
 
         // Eglin Steel
-        CORE.RA.addBlastSmelterRecipe(
-            new ItemStack[] { ItemUtils.getGregtechCircuit(6), ELEMENT.getInstance().IRON.getDust(4),
-                ALLOY.KANTHAL.getDust(1), ALLOY.INVAR.getDust(5), ELEMENT.getInstance().SULFUR.getDust(1),
-                ELEMENT.getInstance().CARBON.getDust(1), ELEMENT.getInstance().SILICON.getDust(4) },
-            ALLOY.EGLIN_STEEL.getFluidStack(16 * 144),
-            0,
-            20 * 45,
-            120);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(6),
+                ELEMENT.getInstance().IRON.getDust(4),
+                ALLOY.KANTHAL.getDust(1),
+                ALLOY.INVAR.getDust(5),
+                ELEMENT.getInstance().SULFUR.getDust(1),
+                ELEMENT.getInstance().CARBON.getDust(1),
+                ELEMENT.getInstance().SILICON.getDust(4)
+            )
+            .fluidOutputs(ALLOY.EGLIN_STEEL.getFluidStack(16 * 144))
+            .eut(TierEU.RECIPE_MV)
+            .duration(45*SECONDS)
+            .specialValue(3700)
+            .addTo(alloyBlastSmelterRecipes);
 
         // HG1223
-        CORE.RA.addBlastSmelterRecipe(
-            new ItemStack[] { ItemUtils.getGregtechCircuit(5), ELEMENT.getInstance().BARIUM.getDust(2),
-                ELEMENT.getInstance().CALCIUM.getDust(2), ELEMENT.getInstance().COPPER.getDust(3), },
-            new FluidStack[] { ELEMENT.getInstance().OXYGEN.getFluidStack(8000),
-                ELEMENT.getInstance().MERCURY.getFluidStack(1000), },
-            ALLOY.HG1223.getFluidStack(16 * 144),
-            null,
-            new int[] { 10000 }, // Output Chance
-            20 * 120,
-            30720);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(5),
+                ELEMENT.getInstance().BARIUM.getDust(2),
+                ELEMENT.getInstance().CALCIUM.getDust(2),
+                ELEMENT.getInstance().COPPER.getDust(3)
+            )
+            .fluidOutputs(ALLOY.HG1223.getFluidStack(16 * 144))
+            .eut(TierEU.RECIPE_LuV)
+            .duration(2*MINUTES)
+            .specialValue(3700)
+            .addTo(alloyBlastSmelterRecipes);
 
         // NITINOL_60
-        CORE.RA.addBlastSmelterRecipe(
-            new ItemStack[] { ItemUtils.getGregtechCircuit(2), ELEMENT.getInstance().TITANIUM.getDust(3),
-                ELEMENT.getInstance().NICKEL.getDust(2) },
-            ALLOY.NITINOL_60.getFluidStack(5 * 144),
-            0,
-            20 * 75,
-            7680);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(2), ELEMENT.getInstance().TITANIUM.getDust(3),
+                ELEMENT.getInstance().NICKEL.getDust(2)
+            )
+            .fluidOutputs(ALLOY.NITINOL_60.getFluidStack(5 * 144))
+            .eut(TierEU.RECIPE_IV)
+            .duration(1*MINUTES +15*SECONDS)
+            .specialValue(3700)
+            .addTo(alloyBlastSmelterRecipes);
 
         // INDALLOY_140
-        CORE.RA.addBlastSmelterRecipe(
-            new ItemStack[] { ItemUtils.getGregtechCircuit(5), ELEMENT.getInstance().BISMUTH.getDust(47),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(5), ELEMENT.getInstance().BISMUTH.getDust(47),
                 ELEMENT.getInstance().LEAD.getDust(25), ELEMENT.getInstance().TIN.getDust(13),
-                ELEMENT.getInstance().CADMIUM.getDust(10), ELEMENT.getInstance().INDIUM.getDust(5) },
-            ALLOY.INDALLOY_140.getFluidStack(100 * 144),
-            0,
-            20 * 40,
-            7680);
+                ELEMENT.getInstance().CADMIUM.getDust(10), ELEMENT.getInstance().INDIUM.getDust(5)
+            )
+            .fluidOutputs(ALLOY.INDALLOY_140.getFluidStack(100 * 144))
+            .eut(TierEU.RECIPE_IV)
+            .duration(40*SECONDS)
+            .specialValue(3700)
+            .addTo(alloyBlastSmelterRecipes);
 
         // Germanium Roasting
-        CORE.RA.addBlastSmelterRecipe(
-            new ItemStack[] { ItemUtils.getGregtechCircuit(15),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(15),
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedSphalerite", 8),
-                ELEMENT.getInstance().CARBON.getDust(32), },
-            Materials.SulfuricAcid.getFluid(2000),
-            ELEMENT.getInstance().GERMANIUM.getFluidStack(288),
-            0,
-            20 * 300,
-            4000);
+                ELEMENT.getInstance().CARBON.getDust(32)
+            )
+            .fluidInputs(Materials.SulfuricAcid.getFluid(2000))
+            .fluidOutputs(ELEMENT.getInstance().GERMANIUM.getFluidStack(288))
+            .eut(4_000)
+            .duration(5*MINUTES)
+            .specialValue(3700)
+            .addTo(alloyBlastSmelterRecipes);
 
         // Rhenium Roasting
-        CORE.RA.addBlastSmelterRecipe(
-            new ItemStack[] { ItemUtils.getGregtechCircuit(20),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(20),
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedScheelite", 8),
-                ELEMENT.getInstance().CARBON.getDust(32), },
-            Materials.SulfuricAcid.getFluid(10000),
-            ELEMENT.getInstance().RHENIUM.getFluidStack(144),
-            0,
-            20 * 300,
-            4000);
-        CORE.RA.addBlastSmelterRecipe(
-            new ItemStack[] { ItemUtils.getGregtechCircuit(20),
+                ELEMENT.getInstance().CARBON.getDust(32)
+            )
+            .fluidInputs(Materials.SulfuricAcid.getFluid(10000))
+            .fluidOutputs(ELEMENT.getInstance().RHENIUM.getFluidStack(144))
+            .eut(4_000)
+            .duration(5*MINUTES)
+            .specialValue(3700)
+            .addTo(alloyBlastSmelterRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(20),
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedMolybdenite", 8),
-                ELEMENT.getInstance().CARBON.getDust(32), },
-            Materials.SulfuricAcid.getFluid(7500),
-            ELEMENT.getInstance().RHENIUM.getFluidStack(144),
-            0,
-            20 * 300,
-            4000);
-        CORE.RA.addBlastSmelterRecipe(
-            new ItemStack[] { ItemUtils.getGregtechCircuit(20),
+                ELEMENT.getInstance().CARBON.getDust(32)
+            )
+            .fluidInputs(Materials.SulfuricAcid.getFluid(7500))
+            .fluidOutputs(ELEMENT.getInstance().RHENIUM.getFluidStack(144))
+            .eut(4_000)
+            .duration(5*MINUTES)
+            .specialValue(3700)
+            .addTo(alloyBlastSmelterRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(20),
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedMolybdenum", 8),
-                ELEMENT.getInstance().CARBON.getDust(32), },
-            Materials.SulfuricAcid.getFluid(5000),
-            ELEMENT.getInstance().RHENIUM.getFluidStack(288),
-            0,
-            20 * 300,
-            4000);
+                ELEMENT.getInstance().CARBON.getDust(32)
+            )
+            .fluidInputs(Materials.SulfuricAcid.getFluid(5000))
+            .fluidOutputs(ELEMENT.getInstance().RHENIUM.getFluidStack(288))
+            .eut(4_000)
+            .duration(5*MINUTES)
+            .specialValue(3700)
+            .addTo(alloyBlastSmelterRecipes);
 
         // Thallium Roasting
-        CORE.RA.addBlastSmelterRecipe(
-            new ItemStack[] { ItemUtils.getGregtechCircuit(21),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(21),
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedZinc", 3),
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedPyrite", 4),
-                ELEMENT.getInstance().CARBON.getDust(16), },
-            Materials.SulfuricAcid.getFluid(1250),
-            ELEMENT.getInstance().THALLIUM.getFluidStack(288),
-            new ItemStack[] {},
-            new int[] { 0 },
-            20 * 75,
-            8000,
-            3700,
-            false);
+                ELEMENT.getInstance().CARBON.getDust(16)
+            )
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1250))
+            .fluidOutputs(ELEMENT.getInstance().THALLIUM.getFluidStack(288))
+            .eut(8000)
+            .duration(1*MINUTES+15*SECONDS)
+            .specialValue(3700)
+            .noOptimize()
+            .addTo(alloyBlastSmelterRecipes);
 
         // Strontium processing
-        CORE.RA.addBlastSmelterRecipe(
-            new ItemStack[] { ItemUtils.getGregtechCircuit(21), MISC_MATERIALS.STRONTIUM_OXIDE.getDust(8),
-                ELEMENT.getInstance().ALUMINIUM.getDust(8), },
-            (FluidStack) null,
-            ELEMENT.getInstance().OXYGEN.getFluidStack(8000),
-            new ItemStack[] { ELEMENT.getInstance().ALUMINIUM.getIngot(8),
-                ELEMENT.getInstance().STRONTIUM.getIngot(8) },
-            new int[] { 10000, 10000 }, // Output Chance
-            20 * 120,
-            480 * 4);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(21), MISC_MATERIALS.STRONTIUM_OXIDE.getDust(8),
+                ELEMENT.getInstance().ALUMINIUM.getDust(8)
+            )
+            .itemOutputs(ELEMENT.getInstance().ALUMINIUM.getIngot(8),
+                ELEMENT.getInstance().STRONTIUM.getIngot(8))
+            .fluidOutputs(ELEMENT.getInstance().OXYGEN.getFluidStack(8000))
+            .eut(TierEU.RECIPE_EV)
+            .duration(2*MINUTES)
+            .specialValue(3700)
+            .addTo(alloyBlastSmelterRecipes);
 
         // molten botmium
-        CORE.RA.addBlastSmelterRecipe(
-            new ItemStack[] { ItemUtils.getGregtechCircuit(4),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(4),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustNitinol60", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustOsmium", 6),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustRuthenium", 6),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustThallium", 3) },
-            GT_Values.NF,
-            ALLOY.BOTMIUM.getFluidStack(2304),
-            0,
-            20 * 120,
-            491520);
+                ItemUtils.getItemStackOfAmountFromOreDict("dustThallium", 3)
+            )
+            .fluidOutputs(ALLOY.BOTMIUM.getFluidStack(2304))
+            .eut(TierEU.RECIPE_UV)
+            .duration(2*MINUTES)
+            .specialValue(3700)
+            .addTo(alloyBlastSmelterRecipes);
 
         // molten precious metals alloy
-        CORE.RA.addBlastSmelterRecipe(
-            new ItemStack[] { ItemUtils.getGregtechCircuit(6),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(6),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustRuthenium", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustRhodium", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustPalladium", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustPlatinum", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustOsmium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustIridium", 1) },
-            GT_Values.NF,
-            FluidUtils.getFluidStack("molten.precious metals alloy", 864),
-            0,
-            20 * 540,
-            7864320);
+                ItemUtils.getItemStackOfAmountFromOreDict("dustIridium", 1)
+            )
+            .fluidOutputs(FluidUtils.getFluidStack("molten.precious metals alloy", 864))
+            .eut(TierEU.RECIPE_UEV)
+            .duration(9*MINUTES)
+            .specialValue(3700)
+            .addTo(alloyBlastSmelterRecipes);
     }
 
     private static void dehydratorRecipes() {

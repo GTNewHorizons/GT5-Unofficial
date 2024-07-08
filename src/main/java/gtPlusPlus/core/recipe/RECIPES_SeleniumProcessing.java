@@ -1,5 +1,8 @@
 package gtPlusPlus.core.recipe;
 
+import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_RecipeBuilder;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -13,6 +16,9 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
+
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 
 public class RECIPES_SeleniumProcessing {
 
@@ -45,30 +51,17 @@ public class RECIPES_SeleniumProcessing {
             2048);
 
         // Make Selenium
-        CORE.RA.addBlastSmelterRecipe(
-            new ItemStack[] { ItemUtils.getGregtechCircuit(14), ELEMENT.getInstance().CARBON.getDust(16), },
-            new FluidStack[] { MISC_MATERIALS.SELENIOUS_ACID.getFluidStack(750),
-                Materials.SulfuricAcid.getFluid(8000), },
-            ELEMENT.getInstance().SELENIUM.getFluidStack(144 * 1),
-            new ItemStack[] { ELEMENT.getInstance().SELENIUM.getIngot(1), ELEMENT.getInstance().SELENIUM.getIngot(1), },
-            new int[] { 10000, 2000, 2000 },
-            20 * 300,
-            7200);
-
-        /*
-         * // Old recipes for Selenium Roasting CORE.RA.addBlastSmelterRecipe( new ItemStack[] {
-         * ItemUtils.getGregtechCircuit(16), ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedPyrite", 8),
-         * ELEMENT.getInstance().CARBON.getDust(32), }, Materials.SulfuricAcid.getFluid(4000),
-         * ELEMENT.getInstance().SELENIUM.getFluid(144), 0, 20 * 300, 2000); CORE.RA.addBlastSmelterRecipe( new
-         * ItemStack[] { ItemUtils.getGregtechCircuit(17),
-         * ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedChalcopyrite", 8),
-         * ELEMENT.getInstance().CARBON.getDust(32), }, Materials.SulfuricAcid.getFluid(4000),
-         * ELEMENT.getInstance().SELENIUM.getFluid(144), 0, 20 * 300, 2000); CORE.RA.addBlastSmelterRecipe( new
-         * ItemStack[] { ItemUtils.getGregtechCircuit(18),
-         * ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedGalena", 8),
-         * ELEMENT.getInstance().CARBON.getDust(32), }, Materials.SulfuricAcid.getFluid(4000),
-         * ELEMENT.getInstance().SELENIUM.getFluid(144), 0, 20 * 300, 2000);
-         */
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(14), ELEMENT.getInstance().CARBON.getDust(16))
+            .itemOutputs( ELEMENT.getInstance().SELENIUM.getIngot(1), ELEMENT.getInstance().SELENIUM.getIngot(1))
+            .outputChances(100_00, 20_00, 20_00)
+            .fluidInputs( MISC_MATERIALS.SELENIOUS_ACID.getFluidStack(750),
+                Materials.SulfuricAcid.getFluid(8000))
+            .fluidOutputs(ELEMENT.getInstance().SELENIUM.getFluidStack(144 * 1))
+            .eut(7200)
+            .duration(5* MINUTES)
+            .specialValue(3700)
+            .addTo(alloyBlastSmelterRecipes);
     }
 
     public static void processCopperRecipes() {

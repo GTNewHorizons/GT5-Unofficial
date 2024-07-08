@@ -25,6 +25,8 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
+
 public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 
     public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
@@ -139,41 +141,31 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
                         .duration(duration / (mTotalPartsCounter > 0 ? mTotalPartsCounter : 1))
                         .eut(aVoltage)
                         .recipeCategory(GTPPRecipeCategories.absNonAlloyRecipes)
-                        .addTo(GTPPRecipeMaps.alloyBlastSmelterRecipes);
+                        .addTo(alloyBlastSmelterRecipes);
                 } else {
                     Logger.WARNING("[BAS] Failed.");
                 }
             } else {
-                if (CORE.RA.addBlastSmelterRecipe(
-                    tItemStackTest,
-                    M.getFluidStack(fluidAmount),
-                    100,
-                    duration / (mTotalPartsCounter > 0 ? mTotalPartsCounter : 1) / 2,
-                    (int) aVoltage)) {
-                    Logger.WARNING("[BAS] Success.");
-                    if (GT_Values.RA.addFluidSolidifierRecipe(
-                        ItemList.Shape_Mold_Ingot.get(0),
-                        M.getFluidStack(144),
-                        M.getIngot(1),
-                        duration / 2,
-                        60)) {
-                        Logger.WARNING("[BAS] Success, Also added a Fluid solidifier recipe.");
-                        /*
-                         * if (GT_Values.RA.addFluidExtractionRecipe(M.getIngot(1), null, M.getFluidStack(144), 100,
-                         * duration/2, 60)){ Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe."); } if
-                         * (GT_Values.RA.addFluidExtractionRecipe(M.getNugget(1), null, M.getFluidStack(16), 100,
-                         * duration/2/9, 60)){ Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe."); }
-                         */
-                        /*
-                         * if (GT_Values.RA.addFluidExtractionRecipe(M.getSmallDust(1), null, M.getFluid(36), 100,
-                         * duration/2/4, 60)){ Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe."); }
-                         * if (GT_Values.RA.addFluidExtractionRecipe(M.getTinyDust(1), null, M.getFluid(16), 100,
-                         * duration/2/9, 60)){ Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe."); }
-                         */
-                    }
-                } else {
-                    Logger.WARNING("[BAS] Failed.");
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        tItemStackTest
+                    )
+                    .fluidOutputs(M.getFluidStack(fluidAmount))
+                    .eut(aVoltage)
+                    .duration(duration / (mTotalPartsCounter > 0 ? mTotalPartsCounter : 1) / 2)
+                    .specialValue(3700)
+                    .addTo(alloyBlastSmelterRecipes);
+
+                Logger.WARNING("[BAS] Success.");
+                if (GT_Values.RA.addFluidSolidifierRecipe(
+                    ItemList.Shape_Mold_Ingot.get(0),
+                    M.getFluidStack(144),
+                    M.getIngot(1),
+                    duration / 2,
+                    60)) {
+                    Logger.WARNING("[BAS] Success, Also added a Fluid solidifier recipe.");
                 }
+
             }
 
             if (tMaterial != null) {
@@ -287,29 +279,27 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 
                         // Adds Recipe
                         if (M.requiresBlastFurnace()) {
-                            if (CORE.RA.addBlastSmelterRecipe(
-                                components,
-                                componentsFluid,
-                                M.getFluidStack(fluidAmount),
-                                100,
-                                duration,
-                                (int) aVoltage)) {
-                                Logger.WARNING("[BAS] Success.");
-                            } else {
-                                Logger.WARNING("[BAS] Failed.");
-                            }
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(components)
+                                .fluidInputs(componentsFluid)
+                                .fluidOutputs(M.getFluidStack(fluidAmount))
+                                .eut(aVoltage)
+                                .duration(duration)
+                                .specialValue(3700)
+                                .addTo(alloyBlastSmelterRecipes);
+                            Logger.WARNING("[BAS] Success.");
+
                         } else {
-                            if (CORE.RA.addBlastSmelterRecipe(
-                                components,
-                                componentsFluid,
-                                M.getFluidStack(fluidAmount),
-                                100,
-                                duration,
-                                (int) aVoltage / 2)) {
-                                Logger.WARNING("[BAS] Success.");
-                            } else {
-                                Logger.WARNING("[BAS] Failed.");
-                            }
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(components)
+                                .fluidInputs(componentsFluid)
+                                .fluidOutputs(M.getFluidStack(fluidAmount))
+                                .eut(aVoltage/2)
+                                .duration(duration)
+                                .specialValue(3700)
+                                .addTo(alloyBlastSmelterRecipes);
+
+                            Logger.WARNING("[BAS] Success.");
                         }
                     }
                 }

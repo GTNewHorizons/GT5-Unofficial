@@ -557,6 +557,7 @@ public class ItemUtils {
         return itemNames;
     }
 
+    @Deprecated // Use GT_Utility.getIntegratedCircuit() instead
     public static ItemStack getGregtechCircuit(final int Meta) {
         return ItemUtils.getItemStackWithMeta(true, "gregtech:gt.integrated_circuit", "Gregtech Circuit", Meta, 0);
     }
