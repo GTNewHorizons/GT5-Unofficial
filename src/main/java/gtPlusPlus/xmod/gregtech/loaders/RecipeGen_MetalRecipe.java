@@ -4,12 +4,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 import static gregtech.api.enums.Mods.Forestry;
@@ -18,6 +22,7 @@ import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
@@ -82,16 +87,17 @@ public class RecipeGen_MetalRecipe extends RecipeGen_Base {
         }
 
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
-            && ItemUtils.checkForInvalidItems(material.getHotIngot(1)))
-            if (CORE.RA.addVacuumFreezerRecipe(
-                material.getHotIngot(1),
-                material.getIngot(1),
-                (int) Math.max(material.getMass() * 3L, 1L),
-                material.vVoltageMultiplier)) {
-                    Logger.WARNING("Cool Hot Ingot Recipe: " + material.getLocalizedName() + " - Success");
-                } else {
-                    Logger.WARNING("Cool Hot Ingot Recipe: " + material.getLocalizedName() + " - Failed");
-                }
+            && ItemUtils.checkForInvalidItems(material.getHotIngot(1))) {
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(material.getHotIngot(1))
+                .itemOutputs(material.getIngot(1))
+                .duration((int) Math.max(material.getMass() * 3L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(vacuumFreezerRecipes);
+            Logger.WARNING("Cool Hot Ingot Recipe: " + material.getLocalizedName() + " - Success");
+        }
+
 
         if (ItemUtils.checkForInvalidItems(material.getRod(1))
             && ItemUtils.checkForInvalidItems(material.getLongRod(1))) {

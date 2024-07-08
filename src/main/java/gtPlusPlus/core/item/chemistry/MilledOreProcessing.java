@@ -2,9 +2,11 @@ package gtPlusPlus.core.item.chemistry;
 
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 
 import java.util.HashMap;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TierEU;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -354,96 +356,150 @@ public class MilledOreProcessing extends ItemPackage {
     private void addVacuumFurnaceRecipes() {
         int aCircuitID = 1;
 
-        CORE.RA.addVacuumFurnaceRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(aCircuitID++) },
-            new FluidStack[] { FluidUtils.getFluidStack(SphaleriteFlotationFroth, 4000) },
-            getOutputsFromMap(SphaleriteFlotationFroth),
-            new FluidStack[] { FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000) },
-            20 * 120,
-            (int) TierEU.RECIPE_LuV,
-            5500);
-        CORE.RA.addVacuumFurnaceRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(aCircuitID++) },
-            new FluidStack[] { FluidUtils.getFluidStack(ChalcopyriteFlotationFroth, 4000) },
-            getOutputsFromMap(ChalcopyriteFlotationFroth),
-            new FluidStack[] { FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000) },
-            20 * 120,
-            (int) TierEU.RECIPE_IV,
-            4500);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(
+                getOutputsFromMap(SphaleriteFlotationFroth)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack(SphaleriteFlotationFroth, 4000))
+            .fluidOutputs(
+                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .duration((int) TierEU.RECIPE_LuV)
+            .eut(5500)
+            .addTo(vacuumFreezerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(
+                getOutputsFromMap(ChalcopyriteFlotationFroth)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack(ChalcopyriteFlotationFroth, 4000))
+            .fluidOutputs(
+                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .duration((int) TierEU.RECIPE_IV)
+            .eut(4500)
+            .addTo(vacuumFreezerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(
+                getOutputsFromMap(NickelFlotationFroth)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack(NickelFlotationFroth, 4000))
+            .fluidOutputs(
+                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .duration((int) TierEU.RECIPE_IV)
+            .eut(4500)
+            .addTo(vacuumFreezerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(
+                getOutputsFromMap(PlatinumFlotationFroth)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack(PlatinumFlotationFroth, 4000))
+            .fluidOutputs(
+                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .duration((int) TierEU.RECIPE_LuV)
+            .eut(5500)
+            .addTo(vacuumFreezerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(
+                getOutputsFromMap(PentlanditeFlotationFroth)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack(PentlanditeFlotationFroth, 4000))
+            .fluidOutputs(
+                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .duration((int) TierEU.RECIPE_LuV)
+            .eut(5500)
+            .addTo(vacuumFreezerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(
+                getOutputsFromMap(RedstoneFlotationFroth)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack(RedstoneFlotationFroth, 4000))
+            .fluidOutputs(
+                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .duration((int) TierEU.RECIPE_IV)
+            .eut(4500)
+            .addTo(vacuumFreezerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(
+                getOutputsFromMap(SpessartineFlotationFroth)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack(SpessartineFlotationFroth, 4000))
+            .fluidOutputs(
+                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .duration((int) TierEU.RECIPE_LuV)
+            .eut(5500)
+            .addTo(vacuumFreezerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(
+                getOutputsFromMap(GrossularFlotationFroth)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack(GrossularFlotationFroth, 4000))
+            .fluidOutputs(
+                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .duration((int) TierEU.RECIPE_LuV)
+            .eut(5500)
+            .addTo(vacuumFreezerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(
+                getOutputsFromMap(AlmandineFlotationFroth)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack(AlmandineFlotationFroth, 4000))
+            .fluidOutputs(
+                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .duration((int) TierEU.RECIPE_LuV)
+            .eut(5500)
+            .addTo(vacuumFreezerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(
+                getOutputsFromMap(PyropeFlotationFroth)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack(PyropeFlotationFroth, 4000))
+            .fluidOutputs(
+                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .duration((int) TierEU.RECIPE_EV)
+            .eut(3500)
+            .addTo(vacuumFreezerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(
+                getOutputsFromMap(MonaziteFlotationFroth)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack(MonaziteFlotationFroth, 4000))
+            .fluidOutputs(
+                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .duration((int) TierEU.RECIPE_ZPM)
+            .eut(7500)
+            .addTo(vacuumFreezerRecipes);
 
-        CORE.RA.addVacuumFurnaceRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(aCircuitID++) },
-            new FluidStack[] { FluidUtils.getFluidStack(NickelFlotationFroth, 4000) },
-            getOutputsFromMap(NickelFlotationFroth),
-            new FluidStack[] { FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000) },
-            20 * 120,
-            (int) TierEU.RECIPE_IV,
-            4500);
-        CORE.RA.addVacuumFurnaceRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(aCircuitID++) },
-            new FluidStack[] { FluidUtils.getFluidStack(PlatinumFlotationFroth, 4000) },
-            getOutputsFromMap(PlatinumFlotationFroth),
-            new FluidStack[] { FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000) },
-            20 * 120,
-            (int) TierEU.RECIPE_LuV,
-            5500);
-        CORE.RA.addVacuumFurnaceRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(aCircuitID++) },
-            new FluidStack[] { FluidUtils.getFluidStack(PentlanditeFlotationFroth, 4000) },
-            getOutputsFromMap(PentlanditeFlotationFroth),
-            new FluidStack[] { FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000) },
-            20 * 120,
-            (int) TierEU.RECIPE_LuV,
-            5500);
-
-        CORE.RA.addVacuumFurnaceRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(aCircuitID++) },
-            new FluidStack[] { FluidUtils.getFluidStack(RedstoneFlotationFroth, 4000) },
-            getOutputsFromMap(RedstoneFlotationFroth),
-            new FluidStack[] { FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000) },
-            20 * 120,
-            (int) TierEU.RECIPE_IV,
-            4500);
-        CORE.RA.addVacuumFurnaceRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(aCircuitID++) },
-            new FluidStack[] { FluidUtils.getFluidStack(SpessartineFlotationFroth, 4000) },
-            getOutputsFromMap(SpessartineFlotationFroth),
-            new FluidStack[] { FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000) },
-            20 * 120,
-            (int) TierEU.RECIPE_LuV,
-            5500);
-        CORE.RA.addVacuumFurnaceRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(aCircuitID++) },
-            new FluidStack[] { FluidUtils.getFluidStack(GrossularFlotationFroth, 4000) },
-            getOutputsFromMap(GrossularFlotationFroth),
-            new FluidStack[] { FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000) },
-            20 * 120,
-            (int) TierEU.RECIPE_LuV,
-            5500);
-        CORE.RA.addVacuumFurnaceRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(aCircuitID++) },
-            new FluidStack[] { FluidUtils.getFluidStack(AlmandineFlotationFroth, 4000) },
-            getOutputsFromMap(AlmandineFlotationFroth),
-            new FluidStack[] { FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000) },
-            20 * 120,
-            (int) TierEU.RECIPE_LuV,
-            5500);
-        CORE.RA.addVacuumFurnaceRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(aCircuitID++) },
-            new FluidStack[] { FluidUtils.getFluidStack(PyropeFlotationFroth, 4000) },
-            getOutputsFromMap(PyropeFlotationFroth),
-            new FluidStack[] { FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000) },
-            20 * 120,
-            (int) TierEU.RECIPE_EV,
-            3500);
-        CORE.RA.addVacuumFurnaceRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(aCircuitID++) },
-            new FluidStack[] { FluidUtils.getFluidStack(MonaziteFlotationFroth, 4000) },
-            getOutputsFromMap(MonaziteFlotationFroth),
-            new FluidStack[] { FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000) },
-            20 * 120,
-            (int) TierEU.RECIPE_ZPM,
-            7500);
     }
 
     private void addFlotationRecipes1() {
