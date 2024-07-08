@@ -8,9 +8,11 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipes;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -32,7 +34,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GT_Bees;
 import gtPlusPlus.core.item.chemistry.GenericChem;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.MISC_MATERIALS;
@@ -67,256 +68,232 @@ public class RecipeLoader_ChemicalSkips {
         ItemStack stemcells = GT_Utility.copyAmountUnsafe(64 * 32, ItemList.Circuit_Chip_Stemcell.get(1));
         ItemStack biocells = GT_Utility.copyAmountUnsafe(64 * 32, ItemList.Circuit_Chip_Biocell.get(1));
         // Platline
-        CORE.RA.addQuantumTransformerRecipe(
-            new ItemStack[] { WerkstoffLoader.PTMetallicPowder.get(OrePrefixes.dust, 32),
-                ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0) },
-            new FluidStack[] {},
-            new FluidStack[] {},
-            new ItemStack[] { Materials.Platinum.getDust(64), Materials.Palladium.getDust(64),
-                Materials.Iridium.getDust(64), Materials.Osmium.getDust(64),
-                WerkstoffLoader.Rhodium.get(OrePrefixes.dust, 64),
-                WerkstoffLoader.Ruthenium.get(OrePrefixes.dust, 64) },
-            new int[] { 1667, 1667, 1667, 1667, 1667, 1667 },
-            20 * 20,
-            (int) TierEU.RECIPE_UV,
-            1);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffLoader.PTMetallicPowder.get(OrePrefixes.dust, 32),ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0))
+            .itemOutputs(
+                Materials.Platinum.getDust(64), Materials.Palladium.getDust(64),Materials.Iridium.getDust(64), Materials.Osmium.getDust(64),WerkstoffLoader.Rhodium.get(OrePrefixes.dust, 64),WerkstoffLoader.Ruthenium.get(OrePrefixes.dust, 64))
+            .outputChances(1667, 1667, 1667, 1667, 1667, 1667)
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_UV)
+            .specialValue(1)
+            .addTo(quantumForceTransformerRecipes);
         // Early Plastics
-        CORE.RA.addQuantumTransformerRecipe(
-            new ItemStack[] { Materials.Carbon.getDust(64),
-                ItemUtils.getSimpleStack(GenericChem.mPlasticPolymerCatalyst, 0) },
-            new FluidStack[] { Materials.Oxygen.getGas(1000 * 16), Materials.Hydrogen.getGas(1000 * 16),
-                Materials.Chlorine.getGas(1000 * 16), Materials.Fluorine.getGas(1000 * 16) },
-            new FluidStack[] { Materials.Plastic.getMolten(144 * 256), Materials.PolyvinylChloride.getMolten(144 * 128),
-                Materials.Polystyrene.getMolten(144 * 64), Materials.Polytetrafluoroethylene.getMolten(144 * 128),
-                Materials.Epoxid.getMolten(144 * 64), Materials.Polybenzimidazole.getMolten(144 * 64) },
-            null,
-            new int[] { 2000, 2000, 2000, 2000, 2000, 2000 },
-            20 * 20,
-            (int) TierEU.RECIPE_ZPM,
-            1);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Carbon.getDust(64),ItemUtils.getSimpleStack(GenericChem.mPlasticPolymerCatalyst, 0))
+            .fluidInputs(
+                Materials.Oxygen.getGas(1000 * 16), Materials.Hydrogen.getGas(1000 * 16),Materials.Chlorine.getGas(1000 * 16), Materials.Fluorine.getGas(1000 * 16))
+            .fluidOutputs(
+                Materials.Plastic.getMolten(144 * 256), Materials.PolyvinylChloride.getMolten(144 * 128),Materials.Polystyrene.getMolten(144 * 64), Materials.Polytetrafluoroethylene.getMolten(144 * 128),Materials.Epoxid.getMolten(144 * 64), Materials.Polybenzimidazole.getMolten(144 * 64))
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_ZPM)
+            .specialValue(1)
+            .addTo(quantumForceTransformerRecipes);
         // Early Rubbers/Cable Materials
-        CORE.RA.addQuantumTransformerRecipe(
-            new ItemStack[] { Materials.Carbon.getDust(64),
-                ItemUtils.getSimpleStack(GenericChem.mRubberPolymerCatalyst, 0) },
-            new FluidStack[] { Materials.Oxygen.getGas(1000 * 16), Materials.Hydrogen.getGas(1000 * 16),
-                Materials.Chlorine.getGas(1000 * 16) },
-            new FluidStack[] { Materials.Silicone.getMolten(144 * 64),
-                Materials.StyreneButadieneRubber.getMolten(144 * 64),
-                Materials.PolyphenyleneSulfide.getMolten(144 * 128), Materials.Rubber.getMolten(144 * 256) },
-            null,
-            new int[] { 2500, 2500, 2500, 2500 },
-            20 * 20,
-            (int) TierEU.RECIPE_ZPM,
-            1);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Carbon.getDust(64),ItemUtils.getSimpleStack(GenericChem.mRubberPolymerCatalyst, 0))
+            .fluidInputs(
+                Materials.Oxygen.getGas(1000 * 16), Materials.Hydrogen.getGas(1000 * 16),Materials.Chlorine.getGas(1000 * 16))
+            .fluidOutputs(
+                Materials.Silicone.getMolten(144 * 64),Materials.StyreneButadieneRubber.getMolten(144 * 64),Materials.PolyphenyleneSulfide.getMolten(144 * 128), Materials.Rubber.getMolten(144 * 256))
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_ZPM)
+            .specialValue(1)
+            .addTo(quantumForceTransformerRecipes);
         // Glues and Solders
-        CORE.RA.addQuantumTransformerRecipe(
-            new ItemStack[] { Materials.Carbon.getDust(32), Materials.Bismuth.getDust(32),
-                ItemUtils.getSimpleStack(GenericChem.mAdhesionPromoterCatalyst, 0) },
-            new FluidStack[] { Materials.Oxygen.getGas(10000), Materials.Hydrogen.getGas(10000) },
-            new FluidStack[] { MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(1000 * 32),
-                Materials.AdvancedGlue.getFluid(1000 * 16), ALLOY.INDALLOY_140.getFluidStack(144 * 64),
-                Materials.SolderingAlloy.getMolten(144 * 128) },
-            new ItemStack[] { ItemList.StableAdhesive.get(1) },
-            new int[] { 2000, 2000, 2000, 2000, 2000 },
-            20 * 20,
-            (int) TierEU.RECIPE_UV,
-            1);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Carbon.getDust(32), Materials.Bismuth.getDust(32),ItemUtils.getSimpleStack(GenericChem.mAdhesionPromoterCatalyst, 0))
+            .itemOutputs(
+                ItemList.StableAdhesive.get(1))
+            .outputChances(2000)
+            .fluidInputs(
+                Materials.Oxygen.getGas(10000), Materials.Hydrogen.getGas(10000))
+            .fluidOutputs(
+                MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(1000 * 32),Materials.AdvancedGlue.getFluid(1000 * 16), ALLOY.INDALLOY_140.getFluidStack(144 * 64),Materials.SolderingAlloy.getMolten(144 * 128))
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_UV)
+            .specialValue(1)
+            .addTo(quantumForceTransformerRecipes);
         // Titanium, Tungsten, Indium
-        CORE.RA.addQuantumTransformerRecipe(
-            new ItemStack[] { Materials.Lead.getDust(16), Materials.Bauxite.getDust(32),
-                Materials.Tungstate.getDust(16), ItemUtils.getSimpleStack(GenericChem.mTitaTungstenIndiumCatalyst, 0) },
-            new FluidStack[] {},
-            new FluidStack[] {},
-            new ItemStack[] { Materials.Titanium.getDust(64), Materials.TungstenSteel.getDust(64),
-                Materials.TungstenCarbide.getDust(64), Materials.Indium.getDust(64) },
-            new int[] { 2500, 2500, 2500, 2500 },
-            20 * 20,
-            (int) TierEU.RECIPE_UV,
-            1);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Lead.getDust(16), Materials.Bauxite.getDust(32),Materials.Tungstate.getDust(16), ItemUtils.getSimpleStack(GenericChem.mTitaTungstenIndiumCatalyst, 0))
+            .itemOutputs(
+                Materials.Titanium.getDust(64), Materials.TungstenSteel.getDust(64),Materials.TungstenCarbide.getDust(64), Materials.Indium.getDust(64))
+            .outputChances(2500, 2500, 2500, 2500)
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_UV)
+            .specialValue(1)
+            .addTo(quantumForceTransformerRecipes);
         // Thorium, Uranium, Plutonium
-        CORE.RA.addQuantumTransformerRecipe(
-            new ItemStack[] { Materials.Thorium.getDust(32), Materials.Uranium.getDust(32),
-                ItemUtils.getSimpleStack(GenericChem.mRadioactivityCatalyst, 0) },
-            new FluidStack[] {},
-            new FluidStack[] {},
-            new ItemStack[] { ELEMENT.getInstance().THORIUM232.getDust(64),
-                ELEMENT.getInstance().URANIUM233.getDust(64), Materials.Uranium235.getDust(64),
-                ELEMENT.getInstance().PLUTONIUM238.getDust(64), Materials.Plutonium.getDust(64),
-                Materials.Plutonium241.getDust(64) },
-            new int[] { 1667, 1667, 1667, 1667, 1667, 1667 },
-            20 * 20,
-            (int) TierEU.RECIPE_UV,
-            1);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Thorium.getDust(32), Materials.Uranium.getDust(32),ItemUtils.getSimpleStack(GenericChem.mRadioactivityCatalyst, 0))
+            .itemOutputs(
+                ELEMENT.getInstance().THORIUM232.getDust(64),ELEMENT.getInstance().URANIUM233.getDust(64), Materials.Uranium235.getDust(64),ELEMENT.getInstance().PLUTONIUM238.getDust(64), Materials.Plutonium.getDust(64),Materials.Plutonium241.getDust(64))
+            .outputChances(1667, 1667, 1667, 1667, 1667, 1667)
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_UV)
+            .specialValue(1)
+            .addTo(quantumForceTransformerRecipes);
         // Monaline
-        CORE.RA.addQuantumTransformerRecipe(
-            new ItemStack[] { Materials.Monazite.getDust(32),
-                ItemUtils.getSimpleStack(GenericChem.mRareEarthGroupCatalyst, 0) },
-            new FluidStack[] {},
-            new FluidStack[] {},
-            new ItemStack[] { Materials.Cerium.getDust(64), Materials.Gadolinium.getDust(64),
-                Materials.Samarium.getDust(64), getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 64L, 11002), // Hafnia
-                getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 64L, 11007), // Zirconium
-                ItemList.SuperconductorComposite.get(1) },
-            new int[] { 1667, 1667, 1667, 1667, 1667, 1667 },
-            20 * 20,
-            (int) TierEU.RECIPE_UHV,
-            2);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Monazite.getDust(32),ItemUtils.getSimpleStack(GenericChem.mRareEarthGroupCatalyst, 0))
+            .itemOutputs(
+                Materials.Cerium.getDust(64), Materials.Gadolinium.getDust(64),Materials.Samarium.getDust(64), getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 64L, 11002), getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 64L, 11007),ItemList.SuperconductorComposite.get(1))
+            .outputChances(1667, 1667, 1667, 1667, 1667, 1667)
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_UHV)
+            .specialValue(2)
+            .addTo(quantumForceTransformerRecipes);
         // Bastline
-        CORE.RA.addQuantumTransformerRecipe(
-            new ItemStack[] { Materials.Bastnasite.getDust(32),
-                ItemUtils.getSimpleStack(GenericChem.mRareEarthGroupCatalyst, 0) },
-            null,
-            null,
-            new ItemStack[] { Materials.Holmium.getDust(64), Materials.Cerium.getDust(64),
-                Materials.Samarium.getDust(64), Materials.Gadolinium.getDust(64), Materials.Lanthanum.getDust(64) },
-            new int[] { 2000, 2000, 2000, 2000, 2000 },
-            20 * 20,
-            (int) TierEU.RECIPE_UHV,
-            2);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Bastnasite.getDust(32),ItemUtils.getSimpleStack(GenericChem.mRareEarthGroupCatalyst, 0))
+            .itemOutputs(
+                Materials.Holmium.getDust(64), Materials.Cerium.getDust(64),Materials.Samarium.getDust(64), Materials.Gadolinium.getDust(64), Materials.Lanthanum.getDust(64))
+            .outputChances(2000, 2000, 2000, 2000, 2000)
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_UHV)
+            .specialValue(2)
+            .addTo(quantumForceTransformerRecipes);
         // Early Waterline skip (first 4 tiers)
-        CORE.RA.addQuantumTransformerRecipe(
-            new ItemStack[] { ItemUtils.getSimpleStack(GenericChem.mLimpidWaterCatalyst, 0) },
-            new FluidStack[] { Materials.Water.getFluid(40000L) },
-            new FluidStack[] { Materials.Grade1PurifiedWater.getFluid(20000L),
-                Materials.Grade2PurifiedWater.getFluid(10000L), Materials.Grade3PurifiedWater.getFluid(5000L),
-                Materials.Grade4PurifiedWater.getFluid(1000L) },
-            new ItemStack[] {},
-            new int[] { 2500, 2500, 2500, 2500 },
-            20 * 20,
-            (int) TierEU.RECIPE_UHV,
-            2);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(GenericChem.mLimpidWaterCatalyst, 0))
+            .fluidInputs(
+                Materials.Water.getFluid(40000L))
+            .fluidOutputs(
+                Materials.Grade1PurifiedWater.getFluid(20000L),Materials.Grade2PurifiedWater.getFluid(10000L), Materials.Grade3PurifiedWater.getFluid(5000L),Materials.Grade4PurifiedWater.getFluid(1000L))
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_UHV)
+            .specialValue(2)
+            .addTo(quantumForceTransformerRecipes);
         // Stem Cells
-        CORE.RA.addQuantumTransformerRecipe(
-            new ItemStack[] { Materials.Calcium.getDust(32), Materials.MeatRaw.getDust(32),
-                getModItem(NewHorizonsCoreMod.ID, "GTNHBioItems", 32, 2),
-                ItemUtils.getSimpleStack(GenericChem.mRawIntelligenceCatalyst, 0) },
-            new FluidStack[] {},
-            new FluidStack[] { Materials.GrowthMediumRaw.getFluid(1000 * 1024),
-                Materials.GrowthMediumSterilized.getFluid(1000 * 512) },
-            new ItemStack[] { stemcells },
-            new int[] { 3333, 3333, 3333 },
-            20 * 20,
-            (int) TierEU.RECIPE_UEV,
-            3);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Calcium.getDust(32), Materials.MeatRaw.getDust(32),getModItem(NewHorizonsCoreMod.ID, "GTNHBioItems", 32, 2),ItemUtils.getSimpleStack(GenericChem.mRawIntelligenceCatalyst, 0))
+            .itemOutputs(
+                stemcells)
+            .outputChances(3333)
+            .fluidOutputs(
+                Materials.GrowthMediumRaw.getFluid(1000 * 1024),Materials.GrowthMediumSterilized.getFluid(1000 * 512))
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_UEV)
+            .specialValue(3)
+            .addTo(quantumForceTransformerRecipes);
         // Unknown Particles
-        CORE.RA.addQuantumTransformerRecipe(
-            new ItemStack[] { ItemUtils.getSimpleStack(GenericChem.mParticleAccelerationCatalyst, 0) },
-            new FluidStack[] { Materials.Hydrogen.getGas(10000L), Materials.Deuterium.getGas(1000L) },
-            new FluidStack[] { FluidUtils.getFluidStack("plasma.hydrogen", 1000) },
-            new ItemStack[] { Particle.getBaseParticle(Particle.UNKNOWN), Particle.getBaseParticle(Particle.GRAVITON),
-                Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.ELECTRON) },
-            new int[] { 2000, 2000, 2000, 2000, 2000 },
-            5 * 20,
-            (int) TierEU.RECIPE_UEV,
-            3);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(GenericChem.mParticleAccelerationCatalyst, 0))
+            .itemOutputs(
+                Particle.getBaseParticle(Particle.UNKNOWN), Particle.getBaseParticle(Particle.GRAVITON),Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.ELECTRON))
+            .outputChances(2000, 2000, 2000, 2000, 2000)
+            .fluidInputs(
+                Materials.Hydrogen.getGas(10000L), Materials.Deuterium.getGas(1000L))
+            .fluidOutputs(
+                FluidUtils.getFluidStack("plasma.hydrogen", 1000))
+            .duration(5 * SECONDS)
+            .eut( TierEU.RECIPE_UEV)
+            .specialValue(3)
+            .addTo(quantumForceTransformerRecipes);
         // Lategame Plastics (Missing Radox Polymer and Heavy Radox)
-        CORE.RA.addQuantumTransformerRecipe(
-            new ItemStack[] { Materials.Carbon.getDust(64), Materials.Osmium.getDust(24),
-                ItemUtils.getSimpleStack(GenericChem.mUltimatePlasticCatalyst, 0) },
-            new FluidStack[] { Materials.Hydrogen.getGas(1000 * 16), Materials.Nitrogen.getGas(1000 * 16) },
-            new FluidStack[] { FluidUtils.getFluidStack("xenoxene", 1000 * 16),
-                FluidUtils.getFluidStack("molten.radoxpoly", 144 * 64),
-                FluidUtils.getFluidStack("heavyradox", 1000 * 16), MaterialsKevlar.Kevlar.getMolten(144 * 64) },
-            new ItemStack[] {},
-            new int[] { 2500, 2500, 2500, 2500 },
-            20 * 20,
-            (int) TierEU.RECIPE_UIV,
-            4);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Carbon.getDust(64), Materials.Osmium.getDust(24),ItemUtils.getSimpleStack(GenericChem.mUltimatePlasticCatalyst, 0))
+            .fluidInputs(
+                Materials.Hydrogen.getGas(1000 * 16), Materials.Nitrogen.getGas(1000 * 16))
+            .fluidOutputs(
+                FluidUtils.getFluidStack("xenoxene", 1000 * 16),FluidUtils.getFluidStack("molten.radoxpoly", 144 * 64),FluidUtils.getFluidStack("heavyradox", 1000 * 16), MaterialsKevlar.Kevlar.getMolten(144 * 64))
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_UIV)
+            .specialValue(4)
+            .addTo(quantumForceTransformerRecipes);
         // Lategame Kevlar using Kevlar bee comb
-        CORE.RA.addQuantumTransformerRecipe(
-            new ItemStack[] { GT_Bees.combs.getStackForType(CombType.KEVLAR, 24), Materials.Carbon.getDust(64),
-                ItemUtils.getSimpleStack(GenericChem.mUltimatePlasticCatalyst, 0) },
-            new FluidStack[] { Materials.Nitrogen.getGas(1000 * 16), Materials.Hydrogen.getGas(1000 * 16) },
-            new FluidStack[] { MaterialsKevlar.PolyurethaneResin.getFluid(1000 * 32),
-                MaterialsKevlar.LiquidCrystalKevlar.getFluid(144 * 32), MaterialsKevlar.Kevlar.getMolten(144 * 64) },
-            new ItemStack[] {},
-            new int[] { 2500, 2500, 2500, 2500 },
-            20 * 20,
-            (int) TierEU.RECIPE_UIV,
-            4);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Bees.combs.getStackForType(CombType.KEVLAR, 24), Materials.Carbon.getDust(64),ItemUtils.getSimpleStack(GenericChem.mUltimatePlasticCatalyst, 0))
+            .fluidInputs(
+                Materials.Nitrogen.getGas(1000 * 16), Materials.Hydrogen.getGas(1000 * 16))
+            .fluidOutputs(
+                MaterialsKevlar.PolyurethaneResin.getFluid(1000 * 32),MaterialsKevlar.LiquidCrystalKevlar.getFluid(144 * 32), MaterialsKevlar.Kevlar.getMolten(144 * 64))
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_UIV)
+            .specialValue(4)
+            .addTo(quantumForceTransformerRecipes);
         // Platline skip using Platline Combs (Palladium, Osmium, Iridium, Platinum)
-        CORE.RA.addQuantumTransformerRecipe(
-            new ItemStack[] { GT_Bees.combs.getStackForType(CombType.PLATINUM, 32),
-                GT_Bees.combs.getStackForType(CombType.PALLADIUM, 32),
-                GT_Bees.combs.getStackForType(CombType.OSMIUM, 32), GT_Bees.combs.getStackForType(CombType.IRIDIUM, 32),
-                ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0) },
-            new FluidStack[] {},
-            new FluidStack[] { Materials.Osmium.getMolten(144 * 256), Materials.Palladium.getMolten(144 * 256),
-                Materials.Iridium.getMolten(144 * 256), Materials.Platinum.getMolten(144 * 256) },
-            new ItemStack[] {},
-            new int[] { 2500, 2500, 2500, 2500 },
-            20 * 20,
-            (int) TierEU.RECIPE_UV,
-            1);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Bees.combs.getStackForType(CombType.PLATINUM, 32),GT_Bees.combs.getStackForType(CombType.PALLADIUM, 32),GT_Bees.combs.getStackForType(CombType.OSMIUM, 32), GT_Bees.combs.getStackForType(CombType.IRIDIUM, 32),ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0))
+            .fluidOutputs(
+                Materials.Osmium.getMolten(144 * 256), Materials.Palladium.getMolten(144 * 256),Materials.Iridium.getMolten(144 * 256), Materials.Platinum.getMolten(144 * 256))
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_UV)
+            .specialValue(1)
+            .addTo(quantumForceTransformerRecipes);
         // Bio Cells and Mutated Solder
-        CORE.RA.addQuantumTransformerRecipe(
-            new ItemStack[] { ItemList.Circuit_Chip_Stemcell.get(16), Materials.InfinityCatalyst.getDust(4),
-                ItemUtils.getSimpleStack(GenericChem.mBiologicalIntelligenceCatalyst, 0) },
-            new FluidStack[] {},
-            new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 128),
-                Materials.BioMediumSterilized.getFluid(1000 * 256), Materials.BioMediumRaw.getFluid(1000 * 512) },
-            new ItemStack[] { biocells },
-            new int[] { 2500, 2500, 2500, 2500 },
-            20 * 20,
-            (int) TierEU.RECIPE_UIV,
-            4);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Circuit_Chip_Stemcell.get(16), Materials.InfinityCatalyst.getDust(4),ItemUtils.getSimpleStack(GenericChem.mBiologicalIntelligenceCatalyst, 0))
+            .itemOutputs(
+                biocells)
+            .outputChances(2500)
+            .fluidOutputs(
+                MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 128),Materials.BioMediumSterilized.getFluid(1000 * 256), Materials.BioMediumRaw.getFluid(1000 * 512))
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_UIV)
+            .specialValue(4)
+            .addTo(quantumForceTransformerRecipes);
         // Advanced Waterline skip (last 4 tiers)
-        CORE.RA.addQuantumTransformerRecipe(
-            new ItemStack[] { ItemUtils.getSimpleStack(GenericChem.mFlawlessWaterCatalyst, 0) },
-            new FluidStack[] { Materials.Water.getFluid(40000L) },
-            new FluidStack[] { Materials.Grade5PurifiedWater.getFluid(20000L),
-                Materials.Grade6PurifiedWater.getFluid(10000L), Materials.Grade7PurifiedWater.getFluid(5000L),
-                Materials.Grade8PurifiedWater.getFluid(1000L) },
-            new ItemStack[] {},
-            new int[] { 2500, 2500, 2500, 2500 },
-            20 * 20,
-            (int) TierEU.RECIPE_UIV,
-            4);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(GenericChem.mFlawlessWaterCatalyst, 0))
+            .fluidInputs(
+                Materials.Water.getFluid(40000L))
+            .fluidOutputs(
+                Materials.Grade5PurifiedWater.getFluid(20000L),Materials.Grade6PurifiedWater.getFluid(10000L), Materials.Grade7PurifiedWater.getFluid(5000L),Materials.Grade8PurifiedWater.getFluid(1000L))
+            .duration(20 * SECONDS)
+            .eut( TierEU.RECIPE_UIV)
+            .specialValue(4)
+            .addTo(quantumForceTransformerRecipes);
         // Rare Particles
-        CORE.RA.addQuantumTransformerRecipe(
-            new ItemStack[] { ItemUtils.getSimpleStack(GenericChem.mSynchrotronCapableCatalyst, 0),
-                GregtechItemList.Laser_Lens_Special.get(1) },
-            new FluidStack[] { FluidUtils.getFluidStack("plasma.hydrogen", 30000), Materials.Helium.getPlasma(30000L),
-                Materials.Americium.getPlasma(30000L),
-                new FluidStack(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 30000) },
-            new FluidStack[] {},
-            new ItemStack[] { Particle.getBaseParticle(Particle.Z_BOSON), Particle.getBaseParticle(Particle.W_BOSON),
-                Particle.getBaseParticle(Particle.LAMBDA), Particle.getBaseParticle(Particle.OMEGA),
-                Particle.getBaseParticle(Particle.HIGGS_BOSON) },
-            new int[] { 2000, 2000, 2000, 2000, 2000 },
-            200 * 20,
-            (int) TierEU.RECIPE_UIV,
-            4);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(GenericChem.mSynchrotronCapableCatalyst, 0),GregtechItemList.Laser_Lens_Special.get(1))
+            .itemOutputs(
+                Particle.getBaseParticle(Particle.Z_BOSON), Particle.getBaseParticle(Particle.W_BOSON),Particle.getBaseParticle(Particle.LAMBDA), Particle.getBaseParticle(Particle.OMEGA),Particle.getBaseParticle(Particle.HIGGS_BOSON))
+            .outputChances(2000, 2000, 2000, 2000, 2000)
+            .fluidInputs(
+                FluidUtils.getFluidStack("plasma.hydrogen", 30000), Materials.Helium.getPlasma(30000L),Materials.Americium.getPlasma(30000L),new FluidStack(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 30000))
+            .duration(3 * MINUTES + 20 * SECONDS)
+            .eut( TierEU.RECIPE_UIV)
+            .specialValue(4)
+            .addTo(quantumForceTransformerRecipes);
+
 
         if (GalaxySpace.isModLoaded()) {
             // Seaweed
             ItemStack seaweed = GT_Utility
                 .copyAmountUnsafe(64 * 32, getModItem(GalaxySpace.ID, "tcetiedandelions", 1, 4));
-            CORE.RA.addQuantumTransformerRecipe(
-                new ItemStack[] { GT_OreDictUnificator.get("cropSeaweed", 64), Materials.Mytryl.getDust(16),
-                    ItemUtils.getSimpleStack(GenericChem.mAlgagenicGrowthPromoterCatalyst, 0) },
-                new FluidStack[] { FluidUtils.getFluidStack("unknowwater", 25_000) },
-                new FluidStack[] { FluidUtils.getFluidStack("seaweedbroth", 50_000),
-                    FluidUtils.getFluidStack("iodine", 64_000) },
-                new ItemStack[] { seaweed, getModItem(NewHorizonsCoreMod.ID, "item.TCetiESeaweedExtract", 16) },
-                new int[] { 2_500, 2_500, 2_500, 2_500 },
-                20 * SECONDS,
-                (int) TierEU.RECIPE_UIV,
-                4);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get("cropSeaweed", 64), Materials.Mytryl.getDust(16),ItemUtils.getSimpleStack(GenericChem.mAlgagenicGrowthPromoterCatalyst, 0))
+                .itemOutputs(
+                    seaweed, getModItem(NewHorizonsCoreMod.ID, "item.TCetiESeaweedExtract", 16))
+                .outputChances(2_500)
+                .fluidInputs(
+                    FluidUtils.getFluidStack("unknowwater", 25_000))
+                .fluidOutputs(
+                    FluidUtils.getFluidStack("seaweedbroth", 50_000),FluidUtils.getFluidStack("iodine", 64_000))
+                .duration(20 * SECONDS)
+                .eut( TierEU.RECIPE_UIV)
+                .specialValue(4)
+                .addTo(quantumForceTransformerRecipes);
+
         }
     }
 
