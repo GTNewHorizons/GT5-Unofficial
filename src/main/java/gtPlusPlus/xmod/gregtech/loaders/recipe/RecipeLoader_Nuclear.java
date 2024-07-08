@@ -5,6 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.electroMagneticSeparatorRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
@@ -478,32 +479,47 @@ public class RecipeLoader_Nuclear {
     private static void electroMagneticSeperator() {
 
         // Zirconium
-        GT_Values.RA.addElectromagneticSeparatorRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedBauxite", 1),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustBauxite", 1),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustSmallRutile", 1),
-            ItemUtils.getItemStackOfAmountFromOreDict("nuggetZirconium", 1),
-            new int[] { 10000, 2500, 4000 },
-            20 * 20,
-            24);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedBauxite", 1)
+            )
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustBauxite", 1),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustSmallRutile", 1),
+                ItemUtils.getItemStackOfAmountFromOreDict("nuggetZirconium", 1)
+            )
+            .outputChances(10000, 2500, 4000)
+            .duration(20 * SECONDS)
+            .eut(24)
+            .addTo(electroMagneticSeparatorRecipes);
         // Zircon
-        GT_Values.RA.addElectromagneticSeparatorRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedMagnetite", 1),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustMagnetite", 1),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustSmallZircon", 1),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustTinyZircon", 1),
-            new int[] { 10000, 1250, 2500 },
-            20 * 20,
-            24);
-        GT_Values.RA.addElectromagneticSeparatorRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedCassiterite", 1),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustCassiterite", 1),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustSmallZircon", 1),
-            ItemUtils.getItemStackOfAmountFromOreDict("dustTinyZircon", 1),
-            new int[] { 10000, 1250, 2500 },
-            20 * 20,
-            24);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedMagnetite", 1)
+            )
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustMagnetite", 1),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustSmallZircon", 1),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyZircon", 1)
+            )
+            .outputChances(10000, 1250, 2500)
+            .duration(20 * SECONDS)
+            .eut(24)
+            .addTo(electroMagneticSeparatorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedCassiterite", 1)
+            )
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustCassiterite", 1),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustSmallZircon", 1),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyZircon", 1)
+            )
+            .outputChances(10000, 1250, 2500)
+            .duration(20 * SECONDS)
+            .eut(24)
+            .addTo(electroMagneticSeparatorRecipes);
+
     }
 
     private static void fluidExtractorRecipes() {
