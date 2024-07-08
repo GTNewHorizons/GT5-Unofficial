@@ -1,5 +1,6 @@
 package gtPlusPlus.core.util.reflect;
 
+import gregtech.api.util.GT_Utility;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -8,6 +9,8 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
+
+import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
 
 public final class AddGregtechRecipe {
 
@@ -70,7 +73,17 @@ public final class AddGregtechRecipe {
         int TIME = timeInSeconds * 20;
         int TIMEPYRO = TIME + (TIME / 5);
         // Even though it says coke and pyrolyse, ICO recipes are imported from pyrolyse by #importPyroRecipe
-        GT_Values.RA.addPyrolyseRecipe(input1, inputFluid1, circuitNumber, output1, outputFluid1, TIMEPYRO, euTick);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(circuitNumber),
+                input1
+            )
+            .itemOutputs(output1)
+            .fluidInputs(inputFluid1)
+            .fluidOutputs(outputFluid1)
+            .duration(TIMEPYRO)
+            .eut(euTick)
+            .addTo(pyrolyseRecipes);
 
         return false;
     }
