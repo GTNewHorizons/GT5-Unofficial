@@ -8,6 +8,7 @@ import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.RemoteIO;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -805,14 +806,12 @@ public class RECIPES_Machines {
     private static void algaeFarm() {
 
         // Give the bad algae a use.
-        CORE.RA.addDistilleryRecipe(
-            ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 32),
-            null,
-            null,
-            ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 4),
-            20 * 15,
-            16,
-            false);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 32))
+            .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 4))
+            .duration(15 * SECONDS)
+            .eut( 16)
+            .addTo(distilleryRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
