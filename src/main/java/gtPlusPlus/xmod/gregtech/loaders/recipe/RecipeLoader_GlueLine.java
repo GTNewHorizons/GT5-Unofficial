@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -226,12 +227,13 @@ public class RecipeLoader_GlueLine {
 
     private static void fluidHeaterRecipes() {
 
-        CORE.RA.addFluidHeaterRecipe(
-             GT_Utility.getIntegratedCircuit(16),
-            MISC_MATERIALS.CYANOACRYLATE_POLYMER.getFluidStack(100),
-            MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(100),
-            30 * 30,
-            500);
+        GT_Values.RA.stdBuilder()
+            .itemInputs( GT_Utility.getIntegratedCircuit(16))
+            .fluidInputs(MISC_MATERIALS.CYANOACRYLATE_POLYMER.getFluidStack(100))
+            .fluidOutputs(MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(100))
+            .duration(45 * SECONDS)
+            .eut(500)
+            .addTo(fluidHeaterRecipes);
     }
 
     private static void mixerRecipes() {

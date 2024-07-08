@@ -7,6 +7,7 @@ import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.electroMagneticSeparatorRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
@@ -756,12 +757,11 @@ public class RecipeLoader_Nuclear {
     }
 
     private static void fluidHeater() {
-
-        CORE.RA.addFluidHeaterRecipe(
-            FLUORIDES.SODIUM_FLUORIDE.getDust(1),
-            null,
-            FLUORIDES.SODIUM_FLUORIDE.getFluidStack(144),
-            20 * 30,
-            500);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(FLUORIDES.SODIUM_FLUORIDE.getDust(1))
+            .fluidOutputs(FLUORIDES.SODIUM_FLUORIDE.getFluidStack(144))
+            .duration(30 * SECONDS)
+            .eut(500)
+            .addTo(fluidHeaterRecipes);
     }
 }
