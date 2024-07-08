@@ -537,13 +537,17 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
-        GT_Values.RA.addSifterRecipe(
-            WerkstoffMaterialPool.AcidicMonazitePowder.get(OrePrefixes.dust, 1),
-            new ItemStack[] { WerkstoffMaterialPool.MonaziteRareEarthFiltrate.get(OrePrefixes.dust, 1),
-                WerkstoffMaterialPool.ThoriumPhosphateCake.get(OrePrefixes.dust, 1) },
-            new int[] { 9000, 7000 },
-            600,
-            256);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.AcidicMonazitePowder.get(OrePrefixes.dust, 1)
+            )
+            .itemOutputs(
+                WerkstoffMaterialPool.MonaziteRareEarthFiltrate.get(OrePrefixes.dust, 1), WerkstoffMaterialPool.ThoriumPhosphateCake.get(OrePrefixes.dust, 1))
+            .outputChances(9000, 7000)
+            .duration(30 * SECONDS)
+            .eut(256)
+            .addTo(sifterRecipes);
+
 
         GT_Values.RA.stdBuilder()
             .itemInputs(WerkstoffMaterialPool.ThoriumPhosphateCake.get(OrePrefixes.dust, 1))
@@ -578,14 +582,17 @@ public class RecipeLoader {
             .addTo(chemicalBathRecipes);
 
 
-        GT_Values.RA.addSifterRecipe(
-            WerkstoffMaterialPool.NeutralizedMonaziteRareEarthFiltrate.get(OrePrefixes.dust, 1),
-            new ItemStack[] { WerkstoffMaterialPool.MonaziteRareEarthHydroxideConcentrate.get(OrePrefixes.dust, 1),
-                WerkstoffMaterialPool.UraniumFiltrate.get(OrePrefixes.dust, 1),
-                WerkstoffMaterialPool.UraniumFiltrate.get(OrePrefixes.dust, 1) },
-            new int[] { 9000, 5000, 4000 },
-            800,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.NeutralizedMonaziteRareEarthFiltrate.get(OrePrefixes.dust, 1)
+            )
+            .itemOutputs(
+                WerkstoffMaterialPool.MonaziteRareEarthHydroxideConcentrate.get(OrePrefixes.dust, 1), WerkstoffMaterialPool.UraniumFiltrate.get(OrePrefixes.dust, 1), WerkstoffMaterialPool.UraniumFiltrate.get(OrePrefixes.dust, 1))
+            .outputChances(9000, 5000, 4000)
+            .duration(40 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(sifterRecipes);
+
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -602,13 +609,17 @@ public class RecipeLoader {
             .addTo(chemicalBathRecipes);
 
 
-        GT_Values.RA.addSifterRecipe(
-            WerkstoffMaterialPool.NeutralizedUraniumFiltrate.get(OrePrefixes.dust, 1),
-            new ItemStack[] { Materials.Uranium.getDust(1), Materials.Uranium.getDust(1), Materials.Uranium.getDust(1),
-                Materials.Uranium235.getDust(1), Materials.Uranium235.getDust(1), },
-            new int[] { 4500, 4000, 3000, 3000, 2000 },
-            1000,
-            30);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.NeutralizedUraniumFiltrate.get(OrePrefixes.dust, 1)
+            )
+            .itemOutputs(
+                Materials.Uranium.getDust(1), Materials.Uranium.getDust(1), Materials.Uranium.getDust(1), Materials.Uranium235.getDust(1), Materials.Uranium235.getDust(1))
+            .outputChances(4500, 4000, 3000, 3000, 2000)
+            .duration(50 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sifterRecipes);
+
 
         GT_Values.RA.stdBuilder()
             .itemInputs(WerkstoffMaterialPool.MonaziteRareEarthHydroxideConcentrate.get(OrePrefixes.dust, 1))
@@ -832,14 +843,16 @@ public class RecipeLoader {
             .duration(5*MINUTES+15*SECONDS)
             .addTo(centrifugeRecipes);
 
-
-
-        GT_Values.RA.addSifterRecipe(
-            WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 9),
-            new ItemStack[] { Materials.Samarium.getDust(6), Materials.Gadolinium.getDust(3) },
-            new int[] { 10000, 10000 },
-            400,
-            1920);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 9)
+            )
+            .itemOutputs(
+                Materials.Samarium.getDust(6), Materials.Gadolinium.getDust(3))
+            .outputChances(10000, 10000)
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(sifterRecipes);
 
         // BASTNASITE (god help me)
         GT_Values.RA.stdBuilder()

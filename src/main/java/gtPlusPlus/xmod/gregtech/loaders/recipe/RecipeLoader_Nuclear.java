@@ -10,6 +10,7 @@ import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -679,90 +680,79 @@ public class RecipeLoader_Nuclear {
     }
 
     private static void sifter() {
-
         // Zirconium
-        GT_Values.RA.addSifterRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedIlmenite", 1),
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustWroughtIron", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 1) },
-            new int[] { 5000, 278, 1000, 1000, 300, 300 },
-            20 * 30,
-            500);
-        GT_Values.RA.addSifterRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedTin", 1),
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustZinc", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1) },
-            new int[] { 10000, 556, 1500, 1000, 500, 500 },
-            20 * 30,
-            500);
-        GT_Values.RA.addSifterRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedCassiterite", 1),
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCassiterite", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1) },
-            new int[] { 10000, 556, 1500, 1000, 500, 500 },
-            20 * 30,
-            500);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedIlmenite", 1)
+            )
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustWroughtIron", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 1))
+            .outputChances(5000, 278, 1000, 1000, 300, 300)
+            .duration(30 * SECONDS)
+            .eut(500)
+            .addTo(sifterRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedTin", 1)
+            )
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustZinc", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1))
+            .outputChances(10000, 556, 1500, 1000, 500, 500)
+            .duration(30 * SECONDS)
+            .eut(500)
+            .addTo(sifterRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedCassiterite", 1)
+            )
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustCassiterite", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1))
+            .outputChances(10000, 556, 1500, 1000, 500, 500)
+            .duration(30 * SECONDS)
+            .eut(500)
+            .addTo(sifterRecipes);
         // Radium
-        GT_Values.RA.addSifterRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedThorium", 1),
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustThorium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustLead", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1) },
-            new int[] { 10000, 500, 300, 200, 100, 100 },
-            20 * 30,
-            500);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedThorium", 1)
+            )
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustThorium", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustLead", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1))
+            .outputChances(10000, 500, 300, 200, 100, 100)
+            .duration(30 * SECONDS)
+            .eut(500)
+            .addTo(sifterRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedUranium", 1)
+            )
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustUranium", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustLead", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1))
+            .outputChances(10000, 556, 1000, 500, 500, 500)
+            .duration(30 * SECONDS)
+            .eut(500)
+            .addTo(sifterRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedUraninite", 1)
+            )
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustUraninite", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustUranium", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1))
+            .outputChances(10000, 556, 500, 250, 250, 250)
+            .duration(30 * SECONDS)
+            .eut(500)
+            .addTo(sifterRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedPitchblende", 1)
+            )
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustPitchblende", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustLead", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1))
+            .outputChances(10000, 556, 500, 250, 250, 250)
+            .duration(30 * SECONDS)
+            .eut(500)
+            .addTo(sifterRecipes);
 
-        GT_Values.RA.addSifterRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedUranium", 1),
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustUranium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustLead", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1) },
-            new int[] { 10000, 556, 1000, 500, 500, 500 },
-            20 * 30,
-            500);
-
-        GT_Values.RA.addSifterRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedUraninite", 1),
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustUraninite", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustUranium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1) },
-            new int[] { 10000, 556, 500, 250, 250, 250 },
-            20 * 30,
-            500);
-
-        GT_Values.RA.addSifterRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedPitchblende", 1),
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustPitchblende", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustLead", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1) },
-            new int[] { 10000, 556, 500, 250, 250, 250 },
-            20 * 30,
-            500);
     }
 
     private static void fluidHeater() {
