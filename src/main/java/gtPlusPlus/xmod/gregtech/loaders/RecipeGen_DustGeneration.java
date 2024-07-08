@@ -1,9 +1,16 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+
 import java.util.HashSet;
 import java.util.Set;
 
-import gregtech.api.util.GT_RecipeBuilder;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -13,24 +20,13 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-
-import static gregtech.api.enums.GT_Values.RA;
-import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
-import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
-import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 
 public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
@@ -122,11 +118,21 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
         final ItemStack materialFrameBox = material.getFrameBox(1);
 
         if (ItemUtils.checkForInvalidItems(materialBlock)) {
-            RA.stdBuilder().itemInputs(materialBlock).itemOutputs(material.getDust(9)).eut(2).duration(20*SECONDS).addTo(maceratorRecipes);
+            RA.stdBuilder()
+                .itemInputs(materialBlock)
+                .itemOutputs(material.getDust(9))
+                .eut(2)
+                .duration(20 * SECONDS)
+                .addTo(maceratorRecipes);
         }
 
         if (ItemUtils.checkForInvalidItems(materialFrameBox)) {
-            RA.stdBuilder().itemInputs(materialFrameBox).itemOutputs(material.getDust(2)).eut(2).duration(20*SECONDS).addTo(maceratorRecipes);
+            RA.stdBuilder()
+                .itemInputs(materialFrameBox)
+                .itemOutputs(material.getDust(2))
+                .eut(2)
+                .duration(20 * SECONDS)
+                .addTo(maceratorRecipes);
         }
 
         if (ItemUtils.checkForInvalidItems(smallDust) && ItemUtils.checkForInvalidItems(tinyDust)) {
@@ -218,18 +224,9 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
                     // Add mixer Recipe
                     GT_Values.RA.stdBuilder()
-                        .itemInputs(
-                            input[0],
-                            input[1],
-                            input[2],
-                            input[3]
-                        )
-                        .itemOutputs(
-                            outputStacks
-                        )
-                        .fluidInputs(
-                            oxygen
-                        )
+                        .itemInputs(input[0], input[1], input[2], input[3])
+                        .itemOutputs(outputStacks)
+                        .fluidInputs(oxygen)
                         .duration((int) Math.max(material.getMass() * 2L * 1, 1))
                         .eut(material.vVoltageMultiplier)
                         .addTo(mixerRecipes);
@@ -318,18 +315,9 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
                     // Add mixer Recipe
                     try {
                         GT_Values.RA.stdBuilder()
-                            .itemInputs(
-                                input1,
-                                input2,
-                                input3,
-                                input4
-                            )
-                            .itemOutputs(
-                                outputStacks
-                            )
-                            .fluidInputs(
-                                oxygen
-                            )
+                            .itemInputs(input1, input2, input3, input4)
+                            .itemOutputs(outputStacks)
+                            .fluidInputs(oxygen)
                             .duration((int) Math.max(material.getMass() * 2L * 1, 1))
                             .eut(material.vVoltageMultiplier)
                             .addTo(mixerRecipes);
@@ -355,23 +343,17 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
     public static boolean generatePackagerRecipes(Material aMatInfo) {
         // Small Dust
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.copyAmount(4, aMatInfo.getSmallDust(4)),
-                ItemList.Schematic_Dust.get(0)
-            )
+            .itemInputs(GT_Utility.copyAmount(4, aMatInfo.getSmallDust(4)), ItemList.Schematic_Dust.get(0))
             .itemOutputs(aMatInfo.getDust(1))
-            .duration(5*SECONDS)
+            .duration(5 * SECONDS)
             .eut(4)
             .addTo(packagerRecipes);
 
         // Tiny Dust
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.copyAmount(4, aMatInfo.getTinyDust(9)),
-                ItemList.Schematic_Dust.get(0)
-            )
+            .itemInputs(GT_Utility.copyAmount(4, aMatInfo.getTinyDust(9)), ItemList.Schematic_Dust.get(0))
             .itemOutputs(aMatInfo.getDust(1))
-            .duration(5*SECONDS)
+            .duration(5 * SECONDS)
             .eut(4)
             .addTo(packagerRecipes);
         return true;
@@ -383,8 +365,13 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
             int chance = (aMatInfo.vTier * 10) / MathUtils.randInt(10, 20);
             chance = chance <= 0 ? 1000 : 100 * chance; // comes from RA1 -> RA2 conversion
 
-            RA.stdBuilder().itemInputs(aMatInfo.getIngot(1))
-                .itemOutputs(aMatInfo.getDust(1)).outputChances(chance).eut(2).duration(20*SECONDS).addTo(maceratorRecipes);
+            RA.stdBuilder()
+                .itemInputs(aMatInfo.getIngot(1))
+                .itemOutputs(aMatInfo.getDust(1))
+                .outputChances(chance)
+                .eut(2)
+                .duration(20 * SECONDS)
+                .addTo(maceratorRecipes);
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -438,14 +425,8 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
             long aVoltage = aMatInfo.vVoltageMultiplier;
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    input1,
-                    input2
-                )
-                .itemOutputs(
-                    output1,
-                    output2
-                )
+                .itemInputs(input1, input2)
+                .itemOutputs(output1, output2)
                 .duration(timeTaken)
                 .eut(aVoltage)
                 .metadata(COIL_HEAT, tempRequired)

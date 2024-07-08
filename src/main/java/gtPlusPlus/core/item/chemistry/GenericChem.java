@@ -15,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -30,7 +29,6 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.item.circuit.GTPP_IntegratedCircuit_Item;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.material.Material;
@@ -384,14 +382,10 @@ public class GenericChem extends ItemPackage {
     private void recipeSodiumEthoxide() {
         // C2H5OH + Na → C2H5ONa + H
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(16), ELEMENT.getInstance().SODIUM.getDust(1))
-            .itemOutputs(
-                ItemUtils.getSimpleStack(mSodiumEthoxide, 9))
-            .fluidInputs(
-                Materials.Ethanol.getFluid(1000))
-            .fluidOutputs(
-                ELEMENT.getInstance().HYDROGEN.getFluidStack(1000))
+            .itemInputs(GT_Utility.getIntegratedCircuit(16), ELEMENT.getInstance().SODIUM.getDust(1))
+            .itemOutputs(ItemUtils.getSimpleStack(mSodiumEthoxide, 9))
+            .fluidInputs(Materials.Ethanol.getFluid(1000))
+            .fluidOutputs(ELEMENT.getInstance().HYDROGEN.getFluidStack(1000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .specialValue(2)
@@ -402,11 +396,13 @@ public class GenericChem extends ItemPackage {
         // Ca(OH)2 + K2O + CO2 → CaCO3 + 2 KOH
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_Utility.getIntegratedCircuit(18), Materials.Potash.getDust(3), ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5))
+                GT_Utility.getIntegratedCircuit(18),
+                Materials.Potash.getDust(3),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5))
             .itemOutputs(
-                ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 5), ItemUtils.getSimpleStack(mPotassiumHydroxide, 6))
-            .fluidInputs(
-                Materials.CarbonDioxide.getGas(1000))
+                ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 5),
+                ItemUtils.getSimpleStack(mPotassiumHydroxide, 6))
+            .fluidInputs(Materials.CarbonDioxide.getGas(1000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .specialValue(2)
@@ -418,14 +414,10 @@ public class GenericChem extends ItemPackage {
 
         // Potassium ethyl xanthate - CH3CH2OH + CS2 + KOH → C3H5KOS2 + H2O
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(17), ItemUtils.getSimpleStack(mPotassiumHydroxide, 3))
-            .itemOutputs(
-                ItemUtils.getSimpleStack(mPotassiumEthylXanthate, 12))
-            .fluidInputs(
-                Materials.Ethanol.getFluid(1000), FluidUtils.getFluidStack(Carbon_Disulfide, 1000))
-            .fluidOutputs(
-                FluidUtils.getWater(1000))
+            .itemInputs(GT_Utility.getIntegratedCircuit(17), ItemUtils.getSimpleStack(mPotassiumHydroxide, 3))
+            .itemOutputs(ItemUtils.getSimpleStack(mPotassiumEthylXanthate, 12))
+            .fluidInputs(Materials.Ethanol.getFluid(1000), FluidUtils.getFluidStack(Carbon_Disulfide, 1000))
+            .fluidOutputs(FluidUtils.getWater(1000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .specialValue(4)
@@ -433,12 +425,9 @@ public class GenericChem extends ItemPackage {
 
         // Sodium ethyl xanthate - CH3CH2ONa + CS2 → CH3CH2OCS2Na
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(17), ItemUtils.getSimpleStack(mSodiumEthoxide, 9))
-            .itemOutputs(
-                ItemUtils.getSimpleStack(mSodiumEthylXanthate, 12))
-            .fluidInputs(
-                FluidUtils.getFluidStack(Carbon_Disulfide, 1000))
+            .itemInputs(GT_Utility.getIntegratedCircuit(17), ItemUtils.getSimpleStack(mSodiumEthoxide, 9))
+            .itemOutputs(ItemUtils.getSimpleStack(mSodiumEthylXanthate, 12))
+            .fluidInputs(FluidUtils.getFluidStack(Carbon_Disulfide, 1000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .specialValue(4)
@@ -460,11 +449,11 @@ public class GenericChem extends ItemPackage {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_Utility.getIntegratedCircuit(20), ItemUtils.getSimpleStack(mBrownCatalyst, 0), ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 4))
-            .fluidInputs(
-                FluidUtils.getFluidStack(CoalTar.Coal_Gas, 1000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(Carbon_Disulfide, 2000))
+                GT_Utility.getIntegratedCircuit(20),
+                ItemUtils.getSimpleStack(mBrownCatalyst, 0),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 4))
+            .fluidInputs(FluidUtils.getFluidStack(CoalTar.Coal_Gas, 1000))
+            .fluidOutputs(FluidUtils.getFluidStack(Carbon_Disulfide, 2000))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .specialValue(2)
@@ -477,11 +466,15 @@ public class GenericChem extends ItemPackage {
         // Endgame soldering alloy meant for the bioware circuit line and beyond.
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(GenericChem.mInfiniteMutationCatalyst, 0), ItemList.Circuit_Chip_Biocell.get(64), ItemList.Gravistar.get(8), Materials.InfinityCatalyst.getDust(2))
+                ItemUtils.getSimpleStack(GenericChem.mInfiniteMutationCatalyst, 0),
+                ItemList.Circuit_Chip_Biocell.get(64),
+                ItemList.Gravistar.get(8),
+                Materials.InfinityCatalyst.getDust(2))
             .fluidInputs(
-                FluidUtils.getFluidStack("plasma.tin", 18000), FluidUtils.getFluidStack("plasma.bismuth", 18000), FluidUtils.getFluidStack("cryotheum", 4000))
-            .fluidOutputs(
-                MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 280))
+                FluidUtils.getFluidStack("plasma.tin", 18000),
+                FluidUtils.getFluidStack("plasma.bismuth", 18000),
+                FluidUtils.getFluidStack("cryotheum", 4000))
+            .fluidOutputs(MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 280))
             .duration(13 * MINUTES + 20 * SECONDS)
             .eut(3842160)
             .specialValue(7)
@@ -529,12 +522,9 @@ public class GenericChem extends ItemPackage {
 
         // C6H6 + 6H = C6H12
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                getTierTwoChip(), ItemUtils.getSimpleStack(mBrownCatalyst, 0))
-            .fluidInputs(
-                FluidUtils.getFluidStack(Benzene, 1000), FluidUtils.getFluidStack("hydrogen", 6000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(Cyclohexane, 1000))
+            .itemInputs(getTierTwoChip(), ItemUtils.getSimpleStack(mBrownCatalyst, 0))
+            .fluidInputs(FluidUtils.getFluidStack(Benzene, 1000), FluidUtils.getFluidStack("hydrogen", 6000))
+            .fluidOutputs(FluidUtils.getFluidStack(Cyclohexane, 1000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV)
             .specialValue(2)
@@ -546,23 +536,17 @@ public class GenericChem extends ItemPackage {
 
         // C6H12 + 2O(Air) = C6H10O + H2O
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                getTierTwoChip(), ItemUtils.getSimpleStack(mBlueCatalyst, 0))
-            .fluidInputs(
-                FluidUtils.getFluidStack(Cyclohexane, 1000), FluidUtils.getFluidStack("air", 4000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(Cyclohexanone, 1000))
+            .itemInputs(getTierTwoChip(), ItemUtils.getSimpleStack(mBlueCatalyst, 0))
+            .fluidInputs(FluidUtils.getFluidStack(Cyclohexane, 1000), FluidUtils.getFluidStack("air", 4000))
+            .fluidOutputs(FluidUtils.getFluidStack(Cyclohexanone, 1000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV)
             .specialValue(2)
             .addTo(chemicalPlantRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                getTierTwoChip())
-            .fluidInputs(
-                FluidUtils.getFluidStack(Cyclohexane, 1000), FluidUtils.getFluidStack("oxygen", 2000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(Cyclohexanone, 1000))
+            .itemInputs(getTierTwoChip())
+            .fluidInputs(FluidUtils.getFluidStack(Cyclohexane, 1000), FluidUtils.getFluidStack("oxygen", 2000))
+            .fluidOutputs(FluidUtils.getFluidStack(Cyclohexanone, 1000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV)
             .specialValue(2)
@@ -713,12 +697,9 @@ public class GenericChem extends ItemPackage {
 
         // Basic Recipe
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                getTierOneChip(), ItemUtils.getSimpleStack(Items.rotten_flesh, 64))
-            .fluidInputs(
-                FluidUtils.getHotWater(2000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(Cadaverine, 250), FluidUtils.getFluidStack(Putrescine, 250))
+            .itemInputs(getTierOneChip(), ItemUtils.getSimpleStack(Items.rotten_flesh, 64))
+            .fluidInputs(FluidUtils.getHotWater(2000))
+            .fluidOutputs(FluidUtils.getFluidStack(Cadaverine, 250), FluidUtils.getFluidStack(Putrescine, 250))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV)
             .specialValue(1)
@@ -726,11 +707,11 @@ public class GenericChem extends ItemPackage {
         // Advanced Recipe
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                getTierTwoChip(), ItemUtils.getSimpleStack(Items.rotten_flesh, 128), ItemUtils.simpleMetaStack(AgriculturalChem.mAgrichemItem1, 8, 32))
-            .fluidInputs(
-                FluidUtils.getHotWater(3000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(Cadaverine, 750), FluidUtils.getFluidStack(Putrescine, 750))
+                getTierTwoChip(),
+                ItemUtils.getSimpleStack(Items.rotten_flesh, 128),
+                ItemUtils.simpleMetaStack(AgriculturalChem.mAgrichemItem1, 8, 32))
+            .fluidInputs(FluidUtils.getHotWater(3000))
+            .fluidOutputs(FluidUtils.getFluidStack(Cadaverine, 750), FluidUtils.getFluidStack(Putrescine, 750))
             .duration(2 * MINUTES)
             .eut(240)
             .specialValue(2)
@@ -742,12 +723,9 @@ public class GenericChem extends ItemPackage {
 
         // C6H5NO2 + 6H = C6H7N + 2H2O
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                getTierThreeChip(), ItemUtils.getSimpleStack(mBlueCatalyst, 0))
-            .fluidInputs(
-                FluidUtils.getFluidStack(NitroBenzene, 1000), FluidUtils.getFluidStack("hydrogen", 6000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(Aniline, 1000))
+            .itemInputs(getTierThreeChip(), ItemUtils.getSimpleStack(mBlueCatalyst, 0))
+            .fluidInputs(FluidUtils.getFluidStack(NitroBenzene, 1000), FluidUtils.getFluidStack("hydrogen", 6000))
+            .fluidOutputs(FluidUtils.getFluidStack(Aniline, 1000))
             .duration(30 * SECONDS)
             .eut(500)
             .specialValue(3)
@@ -759,12 +737,13 @@ public class GenericChem extends ItemPackage {
 
         // C6H6 + HNO3 =H2SO4= C6H5NO2 +H2O
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                getTierThreeChip())
+            .itemInputs(getTierThreeChip())
             .fluidInputs(
-                FluidUtils.getFluidStack(Benzene, 5000), FluidUtils.getFluidStack("sulfuricacid", 1000), FluidUtils.getFluidStack("nitricacid", 5000), FluidUtils.getDistilledWater(10000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(NitroBenzene, 5000))
+                FluidUtils.getFluidStack(Benzene, 5000),
+                FluidUtils.getFluidStack("sulfuricacid", 1000),
+                FluidUtils.getFluidStack("nitricacid", 5000),
+                FluidUtils.getDistilledWater(10000))
+            .fluidOutputs(FluidUtils.getFluidStack(NitroBenzene, 5000))
             .duration(30 * SECONDS)
             .eut(500)
             .specialValue(4)
@@ -777,11 +756,10 @@ public class GenericChem extends ItemPackage {
         // C6H4(CO)2O + C6H5CH2CH3 = C6H4(CO)2C6H3CH2CH3 + H2O
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_Utility.getIntegratedCircuit(4), ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 15))
-            .fluidInputs(
-                FluidUtils.getFluidStack(CoalTar.Ethylbenzene, 1000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(Ethylanthraquinone2, 1000))
+                GT_Utility.getIntegratedCircuit(4),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 15))
+            .fluidInputs(FluidUtils.getFluidStack(CoalTar.Ethylbenzene, 1000))
+            .fluidOutputs(FluidUtils.getFluidStack(Ethylanthraquinone2, 1000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .specialValue(2)
@@ -793,12 +771,11 @@ public class GenericChem extends ItemPackage {
 
         // C6H4(CO)2C6H3CH2CH3 + 2H = C6H4(COH)2C6H3CH2CH3
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(4), ItemUtils.getSimpleStack(mOrangeCatalyst, 0))
+            .itemInputs(GT_Utility.getIntegratedCircuit(4), ItemUtils.getSimpleStack(mOrangeCatalyst, 0))
             .fluidInputs(
-                FluidUtils.getFluidStack(Ethylanthraquinone2, 1000), FluidUtils.getFluidStack("hydrogen", 2000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(Ethylanthrahydroquinone2, 1000))
+                FluidUtils.getFluidStack(Ethylanthraquinone2, 1000),
+                FluidUtils.getFluidStack("hydrogen", 2000))
+            .fluidOutputs(FluidUtils.getFluidStack(Ethylanthrahydroquinone2, 1000))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .specialValue(2)
@@ -823,16 +800,14 @@ public class GenericChem extends ItemPackage {
         // LiOH + H2O2 = HLiO2 + H2O
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_Utility.getIntegratedCircuit(4), ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 3))
-            .itemOutputs(
-                ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroperoxide", 4))
-            .fluidInputs(
-                FluidUtils.getFluidStack("fluid.hydrogenperoxide", 1000))
+                GT_Utility.getIntegratedCircuit(4),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 3))
+            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroperoxide", 4))
+            .fluidInputs(FluidUtils.getFluidStack("fluid.hydrogenperoxide", 1000))
             .duration(30 * SECONDS)
             .eut(240)
             .specialValue(1)
             .addTo(chemicalPlantRecipes);
-
 
     }
 
@@ -840,28 +815,31 @@ public class GenericChem extends ItemPackage {
 
         // C6H4(COH)2C6H3CH2CH3 + 2O =(C6H4CH)2= H2O2 + C6H4(CO)2C6H3CH2CH3
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(4))
+            .itemInputs(GT_Utility.getIntegratedCircuit(4))
             .fluidInputs(
-                FluidUtils.getFluidStack("air", 20000), FluidUtils.getFluidStack(Ethylanthrahydroquinone2, 5000), FluidUtils.getFluidStack("fluid.anthracene", 50))
+                FluidUtils.getFluidStack("air", 20000),
+                FluidUtils.getFluidStack(Ethylanthrahydroquinone2, 5000),
+                FluidUtils.getFluidStack("fluid.anthracene", 50))
             .fluidOutputs(
-                FluidUtils.getFluidStack(Ethylanthraquinone2, 5000), FluidUtils.getFluidStack("fluid.hydrogenperoxide", 5000))
+                FluidUtils.getFluidStack(Ethylanthraquinone2, 5000),
+                FluidUtils.getFluidStack("fluid.hydrogenperoxide", 5000))
             .duration(30 * SECONDS)
             .eut(240)
             .specialValue(1)
             .addTo(chemicalPlantRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(4))
+            .itemInputs(GT_Utility.getIntegratedCircuit(4))
             .fluidInputs(
-                Materials.Oxygen.getGas(10000), FluidUtils.getFluidStack(Ethylanthrahydroquinone2, 5000), FluidUtils.getFluidStack("fluid.anthracene", 50))
+                Materials.Oxygen.getGas(10000),
+                FluidUtils.getFluidStack(Ethylanthrahydroquinone2, 5000),
+                FluidUtils.getFluidStack("fluid.anthracene", 50))
             .fluidOutputs(
-                FluidUtils.getFluidStack(Ethylanthraquinone2, 5000),FluidUtils.getFluidStack("fluid.hydrogenperoxide", 5000))
+                FluidUtils.getFluidStack(Ethylanthraquinone2, 5000),
+                FluidUtils.getFluidStack("fluid.hydrogenperoxide", 5000))
             .duration(5 * SECONDS)
             .eut(240)
             .specialValue(1)
             .addTo(chemicalPlantRecipes);
-
 
     }
 
@@ -891,122 +869,98 @@ public class GenericChem extends ItemPackage {
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 1L),
             bits,
-            new Object[] { "d  ", " P ", "   ", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "d  ", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 2L),
             bits,
-            new Object[] { " d ", " P ", "   ", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { " d ", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 3L),
             bits,
-            new Object[] { "  d", " P ", "   ", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "  d", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 4L),
             bits,
-            new Object[] { "   ", " Pd", "   ", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "   ", " Pd", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 5L),
             bits,
-            new Object[] { "   ", " P ", "  d", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "   ", " P ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 6L),
             bits,
-            new Object[] { "   ", " P ", " d ", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "   ", " P ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 7L),
             bits,
-            new Object[] { "   ", " P ", "d  ", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "   ", " P ", "d  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 8L),
             bits,
-            new Object[] { "   ", "dP ", "   ", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "   ", "dP ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 9L),
             bits,
-            new Object[] { "P d", "   ", "   ", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "P d", "   ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 10L),
             bits,
-            new Object[] { "P  ", "  d", "   ", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "P  ", "  d", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 11L),
             bits,
-            new Object[] { "P  ", "   ", "  d", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "P  ", "   ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 12L),
             bits,
-            new Object[] { "P  ", "   ", " d ", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "P  ", "   ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 13L),
             bits,
-            new Object[] { "  P", "   ", "  d", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "  P", "   ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 14L),
             bits,
-            new Object[] { "  P", "   ", " d ", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "  P", "   ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 15L),
             bits,
-            new Object[] { "  P", "   ", "d  ", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "  P", "   ", "d  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 16L),
             bits,
-            new Object[] { "  P", "d  ", "   ", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "  P", "d  ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 17L),
             bits,
-            new Object[] { "   ", "   ", "d P", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "   ", "   ", "d P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 18L),
             bits,
-            new Object[] { "   ", "d  ", "  P", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "   ", "d  ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 19L),
             bits,
-            new Object[] { "d  ", "   ", "  P", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "d  ", "   ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 20L),
             bits,
-            new Object[] { " d ", "   ", "  P", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { " d ", "   ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 21L),
             bits,
-            new Object[] { "d  ", "   ", "P  ", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "d  ", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 22L),
             bits,
-            new Object[] { " d ", "   ", "P  ", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { " d ", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 23L),
             bits,
-            new Object[] { "  d", "   ", "P  ", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "  d", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
         BioRecipes.addCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 24L),
             bits,
-            new Object[] { "   ", "  d", "P  ", 'P',
-                GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
+            new Object[] { "   ", "  d", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
     }
 }

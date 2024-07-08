@@ -1,6 +1,5 @@
 package gregtech.common;
 
-
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
@@ -12,6 +11,7 @@ import ic2.core.init.MainConfig;
 import ic2.core.util.ConfigUtil;
 
 public class GT_RecipeAdder implements IGT_RecipeAdder {
+
     @Override
     public GT_Recipe addIC2ReactorBreederCell(ItemStack input, ItemStack output, boolean reflector, int heatStep,
         int heatMultiplier, int requiredPulses) {

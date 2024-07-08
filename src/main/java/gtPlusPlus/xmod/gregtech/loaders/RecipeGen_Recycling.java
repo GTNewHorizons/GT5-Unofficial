@@ -6,27 +6,24 @@ import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-import gregtech.api.enums.GT_Values;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
@@ -131,7 +128,12 @@ public class RecipeGen_Recycling implements Runnable {
                     // Maceration
                     if (ItemUtils.checkForInvalidItems(tempStack)) {
                         if (mDust != null) {
-                            RA.stdBuilder().itemInputs(tempStack).itemOutputs(mDust).eut(2).duration(20*SECONDS).addTo(maceratorRecipes);
+                            RA.stdBuilder()
+                                .itemInputs(tempStack)
+                                .itemOutputs(mDust)
+                                .eut(2)
+                                .duration(20 * SECONDS)
+                                .addTo(maceratorRecipes);
                             Logger.WARNING(
                                 "Recycle Recipe: " + material.getLocalizedName()
                                     + " - Success - Recycle "

@@ -1,12 +1,11 @@
 package gregtech.api.util;
 
-import gregtech.api.enums.TierEU;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.TierEU;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
 

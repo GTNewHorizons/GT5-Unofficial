@@ -92,7 +92,6 @@ import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GT_Bees;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.chemistry.GenericChem;
-import gtPlusPlus.core.lib.CORE;
 
 public class NaquadahReworkRecipeLoader {
 
@@ -104,42 +103,57 @@ public class NaquadahReworkRecipeLoader {
             // Naquadah (UEV)
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    naquadahEarth.get(OrePrefixes.dust, 32), Materials.Sodium.getDust(64),Materials.Carbon.getDust(1), GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst))
+                    naquadahEarth.get(OrePrefixes.dust, 32),
+                    Materials.Sodium.getDust(64),
+                    Materials.Carbon.getDust(1),
+                    GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst))
                 .itemOutputs(
-                    inertNaquadah.get(OrePrefixes.dust, 1), Materials.Titanium.getDust(64),Materials.Adamantium.getDust(64), Materials.Gallium.getDust(64))
+                    inertNaquadah.get(OrePrefixes.dust, 1),
+                    Materials.Titanium.getDust(64),
+                    Materials.Adamantium.getDust(64),
+                    Materials.Gallium.getDust(64))
                 .outputChances(2500, 2500, 2500, 2500)
                 .fluidInputs(
-                    Materials.Hydrogen.getGas(64000L), Materials.Fluorine.getGas(64000L),Materials.Oxygen.getGas(100L))
+                    Materials.Hydrogen.getGas(64000L),
+                    Materials.Fluorine.getGas(64000L),
+                    Materials.Oxygen.getGas(100L))
                 .duration(10 * SECONDS)
-                .eut( GT_Values.VP[10])
+                .eut(GT_Values.VP[10])
                 .specialValue(2)
                 .addTo(quantumForceTransformerRecipes);
             // Enriched Naquadah (UIV)
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    enrichedNaquadahEarth.get(OrePrefixes.dust, 32), Materials.Zinc.getDust(64),Materials.Carbon.getDust(1), GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst))
-                .itemOutputs(
-                    inertEnrichedNaquadah.get(OrePrefixes.dust, 1), Materials.Trinium.getDust(64))
+                    enrichedNaquadahEarth.get(OrePrefixes.dust, 32),
+                    Materials.Zinc.getDust(64),
+                    Materials.Carbon.getDust(1),
+                    GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst))
+                .itemOutputs(inertEnrichedNaquadah.get(OrePrefixes.dust, 1), Materials.Trinium.getDust(64))
                 .outputChances(3300, 3300, 3300)
-                .fluidInputs(
-                    Materials.SulfuricAcid.getFluid(16000), Materials.Oxygen.getGas(100L))
-                .fluidOutputs(
-                    wasteLiquid.getFluidOrGas(32000))
+                .fluidInputs(Materials.SulfuricAcid.getFluid(16000), Materials.Oxygen.getGas(100L))
+                .fluidOutputs(wasteLiquid.getFluidOrGas(32000))
                 .duration(10 * SECONDS)
-                .eut( GT_Values.VP[11])
+                .eut(GT_Values.VP[11])
                 .specialValue(2)
                 .addTo(quantumForceTransformerRecipes);
             // Naquadria (UMV)
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    naquadriaEarth.get(OrePrefixes.dust, 32), Materials.Magnesium.getDust(64),GT_Utility.copyAmount(0, GenericChem.mAdvancedNaquadahCatalyst))
+                    naquadriaEarth.get(OrePrefixes.dust, 32),
+                    Materials.Magnesium.getDust(64),
+                    GT_Utility.copyAmount(0, GenericChem.mAdvancedNaquadahCatalyst))
                 .itemOutputs(
-                    inertNaquadria.get(OrePrefixes.dust, 1), Materials.Barium.getDust(64),Materials.Indium.getDust(64), ItemList.NaquadriaSupersolid.get(1))
+                    inertNaquadria.get(OrePrefixes.dust, 1),
+                    Materials.Barium.getDust(64),
+                    Materials.Indium.getDust(64),
+                    ItemList.NaquadriaSupersolid.get(1))
                 .outputChances(2500, 2500, 2500, 2500)
                 .fluidInputs(
-                    Materials.PhosphoricAcid.getFluid(16000), Materials.SulfuricAcid.getFluid(16000),Materials.Oxygen.getGas(100L))
+                    Materials.PhosphoricAcid.getFluid(16000),
+                    Materials.SulfuricAcid.getFluid(16000),
+                    Materials.Oxygen.getGas(100L))
                 .duration(5 * SECONDS)
-                .eut( GT_Values.VP[12])
+                .eut(GT_Values.VP[12])
                 .specialValue(3)
                 .addTo(quantumForceTransformerRecipes);
 

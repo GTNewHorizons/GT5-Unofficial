@@ -1,20 +1,21 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeCategories;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
@@ -25,9 +26,6 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-
-import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 
 public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 
@@ -149,9 +147,7 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
                 }
             } else {
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        tItemStackTest
-                    )
+                    .itemInputs(tItemStackTest)
                     .fluidOutputs(M.getFluidStack(fluidAmount))
                     .eut(aVoltage)
                     .duration(duration / (mTotalPartsCounter > 0 ? mTotalPartsCounter : 1) / 2)
@@ -160,21 +156,14 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 
                 Logger.WARNING("[BAS] Success.");
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Shape_Mold_Ingot.get(0)
-                    )
-                    .itemOutputs(
-                        M.getIngot(1)
-                    )
-                    .fluidInputs(
-                        M.getFluidStack(144)
-                    )
+                    .itemInputs(ItemList.Shape_Mold_Ingot.get(0))
+                    .itemOutputs(M.getIngot(1))
+                    .fluidInputs(M.getFluidStack(144))
                     .duration(duration / 2)
                     .eut(60)
                     .addTo(fluidSolidifierRecipes);
 
                 Logger.WARNING("[BAS] Success, Also added a Fluid solidifier recipe.");
-
 
             }
 
@@ -304,7 +293,7 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
                                 .itemInputs(components)
                                 .fluidInputs(componentsFluid)
                                 .fluidOutputs(M.getFluidStack(fluidAmount))
-                                .eut(aVoltage/2)
+                                .eut(aVoltage / 2)
                                 .duration(duration)
                                 .specialValue(3700)
                                 .addTo(alloyBlastSmelterRecipes);

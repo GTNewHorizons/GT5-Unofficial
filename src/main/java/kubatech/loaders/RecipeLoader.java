@@ -84,7 +84,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.lib.CORE;
 import ic2.core.Ic2Items;
 import kubatech.api.enums.ItemList;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_DEFusionCrafter;
@@ -232,14 +231,14 @@ public class RecipeLoader {
                 .itemInputs(GameRegistry.findItemStack("harvestcraft", "tealeafItem", 1))
                 .itemOutputs(TeaLeafDehydrated.get(1))
                 .eut(32)
-                .duration(5*SECONDS)
+                .duration(5 * SECONDS)
                 .addTo(chemicalDehydratorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(TeaLeafDehydrated.get(1))
                 .itemOutputs(WhiteTeaLeaf.get(1))
                 .eut(32)
-                .duration(5*SECONDS)
+                .duration(5 * SECONDS)
                 .addTo(chemicalDehydratorRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -254,7 +253,7 @@ public class RecipeLoader {
                 .itemInputs(SteamedTeaLeaf.get(1))
                 .itemOutputs(YellowTeaLeaf.get(1))
                 .eut(32)
-                .duration(5*SECONDS)
+                .duration(5 * SECONDS)
                 .addTo(chemicalDehydratorRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -266,9 +265,9 @@ public class RecipeLoader {
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(RolledTeaLeaf.get(1))
-                .itemOutputs( GreenTeaLeaf.get(1))
+                .itemOutputs(GreenTeaLeaf.get(1))
                 .eut(32)
-                .duration(5*SECONDS)
+                .duration(5 * SECONDS)
                 .addTo(chemicalDehydratorRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -280,9 +279,9 @@ public class RecipeLoader {
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(OxidizedTeaLeaf.get(1))
-                .itemOutputs( BlackTeaLeaf.get(1))
+                .itemOutputs(BlackTeaLeaf.get(1))
                 .eut(32)
-                .duration(5*SECONDS)
+                .duration(5 * SECONDS)
                 .addTo(chemicalDehydratorRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -293,10 +292,10 @@ public class RecipeLoader {
                 .addTo(UniversalChemical);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs( FermentedTeaLeaf.get(1))
+                .itemInputs(FermentedTeaLeaf.get(1))
                 .itemOutputs(PuerhTeaLeaf.get(1))
                 .eut(32)
-                .duration(5*SECONDS)
+                .duration(5 * SECONDS)
                 .addTo(chemicalDehydratorRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -314,10 +313,10 @@ public class RecipeLoader {
                 .addTo(UniversalChemical);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs( PartiallyOxidizedTeaLeaf.get(1))
+                .itemInputs(PartiallyOxidizedTeaLeaf.get(1))
                 .itemOutputs(OolongTeaLeaf.get(1))
                 .eut(32)
-                .duration(5*SECONDS)
+                .duration(5 * SECONDS)
                 .addTo(chemicalDehydratorRecipes);
 
             // Tea Assembly

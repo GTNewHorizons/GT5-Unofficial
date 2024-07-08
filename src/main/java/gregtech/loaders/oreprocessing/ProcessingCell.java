@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;

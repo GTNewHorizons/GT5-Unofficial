@@ -86,10 +86,10 @@ public class CrushedLoader implements IWerkstoffRunnable {
 
         RA.stdBuilder()
             .itemInputs(werkstoff.get(crushed))
-            .itemOutputs(werkstoff.get(dustImpure),werkstoff.getOreByProduct(0, dust))
+            .itemOutputs(werkstoff.get(dustImpure), werkstoff.getOreByProduct(0, dust))
             .outputChances(100_00, 10_00)
             .eut(2)
-            .duration(20*SECONDS)
+            .duration(20 * SECONDS)
             .addTo(maceratorRecipes);
 
         GT_ModHandler.addOreWasherRecipe(
@@ -105,10 +105,9 @@ public class CrushedLoader implements IWerkstoffRunnable {
             .itemOutputs(
                 werkstoff.get(crushedCentrifuged),
                 werkstoff.getOreByProduct(1, dust),
-                GT_OreDictUnificator.get(dust, Materials.Stone, 1L)
-            )
+                GT_OreDictUnificator.get(dust, Materials.Stone, 1L))
             .outputChances(100_00, 11_11, 100_00)
-            .duration(25*SECONDS)
+            .duration(25 * SECONDS)
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
 
@@ -121,20 +120,17 @@ public class CrushedLoader implements IWerkstoffRunnable {
 
         RA.stdBuilder()
             .itemInputs(werkstoff.get(crushedPurified))
-            .itemOutputs(werkstoff.get(dustPure),werkstoff.getOreByProduct(1, dust))
+            .itemOutputs(werkstoff.get(dustPure), werkstoff.getOreByProduct(1, dust))
             .outputChances(100_00, 10_00)
             .eut(2)
-            .duration(20*SECONDS)
+            .duration(20 * SECONDS)
             .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(werkstoff.get(crushedPurified))
-            .itemOutputs(
-                werkstoff.get(crushedCentrifuged),
-                werkstoff.getOreByProduct(1, dust)
-            )
+            .itemOutputs(werkstoff.get(crushedCentrifuged), werkstoff.getOreByProduct(1, dust))
             .outputChances(100_00, 11_11)
-            .duration(25*SECONDS)
+            .duration(25 * SECONDS)
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
 
@@ -147,11 +143,10 @@ public class CrushedLoader implements IWerkstoffRunnable {
 
         RA.stdBuilder()
             .itemInputs(werkstoff.get(crushedCentrifuged))
-            .itemOutputs(werkstoff.get(dust),
-                werkstoff.getOreByProduct(2, dust))
+            .itemOutputs(werkstoff.get(dust), werkstoff.getOreByProduct(2, dust))
             .outputChances(100_00, 10_00)
             .eut(2)
-            .duration(20*SECONDS)
+            .duration(20 * SECONDS)
             .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()

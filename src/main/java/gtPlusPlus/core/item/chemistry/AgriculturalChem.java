@@ -560,13 +560,11 @@ public class AgriculturalChem extends ItemPackage {
                         GT_Values.RA.stdBuilder()
                             .itemInputs(
                                 GT_Utility.getIntegratedCircuit(11),
-                                ItemUtils.getSimpleStack(aDustOrganicFert, 4)
-                            )
-                            .itemOutputs(ItemUtils.getSimpleStack(aForestryFert, 3), aManureByprod,
-                                aManureByprod)
+                                ItemUtils.getSimpleStack(aDustOrganicFert, 4))
+                            .itemOutputs(ItemUtils.getSimpleStack(aForestryFert, 3), aManureByprod, aManureByprod)
                             .outputChances(100_00, 20_00, 20_00)
                             .eut(240)
-                            .duration(20*SECONDS)
+                            .duration(20 * SECONDS)
                             .addTo(chemicalDehydratorRecipes);
                     }
                 }
@@ -581,10 +579,10 @@ public class AgriculturalChem extends ItemPackage {
         aFertIC2 = ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 1);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(12), ItemUtils.getSimpleStack(aDustOrganicFert, 4))
-            .itemOutputs(ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 3), aManureByprod, aManureByprod )
+            .itemOutputs(ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 3), aManureByprod, aManureByprod)
             .outputChances(100_00, 20_00, 20_00)
             .eut(240)
-            .duration(20*SECONDS)
+            .duration(20 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
 
         // Dirt Production

@@ -28,7 +28,6 @@ import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
@@ -60,7 +59,7 @@ public class RawOreLoader implements IWerkstoffRunnable {
                     Materials.Stone.getDust(1))
                 .outputChances(100_00, werkstoff.getNoOfByProducts() > 0 ? 5_00 : 10_00, 50_00)
                 .eut(2)
-                .duration(20*SECONDS)
+                .duration(20 * SECONDS)
                 .addTo(maceratorRecipes);
         }
     }

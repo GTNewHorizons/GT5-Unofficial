@@ -95,7 +95,6 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -257,7 +256,7 @@ public class PlatinumSludgeOverHaul {
             .itemInputs(GT_Utility.getIntegratedCircuit(9))
             .fluidInputs(Materials.Ammonia.getGas(64000), Materials.HydrochloricAcid.getFluid(64000))
             .fluidOutputs(AmmoniumChloride.getFluidOrGas(64000))
-            .duration(3*SECONDS)
+            .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
@@ -482,27 +481,23 @@ public class PlatinumSludgeOverHaul {
             .addTo(sifterRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                PDRawPowder.get(dust, 4),
-                Materials.Empty.getCells(1)
-            )
-            .itemOutputs(
-                Materials.Palladium.getDust(2),
-                Materials.Ethylene.getCells(1)
-            )
+            .itemInputs(PDRawPowder.get(dust, 4), Materials.Empty.getCells(1))
+            .itemOutputs(Materials.Palladium.getDust(2), Materials.Ethylene.getCells(1))
             .fluidInputs(FormicAcid.getFluidOrGas(4000))
-            .fluidOutputs( Materials.Ammonia.getGas(4000))
-            .duration(12*SECONDS+10*TICKS)
+            .fluidOutputs(Materials.Ammonia.getGas(4000))
+            .duration(12 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(PDRawPowder.get(dust, 4) )
+            .itemInputs(PDRawPowder.get(dust, 4))
             .itemOutputs(Materials.Palladium.getDust(2))
-            .fluidInputs( FormicAcid.getFluidOrGas(4000))
-            .fluidOutputs(Materials.Ammonia.getGas(4000), Materials.Ethylene.getGas(1000),
+            .fluidInputs(FormicAcid.getFluidOrGas(4000))
+            .fluidOutputs(
+                Materials.Ammonia.getGas(4000),
+                Materials.Ethylene.getGas(1000),
                 Materials.Water.getFluid(1000))
-            .duration(12*SECONDS+10*TICKS)
+            .duration(12 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
 
@@ -556,26 +551,19 @@ public class PlatinumSludgeOverHaul {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(17))
-            .fluidInputs(RutheniumTetroxideSollution.getFluidOrGas(1000),
-                GT_ModHandler.getSteam(1000))
+            .fluidInputs(RutheniumTetroxideSollution.getFluidOrGas(1000), GT_ModHandler.getSteam(1000))
             .fluidOutputs(HotRutheniumTetroxideSollution.getFluidOrGas(2000))
-            .duration(7*SECONDS+10*TICKS)
+            .duration(7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(crackingRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemOutputs(
-                Materials.Salt.getDust(6)
-            )
-            .fluidInputs(
-                HotRutheniumTetroxideSollution.getFluidOrGas(9000)
-            )
-            .fluidOutputs(
-                Materials.Water.getFluid(1800), RutheniumTetroxide.getFluidOrGas(7200))
+            .itemOutputs(Materials.Salt.getDust(6))
+            .fluidInputs(HotRutheniumTetroxideSollution.getFluidOrGas(9000))
+            .fluidOutputs(Materials.Water.getFluid(1800), RutheniumTetroxide.getFluidOrGas(7200))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(distillationTowerRecipes);
-
 
         GT_Values.RA.stdBuilder()
             .itemInputs(RutheniumTetroxide.get(dust, 1), Materials.HydrochloricAcid.getCells(6))
@@ -597,15 +585,11 @@ public class PlatinumSludgeOverHaul {
             .addTo(blastFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-            .fluidInputs(
-                AcidicOsmiumSolution.getFluidOrGas(1000)
-            )
-            .fluidOutputs(
-                OsmiumSolution.getFluidOrGas(100), Materials.Water.getFluid(900))
+            .fluidInputs(AcidicOsmiumSolution.getFluidOrGas(1000))
+            .fluidOutputs(OsmiumSolution.getFluidOrGas(100), Materials.Water.getFluid(900))
             .duration(7 * SECONDS + 10 * TICKS)
-            .eut( TierEU.RECIPE_IV)
+            .eut(TierEU.RECIPE_IV)
             .addTo(distillationTowerRecipes);
-
 
         GT_Values.RA.stdBuilder()
             .itemInputs(OsmiumSolution.get(cell), Materials.HydrochloricAcid.getCells(6))
@@ -659,11 +643,11 @@ public class PlatinumSludgeOverHaul {
             .addTo(UniversalChemical);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs( GT_Utility.getIntegratedCircuit(3))
+            .itemInputs(GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(LeachResidue.get(dust, 4))
             .fluidInputs(Materials.Water.getFluid(36000), RHSulfate.getFluidOrGas(39600))
-            .fluidOutputs( Materials.Potassium.getMolten(7200), RHSulfateSolution.getFluidOrGas(39600))
-            .duration(1*MINUTES)
+            .fluidOutputs(Materials.Potassium.getMolten(7200), RHSulfateSolution.getFluidOrGas(39600))
+            .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
 
@@ -979,11 +963,8 @@ public class PlatinumSludgeOverHaul {
             .itemInputs(
                 Materials.Redstone.getDust(1),
                 Materials.Electrum.getDust(1),
-                GT_Utility.getIntegratedCircuit(1)
-            )
-            .itemOutputs(
-                Materials.Nikolite.getDust(8)
-            )
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(Materials.Nikolite.getDust(8))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);

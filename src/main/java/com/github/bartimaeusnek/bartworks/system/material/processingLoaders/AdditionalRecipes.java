@@ -14,7 +14,6 @@
 package com.github.bartimaeusnek.bartworks.system.material.processingLoaders;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.CLEANROOM;
-import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.OrePrefixes.bolt;
 import static gregtech.api.enums.OrePrefixes.crushed;
@@ -286,17 +285,17 @@ public class AdditionalRecipes {
         GT_Values.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.RawAdemicSteel.get(dust))
             .itemOutputs(WerkstoffLoader.AdemicSteel.get(dust))
-            .duration(1*SECONDS).eut(TierEU.RECIPE_LV).metadata(ADDITIVE_AMOUNT, 4).addTo(implosionRecipes);
+            .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .metadata(ADDITIVE_AMOUNT, 4)
+            .addTo(implosionRecipes);
 
         // Thorium/Yttrium Glas
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                WerkstoffLoader.YttriumOxide.get(dustSmall, 2),
-                WerkstoffLoader.Thorianit.get(dustSmall, 2)
-            )
+            .itemInputs(WerkstoffLoader.YttriumOxide.get(dustSmall, 2), WerkstoffLoader.Thorianit.get(dustSmall, 2))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 12))
             .fluidInputs(Materials.Glass.getMolten(144))
-            .duration(40*SECONDS)
+            .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 3663)
             .addTo(blastFurnaceRecipes);
@@ -318,52 +317,34 @@ public class AdditionalRecipes {
 
         // 3ThO2 + 4Al = 3Th + 2Al2O3
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                WerkstoffLoader.Thorianit.get(dust, 9),
-                Materials.Aluminium.getDust(4)
-            )
-            .itemOutputs(
-                Materials.Thorium.getDust(3),
-                Materials.Aluminiumoxide.getDust(10)
-            )
-            .duration(50*SECONDS)
+            .itemInputs(WerkstoffLoader.Thorianit.get(dust, 9), Materials.Aluminium.getDust(4))
+            .itemOutputs(Materials.Thorium.getDust(3), Materials.Aluminiumoxide.getDust(10))
+            .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
         // ThO2 + 2Mg = Th + 2MgO
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                WerkstoffLoader.Thorianit.get(dust, 3),
-                Materials.Magnesium.getDust(2)
-            )
-            .itemOutputs(
-                Materials.Thorium.getDust(1),
-                Materials.Magnesia.getDust(4)
-            )
-            .duration(50*SECONDS)
+            .itemInputs(WerkstoffLoader.Thorianit.get(dust, 3), Materials.Magnesium.getDust(2))
+            .itemOutputs(Materials.Thorium.getDust(1), Materials.Magnesia.getDust(4))
+            .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                WerkstoffLoader.Thorianit.get(crushed),
-                ItemList.Crop_Drop_Thorium.get(9)
-            )
+            .itemInputs(WerkstoffLoader.Thorianit.get(crushed), ItemList.Crop_Drop_Thorium.get(9))
             .itemOutputs(WerkstoffLoader.Thorianit.get(crushedPurified, 4))
             .fluidInputs(Materials.Water.getFluid(1000))
             .fluidOutputs(Materials.Thorium.getMolten(144))
-            .duration(4*SECONDS+16*TICKS)
+            .duration(4 * SECONDS + 16 * TICKS)
             .eut(24)
             .addTo(UniversalChemical);
 
         // Prasiolite
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(dust, Materials.Quartzite, 40L),
-                Materials.Amethyst.getDust(10)
-            )
+            .itemInputs(GT_OreDictUnificator.get(dust, Materials.Quartzite, 40L), Materials.Amethyst.getDust(10))
             .itemOutputs(WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed, 20))
-            .duration(40*SECONDS)
+            .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 500)
             .addTo(blastFurnaceRecipes);
@@ -379,13 +360,10 @@ public class AdditionalRecipes {
         // Cubic Circonia
         // 2Y + 3O = Y2O3
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                Materials.Yttrium.getDust(2),
-                GT_Utility.getIntegratedCircuit(5)
-            )
+            .itemInputs(Materials.Yttrium.getDust(2), GT_Utility.getIntegratedCircuit(5))
             .itemOutputs(WerkstoffLoader.YttriumOxide.get(dust, 5))
             .fluidInputs(Materials.Oxygen.getGas(3000))
-            .duration(3*MINUTES+24*SECONDS+16*TICKS)
+            .duration(3 * MINUTES + 24 * SECONDS + 16 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
@@ -403,48 +381,45 @@ public class AdditionalRecipes {
             2953);
         // Tellurium
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(crushed, Materials.Lead, 10L),
-                GT_Utility.getIntegratedCircuit(17)
-            )
-            .itemOutputs(
-                Materials.Lead.getIngots(10),
-                Materials.Tellurium.getNuggets(20)
-            )
-            .duration(40*SECONDS)
+            .itemInputs(GT_OreDictUnificator.get(crushed, Materials.Lead, 10L), GT_Utility.getIntegratedCircuit(17))
+            .itemOutputs(Materials.Lead.getIngots(10), Materials.Tellurium.getNuggets(20))
+            .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 722)
             .addTo(blastFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-            .fluidInputs(Materials.Plutonium.getMolten(48),
-                Materials.Beryllium.getMolten(48))
+            .fluidInputs(Materials.Plutonium.getMolten(48), Materials.Beryllium.getMolten(48))
             .fluidOutputs(WerkstoffLoader.Californium.getMolten(48))
-            .duration(12*SECONDS)
+            .duration(12 * SECONDS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 480_000_000)
             .addTo(fusionRecipes);
 
         GT_Values.RA.stdBuilder()
-            .fluidInputs(
-                WerkstoffLoader.Californium.getMolten(32),
-                WerkstoffLoader.Calcium.getMolten(720))
+            .fluidInputs(WerkstoffLoader.Californium.getMolten(32), WerkstoffLoader.Calcium.getMolten(720))
             .fluidOutputs(WerkstoffLoader.Oganesson.getFluidOrGas(720))
-            .duration(24*SECONDS)
+            .duration(24 * SECONDS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 600_000_000)
             .addTo(fusionRecipes);
 
         GT_Values.RA.stdBuilder()
-            .fluidInputs(
-                Materials.LiquidAir.getFluid(100000000)
-            )
+            .fluidInputs(Materials.LiquidAir.getFluid(100000000))
             .fluidOutputs(
-                Materials.Nitrogen.getGas(78084000), Materials.Oxygen.getGas(20946000),Materials.Argon.getGas(934000), Materials.CarbonDioxide.getGas(40700),WerkstoffLoader.Neon.getFluidOrGas(1818), Materials.Helium.getGas(524), Materials.Methane.getGas(180),WerkstoffLoader.Krypton.getFluidOrGas(114), Materials.Hydrogen.getGas(55),WerkstoffLoader.Xenon.getFluidOrGas(9))
+                Materials.Nitrogen.getGas(78084000),
+                Materials.Oxygen.getGas(20946000),
+                Materials.Argon.getGas(934000),
+                Materials.CarbonDioxide.getGas(40700),
+                WerkstoffLoader.Neon.getFluidOrGas(1818),
+                Materials.Helium.getGas(524),
+                Materials.Methane.getGas(180),
+                WerkstoffLoader.Krypton.getFluidOrGas(114),
+                Materials.Hydrogen.getGas(55),
+                WerkstoffLoader.Xenon.getFluidOrGas(9))
             .duration(6 * MINUTES + 15 * SECONDS)
-            .eut( TierEU.RECIPE_EV)
+            .eut(TierEU.RECIPE_EV)
             .addTo(distillationTowerRecipes);
-
 
         GT_Values.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.MagnetoResonaticDust.get(dust))
@@ -668,58 +643,48 @@ public class AdditionalRecipes {
         LoadItemContainers.run();
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Large_Fluid_Cell_TungstenSteel.get(1L),
-                WerkstoffLoader.Tiberium.get(dust, 3)
-            )
+            .itemInputs(ItemList.Large_Fluid_Cell_TungstenSteel.get(1L), WerkstoffLoader.Tiberium.get(dust, 3))
             .itemOutputs(BW_NonMeta_MaterialItems.TiberiumCell_1.get(1L))
-            .duration(1 * SECONDS+10*TICKS)
+            .duration(1 * SECONDS + 10 * TICKS)
             .eut(16)
             .addTo(cannerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 BW_NonMeta_MaterialItems.TiberiumCell_1.get(2L),
-                GT_OreDictUnificator.get(stick, Materials.TungstenSteel, 4L)
-            )
-            .itemOutputs(
-                BW_NonMeta_MaterialItems.TiberiumCell_2.get(1L)
-            )
+                GT_OreDictUnificator.get(stick, Materials.TungstenSteel, 4L))
+            .itemOutputs(BW_NonMeta_MaterialItems.TiberiumCell_2.get(1L))
             .duration(5 * SECONDS)
             .eut(400)
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 BW_NonMeta_MaterialItems.TiberiumCell_1.get(4L),
-                GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 6L)
-            )
-            .itemOutputs(
-                BW_NonMeta_MaterialItems.TiberiumCell_4.get(1L)
-            )
+                GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 6L))
+            .itemOutputs(BW_NonMeta_MaterialItems.TiberiumCell_4.get(1L))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(400)
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 BW_NonMeta_MaterialItems.TiberiumCell_2.get(2L),
-                GT_OreDictUnificator.get(stick, Materials.TungstenSteel, 4L)
-            )
-            .itemOutputs(
-                BW_NonMeta_MaterialItems.TiberiumCell_4.get(1L)
-            )
+                GT_OreDictUnificator.get(stick, Materials.TungstenSteel, 4L))
+            .itemOutputs(BW_NonMeta_MaterialItems.TiberiumCell_4.get(1L))
             .duration(5 * SECONDS)
             .eut(400)
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                ItemList.NaquadahCell_1.get(32L),GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),WerkstoffLoader.Tiberium.get(dust, 64), WerkstoffLoader.Tiberium.get(dust, 64))
-            .itemOutputs(
-                BW_NonMeta_MaterialItems.TheCoreCell.get(1L)
-            )
+                ItemList.NaquadahCell_1.get(32L),
+                GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
+                GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
+                GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
+                WerkstoffLoader.Tiberium.get(dust, 64),
+                WerkstoffLoader.Tiberium.get(dust, 64))
+            .itemOutputs(BW_NonMeta_MaterialItems.TheCoreCell.get(1L))
             .duration(5 * SECONDS)
-            .eut( TierEU.RECIPE_LuV)
+            .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
-
 
         GregTech_API.sAfterGTPostload.add(new AddSomeRecipes());
     }

@@ -1,13 +1,12 @@
 package gregtech.api.interfaces.internal;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeBuilder;
 
 public interface IGT_RecipeAdder {
+
     /**
      * Add a breeder cell.
      *

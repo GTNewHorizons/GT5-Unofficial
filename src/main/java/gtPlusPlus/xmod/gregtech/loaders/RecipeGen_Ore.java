@@ -1,13 +1,18 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -18,7 +23,6 @@ import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
@@ -27,16 +31,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-
-import static gregtech.api.enums.Mods.TwilightForest;
-import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
-import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
-import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 public class RecipeGen_Ore extends RecipeGen_Base {
 
@@ -210,9 +204,9 @@ public class RecipeGen_Ore extends RecipeGen_Base {
          */
         // Macerate ore to Crushed
         GT_Values.RA.stdBuilder()
-            .itemInputs( material.getOre(1))
+            .itemInputs(material.getOre(1))
             .itemOutputs(material.getCrushed(2))
-            .duration(20*SECONDS)
+            .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
 
@@ -222,7 +216,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
         GT_Values.RA.stdBuilder()
             .itemInputs(material.getRawOre(1))
             .itemOutputs(material.getCrushed(2))
-            .duration(20*SECONDS)
+            .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
 
@@ -232,8 +226,8 @@ public class RecipeGen_Ore extends RecipeGen_Base {
         GT_Values.RA.stdBuilder()
             .itemInputs(material.getCrushed(1))
             .itemOutputs(material.getDustImpure(1), matDustA)
-            .outputChances(100_00,10_00)
-            .duration(20*SECONDS)
+            .outputChances(100_00, 10_00)
+            .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
 
@@ -241,10 +235,10 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 
         // Macerate Washed to Purified Dust
         GT_Values.RA.stdBuilder()
-            .itemInputs( material.getCrushedPurified(1))
-            .itemOutputs( material.getDustPurified(1), matDustA)
-            .outputChances(100_00,10_00)
-            .duration(20*SECONDS)
+            .itemInputs(material.getCrushedPurified(1))
+            .itemOutputs(material.getDustPurified(1), matDustA)
+            .outputChances(100_00, 10_00)
+            .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
 
@@ -253,14 +247,13 @@ public class RecipeGen_Ore extends RecipeGen_Base {
         // Macerate Centrifuged to Pure Dust
         GT_Values.RA.stdBuilder()
             .itemInputs(material.getCrushedCentrifuged(1))
-            .itemOutputs( matDust, matDustA )
-            .outputChances(100_00,10_00)
-            .duration(20*SECONDS)
+            .itemOutputs(matDust, matDustA)
+            .outputChances(100_00, 10_00)
+            .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
 
         Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate Centrifuged ore to Pure Dust'");
-
 
         /**
          * Wash
@@ -304,40 +297,33 @@ public class RecipeGen_Ore extends RecipeGen_Base {
             // .08 compat
             GT_Values.RA.stdBuilder()
                 .itemInputs(material.getCrushed(1))
-                .itemOutputs(
-                    material.getCrushedCentrifuged(1),
-                    matDustB,
-                    dustStone
-                )
+                .itemOutputs(material.getCrushedCentrifuged(1), matDustB, dustStone)
                 .outputChances(100_00, 11_11, 100_00)
-                .duration(25*SECONDS)
+                .duration(25 * SECONDS)
                 .eut(48)
                 .addTo(thermalCentrifugeRecipes);
 
-            Logger.MATERIALS(
-                "[ThermalCentrifuge] Added Recipe: 'Crushed ore to Centrifuged Ore' | Input: "
-                    + material.getCrushed(1)
-                        .getDisplayName()
-                    + " | Outputs: "
-                    + material.getCrushedCentrifuged(1)
-                        .getDisplayName()
-                    + ", "
-                    + matDustB.getDisplayName()
-                    + ", "
-                    + dustStone.getDisplayName()
-                    + ".");
+            Logger
+                .MATERIALS(
+                    "[ThermalCentrifuge] Added Recipe: 'Crushed ore to Centrifuged Ore' | Input: "
+                        + material.getCrushed(1)
+                            .getDisplayName()
+                        + " | Outputs: "
+                        + material.getCrushedCentrifuged(1)
+                            .getDisplayName()
+                        + ", "
+                        + matDustB.getDisplayName()
+                        + ", "
+                        + dustStone.getDisplayName()
+                        + ".");
 
         } catch (Throwable t) {}
         try {
             GT_Values.RA.stdBuilder()
                 .itemInputs(material.getCrushedPurified(1))
-                .itemOutputs(
-                    material.getCrushedCentrifuged(1),
-                    matDustA,
-                    dustStone
-                )
-                .outputChances(100_00,11_11,100_00)
-                .duration(25*SECONDS)
+                .itemOutputs(material.getCrushedCentrifuged(1), matDustA, dustStone)
+                .outputChances(100_00, 11_11, 100_00)
+                .duration(25 * SECONDS)
                 .eut(48)
                 .addTo(thermalCentrifugeRecipes);
 
@@ -360,12 +346,8 @@ public class RecipeGen_Ore extends RecipeGen_Base {
          * Forge Hammer
          */
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                material.getCrushedCentrifuged(1)
-            )
-            .itemOutputs(
-                matDust
-            )
+            .itemInputs(material.getCrushedCentrifuged(1))
+            .itemOutputs(matDust)
             .duration(10 * TICKS)
             .eut(tVoltageMultiplier / 4)
             .addTo(hammerRecipes);
@@ -373,31 +355,21 @@ public class RecipeGen_Ore extends RecipeGen_Base {
         Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Crushed Centrifuged to Pure Dust'");
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                material.getCrushedPurified(1)
-            )
-            .itemOutputs(
-                material.getDustPurified(1)
-            )
+            .itemInputs(material.getCrushedPurified(1))
+            .itemOutputs(material.getDustPurified(1))
             .duration(10 * TICKS)
             .eut(tVoltageMultiplier / 4)
             .addTo(hammerRecipes);
         Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Crushed Purified to Purified Dust'");
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                material.getOre(1)
-            )
-            .itemOutputs(
-                material.getCrushed(1)
-            )
+            .itemInputs(material.getOre(1))
+            .itemOutputs(material.getCrushed(1))
             .duration(10 * TICKS)
             .eut(tVoltageMultiplier / 4)
             .addTo(hammerRecipes);
 
-
         Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Ore to Crushed'");
-
 
         /**
          * Centrifuge
@@ -405,32 +377,24 @@ public class RecipeGen_Ore extends RecipeGen_Base {
         // Purified Dust to Clean
         GT_Values.RA.stdBuilder()
             .itemInputs(material.getDustPurified(1))
-            .itemOutputs(
-                matDust,
-                matDustA
-            )
-            .outputChances(100_00,11_11)
+            .itemOutputs(matDust, matDustA)
+            .outputChances(100_00, 11_11)
             .eut(tVoltageMultiplier / 2)
             .duration((int) Math.max(1L, material.getMass() * 8L))
             .addTo(centrifugeRecipes);
 
         Logger.MATERIALS("[Centrifuge] Added Recipe: Purified Dust to Clean Dust");
 
-
         // Impure Dust to Clean
         GT_Values.RA.stdBuilder()
             .itemInputs(material.getDustImpure(1))
-            .itemOutputs(
-                matDust,
-                matDustB
-            )
-            .outputChances(100_00,11_11)
+            .itemOutputs(matDust, matDustB)
+            .outputChances(100_00, 11_11)
             .eut(tVoltageMultiplier / 2)
             .duration((int) Math.max(1L, material.getMass() * 8L))
             .addTo(centrifugeRecipes);
 
         Logger.MATERIALS("[Centrifuge] Added Recipe: Inpure Dust to Clean Dust");
-
 
         /**
          * Electrolyzer
@@ -640,7 +604,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 
                 try {
                     GT_Values.RA.stdBuilder()
-                        .itemInputs( mainDust, emptyCell)
+                        .itemInputs(mainDust, emptyCell)
                         .itemOutputs(mInternalOutputs)
                         .outputChances(mChances)
                         .eut(tVoltageMultiplier)
@@ -765,14 +729,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
         }
         GT_Values.RA.stdBuilder()
             .itemInputs(aInput1, aInput2)
-            .itemOutputs(
-                aOutput1,
-                aOutput2,
-                aOutput3,
-                aOutput4,
-                aOutput5,
-                aOutput6
-            )
+            .itemOutputs(aOutput1, aOutput2, aOutput3, aOutput4, aOutput5, aOutput6)
             .outputChances(aChances)
             .fluidInputs(aFluidInput)
             .fluidOutputs(aFluidOutput)

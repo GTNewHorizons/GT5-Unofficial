@@ -1,29 +1,25 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
+import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+
 import java.util.HashSet;
 import java.util.Set;
 
-import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-
-import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
-import static gregtech.api.recipe.RecipeMaps.benderRecipes;
-import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
-import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 public class RecipeGen_Plates extends RecipeGen_Base {
 
@@ -78,7 +74,7 @@ public class RecipeGen_Plates extends RecipeGen_Base {
                 .itemInputs(ingotStackOne, GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(plate_Single)
                 .duration(Math.max(material.getMass() * 1L, 1L))
-                .eut( material.vVoltageMultiplier)
+                .eut(material.vVoltageMultiplier)
                 .addTo(benderRecipes);
 
             Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
@@ -96,21 +92,18 @@ public class RecipeGen_Plates extends RecipeGen_Base {
         }
 
         // Alloy Smelter
-        if (ItemUtils.checkForInvalidItems(ingotStackTwo) && ItemUtils.checkForInvalidItems(plate_Single)){
+        if (ItemUtils.checkForInvalidItems(ingotStackTwo) && ItemUtils.checkForInvalidItems(plate_Single)) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ingotStackTwo,
-                    shape_Mold
-                )
+                .itemInputs(ingotStackTwo, shape_Mold)
                 .itemOutputs(plate_Single)
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut( material.vVoltageMultiplier)
+                .eut(material.vVoltageMultiplier)
                 .addTo(alloySmelterRecipes);
 
             Logger.WARNING("Alloy Smelter Recipe: " + material.getLocalizedName() + " - Success");
-                }
+        }
         // Cutting Machine
-        if (ItemUtils.checkForInvalidItems(block) && ItemUtils.checkForInvalidItems(plate_Single)){
+        if (ItemUtils.checkForInvalidItems(block) && ItemUtils.checkForInvalidItems(plate_Single)) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(block)
                 .itemOutputs(plate_SingleNine)
@@ -133,7 +126,6 @@ public class RecipeGen_Plates extends RecipeGen_Base {
             Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }
 
-
         if (ItemUtils.checkForInvalidItems(plate_SingleTwo) && ItemUtils.checkForInvalidItems(plate_Double)) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(plate_SingleTwo, GT_Utility.getIntegratedCircuit(2))
@@ -144,9 +136,9 @@ public class RecipeGen_Plates extends RecipeGen_Base {
             Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }
 
-
         // Bender
-        if (ItemUtils.checkForInvalidItems(material.getPlate(1)) && ItemUtils.checkForInvalidItems(material.getFoil(1))) {
+        if (ItemUtils.checkForInvalidItems(material.getPlate(1))
+            && ItemUtils.checkForInvalidItems(material.getFoil(1))) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(material.getPlate(1), GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(material.getFoil(4))
@@ -161,7 +153,6 @@ public class RecipeGen_Plates extends RecipeGen_Base {
             Logger.WARNING("Bender Foil Recipe: " + material.getLocalizedName() + " - Success");
         }
 
-
         // Making Dense Plates
         if (ItemUtils.checkForInvalidItems(ingotStackNine) && ItemUtils.checkForInvalidItems(plate_Dense)) {
             GT_Values.RA.stdBuilder()
@@ -173,7 +164,6 @@ public class RecipeGen_Plates extends RecipeGen_Base {
 
             Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }
-
 
         if (ItemUtils.checkForInvalidItems(plate_SingleNine) && ItemUtils.checkForInvalidItems(plate_Dense)) {
             GT_Values.RA.stdBuilder()

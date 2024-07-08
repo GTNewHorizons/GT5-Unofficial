@@ -1,28 +1,25 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+
 import java.util.HashSet;
 import java.util.Set;
 
-import gregtech.api.util.GT_RecipeBuilder;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-
-import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
 
@@ -170,11 +167,10 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
                             mInternalOutputs[2],
                             mInternalOutputs[3],
                             mInternalOutputs[4],
-                            mInternalOutputs[5]
-                        )
+                            mInternalOutputs[5])
                         .outputChances(mChances)
                         .eut(tVoltageMultiplier)
-                        .duration((tVoltageMultiplier / 10)* SECONDS)
+                        .duration((tVoltageMultiplier / 10) * SECONDS)
                         .addTo(centrifugeRecipes);
 
                     Logger.MATERIALS(
@@ -282,7 +278,9 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
                         .duration(20 * (tVoltageMultiplier / 10))
                         .addTo(chemicalDehydratorRecipes);
 
-                    Logger.MATERIALS("[Dehydrator] Generated Dehydrator recipe for " + material.getDust(1).getDisplayName());
+                    Logger.MATERIALS(
+                        "[Dehydrator] Generated Dehydrator recipe for " + material.getDust(1)
+                            .getDisplayName());
 
                 } catch (Throwable t) {
                     t.printStackTrace();

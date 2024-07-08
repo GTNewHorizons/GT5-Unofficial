@@ -1,12 +1,14 @@
 package gtPlusPlus.recipes;
 
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
+
 import java.util.ArrayList;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_RecipeBuilder;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.recipe.RecipeMaps;
@@ -14,13 +16,9 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
-
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
 
 public class CokeAndPyrolyseOven {
 
@@ -58,13 +56,12 @@ public class CokeAndPyrolyseOven {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 12L),
-                ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 6)
-            )
+                ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 6))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 14))
-            .fluidInputs( GT_ModHandler.getSteam(2000))
+            .fluidInputs(GT_ModHandler.getSteam(2000))
             .fluidOutputs(FluidUtils.getFluidStack("fluid.coalgas", 5040))
             .eut(240)
-            .duration(1* MINUTES)
+            .duration(1 * MINUTES)
             .addTo(cokeOvenRecipes);
     }
 

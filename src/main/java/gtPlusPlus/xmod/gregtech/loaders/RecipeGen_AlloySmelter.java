@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,8 +11,6 @@ import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-
-import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 
 public class RecipeGen_AlloySmelter extends RecipeGen_Base {
 
@@ -32,15 +32,12 @@ public class RecipeGen_AlloySmelter extends RecipeGen_Base {
 
     private void generateRecipes(final Material material) {
         final int tVoltageMultiplier = material.vVoltageMultiplier;
-        final long duration =  Math.max(material.getMass() * 2L, 1L);
+        final long duration = Math.max(material.getMass() * 2L, 1L);
         // Nuggets
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
             && ItemUtils.checkForInvalidItems(material.getNugget(1))) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    material.getIngot(1),
-                    ItemList.Shape_Mold_Nugget.get(0)
-                )
+                .itemInputs(material.getIngot(1), ItemList.Shape_Mold_Nugget.get(0))
                 .itemOutputs(material.getNugget(9))
                 .duration(duration)
                 .eut(tVoltageMultiplier)
@@ -48,12 +45,10 @@ public class RecipeGen_AlloySmelter extends RecipeGen_Base {
         }
 
         // Gears
-        if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getGear(1))) {
+        if (ItemUtils.checkForInvalidItems(material.getIngot(1))
+            && ItemUtils.checkForInvalidItems(material.getGear(1))) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    material.getIngot(8),
-                    ItemList.Shape_Mold_Gear.get(0)
-                )
+                .itemInputs(material.getIngot(8), ItemList.Shape_Mold_Gear.get(0))
                 .itemOutputs(material.getGear(1))
                 .duration(duration)
                 .eut(tVoltageMultiplier)
@@ -64,10 +59,7 @@ public class RecipeGen_AlloySmelter extends RecipeGen_Base {
         if (ItemUtils.checkForInvalidItems(material.getIngot(1))
             && ItemUtils.checkForInvalidItems(material.getNugget(1))) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    material.getNugget(9),
-                    ItemList.Shape_Mold_Ingot.get(0)
-                )
+                .itemInputs(material.getNugget(9), ItemList.Shape_Mold_Ingot.get(0))
                 .itemOutputs(material.getIngot(1))
                 .duration(duration)
                 .eut(tVoltageMultiplier)

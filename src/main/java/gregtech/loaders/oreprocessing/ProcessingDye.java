@@ -65,20 +65,16 @@ public class ProcessingDye implements IOreRecipeRegistrator {
         RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 8L),
-                GT_Utility.copyAmount(1, stack)
-            )
+                GT_Utility.copyAmount(1, stack))
             .itemOutputs(new ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
-            .duration(10*SECONDS)
+            .duration(10 * SECONDS)
             .eut(8)
             .addTo(alloySmelterRecipes);
 
         RA.stdBuilder()
-            .itemInputs(
-                new ItemStack(Blocks.glass, 8, WILDCARD),
-                GT_Utility.copyAmount(1, stack)
-            )
+            .itemInputs(new ItemStack(Blocks.glass, 8, WILDCARD), GT_Utility.copyAmount(1, stack))
             .itemOutputs(new ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
-            .duration(10*SECONDS)
+            .duration(10 * SECONDS)
             .eut(8)
             .addTo(alloySmelterRecipes);
     }

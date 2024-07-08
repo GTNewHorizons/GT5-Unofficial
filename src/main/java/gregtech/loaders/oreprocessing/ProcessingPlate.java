@@ -555,17 +555,15 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             }
             case "plateAlloyAdvanced" -> {
                 RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1, aStack),
-                        new ItemStack(Blocks.glass, 3, WILDCARD))
+                    .itemInputs(GT_Utility.copyAmount(1, aStack), new ItemStack(Blocks.glass, 3, WILDCARD))
                     .itemOutputs(GT_ModHandler.getIC2Item("reinforcedGlass", 4L))
-                    .duration(20*SECONDS)
+                    .duration(20 * SECONDS)
                     .eut(4)
                     .addTo(alloySmelterRecipes);
                 RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1, aStack),
-                        Materials.Glass.getDust(3))
+                    .itemInputs(GT_Utility.copyAmount(1, aStack), Materials.Glass.getDust(3))
                     .itemOutputs(GT_ModHandler.getIC2Item("reinforcedGlass", 4L))
-                    .duration(20*SECONDS)
+                    .duration(20 * SECONDS)
                     .eut(4)
                     .addTo(alloySmelterRecipes);
             }

@@ -6,20 +6,18 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.List;
 
-import gregtech.api.enums.GT_Values;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPP_CombType;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPP_DropType;
@@ -121,11 +119,8 @@ public class GTPP_Comb extends Item {
         long aEU = aMat.vVoltageMultiplier;
         int aTier = Math.max(aMat.vTier / 2, 1);
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                aInputStack.getStackForType(aTier))
-            .itemOutputs(
-                aOutputs
-            )
+            .itemInputs(aInputStack.getStackForType(aTier))
+            .itemOutputs(aOutputs)
             .duration(aTier * 20 * 60)
             .eut(aEU)
             .specialValue(aTier)

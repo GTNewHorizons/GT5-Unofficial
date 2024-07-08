@@ -384,22 +384,16 @@ public class ItemUtils {
         final ItemStack tinyDust = ItemUtils.getSimpleStack(output[2]);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.copyAmount(4, smallDust),
-                ItemList.Schematic_Dust.get(0)
-            )
+            .itemInputs(GT_Utility.copyAmount(4, smallDust), ItemList.Schematic_Dust.get(0))
             .itemOutputs(normalDust)
-            .duration(5*SECONDS)
+            .duration(5 * SECONDS)
             .eut(4)
             .addTo(packagerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.copyAmount(9, tinyDust),
-                ItemList.Schematic_Dust.get(0)
-            )
+            .itemInputs(GT_Utility.copyAmount(9, tinyDust), ItemList.Schematic_Dust.get(0))
             .itemOutputs(normalDust)
-            .duration(5*SECONDS)
+            .duration(5 * SECONDS)
             .eut(4)
             .addTo(packagerRecipes);
 

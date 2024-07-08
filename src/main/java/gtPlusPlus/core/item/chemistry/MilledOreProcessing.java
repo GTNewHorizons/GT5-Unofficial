@@ -8,14 +8,14 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.HashMap;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.TierEU;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
@@ -359,145 +359,90 @@ public class MilledOreProcessing extends ItemPackage {
         int aCircuitID = 1;
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(
-                getOutputsFromMap(SphaleriteFlotationFroth)
-            )
-            .fluidInputs(
-                FluidUtils.getFluidStack(SphaleriteFlotationFroth, 4000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(getOutputsFromMap(SphaleriteFlotationFroth))
+            .fluidInputs(FluidUtils.getFluidStack(SphaleriteFlotationFroth, 4000))
+            .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .duration((int) TierEU.RECIPE_LuV)
             .eut(5500)
             .addTo(vacuumFreezerRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(
-                getOutputsFromMap(ChalcopyriteFlotationFroth)
-            )
-            .fluidInputs(
-                FluidUtils.getFluidStack(ChalcopyriteFlotationFroth, 4000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(getOutputsFromMap(ChalcopyriteFlotationFroth))
+            .fluidInputs(FluidUtils.getFluidStack(ChalcopyriteFlotationFroth, 4000))
+            .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .duration((int) TierEU.RECIPE_IV)
             .eut(4500)
             .addTo(vacuumFreezerRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(
-                getOutputsFromMap(NickelFlotationFroth)
-            )
-            .fluidInputs(
-                FluidUtils.getFluidStack(NickelFlotationFroth, 4000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(getOutputsFromMap(NickelFlotationFroth))
+            .fluidInputs(FluidUtils.getFluidStack(NickelFlotationFroth, 4000))
+            .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .duration((int) TierEU.RECIPE_IV)
             .eut(4500)
             .addTo(vacuumFreezerRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(
-                getOutputsFromMap(PlatinumFlotationFroth)
-            )
-            .fluidInputs(
-                FluidUtils.getFluidStack(PlatinumFlotationFroth, 4000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(getOutputsFromMap(PlatinumFlotationFroth))
+            .fluidInputs(FluidUtils.getFluidStack(PlatinumFlotationFroth, 4000))
+            .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .duration((int) TierEU.RECIPE_LuV)
             .eut(5500)
             .addTo(vacuumFreezerRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(
-                getOutputsFromMap(PentlanditeFlotationFroth)
-            )
-            .fluidInputs(
-                FluidUtils.getFluidStack(PentlanditeFlotationFroth, 4000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(getOutputsFromMap(PentlanditeFlotationFroth))
+            .fluidInputs(FluidUtils.getFluidStack(PentlanditeFlotationFroth, 4000))
+            .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .duration((int) TierEU.RECIPE_LuV)
             .eut(5500)
             .addTo(vacuumFreezerRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(
-                getOutputsFromMap(RedstoneFlotationFroth)
-            )
-            .fluidInputs(
-                FluidUtils.getFluidStack(RedstoneFlotationFroth, 4000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(getOutputsFromMap(RedstoneFlotationFroth))
+            .fluidInputs(FluidUtils.getFluidStack(RedstoneFlotationFroth, 4000))
+            .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .duration((int) TierEU.RECIPE_IV)
             .eut(4500)
             .addTo(vacuumFreezerRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(
-                getOutputsFromMap(SpessartineFlotationFroth)
-            )
-            .fluidInputs(
-                FluidUtils.getFluidStack(SpessartineFlotationFroth, 4000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(getOutputsFromMap(SpessartineFlotationFroth))
+            .fluidInputs(FluidUtils.getFluidStack(SpessartineFlotationFroth, 4000))
+            .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .duration((int) TierEU.RECIPE_LuV)
             .eut(5500)
             .addTo(vacuumFreezerRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(
-                getOutputsFromMap(GrossularFlotationFroth)
-            )
-            .fluidInputs(
-                FluidUtils.getFluidStack(GrossularFlotationFroth, 4000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(getOutputsFromMap(GrossularFlotationFroth))
+            .fluidInputs(FluidUtils.getFluidStack(GrossularFlotationFroth, 4000))
+            .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .duration((int) TierEU.RECIPE_LuV)
             .eut(5500)
             .addTo(vacuumFreezerRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(
-                getOutputsFromMap(AlmandineFlotationFroth)
-            )
-            .fluidInputs(
-                FluidUtils.getFluidStack(AlmandineFlotationFroth, 4000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(getOutputsFromMap(AlmandineFlotationFroth))
+            .fluidInputs(FluidUtils.getFluidStack(AlmandineFlotationFroth, 4000))
+            .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .duration((int) TierEU.RECIPE_LuV)
             .eut(5500)
             .addTo(vacuumFreezerRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(
-                getOutputsFromMap(PyropeFlotationFroth)
-            )
-            .fluidInputs(
-                FluidUtils.getFluidStack(PyropeFlotationFroth, 4000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(getOutputsFromMap(PyropeFlotationFroth))
+            .fluidInputs(FluidUtils.getFluidStack(PyropeFlotationFroth, 4000))
+            .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .duration((int) TierEU.RECIPE_EV)
             .eut(3500)
             .addTo(vacuumFreezerRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(
-                getOutputsFromMap(MonaziteFlotationFroth)
-            )
-            .fluidInputs(
-                FluidUtils.getFluidStack(MonaziteFlotationFroth, 4000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
+            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
+            .itemOutputs(getOutputsFromMap(MonaziteFlotationFroth))
+            .fluidInputs(FluidUtils.getFluidStack(MonaziteFlotationFroth, 4000))
+            .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .duration((int) TierEU.RECIPE_ZPM)
             .eut(7500)
             .addTo(vacuumFreezerRecipes);
@@ -660,27 +605,27 @@ public class MilledOreProcessing extends ItemPackage {
         }
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                CI.getNumberedAdvancedCircuit(16), ItemUtils.getSimpleStack(aCrushedPine, 64))
+            .itemInputs(CI.getNumberedAdvancedCircuit(16), ItemUtils.getSimpleStack(aCrushedPine, 64))
             .itemOutputs(
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5),ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5))
-            .fluidInputs(
-                FluidUtils.getSteam(5000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(PineOil, 500))
+                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5))
+            .fluidInputs(FluidUtils.getSteam(5000))
+            .fluidOutputs(FluidUtils.getFluidStack(PineOil, 500))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .specialValue(3)
             .addTo(chemicalPlantRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                CI.getNumberedAdvancedCircuit(18), ItemUtils.getSimpleStack(aCrushedPine, 64))
+            .itemInputs(CI.getNumberedAdvancedCircuit(18), ItemUtils.getSimpleStack(aCrushedPine, 64))
             .itemOutputs(
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5),ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5))
-            .fluidInputs(
-                FluidUtils.getSuperHeatedSteam(5000))
-            .fluidOutputs(
-                FluidUtils.getFluidStack(PineOil, 1500))
+                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5))
+            .fluidInputs(FluidUtils.getSuperHeatedSteam(5000))
+            .fluidOutputs(FluidUtils.getFluidStack(PineOil, 1500))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .specialValue(4)
@@ -701,11 +646,8 @@ public class MilledOreProcessing extends ItemPackage {
         }
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                CI.getNumberedAdvancedCircuit(14), aInput)
-            .itemOutputs(
-                aOutputs
-            )
+            .itemInputs(CI.getNumberedAdvancedCircuit(14), aInput)
+            .itemOutputs(aOutputs)
             .duration(aTime * 20)
             .eut(aEU)
             .specialValue(3)
