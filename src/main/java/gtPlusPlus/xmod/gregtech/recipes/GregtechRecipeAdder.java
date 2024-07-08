@@ -141,12 +141,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         return true;
     }
 
-    @Override
-    public boolean addSixSlotAssemblingRecipe(ItemStack[] aInputs, FluidStack aInputFluid, ItemStack aOutput1,
-        int aDuration, int aEUt) {
-        return RA.addAssemblerRecipe(aInputs, aInputFluid, aOutput1, aDuration, aEUt);
-    }
-
     private boolean areItemsAndFluidsBothNull(final ItemStack[] items, final FluidStack[] fluids) {
         boolean itemsNull = true;
         if (items != null) {

@@ -49,10 +49,6 @@ public interface IGregtech_RecipeAdder {
         FluidStack aFluidOutput, int[] aChances, int aDuration, int aEUt, int aSpecialValue);
 
     @Deprecated
-    boolean addSixSlotAssemblingRecipe(ItemStack[] aInputs, FluidStack aInputFluid, ItemStack aOutput1, int aDuration,
-        int aEUt);
-
-    @Deprecated
     boolean addBrewingRecipe(ItemStack aIngredient, FluidStack aInput, FluidStack aOutput, int aTime, int aEu,
         boolean aHidden);
 

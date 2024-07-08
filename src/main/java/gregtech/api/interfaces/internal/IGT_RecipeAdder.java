@@ -8,48 +8,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeBuilder;
 
 public interface IGT_RecipeAdder {
-
-    /**
-     * Adds an Assembler Recipe
-     *
-     * @param aInput1   must be != null
-     * @param aOutput1  must be != null
-     * @param aInput2   must be != null
-     * @param aDuration must be > 0
-     * @param aEUt      should be > 0
-     */
-    @Deprecated
-    boolean addAssemblerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration, int aEUt);
-
-    /**
-     * Adds an Assembler Recipe
-     *
-     * @param aInputs   must be != null
-     * @param aOutput1  must be != null
-     * @param aDuration must be > 0
-     * @param aEUt      should be > 0
-     *
-     */
-    @Deprecated
-    boolean addAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput1, int aDuration,
-        int aEUt);
-
-    /**
-     * Adds an Assembler Recipe
-     *
-     * @param aInput1   must be != null
-     * @param aOutput1  must be != null
-     * @param aDuration must be > 0
-     * @param aEUt      should be > 0
-     */
-    @Deprecated
-    boolean addAssemblerRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, ItemStack aOutput1,
-        int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt,
-        boolean aCleanroom);
-
     /**
      * Adds a Forge Hammer Recipe
      *
