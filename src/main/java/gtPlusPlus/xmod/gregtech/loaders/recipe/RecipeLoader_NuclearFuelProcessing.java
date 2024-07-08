@@ -2,11 +2,14 @@ package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.coldTrapRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.fissionFuelProcessingRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.reactorProcessingUnitRecipes;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -87,109 +90,156 @@ public class RecipeLoader_NuclearFuelProcessing {
         // Reprocess Fuels
 
         // Reactor Blanket step 1 - Fluorination
-        CORE.RA.addReactorProcessingUnitRecipe(
-            CI.getNumberedAdvancedCircuit(17),
-            ELEMENT.getInstance().FLUORINE.getCell(6),
-            NUCLIDE.LiFThF4.getFluidStack(10000),
-            new ItemStack[] { CI.emptyCells(5), FLUORIDES.LITHIUM_FLUORIDE.getCell(1),
-                ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
-                ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
-                ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1) },
-            new int[] { 10000, 10000, 500, 500, 500, 250, 250, 250 },
-            NUCLIDE.UF6F2.getFluidStack(1500),
-            20 * 60 * 10,
-            (int) TierEU.RECIPE_IV);
-        CORE.RA.addReactorProcessingUnitRecipe(
-            CI.getNumberedAdvancedCircuit(18),
-            ELEMENT.getInstance().FLUORINE.getCell(6),
-            NUCLIDE.LiFBeF2ThF4.getFluidStack(10000),
-            new ItemStack[] { CI.emptyCells(4), FLUORIDES.LITHIUM_FLUORIDE.getCell(1),
-                FLUORIDES.BERYLLIUM_FLUORIDE.getCell(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
-                ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
-                ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
-                ELEMENT.getInstance().PROTACTINIUM.getDust(1) },
-            new int[] { 10000, 10000, 10000, 1000, 1000, 1000, 500, 500, 500 },
-            NUCLIDE.UF6F2.getFluidStack(3000),
-            20 * 60 * 10,
-            (int) TierEU.RECIPE_IV);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(17),
+                ELEMENT.getInstance().FLUORINE.getCell(6)
+            )
+            .itemOutputs(
+                CI.emptyCells(5), FLUORIDES.LITHIUM_FLUORIDE.getCell(1),ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1))
+            .outputChances(10000, 10000, 500, 500, 500, 250, 250, 250)
+            .fluidInputs(
+                NUCLIDE.LiFThF4.getFluidStack(10000)
+            )
+            .fluidOutputs(
+                NUCLIDE.UF6F2.getFluidStack(1500)
+            )
+            .duration(10 * MINUTES)
+            .eut( TierEU.RECIPE_IV)
+            .addTo(reactorProcessingUnitRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(18),
+                ELEMENT.getInstance().FLUORINE.getCell(6)
+            )
+            .itemOutputs(
+                CI.emptyCells(4), FLUORIDES.LITHIUM_FLUORIDE.getCell(1),FLUORIDES.BERYLLIUM_FLUORIDE.getCell(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),ELEMENT.getInstance().PROTACTINIUM.getDust(1))
+            .outputChances(10000, 10000, 10000, 1000, 1000, 1000, 500, 500, 500)
+            .fluidInputs(
+                NUCLIDE.LiFBeF2ThF4.getFluidStack(10000)
+            )
+            .fluidOutputs(
+                NUCLIDE.UF6F2.getFluidStack(3000)
+            )
+            .duration(10 * MINUTES)
+            .eut( TierEU.RECIPE_IV)
+            .addTo(reactorProcessingUnitRecipes);
         // Reactor Blanket step 1 - Fluorination
-        CORE.RA.addReactorProcessingUnitRecipe(
-            CI.getNumberedAdvancedCircuit(7),
-            ELEMENT.getInstance().FLUORINE.getCell(6),
-            NUCLIDE.Sparged_LiFThF4.getFluidStack(10000),
-            new ItemStack[] { CI.emptyCells(4), FLUORIDES.LITHIUM_FLUORIDE.getCell(2),
-                ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
-                ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
-                ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1) },
-            new int[] { 10000, 10000, 1000, 1000, 1000, 1000, 1000, 1000 },
-            NUCLIDE.UF6F2.getFluidStack(3000),
-            20 * 60 * 5,
-            (int) TierEU.RECIPE_IV);
-        CORE.RA.addReactorProcessingUnitRecipe(
-            CI.getNumberedAdvancedCircuit(8),
-            ELEMENT.getInstance().FLUORINE.getCell(6),
-            NUCLIDE.Sparged_LiFBeF2ThF4.getFluidStack(10000),
-            new ItemStack[] { CI.emptyCells(2), FLUORIDES.LITHIUM_FLUORIDE.getCell(2),
-                FLUORIDES.BERYLLIUM_FLUORIDE.getCell(2), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
-                ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
-                ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
-                ELEMENT.getInstance().PROTACTINIUM.getDust(1) },
-            new int[] { 10000, 10000, 10000, 2000, 2000, 2000, 2000, 2000, 2000 },
-            NUCLIDE.UF6F2.getFluidStack(6000),
-            20 * 60 * 5,
-            (int) TierEU.RECIPE_IV);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(7),
+                ELEMENT.getInstance().FLUORINE.getCell(6)
+            )
+            .itemOutputs(
+                CI.emptyCells(4), FLUORIDES.LITHIUM_FLUORIDE.getCell(2),ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1))
+            .outputChances(10000, 10000, 1000, 1000, 1000, 1000, 1000, 1000)
+            .fluidInputs(
+                NUCLIDE.Sparged_LiFThF4.getFluidStack(10000)
+            )
+            .fluidOutputs(
+                NUCLIDE.UF6F2.getFluidStack(3000)
+            )
+            .duration(5 * MINUTES)
+            .eut( TierEU.RECIPE_IV)
+            .addTo(reactorProcessingUnitRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(8),
+                ELEMENT.getInstance().FLUORINE.getCell(6)
+            )
+            .itemOutputs(
+                CI.emptyCells(2), FLUORIDES.LITHIUM_FLUORIDE.getCell(2),FLUORIDES.BERYLLIUM_FLUORIDE.getCell(2), ELEMENT.getInstance().PROTACTINIUM.getDust(1),ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),ELEMENT.getInstance().PROTACTINIUM.getDust(1))
+            .outputChances(10000, 10000, 10000, 2000, 2000, 2000, 2000, 2000, 2000)
+            .fluidInputs(
+                NUCLIDE.Sparged_LiFBeF2ThF4.getFluidStack(10000)
+            )
+            .fluidOutputs(
+                NUCLIDE.UF6F2.getFluidStack(6000)
+            )
+            .duration(5 * MINUTES)
+            .eut( TierEU.RECIPE_IV)
+            .addTo(reactorProcessingUnitRecipes);
+
 
         // Reactor Blanket step 2 - Sorption + Cold Trap
-        CORE.RA.addColdTrapRecipe(
-            8,
-            FLUORIDES.SODIUM_FLUORIDE.getCell(4),
-            NUCLIDE.UF6F2.getFluidStack(3000),
-            new ItemStack[] { ELEMENT.getInstance().FLUORINE.getCell(2), FLUORIDES.URANIUM_HEXAFLUORIDE.getCell(2),
-                ELEMENT.getInstance().URANIUM233.getDust(1), ELEMENT.getInstance().URANIUM233.getDust(1),
-                ELEMENT.getInstance().URANIUM233.getDust(1) },
-            new int[] { 10000, 10000, 3000, 2000, 1000 },
-            FLUORIDES.SODIUM_FLUORIDE.getFluidStack(2000),
-            20 * 60 * 10,
-            (int) TierEU.RECIPE_HV);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                8,
+                FLUORIDES.SODIUM_FLUORIDE.getCell(4)
+            )
+            .itemOutputs(
+                ELEMENT.getInstance().FLUORINE.getCell(2), FLUORIDES.URANIUM_HEXAFLUORIDE.getCell(2),ELEMENT.getInstance().URANIUM233.getDust(1), ELEMENT.getInstance().URANIUM233.getDust(1),ELEMENT.getInstance().URANIUM233.getDust(1))
+            .outputChances(10000, 10000, 3000, 2000, 1000)
+            .fluidInputs(
+                NUCLIDE.UF6F2.getFluidStack(3000)
+            )
+            .fluidOutputs(
+                FLUORIDES.SODIUM_FLUORIDE.getFluidStack(2000)
+            )
+            .duration(10 * MINUTES)
+            .eut( TierEU.RECIPE_HV)
+            .addTo(coldTrapRecipes);
+
 
         // LiBeF2UF4FP + F2 = LiFBeF2 & UF6F2FP
         // Reactor Core step 1 - Process Burnt Salt
-        CORE.RA.addReactorProcessingUnitRecipe(
-            CI.getNumberedAdvancedCircuit(1),
-            ELEMENT.getInstance().FLUORINE.getCell(1),
-            NUCLIDE.LiFBeF2UF4FP.getFluidStack(1000),
-            new ItemStack[] { NUCLIDE.UF6F2FP.getCell(1) },
-            new int[] { 10000 },
-            FluidUtils.getFluidStack(NuclearChem.Impure_LiFBeF2, 1000),
-            20 * 60 * 120,
-            (int) TierEU.RECIPE_HV);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(1),
+                ELEMENT.getInstance().FLUORINE.getCell(1)
+            )
+            .itemOutputs(
+                NUCLIDE.UF6F2FP.getCell(1))
+            .outputChances(10000)
+            .fluidInputs(
+                NUCLIDE.LiFBeF2UF4FP.getFluidStack(1000)
+            )
+            .fluidOutputs(
+                FluidUtils.getFluidStack(NuclearChem.Impure_LiFBeF2, 1000)
+            )
+            .duration(2 * HOURS)
+            .eut( TierEU.RECIPE_HV)
+            .addTo(reactorProcessingUnitRecipes);
         // LiBeF2UF4FP + F2 = LiFBeF2 & UF6F2FP
         // Reactor Core step 1 - Process Burnt Salt
-        CORE.RA.addReactorProcessingUnitRecipe(
-            CI.getNumberedAdvancedCircuit(1),
-            ELEMENT.getInstance().FLUORINE.getCell(3),
-            NUCLIDE.Sparged_LiFBeF2UF4FP.getFluidStack(1000),
-            new ItemStack[] { CI.emptyCells(1), NUCLIDE.UF6F2FP.getCell(2) },
-            new int[] { 10000 },
-            FluidUtils.getFluidStack(NuclearChem.Impure_LiFBeF2, 2000),
-            20 * 60 * 60,
-            (int) TierEU.RECIPE_HV);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(1),
+                ELEMENT.getInstance().FLUORINE.getCell(3)
+            )
+            .itemOutputs(
+                CI.emptyCells(1), NUCLIDE.UF6F2FP.getCell(2))
+            .outputChances(10000)
+            .fluidInputs(
+                NUCLIDE.Sparged_LiFBeF2UF4FP.getFluidStack(1000)
+            )
+            .fluidOutputs(
+                FluidUtils.getFluidStack(NuclearChem.Impure_LiFBeF2, 2000)
+            )
+            .duration(60 * MINUTES)
+            .eut( TierEU.RECIPE_HV)
+            .addTo(reactorProcessingUnitRecipes);
+
 
         // Reactor Core step 2A - Sorption + Cold Trap
-        CORE.RA.addColdTrapRecipe(
-            8,
-            FLUORIDES.SODIUM_FLUORIDE.getCell(3),
-            NUCLIDE.UF6F2FP.getFluidStack(2000),
-            new ItemStack[] { ELEMENT.getInstance().FLUORINE.getCell(1), FLUORIDES.URANIUM_HEXAFLUORIDE.getCell(2),
-                ELEMENT.getInstance().PHOSPHORUS.getDust(1), ELEMENT.getInstance().PHOSPHORUS.getDust(1),
-                ELEMENT.getInstance().PHOSPHORUS.getDust(1), ELEMENT.getInstance().PHOSPHORUS.getDust(1),
-                ELEMENT.getInstance().PHOSPHORUS.getDust(1), ELEMENT.getInstance().PHOSPHORUS.getDust(1) },
-            new int[] { 10000, 10000, 5000, 5000, 5000, 5000, 5000, 5000 },
-            FLUORIDES.SODIUM_FLUORIDE.getFluidStack(2000),
-            20 * 60 * 10,
-            (int) TierEU.RECIPE_EV);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                8,
+                FLUORIDES.SODIUM_FLUORIDE.getCell(3)
+            )
+            .itemOutputs(
+                ELEMENT.getInstance().FLUORINE.getCell(1), FLUORIDES.URANIUM_HEXAFLUORIDE.getCell(2),ELEMENT.getInstance().PHOSPHORUS.getDust(1), ELEMENT.getInstance().PHOSPHORUS.getDust(1),ELEMENT.getInstance().PHOSPHORUS.getDust(1), ELEMENT.getInstance().PHOSPHORUS.getDust(1),ELEMENT.getInstance().PHOSPHORUS.getDust(1), ELEMENT.getInstance().PHOSPHORUS.getDust(1))
+            .outputChances(10000, 10000, 5000, 5000, 5000, 5000, 5000, 5000)
+            .fluidInputs(
+                NUCLIDE.UF6F2FP.getFluidStack(2000)
+            )
+            .fluidOutputs(
+                FLUORIDES.SODIUM_FLUORIDE.getFluidStack(2000)
+            )
+            .duration(10 * MINUTES)
+            .eut( TierEU.RECIPE_EV)
+            .addTo(coldTrapRecipes);
+
 
         // Reactor Core step 2B - Distillation
         GT_Values.RA.stdBuilder()
