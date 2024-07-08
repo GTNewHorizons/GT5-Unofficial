@@ -26,6 +26,7 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 
 public class RecipeGen_BlastSmelter extends RecipeGen_Base {
@@ -158,14 +159,22 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
                     .addTo(alloyBlastSmelterRecipes);
 
                 Logger.WARNING("[BAS] Success.");
-                if (GT_Values.RA.addFluidSolidifierRecipe(
-                    ItemList.Shape_Mold_Ingot.get(0),
-                    M.getFluidStack(144),
-                    M.getIngot(1),
-                    duration / 2,
-                    60)) {
-                    Logger.WARNING("[BAS] Success, Also added a Fluid solidifier recipe.");
-                }
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        ItemList.Shape_Mold_Ingot.get(0)
+                    )
+                    .itemOutputs(
+                        M.getIngot(1)
+                    )
+                    .fluidInputs(
+                        M.getFluidStack(144)
+                    )
+                    .duration(duration / 2)
+                    .eut(60)
+                    .addTo(fluidSolidifierRecipes);
+
+                Logger.WARNING("[BAS] Success, Also added a Fluid solidifier recipe.");
+
 
             }
 

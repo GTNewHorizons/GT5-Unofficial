@@ -16,6 +16,7 @@ import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
@@ -2903,19 +2904,33 @@ public class RecipeLoader {
 
         // PTMEG Manipulation
 
-        GT_Values.RA.addFluidSolidifierRecipe(
-            ItemList.Shape_Mold_Ingot.get(0L),
-            WerkstoffMaterialPool.PTMEGElastomer.getMolten(144),
-            WerkstoffMaterialPool.PTMEGElastomer.get(OrePrefixes.ingot, 1),
-            40,
-            64);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Shape_Mold_Ingot.get(0L)
+            )
+            .itemOutputs(
+                WerkstoffMaterialPool.PTMEGElastomer.get(OrePrefixes.ingot, 1)
+            )
+            .fluidInputs(
+                WerkstoffMaterialPool.PTMEGElastomer.getMolten(144)
+            )
+            .duration(2 * SECONDS)
+            .eut(64)
+            .addTo(fluidSolidifierRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Shape_Mold_Plate.get(0L)
+            )
+            .itemOutputs(
+                WerkstoffMaterialPool.PTMEGElastomer.get(OrePrefixes.plate, 1)
+            )
+            .fluidInputs(
+                WerkstoffMaterialPool.PTMEGElastomer.getMolten(144)
+            )
+            .duration(2 * SECONDS)
+            .eut(64)
+            .addTo(fluidSolidifierRecipes);
 
-        GT_Values.RA.addFluidSolidifierRecipe(
-            ItemList.Shape_Mold_Plate.get(0L),
-            WerkstoffMaterialPool.PTMEGElastomer.getMolten(144),
-            WerkstoffMaterialPool.PTMEGElastomer.get(OrePrefixes.plate, 1),
-            40,
-            64);
 
         // TODO Cerium-doped Lutetium Aluminium Garnet (Ce:LuAG)
         /**

@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import gregtech.api.enums.TierEU;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -11,6 +12,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.core.material.ELEMENT;
 
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -19,12 +21,20 @@ import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
 public class RecipeLoader_GTNH {
 
     public static void generate() {
-        GT_Values.RA.addFluidSolidifierRecipe(
-            ItemList.Shape_Mold_Ball.get(0L),
-            new FluidStack(FluidRegistry.getFluid("ender"), 250),
-            new ItemStack(Items.ender_pearl, 1, 0),
-            100,
-            30);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Shape_Mold_Ball.get(0L)
+            )
+            .itemOutputs(
+                new ItemStack(Items.ender_pearl, 1, 0)
+            )
+            .fluidInputs(
+                new FluidStack(FluidRegistry.getFluid("ender"), 250)
+            )
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(fluidSolidifierRecipes);
+
         // MK4
         GT_Values.RA.stdBuilder()
             .fluidInputs(
