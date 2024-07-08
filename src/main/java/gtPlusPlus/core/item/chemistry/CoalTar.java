@@ -194,14 +194,13 @@ public class CoalTar extends ItemPackage {
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
-        GT_Values.RA.addDistilleryRecipe(
-            GT_Utility.getIntegratedCircuit(6), // Circuit
-            FluidUtils.getFluidStack("fluid.sulfuriccoaltaroil", 1000), // aInput
-            FluidUtils.getFluidStack("fluid.naphthalene", 1000), // aOutput
-            1200, // aDuration
-            30, // aEUt
-            false // Hidden?
-        );
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(6))
+            .fluidInputs(FluidUtils.getFluidStack("fluid.sulfuriccoaltaroil", 1000))
+            .fluidOutputs(FluidUtils.getFluidStack("fluid.naphthalene", 1000))
+            .eut(TierEU.RECIPE_LV)
+            .duration(60*SECONDS)
+            .addTo(distilleryRecipes);
     }
 
     private static void recipeNaphthaleneToPhthalicAcid() {

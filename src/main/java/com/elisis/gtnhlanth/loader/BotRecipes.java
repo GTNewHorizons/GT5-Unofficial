@@ -7,6 +7,7 @@ import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
+import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -17,6 +18,7 @@ import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
 import java.util.HashSet;
 
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -194,26 +196,26 @@ public class BotRecipes {
             .addTo(UniversalChemical);
 
         // H3PO4 = P + H2O
-        GT_Values.RA.addDistilleryRecipe(
-            C2,
-            Materials.PhosphoricAcid.getFluid(1000),
-            Materials.Water.getFluid(500),
-            Materials.Phosphorus.getDust(1),
-            20,
-            480,
-            false);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(C2)
+            .itemOutputs(Materials.Phosphorus.getDust(1))
+            .fluidInputs(Materials.PhosphoricAcid.getFluid(1000))
+            .fluidOutputs(Materials.Water.getFluid(500))
+            .eut(TierEU.RECIPE_HV)
+            .duration(1*SECONDS)
+            .addTo(distilleryRecipes);
 
         ItemStack cells = Ic2Items.cell.copy();
         cells.stackSize = 1;
         // NH4Cl = HCl + NH3
-        GT_Values.RA.addDistilleryRecipe(
-            cells,
-            WerkstoffLoader.AmmoniumChloride.getFluidOrGas(1000),
-            Materials.HydrochloricAcid.getFluid(1000),
-            Materials.Ammonia.getCells(1),
-            50,
-            120,
-            false);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(cells)
+            .itemOutputs(Materials.Ammonia.getCells(1))
+            .fluidInputs(WerkstoffLoader.AmmoniumChloride.getFluidOrGas(1000))
+            .fluidOutputs(Materials.HydrochloricAcid.getFluid(1000))
+            .eut(TierEU.RECIPE_MV)
+            .duration(2*SECONDS+10*TICKS)
+            .addTo(distilleryRecipes);
 
         // N2H4O3 + NaOH = NaNO3 + NH3 + H2O
         GT_Values.RA.stdBuilder()
