@@ -563,12 +563,19 @@ public class PlatinumSludgeOverHaul {
             .eut(TierEU.RECIPE_HV)
             .addTo(crackingRecipes);
 
-        GT_Values.RA.addDistillationTowerRecipe(
-            HotRutheniumTetroxideSollution.getFluidOrGas(9000),
-            new FluidStack[] { Materials.Water.getFluid(1800), RutheniumTetroxide.getFluidOrGas(7200) },
-            Materials.Salt.getDust(6),
-            1500,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemOutputs(
+                Materials.Salt.getDust(6)
+            )
+            .fluidInputs(
+                HotRutheniumTetroxideSollution.getFluidOrGas(9000)
+            )
+            .fluidOutputs(
+                Materials.Water.getFluid(1800), RutheniumTetroxide.getFluidOrGas(7200))
+            .duration(1 * MINUTES + 15 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(distillationTowerRecipes);
+
 
         GT_Values.RA.stdBuilder()
             .itemInputs(RutheniumTetroxide.get(dust, 1), Materials.HydrochloricAcid.getCells(6))
@@ -589,12 +596,16 @@ public class PlatinumSludgeOverHaul {
             .metadata(COIL_HEAT, 775)
             .addTo(blastFurnaceRecipes);
 
-        GT_Values.RA.addDistillationTowerRecipe(
-            AcidicOsmiumSolution.getFluidOrGas(1000),
-            new FluidStack[] { OsmiumSolution.getFluidOrGas(100), Materials.Water.getFluid(900) },
-            null,
-            150,
-            (int) TierEU.RECIPE_IV);
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(
+                AcidicOsmiumSolution.getFluidOrGas(1000)
+            )
+            .fluidOutputs(
+                OsmiumSolution.getFluidOrGas(100), Materials.Water.getFluid(900))
+            .duration(7 * SECONDS + 10 * TICKS)
+            .eut( TierEU.RECIPE_IV)
+            .addTo(distillationTowerRecipes);
+
 
         GT_Values.RA.stdBuilder()
             .itemInputs(OsmiumSolution.get(cell), Materials.HydrochloricAcid.getCells(6))

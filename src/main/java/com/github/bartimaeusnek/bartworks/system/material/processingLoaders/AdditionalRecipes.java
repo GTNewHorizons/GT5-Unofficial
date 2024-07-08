@@ -32,6 +32,7 @@ import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
@@ -434,16 +435,16 @@ public class AdditionalRecipes {
             .metadata(FUSION_THRESHOLD, 600_000_000)
             .addTo(fusionRecipes);
 
-        GT_Values.RA.addDistillationTowerRecipe(
-            Materials.LiquidAir.getFluid(100000000),
-            new FluidStack[] { Materials.Nitrogen.getGas(78084000), Materials.Oxygen.getGas(20946000),
-                Materials.Argon.getGas(934000), Materials.CarbonDioxide.getGas(40700),
-                WerkstoffLoader.Neon.getFluidOrGas(1818), Materials.Helium.getGas(524), Materials.Methane.getGas(180),
-                WerkstoffLoader.Krypton.getFluidOrGas(114), Materials.Hydrogen.getGas(55),
-                WerkstoffLoader.Xenon.getFluidOrGas(9) },
-            null,
-            7500,
-            (int) TierEU.RECIPE_EV);
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(
+                Materials.LiquidAir.getFluid(100000000)
+            )
+            .fluidOutputs(
+                Materials.Nitrogen.getGas(78084000), Materials.Oxygen.getGas(20946000),Materials.Argon.getGas(934000), Materials.CarbonDioxide.getGas(40700),WerkstoffLoader.Neon.getFluidOrGas(1818), Materials.Helium.getGas(524), Materials.Methane.getGas(180),WerkstoffLoader.Krypton.getFluidOrGas(114), Materials.Hydrogen.getGas(55),WerkstoffLoader.Xenon.getFluidOrGas(9))
+            .duration(6 * MINUTES + 15 * SECONDS)
+            .eut( TierEU.RECIPE_EV)
+            .addTo(distillationTowerRecipes);
+
 
         GT_Values.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.MagnetoResonaticDust.get(dust))

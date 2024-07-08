@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -211,14 +212,16 @@ public class RecipeLoader_GlueLine {
     }
 
     private static void distillationTowerRecipes() {
-        GT_Values.RA.addDistillationTowerRecipe(
-            MISC_MATERIALS.CHLOROACETIC_MIXTURE.getFluidStack(1000),
-            new FluidStack[] { MISC_MATERIALS.CHLOROACETIC_ACID.getFluidStack(100),
-                MISC_MATERIALS.DICHLOROACETIC_ACID.getFluidStack(450),
-                MISC_MATERIALS.TRICHLOROACETIC_ACID.getFluidStack(450) },
-            null,
-            4 * 20,
-            (int) TierEU.RECIPE_IV);
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(
+                MISC_MATERIALS.CHLOROACETIC_MIXTURE.getFluidStack(1000)
+            )
+            .fluidOutputs(
+                MISC_MATERIALS.CHLOROACETIC_ACID.getFluidStack(100),MISC_MATERIALS.DICHLOROACETIC_ACID.getFluidStack(450),MISC_MATERIALS.TRICHLOROACETIC_ACID.getFluidStack(450))
+            .duration(4 * SECONDS)
+            .eut( TierEU.RECIPE_IV)
+            .addTo(distillationTowerRecipes);
+
     }
 
     private static void fluidHeaterRecipes() {
