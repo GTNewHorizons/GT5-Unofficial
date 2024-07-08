@@ -2,6 +2,8 @@ package gtPlusPlus.core.material;
 
 import java.util.Set;
 
+import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -58,6 +60,8 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Plasma;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Plates;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Recycling;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_ShapedCrafting;
+
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 public class MaterialGenerator {
 
@@ -245,14 +249,13 @@ public class MaterialGenerator {
     public static void generateNuclearDusts(final Material matInfo, boolean generateDehydratorRecipe) {
         generateNuclearMaterial(matInfo, false, true, false, false, true);
         if (generateDehydratorRecipe && matInfo.getFluid() != null && matInfo.getDust(0) != null) {
-            CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { CI.getNumberedCircuit(20) },
-                matInfo.getFluidStack(144),
-                null,
-                new ItemStack[] { matInfo.getDust(1), },
-                new int[] { 10000 },
-                10 * (matInfo.vVoltageMultiplier / 5), // Time in ticks
-                matInfo.vVoltageMultiplier); // EU
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.getIntegratedCircuit(20))
+                .itemOutputs( matInfo.getDust(1))
+                .fluidInputs(matInfo.getFluidStack(144))
+                .eut( matInfo.vVoltageMultiplier)
+                .duration(10 * (matInfo.vVoltageMultiplier / 5))
+                .addTo(chemicalDehydratorRecipes);
         } else {
             Logger.INFO(
                 "Nuclear Dehydrator: Did not generate recipe for " + matInfo.getLocalizedName()

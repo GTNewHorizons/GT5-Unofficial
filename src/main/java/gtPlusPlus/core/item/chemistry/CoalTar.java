@@ -2,6 +2,7 @@ package gtPlusPlus.core.item.chemistry;
 
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
@@ -47,27 +48,29 @@ public class CoalTar extends ItemPackage {
 
         // C2H6O = C2H4 + H2O
         if (bioEth1 != null) {
-            CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { CI.getNumberedBioCircuit(17),
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1) },
-                bioEth1,
-                FluidUtils.getWater(1000),
-                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1) },
-                new int[] { 10000 },
-                120 * 20,
-                80);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    CI.getNumberedBioCircuit(17),
+                    ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1)
+                )
+                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1))
+                .fluidInputs(bioEth1)
+                .fluidOutputs(FluidUtils.getWater(1000))
+                .eut(80)
+                .duration(2*MINUTES)
+                .addTo(chemicalDehydratorRecipes);
         }
 
         if (bioEth2 != null) {
-            CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { CI.getNumberedBioCircuit(18),
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1) },
-                bioEth2,
-                FluidUtils.getWater(1000),
-                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1) },
-                new int[] { 10000 },
-                120 * 20,
-                80);
+            GT_Values.RA.stdBuilder()
+                .itemInputs( CI.getNumberedBioCircuit(18),
+                    ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1))
+                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1))
+                .fluidInputs(bioEth2)
+                .fluidOutputs(FluidUtils.getWater(1000))
+                .eut(80)
+                .duration(2*MINUTES)
+                .addTo(chemicalDehydratorRecipes);
         }
     }
 
@@ -214,14 +217,13 @@ public class CoalTar extends ItemPackage {
     }
 
     private static void recipePhthalicAcidToPhthalicAnhydride() {
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedBioCircuit(15) },
-            Materials.PhthalicAcid.getFluid(1000),
-            null,
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 15) },
-            new int[] { 10000 },
-            60 * 20,
-            120);
+        GT_Values.RA.stdBuilder()
+            .itemInputs( CI.getNumberedBioCircuit(15) )
+            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 15))
+            .fluidInputs(Materials.PhthalicAcid.getFluid(1000))
+            .eut(TierEU.RECIPE_MV)
+            .duration(60*SECONDS)
+            .addTo(chemicalDehydratorRecipes);
     }
 
     @Override

@@ -34,6 +34,7 @@ import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 public class RecipeGen_Ore extends RecipeGen_Base {
 
@@ -610,29 +611,26 @@ public class RecipeGen_Ore extends RecipeGen_Base {
                 }
 
                 try {
-                    if (CORE.RA.addDehydratorRecipe(
-                        new ItemStack[] { mainDust, emptyCell },
-                        null,
-                        null,
-                        mInternalOutputs,
-                        mChances,
-                        (int) Math.max(material.getMass() * 4L * 1, 1),
-                        tVoltageMultiplier)) {
-                        Logger.MATERIALS("[Dehydrator] Generated Dehydrator recipe for " + matDust.getDisplayName());
-                        Logger.MATERIALS(
-                            "Inputs: " + mainDust.getDisplayName()
-                                + " x"
-                                + mainDust.stackSize
-                                + ", "
-                                + (emptyCell == null ? "No Cells"
-                                    : "" + emptyCell.getDisplayName() + " x" + emptyCell.stackSize));
-                        Logger.MATERIALS("Outputs " + ItemUtils.getArrayStackNames(mInternalOutputs));
-                        Logger.MATERIALS("Time: " + ((int) Math.max(material.getMass() * 4L * 1, 1)));
-                        Logger.MATERIALS("EU: " + tVoltageMultiplier);
-                    } else {
-                        Logger.MATERIALS(
-                            "[Dehydrator] Failed to generate Dehydrator recipe for " + matDust.getDisplayName());
-                    }
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs( mainDust, emptyCell)
+                        .itemOutputs(mInternalOutputs)
+                        .outputChances(mChances)
+                        .eut(tVoltageMultiplier)
+                        .duration((int) Math.max(material.getMass() * 4L * 1, 1))
+                        .addTo(chemicalDehydratorRecipes);
+
+                    Logger.MATERIALS("[Dehydrator] Generated Dehydrator recipe for " + matDust.getDisplayName());
+                    Logger.MATERIALS(
+                        "Inputs: " + mainDust.getDisplayName()
+                            + " x"
+                            + mainDust.stackSize
+                            + ", "
+                            + (emptyCell == null ? "No Cells"
+                                : "" + emptyCell.getDisplayName() + " x" + emptyCell.stackSize));
+                    Logger.MATERIALS("Outputs " + ItemUtils.getArrayStackNames(mInternalOutputs));
+                    Logger.MATERIALS("Time: " + ((int) Math.max(material.getMass() * 4L * 1, 1)));
+                    Logger.MATERIALS("EU: " + tVoltageMultiplier);
+
                 } catch (Throwable t) {
                     t.printStackTrace();
                 }

@@ -4,8 +4,10 @@ import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -50,7 +52,7 @@ public class RecipeLoader_GlueLine {
     private static void chemicalPlantRecipes() {
         // CO + C3H6O2 = C4H6O3
         CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(17), ItemUtils.getSimpleStack(GenericChem.mBlueCatalyst, 0) },
+            new ItemStack[] {  GT_Utility.getIntegratedCircuit(17), ItemUtils.getSimpleStack(GenericChem.mBlueCatalyst, 0) },
             new FluidStack[] { FluidUtils.getFluidStack("carbonmonoxide", 1000),
                 FluidUtils.getFluidStack("methylacetate", 1000), },
             new ItemStack[] {},
@@ -60,7 +62,7 @@ public class RecipeLoader_GlueLine {
             3);
 
         CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(18) },
+            new ItemStack[] {  GT_Utility.getIntegratedCircuit(18) },
             new FluidStack[] { FluidUtils.getFluidStack("aceticacid", 1000), FluidUtils.getFluidStack("chlorine", 1000),
                 MISC_MATERIALS.ACETIC_ANHYDRIDE.getFluidStack(1000) },
             new ItemStack[] {},
@@ -72,7 +74,7 @@ public class RecipeLoader_GlueLine {
 
         // Na2CO3 + NaCN + C2H3O2Cl + 2HCl = C3H3NO2 + 3NaCl + CO2 + H2O
         CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(19), ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 6),
+            new ItemStack[] {  GT_Utility.getIntegratedCircuit(19), ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 6),
                 MISC_MATERIALS.SODIUM_CYANIDE.getDust(3) },
             new FluidStack[] { MISC_MATERIALS.CHLOROACETIC_ACID.getFluidStack(1000),
                 FluidUtils.getFluidStack("hydrochloricacid_gt5u", 2000) },
@@ -84,7 +86,7 @@ public class RecipeLoader_GlueLine {
 
         // CuSO4 + 5C3H3NO2 + 5C2H6O = CuSO4·5(H2O) + 5C5H7NO2
         CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(20), ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 0),
+            new ItemStack[] {  GT_Utility.getIntegratedCircuit(20), ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 0),
                 MISC_MATERIALS.COPPER_SULFATE.getDust(6), MISC_MATERIALS.CYANOACETIC_ACID.getDust(45) },
             new FluidStack[] { Materials.Ethanol.getFluid(5000) },
             new ItemStack[] { MISC_MATERIALS.COPPER_SULFATE_HYDRATED.getDust(11) },
@@ -95,7 +97,7 @@ public class RecipeLoader_GlueLine {
 
         // C3H3NO2 + C2H6O = C5H7NO2 + H2O
         CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(21), MISC_MATERIALS.CYANOACETIC_ACID.getDust(9) },
+            new ItemStack[] {  GT_Utility.getIntegratedCircuit(21), MISC_MATERIALS.CYANOACETIC_ACID.getDust(9) },
             new FluidStack[] { Materials.Ethanol.getFluid(1000) },
             new ItemStack[] {},
             new FluidStack[] { MISC_MATERIALS.ETHYL_CYANOACETATE.getFluidStack(1000) },
@@ -107,7 +109,7 @@ public class RecipeLoader_GlueLine {
             .getFluid();
 
         CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(22), ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 0) },
+            new ItemStack[] {  GT_Utility.getIntegratedCircuit(22), ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 0) },
             new FluidStack[] { MISC_MATERIALS.ETHYL_CYANOACETATE.getFluidStack(100),
                 FluidUtils.getFluidStack(BioRecipes.mFormaldehyde, 100) },
             new ItemStack[] {},
@@ -118,7 +120,7 @@ public class RecipeLoader_GlueLine {
 
         // CH4 + NH3 + 3O = HCN + 3H2O
         CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(23), ItemUtils.getSimpleStack(GenericChem.mPinkCatalyst, 0) },
+            new ItemStack[] {  GT_Utility.getIntegratedCircuit(23), ItemUtils.getSimpleStack(GenericChem.mPinkCatalyst, 0) },
             new FluidStack[] { FluidUtils.getFluidStack("methane", 2000), FluidUtils.getFluidStack("ammonia", 2000),
                 FluidUtils.getFluidStack("oxygen", 6000) },
             new ItemStack[] {},
@@ -132,7 +134,7 @@ public class RecipeLoader_GlueLine {
         // NaOH + HCN = NaCN + H2O
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedCircuit(17),
+                 GT_Utility.getIntegratedCircuit(17),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3)
             )
             .itemOutputs(MISC_MATERIALS.SODIUM_CYANIDE.getDust(3))
@@ -145,7 +147,7 @@ public class RecipeLoader_GlueLine {
         // #UniversalChemical recipemap won't generate LCR recipe if config >= 10
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedCircuit(17),
+                 GT_Utility.getIntegratedCircuit(17),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3)
             )
             .itemOutputs(MISC_MATERIALS.SODIUM_CYANIDE.getDust(3))
@@ -170,7 +172,7 @@ public class RecipeLoader_GlueLine {
         // SO2 + 2H2O -> diluted sulfuric acid
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedCircuit(19),
+                 GT_Utility.getIntegratedCircuit(19),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1)
             )
             .itemOutputs(MISC_MATERIALS.COPPER_SULFATE.getDust(6))
@@ -184,7 +186,7 @@ public class RecipeLoader_GlueLine {
         // #UniversalChemical won't generate LCR recipe if config >= 10
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedCircuit(19),
+                 GT_Utility.getIntegratedCircuit(19),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1)
             )
             .itemOutputs(MISC_MATERIALS.COPPER_SULFATE.getDust(6))
@@ -196,14 +198,13 @@ public class RecipeLoader_GlueLine {
     }
 
     private static void dehydratorRecipes() {
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { MISC_MATERIALS.COPPER_SULFATE_HYDRATED.getDust(11), },
-            null,
-            GT_ModHandler.getWater(5000),
-            new ItemStack[] { MISC_MATERIALS.COPPER_SULFATE.getDust(6) },
-            new int[] { 10000, 10000, 10000 },
-            300 * 20,
-            10);
+        GT_Values.RA.stdBuilder()
+            .itemInputs( MISC_MATERIALS.COPPER_SULFATE_HYDRATED.getDust(11))
+            .itemOutputs( MISC_MATERIALS.COPPER_SULFATE.getDust(6) )
+            .fluidOutputs(GT_ModHandler.getWater(5000))
+            .eut(10)
+            .duration(5*MINUTES)
+            .addTo(chemicalDehydratorRecipes);
     }
 
     private static void distillationTowerRecipes() {
@@ -214,13 +215,13 @@ public class RecipeLoader_GlueLine {
                 MISC_MATERIALS.TRICHLOROACETIC_ACID.getFluidStack(450) },
             null,
             4 * 20,
-            MaterialUtils.getVoltageForTier(5));
+            (int) TierEU.RECIPE_IV);
     }
 
     private static void fluidHeaterRecipes() {
 
         CORE.RA.addFluidHeaterRecipe(
-            CI.getNumberedCircuit(16),
+             GT_Utility.getIntegratedCircuit(16),
             MISC_MATERIALS.CYANOACRYLATE_POLYMER.getFluidStack(100),
             MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(100),
             30 * 30,
@@ -229,7 +230,7 @@ public class RecipeLoader_GlueLine {
 
     private static void mixerRecipes() {
         GT_Values.RA.addMixerRecipe(
-            CI.getNumberedCircuit(1),
+             GT_Utility.getIntegratedCircuit(1),
             MISC_MATERIALS.DICHLOROACETIC_ACID.getCell(1),
             null,
             null,
@@ -241,7 +242,7 @@ public class RecipeLoader_GlueLine {
 
         GT_Values.RA.addMixerRecipe(
             ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurTrioxide", 1),
-            CI.getNumberedCircuit(2),
+             GT_Utility.getIntegratedCircuit(2),
             null,
             null,
             FluidUtils.getFluidStack("sulfuricacid", 1000),
@@ -255,7 +256,7 @@ public class RecipeLoader_GlueLine {
         // Braintech Tape recipe, PBI and superglue make 16 tape at once
         GT_Values.RA.addAssemblerRecipe(
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polybenzimidazole, 1L),
-                GT_ModHandler.getIC2Item("carbonMesh", 1L), CI.getNumberedCircuit(10) },
+                GT_ModHandler.getIC2Item("carbonMesh", 1L),  GT_Utility.getIntegratedCircuit(10) },
             MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(100),
             ItemList.Duct_Tape.get(16L),
             120,
@@ -263,7 +264,7 @@ public class RecipeLoader_GlueLine {
 
         // Maintenance Hatch recipe, using Braintech Tape
         GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Hull_LV.get(1), ItemList.Duct_Tape.get(1), CI.getNumberedCircuit(1) },
+            new ItemStack[] { ItemList.Hull_LV.get(1), ItemList.Duct_Tape.get(1),  GT_Utility.getIntegratedCircuit(1) },
             MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(100),
             ItemList.Hatch_Maintenance.get(1),
             120,
@@ -272,7 +273,7 @@ public class RecipeLoader_GlueLine {
         // Graphene recipes from later wafer tiers, using superglue instead of the bronze age glue
         GT_Values.RA.addAssemblerRecipe(
             new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
-                ItemList.Circuit_Silicon_Wafer4.get(2L), CI.getNumberedCircuit(2) },
+                ItemList.Circuit_Silicon_Wafer4.get(2L),  GT_Utility.getIntegratedCircuit(2) },
             MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(500),
             ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 64),
             400,
@@ -280,7 +281,7 @@ public class RecipeLoader_GlueLine {
 
         GT_Values.RA.addAssemblerRecipe(
             new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
-                ItemList.Circuit_Silicon_Wafer5.get(1L), CI.getNumberedCircuit(2) },
+                ItemList.Circuit_Silicon_Wafer5.get(1L),  GT_Utility.getIntegratedCircuit(2) },
             MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(250),
             ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 64),
             80,
@@ -387,7 +388,7 @@ public class RecipeLoader_GlueLine {
             GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { ItemUtils.getItemStackFromFQRN("GalacticraftMars:item.itemBasicAsteroids:7", 1),
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Titanium, 8),
-                    ItemUtils.getItemStackFromFQRN("dreamcraft:item.TungstenString", 8), CI.getNumberedCircuit(1) },
+                    ItemUtils.getItemStackFromFQRN("dreamcraft:item.TungstenString", 8),  GT_Utility.getIntegratedCircuit(1) },
                 MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(576),
                 ItemUtils.getItemStackFromFQRN("GalaxySpace:item.ThermalClothT2", 1),
                 600,

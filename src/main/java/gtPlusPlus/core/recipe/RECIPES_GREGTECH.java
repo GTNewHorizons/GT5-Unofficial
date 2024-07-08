@@ -38,6 +38,7 @@ import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.thermalBoilerRecipes;
 
 import net.minecraft.init.Blocks;
@@ -865,21 +866,20 @@ public class RECIPES_GREGTECH {
         ItemStack cropGrape = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cropGrape", 1);
         ItemStack foodRaisins = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foodRaisins", 1);
 
-        if (cropGrape != null && foodRaisins != null) CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedBioCircuit(20), cropGrape }, // Item
-            null, // Fluid input (slot 1)
-            null, // Fluid output (slot 2)
-            new ItemStack[] { foodRaisins }, // Output
-            new int[] { 10000 },
-            10, // Time in ticks
-            2); // EU
+        if (cropGrape != null && foodRaisins != null) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(CI.getNumberedBioCircuit(20), cropGrape)
+                .itemOutputs(foodRaisins)
+                .eut(2)
+                .duration(10*TICKS)
+                .addTo(chemicalDehydratorRecipes);
+        }
 
         // Process Waste Water
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedBioCircuit(21) },
-            FluidUtils.getFluidStack("sludge", 1000),
-            Materials.Methane.getGas(100),
-            new ItemStack[] { ItemUtils.getSimpleStack(Blocks.dirt),
+        GT_Values.RA.stdBuilder()
+            .itemInputs( CI.getNumberedBioCircuit(21) )
+            .itemOutputs(
+                ItemUtils.getSimpleStack(Blocks.dirt),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1L),
@@ -887,56 +887,58 @@ public class RECIPES_GREGTECH {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L) },
-            new int[] { 2000, 500, 10, 7, 6, 5, 4, 3, 2 },
-            2 * 20,
-            500); // EU
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L)
+            )
+            .outputChances(20_00, 5_00, 10, 7, 6, 5, 4, 3, 2 )
+            .fluidInputs(FluidUtils.getFluidStack("sludge", 1000))
+            .fluidOutputs( Materials.Methane.getGas(100))
+            .eut(500)
+            .duration(2*SECONDS)
+            .addTo(chemicalDehydratorRecipes);
 
         // C8H10 = C8H8 + 2H
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(18), CI.emptyCells(3) },
-            FluidUtils.getFluidStack("fluid.ethylbenzene", 1000),
-            null,
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellStyrene", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 2) },
-            new int[] { 10000, 10000 },
-            3 * 20,
-            30);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(CI.getNumberedAdvancedCircuit(18), CI.emptyCells(3))
+            .itemOutputs( ItemUtils.getItemStackOfAmountFromOreDict("cellStyrene", 1),
+                ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 2) )
+            .fluidInputs( FluidUtils.getFluidStack("fluid.ethylbenzene", 1000))
+            .eut(TierEU.RECIPE_LV)
+            .duration(3*SECONDS)
+            .addTo(chemicalDehydratorRecipes);
 
         /*
          * Add custom recipes for drying leather
          */
         if (Backpack.isModLoaded()) {
-            CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { CI.getNumberedAdvancedCircuit(18), new ItemStack(Items.leather, 2) },
-                FluidUtils.getFluidStack("fluid.ethylbenzene", 1000),
-                null,
-                new ItemStack[] { ItemUtils.getCorrectStacktype("Backpack:tannedLeather", 1) },
-                new int[] { 10000 },
-                5 * 20,
-                180);
+            GT_Values.RA.stdBuilder()
+                .itemInputs( CI.getNumberedAdvancedCircuit(18), new ItemStack(Items.leather, 2))
+                .itemOutputs(ItemUtils.getCorrectStacktype("Backpack:tannedLeather", 1))
+                .fluidInputs(FluidUtils.getFluidStack("fluid.ethylbenzene", 1000))
+                .eut(180)
+                .duration(5*SECONDS)
+                .addTo(chemicalDehydratorRecipes);
+
             if (NewHorizonsCoreMod.isModLoaded()) {
-                CORE.RA.addDehydratorRecipe(
-                    new ItemStack[] { CI.getNumberedAdvancedCircuit(18),
-                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ArtificialLeather", 2L, 0) },
-                    FluidUtils.getFluidStack("fluid.ethylbenzene", 1000),
-                    null,
-                    new ItemStack[] { ItemUtils.getCorrectStacktype("Backpack:tannedLeather", 1) },
-                    new int[] { 10000 },
-                    5 * 20,
-                    180);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(CI.getNumberedAdvancedCircuit(18),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ArtificialLeather", 2L, 0))
+                    .itemOutputs(ItemUtils.getCorrectStacktype("Backpack:tannedLeather", 1))
+                    .fluidInputs(FluidUtils.getFluidStack("fluid.ethylbenzene", 1000))
+                    .eut(180)
+                    .duration(5*SECONDS)
+                    .addTo(chemicalDehydratorRecipes);
             }
         }
         // Alternative ACETIC ANHYDRIDE recipe for Kevlar Line
         // 2C2H4O2 = C4H6O3 + H2O
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(18), CI.emptyCells(1) },
-            FluidUtils.getFluidStack("aceticacid", 2000),
-            MISC_MATERIALS.ACETIC_ANHYDRIDE.getFluidStack(1000),
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 1), },
-            new int[] { 10000 },
-            30 * 20,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs( CI.getNumberedAdvancedCircuit(18), CI.emptyCells(1))
+            .itemOutputs( ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 1))
+            .fluidInputs(FluidUtils.getFluidStack("aceticacid", 2000))
+            .fluidOutputs(MISC_MATERIALS.ACETIC_ANHYDRIDE.getFluidStack(1000))
+            .eut(TierEU.RECIPE_HV)
+            .duration(30*SECONDS)
+            .addTo(chemicalDehydratorRecipes);
     }
 
     private static void largeChemReactorRecipes() {

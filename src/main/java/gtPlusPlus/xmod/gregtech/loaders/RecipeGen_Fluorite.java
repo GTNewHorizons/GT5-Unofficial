@@ -23,7 +23,9 @@ import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 public class RecipeGen_Fluorite extends RecipeGen_Base {
 
@@ -258,18 +260,20 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
         if (aGregtechHydro == null) {
             aGregtechHydro = FluidUtils.getFluidStack("hydrofluoricacid", 16000);
         }
-
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(5), FLUORIDES.FLUORITE.getDust(37), },
-            FluidUtils.getFluidStack("sulfuricacid", 8000),
-            aGregtechHydro, // Fluid output (slot 2)
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumSulfate", 15),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(CI.getNumberedAdvancedCircuit(5), FLUORIDES.FLUORITE.getDust(37))
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumSulfate", 15),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 2),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 2) },
-            new int[] { 10000, 1000, 1000, 3000, 2000 },
-            10 * 60 * 20,
-            240); // EU
+                ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 2)
+            )
+            .outputChances(100_00, 10_00, 10_00, 30_00, 20_00 )
+            .fluidInputs(FluidUtils.getFluidStack("sulfuricacid", 8000))
+            .fluidOutputs(aGregtechHydro)
+            .eut(240)
+            .duration(10*MINUTES)
+            .addTo(chemicalDehydratorRecipes);
     }
 }

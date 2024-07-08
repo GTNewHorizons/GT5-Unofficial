@@ -340,37 +340,34 @@ public class RecipeLoader_Nuclear {
             .addTo(chemicalDehydratorRecipes);
 
         // Makes Lithium Carbonate
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.emptyCells(12), ItemUtils.getItemStackOfAmountFromOreDict("dustLepidolite", 20) }, // Item
-                                                                                                                    // input
-                                                                                                                    // (Array,
-                                                                                                                    // up
-                                                                                                                    // to
-                                                                                                                    // 2)
-            FluidUtils.getFluidStack("sulfuricacid", 10000),
-            FluidUtils.getFluidStack("sulfuriclithium", 10000),
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustPotassium", 1),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(CI.emptyCells(12), ItemUtils.getItemStackOfAmountFromOreDict("dustLepidolite", 20))
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustPotassium", 1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 10),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 2),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 3), // LithiumCarbonate
-            }, // Output Array of Items - Upto 9,
-            new int[] { 10000, 10000, 10000, 10000, 10000 },
-            75 * 20, // Time in ticks
-            1000); // EU
+                ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 3))
+            .fluidInputs(FluidUtils.getFluidStack("sulfuricacid", 10000))
+            .fluidOutputs(FluidUtils.getFluidStack("sulfuriclithium", 10000))
+            .eut(1_000)
+            .duration(1*MINUTES+15*SECONDS)
+            .addTo(chemicalDehydratorRecipes);
 
         // Calcium Hydroxide
         if (ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1))) {
             // CaO + H2O = Ca(OH)2
-            CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { CI.getNumberedBioCircuit(20),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 2) },
-                FluidUtils.getFluidStack("water", 1000),
-                null, // Fluid output (slot 2)
-                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5) }, // Output
-                new int[] { 10000 },
-                12 * 20, // Time in ticks
-                120); // EU
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    CI.getNumberedBioCircuit(20),
+                    ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 2)
+                )
+                .itemOutputs( ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5))
+                .fluidInputs(FluidUtils.getFluidStack("water", 1000))
+                .eut(TierEU.RECIPE_MV)
+                .duration(12*SECONDS)
+                .addTo(chemicalDehydratorRecipes);
+
         } else {
             Logger.INFO("[dustCalciumHydroxide] FAILED TO LOAD RECIPE");
             if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1))) {
@@ -379,77 +376,81 @@ public class RecipeLoader_Nuclear {
         }
 
         // 2 LiOH + CaCO3
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(20),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 11) }, // Item
-            null, // Fluid input (slot 1)
-            null, // Fluid output (slot 2)
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 6),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 5) }, // Output
-            new int[] { 10000, 10000 },
-            240 * 20, // Time in ticks
-            1000); // EU
+        GT_Values.RA.stdBuilder()
+            .itemInputs(CI.getNumberedAdvancedCircuit(20),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 11))
+            .itemOutputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 6),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 5)
+            )
+            .eut(1_000)
+            .duration(6*MINUTES)
+            .addTo(chemicalDehydratorRecipes);
 
         // LiOH Liquid to Dust
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(22) },
-            FluidUtils.getFluidStack("lithiumhydroxide", 144),
-            null,
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 1) },
-            new int[] { 10000 },
-            1 * 20, // Time in ticks
-            64); // EU
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(22)
+            )
+            .itemOutputs( ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 1))
+            .fluidInputs(FluidUtils.getFluidStack("lithiumhydroxide", 144))
+            .eut(64)
+            .duration(1*SECONDS)
+            .addTo(chemicalDehydratorRecipes);
 
         // Zirconium Chloride -> TetraFluoride
         FluidStack aHydrogenChloride = new FluidStack(GenericChem.HydrochloricAcid, 800);
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(11),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 1), }, // Item
-            FluidUtils.getFluidStack("hydrofluoricacid", 400),
-            aHydrogenChloride,
-            new ItemStack[] { FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1) },
-            new int[] { 10000 },
-            15 * 20, // Time in ticks
-            500); // EU
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(11),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 1)
+            )
+            .itemOutputs()
+            .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid", 400))
+            .fluidOutputs(aHydrogenChloride)
+            .eut(500)
+            .duration(15*SECONDS)
+            .addTo(chemicalDehydratorRecipes);
 
         // Zirconium Chloride -> TetraFluoride
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(10),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 1) },
-            FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 800),
-            aHydrogenChloride,
-            new ItemStack[] { FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1) },
-            new int[] { 10000 },
-            30 * 20, // Time in ticks
-            500); // EU
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(10),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 1)
+            )
+            .itemOutputs(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1))
+            .fluidInputs( FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 800))
+            .fluidOutputs(aHydrogenChloride)
+            .eut(500)
+            .duration(30*SECONDS)
+            .addTo(chemicalDehydratorRecipes);
 
         // Be(OH)2 + 2 (NH4)HF2 → (NH4)2BeF4 + 2 H2O
         // Inputs use solid rule because they are molten forms of solids
         // Outputs use fluid rule because they are not molten forms of solids
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { FLUORIDES.BERYLLIUM_HYDROXIDE.getDust(3), CI.emptyCells(2) },
-            FLUORIDES.AMMONIUM_BIFLUORIDE.getFluidStack(1152), // Fluid input (slot 1)
-            FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1000),
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 2) },
-            new int[] { 10000 },
-            6 * 20, // Time in ticks
-            64); // EU
+        GT_Values.RA.stdBuilder()
+            .itemInputs( FLUORIDES.BERYLLIUM_HYDROXIDE.getDust(3), CI.emptyCells(2))
+            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 2))
+            .fluidInputs(FLUORIDES.AMMONIUM_BIFLUORIDE.getFluidStack(1152))
+            .fluidOutputs(FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1000))
+            .eut(64)
+            .duration(6*SECONDS)
+            .addTo(chemicalDehydratorRecipes);
 
         // (NH4)2BeF4 → 2 NH3 + 2 HF + BeF2
         // Ammonium tetrafluoroberyllate uses fluid rule because it is not a molten form of a solid
         // Beryllium fluoride uses solid rule
         // Industrial strength hydrofluoric acid follows its usual convention where it is twice as dense as regular
         // hydrofluoric acid
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(17), CI.emptyCells(3) },
-            FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1000),
-            null,
-            new ItemStack[] { MISC_MATERIALS.AMMONIA.getCell(2),
+        GT_Values.RA.stdBuilder()
+            .itemInputs( CI.getNumberedAdvancedCircuit(17), CI.emptyCells(3) )
+            .itemOutputs( MISC_MATERIALS.AMMONIA.getCell(2),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
-                FLUORIDES.BERYLLIUM_FLUORIDE.getDust(3) },
-            new int[] { 10000, 10000, 10000 },
-            5 * 60 * 20,
-            120);
+                FLUORIDES.BERYLLIUM_FLUORIDE.getDust(3) )
+            .fluidInputs(FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1000))
+            .eut(TierEU.RECIPE_MV)
+            .duration(5*MINUTES)
+            .addTo(chemicalDehydratorRecipes);
     }
 
     private static void electroMagneticSeperator() {

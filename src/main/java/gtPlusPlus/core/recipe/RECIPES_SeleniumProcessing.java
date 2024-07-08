@@ -18,7 +18,9 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 public class RECIPES_SeleniumProcessing {
 
@@ -67,69 +69,80 @@ public class RECIPES_SeleniumProcessing {
     public static void processCopperRecipes() {
 
         // Copper
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(23),
-                ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Copper, 1), // Item Input
-            },
-            FluidUtils.getHotWater(1000), // Fluid
-            MISC_MATERIALS.SELENIUM_DIOXIDE.getFluidStack(20), // Fluid
-            new ItemStack[] { ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Copper, 1),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(23),
+                ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Copper, 1)
+            )
+            .itemOutputs(
+                ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Copper, 1),
                 MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1),
                 MISC_MATERIALS.SELENIUM_DIOXIDE.getSmallDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getSmallDust(1),
                 MISC_MATERIALS.SELENIUM_DIOXIDE.getSmallDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1),
-                MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1), }, // Output
-            new int[] { 10000, 100, 100, 500, 500, 500, 1000, 1000, 1000 },
-            40 * 20, // Time in ticks
-            1024); // EU
+                MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1)
+            )
+            .outputChances( 100_00, 1_00, 1_00, 5_00, 5_00, 5_00, 10_00, 10_00, 10_00 )
+            .fluidInputs(FluidUtils.getHotWater(1000))
+            .fluidOutputs(MISC_MATERIALS.SELENIUM_DIOXIDE.getFluidStack(20))
+            .eut(1024)
+            .duration(40*SECONDS)
+            .addTo(chemicalDehydratorRecipes);
 
         // Tetra
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(23),
-                ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Tetrahedrite, 1), // Item
-                                                                                                     // Input
-            },
-            FluidUtils.getHotWater(1000), // Fluid
-            MISC_MATERIALS.SELENIUM_DIOXIDE.getFluidStack(10), // Fluid
-            new ItemStack[] { ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Tetrahedrite, 1),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(CI.getNumberedAdvancedCircuit(23),
+                ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Tetrahedrite, 1))
+            .itemOutputs(
+                ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Tetrahedrite, 1),
                 MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1),
                 MISC_MATERIALS.SELENIUM_DIOXIDE.getSmallDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getSmallDust(1),
                 MISC_MATERIALS.SELENIUM_DIOXIDE.getSmallDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1),
-                MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1), }, // Output
-            new int[] { 10000, 100, 100, 300, 300, 300, 800, 800, 800 },
-            40 * 20, // Time in ticks
-            1024); // EU
+                MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1)
+            )
+            .outputChances(100_00, 1_00, 1_00, 3_00, 3_00, 3_00, 8_00, 8_00, 8_00)
+            .fluidInputs( FluidUtils.getHotWater(1000))
+            .fluidOutputs(MISC_MATERIALS.SELENIUM_DIOXIDE.getFluidStack(10))
+            .eut(1024)
+            .duration(40*SECONDS)
+            .addTo(chemicalDehydratorRecipes);
+
 
         // Chalco
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(23),
-                ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Chalcopyrite, 1), // Item
-                                                                                                     // Input
-            },
-            FluidUtils.getHotWater(1000), // Fluid
-            MISC_MATERIALS.SELENIUM_DIOXIDE.getFluidStack(10), // Fluid
-            new ItemStack[] { ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Chalcopyrite, 1),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(CI.getNumberedAdvancedCircuit(23),
+                ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Chalcopyrite, 1))
+            .itemOutputs(
+                ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Chalcopyrite, 1),
                 MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1),
                 MISC_MATERIALS.SELENIUM_DIOXIDE.getSmallDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getSmallDust(1),
                 MISC_MATERIALS.SELENIUM_DIOXIDE.getSmallDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1),
-                MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1), }, // Output
-            new int[] { 10000, 100, 100, 300, 300, 300, 800, 800, 800 },
-            40 * 20, // Time in ticks
-            1024); // EU
+                MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1)
+            )
+            .outputChances(100_00, 1_00, 1_00, 3_00, 3_00, 3_00, 8_00, 8_00, 8_00)
+            .fluidInputs(FluidUtils.getHotWater(1000))
+            .fluidOutputs(MISC_MATERIALS.SELENIUM_DIOXIDE.getFluidStack(10))
+            .eut(1024)
+            .duration(40*SECONDS)
+            .addTo(chemicalDehydratorRecipes);
 
         // Malachite
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(23),
-                ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Malachite, 1), // Item Input
-            },
-            FluidUtils.getHotWater(1000), // Fluid
-            MISC_MATERIALS.SELENIUM_DIOXIDE.getFluidStack(10), // Fluid
-            new ItemStack[] { ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Malachite, 1),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(23),
+                ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Malachite, 1)
+            )
+            .itemOutputs(
+                ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Malachite, 1),
                 MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1),
                 MISC_MATERIALS.SELENIUM_DIOXIDE.getSmallDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getSmallDust(1),
                 MISC_MATERIALS.SELENIUM_DIOXIDE.getSmallDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1),
-                MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1), }, // Output
-            new int[] { 10000, 100, 100, 300, 300, 300, 800, 800, 800 },
-            40 * 20, // Time in ticks
-            1024); // EU
+                MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1), MISC_MATERIALS.SELENIUM_DIOXIDE.getTinyDust(1)
+            )
+            .outputChances(100_00, 1_00, 1_00, 3_00, 3_00, 3_00, 8_00, 8_00, 8_00)
+            .fluidInputs(FluidUtils.getHotWater(1000))
+            .fluidOutputs(MISC_MATERIALS.SELENIUM_DIOXIDE.getFluidStack(10))
+            .eut(1024)
+            .duration(40*SECONDS)
+            .addTo(chemicalDehydratorRecipes);
     }
 }

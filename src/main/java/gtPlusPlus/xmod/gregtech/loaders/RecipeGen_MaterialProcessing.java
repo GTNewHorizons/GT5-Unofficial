@@ -22,6 +22,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
 
@@ -273,23 +274,16 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
                 }
 
                 try {
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(mainDust, emptyCell)
+                        .itemOutputs(mInternalOutputs)
+                        .outputChances(mChances)
+                        .eut(tVoltageMultiplier)
+                        .duration(20 * (tVoltageMultiplier / 10))
+                        .addTo(chemicalDehydratorRecipes);
 
-                    if (CORE.RA.addDehydratorRecipe(
-                        new ItemStack[] { mainDust, emptyCell },
-                        null,
-                        null,
-                        mInternalOutputs,
-                        mChances,
-                        20 * 1 * (tVoltageMultiplier / 10),
-                        tVoltageMultiplier)) {
-                        Logger.MATERIALS(
-                            "[Dehydrator] Generated Dehydrator recipe for " + material.getDust(1)
-                                .getDisplayName());
-                    } else {
-                        Logger.MATERIALS(
-                            "[Dehydrator] Failed to generate Dehydrator recipe for " + material.getDust(1)
-                                .getDisplayName());
-                    }
+                    Logger.MATERIALS("[Dehydrator] Generated Dehydrator recipe for " + material.getDust(1).getDisplayName());
+
                 } catch (Throwable t) {
                     t.printStackTrace();
                 }
