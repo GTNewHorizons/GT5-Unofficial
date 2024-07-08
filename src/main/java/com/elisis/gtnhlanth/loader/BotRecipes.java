@@ -1,10 +1,12 @@
 package com.elisis.gtnhlanth.loader;
 
 import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.*;
+import static gregtech.api.enums.Materials.Silver;
 import static gregtech.api.enums.OrePrefixes.*;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -249,22 +251,28 @@ public class BotRecipes {
         // Monomethylhydrazine
         cells.stackSize = 1;
         // C7H8 + CH4O = C8H10 + H2O
-        GT_Values.RA.addCrackingRecipe(
-            1,
-            Materials.Toluene.getFluid(1000),
-            Materials.Methanol.getFluid(1000),
-            OXylene.getFluidOrGas(1000),
-            600,
-            4096);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
+            .fluidInputs(
+                Materials.Toluene.getFluid(1000),
+                Materials.Methanol.getFluid(1000)
+            )
+            .fluidOutputs(OXylene.getFluidOrGas(1000))
+            .duration(30*SECONDS)
+            .eut(4096)
+            .addTo(crackingRecipes);
 
         // 2HNO3 + C3H8 = 2CH3NO2 + 2H2O + C
-        GT_Values.RA.addCrackingRecipe(
-            2,
-            Materials.Propane.getGas(1000),
-            Materials.NitricAcid.getFluid(2000),
-            Nitromethane.getFluidOrGas(2000),
-            300,
-            1920);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
+            .fluidInputs(
+                Materials.Propane.getGas(1000),
+                Materials.NitricAcid.getFluid(2000)
+            )
+            .fluidOutputs(Nitromethane.getFluidOrGas(2000))
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(crackingRecipes);
     }
 
     public static void removeRecipes() {

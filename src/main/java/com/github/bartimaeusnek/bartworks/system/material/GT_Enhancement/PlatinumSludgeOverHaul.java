@@ -554,13 +554,15 @@ public class PlatinumSludgeOverHaul {
             .eut(TierEU.RECIPE_HV)
             .addTo(fluidHeaterRecipes);
 
-        GT_Values.RA.addCrackingRecipe(
-            17,
-            RutheniumTetroxideSollution.getFluidOrGas(1000),
-            GT_ModHandler.getSteam(1000),
-            HotRutheniumTetroxideSollution.getFluidOrGas(2000),
-            150,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(17))
+            .fluidInputs(RutheniumTetroxideSollution.getFluidOrGas(1000),
+                GT_ModHandler.getSteam(1000))
+            .fluidOutputs(HotRutheniumTetroxideSollution.getFluidOrGas(2000))
+            .duration(7*SECONDS+10*TICKS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(crackingRecipes);
+
         GT_Values.RA.addDistillationTowerRecipe(
             HotRutheniumTetroxideSollution.getFluidOrGas(9000),
             new FluidStack[] { Materials.Water.getFluid(1800), RutheniumTetroxide.getFluidOrGas(7200) },

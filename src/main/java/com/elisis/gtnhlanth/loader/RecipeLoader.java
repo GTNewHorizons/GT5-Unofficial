@@ -10,6 +10,7 @@ import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
@@ -802,13 +803,16 @@ public class RecipeLoader {
             .specialValue(800)
             .addTo(digesterRecipes);
 
-        GT_Values.RA.addCrackingRecipe(
-            1,
-            WerkstoffMaterialPool.MuddyRareEarthBastnasiteSolution.getFluidOrGas(1000),
-            GT_ModHandler.getSteam(1000),
-            WerkstoffMaterialPool.SteamCrackedBasnasiteSolution.getFluidOrGas(2000),
-            600,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
+            .fluidInputs(
+                WerkstoffMaterialPool.MuddyRareEarthBastnasiteSolution.getFluidOrGas(1000),
+                GT_ModHandler.getSteam(1000)
+            )
+            .fluidOutputs(WerkstoffMaterialPool.SteamCrackedBasnasiteSolution.getFluidOrGas(2000))
+            .duration(30*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(crackingRecipes);
 
         GT_Values.RA.addMixerRecipe(
             GT_Utility.getIntegratedCircuit(6),
