@@ -669,7 +669,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 OrePrefixes.stick.get(Materials.Steel) });
 
         ItemList.CompressedFireclay.set(addItem(Compressed_Fireclay.ID, "Compressed Fireclay", "Brick-shaped"));
+        GT_OreDictUnificator.addItemDataFromInputs(ItemList.CompressedFireclay.get(1), Materials.Fireclay.getDust(1));
+
         ItemList.Firebrick.set(addItem(Firebrick.ID, "Firebrick", "Heat resistant"));
+        GT_OreDictUnificator.addItemDataFromInputs(ItemList.Firebrick.get(1), Materials.Fireclay.getDust(1));
 
         ItemList.Shape_Empty.set(
             addItem(
