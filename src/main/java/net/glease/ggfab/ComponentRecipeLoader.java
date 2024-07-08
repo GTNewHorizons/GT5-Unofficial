@@ -1,13 +1,13 @@
 package net.glease.ggfab;
 
-import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -43,13 +43,18 @@ class ComponentRecipeLoader implements Runnable {
             .duration(10*MINUTES)
             .addTo(AssemblyLine);
 
-        RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Hatch_Input_Bus_IV.get(1L), ItemList.Emitter_IV.get(1L),
-                ItemList.Sensor_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Enderium, 1L),
-                GT_Utility.getIntegratedCircuit(12), },
-            Materials.Polybenzimidazole.getMolten(144L),
-            GGItemList.LinkedInputBus.get(1L),
-            600,
-            (int) GT_Values.VP[5]);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Input_Bus_IV.get(1L), ItemList.Emitter_IV.get(1L), ItemList.Sensor_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Enderium, 1L), GT_Utility.getIntegratedCircuit(12))
+            .itemOutputs(
+                GGItemList.LinkedInputBus.get(1L)
+            )
+            .fluidInputs(
+                Materials.Polybenzimidazole.getMolten(144L)
+            )
+            .duration(30 * SECONDS)
+            .eut( GT_Values.VP[5])
+            .addTo(assemblerRecipes);
+
     }
 }

@@ -27,6 +27,7 @@ import static gregtech.api.enums.OrePrefixes.gemExquisite;
 import static gregtech.api.enums.OrePrefixes.gemFlawed;
 import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
@@ -674,36 +675,50 @@ public class AdditionalRecipes {
             .duration(1 * SECONDS+10*TICKS)
             .eut(16)
             .addTo(cannerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                BW_NonMeta_MaterialItems.TiberiumCell_1.get(2L),
+                GT_OreDictUnificator.get(stick, Materials.TungstenSteel, 4L)
+            )
+            .itemOutputs(
+                BW_NonMeta_MaterialItems.TiberiumCell_2.get(1L)
+            )
+            .duration(5 * SECONDS)
+            .eut(400)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                BW_NonMeta_MaterialItems.TiberiumCell_1.get(4L),
+                GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 6L)
+            )
+            .itemOutputs(
+                BW_NonMeta_MaterialItems.TiberiumCell_4.get(1L)
+            )
+            .duration(7 * SECONDS + 10 * TICKS)
+            .eut(400)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                BW_NonMeta_MaterialItems.TiberiumCell_2.get(2L),
+                GT_OreDictUnificator.get(stick, Materials.TungstenSteel, 4L)
+            )
+            .itemOutputs(
+                BW_NonMeta_MaterialItems.TiberiumCell_4.get(1L)
+            )
+            .duration(5 * SECONDS)
+            .eut(400)
+            .addTo(assemblerRecipes);
 
-        GT_Values.RA.addAssemblerRecipe(
-            BW_NonMeta_MaterialItems.TiberiumCell_1.get(2L),
-            GT_OreDictUnificator.get(stick, Materials.TungstenSteel, 4L),
-            BW_NonMeta_MaterialItems.TiberiumCell_2.get(1L),
-            100,
-            400);
-        GT_Values.RA.addAssemblerRecipe(
-            BW_NonMeta_MaterialItems.TiberiumCell_1.get(4L),
-            GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 6L),
-            BW_NonMeta_MaterialItems.TiberiumCell_4.get(1L),
-            150,
-            400);
-        GT_Values.RA.addAssemblerRecipe(
-            BW_NonMeta_MaterialItems.TiberiumCell_2.get(2L),
-            GT_OreDictUnificator.get(stick, Materials.TungstenSteel, 4L),
-            BW_NonMeta_MaterialItems.TiberiumCell_4.get(1L),
-            100,
-            400);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.NaquadahCell_1.get(32L),GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),WerkstoffLoader.Tiberium.get(dust, 64), WerkstoffLoader.Tiberium.get(dust, 64))
+            .itemOutputs(
+                BW_NonMeta_MaterialItems.TheCoreCell.get(1L)
+            )
+            .duration(5 * SECONDS)
+            .eut( TierEU.RECIPE_LuV)
+            .addTo(assemblerRecipes);
 
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.NaquadahCell_1.get(32L),
-                GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
-                GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
-                GT_OreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
-                WerkstoffLoader.Tiberium.get(dust, 64), WerkstoffLoader.Tiberium.get(dust, 64) },
-            null,
-            BW_NonMeta_MaterialItems.TheCoreCell.get(1L),
-            100,
-            (int) TierEU.RECIPE_LuV);
 
         GregTech_API.sAfterGTPostload.add(new AddSomeRecipes());
     }

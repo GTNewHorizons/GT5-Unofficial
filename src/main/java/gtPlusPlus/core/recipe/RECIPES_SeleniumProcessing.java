@@ -56,7 +56,7 @@ public class RECIPES_SeleniumProcessing {
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(14), ELEMENT.getInstance().CARBON.getDust(16))
             .itemOutputs( ELEMENT.getInstance().SELENIUM.getIngot(1), ELEMENT.getInstance().SELENIUM.getIngot(1))
-            .outputChances(100_00, 20_00, 20_00)
+            .outputChances(100_00, 20_00)
             .fluidInputs( MISC_MATERIALS.SELENIOUS_ACID.getFluidStack(750),
                 Materials.SulfuricAcid.getFluid(8000))
             .fluidOutputs(ELEMENT.getInstance().SELENIUM.getFluidStack(144 * 1))

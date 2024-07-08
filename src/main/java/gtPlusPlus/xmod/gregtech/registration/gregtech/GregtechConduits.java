@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
@@ -1180,95 +1181,175 @@ public class GregtechConduits {
         // Wire to Cable
         // 1x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aCable01 })) {
-            GT_Values.RA.addAssemblerRecipe(
-                aWire01,
-                GT_Utility.getIntegratedCircuit(24),
-                FluidUtils.getFluidStack("molten.rubber", 144),
-                aCable01,
-                100,
-                8);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aWire01,
+                    GT_Utility.getIntegratedCircuit(24)
+                )
+                .itemOutputs(
+                    aCable01
+                )
+                .fluidInputs(
+                    FluidUtils.getFluidStack("molten.rubber", 144)
+                )
+                .duration(5 * SECONDS)
+                .eut(8)
+                .addTo(assemblerRecipes);
+
         }
 
         // 2x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire02, aCable02 })) {
-            GT_Values.RA.addAssemblerRecipe(
-                aWire02,
-                GT_Utility.getIntegratedCircuit(24),
-                FluidUtils.getFluidStack("molten.rubber", 144),
-                aCable02,
-                100,
-                8);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aWire02,
+                    GT_Utility.getIntegratedCircuit(24)
+                )
+                .itemOutputs(
+                    aCable02
+                )
+                .fluidInputs(
+                    FluidUtils.getFluidStack("molten.rubber", 144)
+                )
+                .duration(5 * SECONDS)
+                .eut(8)
+                .addTo(assemblerRecipes);
+
         }
 
         // 4x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aCable04 })) {
-            GT_Values.RA.addAssemblerRecipe(
-                aWire04,
-                GT_Utility.getIntegratedCircuit(24),
-                FluidUtils.getFluidStack("molten.rubber", 288),
-                aCable04,
-                100,
-                8);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aWire04,
+                    GT_Utility.getIntegratedCircuit(24)
+                )
+                .itemOutputs(
+                    aCable04
+                )
+                .fluidInputs(
+                    FluidUtils.getFluidStack("molten.rubber", 288)
+                )
+                .duration(5 * SECONDS)
+                .eut(8)
+                .addTo(assemblerRecipes);
+
         }
 
         // 8x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire08, aCable08 })) {
-            GT_Values.RA.addAssemblerRecipe(
-                aWire08,
-                GT_Utility.getIntegratedCircuit(24),
-                FluidUtils.getFluidStack("molten.rubber", 432),
-                aCable08,
-                100,
-                8);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aWire08,
+                    GT_Utility.getIntegratedCircuit(24)
+                )
+                .itemOutputs(
+                    aCable08
+                )
+                .fluidInputs(
+                    FluidUtils.getFluidStack("molten.rubber", 432)
+                )
+                .duration(5 * SECONDS)
+                .eut(8)
+                .addTo(assemblerRecipes);
+
         }
 
         // 12x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire12, aCable12 })) {
-            GT_Values.RA.addAssemblerRecipe(
-                aWire12,
-                GT_Utility.getIntegratedCircuit(24),
-                FluidUtils.getFluidStack("molten.rubber", 576),
-                aCable12,
-                100,
-                8);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aWire12,
+                    GT_Utility.getIntegratedCircuit(24)
+                )
+                .itemOutputs(
+                    aCable12
+                )
+                .fluidInputs(
+                    FluidUtils.getFluidStack("molten.rubber", 576)
+                )
+                .duration(5 * SECONDS)
+                .eut(8)
+                .addTo(assemblerRecipes);
+
         }
 
         // 16x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire16, aCable16 })) {
-            GT_Values.RA.addAssemblerRecipe(
-                aWire16,
-                GT_Utility.getIntegratedCircuit(24),
-                FluidUtils.getFluidStack("molten.rubber", 720),
-                aCable16,
-                100,
-                8);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aWire16,
+                    GT_Utility.getIntegratedCircuit(24)
+                )
+                .itemOutputs(
+                    aCable16
+                )
+                .fluidInputs(
+                    FluidUtils.getFluidStack("molten.rubber", 720)
+                )
+                .duration(5 * SECONDS)
+                .eut(8)
+                .addTo(assemblerRecipes);
+
         }
 
         // Assemble small wires into bigger wires
-
-        // 2x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(2), GT_Utility.getIntegratedCircuit(2), null, aWire02, 100, 8);
-        }
-
-        // 4x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(4), GT_Utility.getIntegratedCircuit(4), null, aWire04, 100, 8);
-        }
-
-        // 8x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(8), GT_Utility.getIntegratedCircuit(8), null, aWire08, 100, 8);
-        }
-
-        // 12x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(12), GT_Utility.getIntegratedCircuit(12), null, aWire12, 100, 8);
-        }
-
-        // 16x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(16), GT_Utility.getIntegratedCircuit(16), null, aWire16, 100, 8);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getWire01(2),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    aWire02
+                )
+                .duration(5 * SECONDS)
+                .eut(8)
+                .addTo(assemblerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getWire01(4),
+                    GT_Utility.getIntegratedCircuit(4)
+                )
+                .itemOutputs(
+                    aWire04
+                )
+                .duration(5 * SECONDS)
+                .eut(8)
+                .addTo(assemblerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getWire01(8),
+                    GT_Utility.getIntegratedCircuit(8)
+                )
+                .itemOutputs(
+                    aWire08
+                )
+                .duration(5 * SECONDS)
+                .eut(8)
+                .addTo(assemblerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getWire01(12),
+                    GT_Utility.getIntegratedCircuit(12)
+                )
+                .itemOutputs(
+                    aWire12
+                )
+                .duration(5 * SECONDS)
+                .eut(8)
+                .addTo(assemblerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aMaterial.getWire01(16),
+                    GT_Utility.getIntegratedCircuit(16)
+                )
+                .itemOutputs(
+                    aWire16
+                )
+                .duration(5 * SECONDS)
+                .eut(8)
+                .addTo(assemblerRecipes);
         }
 
         return true;

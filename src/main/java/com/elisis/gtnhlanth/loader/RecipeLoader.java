@@ -4,6 +4,7 @@ import static com.elisis.gtnhlanth.api.recipe.LanthanidesRecipeMaps.digesterReci
 import static com.elisis.gtnhlanth.api.recipe.LanthanidesRecipeMaps.dissolutionTankRecipes;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.*;
 import static gregtech.api.enums.Mods.TwilightForest;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
@@ -2811,27 +2812,32 @@ public class RecipeLoader {
             .addTo(UniversalChemical);
 
         // Digester Control Block
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Hull_IV.get(1L), ItemList.Super_Tank_EV.get(2L),
-                ItemList.Electric_Motor_IV.get(4L), ItemList.Electric_Pump_IV.get(4L),
-                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Desh, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4L),
-                GT_Utility.getIntegratedCircuit(1) },
-            Materials.Polytetrafluoroethylene.getMolten(1440),
-            LanthItemList.DIGESTER,
-            600,
-            4096);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hull_IV.get(1L), ItemList.Super_Tank_EV.get(2L),ItemList.Electric_Motor_IV.get(4L), ItemList.Electric_Pump_IV.get(4L),GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Desh, 4L),GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4L),GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(
+                LanthItemList.DIGESTER
+            )
+            .fluidInputs(
+                Materials.Polytetrafluoroethylene.getMolten(1440)
+            )
+            .duration(30 * SECONDS)
+            .eut(4096)
+            .addTo(assemblerRecipes);
         // Dissolution Tank
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Hull_EV.get(1L), ItemList.Super_Tank_HV.get(2L),
-                ItemList.Electric_Motor_EV.get(4L), ItemList.Electric_Pump_EV.get(2L),
-                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.VibrantAlloy, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4L), GT_Utility.getIntegratedCircuit(2) },
-            Materials.Polytetrafluoroethylene.getMolten(720),
-            LanthItemList.DISSOLUTION_TANK,
-            400,
-            960);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hull_EV.get(1L), ItemList.Super_Tank_HV.get(2L),ItemList.Electric_Motor_EV.get(4L), ItemList.Electric_Pump_EV.get(2L),GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.VibrantAlloy, 4L),GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4L), GT_Utility.getIntegratedCircuit(2))
+            .itemOutputs(
+                LanthItemList.DISSOLUTION_TANK
+            )
+            .fluidInputs(
+                Materials.Polytetrafluoroethylene.getMolten(720)
+            )
+            .duration(20 * SECONDS)
+            .eut(960)
+            .addTo(assemblerRecipes);
+
 
         GT_Values.RA.stdBuilder()
             .fluidInputs(WerkstoffMaterialPool.DilutedAcetone.getFluidOrGas(250))

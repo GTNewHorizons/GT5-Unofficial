@@ -360,151 +360,211 @@ public class RecipeLoader_ChemicalSkips {
     }
 
     private static void catalystRecipes() {
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1),
-                getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 64L, 88), Materials.Osmiridium.getDust(64),
-                Materials.Carbon.getNanite(64) },
-            ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
-            ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 1),
-            60 * 20,
-            (int) TierEU.RECIPE_UEV);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1),getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 64L, 88), Materials.Osmiridium.getDust(64),Materials.Carbon.getNanite(64))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 1)
+            )
+            .fluidInputs(
+                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360)
+            )
+            .duration(60 * SECONDS)
+            .eut( TierEU.RECIPE_UEV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1),Materials.Polybenzimidazole.getDust(64), Materials.Polytetrafluoroethylene.getDust(64),Materials.Carbon.getNanite(64))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(GenericChem.mPlasticPolymerCatalyst, 1)
+            )
+            .fluidInputs(
+                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360)
+            )
+            .duration(60 * SECONDS)
+            .eut( TierEU.RECIPE_UEV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), Materials.Silicone.getDust(64),Materials.StyreneButadieneRubber.getDust(64), Materials.Carbon.getNanite(64))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(GenericChem.mRubberPolymerCatalyst, 1)
+            )
+            .fluidInputs(
+                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360)
+            )
+            .duration(60 * SECONDS)
+            .eut( TierEU.RECIPE_UEV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), ALLOY.INDALLOY_140.getDust(64),MISC_MATERIALS.ETHYL_CYANOACRYLATE.getCell(64), Materials.Carbon.getNanite(64))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(GenericChem.mAdhesionPromoterCatalyst, 1)
+            )
+            .fluidInputs(
+                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360)
+            )
+            .duration(60 * SECONDS)
+            .eut( TierEU.RECIPE_UHV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), Materials.TungstenSteel.getDust(64),Materials.Indium.getDust(64), Materials.Carbon.getNanite(64))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(GenericChem.mTitaTungstenIndiumCatalyst, 1)
+            )
+            .fluidInputs(
+                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360)
+            )
+            .duration(60 * SECONDS)
+            .eut( TierEU.RECIPE_UHV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1),ELEMENT.getInstance().URANIUM235.getDust(64), ELEMENT.getInstance().PLUTONIUM241.getDust(64),Materials.Carbon.getNanite(64))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(GenericChem.mRadioactivityCatalyst, 1)
+            )
+            .fluidInputs(
+                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360)
+            )
+            .duration(60 * SECONDS)
+            .eut( TierEU.RECIPE_UHV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), Materials.Samarium.getDust(64),Materials.Gadolinium.getDust(64), Materials.Silver.getNanite(1))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(GenericChem.mRareEarthGroupCatalyst, 1)
+            )
+            .fluidInputs(
+                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(9216)
+            )
+            .duration(60 * SECONDS)
+            .eut( TierEU.RECIPE_UEV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1),WerkstoffLoader.Hedenbergit.get(OrePrefixes.lens, 1),GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 1, false),ItemList.Circuit_Silicon_Wafer6.get(64))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(GenericChem.mLimpidWaterCatalyst, 1)
+            )
+            .fluidInputs(
+                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(9216)
+            )
+            .duration(60 * SECONDS)
+            .eut( TierEU.RECIPE_UEV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), Materials.Naquadah.getDust(64),Materials.Adamantium.getDust(64), Materials.Silver.getNanite(1))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(GenericChem.mSimpleNaquadahCatalyst, 1)
+            )
+            .fluidInputs(
+                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(9216)
+            )
+            .duration(60 * SECONDS)
+            .eut( TierEU.RECIPE_UEV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), Materials.Naquadria.getDust(64),Materials.Trinium.getDust(64), Materials.Gold.getNanite(1))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(GenericChem.mAdvancedNaquadahCatalyst, 1)
+            )
+            .fluidInputs(
+                MaterialsUEVplus.SpaceTime.getMolten(9216L)
+            )
+            .duration(60 * SECONDS)
+            .eut( TierEU.RECIPE_UIV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), ItemList.Circuit_Chip_Stemcell.get(64),Materials.Gold.getNanite(1))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(GenericChem.mRawIntelligenceCatalyst, 1)
+            )
+            .fluidInputs(
+                MaterialsUEVplus.SpaceTime.getMolten(9216L)
+            )
+            .duration(60 * SECONDS)
+            .eut( TierEU.RECIPE_UIV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1),GregtechItemList.Laser_Lens_Special.get(64),GT_ModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 10))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(GenericChem.mParticleAccelerationCatalyst, 1)
+            )
+            .fluidInputs(
+                MaterialsUEVplus.SpaceTime.getMolten(9216L)
+            )
+            .duration(60 * SECONDS)
+            .eut( TierEU.RECIPE_UIV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), MaterialsKevlar.Kevlar.getDust(64),MaterialsUEVplus.TranscendentMetal.getNanite(1))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(GenericChem.mUltimatePlasticCatalyst, 1)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack("molten.shirabon", 92160)
+            )
+            .duration(60 * SECONDS)
+            .eut( TierEU.RECIPE_UMV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), ItemList.Circuit_Chip_Biocell.get(64),MaterialsUEVplus.TranscendentMetal.getNanite(1))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(GenericChem.mBiologicalIntelligenceCatalyst, 1)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack("molten.shirabon", 92160)
+            )
+            .duration(60 * SECONDS)
+            .eut( TierEU.RECIPE_UMV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1),WerkstoffLoader.Hedenbergit.get(OrePrefixes.lens, 64),GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 64, false),ItemList.Circuit_Silicon_Wafer6.get(64))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(GenericChem.mFlawlessWaterCatalyst, 1)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack("molten.shirabon", 92160)
+            )
+            .duration(60 * SECONDS)
+            .eut( TierEU.RECIPE_UMV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1),Particle.getBaseParticle(Particle.HIGGS_BOSON), Particle.getIon("Helium", 0),Particle.getIon("Hydrogen", 0), MaterialsUEVplus.Eternity.getNanite(16))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(GenericChem.mSynchrotronCapableCatalyst, 1)
+            )
+            .fluidInputs(
+                FluidUtils.getFluidStack("molten.shirabon", 92160)
+            )
+            .duration(60 * SECONDS)
+            .eut( TierEU.RECIPE_UMV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1),GT_OreDictUnificator.get("blockShirabon", 16), MaterialsUEVplus.Universium.getNanite(1),ItemList.Timepiece.get(1))
+            .itemOutputs(
+                ItemUtils.getSimpleStack(GenericChem.TemporalHarmonyCatalyst, 1)
+            )
+            .fluidInputs(
+                Materials.DarkIron.getMolten(92160)
+            )
+            .duration(60 * SECONDS)
+            .eut( TierEU.RECIPE_UXV)
+            .addTo(assemblerRecipes);
 
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1),
-                Materials.Polybenzimidazole.getDust(64), Materials.Polytetrafluoroethylene.getDust(64),
-                Materials.Carbon.getNanite(64) },
-            ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
-            ItemUtils.getSimpleStack(GenericChem.mPlasticPolymerCatalyst, 1),
-            60 * 20,
-            (int) TierEU.RECIPE_UEV);
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), Materials.Silicone.getDust(64),
-                Materials.StyreneButadieneRubber.getDust(64), Materials.Carbon.getNanite(64) },
-            ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
-            ItemUtils.getSimpleStack(GenericChem.mRubberPolymerCatalyst, 1),
-            60 * 20,
-            (int) TierEU.RECIPE_UEV);
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), ALLOY.INDALLOY_140.getDust(64),
-                MISC_MATERIALS.ETHYL_CYANOACRYLATE.getCell(64), Materials.Carbon.getNanite(64) },
-            ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
-            ItemUtils.getSimpleStack(GenericChem.mAdhesionPromoterCatalyst, 1),
-            60 * 20,
-            (int) TierEU.RECIPE_UHV);
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), Materials.TungstenSteel.getDust(64),
-                Materials.Indium.getDust(64), Materials.Carbon.getNanite(64) },
-            ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
-            ItemUtils.getSimpleStack(GenericChem.mTitaTungstenIndiumCatalyst, 1),
-            60 * 20,
-            (int) TierEU.RECIPE_UHV);
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1),
-                ELEMENT.getInstance().URANIUM235.getDust(64), ELEMENT.getInstance().PLUTONIUM241.getDust(64),
-                Materials.Carbon.getNanite(64) },
-            ELEMENT.STANDALONE.HYPOGEN.getFluidStack(360),
-            ItemUtils.getSimpleStack(GenericChem.mRadioactivityCatalyst, 1),
-            60 * 20,
-            (int) TierEU.RECIPE_UHV);
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), Materials.Samarium.getDust(64),
-                Materials.Gadolinium.getDust(64), Materials.Silver.getNanite(1) },
-            ELEMENT.STANDALONE.HYPOGEN.getFluidStack(9216),
-            ItemUtils.getSimpleStack(GenericChem.mRareEarthGroupCatalyst, 1),
-            60 * 20,
-            (int) TierEU.RECIPE_UEV);
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1),
-                WerkstoffLoader.Hedenbergit.get(OrePrefixes.lens, 1),
-                GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 1, false),
-                ItemList.Circuit_Silicon_Wafer6.get(64) },
-            ELEMENT.STANDALONE.HYPOGEN.getFluidStack(9216),
-            ItemUtils.getSimpleStack(GenericChem.mLimpidWaterCatalyst, 1),
-            60 * 20,
-            (int) TierEU.RECIPE_UEV);
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), Materials.Naquadah.getDust(64),
-                Materials.Adamantium.getDust(64), Materials.Silver.getNanite(1) },
-            ELEMENT.STANDALONE.HYPOGEN.getFluidStack(9216),
-            ItemUtils.getSimpleStack(GenericChem.mSimpleNaquadahCatalyst, 1),
-            60 * 20,
-            (int) TierEU.RECIPE_UEV);
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), Materials.Naquadria.getDust(64),
-                Materials.Trinium.getDust(64), Materials.Gold.getNanite(1) },
-            MaterialsUEVplus.SpaceTime.getMolten(9216L),
-            ItemUtils.getSimpleStack(GenericChem.mAdvancedNaquadahCatalyst, 1),
-            60 * 20,
-            (int) TierEU.RECIPE_UIV);
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), ItemList.Circuit_Chip_Stemcell.get(64),
-                Materials.Gold.getNanite(1) },
-            MaterialsUEVplus.SpaceTime.getMolten(9216L),
-            ItemUtils.getSimpleStack(GenericChem.mRawIntelligenceCatalyst, 1),
-            60 * 20,
-            (int) TierEU.RECIPE_UIV);
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1),
-                GregtechItemList.Laser_Lens_Special.get(64),
-                GT_ModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 10) },
-            MaterialsUEVplus.SpaceTime.getMolten(9216L),
-            ItemUtils.getSimpleStack(GenericChem.mParticleAccelerationCatalyst, 1),
-            60 * 20,
-            (int) TierEU.RECIPE_UIV);
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), MaterialsKevlar.Kevlar.getDust(64),
-                MaterialsUEVplus.TranscendentMetal.getNanite(1) },
-            FluidUtils.getFluidStack("molten.shirabon", 92160),
-            ItemUtils.getSimpleStack(GenericChem.mUltimatePlasticCatalyst, 1),
-            60 * 20,
-            (int) TierEU.RECIPE_UMV);
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1), ItemList.Circuit_Chip_Biocell.get(64),
-                MaterialsUEVplus.TranscendentMetal.getNanite(1) },
-            FluidUtils.getFluidStack("molten.shirabon", 92160),
-            ItemUtils.getSimpleStack(GenericChem.mBiologicalIntelligenceCatalyst, 1),
-            60 * 20,
-            (int) TierEU.RECIPE_UMV);
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1),
-                WerkstoffLoader.Hedenbergit.get(OrePrefixes.lens, 64),
-                GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 64, false),
-                ItemList.Circuit_Silicon_Wafer6.get(64) },
-            FluidUtils.getFluidStack("molten.shirabon", 92160),
-            ItemUtils.getSimpleStack(GenericChem.mFlawlessWaterCatalyst, 1),
-            60 * 20,
-            (int) TierEU.RECIPE_UMV);
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1),
-                Particle.getBaseParticle(Particle.HIGGS_BOSON), Particle.getIon("Helium", 0),
-                Particle.getIon("Hydrogen", 0), MaterialsUEVplus.Eternity.getNanite(16) },
-            FluidUtils.getFluidStack("molten.shirabon", 92160),
-            ItemUtils.getSimpleStack(GenericChem.mSynchrotronCapableCatalyst, 1),
-            60 * 20,
-            (int) TierEU.RECIPE_UMV);
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(10), CI.getEmptyCatalyst(1),
-                GT_OreDictUnificator.get("blockShirabon", 16), MaterialsUEVplus.Universium.getNanite(1),
-                ItemList.Timepiece.get(1) },
-            Materials.DarkIron.getMolten(92160),
-            ItemUtils.getSimpleStack(GenericChem.TemporalHarmonyCatalyst, 1),
-            60 * 20,
-            (int) TierEU.RECIPE_UXV);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -658,12 +718,18 @@ public class RecipeLoader_ChemicalSkips {
             120 * 20,
             (int) TierEU.RECIPE_UXV);
 
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { new ItemStack(QuantumGlassBlock.INSTANCE, 1), ItemList.Field_Generator_ZPM.get(1),
-                ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getLongRod(6), ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getPlate(6) },
-            ALLOY.QUANTUM.getFluidStack(144 * 6),
-            GregtechItemList.ForceFieldGlass.get(1),
-            10 * 20,
-            (int) TierEU.RECIPE_UEV);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(QuantumGlassBlock.INSTANCE, 1), ItemList.Field_Generator_ZPM.get(1), ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getLongRod(6), ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getPlate(6))
+            .itemOutputs(
+                GregtechItemList.ForceFieldGlass.get(1)
+            )
+            .fluidInputs(
+                ALLOY.QUANTUM.getFluidStack(144 * 6)
+            )
+            .duration(10 * SECONDS)
+            .eut( TierEU.RECIPE_UEV)
+            .addTo(assemblerRecipes);
+
     }
 }

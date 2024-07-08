@@ -26,6 +26,7 @@ public class TT_recipeAdder extends GT_RecipeAdder {
     public static final ItemStack[] nullItem = new ItemStack[0];
     public static final FluidStack[] nullFluid = new FluidStack[0];
 
+    @Deprecated
     public static boolean addResearchableAssemblylineRecipe(ItemStack aResearchItem, int totalComputationRequired,
         int computationRequiredPerSec, int researchEUt, int researchAmperage, ItemStack[] aInputs,
         FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
@@ -91,6 +92,7 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     public static boolean addResearchableAssemblylineRecipe(ItemStack aResearchItem, int totalComputationRequired,
         int computationRequiredPerSec, int researchEUt, int researchAmperage, Object[] aInputs,
         FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
