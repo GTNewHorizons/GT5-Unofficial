@@ -21,6 +21,7 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
@@ -146,33 +147,38 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
          * Macerate
          */
         // Macerate ore to Crushed
-        if (GT_Values.RA.addPulveriserRecipe(
-            material.getOre(1),
-            new ItemStack[] { material.getCrushed(2) },
-            new int[] { 10000 },
-            20 * 20,
-            tVoltageMultiplier / 2)) {
-            Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate ore to Crushed ore'");
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(material.getOre(1))
+            .itemOutputs(material.getCrushed(2))
+            .duration(20*SECONDS)
+            .eut(tVoltageMultiplier/2)
+            .addTo(maceratorRecipes);
+
+
+        Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate ore to Crushed ore'");
+
         // Macerate raw ore to Crushed
-        if (GT_Values.RA.addPulveriserRecipe(
-            material.getRawOre(1),
-            new ItemStack[] { material.getCrushed(2) },
-            new int[] { 10000 },
-            20 * 20,
-            tVoltageMultiplier / 2)) {
-            Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate raw ore to Crushed ore'");
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(material.getRawOre(1))
+            .itemOutputs(material.getCrushed(2))
+            .duration(20*SECONDS)
+            .eut(tVoltageMultiplier/2)
+            .addTo(maceratorRecipes);
+
+        Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate raw ore to Crushed ore'");
+
 
         // Macerate Centrifuged to Pure Dust
-        if (GT_Values.RA.addPulveriserRecipe(
-            material.getCrushedCentrifuged(1),
-            new ItemStack[] { matDust, matDustA },
-            new int[] { 10000, 1000 },
-            20 * 20,
-            tVoltageMultiplier / 2)) {
-            Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate Centrifuged ore to Pure Dust'");
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(material.getCrushedCentrifuged(1))
+            .itemOutputs( matDust, matDustA)
+            .outputChances(100_00,10_00)
+            .duration(20*SECONDS)
+            .eut(tVoltageMultiplier/2)
+            .addTo(maceratorRecipes);
+
+        Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate Centrifuged ore to Pure Dust'");
+
 
         GT_Values.RA.stdBuilder()
             .itemInputs(material.getCrushedPurified(1))
