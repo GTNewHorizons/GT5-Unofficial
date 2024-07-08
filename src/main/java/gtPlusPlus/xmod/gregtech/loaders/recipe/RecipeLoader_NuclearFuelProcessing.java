@@ -5,6 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.fissionFuelProcessingRecipes;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -39,52 +40,48 @@ public class RecipeLoader_NuclearFuelProcessing {
         final FluidStack aLiFBeF2ThF4UF4 = NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(100);
 
         // 7LiF - BeF2 - ZrF4 - U235 - 590C
-        CORE.RA.addFissionFuel(
-            FluidUtils.getFluidStack(aLithiumFluoride, 550),
-            FluidUtils.getFluidStack(aBerylliumFluoride, 150),
-            FluidUtils.getFluidStack(aZirconiumFluoride, 60),
-            FluidUtils.getFluidStack(aUranium235, 240),
-            null,
-            null,
-            null,
-            null,
-            null, // Extra 5 inputs
-            FluidUtils.getFluidStack(aLiFBeF2ZrF4U235, 1000),
-            null,
-            30 * 60 * 20, // Duration
-            (int) TierEU.RECIPE_EV);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                FluidUtils.getFluidStack(aLithiumFluoride, 550),
+                FluidUtils.getFluidStack(aBerylliumFluoride, 150),
+                FluidUtils.getFluidStack(aZirconiumFluoride, 60),
+                FluidUtils.getFluidStack(aUranium235, 240)
+            )
+            .fluidOutputs(
+                FluidUtils.getFluidStack(aLiFBeF2ZrF4U235, 1000)
+            )
+            .duration(30 * MINUTES)
+            .eut( TierEU.RECIPE_EV)
+            .addTo(fissionFuelProcessingRecipes);
         // 7LiF - BeF2 - ZrF4 - UF4 - 650C
-        CORE.RA.addFissionFuel(
-            FluidUtils.getFluidStack(aLithiumFluoride, 600),
-            FluidUtils.getFluidStack(aBerylliumFluoride, 250),
-            FluidUtils.getFluidStack(aZirconiumFluoride, 80),
-            FluidUtils.getFluidStack(aUraniumTetraFluoride, 70),
-            null,
-            null,
-            null,
-            null,
-            null, // Extra 5 inputs
-            FluidUtils.getFluidStack(aLiFBeF2ZrF4UF4, 1000),
-            null,
-            40 * 60 * 20,
-            (int) TierEU.RECIPE_IV);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                FluidUtils.getFluidStack(aLithiumFluoride, 600),
+                FluidUtils.getFluidStack(aBerylliumFluoride, 250),
+                FluidUtils.getFluidStack(aZirconiumFluoride, 80),
+                FluidUtils.getFluidStack(aUraniumTetraFluoride, 70)
+            )
+            .fluidOutputs(
+                FluidUtils.getFluidStack(aLiFBeF2ZrF4UF4, 1000)
+            )
+            .duration(40 * MINUTES)
+            .eut( TierEU.RECIPE_IV)
+            .addTo(fissionFuelProcessingRecipes);
         // 7liF - BeF2 - ThF4 - UF4 - 566C
-        CORE.RA.addFissionFuel(
-            FluidUtils.getFluidStack(aLithiumFluoride, 580),
-            FluidUtils.getFluidStack(aBerylliumFluoride, 270),
-            FluidUtils.getFluidStack(aThoriumFluoride, 80),
-            FluidUtils.getFluidStack(aUraniumTetraFluoride, 70),
-            null,
-            null,
-            null,
-            null,
-            null, // Extra 5 inputs
-            FluidUtils.getFluidStack(aLiFBeF2ThF4UF4, 1000),
-            null,
-            50 * 60 * 20, // Duration
-            (int) TierEU.RECIPE_IV);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                FluidUtils.getFluidStack(aLithiumFluoride, 580),
+                FluidUtils.getFluidStack(aBerylliumFluoride, 270),
+                FluidUtils.getFluidStack(aThoriumFluoride, 80),
+                FluidUtils.getFluidStack(aUraniumTetraFluoride, 70)
+            )
+            .fluidOutputs(
+                FluidUtils.getFluidStack(aLiFBeF2ThF4UF4, 1000)
+            )
+            .duration(50 * MINUTES)
+            .eut( TierEU.RECIPE_IV)
+            .addTo(fissionFuelProcessingRecipes);
+
 
         // Reprocess Fuels
 
@@ -225,34 +222,27 @@ public class RecipeLoader_NuclearFuelProcessing {
             (int) TierEU.RECIPE_IV,
             4);
 
-        CORE.RA.addFissionFuel(
-            FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(100),
-            NUCLIDE.LiFBeF2UF4.getFluidStack(900),
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(1000),
-            null,
-            20 * 60 * 12, // Duration
-            (int) TierEU.RECIPE_IV);
-
-        CORE.RA.addFissionFuel(
-            FLUORIDES.THORIUM_TETRAFLUORIDE.getFluidStack(100),
-            NUCLIDE.LiFBeF2UF4.getFluidStack(900),
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(1000),
-            null,
-            20 * 60 * 15, // Duration
-            (int) TierEU.RECIPE_IV);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(100),
+                NUCLIDE.LiFBeF2UF4.getFluidStack(900)
+            )
+            .fluidOutputs(
+                NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(1000)
+            )
+            .duration(12 * MINUTES)
+            .eut( TierEU.RECIPE_IV)
+            .addTo(fissionFuelProcessingRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                FLUORIDES.THORIUM_TETRAFLUORIDE.getFluidStack(100),
+                NUCLIDE.LiFBeF2UF4.getFluidStack(900)
+            )
+            .fluidOutputs(
+                NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(1000)
+            )
+            .duration(15 * MINUTES)
+            .eut( TierEU.RECIPE_IV)
+            .addTo(fissionFuelProcessingRecipes);
     }
 }
