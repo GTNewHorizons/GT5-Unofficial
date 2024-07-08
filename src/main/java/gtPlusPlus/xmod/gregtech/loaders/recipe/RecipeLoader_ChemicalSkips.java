@@ -72,7 +72,12 @@ public class RecipeLoader_ChemicalSkips {
             .itemInputs(
                 WerkstoffLoader.PTMetallicPowder.get(OrePrefixes.dust, 32),ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0))
             .itemOutputs(
-                Materials.Platinum.getDust(64), Materials.Palladium.getDust(64),Materials.Iridium.getDust(64), Materials.Osmium.getDust(64),WerkstoffLoader.Rhodium.get(OrePrefixes.dust, 64),WerkstoffLoader.Ruthenium.get(OrePrefixes.dust, 64))
+                Materials.Platinum.getDust(64),
+                Materials.Palladium.getDust(64),
+                Materials.Iridium.getDust(64),
+                Materials.Osmium.getDust(64),
+                WerkstoffLoader.Rhodium.get(OrePrefixes.dust, 64),
+                WerkstoffLoader.Ruthenium.get(OrePrefixes.dust, 64))
             .outputChances(1667, 1667, 1667, 1667, 1667, 1667)
             .duration(20 * SECONDS)
             .eut( TierEU.RECIPE_UV)
@@ -122,7 +127,10 @@ public class RecipeLoader_ChemicalSkips {
             .itemInputs(
                 Materials.Lead.getDust(16), Materials.Bauxite.getDust(32),Materials.Tungstate.getDust(16), ItemUtils.getSimpleStack(GenericChem.mTitaTungstenIndiumCatalyst, 0))
             .itemOutputs(
-                Materials.Titanium.getDust(64), Materials.TungstenSteel.getDust(64),Materials.TungstenCarbide.getDust(64), Materials.Indium.getDust(64))
+                Materials.Titanium.getDust(64),
+                Materials.TungstenSteel.getDust(64),
+                Materials.TungstenCarbide.getDust(64),
+                Materials.Indium.getDust(64))
             .outputChances(2500, 2500, 2500, 2500)
             .duration(20 * SECONDS)
             .eut( TierEU.RECIPE_UV)
@@ -133,7 +141,12 @@ public class RecipeLoader_ChemicalSkips {
             .itemInputs(
                 Materials.Thorium.getDust(32), Materials.Uranium.getDust(32),ItemUtils.getSimpleStack(GenericChem.mRadioactivityCatalyst, 0))
             .itemOutputs(
-                ELEMENT.getInstance().THORIUM232.getDust(64),ELEMENT.getInstance().URANIUM233.getDust(64), Materials.Uranium235.getDust(64),ELEMENT.getInstance().PLUTONIUM238.getDust(64), Materials.Plutonium.getDust(64),Materials.Plutonium241.getDust(64))
+                ELEMENT.getInstance().THORIUM232.getDust(64),
+                ELEMENT.getInstance().URANIUM233.getDust(64),
+                Materials.Uranium235.getDust(64),
+                ELEMENT.getInstance().PLUTONIUM238.getDust(64),
+                Materials.Plutonium.getDust(64),
+                Materials.Plutonium241.getDust(64))
             .outputChances(1667, 1667, 1667, 1667, 1667, 1667)
             .duration(20 * SECONDS)
             .eut( TierEU.RECIPE_UV)
@@ -144,7 +157,12 @@ public class RecipeLoader_ChemicalSkips {
             .itemInputs(
                 Materials.Monazite.getDust(32),ItemUtils.getSimpleStack(GenericChem.mRareEarthGroupCatalyst, 0))
             .itemOutputs(
-                Materials.Cerium.getDust(64), Materials.Gadolinium.getDust(64),Materials.Samarium.getDust(64), getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 64L, 11002), getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 64L, 11007),ItemList.SuperconductorComposite.get(1))
+                Materials.Cerium.getDust(64),
+                Materials.Gadolinium.getDust(64),
+                Materials.Samarium.getDust(64),
+                getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 64L, 11002),
+                getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 64L, 11007),
+                ItemList.SuperconductorComposite.get(1))
             .outputChances(1667, 1667, 1667, 1667, 1667, 1667)
             .duration(20 * SECONDS)
             .eut( TierEU.RECIPE_UHV)
@@ -155,7 +173,11 @@ public class RecipeLoader_ChemicalSkips {
             .itemInputs(
                 Materials.Bastnasite.getDust(32),ItemUtils.getSimpleStack(GenericChem.mRareEarthGroupCatalyst, 0))
             .itemOutputs(
-                Materials.Holmium.getDust(64), Materials.Cerium.getDust(64),Materials.Samarium.getDust(64), Materials.Gadolinium.getDust(64), Materials.Lanthanum.getDust(64))
+                Materials.Holmium.getDust(64),
+                Materials.Cerium.getDust(64),
+                Materials.Samarium.getDust(64),
+                Materials.Gadolinium.getDust(64),
+                Materials.Lanthanum.getDust(64))
             .outputChances(2000, 2000, 2000, 2000, 2000)
             .duration(20 * SECONDS)
             .eut( TierEU.RECIPE_UHV)
@@ -191,8 +213,11 @@ public class RecipeLoader_ChemicalSkips {
             .itemInputs(
                 ItemUtils.getSimpleStack(GenericChem.mParticleAccelerationCatalyst, 0))
             .itemOutputs(
-                Particle.getBaseParticle(Particle.UNKNOWN), Particle.getBaseParticle(Particle.GRAVITON),Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.ELECTRON))
-            .outputChances(2000, 2000, 2000, 2000, 2000)
+                Particle.getBaseParticle(Particle.UNKNOWN),
+                Particle.getBaseParticle(Particle.GRAVITON),
+                Particle.getBaseParticle(Particle.PROTON),
+                Particle.getBaseParticle(Particle.ELECTRON))
+            .outputChances(2000, 2000, 2000, 2000)
             .fluidInputs(
                 Materials.Hydrogen.getGas(10000L), Materials.Deuterium.getGas(1000L))
             .fluidOutputs(
@@ -265,7 +290,11 @@ public class RecipeLoader_ChemicalSkips {
             .itemInputs(
                 ItemUtils.getSimpleStack(GenericChem.mSynchrotronCapableCatalyst, 0),GregtechItemList.Laser_Lens_Special.get(1))
             .itemOutputs(
-                Particle.getBaseParticle(Particle.Z_BOSON), Particle.getBaseParticle(Particle.W_BOSON),Particle.getBaseParticle(Particle.LAMBDA), Particle.getBaseParticle(Particle.OMEGA),Particle.getBaseParticle(Particle.HIGGS_BOSON))
+                Particle.getBaseParticle(Particle.Z_BOSON),
+                Particle.getBaseParticle(Particle.W_BOSON),
+                Particle.getBaseParticle(Particle.LAMBDA),
+                Particle.getBaseParticle(Particle.OMEGA),
+                Particle.getBaseParticle(Particle.HIGGS_BOSON))
             .outputChances(2000, 2000, 2000, 2000, 2000)
             .fluidInputs(
                 FluidUtils.getFluidStack("plasma.hydrogen", 30000), Materials.Helium.getPlasma(30000L),Materials.Americium.getPlasma(30000L),new FluidStack(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 30000))
@@ -284,7 +313,7 @@ public class RecipeLoader_ChemicalSkips {
                     GT_OreDictUnificator.get("cropSeaweed", 64), Materials.Mytryl.getDust(16),ItemUtils.getSimpleStack(GenericChem.mAlgagenicGrowthPromoterCatalyst, 0))
                 .itemOutputs(
                     seaweed, getModItem(NewHorizonsCoreMod.ID, "item.TCetiESeaweedExtract", 16))
-                .outputChances(2_500)
+                .outputChances(25_00, 25_00)
                 .fluidInputs(
                     FluidUtils.getFluidStack("unknowwater", 25_000))
                 .fluidOutputs(
