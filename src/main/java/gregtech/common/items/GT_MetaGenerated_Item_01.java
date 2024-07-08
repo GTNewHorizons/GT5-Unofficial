@@ -444,6 +444,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -4734,7 +4735,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 ItemList.Spray_Empty.get(1L),
                 ItemList.SPRAY_CAN_DYES_USED[i].get(1L),
                 ItemList.SPRAY_CAN_DYES[i].get(1L),
-                512L,
+                GregTech_API.sSpecialFile.get(ConfigCategories.general, "SprayCanUses", 512),
                 i);
             addItemBehavior(32000 + Spray_Colors[i], behaviourSprayColor);
             addItemBehavior(32000 + Spray_Colors_Used[i], behaviourSprayColor);
