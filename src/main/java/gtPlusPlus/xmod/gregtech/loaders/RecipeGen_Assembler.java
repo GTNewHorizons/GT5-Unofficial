@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import java.util.HashSet;
 import java.util.Set;
 
+import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
@@ -36,7 +37,7 @@ public class RecipeGen_Assembler extends RecipeGen_Base {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { material.getRod(1), material.getFrameBox(1) }))
             GT_Values.RA.addAssemblerRecipe(
                 material.getRod(4),
-                ItemUtils.getGregtechCircuit(4),
+                GT_Utility.getIntegratedCircuit(4),
                 material.getFrameBox(1),
                 60,
                 material.vVoltageMultiplier);

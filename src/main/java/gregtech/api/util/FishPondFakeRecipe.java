@@ -65,7 +65,7 @@ public class FishPondFakeRecipe {
     public static void addNewFishPondLoot(int circuit, ItemStack[] outputItems, int[] chances) {
         GT_Recipe x = new GT_Recipe(
             true,
-            new ItemStack[] { CI.getNumberedCircuit(circuit) },
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(circuit) },
             outputItems,
             null,
             chances,

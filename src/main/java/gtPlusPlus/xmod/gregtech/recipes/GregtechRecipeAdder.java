@@ -294,14 +294,14 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         ItemStack aMillingBall_Soapstone = GregtechItemList.Milling_Ball_Soapstone.get(0);
 
         // Inputs
-        ItemStack[] aInputsOre1 = new ItemStack[] { CI.getNumberedCircuit(10), aOreStack, aMillingBall_Alumina };
+        ItemStack[] aInputsOre1 = new ItemStack[] {GT_Utility.getIntegratedCircuit(10), aOreStack, aMillingBall_Alumina };
 
-        ItemStack[] aInputsOre2 = new ItemStack[] { CI.getNumberedCircuit(11), aOreStack, aMillingBall_Soapstone };
+        ItemStack[] aInputsOre2 = new ItemStack[] {GT_Utility.getIntegratedCircuit(11), aOreStack, aMillingBall_Soapstone };
 
-        ItemStack[] aInputsCrushed1 = new ItemStack[] { CI.getNumberedCircuit(10), aCrushedStack,
+        ItemStack[] aInputsCrushed1 = new ItemStack[] {GT_Utility.getIntegratedCircuit(10), aCrushedStack,
             aMillingBall_Alumina };
 
-        ItemStack[] aInputsCrushed2 = new ItemStack[] { CI.getNumberedCircuit(11), aCrushedStack,
+        ItemStack[] aInputsCrushed2 = new ItemStack[] {GT_Utility.getIntegratedCircuit(11), aCrushedStack,
             aMillingBall_Soapstone };
 
         // Outputs

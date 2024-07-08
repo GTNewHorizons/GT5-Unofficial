@@ -235,7 +235,7 @@ public class RecipeLoader_Nuclear {
         // Hydroxide
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getGregtechCircuit(3),
+                GT_Utility.getIntegratedCircuit(3),
                 ELEMENT.getInstance().OXYGEN.getCell(1)
             )
             .itemOutputs(CI.emptyCells(1))
@@ -248,7 +248,7 @@ public class RecipeLoader_Nuclear {
         // Beryllium Hydroxide
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getGregtechCircuit(3),
+                GT_Utility.getIntegratedCircuit(3),
                 ELEMENT.getInstance().BERYLLIUM.getDust(1)
             )
             .fluidInputs(MISC_MATERIALS.HYDROXIDE.getFluidStack(2000))
@@ -260,7 +260,7 @@ public class RecipeLoader_Nuclear {
         // Ammonium Bifluoride
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getGregtechCircuit(3),
+                GT_Utility.getIntegratedCircuit(3),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1)
             )
             .itemOutputs(CI.emptyCells(1))
@@ -273,7 +273,7 @@ public class RecipeLoader_Nuclear {
         // Ammonium Bifluoride
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getGregtechCircuit(3),
+                GT_Utility.getIntegratedCircuit(3),
                 aGtHydrofluoricAcid
             )
             .itemOutputs(CI.emptyCells(2))
@@ -287,7 +287,7 @@ public class RecipeLoader_Nuclear {
         // To be deprecated now that it is no longer needed for ammonium bifluoride
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getGregtechCircuit(3),
+                GT_Utility.getIntegratedCircuit(3),
                 ELEMENT.getInstance().HYDROGEN.getCell(1)
             )
             .itemOutputs(CI.emptyCells(1))

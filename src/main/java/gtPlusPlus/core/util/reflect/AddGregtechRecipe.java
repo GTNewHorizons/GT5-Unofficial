@@ -33,7 +33,7 @@ public final class AddGregtechRecipe {
         }
 
         int aCircuitNumber = -1;
-        Item aCircuit = CI.getNumberedCircuit(1)
+        Item aCircuit = GT_Utility.getIntegratedCircuit(1)
             .getItem();
         boolean hasCircuit = false;
 

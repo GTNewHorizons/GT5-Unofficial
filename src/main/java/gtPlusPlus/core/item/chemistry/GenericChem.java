@@ -383,7 +383,7 @@ public class GenericChem extends ItemPackage {
     private void recipeSodiumEthoxide() {
         // C2H5OH + Na → C2H5ONa + H
         CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(16), ELEMENT.getInstance().SODIUM.getDust(1) },
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(16), ELEMENT.getInstance().SODIUM.getDust(1) },
             new FluidStack[] { Materials.Ethanol.getFluid(1000) },
             new ItemStack[] { ItemUtils.getSimpleStack(mSodiumEthoxide, 9) },
             new FluidStack[] { ELEMENT.getInstance().HYDROGEN.getFluidStack(1000) },
@@ -395,7 +395,7 @@ public class GenericChem extends ItemPackage {
     private void recipePotassiumHydroxide() {
         // Ca(OH)2 + K2O + CO2 → CaCO3 + 2 KOH
         CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(18), Materials.Potash.getDust(3),
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(18), Materials.Potash.getDust(3),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5), },
             new FluidStack[] { Materials.CarbonDioxide.getGas(1000) },
             new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 5),
@@ -410,7 +410,7 @@ public class GenericChem extends ItemPackage {
 
         // Potassium ethyl xanthate - CH3CH2OH + CS2 + KOH → C3H5KOS2 + H2O
         CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(17), ItemUtils.getSimpleStack(mPotassiumHydroxide, 3), },
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(17), ItemUtils.getSimpleStack(mPotassiumHydroxide, 3), },
             new FluidStack[] { Materials.Ethanol.getFluid(1000), FluidUtils.getFluidStack(Carbon_Disulfide, 1000), },
             new ItemStack[] { ItemUtils.getSimpleStack(mPotassiumEthylXanthate, 12) },
             new FluidStack[] { FluidUtils.getWater(1000) },
@@ -420,7 +420,7 @@ public class GenericChem extends ItemPackage {
 
         // Sodium ethyl xanthate - CH3CH2ONa + CS2 → CH3CH2OCS2Na
         CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(17), ItemUtils.getSimpleStack(mSodiumEthoxide, 9) },
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(17), ItemUtils.getSimpleStack(mSodiumEthoxide, 9) },
             new FluidStack[] { FluidUtils.getFluidStack(Carbon_Disulfide, 1000), },
             new ItemStack[] { ItemUtils.getSimpleStack(mSodiumEthylXanthate, 12) },
             new FluidStack[] {},
@@ -443,7 +443,7 @@ public class GenericChem extends ItemPackage {
             .addTo(blastFurnaceRecipes);
 
         CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(20), ItemUtils.getSimpleStack(mBrownCatalyst, 0),
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(20), ItemUtils.getSimpleStack(mBrownCatalyst, 0),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 4) },
             new FluidStack[] { FluidUtils.getFluidStack(CoalTar.Coal_Gas, 1000), },
             new ItemStack[] {},
@@ -735,7 +735,7 @@ public class GenericChem extends ItemPackage {
 
         // C6H4(CO)2O + C6H5CH2CH3 = C6H4(CO)2C6H3CH2CH3 + H2O
         CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(4),
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(4),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 15), },
             new FluidStack[] { FluidUtils.getFluidStack(CoalTar.Ethylbenzene, 1000), },
             new ItemStack[] {},
@@ -749,7 +749,7 @@ public class GenericChem extends ItemPackage {
 
         // C6H4(CO)2C6H3CH2CH3 + 2H = C6H4(COH)2C6H3CH2CH3
         CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(4), ItemUtils.getSimpleStack(mOrangeCatalyst, 0), },
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(4), ItemUtils.getSimpleStack(mOrangeCatalyst, 0), },
             new FluidStack[] { FluidUtils.getFluidStack(Ethylanthraquinone2, 1000),
                 FluidUtils.getFluidStack("hydrogen", 2000), },
             new ItemStack[] {},
@@ -775,7 +775,7 @@ public class GenericChem extends ItemPackage {
 
         // LiOH + H2O2 = HLiO2 + H2O
         CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(4),
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(4),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 3), },
             new FluidStack[] { FluidUtils.getFluidStack("fluid.hydrogenperoxide", 1000), },
             new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroperoxide", 4), },
@@ -790,7 +790,7 @@ public class GenericChem extends ItemPackage {
 
         // C6H4(COH)2C6H3CH2CH3 + 2O =(C6H4CH)2= H2O2 + C6H4(CO)2C6H3CH2CH3
         CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(4), },
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(4), },
             new FluidStack[] { FluidUtils.getFluidStack("air", 20000),
                 FluidUtils.getFluidStack(Ethylanthrahydroquinone2, 5000),
                 FluidUtils.getFluidStack("fluid.anthracene", 50), },
@@ -802,7 +802,7 @@ public class GenericChem extends ItemPackage {
             1);
 
         CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(4), },
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(4), },
             new FluidStack[] { Materials.Oxygen.getGas(10000), FluidUtils.getFluidStack(Ethylanthrahydroquinone2, 5000),
                 FluidUtils.getFluidStack("fluid.anthracene", 50), },
             new ItemStack[] {},

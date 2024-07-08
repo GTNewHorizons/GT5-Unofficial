@@ -236,7 +236,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
 
     private ItemStack getCircuit(ItemStack[] t) {
         for (ItemStack j : t) {
-            if (j.getItem() == CI.getNumberedCircuit(0)
+            if (j.getItem() == GT_Utility.getIntegratedCircuit(0)
                 .getItem()) {
                 if (j.getItemDamage() >= 20 && j.getItemDamage() <= 22) {
                     return j;
@@ -411,7 +411,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
                     if (mold != null && fluid != null) {
                         List<ItemStack> inputItems = new ArrayList<>();
                         inputItems.add(mold);
-                        inputItems.add(ItemUtils.getGregtechCircuit(22));
+                        inputItems.add(GT_Utility.getIntegratedCircuit(22));
 
                         processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
                         processingLogic.setInputFluids(fluid);

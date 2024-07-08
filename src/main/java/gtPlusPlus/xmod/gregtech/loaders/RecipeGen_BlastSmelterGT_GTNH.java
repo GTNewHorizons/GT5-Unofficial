@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -201,7 +202,7 @@ public class RecipeGen_BlastSmelterGT_GTNH {
                     // If no circuit was found, add a circuit here
                     if (!circuitFound) {
                         l = 1;
-                        newInput[0] = CI.getNumberedCircuit(inputs.length);
+                        newInput[0] = GT_Utility.getIntegratedCircuit(inputs.length);
                     }
 
                     for (ItemStack y : inputs) {

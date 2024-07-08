@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.EnderIO;
 import static gtPlusPlus.core.recipe.RECIPES_Tools.craftingToolHardHammer;
 import static gtPlusPlus.core.recipe.RECIPES_Tools.craftingToolWrench;
 
+import gregtech.api.enums.TierEU;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -333,7 +334,7 @@ public class RECIPE_IC2 {
             aRubber.getFluidStack(144 * 4),
             GregtechItemList.Armour_Hazmat_Advanced_Helmet.get(1),
             30 * 20,
-            MaterialUtils.getVoltageForTier(2));
+            (int) TierEU.RECIPE_MV);
 
         CORE.RA.addSixSlotAssemblingRecipe(
             new ItemStack[] { CI.getNumberedAdvancedCircuit(2), aBasicHazmatPieces[1],
@@ -342,7 +343,7 @@ public class RECIPE_IC2 {
             aRubber.getFluidStack(144 * 10),
             GregtechItemList.Armour_Hazmat_Advanced_Chest.get(1),
             90 * 20,
-            MaterialUtils.getVoltageForTier(2));
+            (int) TierEU.RECIPE_MV);
 
         CORE.RA.addSixSlotAssemblingRecipe(
             new ItemStack[] { CI.getNumberedAdvancedCircuit(2), aBasicHazmatPieces[2],
@@ -351,7 +352,7 @@ public class RECIPE_IC2 {
             aRubber.getFluidStack(144 * 8),
             GregtechItemList.Armour_Hazmat_Advanced_Legs.get(1),
             75 * 20,
-            MaterialUtils.getVoltageForTier(2));
+            (int) TierEU.RECIPE_MV);
 
         CORE.RA.addSixSlotAssemblingRecipe(
             new ItemStack[] { CI.getNumberedAdvancedCircuit(2), aBasicHazmatPieces[3],
@@ -360,6 +361,6 @@ public class RECIPE_IC2 {
             aRubber.getFluidStack(144 * 6),
             GregtechItemList.Armour_Hazmat_Advanced_Boots.get(1),
             45 * 20,
-            MaterialUtils.getVoltageForTier(2));
+            (int) TierEU.RECIPE_MV);
     }
 }

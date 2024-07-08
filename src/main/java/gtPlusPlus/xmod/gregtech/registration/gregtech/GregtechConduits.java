@@ -1182,7 +1182,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aCable01 })) {
             GT_Values.RA.addAssemblerRecipe(
                 aWire01,
-                CI.getNumberedCircuit(24),
+                GT_Utility.getIntegratedCircuit(24),
                 FluidUtils.getFluidStack("molten.rubber", 144),
                 aCable01,
                 100,
@@ -1193,7 +1193,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire02, aCable02 })) {
             GT_Values.RA.addAssemblerRecipe(
                 aWire02,
-                CI.getNumberedCircuit(24),
+                GT_Utility.getIntegratedCircuit(24),
                 FluidUtils.getFluidStack("molten.rubber", 144),
                 aCable02,
                 100,
@@ -1204,7 +1204,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aCable04 })) {
             GT_Values.RA.addAssemblerRecipe(
                 aWire04,
-                CI.getNumberedCircuit(24),
+                GT_Utility.getIntegratedCircuit(24),
                 FluidUtils.getFluidStack("molten.rubber", 288),
                 aCable04,
                 100,
@@ -1215,7 +1215,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire08, aCable08 })) {
             GT_Values.RA.addAssemblerRecipe(
                 aWire08,
-                CI.getNumberedCircuit(24),
+                GT_Utility.getIntegratedCircuit(24),
                 FluidUtils.getFluidStack("molten.rubber", 432),
                 aCable08,
                 100,
@@ -1226,7 +1226,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire12, aCable12 })) {
             GT_Values.RA.addAssemblerRecipe(
                 aWire12,
-                CI.getNumberedCircuit(24),
+                GT_Utility.getIntegratedCircuit(24),
                 FluidUtils.getFluidStack("molten.rubber", 576),
                 aCable12,
                 100,
@@ -1237,7 +1237,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire16, aCable16 })) {
             GT_Values.RA.addAssemblerRecipe(
                 aWire16,
-                CI.getNumberedCircuit(24),
+                GT_Utility.getIntegratedCircuit(24),
                 FluidUtils.getFluidStack("molten.rubber", 720),
                 aCable16,
                 100,
@@ -1248,27 +1248,27 @@ public class GregtechConduits {
 
         // 2x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(2), CI.getNumberedCircuit(2), null, aWire02, 100, 8);
+            GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(2), GT_Utility.getIntegratedCircuit(2), null, aWire02, 100, 8);
         }
 
         // 4x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(4), CI.getNumberedCircuit(4), null, aWire04, 100, 8);
+            GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(4), GT_Utility.getIntegratedCircuit(4), null, aWire04, 100, 8);
         }
 
         // 8x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(8), CI.getNumberedCircuit(8), null, aWire08, 100, 8);
+            GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(8), GT_Utility.getIntegratedCircuit(8), null, aWire08, 100, 8);
         }
 
         // 12x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(12), CI.getNumberedCircuit(12), null, aWire12, 100, 8);
+            GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(12), GT_Utility.getIntegratedCircuit(12), null, aWire12, 100, 8);
         }
 
         // 16x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(16), CI.getNumberedCircuit(16), null, aWire16, 100, 8);
+            GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(16), GT_Utility.getIntegratedCircuit(16), null, aWire16, 100, 8);
         }
 
         return true;

@@ -10,6 +10,7 @@ import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generateWireRecipes;
 
+import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -267,7 +268,7 @@ public class RECIPES_General {
                 CI.getElectricPump(2, 1),
                 CI.getPlate(2, 4),
                 ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(0), 2),
-                CI.getNumberedCircuit(16))
+                GT_Utility.getIntegratedCircuit(16))
             .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPestKiller))
             .fluidInputs(FluidUtils.getHotWater(500))
             .duration(1 * MINUTES)

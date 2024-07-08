@@ -92,7 +92,7 @@ public class CoalTar extends ItemPackage {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 2),
-                ItemUtils.getGregtechCircuit(1)
+                GT_Utility.getIntegratedCircuit(1)
             )
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2))
             .fluidInputs(FluidUtils.getFluidStack("benzene", 2000))
@@ -105,7 +105,7 @@ public class CoalTar extends ItemPackage {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("cellBenzene", 2),
-                ItemUtils.getGregtechCircuit(1)
+                GT_Utility.getIntegratedCircuit(1)
             )
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2))
             .fluidInputs(
@@ -195,7 +195,7 @@ public class CoalTar extends ItemPackage {
             .addTo(UniversalChemical);
 
         GT_Values.RA.addDistilleryRecipe(
-            CI.getNumberedCircuit(6), // Circuit
+            GT_Utility.getIntegratedCircuit(6), // Circuit
             FluidUtils.getFluidStack("fluid.sulfuriccoaltaroil", 1000), // aInput
             FluidUtils.getFluidStack("fluid.naphthalene", 1000), // aOutput
             1200, // aDuration

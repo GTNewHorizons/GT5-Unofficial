@@ -7,6 +7,7 @@ import static gregtech.api.enums.Mods.GalaxySpace;
 import advsolar.utils.MTRecipeRecord;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
@@ -19,7 +20,7 @@ public class RecipeLoader_MolecularTransformer {
     public static void run() {
 
         for (MTRecipeRecord aRecipe : transformerRecipes) {
-            int aEU = MaterialUtils.getVoltageForTier(5);
+            int aEU = (int) TierEU.RECIPE_IV;
             Logger.INFO("=======================");
             Logger.INFO("Generating GT recipe for Molecular Transformer.");
             Logger.INFO(

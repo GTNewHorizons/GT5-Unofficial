@@ -171,7 +171,7 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter
             .isServerSide()) {
             // Get Controller Circuit
             if (circuit == null) {
-                circuit = CI.getNumberedCircuit(0)
+                circuit = GT_Utility.getIntegratedCircuit(0)
                     .getItem();
             }
             if (aStack != null && aStack.getItem() == circuit) {

@@ -1,5 +1,6 @@
 package gtPlusPlus.core.tileentities.general;
 
+import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -108,7 +109,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
                     // Check Circuit Type
                     ItemStack aOutput;
                     if (aTypeInSlot == 0) {
-                        aOutput = CI.getNumberedCircuit(e);
+                        aOutput = GT_Utility.getIntegratedCircuit(e);
                     } else if (aTypeInSlot == 1) {
                         aOutput = CI.getNumberedBioCircuit(e);
                     } else if (aTypeInSlot == 2) {

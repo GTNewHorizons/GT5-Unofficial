@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import gregtech.api.enums.TierEU;
 import net.minecraftforge.fluids.FluidStack;
 
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -29,7 +30,7 @@ public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
         mFluidOutputs = aOutputs;
         mMaxOutputQuantity = aMaxOutputQuantity;
         mDuration = 500;
-        mEUt = MaterialUtils.getVoltageForTier(5);
+        mEUt = (int) TierEU.RECIPE_IV;
     }
 
     @Override

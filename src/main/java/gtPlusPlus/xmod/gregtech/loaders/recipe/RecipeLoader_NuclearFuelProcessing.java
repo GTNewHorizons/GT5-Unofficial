@@ -52,7 +52,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             FluidUtils.getFluidStack(aLiFBeF2ZrF4U235, 1000),
             null,
             30 * 60 * 20, // Duration
-            MaterialUtils.getVoltageForTier(4));
+            (int) TierEU.RECIPE_EV);
 
         // 7LiF - BeF2 - ZrF4 - UF4 - 650C
         CORE.RA.addFissionFuel(
@@ -68,7 +68,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             FluidUtils.getFluidStack(aLiFBeF2ZrF4UF4, 1000),
             null,
             40 * 60 * 20,
-            MaterialUtils.getVoltageForTier(5));
+            (int) TierEU.RECIPE_IV);
 
         // 7liF - BeF2 - ThF4 - UF4 - 566C
         CORE.RA.addFissionFuel(
@@ -84,7 +84,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             FluidUtils.getFluidStack(aLiFBeF2ThF4UF4, 1000),
             null,
             50 * 60 * 20, // Duration
-            MaterialUtils.getVoltageForTier(5));
+            (int) TierEU.RECIPE_IV);
 
         // Reprocess Fuels
 
@@ -100,7 +100,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             new int[] { 10000, 10000, 500, 500, 500, 250, 250, 250 },
             NUCLIDE.UF6F2.getFluidStack(1500),
             20 * 60 * 10,
-            MaterialUtils.getVoltageForTier(5));
+            (int) TierEU.RECIPE_IV);
         CORE.RA.addReactorProcessingUnitRecipe(
             CI.getNumberedAdvancedCircuit(18),
             ELEMENT.getInstance().FLUORINE.getCell(6),
@@ -113,7 +113,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             new int[] { 10000, 10000, 10000, 1000, 1000, 1000, 500, 500, 500 },
             NUCLIDE.UF6F2.getFluidStack(3000),
             20 * 60 * 10,
-            MaterialUtils.getVoltageForTier(5));
+            (int) TierEU.RECIPE_IV);
 
         // Reactor Blanket step 1 - Fluorination
         CORE.RA.addReactorProcessingUnitRecipe(
@@ -127,7 +127,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             new int[] { 10000, 10000, 1000, 1000, 1000, 1000, 1000, 1000 },
             NUCLIDE.UF6F2.getFluidStack(3000),
             20 * 60 * 5,
-            MaterialUtils.getVoltageForTier(5));
+            (int) TierEU.RECIPE_IV);
         CORE.RA.addReactorProcessingUnitRecipe(
             CI.getNumberedAdvancedCircuit(8),
             ELEMENT.getInstance().FLUORINE.getCell(6),
@@ -140,7 +140,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             new int[] { 10000, 10000, 10000, 2000, 2000, 2000, 2000, 2000, 2000 },
             NUCLIDE.UF6F2.getFluidStack(6000),
             20 * 60 * 5,
-            MaterialUtils.getVoltageForTier(5));
+            (int) TierEU.RECIPE_IV);
 
         // Reactor Blanket step 2 - Sorption + Cold Trap
         CORE.RA.addColdTrapRecipe(
@@ -153,7 +153,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             new int[] { 10000, 10000, 3000, 2000, 1000 },
             FLUORIDES.SODIUM_FLUORIDE.getFluidStack(2000),
             20 * 60 * 10,
-            MaterialUtils.getVoltageForTier(3));
+            (int) TierEU.RECIPE_HV);
 
         // LiBeF2UF4FP + F2 = LiFBeF2 & UF6F2FP
         // Reactor Core step 1 - Process Burnt Salt
@@ -165,7 +165,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             new int[] { 10000 },
             FluidUtils.getFluidStack(NuclearChem.Impure_LiFBeF2, 1000),
             20 * 60 * 120,
-            MaterialUtils.getVoltageForTier(3));
+            (int) TierEU.RECIPE_HV);
 
         // LiBeF2UF4FP + F2 = LiFBeF2 & UF6F2FP
         // Reactor Core step 1 - Process Burnt Salt
@@ -177,7 +177,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             new int[] { 10000 },
             FluidUtils.getFluidStack(NuclearChem.Impure_LiFBeF2, 2000),
             20 * 60 * 60,
-            MaterialUtils.getVoltageForTier(3));
+            (int) TierEU.RECIPE_HV);
 
         // Reactor Core step 2A - Sorption + Cold Trap
         CORE.RA.addColdTrapRecipe(
@@ -191,7 +191,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             new int[] { 10000, 10000, 5000, 5000, 5000, 5000, 5000, 5000 },
             FLUORIDES.SODIUM_FLUORIDE.getFluidStack(2000),
             20 * 60 * 10,
-            MaterialUtils.getVoltageForTier(4));
+            (int) TierEU.RECIPE_EV);
 
         // Reactor Core step 2B - Distillation
         GT_Values.RA.stdBuilder()
@@ -222,7 +222,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             new FluidStack[] { NUCLIDE.LiFBeF2UF4.getFluidStack(3000),
                 FluidUtils.getFluidStack("hydrofluoricacid", 2000) },
             300 * 10,
-            MaterialUtils.getVoltageForTier(5),
+            (int) TierEU.RECIPE_IV,
             4);
 
         CORE.RA.addFissionFuel(
@@ -238,7 +238,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(1000),
             null,
             20 * 60 * 12, // Duration
-            MaterialUtils.getVoltageForTier(5));
+            (int) TierEU.RECIPE_IV);
 
         CORE.RA.addFissionFuel(
             FLUORIDES.THORIUM_TETRAFLUORIDE.getFluidStack(100),
@@ -253,6 +253,6 @@ public class RecipeLoader_NuclearFuelProcessing {
             NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(1000),
             null,
             20 * 60 * 15, // Duration
-            MaterialUtils.getVoltageForTier(5));
+            (int) TierEU.RECIPE_IV);
     }
 }

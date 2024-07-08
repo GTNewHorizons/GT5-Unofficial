@@ -253,11 +253,6 @@ public class CI {
         }
     }
 
-    @Deprecated // Use GT_Utility.getIntegratedCircuit() instead
-    public static ItemStack getNumberedCircuit(int Meta) {
-        return ItemUtils.getGregtechCircuit(Meta);
-    }
-
     private static Object getMaterialFromTier(int tier) {
         if (tier == 0) {
             return Materials.Wood;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -108,7 +109,7 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
             Logger.WARNING("[BAS] Size: " + mMaterialListSize);
 
             // Make a simple one Material MaterialStack[] and log it for validity.
-            circuitGT = ItemUtils.getGregtechCircuit(1);
+            circuitGT = GT_Utility.getIntegratedCircuit(1);
             final ItemStack[] tItemStackTest = new ItemStack[] { circuitGT, tStack };
             inputStackCount = 1;
             fluidAmount = 144 * inputStackCount;
@@ -175,7 +176,7 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
                 // If this Material has some kind of compound list, proceed
                 if (mMaterialListSize > 1) {
                     final gtPlusPlus.core.material.MaterialStack[] tempStack = new gtPlusPlus.core.material.MaterialStack[mMaterialListSize];
-                    circuitGT = ItemUtils.getGregtechCircuit(mMaterialListSize);
+                    circuitGT = GT_Utility.getIntegratedCircuit(mMaterialListSize);
                     // Just double checking
                     if (tempStack.length > 1) {
 

@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.TierEU;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -291,7 +292,7 @@ public class GregtechMetaTileEntity_MassFabricator
                                 null,
                                 null,
                                 40,
-                                MaterialUtils.getVoltageForTier(1),
+                                (int) TierEU.RECIPE_LV,
                                 0);
                             return Stream.of(recipe);
                         }

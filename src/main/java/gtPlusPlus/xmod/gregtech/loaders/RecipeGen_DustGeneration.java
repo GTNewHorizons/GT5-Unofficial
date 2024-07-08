@@ -168,22 +168,22 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
                     if (inputStacks.length == 1) {
                         input[1] = input[0];
-                        input[0] = CI.getNumberedCircuit(inputStacks.length + 10);
+                        input[0] = GT_Utility.getIntegratedCircuit(inputStacks.length + 10);
                     } else if (inputStacks.length == 2) {
                         input[2] = input[1];
                         input[1] = input[0];
-                        input[0] = CI.getNumberedCircuit(inputStacks.length + 10);
+                        input[0] = GT_Utility.getIntegratedCircuit(inputStacks.length + 10);
 
                     } else if (inputStacks.length == 3) {
                         input[3] = input[2];
                         input[2] = input[1];
                         input[1] = input[0];
-                        input[0] = CI.getNumberedCircuit(inputStacks.length + 10);
+                        input[0] = GT_Utility.getIntegratedCircuit(inputStacks.length + 10);
                     }
 
                     /*
                      * for (int g = 0; g<4; g++) { if(inputStacks.length > g) { input[g] = inputStacks[g] != null ?
-                     * inputStacks[g] : null; } else { input[g] = CI.getNumberedCircuit(g+10); break; } }
+                     * inputStacks[g] : null; } else { input[g] = GT_Utility.getIntegratedCircuit(g+10); break; } }
                      */
 
                     // Add mixer Recipe
@@ -279,17 +279,17 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
                     if (inputStacks.length == 1) {
                         input2 = input1;
-                        input1 = CI.getNumberedCircuit(20);
+                        input1 = GT_Utility.getIntegratedCircuit(20);
                     } else if (inputStacks.length == 2) {
                         input3 = input2;
                         input2 = input1;
-                        input1 = CI.getNumberedCircuit(20);
+                        input1 = GT_Utility.getIntegratedCircuit(20);
 
                     } else if (inputStacks.length == 3) {
                         input4 = input3;
                         input3 = input2;
                         input2 = input1;
-                        input1 = CI.getNumberedCircuit(20);
+                        input1 = GT_Utility.getIntegratedCircuit(20);
                     }
 
                     // Add mixer Recipe

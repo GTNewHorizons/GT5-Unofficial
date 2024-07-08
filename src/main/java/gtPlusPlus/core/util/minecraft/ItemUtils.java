@@ -557,11 +557,6 @@ public class ItemUtils {
         return itemNames;
     }
 
-    @Deprecated // Use GT_Utility.getIntegratedCircuit() instead
-    public static ItemStack getGregtechCircuit(final int Meta) {
-        return ItemUtils.getItemStackWithMeta(true, "gregtech:gt.integrated_circuit", "Gregtech Circuit", Meta, 0);
-    }
-
     private static final Map<Item, String> mModidCache = new HashMap<>();
 
     private static String getModId(final Item item) {
@@ -899,7 +894,7 @@ public class ItemUtils {
             Item aItem = aStack.getItem();
             if (aItem == CI.getNumberedBioCircuit(0)
                 .getItem() || aItem
-                    == CI.getNumberedCircuit(0)
+                    == GT_Utility.getIntegratedCircuit(0)
                         .getItem()
                 || aItem == CI.getNumberedAdvancedCircuit(0)
                     .getItem()) {

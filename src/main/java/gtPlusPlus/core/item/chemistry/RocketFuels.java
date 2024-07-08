@@ -115,7 +115,7 @@ public class RocketFuels extends ItemPackage {
             new FluidStack[] { FluidUtils.getFluidStack(Nitrogen_Tetroxide, 1000), },
             new int[] { 100, 100, 50, 50 },
             20 * 30,
-            MaterialUtils.getVoltageForTier(3),
+            (int) TierEU.RECIPE_HV,
             3);
     }
 
@@ -129,7 +129,7 @@ public class RocketFuels extends ItemPackage {
             new ItemStack[] {},
             new FluidStack[] { FluidUtils.getFluidStack(Hydrazine, 1000), },
             20 * 30,
-            MaterialUtils.getVoltageForTier(2),
+            (int) TierEU.RECIPE_MV,
             1);
     }
 
