@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -485,36 +486,50 @@ public class RecipeLoader_Nuclear {
     private static void fluidExtractorRecipes() {
 
         // FLiBe fuel
-        CORE.RA.addFluidExtractionRecipe(NUCLIDE.Li2BeF4.getDust(1), NUCLIDE.Li2BeF4.getFluidStack(144), 100, 500);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(NUCLIDE.Li2BeF4.getDust(1))
+            .fluidOutputs(NUCLIDE.Li2BeF4.getFluidStack(144))
+            .duration(5*SECONDS)
+            .eut(500)
+            .addTo(fluidExtractionRecipes);
+
         // Lithium Fluoride
-        CORE.RA.addFluidExtractionRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 1),
-            FLUORIDES.LITHIUM_FLUORIDE.getFluidStack(144),
-            100,
-            500);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 1))
+            .fluidOutputs(FLUORIDES.LITHIUM_FLUORIDE.getFluidStack(144))
+            .duration(5*SECONDS)
+            .eut(500)
+            .addTo(fluidExtractionRecipes);
+
         // LFTR Fuel 1
-        CORE.RA.addFluidExtractionRecipe(
-            NUCLIDE.LiFBeF2ZrF4U235.getDust(1),
-            NUCLIDE.LiFBeF2ZrF4U235.getFluidStack(144),
-            250,
-            1000);
-        CORE.RA.addFluidExtractionRecipe(
-            NUCLIDE.LiFBeF2ZrF4UF4.getDust(1),
-            NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(144),
-            150,
-            1500);
-        CORE.RA.addFluidExtractionRecipe(
-            NUCLIDE.LiFBeF2ThF4UF4.getDust(1),
-            NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(144),
-            150,
-            2000);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(NUCLIDE.LiFBeF2ZrF4U235.getDust(1))
+            .fluidOutputs(NUCLIDE.LiFBeF2ZrF4U235.getFluidStack(144))
+            .duration(12*SECONDS+10*TICKS)
+            .eut(1000)
+            .addTo(fluidExtractionRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(NUCLIDE.LiFBeF2ZrF4UF4.getDust(1))
+            .fluidOutputs(NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(144))
+            .duration(7*SECONDS+10*TICKS)
+            .eut(1500)
+            .addTo(fluidExtractionRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(NUCLIDE.LiFBeF2ThF4UF4.getDust(1))
+            .fluidOutputs(NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(144))
+            .duration(7*SECONDS+10*TICKS)
+            .eut(2000)
+            .addTo(fluidExtractionRecipes);
 
         // ZIRCONIUM_TETRAFLUORIDE
-        CORE.RA.addFluidExtractionRecipe(
-            FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1),
-            FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(144),
-            200,
-            512 + 256);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1))
+            .fluidOutputs( FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(144))
+            .duration(10*SECONDS)
+            .eut(512+256)
+            .addTo(fluidExtractionRecipes);
     }
 
     private static void fusionChainRecipes() {
@@ -524,7 +539,7 @@ public class RecipeLoader_Nuclear {
             .fluidOutputs(new FluidStack(ELEMENT.getInstance().NEON.getPlasma(), 1000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LuV)
-            .metadata(FUSION_THRESHOLD, 100000000)
+            .metadata(FUSION_THRESHOLD, 100_000_000)
             .addTo(fusionRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -534,7 +549,7 @@ public class RecipeLoader_Nuclear {
             .fluidOutputs(new FluidStack(ELEMENT.STANDALONE.FORCE.getPlasma(), 1000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LuV)
-            .metadata(FUSION_THRESHOLD, 100000000)
+            .metadata(FUSION_THRESHOLD, 100_000_000)
             .addTo(fusionRecipes);
 
         // Mk2
@@ -543,7 +558,7 @@ public class RecipeLoader_Nuclear {
             .fluidOutputs(new FluidStack(ELEMENT.getInstance().KRYPTON.getPlasma(), 144))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(FUSION_THRESHOLD, 300000000)
+            .metadata(FUSION_THRESHOLD, 300_000_000)
             .addTo(fusionRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -553,7 +568,7 @@ public class RecipeLoader_Nuclear {
             .fluidOutputs(new FluidStack(ELEMENT.STANDALONE.ASTRAL_TITANIUM.getPlasma(), 1000))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(FUSION_THRESHOLD, 300000000)
+            .metadata(FUSION_THRESHOLD, 300_000_000)
             .addTo(fusionRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -563,7 +578,7 @@ public class RecipeLoader_Nuclear {
             .fluidOutputs(new FluidStack(ELEMENT.STANDALONE.RUNITE.getPlasma(), 1000))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(FUSION_THRESHOLD, 300000000)
+            .metadata(FUSION_THRESHOLD, 300_000_000)
             .addTo(fusionRecipes);
 
         // Mk3
@@ -572,7 +587,7 @@ public class RecipeLoader_Nuclear {
             .fluidOutputs(new FluidStack(ELEMENT.getInstance().XENON.getPlasma(), 144))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(FUSION_THRESHOLD, 500000000)
+            .metadata(FUSION_THRESHOLD, 500_000_000)
             .addTo(fusionRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -582,7 +597,7 @@ public class RecipeLoader_Nuclear {
             .fluidOutputs(new FluidStack(ELEMENT.STANDALONE.ADVANCED_NITINOL.getPlasma(), 1000))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(FUSION_THRESHOLD, 500000000)
+            .metadata(FUSION_THRESHOLD, 500_000_000)
             .addTo(fusionRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -592,7 +607,7 @@ public class RecipeLoader_Nuclear {
             .fluidOutputs(new FluidStack(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 1000))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(FUSION_THRESHOLD, 500000000)
+            .metadata(FUSION_THRESHOLD, 500_000_000)
             .addTo(fusionRecipes);
     }
 
