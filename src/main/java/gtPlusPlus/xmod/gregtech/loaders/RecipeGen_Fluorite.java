@@ -21,10 +21,12 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 public class RecipeGen_Fluorite extends RecipeGen_Base {
@@ -220,9 +222,20 @@ public class RecipeGen_Fluorite extends RecipeGen_Base {
         /**
          * Forge Hammer
          */
-        if (GT_Values.RA.addForgeHammerRecipe(material.getCrushedCentrifuged(1), matDust, 10, tVoltageMultiplier / 4)) {
-            Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Crushed Centrifuged to Pure Dust'");
-        }
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                material.getCrushedCentrifuged(1)
+            )
+            .itemOutputs(
+                matDust
+            )
+            .duration(10 * TICKS)
+            .eut(tVoltageMultiplier / 4)
+            .addTo(hammerRecipes);
+
+        Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Crushed Centrifuged to Pure Dust'");
+
 
         /**
          * Centrifuge

@@ -16,6 +16,7 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -94,15 +95,19 @@ public class RecipeGen_MetalRecipe extends RecipeGen_Base {
 
         if (ItemUtils.checkForInvalidItems(material.getRod(1))
             && ItemUtils.checkForInvalidItems(material.getLongRod(1))) {
-            if (GT_Values.RA.addForgeHammerRecipe(
-                material.getRod(2),
-                material.getLongRod(1),
-                (int) Math.max(material.getMass(), 1L),
-                16)) {
-                Logger.WARNING("Hammer Long Rod Recipe: " + material.getLocalizedName() + " - Success");
-            } else {
-                Logger.WARNING("Hammer Long Rod Recipe: " + material.getLocalizedName() + " - Failed");
-            }
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    material.getRod(2)
+                )
+                .itemOutputs(
+                    material.getLongRod(1)
+                )
+                .duration((int) Math.max(material.getMass(), 1L))
+                .eut(16)
+                .addTo(hammerRecipes);
+
+            Logger.WARNING("Hammer Long Rod Recipe: " + material.getLocalizedName() + " - Success");
+
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(material.getLongRod(1))

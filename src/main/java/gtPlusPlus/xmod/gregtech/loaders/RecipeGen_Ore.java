@@ -31,9 +31,11 @@ import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 public class RecipeGen_Ore extends RecipeGen_Base {
@@ -357,19 +359,45 @@ public class RecipeGen_Ore extends RecipeGen_Base {
         /**
          * Forge Hammer
          */
-        if (GT_Values.RA.addForgeHammerRecipe(material.getCrushedCentrifuged(1), matDust, 10, tVoltageMultiplier / 4)) {
-            Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Crushed Centrifuged to Pure Dust'");
-        }
-        if (GT_Values.RA.addForgeHammerRecipe(
-            material.getCrushedPurified(1),
-            material.getDustPurified(1),
-            10,
-            tVoltageMultiplier / 4)) {
-            Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Crushed Purified to Purified Dust'");
-        }
-        if (GT_Values.RA.addForgeHammerRecipe(material.getOre(1), material.getCrushed(1), 10, tVoltageMultiplier / 4)) {
-            Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Ore to Crushed'");
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                material.getCrushedCentrifuged(1)
+            )
+            .itemOutputs(
+                matDust
+            )
+            .duration(10 * TICKS)
+            .eut(tVoltageMultiplier / 4)
+            .addTo(hammerRecipes);
+
+        Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Crushed Centrifuged to Pure Dust'");
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                material.getCrushedPurified(1)
+            )
+            .itemOutputs(
+                material.getDustPurified(1)
+            )
+            .duration(10 * TICKS)
+            .eut(tVoltageMultiplier / 4)
+            .addTo(hammerRecipes);
+        Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Crushed Purified to Purified Dust'");
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                material.getOre(1)
+            )
+            .itemOutputs(
+                material.getCrushed(1)
+            )
+            .duration(10 * TICKS)
+            .eut(tVoltageMultiplier / 4)
+            .addTo(hammerRecipes);
+
+
+        Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Ore to Crushed'");
+
 
         /**
          * Centrifuge
