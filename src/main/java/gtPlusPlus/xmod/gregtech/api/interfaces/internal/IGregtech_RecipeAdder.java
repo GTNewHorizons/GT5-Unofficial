@@ -10,182 +10,11 @@ import gtPlusPlus.core.material.Material;
 public interface IGregtech_RecipeAdder {
 
     /**
-     * Adds a Coke Oven Recipe
-     *
-     * @param aInput1      = first Input (not null, and respects StackSize)
-     * @param aInput2      = second Input (can be null, and respects StackSize)
-     * @param aFluidOutput = Output of the Creosote (not null, and respects StackSize)
-     * @param aFluidInput  = fluid Input (can be null, and respects StackSize)
-     * @param aOutput      = Output of the Coal/coke (can be null, and respects StackSize)
-     * @param aDuration    = Duration (must be >= 0)
-     * @param aEUt         = EU needed for heating up (must be >= 0)
-     * @return true if the Recipe got added, otherwise false.
-     */
-    @Deprecated
-    boolean addCokeOvenRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput,
-        ItemStack aOutput, int aDuration, int aEUt);
-    @Deprecated
-    boolean addCokeOvenRecipe(int aCircuit, ItemStack aInput2, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs,
-        ItemStack[] aOutputs, int aDuration, int aEUt);
-    @Deprecated
-    boolean addCokeOvenRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack[] aFluidInputs,
-        FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUt);
-
-    /**
-     * Adds a Matter Fabricator Recipe
-     *
-     * @param aFluidOutput = Output of the UU-Matter (not null, and respects StackSize)
-     * @param aFluidInput  = fluid Input (can be UU_Amp or null, and respects StackSize)
-     * @param aDuration    = Duration (must be >= 0)
-     * @param aEUt         = EU needed for heating up (must be >= 0)
-     * @return true if the Recipe got added, otherwise false.
-     */
-    @Deprecated
-    boolean addMatterFabricatorRecipe(FluidStack aFluidInput, FluidStack aFluidOutput, int aDuration, int aEUt);
-
-    /**
-     * Adds a Recipe for the Dehydrator. (up to 9 Outputs)
-     *
-     * @param aInput       = ItemStack[] (not null, and respects StackSize)
-     * @param aFluidInput  = fluid Input (can be UU_Amp or null, and respects StackSize)
-     * @param aFluidOutput = Output of the UU-Matter (not null, and respects StackSize)
-     * @param aOutputItems = ItemStack[] (not null, and respects StackSize)
-     * @param aChances     = Output Change (can be == 0)
-     * @param aDuration    = Duration (must be >= 0)
-     * @param aEUt         = EU needed for heating up (must be >= 0)
-     * @return true if the Recipe got added, otherwise false.
-     */
-    boolean addDehydratorRecipe(ItemStack[] aInput, FluidStack aFluidInput, FluidStack aFluidOutput,
-        ItemStack[] aOutputItems, int[] aChances, int aDuration, int aEUt);
-
-    /**
-     * Adds a Recipe for the Alloy Blast Smelter. (up to 9 Inputs)
-     *
-     * @param aInput    = ItemStack[] (not null, and respects StackSize)
-     * @param aOutput   = Output of the Molten Metal (not null, and respects StackSize)
-     * @param aChance   = Output Chance (can be == 0)
-     * @param aDuration = Duration (must be >= 0)
-     * @param aEUt      = EU per tick needed for heating up (must be >= 0)
-     * @return true if the Recipe got added, otherwise false.
-     */
-    @Deprecated
-    boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aOutput, int aChance, int aDuration, int aEUt);
-
-    /**
-     * Adds a Recipe for the Alloy Blast Smelter. (up to 9 Inputs)
-     *
-     * @param aInput      = ItemStack[] (not null, and respects StackSize)
-     * @param aInputFluid = Input of a fluid (can be null, and respects StackSize)
-     * @param aOutput     = Output of the Molten Metal (not null, and respects StackSize)
-     * @param aChance     = Output Chance (can be == 0)
-     * @param aDuration   = Duration (must be >= 0)
-     * @param aEUt        = EU per tick needed for heating up (must be >= 0)
-     * @return true if the Recipe got added, otherwise false.
-     */
-    @Deprecated
-    boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, int aChance,
-        int aDuration, int aEUt);
-
-    /**
-     * Adds a Recipe for the Alloy Blast Smelter. (up to 9 Inputs, More than 1 Fluids)
-     *
-     * @param aInput      = ItemStack[] (not null, and respects StackSize)
-     * @param aInputFluid = FluidStack[] (can be null, and respects StackSize)
-     * @param aOutput     = Output of the Molten Metal (not null, and respects StackSize)
-     * @param aChance     = Output Chance (can be == 0)
-     * @param aDuration   = Duration (must be >= 0)
-     * @param aEUt        = EU per tick needed for heating up (must be >= 0)
-     * @return true if the Recipe got added, otherwise false.
-     */
-    @Deprecated
-    boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput, int aChance,
-        int aDuration, int aEUt);
-
-    /**
-     * Adds a Recipe for the Alloy Blast Smelter. (up to 9 Inputs)
-     *
-     * @param aInput       = ItemStack[] (not null, and respects StackSize)
-     * @param aInputFluid  = Input of a fluid (can be null, and respects StackSize)
-     * @param aOutput      = Output of the Molten Metal (not null, and respects StackSize)
-     * @param aOutputStack = Item Output (Can be null)
-     * @param aChance      = Output Chance (can be == 0)
-     * @param aDuration    = Duration (must be >= 0)
-     * @param aEUt         = EU per tick needed for heating up (must be >= 0)
-     * @return true if the Recipe got added, otherwise false.
-     */
-    @Deprecated
-    boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput,
-        ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt);
-    @Deprecated
-    boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, int aChance,
-        int aDuration, int aEUt, int aSpecialValue);
-    @Deprecated
-    boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput,
-        ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt, int aSpecialValue, boolean aOptimizeRecipe);
-
-    /**
-     * Adds a Recipe for the Alloy Blast Smelter. (up to 9 Inputs, More than 1 fluids)
-     *
-     * @param aInput       = ItemStack[] (not null, and respects StackSize)
-     * @param aInputFluid  = FluidStack[] (can be null, and respects StackSize)
-     * @param aOutput      = Output of the Molten Metal (not null, and respects StackSize)
-     * @param aOutputStack = Item Output (Can be null)
-     * @param aChance      = Output Chance (can be == 0)
-     * @param aDuration    = Duration (must be >= 0)
-     * @param aEUt         = EU per tick needed for heating up (must be >= 0)
-     * @return true if the Recipe got added, otherwise false.
-     */
-    @Deprecated
-    boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput,
-        ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt);
-    @Deprecated
-    boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput, int aChance,
-        int aDuration, int aEUt, int aSpecialValue);
-    @Deprecated
-    boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput,
-        ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt, int aSpecialValue, boolean aOptimizeRecipe);
-
-    /**
-     * Adds a Recipe for the LFTRr. (up to 9 Inputs)
-     *
-     * @param aInput        = ItemStack[] (not null, and respects StackSize)
-     * @param aInputFluid   = Input of a fluid (can be null, and respects StackSize)
-     * @param aOutput       = Output of the Molten Salts (not null, and respects StackSize)
-     * @param aOutputStack  = Item Output (Can be null)
-     * @param aChance       = Output Chance (can be == 0)
-     * @param aDuration     = Duration (must be >= 0)
-     * @param aEUt          = EU per tick needed for heating up (must be >= 0)
-     * @param aSpecialValue = Power produced in EU/t per dynamo
-     * @return true if the Recipe got added, otherwise false.
-     */
-    @Deprecated
-    boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput,
-        ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt, int aSpecialValue);
-
-    /**
      * Adds a Recipe for the Quantum Force Smelter (up to 9 Inputs)
-     *
      *
      **/
     boolean addQuantumTransformerRecipe(ItemStack[] aInput, FluidStack[] aFluidInput, FluidStack[] aFluidOutput,
         ItemStack[] aOutputStack, int[] aChances, int aDuration, int aEUt, int aSpecialValue);
-
-    /**
-     * Adds a Recipe for the LFTRr. (up to 9 Inputs, More than 1 fluids)
-     *
-     * @param aInput        = ItemStack[] (not null, and respects StackSize)
-     * @param aInputFluid   = FluidStack[] (can be null, and respects StackSize)
-     * @param aOutput       = Output of the Molten Salts (not null, and respects StackSize)
-     * @param aOutputStack  = Item Output (Can be null)
-     * @param aChance       = Output Chance (can be == 0)
-     * @param aDuration     = Duration (must be >= 0)
-     * @param aEUt          = EU per tick needed for heating up (must be >= 0)
-     * @param aSpecialValue = Power produced in EU/t per dynamo
-     * @return true if the Recipe got added, otherwise false.
-     */
-    @Deprecated
-    boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput,
-        ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt, int aSpecialValue);
 
     /**
      * Adds a custom Semifluid fuel for the GT++ SemiFluid Generators.
@@ -220,77 +49,19 @@ public interface IGregtech_RecipeAdder {
         FluidStack aFluidOutput, int[] aChances, int aDuration, int aEUt, int aSpecialValue);
 
     @Deprecated
-    boolean addMixerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aInput3, ItemStack aInput4,
-        FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3,
-        ItemStack aOutput4, int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addAdvancedFreezerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs,
-        ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial);
-
-    @Deprecated
     boolean addSixSlotAssemblingRecipe(ItemStack[] aInputs, FluidStack aInputFluid, ItemStack aOutput1, int aDuration,
         int aEUt);
-
-    /**
-     * Adds an Assemblyline Recipe
-     *
-     * @param aInputs      must be != null, 4-16 inputs
-     * @param aFluidInputs 0-4 fluids
-     * @param aOutput      must be != null
-     * @param aDuration    must be > 0
-     * @param aEUt         should be > 0
-     */
-    @Deprecated
-    boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs,
-        FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt);
-
-    /**
-     * Adds a Assemblyline Recipe
-     *
-     * @param aInputs elements should be: ItemStack for single item; ItemStack[] for multiple equivalent items;
-     *                {OreDict, amount} for oredict.
-     */
-    @Deprecated
-    boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, Object[] aInputs,
-        FluidStack[] aFluidInputs, ItemStack aOutput1, int aDuration, int aEUt);
 
     @Deprecated
     boolean addBrewingRecipe(ItemStack aIngredient, FluidStack aInput, FluidStack aOutput, int aTime, int aEu,
         boolean aHidden);
 
     @Deprecated
-    boolean addBrewingRecipe(int aCircuit, FluidStack aInput, FluidStack aOutput, int aTime, int aEu, boolean aHidden);
-
-    @Deprecated
     boolean addSmeltingAndAlloySmeltingRecipe(ItemStack aDust, ItemStack aOutput);
 
     @Deprecated
-    boolean addFluidExtractionRecipe(ItemStack input, FluidStack output, int aTime, int aEu);
-
-    @Deprecated
-    boolean addFluidExtractionRecipe(ItemStack aContainer, ItemStack aFullContainer, FluidStack rFluidOut, int aTime,
-        int aEu);
-
-    @Deprecated
-    boolean addFluidCannerRecipe(ItemStack aContainer, ItemStack aFullContainer, FluidStack rFluidIn);
-
-    @Deprecated
-    boolean addFluidCannerRecipe(ItemStack aContainer, ItemStack aFullContainer, FluidStack rFluidIn,
-        FluidStack rFluidOut);
-
-    @Deprecated
-    boolean addFluidCannerRecipe(ItemStack aContainer, ItemStack aFullContainer, FluidStack rFluidIn,
-        FluidStack rFluidOut, int aTime, int aEu);
-    @Deprecated
-    boolean addVacuumFurnaceRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput,
-        FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt, int aLevel);
-    @Deprecated
     boolean addVacuumFurnaceRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack[] aOutputs,
         FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aLevel);
-
-    @Deprecated
-    boolean addUvLaserRecipe(ItemStack aInput1, ItemStack aOutput, int time, long eu);
 
     boolean addChemicalPlantRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs,
         FluidStack[] aFluidOutputs, int time, long eu, int aTier);
@@ -298,26 +69,9 @@ public interface IGregtech_RecipeAdder {
     boolean addChemicalPlantRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs,
         FluidStack[] aFluidOutputs, int[] aChances, int time, long eu, int aTier);
 
-
-    @Deprecated
-    boolean addPyrolyseRecipe(ItemStack aInput, FluidStack aFluidInput, int intCircuit, ItemStack aOutput,
-        FluidStack aFluidOutput, int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addExtractorRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt);
-
-    @Deprecated
-    boolean addExtractorRecipe(ItemStack aInput, ItemStack aOutput, int aChance, int aDuration, int aEUt);
-
     @Deprecated
     boolean addDistilleryRecipe(ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, ItemStack aSolidOutput,
         int aDuration, int aEUt, boolean aHidden);
-
-    @Deprecated
-    boolean addPulverisationRecipe(final ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2,
-        final ItemStack aOutput3);
-
-    boolean addMillingRecipe(Materials aMat, int aEU);
 
     boolean addMillingRecipe(Material aMat, int aEU);
 

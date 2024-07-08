@@ -11,18 +11,14 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.SemiFluidFuelHandler;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -30,280 +26,6 @@ import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.common.helpers.FlotationRecipeHandler;
 
 public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
-
-    @Override
-    public boolean addCokeOvenRecipe(final ItemStack aInput1, final ItemStack aInput2, final FluidStack aFluidInput,
-        final FluidStack aFluidOutput, final ItemStack aOutput, int aDuration, final int aEUt) {
-        if (aInput1 == null || (aOutput == null && aFluidOutput == null)) {
-            Logger.WARNING("Something was null, returning false");
-            return false;
-        }
-        if (aOutput != null && (aDuration <= 0)) {
-            Logger.WARNING("Something was null, returning false");
-            return false;
-        }
-        if (aFluidOutput != null && (aDuration <= 0)) {
-            Logger.WARNING("Something was null, returning false");
-            return false;
-        }
-
-        GT_Recipe aSpecialRecipe = new GT_Recipe(
-            true,
-            new ItemStack[] { aInput1, aInput2 },
-            new ItemStack[] { aOutput },
-            null,
-            new int[] {},
-            new FluidStack[] { aFluidInput },
-            new FluidStack[] { aFluidOutput },
-            aDuration,
-            Math.max(1, aEUt),
-            0);
-        GTPPRecipeMaps.cokeOvenRecipes.add(aSpecialRecipe);
-        return true;
-    }
-
-    @Override
-    public boolean addCokeOvenRecipe(int aCircuit, ItemStack aInput2, FluidStack[] aFluidInputs,
-        FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUt) {
-        return addCokeOvenRecipe(
-            aInput2,
-            CI.getNumberedCircuit(aCircuit),
-            aFluidInputs,
-            aFluidOutputs,
-            aOutputs,
-            aDuration,
-            aEUt);
-    }
-
-    @Override
-    public boolean addCokeOvenRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack[] aFluidInputs,
-        FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUt) {
-        GT_Recipe aSpecialRecipe = new GT_Recipe(
-            true,
-            new ItemStack[] { aInput1, aInput2 },
-            aOutputs,
-            null,
-            new int[] {},
-            aFluidInputs,
-            aFluidOutputs,
-            Math.max(1, aDuration),
-            Math.max(1, aEUt),
-            0);
-        GTPPRecipeMaps.cokeOvenRecipes.add(aSpecialRecipe);
-        return true;
-    }
-
-    @Override
-    public boolean addMatterFabricatorRecipe(final FluidStack aFluidInput, final FluidStack aFluidOutput,
-        final int aDuration, final int aEUt) {
-        if (aFluidOutput == null) {
-            Logger.WARNING("Something was null, returning false");
-            return false;
-        }
-        GT_Recipe aRecipe = new GT_Recipe(
-            false,
-            new ItemStack[] {},
-            new ItemStack[] {},
-            null,
-            new int[] {},
-            aFluidInput == null ? new FluidStack[] {} : new FluidStack[] { aFluidInput },
-            new FluidStack[] { aFluidOutput },
-            aDuration,
-            aEUt,
-            0);
-        GTPPRecipeMaps.multiblockMassFabricatorRecipes.addRecipe(aRecipe);
-        return true;
-    }
-
-    @Override
-    public boolean addDehydratorRecipe(final ItemStack[] aInput, final FluidStack aFluidInput,
-        final FluidStack aFluidOutput, final ItemStack[] aOutputItems, final int[] aChances, int aDuration,
-        final int aEUt) throws IndexOutOfBoundsException {
-        if (((aInput == null || aInput.length == 0) && (aFluidInput == null))
-            || ((aOutputItems == null || aOutputItems.length == 0) && (aFluidOutput == null))) {
-            return false;
-        }
-
-        GT_Recipe aSpecialRecipe = new GT_Recipe(
-            true,
-            aInput,
-            aOutputItems,
-            null,
-            aChances,
-            new FluidStack[] { aFluidInput },
-            new FluidStack[] { aFluidOutput },
-            Math.max(1, aDuration),
-            Math.max(1, aEUt),
-            0);
-        GTPPRecipeMaps.chemicalDehydratorRecipes.add(aSpecialRecipe);
-        return true;
-    }
-
-    @Override
-    public boolean addBlastSmelterRecipe(final ItemStack[] aInput, FluidStack aOutput, final int aChance, int aDuration,
-        final int aEUt) {
-        return addBlastSmelterRecipe(
-            aInput,
-            (FluidStack) null,
-            aOutput,
-            new ItemStack[] {},
-            new int[] { aChance },
-            aDuration,
-            aEUt,
-            3700);
-    }
-
-    @Override
-    public boolean addBlastSmelterRecipe(final ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput,
-        final int aChance, int aDuration, final int aEUt) {
-        return addBlastSmelterRecipe(
-            aInput,
-            aInputFluid,
-            aOutput,
-            new ItemStack[] {},
-            new int[] { aChance },
-            aDuration,
-            aEUt,
-            3700);
-    }
-
-    @Override
-    public boolean addBlastSmelterRecipe(final ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput,
-        final int aChance, int aDuration, final int aEUt) {
-        return addBlastSmelterRecipe(
-            aInput,
-            aInputFluid,
-            aOutput,
-            new ItemStack[] {},
-            new int[] { aChance },
-            aDuration,
-            aEUt,
-            3700);
-    }
-
-    @Override
-    public boolean addBlastSmelterRecipe(final ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput,
-        ItemStack[] aOutputStack, final int[] aChance, int aDuration, final int aEUt) {
-        return addBlastSmelterRecipe(aInput, aInputFluid, aOutput, aOutputStack, aChance, aDuration, aEUt, 3700);
-    }
-
-    @Override
-    public boolean addBlastSmelterRecipe(final ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput,
-        ItemStack[] aOutputStack, final int[] aChance, int aDuration, final int aEUt) {
-        return addBlastSmelterRecipe(aInput, aInputFluid, aOutput, aOutputStack, aChance, aDuration, aEUt, 3700);
-    }
-
-    @Override
-    public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, int aChance,
-        int aDuration, int aEUt, int aSpecialValue) {
-        return addBlastSmelterRecipe(
-            aInput,
-            aInputFluid,
-            aOutput,
-            new ItemStack[] {},
-            new int[] { aChance },
-            aDuration,
-            aEUt,
-            aSpecialValue);
-    }
-
-    @Override
-    public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput, int aChance,
-        int aDuration, int aEUt, int aSpecialValue) {
-        return addBlastSmelterRecipe(
-            aInput,
-            aInputFluid,
-            aOutput,
-            new ItemStack[] {},
-            new int[] { aChance },
-            aDuration,
-            aEUt,
-            aSpecialValue);
-    }
-
-    @Override
-    public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput,
-        ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt, int aSpecialValue) {
-        return addBlastSmelterRecipe(
-            aInput,
-            aInputFluid,
-            aOutput,
-            aOutputStack,
-            aChance,
-            aDuration,
-            aEUt,
-            aSpecialValue,
-            true);
-    }
-
-    @Override
-    public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput,
-        ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt, int aSpecialValue) {
-        return addBlastSmelterRecipe(
-            aInput,
-            aInputFluid,
-            aOutput,
-            aOutputStack,
-            aChance,
-            aDuration,
-            aEUt,
-            aSpecialValue,
-            true);
-    }
-
-    @Override
-    public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput,
-        ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt, int aSpecialValue, boolean aOptimizeRecipe) {
-        return addBlastSmelterRecipe(
-            aInput,
-            new FluidStack[] { aInputFluid },
-            aOutput,
-            aOutputStack,
-            aChance,
-            aDuration,
-            aEUt,
-            aSpecialValue,
-            aOptimizeRecipe);
-    }
-
-    @Override
-    public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput,
-        ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt, int aSpecialValue, boolean aOptimizeRecipe) {
-        if ((aInput == null) || (aOutput == null)) {
-            Logger.WARNING("Fail - Input or Output was null.");
-            return false;
-        }
-
-        if (aOutput.isFluidEqual(Materials.PhasedGold.getMolten(1))) {
-            aOutput = Materials.VibrantAlloy.getMolten(aOutput.amount);
-        }
-        if (aOutput.isFluidEqual(Materials.PhasedIron.getMolten(1))) {
-            aOutput = Materials.PulsatingIron.getMolten(aOutput.amount);
-        }
-        if (aDuration <= 0) {
-            Logger.WARNING("Recipe did not register.");
-            return false;
-        }
-
-        aInput = ArrayUtils.removeNulls(aInput);
-        if (aInput.length <= 1) {
-            return false;
-        }
-
-        GTPPRecipeMaps.alloyBlastSmelterRecipes.addRecipe(
-            aOptimizeRecipe,
-            aInput,
-            aOutputStack,
-            null,
-            aChance,
-            aInputFluid,
-            new FluidStack[] { aOutput },
-            aDuration,
-            Math.max(1, aEUt),
-            aSpecialValue);
-        return true;
-    }
-
     @Override
     public boolean addQuantumTransformerRecipe(ItemStack[] aInput, FluidStack[] aFluidInput, FluidStack[] aFluidOutput,
         ItemStack[] aOutputStack, int[] aChances, int aDuration, int aEUt, int aSpecialValue) {
@@ -420,136 +142,9 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     }
 
     @Override
-    public boolean addMixerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aInput3, ItemStack aInput4,
-        FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3,
-        ItemStack aOutput4, int aDuration, int aEUt) {
-        if ((aInput1 == null && aFluidInput == null) || (aOutput1 == null && aFluidOutput == null)) {
-            return false;
-        }
-
-        GT_Recipe aSpecialRecipe = new GT_Recipe(
-            true,
-            new ItemStack[] { aInput1, aInput2, aInput3, aInput4 },
-            new ItemStack[] { aOutput1, aOutput2, aOutput3, aOutput4 },
-            null,
-            new int[] {},
-            new FluidStack[] { aFluidInput },
-            new FluidStack[] { aFluidOutput },
-            Math.max(1, aDuration),
-            Math.max(1, aEUt),
-            0);
-        RecipeMaps.mixerRecipes.add(aSpecialRecipe);
-        return true;
-    }
-
-    @Override
-    public boolean addAdvancedFreezerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs,
-        ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial) {
-        if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs)
-            || aEUtick <= 0) {
-            return false;
-        }
-
-        if (!ItemUtils.checkForInvalidItems(aInputs, aOutputs)) {
-            Logger.INFO("[Recipe] Error generating Adv. Vac Freezer recipe.");
-            Logger.INFO("Inputs: " + ItemUtils.getArrayStackNames(aInputs));
-            Logger.INFO("Fluid Inputs: " + ItemUtils.getArrayStackNames(aFluidInputs));
-            Logger.INFO("Outputs: " + ItemUtils.getArrayStackNames(aOutputs));
-            Logger.INFO("Fluid Outputs: " + ItemUtils.getArrayStackNames(aFluidOutputs));
-            return false;
-        }
-
-        GT_Recipe aRecipe = new GT_Recipe(
-            false,
-            aInputs,
-            aOutputs,
-            null,
-            aChances,
-            aFluidInputs,
-            aFluidOutputs,
-            aDuration,
-            aEUtick,
-            aSpecial);
-        GTPPRecipeMaps.advancedFreezerRecipes.addRecipe(aRecipe);
-        return false;
-    }
-
-    public boolean addMultiblockMixerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs,
-        ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial) {
-        if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs)
-            || aEUtick <= 0) {
-            return false;
-        }
-        if (!ItemUtils.checkForInvalidItems(aInputs, aOutputs)) {
-            Logger.INFO("[Recipe] Error generating Large Mixer recipe.");
-            Logger.INFO("Inputs: " + ItemUtils.getArrayStackNames(aInputs));
-            Logger.INFO("Fluid Inputs: " + ItemUtils.getArrayStackNames(aFluidInputs));
-            Logger.INFO("Outputs: " + ItemUtils.getArrayStackNames(aOutputs));
-            Logger.INFO("Fluid Outputs: " + ItemUtils.getArrayStackNames(aFluidOutputs));
-            return false;
-        }
-
-        GT_Recipe aRecipe = new GT_Recipe(
-            false,
-            aInputs,
-            aOutputs,
-            null,
-            aChances,
-            aFluidInputs,
-            aFluidOutputs,
-            aDuration,
-            aEUtick,
-            aSpecial);
-        GTPPRecipeMaps.mixerNonCellRecipes.addRecipe(aRecipe);
-        return true;
-    }
-
-    public boolean addMultiblockChemicalDehydratorRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs,
-        FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial) {
-        if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs)
-            || aEUtick <= 0) {
-            return false;
-        }
-        if (!ItemUtils.checkForInvalidItems(aInputs, aOutputs)) {
-            Logger.INFO("[Recipe] Error generating Large Chemical Dehydrator recipe.");
-            Logger.INFO("Inputs: " + ItemUtils.getArrayStackNames(aInputs));
-            Logger.INFO("Fluid Inputs: " + ItemUtils.getArrayStackNames(aFluidInputs));
-            Logger.INFO("Outputs: " + ItemUtils.getArrayStackNames(aOutputs));
-            Logger.INFO("Fluid Outputs: " + ItemUtils.getArrayStackNames(aFluidOutputs));
-            return false;
-        }
-
-        GT_Recipe aRecipe = new GT_Recipe(
-            false,
-            aInputs,
-            aOutputs,
-            null,
-            aChances,
-            aFluidInputs,
-            aFluidOutputs,
-            aDuration,
-            aEUtick,
-            aSpecial);
-        GTPPRecipeMaps.chemicalDehydratorNonCellRecipes.addRecipe(aRecipe);
-        return true;
-    }
-
-    @Override
     public boolean addSixSlotAssemblingRecipe(ItemStack[] aInputs, FluidStack aInputFluid, ItemStack aOutput1,
         int aDuration, int aEUt) {
         return RA.addAssemblerRecipe(aInputs, aInputFluid, aOutput1, aDuration, aEUt);
-    }
-
-    @Override
-    public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs,
-        FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
-        return RA.addAssemblylineRecipe(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
-    }
-
-    @Override
-    public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, Object[] aInputs,
-        FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
-        return RA.addAssemblylineRecipe(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
     }
 
     private boolean areItemsAndFluidsBothNull(final ItemStack[] items, final FluidStack[] fluids) {
@@ -572,12 +167,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
             }
         }
         return itemsNull && fluidsNull;
-    }
-
-    @Override
-    public boolean addBrewingRecipe(int aCircuit, FluidStack aInput, FluidStack aOutput, int aTime, int aEu,
-        boolean aHidden) {
-        return addBrewingRecipe(CI.getNumberedCircuit(aCircuit), aInput, aOutput, aTime, aEu, aHidden);
     }
 
     @Override
@@ -611,35 +200,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     }
 
     @Override
-    public boolean addFluidExtractionRecipe(ItemStack input, FluidStack output, int aTime, int aEu) {
-        return RA.addFluidSmelterRecipe(GT_Utility.copyAmount(1, input), null, output, 10000, aTime, aEu, false);
-    }
-
-    @Override
-    public boolean addFluidExtractionRecipe(ItemStack aEmpty, ItemStack aRemains, FluidStack aFluid, int aDuration,
-        int aEU) {
-        return RA
-            .addFluidSmelterRecipe(GT_Utility.copyAmount(1, aEmpty), aRemains, aFluid, 10000, aDuration, aEU, false);
-    }
-
-    @Override
-    public boolean addFluidCannerRecipe(ItemStack aContainer, ItemStack aFullContainer, FluidStack rFluidIn) {
-        return MaterialGenerator.addFluidCannerRecipe(aContainer, aFullContainer, rFluidIn, null);
-    }
-
-    @Override
-    public boolean addFluidCannerRecipe(ItemStack aContainer, ItemStack aFullContainer, FluidStack rFluidIn,
-        FluidStack rFluidOut) {
-        return MaterialGenerator.addFluidCannerRecipe(aContainer, aFullContainer, rFluidIn, rFluidOut);
-    }
-
-    @Override
-    public boolean addFluidCannerRecipe(ItemStack aFullContainer, ItemStack container, FluidStack rFluidIn,
-        FluidStack rFluidOut, int aTime, int aEu) {
-        return MaterialGenerator.addFluidCannerRecipe(container, aFullContainer, rFluidIn, rFluidOut, aTime, aEu);
-    }
-
-    @Override
     public boolean addSemifluidFuel(ItemStack aFuelItem, int aFuelValue) {
         return SemiFluidFuelHandler.addSemiFluidFuel(aFuelItem, aFuelValue);
     }
@@ -647,23 +207,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     @Override
     public boolean addSemifluidFuel(FluidStack aFuelItem, int aFuelValue) {
         return SemiFluidFuelHandler.addSemiFluidFuel(aFuelItem, aFuelValue);
-    }
-
-    @Override
-    public boolean addVacuumFurnaceRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput,
-        FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt, int aLevel) {
-        if (aInput1 != null && aOutput1 != null) {
-            return addVacuumFurnaceRecipe(
-                new ItemStack[] { aInput1, aInput2 },
-                new FluidStack[] { aFluidInput },
-                new ItemStack[] { aOutput1, aOutput2 },
-                new FluidStack[] { aFluidOutput },
-                aDuration,
-                aEUt,
-                aLevel);
-        } else {
-            return false;
-        }
     }
 
     @Override
@@ -688,24 +231,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     }
 
     @Override
-    public boolean addUvLaserRecipe(ItemStack aInput1, ItemStack aOutput, int time, long eu) {
-        // Generate Special Laser Recipe
-        GT_Recipe u = new GT_Recipe(
-            false,
-            new ItemStack[] { aInput1, GregtechItemList.Laser_Lens_WoodsGlass.get(0), },
-            new ItemStack[] { aOutput },
-            null,
-            new int[] { 10000 },
-            new FluidStack[] {},
-            new FluidStack[] {},
-            time,
-            (int) eu,
-            0);
-        RecipeMaps.laserEngraverRecipes.add(u);
-        return true;
-    }
-
-    @Override
     public boolean addChemicalPlantRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs,
         FluidStack[] aFluidOutputs, int time, long eu, int aTier) {
         return addChemicalPlantRecipe(aInputs, aInputFluids, aOutputs, aFluidOutputs, new int[] {}, time, eu, aTier);
@@ -725,12 +250,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         GTPPRecipeMaps.chemicalPlantRecipes
             .addRecipe(false, aInputs, aOutputs, null, aChances, aInputFluids, aFluidOutputs, time, (int) eu, aTier);
         return true;
-    }
-
-    @Override
-    public boolean addPyrolyseRecipe(ItemStack aInput, FluidStack aFluidInput, int intCircuit, ItemStack aOutput,
-        FluidStack aFluidOutput, int aDuration, int aEUt) {
-        return RA.addPyrolyseRecipe(aInput, aFluidInput, intCircuit, aOutput, aFluidOutput, aDuration, aEUt);
     }
 
     @Override
@@ -758,60 +277,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         } else {
             return false;
         }
-    }
-
-    @Override
-    public boolean addExtractorRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt) {
-        return addExtractorRecipe(aInput, aOutput, 10000, aDuration, aEUt);
-    }
-
-    @Override
-    public boolean addExtractorRecipe(ItemStack aInput, ItemStack aOutput, int aChance, int aDuration, int aEUt) {
-        if (aInput != null && aOutput != null) {
-            GT_Recipe aRecipe = new GT_Recipe(
-                false,
-                new ItemStack[] { aInput.copy() },
-                new ItemStack[] { aOutput.copy() },
-                null,
-                new int[] { aChance },
-                null,
-                null,
-                aDuration,
-                aEUt,
-                0);
-            RecipeMaps.extractorRecipes.add(aRecipe);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2,
-        ItemStack aOutput3) {
-        aOutput1 = GT_OreDictUnificator.get(true, aOutput1);
-        aOutput2 = GT_OreDictUnificator.get(true, aOutput2);
-        aOutput3 = GT_OreDictUnificator.get(true, aOutput3);
-        if (GT_Utility.isStackInvalid(aInput) || GT_Utility.isStackInvalid(aOutput1)) {
-            return false;
-        }
-        if (GT_Utility.getContainerItem(aInput, false) == null) {
-
-            GT_Utility.addSimpleIC2MachineRecipe(aInput, GT_ModHandler.getMaceratorRecipeList(), null, aOutput1);
-
-            GT_Values.RA.addPulveriserRecipe(
-                aInput,
-                new ItemStack[] { aOutput1, aOutput2, aOutput3 },
-                new int[] { 10000, 10000, 10000 },
-                400,
-                2);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean addMillingRecipe(Materials aMat, int aEU) {
-        return addMillingRecipe(MaterialUtils.generateMaterialFromGtENUM(aMat), aEU);
     }
 
     @Override

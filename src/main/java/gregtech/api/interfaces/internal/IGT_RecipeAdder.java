@@ -51,29 +51,6 @@ public interface IGT_RecipeAdder {
         boolean aCleanroom);
 
     /**
-     * Adds an Assemblyline Recipe
-     *
-     * @param aInputs      must be != null, 4-16 inputs
-     * @param aFluidInputs 0-4 fluids
-     * @param aOutput1     must be != null
-     * @param aDuration    must be > 0
-     * @param aEUt         should be > 0
-     */
-    @Deprecated
-    boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs,
-        FluidStack[] aFluidInputs, ItemStack aOutput1, int aDuration, int aEUt);
-
-    /**
-     * Adds a Assemblyline Recipe
-     *
-     * @param aInputs elements should be: ItemStack for single item; ItemStack[] for multiple equivalent items;
-     *                {OreDict, amount} for oredict.
-     */
-    @Deprecated
-    boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, Object[] aInputs,
-        FluidStack[] aFluidInputs, ItemStack aOutput1, int aDuration, int aEUt);
-
-    /**
      * Adds a Forge Hammer Recipe
      *
      * @param aInput1   must be != null
@@ -127,14 +104,6 @@ public interface IGT_RecipeAdder {
     @Deprecated
     boolean addFluidSolidifierRecipe(ItemStack aMold, FluidStack aInput, ItemStack aOutput, int aDuration, int aEUt);
 
-
-    /**
-     * Adds a Recipe for Fluid Smelting
-     */
-    @Deprecated
-    boolean addFluidSmelterRecipe(ItemStack aInput, ItemStack aRemains, FluidStack aOutput, int aChance, int aDuration,
-        int aEUt, boolean hidden);
-
     /**
      * Adds a Recipe for the Chemical Bath
      */
@@ -178,54 +147,6 @@ public interface IGT_RecipeAdder {
      */
     @Deprecated
     boolean addSifterRecipe(ItemStack aItemToSift, ItemStack[] aSiftedItems, int[] aChances, int aDuration, int aEUt);
-
-    /**
-     * Adds a Recipe for the GT Pulveriser. (up to 4 Outputs)
-     */
-    @Deprecated
-    boolean addPulveriserRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt);
-
-    /**
-     * Adds a Recipe for the GT Pulveriser. (up to 4 Outputs)
-     */
-    @Deprecated
-    boolean addPulveriserRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt,
-        boolean hidden);
-
-
-
-
-    /**
-     * Adds Pyrolyse Recipe
-     *
-     * @param aInput       input item stack
-     * @param aFluidInput  fluid input
-     * @param intCircuit   circuit index
-     * @param aOutput      output item stack
-     * @param aFluidOutput fluid output
-     * @param aDuration    recipe duration
-     * @param aEUt         recipe EU/t expenditure
-     *
-     * @return if the recipe was successfully added
-     */
-    @Deprecated
-    boolean addPyrolyseRecipe(ItemStack aInput, FluidStack aFluidInput, int intCircuit, ItemStack aOutput,
-        FluidStack aFluidOutput, int aDuration, int aEUt);
-
-
-    /**
-     * Adds Oil Cracking Recipe
-     *
-     * @param circuitConfig The circuit configuration to control cracking severity
-     * @param aInput        The fluid to be cracked
-     * @param aInput2       The fluid to catalyze the cracking (typically Hydrogen or Steam)
-     * @param aOutput       The cracked fluid
-     * @param aDuration     recipe duration
-     * @param aEUt          recipe EU/t expenditure
-     */
-    @Deprecated
-    boolean addCrackingRecipe(int circuitConfig, FluidStack aInput, FluidStack aInput2, FluidStack aOutput,
-        int aDuration, int aEUt);
 
     /**
      * Add a breeder cell.
