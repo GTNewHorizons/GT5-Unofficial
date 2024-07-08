@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -886,40 +887,62 @@ public class GregtechConduits {
         if (pipeIngot != null && ItemUtils.checkForInvalidItems(pipeIngot)) {
             // 1 Clay Plate = 1 Clay Dust = 2 Clay Ball
             int inputMultiplier = materialName.equals("Clay") ? 2 : 1;
-            GT_Values.RA.addExtruderRecipe(
-                ItemUtils.getSimpleStack(pipeIngot, 1 * inputMultiplier),
-                ItemList.Shape_Extruder_Pipe_Tiny.get(0),
-                ItemUtils.getItemStackOfAmountFromOreDictNoBroken("pipe" + "Tiny" + output, 2),
-                5,
-                eut);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemUtils.getSimpleStack(pipeIngot, 1 * inputMultiplier),
+                    ItemList.Shape_Extruder_Pipe_Tiny.get(0)
+                )
+                .itemOutputs(
+                    ItemUtils.getItemStackOfAmountFromOreDictNoBroken("pipe" + "Tiny" + output, 2)
+                )
+                .duration(5 * TICKS)
+                .eut(eut)
+                .addTo(extruderRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemUtils.getSimpleStack(pipeIngot, 1 * inputMultiplier),
+                    ItemList.Shape_Extruder_Pipe_Small.get(0)
+                )
+                .itemOutputs(
+                    ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 1)
+                )
+                .duration(10 * TICKS)
+                .eut(eut)
+                .addTo(extruderRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemUtils.getSimpleStack(pipeIngot, 3 * inputMultiplier),
+                    ItemList.Shape_Extruder_Pipe_Medium.get(0)
+                )
+                .itemOutputs(
+                    ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 1)
+                )
+                .duration(20 * TICKS)
+                .eut(eut)
+                .addTo(extruderRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemUtils.getSimpleStack(pipeIngot, 6 * inputMultiplier),
+                    ItemList.Shape_Extruder_Pipe_Large.get(0)
+                )
+                .itemOutputs(
+                    ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1)
+                )
+                .duration(2 * SECONDS)
+                .eut(eut)
+                .addTo(extruderRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemUtils.getSimpleStack(pipeIngot, 12 * inputMultiplier),
+                    ItemList.Shape_Extruder_Pipe_Huge.get(0)
+                )
+                .itemOutputs(
+                    ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1)
+                )
+                .duration(4 * SECONDS)
+                .eut(eut)
+                .addTo(extruderRecipes);
 
-            GT_Values.RA.addExtruderRecipe(
-                ItemUtils.getSimpleStack(pipeIngot, 1 * inputMultiplier),
-                ItemList.Shape_Extruder_Pipe_Small.get(0),
-                ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 1),
-                10,
-                eut);
-
-            GT_Values.RA.addExtruderRecipe(
-                ItemUtils.getSimpleStack(pipeIngot, 3 * inputMultiplier),
-                ItemList.Shape_Extruder_Pipe_Medium.get(0),
-                ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 1),
-                1 * 20,
-                eut);
-
-            GT_Values.RA.addExtruderRecipe(
-                ItemUtils.getSimpleStack(pipeIngot, 6 * inputMultiplier),
-                ItemList.Shape_Extruder_Pipe_Large.get(0),
-                ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1),
-                2 * 20,
-                eut);
-
-            GT_Values.RA.addExtruderRecipe(
-                ItemUtils.getSimpleStack(pipeIngot, 12 * inputMultiplier),
-                ItemList.Shape_Extruder_Pipe_Huge.get(0),
-                ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1),
-                4 * 20,
-                eut);
         }
 
         if ((eut < 512) && !output.equals("Void")) {
@@ -1179,8 +1202,17 @@ public class GregtechConduits {
 
         // Extruder
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aIngot, aWire01 })) {
-            GT_Values.RA
-                .addExtruderRecipe(aIngot, ItemList.Shape_Extruder_Wire.get(0), aMaterial.getWire01(2), 196, 96);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    aIngot,
+                    ItemList.Shape_Extruder_Wire.get(0)
+                )
+                .itemOutputs(
+                    aMaterial.getWire01(2)
+                )
+                .duration(9 * SECONDS + 16 * TICKS)
+                .eut(96)
+                .addTo(extruderRecipes);
         }
 
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aCable01, aWire01 })) {
