@@ -2,8 +2,15 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import gregtech.api.render.TextureFactory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -21,7 +28,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 
 public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IndustrialElectromagneticSeparator>
@@ -70,9 +76,35 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        return new ITexture[0];
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        ITexture[] rTexture;
+        if (side == aFacing) {
+            if (aActive) {
+                rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE)
+                    .extFacing()
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            } else {
+                rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_VACUUM_FREEZER)
+                    .extFacing()
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            }
+        } else {
+            rTexture = new ITexture[] { casingTexturePages[0][17] };
+        }
+        return rTexture;
     }
 
     @Override
@@ -86,6 +118,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             .addInfo("Only uses ??% of the EU/t normally required")
             .addInfo("Processes ?? items per voltage tier")
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addInfo(AuthorFourIsTheNumber)
             .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")
@@ -96,7 +129,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+            .toolTipFinisher("GregTech");
         return tt;
     }
 
