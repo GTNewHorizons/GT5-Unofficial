@@ -1452,6 +1452,7 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_LargeChemicalReactor,
 
     Machine_Multi_IndustrialElectromagneticSeparator,
+    Casing_Electromagnetic_Separator,
 
     Machine_LV_Miner,
     Machine_MV_Miner,
