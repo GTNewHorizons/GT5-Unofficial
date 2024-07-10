@@ -53,7 +53,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             .addTo(fissionFuelProcessingRecipes);
         // 7LiF - BeF2 - ZrF4 - UF4 - 650C
         GT_Values.RA.stdBuilder()
-            .itemInputs(
+            .fluidInputs(
                 FluidUtils.getFluidStack(aLithiumFluoride, 600),
                 FluidUtils.getFluidStack(aBerylliumFluoride, 250),
                 FluidUtils.getFluidStack(aZirconiumFluoride, 80),
