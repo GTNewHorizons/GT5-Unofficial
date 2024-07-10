@@ -7,7 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import net.minecraft.item.ItemStack;
@@ -19,6 +18,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -33,6 +33,8 @@ import gregtech.common.blocks.GT_Block_Casings10;
 public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IndustrialElectromagneticSeparator>
     implements ISurvivalConstructable {
+
+    private static final int CASING_INDEX = 240;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_IndustrialElectromagneticSeparator> STRUCTURE_DEFINITION = StructureDefinition
@@ -82,20 +84,22 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] { casingTexturePages[0][16], TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_EMS_ACTIVE)
-                    .extFacing()
-                    .build(),
+                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_EMS_ACTIVE)
+                        .extFacing()
+                        .build(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_EMS_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
             } else {
-                rTexture = new ITexture[] { casingTexturePages[0][16], TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_EMS)
-                    .extFacing()
-                    .build(),
+                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_EMS)
+                        .extFacing()
+                        .build(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_EMS_GLOW)
                         .extFacing()
@@ -103,7 +107,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { casingTexturePages[0][16] };
+            rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
         }
         return rTexture;
     }

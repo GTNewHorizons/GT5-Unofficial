@@ -22,7 +22,7 @@ public class GT_Block_Casings10 extends GT_Block_Casings_Abstract {
         ItemList.Casing_Electromagnetic_Separator.set(new ItemStack(this, 1, 0));
     }
 
-    //192/208/224 all conflict with gt++ casings.
+    // 192/208/224 all conflict with gt++ casings.
     @Override
     public int getTextureIndex(int aMeta) {
         return aMeta + 240;
