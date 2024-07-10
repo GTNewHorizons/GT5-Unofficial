@@ -3,10 +3,10 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
@@ -83,21 +83,21 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         if (side == aFacing) {
             if (aActive) {
                 rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE)
+                    .addIcon(OVERLAY_FRONT_EMS_ACTIVE)
                     .extFacing()
                     .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_FRONT_EMS_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
             } else {
                 rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_VACUUM_FREEZER)
+                    .addIcon(OVERLAY_FRONT_EMS)
                     .extFacing()
                     .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_GLOW)
+                        .addIcon(OVERLAY_FRONT_EMS_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
