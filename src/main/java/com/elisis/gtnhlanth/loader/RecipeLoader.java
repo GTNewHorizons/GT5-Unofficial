@@ -118,34 +118,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
-
-import com.elisis.gtnhlanth.Tags;
-import com.elisis.gtnhlanth.common.item.MaskList;
-import com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool;
-import com.elisis.gtnhlanth.common.register.LanthItemList;
-import com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool;
-import com.github.bartimaeusnek.bartworks.system.material.BW_GT_MaterialReference;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.PlatinumSludgeOverHaul;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import goodgenerator.items.MyMaterial;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
-import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeBuilder;
-import gregtech.api.util.GT_RecipeConstants;
-import gregtech.api.util.GT_Utility;
-import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -157,6 +129,34 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+
+import org.apache.commons.lang3.reflect.FieldUtils;
+
+import com.elisis.gtnhlanth.Tags;
+import com.elisis.gtnhlanth.common.item.MaskList;
+import com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool;
+import com.elisis.gtnhlanth.common.register.LanthItemList;
+import com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool;
+import com.github.bartimaeusnek.bartworks.system.material.BW_GT_MaterialReference;
+import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.PlatinumSludgeOverHaul;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import goodgenerator.items.MyMaterial;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_RecipeBuilder;
+import gregtech.api.util.GT_RecipeConstants;
+import gregtech.api.util.GT_Utility;
+import ic2.core.Ic2Items;
 
 public class RecipeLoader {
 
@@ -247,41 +247,66 @@ public class RecipeLoader {
          */
         // Mu-metal
         GT_Values.RA.stdBuilder()
-        	.itemInputs(GT_Utility.getIntegratedCircuit(2), WerkstoffMaterialPool.Permalloy.get(OrePrefixes.dust, 9), Materials.Copper.getDust(1), Materials.Chrome.getDust(1))
-        	.itemOutputs(WerkstoffMaterialPool.MuMetal.get(OrePrefixes.ingot, 11))
-        	.duration(20 * SECONDS).eut(1920).specialValue(4500).addTo(blastFurnaceRecipes);
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(2),
+                WerkstoffMaterialPool.Permalloy.get(OrePrefixes.dust, 9),
+                Materials.Copper.getDust(1),
+                Materials.Chrome.getDust(1))
+            .itemOutputs(WerkstoffMaterialPool.MuMetal.get(OrePrefixes.ingot, 11))
+            .duration(20 * SECONDS)
+            .eut(1920)
+            .specialValue(4500)
+            .addTo(blastFurnaceRecipes);
 
         // Shielded Accelerator Casing -- Maybe assline recipe
         GT_Values.RA.stdBuilder()
-        	.itemInputs(ItemList.Casing_RadiationProof.get(1L), WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 6), GT_Utility.getIntegratedCircuit(6))
-        	.fluidInputs(Materials.SolderingAlloy.getMolten(144))
-        	.itemOutputs(new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_CASING, 1))
-        	.duration(40 * SECONDS).eut(7980).addTo(assemblerRecipes);
+            .itemInputs(
+                ItemList.Casing_RadiationProof.get(1L),
+                WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 6),
+                GT_Utility.getIntegratedCircuit(6))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .itemOutputs(new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_CASING, 1))
+            .duration(40 * SECONDS)
+            .eut(7980)
+            .addTo(assemblerRecipes);
 
         // Accelerator Electrode Casing
         GT_Values.RA.stdBuilder()
-        	.itemInputs(BW_GT_MaterialReference.Silver.get(blockCasingAdvanced, 1), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Silver, 12), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Gold, 6), GT_Utility.getIntegratedCircuit(6))
-        	.fluidInputs(Materials.SolderingAlloy.getMolten(288))
-        	.itemOutputs(new ItemStack(LanthItemList.ELECTRODE_CASING, 1))
-        	.duration(40 * SECONDS).eut(7680).addTo(assemblerRecipes);
-        	
+            .itemInputs(
+                BW_GT_MaterialReference.Silver.get(blockCasingAdvanced, 1),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Silver, 12),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Gold, 6),
+                GT_Utility.getIntegratedCircuit(6))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(288))
+            .itemOutputs(new ItemStack(LanthItemList.ELECTRODE_CASING, 1))
+            .duration(40 * SECONDS)
+            .eut(7680)
+            .addTo(assemblerRecipes);
+
         ItemStack insulator = GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorSheet", 1);
 
         // Coolant Delivery Casing
-        
+
         GT_Values.RA.stdBuilder()
-        	.itemInputs(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1), Materials.Copper.getPlates(6), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Naquadah, 2),
-                    ItemList.Electric_Pump_LuV.get(3L), new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 1),
-                    new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 1), new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 1),
-                    GT_Utility.copyAmount(2, insulator), GT_Utility.copyAmount(2, insulator),
-                    GT_Utility.copyAmount(2, insulator),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tungsten, 1))
-        	.fluidInputs(Materials.SolderingAlloy.getMolten(288), Materials.Lubricant.getFluid(1152))
-        	.itemOutputs(new ItemStack(LanthItemList.COOLANT_DELIVERY_CASING))
-        	.metadata(GT_RecipeConstants.RESEARCH_ITEM, ItemList.Casing_Pipe_TungstenSteel.get(1L))
-        	.metadata(GT_RecipeConstants.RESEARCH_TIME, 72000)
-        	.duration(50 * SECONDS).eut(7680).addTo(AssemblyLine);
-        	
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
+                Materials.Copper.getPlates(6),
+                GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Naquadah, 2),
+                ItemList.Electric_Pump_LuV.get(3L),
+                new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 1),
+                new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 1),
+                new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 1),
+                GT_Utility.copyAmount(2, insulator),
+                GT_Utility.copyAmount(2, insulator),
+                GT_Utility.copyAmount(2, insulator),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tungsten, 1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(288), Materials.Lubricant.getFluid(1152))
+            .itemOutputs(new ItemStack(LanthItemList.COOLANT_DELIVERY_CASING))
+            .metadata(GT_RecipeConstants.RESEARCH_ITEM, ItemList.Casing_Pipe_TungstenSteel.get(1L))
+            .metadata(GT_RecipeConstants.RESEARCH_TIME, 72000)
+            .duration(50 * SECONDS)
+            .eut(7680)
+            .addTo(AssemblyLine);
 
         // T1 Antenna Casing
         GT_Values.RA.stdBuilder()
@@ -400,43 +425,54 @@ public class RecipeLoader {
             .eut(1920)
             .addTo(AssemblyLine);
 
-        // Capillary Exchange 
+        // Capillary Exchange
         GT_Values.RA.stdBuilder()
-        	.itemInputs(GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.TungstenSteel, 8),
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Copper, 2), Materials.Titanium.getPlates(6),
-                GT_Utility.copyAmount(4, insulator), ItemList.Electric_Pump_LuV.get(1), Materials.Silver.getDust(2))
-        	.fluidInputs(Materials.Silicone.getMolten(288L))
-        	.itemOutputs(new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 1))
-        	.duration(20 * SECONDS).eut(7680).addTo(assemblerRecipes);
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.TungstenSteel, 8),
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Copper, 2),
+                Materials.Titanium.getPlates(6),
+                GT_Utility.copyAmount(4, insulator),
+                ItemList.Electric_Pump_LuV.get(1),
+                Materials.Silver.getDust(2))
+            .fluidInputs(Materials.Silicone.getMolten(288L))
+            .itemOutputs(new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 1))
+            .duration(20 * SECONDS)
+            .eut(7680)
+            .addTo(assemblerRecipes);
 
-        // Mu-metal lattice    
+        // Mu-metal lattice
         GT_Values.RA.stdBuilder()
-        	.itemInputs(WerkstoffMaterialPool.MuMetal.get(OrePrefixes.wireFine, 12),
+            .itemInputs(
+                WerkstoffMaterialPool.MuMetal.get(OrePrefixes.wireFine, 12),
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 4))
-        	.fluidInputs(Materials.SolderingAlloy.getMolten(144))
-        	.itemOutputs(new ItemStack(LanthItemList.MM_LATTICE, 1))
-        	.duration(15 * SECONDS).eut(1920).addTo(assemblerRecipes);
-            
-        	
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .itemOutputs(new ItemStack(LanthItemList.MM_LATTICE, 1))
+            .duration(15 * SECONDS)
+            .eut(1920)
+            .addTo(assemblerRecipes);
 
-        // Shielded Accelerator Glass  
+        // Shielded Accelerator Glass
         GT_Values.RA.stdBuilder()
-        	.itemInputs(new ItemStack(LanthItemList.MM_LATTICE, 4))
-        	.fluidInputs(Materials.BorosilicateGlass.getMolten(144))
-        	.itemOutputs(new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 1))
-        	.duration(25 * SECONDS).eut(1920).addTo(fluidSolidifierRecipes);
-        
-        
+            .itemInputs(new ItemStack(LanthItemList.MM_LATTICE, 4))
+            .fluidInputs(Materials.BorosilicateGlass.getMolten(144))
+            .itemOutputs(new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 1))
+            .duration(25 * SECONDS)
+            .eut(1920)
+            .addTo(fluidSolidifierRecipes);
 
         // Beamline Pipe
         GT_Values.RA.stdBuilder()
-        	.itemInputs(WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plate, 4),
+            .itemInputs(
+                WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plate, 4),
                 GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenCarbide, 4),
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.TungstenCarbide, 8),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 4), GT_Utility.getIntegratedCircuit(7))
-        	.fluidInputs(Materials.SolderingAlloy.getMolten(144))
-        	.itemOutputs(LanthItemList.BEAMLINE_PIPE)
-        	.duration(20 * SECONDS).eut(1920).addTo(assemblerRecipes);
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 4),
+                GT_Utility.getIntegratedCircuit(7))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .itemOutputs(LanthItemList.BEAMLINE_PIPE)
+            .duration(20 * SECONDS)
+            .eut(1920)
+            .addTo(assemblerRecipes);
 
         // Beamline Input Hatch
         GT_Values.RA.stdBuilder()
@@ -520,17 +556,23 @@ public class RecipeLoader {
         // " + Cr T2
         //
         GT_Values.RA.stdBuilder()
-        	.itemInputs(new ItemStack(LanthItemList.IRON_COATED_QUARTZ))
-        	.fluidInputs(Materials.Oxygen.getGas(1000))
-        	.itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK1)))
-        	.outputChances(10000).requiresCleanRoom().duration(12 * SECONDS).eut(1920).addTo(autoclaveRecipes);
-        
-        /* Unsure what was intended with this recipe?
-        GT_Values.RA.stdBuilder()
-        	.itemInputs(new ItemStack(LanthItemList.IRON_COATED_QUARTZ), Materials.Chrome.getDust(1))
-        	.fluidInputs(Materials.Oxygen.getGas(1000))
-        	.itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK2)))
-        	.outputChances(10000).requiresCleanRoom().duration(12 * SECONDS).eut(7980).addTo(autoclaveRecipes);*/ 
+            .itemInputs(new ItemStack(LanthItemList.IRON_COATED_QUARTZ))
+            .fluidInputs(Materials.Oxygen.getGas(1000))
+            .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK1)))
+            .outputChances(10000)
+            .requiresCleanRoom()
+            .duration(12 * SECONDS)
+            .eut(1920)
+            .addTo(autoclaveRecipes);
+
+        /*
+         * Unsure what was intended with this recipe?
+         * GT_Values.RA.stdBuilder()
+         * .itemInputs(new ItemStack(LanthItemList.IRON_COATED_QUARTZ), Materials.Chrome.getDust(1))
+         * .fluidInputs(Materials.Oxygen.getGas(1000))
+         * .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK2)))
+         * .outputChances(10000).requiresCleanRoom().duration(12 * SECONDS).eut(7980).addTo(autoclaveRecipes);
+         */
 
         // Grow the first silicon
         GT_Values.RA.stdBuilder()
@@ -702,20 +744,26 @@ public class RecipeLoader {
                 // Very copy-paste heavy, could possibly offload most of this into one case and just assign an
                 // otherIngredient variable or something, wouldn't save much space though. Plus: lazy
                 GT_Values.RA.stdBuilder()
-                	.itemInputs(new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
-                            GT_Utility
-                                .copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderPearl, 1)))
-                	.itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask))).requiresCleanRoom()
-                	.duration(120 * SECONDS).eut(1920).addTo(laserEngraverRecipes);
+                    .itemInputs(
+                        new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
+                        GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderPearl, 1)))
+                    .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
+                    .requiresCleanRoom()
+                    .duration(120 * SECONDS)
+                    .eut(1920)
+                    .addTo(laserEngraverRecipes);
 
             } else if (mask == MaskList.NOR) {
 
-            	GT_Values.RA.stdBuilder()
-            	.itemInputs(new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
-                        GT_Utility
-                            .copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderEye, 1)))
-            	.itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask))).requiresCleanRoom()
-            	.duration(120 * SECONDS).eut(1920).addTo(laserEngraverRecipes);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
+                        GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderEye, 1)))
+                    .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
+                    .requiresCleanRoom()
+                    .duration(120 * SECONDS)
+                    .eut(1920)
+                    .addTo(laserEngraverRecipes);
 
             }
 
@@ -726,11 +774,14 @@ public class RecipeLoader {
                     if (lens == null) continue;
 
                     GT_Values.RA.stdBuilder()
-                	.itemInputs(new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
-                            GT_Utility
-                                .copyAmount(0, lens))
-                	.itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask))).requiresCleanRoom()
-                	.duration(120 * SECONDS).eut(1920).addTo(laserEngraverRecipes);
+                        .itemInputs(
+                            new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
+                            GT_Utility.copyAmount(0, lens))
+                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
+                        .requiresCleanRoom()
+                        .duration(120 * SECONDS)
+                        .eut(1920)
+                        .addTo(laserEngraverRecipes);
 
                 }
             }
