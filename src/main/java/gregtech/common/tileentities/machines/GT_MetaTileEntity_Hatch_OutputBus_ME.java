@@ -61,6 +61,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         .storage()
         .createItemList();
     long lastOutputTick = 0;
+    long lastInputTick = 0;
     long tickCounter = 0;
     boolean lastOutputFailed = false;
     boolean additionalConnection = false;
@@ -109,12 +110,17 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         return aStack.stackSize == 0;
     }
 
+    private long getCachedAmount() {
+        long itemAmount = 0;
+        for (IAEItemStack item : itemCache) {
+            itemAmount += item.getStackSize();
+        }
+        return itemAmount;
+    }
+
     private long getCacheCapacity() {
         ItemStack upgradeItemStack = mInventory[0];
-        if (upgradeItemStack == null) {
-            return baseCapacity;
-        }
-        if (upgradeItemStack.getItem() instanceof ItemBasicStorageCell) {
+        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ItemBasicStorageCell) {
             return ((ItemBasicStorageCell) upgradeItemStack.getItem()).getBytesLong(upgradeItemStack) * 8;
         }
         return baseCapacity;
@@ -124,11 +130,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
      * Check if the internal cache can still fit more items in it
      */
     public boolean canAcceptItem() {
-        long itemAmount = 0;
-        for (IAEItemStack item : itemCache) {
-            itemAmount += item.getStackSize();
-        }
-        if (itemAmount < getCacheCapacity()) {
+        if (getCachedAmount() < getCacheCapacity()) {
             return true;
         }
         return false;
@@ -142,11 +144,16 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
      */
     public int store(final ItemStack stack) {
         if (lastOutputFailed) return stack.stackSize;
-        itemCache.add(
-            AEApi.instance()
-                .storage()
-                .createItemStack(stack));
-        return 0;
+        //Always allow insertion on the same tick so we can output the entire recipe
+        if (canAcceptItem() || (lastInputTick == tickCounter)) {
+            itemCache.add(
+                AEApi.instance()
+                    .storage()
+                    .createItemStack(stack));
+            lastInputTick = tickCounter;
+            return 0;
+        }
+        return stack.stackSize;
     }
 
     private BaseActionSource getRequest() {

@@ -66,6 +66,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         .storage()
         .createFluidList();
     long lastOutputTick = 0;
+    long lastInputTick = 0;
     long tickCounter = 0;
     boolean lastOutputFailed = false;
     boolean additionalConnection = false;
@@ -127,13 +128,17 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         return 0;
     }
 
+    private long getCachedAmount() {
+        long fluidAmount = 0;
+        for (IAEFluidStack fluid : fluidCache) {
+            fluidAmount += fluid.getStackSize();
+        }
+        return fluidAmount;
+    }
 
     private long getCacheCapacity() {
         ItemStack upgradeItemStack = mInventory[0];
-        if (upgradeItemStack == null) {
-            return baseCapacity;
-        }
-        if (upgradeItemStack.getItem() instanceof FCBaseItemCell) {
+        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof FCBaseItemCell) {
             return ((FCBaseItemCell) upgradeItemStack.getItem()).getBytes(upgradeItemStack) * 8;
         }
         return baseCapacity;
@@ -143,11 +148,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
      * Check if the internal cache can still fit more fluids in it
      */
     public boolean canAcceptFluid() {
-        long fluidAmount = 0;
-        for (IAEFluidStack fluid : fluidCache) {
-            fluidAmount += fluid.getStackSize();
-        }
-        if (fluidAmount < getCacheCapacity()) {
+        if (getCachedAmount() < getCacheCapacity()) {
             return true;
         }
         return false;
@@ -161,11 +162,16 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
      */
     public int tryFillAE(final FluidStack aFluid) {
         if (lastOutputFailed || aFluid == null) return 0;
-        fluidCache.add(
-            AEApi.instance()
-                .storage()
-                .createFluidStack(aFluid));
-        return aFluid.amount;
+        //Always allow insertion on the same tick so we can output the entire recipe
+        if (canAcceptFluid() || (lastInputTick == tickCounter)) {
+            fluidCache.add(
+                AEApi.instance()
+                    .storage()
+                    .createFluidStack(aFluid));
+            lastInputTick = tickCounter;
+            return aFluid.amount;
+        }
+        return 0;
     }
 
     private BaseActionSource getRequest() {
