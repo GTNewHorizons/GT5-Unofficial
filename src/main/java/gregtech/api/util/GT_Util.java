@@ -21,123 +21,123 @@ public class GT_Util {
         return new Tuple(key, value);
     }
 
-    public static NBTTagCompound fuseNBT(NBTTagCompound aNBT1, NBTTagCompound aNBT2) {
-        if (aNBT1 == null) return aNBT2 == null ? new NBTTagCompound() : (NBTTagCompound) aNBT2.copy();
-        final NBTTagCompound rNBT = (NBTTagCompound) aNBT1.copy();
-        if (aNBT2 == null) return rNBT;
-        for (Object tKey : aNBT2.func_150296_c /* getKeySet */())
-            if (!rNBT.hasKey(tKey.toString())) rNBT.setTag(tKey.toString(), aNBT2.getTag(tKey.toString()));
+    public static NBTTagCompound fuseNBT(NBTTagCompound nbt1, NBTTagCompound nbt2) {
+        if (nbt1 == null) return nbt2 == null ? new NBTTagCompound() : (NBTTagCompound) nbt2.copy();
+        final NBTTagCompound rNBT = (NBTTagCompound) nbt1.copy();
+        if (nbt2 == null) return rNBT;
+        for (Object tKey : nbt2.func_150296_c /* getKeySet */())
+            if (!rNBT.hasKey(tKey.toString())) rNBT.setTag(tKey.toString(), nbt2.getTag(tKey.toString()));
         return rNBT;
     }
 
     /**
      * Construct a NBTTagCompound from a series of key, value pairs. Inspired from GT6.
      */
-    public static NBTTagCompound makeNBT(Tuple... aTags) {
-        final NBTTagCompound rNBT = new NBTTagCompound();
-        for (Tuple t : aTags) {
+    public static NBTTagCompound makeNBT(Tuple... tags) {
+        final NBTTagCompound nbt = new NBTTagCompound();
+        for (Tuple t : tags) {
             if (t.getSecond() == null) continue;
 
-            if (t.getSecond() instanceof Boolean) rNBT.setBoolean(
+            if (t.getSecond() instanceof Boolean) nbt.setBoolean(
                 t.getFirst()
                     .toString(),
                 (Boolean) t.getSecond());
-            else if (t.getSecond() instanceof Byte) rNBT.setByte(
+            else if (t.getSecond() instanceof Byte) nbt.setByte(
                 t.getFirst()
                     .toString(),
                 (Byte) t.getSecond());
-            else if (t.getSecond() instanceof Short) rNBT.setShort(
+            else if (t.getSecond() instanceof Short) nbt.setShort(
                 t.getFirst()
                     .toString(),
                 (Short) t.getSecond());
-            else if (t.getSecond() instanceof Integer) rNBT.setInteger(
+            else if (t.getSecond() instanceof Integer) nbt.setInteger(
                 t.getFirst()
                     .toString(),
                 (Integer) t.getSecond());
-            else if (t.getSecond() instanceof Long) rNBT.setLong(
+            else if (t.getSecond() instanceof Long) nbt.setLong(
                 t.getFirst()
                     .toString(),
                 (Long) t.getSecond());
-            else if (t.getSecond() instanceof Float) rNBT.setFloat(
+            else if (t.getSecond() instanceof Float) nbt.setFloat(
                 t.getFirst()
                     .toString(),
                 (Float) t.getSecond());
-            else if (t.getSecond() instanceof Double) rNBT.setDouble(
+            else if (t.getSecond() instanceof Double) nbt.setDouble(
                 t.getFirst()
                     .toString(),
                 (Double) t.getSecond());
-            else if (t.getSecond() instanceof String) rNBT.setString(
+            else if (t.getSecond() instanceof String) nbt.setString(
                 t.getFirst()
                     .toString(),
                 (String) t.getSecond());
-            else if (t.getSecond() instanceof NBTBase) rNBT.setTag(
+            else if (t.getSecond() instanceof NBTBase) nbt.setTag(
                 t.getFirst()
                     .toString(),
                 (NBTBase) t.getSecond());
-            else rNBT.setString(
+            else nbt.setString(
                 t.getFirst()
                     .toString(),
                 t.getSecond()
                     .toString());
         }
 
-        return rNBT;
+        return nbt;
     }
 
     /**
      * Get a TileEntity
      */
-    public static TileEntity getTileEntity(World aWorld, int aX, int aY, int aZ, boolean aLoadUnloadedChunks) {
-        if (aLoadUnloadedChunks || aWorld.blockExists(aX, aY, aZ)) {
-            TileEntity rTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-            if (rTileEntity instanceof IMultiTileEntity && ((IMultiTileEntity) rTileEntity).isDead()) return null;
-            if (rTileEntity != null) return rTileEntity;
-            rTileEntity = LAST_BROKEN_TILEENTITY.get();
-            if (rTileEntity != null && rTileEntity.xCoord == aX && rTileEntity.yCoord == aY && rTileEntity.zCoord == aZ)
-                return rTileEntity;
+    public static TileEntity getTileEntity(World world, int x, int y, int z, boolean aLoadUnloadedChunks) {
+        if (aLoadUnloadedChunks || world.blockExists(x, y, z)) {
+            TileEntity tileEntity = world.getTileEntity(x, y, z);
+            if (tileEntity instanceof IMultiTileEntity && ((IMultiTileEntity) tileEntity).isDead()) return null;
+            if (tileEntity != null) return tileEntity;
+            tileEntity = LAST_BROKEN_TILEENTITY.get();
+            if (tileEntity != null && tileEntity.xCoord == x && tileEntity.yCoord == y && tileEntity.zCoord == z)
+                return tileEntity;
         }
         return null;
     }
 
     /** Sets the TileEntity at the passed position, with the option of turning adjacent TileEntity updates off. */
-    public static TileEntity setTileEntity(World aWorld, int aX, int aY, int aZ, TileEntity aTileEntity,
+    public static TileEntity setTileEntity(World world, int x, int y, int z, TileEntity aTileEntity,
         boolean aCauseTileEntityUpdates) {
-        if (aCauseTileEntityUpdates) aWorld.setTileEntity(aX, aY, aZ, aTileEntity);
+        if (aCauseTileEntityUpdates) world.setTileEntity(x, y, z, aTileEntity);
         else {
-            Chunk tChunk = aWorld.getChunkFromChunkCoords(aX >> 4, aZ >> 4);
+            final Chunk tChunk = world.getChunkFromChunkCoords(x >> 4, z >> 4);
             if (tChunk != null) {
-                aWorld.addTileEntity(aTileEntity);
-                tChunk.func_150812_a /* setBlockTileEntityInChunk */(aX & 15, aY, aZ & 15, aTileEntity);
+                world.addTileEntity(aTileEntity);
+                tChunk.func_150812_a /* setBlockTileEntityInChunk */(x & 15, y, z & 15, aTileEntity);
                 tChunk.setChunkModified();
             }
         }
         return aTileEntity;
     }
 
-    public static boolean setTileEntity(World aWorld, int aX, int aY, int aZ, Block aBlock, short aMeta, long aFlags,
+    public static boolean setBlock(World world, int x, int y, int z, Block block, short aMeta, long aFlags,
         boolean aRemoveGrassBelow) {
         if (aRemoveGrassBelow) {
-            final Block tBlock = aWorld.getBlock(aX, aY - 1, aZ);
-            if (tBlock == Blocks.grass || tBlock == Blocks.mycelium)
-                aWorld.setBlock(aX, aY - 1, aZ, Blocks.dirt, 0, (byte) aFlags);
+            final Block blockBelow = world.getBlock(x, y - 1, z);
+            if (blockBelow == Blocks.grass || blockBelow == Blocks.mycelium)
+                world.setBlock(x, y - 1, z, Blocks.dirt, 0, (byte) aFlags);
         }
-        return aWorld.setBlock(aX, aY, aZ, aBlock, aMeta, (byte) aFlags);
+        return world.setBlock(x, y, z, block, aMeta, (byte) aFlags);
     }
 
-    public static TileEntity getTileEntity(World aWorld, ChunkCoordinates aCoords, boolean aLoadUnloadedChunks) {
-        return getTileEntity(aWorld, aCoords.posX, aCoords.posY, aCoords.posZ, aLoadUnloadedChunks);
+    public static TileEntity getTileEntity(World world, ChunkCoordinates coords, boolean loadUnloadedChunks) {
+        return getTileEntity(world, coords.posX, coords.posY, coords.posZ, loadUnloadedChunks);
     }
 
     /** Marks a Chunk dirty so it is saved */
-    public static boolean markChunkDirty(World aWorld, int aX, int aZ) {
-        if (aWorld == null || aWorld.isRemote) return false;
-        Chunk aChunk = aWorld.getChunkFromBlockCoords(aX, aZ);
+    public static boolean markChunkDirty(World world, int x, int z) {
+        if (world == null || world.isRemote) return false;
+        Chunk aChunk = world.getChunkFromBlockCoords(x, z);
         if (aChunk == null) {
-            aWorld.getBlockMetadata(aX, 0, aZ);
-            aChunk = aWorld.getChunkFromBlockCoords(aX, aZ);
+            world.getBlockMetadata(x, 0, z);
+            aChunk = world.getChunkFromBlockCoords(x, z);
             if (aChunk == null) {
                 GT_Log.err.println(
-                    "Some important Chunk does not exist for some reason at Coordinates X: " + aX + " and Z: " + aZ);
+                    "Some important Chunk does not exist for some reason at Coordinates X: " + x + " and Z: " + z);
                 return false;
             }
         }
@@ -146,11 +146,9 @@ public class GT_Util {
     }
 
     /** Marks a Chunk dirty so it is saved */
-    public static boolean markChunkDirty(Object aTileEntity) {
-        return aTileEntity instanceof TileEntity && markChunkDirty(
-            ((TileEntity) aTileEntity).getWorldObj(),
-            ((TileEntity) aTileEntity).xCoord,
-            ((TileEntity) aTileEntity).zCoord);
+    public static boolean markChunkDirty(Object maybeTile) {
+        return maybeTile instanceof TileEntity tileEntity
+            && markChunkDirty(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.zCoord);
     }
 
     public static int mixRGBInt(int aRGB1, int aRGB2) {

@@ -19,11 +19,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.multitileentity.MultiTileEntityContainer;
+import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 
@@ -189,25 +188,18 @@ public class GT_StructureUtilityMuTE {
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry
-                    .getRegistry(validCasings[0].getRegistryId());
-                if (tRegistry == null) {
+                final int registryID = validCasings[0].getRegistryId();
+                final MultiTileEntityRegistry registry = MultiTileEntityRegistry.getRegistry(registryID);
+                if (registry == null) {
                     GT_FML_LOGGER.error("NULL REGISTRY");
                     return false;
                 }
-                final MultiTileEntityContainer tContainer = tRegistry
-                    .getNewTileEntityContainer(world, x, y, z, validCasings[0].defaultMeta, null);
-                if (tContainer == null) {
-                    GT_FML_LOGGER.error("NULL CONTAINER");
-                    return false;
-                }
-                final IMultiTileEntity te = ((IMultiTileEntity) tContainer.mTileEntity);
-                if (!(te instanceof MultiBlockPart)) {
-                    GT_FML_LOGGER.error("Not a multiblock part");
-                    return false;
-                }
-                if (world.setBlock(x, y, z, tContainer.mBlock, 15 - tContainer.mBlockMetaData, 2)) {
-                    tContainer.setMultiTile(world, x, y, z);
+                final MultiTileEntityBlock block = registry.getBlock();
+                if (world.setBlock(x, y, z, block, allowedCasings[0].getDefaultMeta(), 2)) {
+                    final TileEntity te = world.getTileEntity(x, y, z);
+                    if (!(te instanceof MultiBlockPart)) {
+                        throw new IllegalStateException("TE is not an MultiBlockPart");
+                    }
                     ((MultiBlockPart) te).setTarget((IMultiBlockController) t, modes);
 
                     ((Controller<?, ?>) t).registerSpecialCasings((MultiBlockPart) te);
@@ -233,7 +225,7 @@ public class GT_StructureUtilityMuTE {
         private final Integer[] validIds;
 
         public MuTEStructureCasing(String registryName, Integer... validIds) {
-            MultiTileEntityRegistry registry = MultiTileEntityRegistry.getRegistry(registryName);
+            final MultiTileEntityRegistry registry = MultiTileEntityRegistry.getRegistry(registryName);
             if (validIds == null || validIds.length == 0 || registry == null) {
                 throw new IllegalArgumentException();
             }
@@ -263,7 +255,7 @@ public class GT_StructureUtilityMuTE {
             // but it should be properly fixed in the future
             if (registryId == GT_Values.W) {
                 MultiTileEntityRegistry registry = MultiTileEntityRegistry.getRegistry(registryName);
-                registryId = Block.getIdFromBlock(registry.mBlock);
+                registryId = Block.getIdFromBlock(registry.getBlock());
             }
             return registryId;
         }
