@@ -28,13 +28,12 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings10;
 
 public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IndustrialElectromagneticSeparator>
     implements ISurvivalConstructable {
-
-    private static final int CASING_INDEX = 240;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_IndustrialElectromagneticSeparator> STRUCTURE_DEFINITION = StructureDefinition
@@ -84,7 +83,9 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                rTexture = new ITexture[] {
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 0)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_EMS_ACTIVE)
                         .extFacing()
@@ -95,7 +96,9 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                         .glow()
                         .build() };
             } else {
-                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                rTexture = new ITexture[] {
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 0)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_EMS)
                         .extFacing()
@@ -107,7 +110,8 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+            rTexture = new ITexture[] { Textures.BlockIcons
+                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 0)) };
         }
         return rTexture;
     }
