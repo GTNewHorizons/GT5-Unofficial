@@ -9,10 +9,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.glodblock.github.common.item.FCBaseItemCell;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -22,6 +18,10 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.glodblock.github.common.item.FCBaseItemCell;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -44,7 +44,6 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.IWideReadableNumberConverter;
 import appeng.util.ReadableNumberConverter;
-import appeng.items.AEBaseItem;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -162,7 +161,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
      */
     public int tryFillAE(final FluidStack aFluid) {
         if (lastOutputFailed || aFluid == null) return 0;
-        //Always allow insertion on the same tick so we can output the entire recipe
+        // Always allow insertion on the same tick so we can output the entire recipe
         if (canAcceptFluid() || (lastInputTick == tickCounter)) {
             fluidCache.add(
                 AEApi.instance()
@@ -356,10 +355,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             "The hatch is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
                 : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
         IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
-        ss.add(
-            "Fluid cache capacity: " +
-            nc.toWideReadableForm(getCacheCapacity()) +
-            " mB");
+        ss.add("Fluid cache capacity: " + nc.toWideReadableForm(getCacheCapacity()) + " mB");
         if (fluidCache.isEmpty()) {
             ss.add("The bus has no cached fluids");
         } else {

@@ -9,10 +9,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.glodblock.github.common.item.FCBaseItemCell;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -22,6 +18,9 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import appeng.api.AEApi;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
@@ -29,7 +28,6 @@ import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.IMEMonitor;
-import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
@@ -72,8 +70,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             aName,
             aNameRegional,
             3,
-            new String[] { "Item Output for Multiblocks", "Stores directly into ME",
-                "Can cache 1600 items by default", "Change cache size by inserting a storage cell",
+            new String[] { "Item Output for Multiblocks", "Stores directly into ME", "Can cache 1600 items by default",
+                "Change cache size by inserting a storage cell",
                 "Change ME connection behavior by right-clicking with wire cutter" },
             1);
     }
@@ -144,7 +142,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
      */
     public int store(final ItemStack stack) {
         if (lastOutputFailed) return stack.stackSize;
-        //Always allow insertion on the same tick so we can output the entire recipe
+        // Always allow insertion on the same tick so we can output the entire recipe
         if (canAcceptItem() || (lastInputTick == tickCounter)) {
             itemCache.add(
                 AEApi.instance()
@@ -337,9 +335,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
                 : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
         IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
-        ss.add(
-            "Item cache capacity: " +
-            nc.toWideReadableForm(getCacheCapacity()));
+        ss.add("Item cache capacity: " + nc.toWideReadableForm(getCacheCapacity()));
         if (itemCache.isEmpty()) {
             ss.add("The bus has no cached items");
         } else {
