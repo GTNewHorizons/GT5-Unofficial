@@ -181,7 +181,6 @@ public class RecipeLoader_NuclearFuelProcessing {
         GT_Values.RA.stdBuilder()
             .itemInputs(CI.getNumberedAdvancedCircuit(1), ELEMENT.getInstance().FLUORINE.getCell(3))
             .itemOutputs(CI.emptyCells(1), NUCLIDE.UF6F2FP.getCell(2))
-            .outputChances(10000)
             .fluidInputs(NUCLIDE.Sparged_LiFBeF2UF4FP.getFluidStack(1000))
             .fluidOutputs(FluidUtils.getFluidStack(NuclearChem.Impure_LiFBeF2, 2000))
             .duration(60 * MINUTES)
