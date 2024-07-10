@@ -28,7 +28,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.common.blocks.GT_Block_Casings9;
+import gregtech.common.blocks.GT_Block_Casings10;
 
 public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IndustrialElectromagneticSeparator>
@@ -44,12 +44,12 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             'C',
             buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
                 .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                .casingIndex(((GT_Block_Casings9) GregTech_API.sBlockCasings9).getTextureIndex(2))
+                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(
                         GT_MetaTileEntity_IndustrialElectromagneticSeparator::onCasingAdded,
-                        ofBlock(GregTech_API.sBlockCasings9, 2))))
+                        ofBlock(GregTech_API.sBlockCasings10, 0))))
         .build();
 
     public GT_MetaTileEntity_IndustrialElectromagneticSeparator(final int aID, final String aName,
@@ -82,7 +82,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
+                rTexture = new ITexture[] { casingTexturePages[0][16], TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_EMS_ACTIVE)
                     .extFacing()
                     .build(),
@@ -92,7 +92,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                         .glow()
                         .build() };
             } else {
-                rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
+                rTexture = new ITexture[] { casingTexturePages[0][16], TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_EMS)
                     .extFacing()
                     .build(),
@@ -103,7 +103,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { casingTexturePages[0][17] };
+            rTexture = new ITexture[] { casingTexturePages[0][16] };
         }
         return rTexture;
     }
