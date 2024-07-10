@@ -404,13 +404,11 @@ public class MultiTileEntityBlock extends BlockContainer implements IDebugableBl
 
     @Override
     public final String getLocalizedName() {
-        // return StatCollector.translateToLocal(registry.getInternalName() + ".name");
         return StatCollector.translateToLocal(internalName + ".name");
     }
 
     @Override
     public final String getUnlocalizedName() {
-        // return registry.getInternalName();
         return internalName;
     }
 
