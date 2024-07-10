@@ -51,7 +51,7 @@ import gregtech.api.util.GT_Utility;
 public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatch_OutputBus
     implements IPowerChannelState {
 
-    private final long baseCapacity = 1_600;
+    private long baseCapacity = 1_600;
 
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
@@ -132,6 +132,13 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             return true;
         }
         return false;
+    }
+
+    /**
+     * Set the base capacity of the bus
+     */
+    public void setBaseCapacity(long capacity) {
+        baseCapacity = capacity;
     }
 
     /**
@@ -278,6 +285,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         }
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setTag("cachedItems", items);
+        aNBT.setLong("baseCapacity", baseCapacity);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -316,6 +324,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             }
         }
         additionalConnection = aNBT.getBoolean("additionalConnection");
+        baseCapacity = aNBT.getLong("baseCapacity");
         getProxy().readFromNBT(aNBT);
     }
 

@@ -57,7 +57,7 @@ import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_Output implements IPowerChannelState {
 
-    private final long baseCapacity = 128_000;
+    private long baseCapacity = 128_000;
 
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
@@ -151,6 +151,10 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             return true;
         }
         return false;
+    }
+
+    public void setBaseCapacity(long capacity) {
+        baseCapacity = capacity;
     }
 
     /**
@@ -311,6 +315,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         }
         aNBT.setTag("cachedFluids", fluids);
         aNBT.setBoolean("additionalConnection", additionalConnection);
+        aNBT.setLong("baseCapacity", baseCapacity);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -336,6 +341,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             }
         }
         additionalConnection = aNBT.getBoolean("additionalConnection");
+        baseCapacity = aNBT.getLong("baseCapacity");
         getProxy().readFromNBT(aNBT);
     }
 
