@@ -42,7 +42,7 @@ public class RecipeLoader_NuclearFuelProcessing {
 
         // 7LiF - BeF2 - ZrF4 - U235 - 590C
         GT_Values.RA.stdBuilder()
-            .itemInputs(
+            .fluidInputs(
                 FluidUtils.getFluidStack(aLithiumFluoride, 550),
                 FluidUtils.getFluidStack(aBerylliumFluoride, 150),
                 FluidUtils.getFluidStack(aZirconiumFluoride, 60),
