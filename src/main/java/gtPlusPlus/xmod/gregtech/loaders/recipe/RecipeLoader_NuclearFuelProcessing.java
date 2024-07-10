@@ -239,13 +239,13 @@ public class RecipeLoader_NuclearFuelProcessing {
             .addTo(chemicalPlantRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(100), NUCLIDE.LiFBeF2UF4.getFluidStack(900))
+            .fluidInputs(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(100), NUCLIDE.LiFBeF2UF4.getFluidStack(900))
             .fluidOutputs(NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(1000))
             .duration(12 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(fissionFuelProcessingRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(FLUORIDES.THORIUM_TETRAFLUORIDE.getFluidStack(100), NUCLIDE.LiFBeF2UF4.getFluidStack(900))
+            .fluidInputs(FLUORIDES.THORIUM_TETRAFLUORIDE.getFluidStack(100), NUCLIDE.LiFBeF2UF4.getFluidStack(900))
             .fluidOutputs(NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(1000))
             .duration(15 * MINUTES)
             .eut(TierEU.RECIPE_IV)
