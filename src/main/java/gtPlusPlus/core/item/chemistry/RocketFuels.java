@@ -3,7 +3,10 @@ package gtPlusPlus.core.item.chemistry;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,7 +28,6 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.base.BaseItemComponent;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -105,43 +107,48 @@ public class RocketFuels extends ItemPackage {
 
     public static void createNitrogenTetroxide() {
         // 2HNO3 + Cu = N2O4 + H2O + CuO
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1),
-                ItemUtils.getSimpleStack(GenericChem.mOrangeCatalyst, 0), },
-            new FluidStack[] { FluidUtils.getFluidStack("nitricacid", 2000) },
-            new ItemStack[] { Materials.CupricOxide.getDust(2), },
-            new FluidStack[] { FluidUtils.getFluidStack(Nitrogen_Tetroxide, 1000), },
-            new int[] { 100, 100, 50, 50 },
-            20 * 30,
-            MaterialUtils.getVoltageForTier(3),
-            3);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1),
+                ItemUtils.getSimpleStack(GenericChem.mOrangeCatalyst, 0))
+            .itemOutputs(Materials.CupricOxide.getDust(2))
+            .fluidInputs(FluidUtils.getFluidStack("nitricacid", 2000))
+            .fluidOutputs(FluidUtils.getFluidStack(Nitrogen_Tetroxide, 1000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .specialValue(3)
+            .addTo(chemicalPlantRecipes);
+
     }
 
     public static void createHydrazine() {
 
         // H2O2 + 2NH3 = N2H4 + 2H2O
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(21) },
-            new FluidStack[] { FluidUtils.getFluidStack("fluid.hydrogenperoxide", 1000),
-                FluidUtils.getFluidStack("ammonia", 2000), },
-            new ItemStack[] {},
-            new FluidStack[] { FluidUtils.getFluidStack(Hydrazine, 1000), },
-            20 * 30,
-            MaterialUtils.getVoltageForTier(2),
-            1);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(21))
+            .fluidInputs(
+                FluidUtils.getFluidStack("fluid.hydrogenperoxide", 1000),
+                FluidUtils.getFluidStack("ammonia", 2000))
+            .fluidOutputs(FluidUtils.getFluidStack(Hydrazine, 1000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .specialValue(1)
+            .addTo(chemicalPlantRecipes);
+
     }
 
     public static void createMonomethylhydrazine() {
 
         // C + 2H + N2H4 = CH6N2
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(21), ItemUtils.getItemStackOfAmountFromOreDict("dustCarbon", 1) },
-            new FluidStack[] { FluidUtils.getFluidStack("hydrogen", 2000), FluidUtils.getFluidStack(Hydrazine, 1000), },
-            new ItemStack[] {},
-            new FluidStack[] { FluidUtils.getFluidStack(Monomethylhydrazine, 1000), },
-            20 * 48,
-            240,
-            2);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(21), ItemUtils.getItemStackOfAmountFromOreDict("dustCarbon", 1))
+            .fluidInputs(FluidUtils.getFluidStack("hydrogen", 2000), FluidUtils.getFluidStack(Hydrazine, 1000))
+            .fluidOutputs(FluidUtils.getFluidStack(Monomethylhydrazine, 1000))
+            .duration(48 * SECONDS)
+            .eut(240)
+            .specialValue(2)
+            .addTo(chemicalPlantRecipes);
+
     }
 
     private static void createLOH() {
@@ -156,41 +163,42 @@ public class RocketFuels extends ItemPackage {
     private static void createHydratedAmmoniumNitrateSlurry() {
 
         // NH3 + HNO3 = NH4NO3
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(21), },
-            new FluidStack[] { FluidUtils.getFluidStack("ammonia", 4000),
-                FluidUtils.getFluidStack("nitricacid", 4000), },
-            new ItemStack[] {},
-            new FluidStack[] { FluidUtils.getFluidStack(Hydrated_Ammonium_Nitrate_Slurry, 5184), },
-            20 * 60,
-            120,
-            1);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(CI.getNumberedAdvancedCircuit(21))
+            .fluidInputs(FluidUtils.getFluidStack("ammonia", 4000), FluidUtils.getFluidStack("nitricacid", 4000))
+            .fluidOutputs(FluidUtils.getFluidStack(Hydrated_Ammonium_Nitrate_Slurry, 5184))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .specialValue(1)
+            .addTo(chemicalPlantRecipes);
+
     }
 
     private static void createAmmoniumNitrateDust() {
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(8) },
-            FluidUtils.getFluidStack(Hydrated_Ammonium_Nitrate_Slurry, 8 * 144),
-            FluidUtils.getWater(2000),
-            new ItemStack[] { ItemUtils.getSimpleStack(Ammonium_Nitrate_Dust, 8) },
-            new int[] { 10000 },
-            90 * 20,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(8))
+            .itemOutputs(ItemUtils.getSimpleStack(Ammonium_Nitrate_Dust, 8))
+            .fluidInputs(FluidUtils.getFluidStack(Hydrated_Ammonium_Nitrate_Slurry, 8 * 144))
+            .fluidOutputs(FluidUtils.getWater(2000))
+            .eut(TierEU.RECIPE_HV)
+            .duration(1 * MINUTES + 30 * SECONDS)
+            .addTo(chemicalDehydratorRecipes);
     }
 
     private static void createFormaldehyde() {
 
         // O + CH4O = CH2O + H2O
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(21),
-                ItemUtils.getSimpleStack(GenericChem.mFormaldehydeCatalyst, 0), },
-            new FluidStack[] { FluidUtils.getFluidStack("oxygen", 32000),
-                FluidUtils.getFluidStack("methanol", 32000), },
-            new ItemStack[] {},
-            new FluidStack[] { FluidUtils.getFluidStack(Formaldehyde, 32000), },
-            20 * 90,
-            120,
-            1);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(21),
+                ItemUtils.getSimpleStack(GenericChem.mFormaldehydeCatalyst, 0))
+            .fluidInputs(FluidUtils.getFluidStack("oxygen", 32000), FluidUtils.getFluidStack("methanol", 32000))
+            .fluidOutputs(FluidUtils.getFluidStack(Formaldehyde, 32000))
+            .duration(1 * MINUTES + 30 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .specialValue(1)
+            .addTo(chemicalPlantRecipes);
+
     }
 
     private static void createFormaldehydeCatalyst() {
@@ -207,17 +215,20 @@ public class RocketFuels extends ItemPackage {
 
     private static void createUnsymmetricalDimethylhydrazine() {
 
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedAdvancedCircuit(21),
-                ItemUtils.getSimpleStack(GenericChem.mFormaldehydeCatalyst, 0), },
-            new FluidStack[] { FluidUtils.getFluidStack("fluid.hydrazine", 2000),
-                FluidUtils.getFluidStack(Formaldehyde, 2000), FluidUtils.getFluidStack("hydrogen", 4000), },
-            new ItemStack[] {},
-            new FluidStack[] { FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine, 2000),
-                FluidUtils.getWater(2000) },
-            20 * 60,
-            120,
-            3);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(21),
+                ItemUtils.getSimpleStack(GenericChem.mFormaldehydeCatalyst, 0))
+            .fluidInputs(
+                FluidUtils.getFluidStack("fluid.hydrazine", 2000),
+                FluidUtils.getFluidStack(Formaldehyde, 2000),
+                FluidUtils.getFluidStack("hydrogen", 4000))
+            .fluidOutputs(FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine, 2000), FluidUtils.getWater(2000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .specialValue(3)
+            .addTo(chemicalPlantRecipes);
+
     }
 
     private static void addRocketFuelsToMap() {
@@ -296,47 +307,46 @@ public class RocketFuels extends ItemPackage {
     private static void createRocketFuels() {
 
         // RP1_Plus_Liquid_Oxygen
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(1), },
-            new FluidStack[] { FluidUtils.getFluidStack(Liquid_Oxygen, 2000), FluidUtils.getFluidStack(RP1, 500), },
-            new ItemStack[] {},
-            new FluidStack[] { FluidUtils.getFluidStack(RP1_Plus_Liquid_Oxygen, 1500), },
-            20 * 15,
-            240,
-            3);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
+            .fluidInputs(FluidUtils.getFluidStack(Liquid_Oxygen, 2000), FluidUtils.getFluidStack(RP1, 500))
+            .fluidOutputs(FluidUtils.getFluidStack(RP1_Plus_Liquid_Oxygen, 1500))
+            .duration(15 * SECONDS)
+            .eut(240)
+            .specialValue(3)
+            .addTo(chemicalPlantRecipes);
         // Dense_Hydrazine_Mix
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(2), },
-            new FluidStack[] { FluidUtils.getFluidStack(Hydrazine, 4000), FluidUtils.getFluidStack("methanol", 6000), },
-            new ItemStack[] {},
-            new FluidStack[] { FluidUtils.getFluidStack(Dense_Hydrazine_Mix, 10000), },
-            20 * 30,
-            240,
-            4);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
+            .fluidInputs(FluidUtils.getFluidStack(Hydrazine, 4000), FluidUtils.getFluidStack("methanol", 6000))
+            .fluidOutputs(FluidUtils.getFluidStack(Dense_Hydrazine_Mix, 10000))
+            .duration(30 * SECONDS)
+            .eut(240)
+            .specialValue(4)
+            .addTo(chemicalPlantRecipes);
         // Monomethylhydrazine_Plus_Nitric_Acid
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(3), },
-            new FluidStack[] { FluidUtils.getFluidStack(Monomethylhydrazine, 2000),
-                FluidUtils.getFluidStack("nitricacid", 1000), },
-            new ItemStack[] {},
-            new FluidStack[] { FluidUtils.getFluidStack(Monomethylhydrazine_Plus_Nitric_Acid, 2000), },
-            20 * 45,
-            480,
-            5);
-
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(3))
+            .fluidInputs(
+                FluidUtils.getFluidStack(Monomethylhydrazine, 2000),
+                FluidUtils.getFluidStack("nitricacid", 1000))
+            .fluidOutputs(FluidUtils.getFluidStack(Monomethylhydrazine_Plus_Nitric_Acid, 2000))
+            .duration(45 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .specialValue(5)
+            .addTo(chemicalPlantRecipes);
         // Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide
-        CORE.RA.addChemicalPlantRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(4), },
-            new FluidStack[] { FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine, 2000),
-                FluidUtils.getFluidStack(Nitrogen_Tetroxide, 2000), },
-            new ItemStack[] {},
-            new FluidStack[] {
-                FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide, 5000), },
-            20 * 60,
-            480,
-            6);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(4))
+            .fluidInputs(
+                FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine, 2000),
+                FluidUtils.getFluidStack(Nitrogen_Tetroxide, 2000))
+            .fluidOutputs(FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide, 5000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .specialValue(6)
+            .addTo(chemicalPlantRecipes);
+
     }
 
     @Override

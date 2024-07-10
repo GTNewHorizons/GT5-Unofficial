@@ -49,6 +49,7 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gregtech.common.items.GT_MetaGenerated_Item_01.registerCauldronCleaningFor;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipes;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -91,7 +92,6 @@ import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GT_Bees;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.chemistry.GenericChem;
-import gtPlusPlus.core.lib.CORE;
 
 public class NaquadahReworkRecipeLoader {
 
@@ -101,42 +101,62 @@ public class NaquadahReworkRecipeLoader {
 
         try {
             // Naquadah (UEV)
-            CORE.RA.addQuantumTransformerRecipe(
-                new ItemStack[] { naquadahEarth.get(OrePrefixes.dust, 32), Materials.Sodium.getDust(64),
-                    Materials.Carbon.getDust(1), GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst) },
-                new FluidStack[] { Materials.Hydrogen.getGas(64000L), Materials.Fluorine.getGas(64000L),
-                    Materials.Oxygen.getGas(100L) },
-                new FluidStack[] {},
-                new ItemStack[] { inertNaquadah.get(OrePrefixes.dust, 1), Materials.Titanium.getDust(64),
-                    Materials.Adamantium.getDust(64), Materials.Gallium.getDust(64) },
-                new int[] { 2500, 2500, 2500, 2500 },
-                10 * 20,
-                (int) GT_Values.VP[10],
-                2);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    naquadahEarth.get(OrePrefixes.dust, 32),
+                    Materials.Sodium.getDust(64),
+                    Materials.Carbon.getDust(1),
+                    GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst))
+                .itemOutputs(
+                    inertNaquadah.get(OrePrefixes.dust, 1),
+                    Materials.Titanium.getDust(64),
+                    Materials.Adamantium.getDust(64),
+                    Materials.Gallium.getDust(64))
+                .outputChances(2500, 2500, 2500, 2500)
+                .fluidInputs(
+                    Materials.Hydrogen.getGas(64000L),
+                    Materials.Fluorine.getGas(64000L),
+                    Materials.Oxygen.getGas(100L))
+                .duration(10 * SECONDS)
+                .eut(GT_Values.VP[10])
+                .specialValue(2)
+                .addTo(quantumForceTransformerRecipes);
             // Enriched Naquadah (UIV)
-            CORE.RA.addQuantumTransformerRecipe(
-                new ItemStack[] { enrichedNaquadahEarth.get(OrePrefixes.dust, 32), Materials.Zinc.getDust(64),
-                    Materials.Carbon.getDust(1), GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst) },
-                new FluidStack[] { Materials.SulfuricAcid.getFluid(16000), Materials.Oxygen.getGas(100L) },
-                new FluidStack[] { wasteLiquid.getFluidOrGas(32000) },
-                new ItemStack[] { inertEnrichedNaquadah.get(OrePrefixes.dust, 1), Materials.Trinium.getDust(64), },
-                new int[] { 3300, 3300, 3300 },
-                10 * 20,
-                (int) GT_Values.VP[11],
-                2);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    enrichedNaquadahEarth.get(OrePrefixes.dust, 32),
+                    Materials.Zinc.getDust(64),
+                    Materials.Carbon.getDust(1),
+                    GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst))
+                .itemOutputs(inertEnrichedNaquadah.get(OrePrefixes.dust, 1), Materials.Trinium.getDust(64))
+                .outputChances(3300, 3300, 3300)
+                .fluidInputs(Materials.SulfuricAcid.getFluid(16000), Materials.Oxygen.getGas(100L))
+                .fluidOutputs(wasteLiquid.getFluidOrGas(32000))
+                .duration(10 * SECONDS)
+                .eut(GT_Values.VP[11])
+                .specialValue(2)
+                .addTo(quantumForceTransformerRecipes);
             // Naquadria (UMV)
-            CORE.RA.addQuantumTransformerRecipe(
-                new ItemStack[] { naquadriaEarth.get(OrePrefixes.dust, 32), Materials.Magnesium.getDust(64),
-                    GT_Utility.copyAmount(0, GenericChem.mAdvancedNaquadahCatalyst) },
-                new FluidStack[] { Materials.PhosphoricAcid.getFluid(16000), Materials.SulfuricAcid.getFluid(16000),
-                    Materials.Oxygen.getGas(100L) },
-                new FluidStack[] {},
-                new ItemStack[] { inertNaquadria.get(OrePrefixes.dust, 1), Materials.Barium.getDust(64),
-                    Materials.Indium.getDust(64), ItemList.NaquadriaSupersolid.get(1) },
-                new int[] { 2500, 2500, 2500, 2500 },
-                5 * 20,
-                (int) GT_Values.VP[12],
-                3);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    naquadriaEarth.get(OrePrefixes.dust, 32),
+                    Materials.Magnesium.getDust(64),
+                    GT_Utility.copyAmount(0, GenericChem.mAdvancedNaquadahCatalyst))
+                .itemOutputs(
+                    inertNaquadria.get(OrePrefixes.dust, 1),
+                    Materials.Barium.getDust(64),
+                    Materials.Indium.getDust(64),
+                    ItemList.NaquadriaSupersolid.get(1))
+                .outputChances(2500, 2500, 2500, 2500)
+                .fluidInputs(
+                    Materials.PhosphoricAcid.getFluid(16000),
+                    Materials.SulfuricAcid.getFluid(16000),
+                    Materials.Oxygen.getGas(100L))
+                .duration(5 * SECONDS)
+                .eut(GT_Values.VP[12])
+                .specialValue(3)
+                .addTo(quantumForceTransformerRecipes);
+
             // Activate Them
             MyRecipeAdder.instance.addNeutronActivatorRecipe(
                 new FluidStack[] { Materials.Nickel.getPlasma(144 * 16) },

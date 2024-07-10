@@ -6,10 +6,10 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_MassFabricator;
@@ -40,7 +40,7 @@ public class GregtechIndustrialMassFabricator {
         // Basic UUA1
         GT_Recipe UUA_From_Scrap = new GT_Recipe(
             false,
-            new ItemStack[] { CI.getNumberedCircuit(9), ItemUtils.getSimpleStack(getScrapPile(), 9) },
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(9), ItemUtils.getSimpleStack(getScrapPile(), 9) },
             new ItemStack[] { GT_Values.NI },
             null,
             null,
@@ -52,7 +52,7 @@ public class GregtechIndustrialMassFabricator {
         // Basic UUA2
         GT_Recipe UUA_From_ScrapBoxes = new GT_Recipe(
             false,
-            new ItemStack[] { CI.getNumberedCircuit(19), ItemUtils.getSimpleStack(getScrapBox(), 1) },
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(19), ItemUtils.getSimpleStack(getScrapBox(), 1) },
             new ItemStack[] { GT_Values.NI },
             null,
             null,
@@ -68,7 +68,7 @@ public class GregtechIndustrialMassFabricator {
         // Basic UUM
         GT_Recipe generateUUM_LV = new GT_Recipe(
             false,
-            new ItemStack[] { CI.getNumberedCircuit(1) },
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
             new ItemStack[] { GT_Values.NI },
             null,
             null,
@@ -81,7 +81,7 @@ public class GregtechIndustrialMassFabricator {
         // Basic UUM
         GT_Recipe generateUUMFromUUA_LV = new GT_Recipe(
             false,
-            new ItemStack[] { CI.getNumberedCircuit(2) },
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(2) },
             new ItemStack[] { GT_Values.NI },
             null,
             null,
@@ -95,7 +95,7 @@ public class GregtechIndustrialMassFabricator {
         GTPPRecipeMaps.multiblockMassFabricatorRecipes.add(
             new GT_Recipe(
                 false,
-                new ItemStack[] { CI.getNumberedCircuit(3) },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(3) },
                 new ItemStack[] { GT_Values.NI },
                 null,
                 null,
@@ -109,7 +109,7 @@ public class GregtechIndustrialMassFabricator {
         GTPPRecipeMaps.multiblockMassFabricatorRecipes.add(
             new GT_Recipe(
                 false,
-                new ItemStack[] { CI.getNumberedCircuit(4) },
+                new ItemStack[] { GT_Utility.getIntegratedCircuit(4) },
                 new ItemStack[] { GT_Values.NI },
                 null,
                 null,
