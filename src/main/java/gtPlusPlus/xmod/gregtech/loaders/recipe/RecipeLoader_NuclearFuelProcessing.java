@@ -151,7 +151,7 @@ public class RecipeLoader_NuclearFuelProcessing {
 
         // Reactor Blanket step 2 - Sorption + Cold Trap
         GT_Values.RA.stdBuilder()
-            .itemInputs(8, FLUORIDES.SODIUM_FLUORIDE.getCell(4))
+            .itemInputs(CI.getNumberedAdvancedCircuit(8), FLUORIDES.SODIUM_FLUORIDE.getCell(4))
             .itemOutputs(
                 ELEMENT.getInstance().FLUORINE.getCell(2),
                 FLUORIDES.URANIUM_HEXAFLUORIDE.getCell(2),
@@ -190,7 +190,7 @@ public class RecipeLoader_NuclearFuelProcessing {
 
         // Reactor Core step 2A - Sorption + Cold Trap
         GT_Values.RA.stdBuilder()
-            .itemInputs(8, FLUORIDES.SODIUM_FLUORIDE.getCell(3))
+            .itemInputs(CI.getNumberedAdvancedCircuit(8), FLUORIDES.SODIUM_FLUORIDE.getCell(3))
             .itemOutputs(
                 ELEMENT.getInstance().FLUORINE.getCell(1),
                 FLUORIDES.URANIUM_HEXAFLUORIDE.getCell(2),
