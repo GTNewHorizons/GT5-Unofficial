@@ -9,7 +9,12 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.glodblock.github.common.item.FCBaseItemCell;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -39,9 +44,11 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.IWideReadableNumberConverter;
 import appeng.util.ReadableNumberConverter;
+import appeng.items.AEBaseItem;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -51,6 +58,8 @@ import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_Output implements IPowerChannelState {
 
+    private final long baseCapacity = 128_000;
+
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
     final IItemList<IAEFluidStack> fluidCache = AEApi.instance()
@@ -59,7 +68,6 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     long lastOutputTick = 0;
     long tickCounter = 0;
     boolean lastOutputFailed = false;
-    boolean infiniteCache = true;
     boolean additionalConnection = false;
 
     public GT_MetaTileEntity_Hatch_Output_ME(int aID, String aName, String aNameRegional) {
@@ -69,13 +77,13 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             aNameRegional,
             3,
             new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
-                "Can cache infinite amount of fluids.", "Change cache behavior by right-clicking with screwdriver.",
+                "Can cache up to 128kL of fluids by default", "Change cache size by inserting a fluid storage cell",
                 "Change ME connection behavior by right-clicking with wire cutter" },
-            0);
+            1);
     }
 
     public GT_MetaTileEntity_Hatch_Output_ME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
+        super(aName, aTier, 1, aDescription, aTextures);
     }
 
     @Override
@@ -109,9 +117,40 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         if (doFill) {
             return tryFillAE(aFluid);
         } else {
-            if ((!infiniteCache && lastOutputFailed) || aFluid == null) return 0;
+            if (lastOutputFailed || aFluid == null) return 0;
             return aFluid.amount;
         }
+    }
+
+    @Override
+    public int getCapacity() {
+        return 0;
+    }
+
+
+    private long getCacheCapacity() {
+        ItemStack upgradeItemStack = mInventory[0];
+        if (upgradeItemStack == null) {
+            return baseCapacity;
+        }
+        if (upgradeItemStack.getItem() instanceof FCBaseItemCell) {
+            return ((FCBaseItemCell) upgradeItemStack.getItem()).getBytes(upgradeItemStack) * 8;
+        }
+        return baseCapacity;
+    }
+
+    /**
+     * Check if the internal cache can still fit more fluids in it
+     */
+    public boolean canAcceptFluid() {
+        long fluidAmount = 0;
+        for (IAEFluidStack fluid : fluidCache) {
+            fluidAmount += fluid.getStackSize();
+        }
+        if (fluidAmount < getCacheCapacity()) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -121,7 +160,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
      * @return amount of fluid filled
      */
     public int tryFillAE(final FluidStack aFluid) {
-        if ((!infiniteCache && lastOutputFailed) || aFluid == null) return 0;
+        if (lastOutputFailed || aFluid == null) return 0;
         fluidCache.add(
             AEApi.instance()
                 .storage()
@@ -154,7 +193,8 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        return false;
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        return true;
     }
 
     @Override
@@ -172,8 +212,6 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         // Don't allow to lock fluid in me fluid hatch
         if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
             .isGUIClickable()) return;
-        infiniteCache = !infiniteCache;
-        aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.hatch.infiniteCacheFluid." + infiniteCache));
     }
 
     @Override
@@ -267,7 +305,6 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             fluids.appendTag(tag);
         }
         aNBT.setTag("cachedFluids", fluids);
-        aNBT.setBoolean("infiniteCache", infiniteCache);
         aNBT.setBoolean("additionalConnection", additionalConnection);
         getProxy().writeToNBT(aNBT);
     }
@@ -293,9 +330,6 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
                 }
             }
         }
-        if (aNBT.hasKey("infiniteCache")) {
-            infiniteCache = aNBT.getBoolean("infiniteCache");
-        }
         additionalConnection = aNBT.getBoolean("additionalConnection");
         getProxy().readFromNBT(aNBT);
     }
@@ -315,10 +349,14 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         ss.add(
             "The hatch is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
                 : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
+        IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
+        ss.add(
+            "Fluid cache capacity: " +
+            nc.toWideReadableForm(getCacheCapacity()) +
+            " mB");
         if (fluidCache.isEmpty()) {
             ss.add("The bus has no cached fluids");
         } else {
-            IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
             ss.add(String.format("The hatch contains %d cached fluids: ", fluidCache.size()));
             int counter = 0;
             for (IAEFluidStack s : fluidCache) {
@@ -379,5 +417,15 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         }
 
         return input;
+    }
+
+    @Override
+    public boolean useModularUI() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        getBaseMetaTileEntity().add1by1Slot(builder);
     }
 }

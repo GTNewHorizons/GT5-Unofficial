@@ -9,6 +9,10 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.glodblock.github.common.item.FCBaseItemCell;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -25,9 +29,11 @@ import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
+import appeng.items.storage.ItemBasicStorageCell;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
@@ -36,6 +42,7 @@ import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import gregtech.GT_Mod;
 import gregtech.api.enums.ItemList;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -46,6 +53,8 @@ import gregtech.api.util.GT_Utility;
 public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatch_OutputBus
     implements IPowerChannelState {
 
+    private final long baseCapacity = 1_600;
+
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
     final IItemList<IAEItemStack> itemCache = AEApi.instance()
@@ -54,7 +63,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     long lastOutputTick = 0;
     long tickCounter = 0;
     boolean lastOutputFailed = false;
-    boolean infiniteCache = true;
     boolean additionalConnection = false;
 
     public GT_MetaTileEntity_Hatch_OutputBus_ME(int aID, String aName, String aNameRegional) {
@@ -64,14 +72,14 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             aNameRegional,
             3,
             new String[] { "Item Output for Multiblocks", "Stores directly into ME",
-                "Can cache infinite amount of items.", "Change cache behavior by right-clicking with screwdriver.",
+                "Can cache 1600 items by default", "Change cache size by inserting a storage cell",
                 "Change ME connection behavior by right-clicking with wire cutter" },
-            0);
+            1);
     }
 
     public GT_MetaTileEntity_Hatch_OutputBus_ME(String aName, int aTier, String[] aDescription,
         ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
+        super(aName, aTier, 1, aDescription, aTextures);
     }
 
     @Override
@@ -101,6 +109,31 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         return aStack.stackSize == 0;
     }
 
+    private long getCacheCapacity() {
+        ItemStack upgradeItemStack = mInventory[0];
+        if (upgradeItemStack == null) {
+            return baseCapacity;
+        }
+        if (upgradeItemStack.getItem() instanceof ItemBasicStorageCell) {
+            return ((ItemBasicStorageCell) upgradeItemStack.getItem()).getBytesLong(upgradeItemStack) * 8;
+        }
+        return baseCapacity;
+    }
+
+    /**
+     * Check if the internal cache can still fit more items in it
+     */
+    public boolean canAcceptItem() {
+        long itemAmount = 0;
+        for (IAEItemStack item : itemCache) {
+            itemAmount += item.getStackSize();
+        }
+        if (itemAmount < getCacheCapacity()) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Attempt to store items in connected ME network. Returns how many items did not fit (if the network was down e.g.)
      *
@@ -108,7 +141,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
      * @return amount of items left over
      */
     public int store(final ItemStack stack) {
-        if (!infiniteCache && lastOutputFailed) return stack.stackSize;
+        if (lastOutputFailed) return stack.stackSize;
         itemCache.add(
             AEApi.instance()
                 .storage()
@@ -141,15 +174,14 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        return false;
+        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        return true;
     }
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
             .isGUIClickable()) return;
-        infiniteCache = !infiniteCache;
-        aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.hatch.infiniteCache." + infiniteCache));
     }
 
     @Override
@@ -239,7 +271,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             tag.setLong("size", s.getStackSize());
             items.appendTag(tag);
         }
-        aNBT.setBoolean("infiniteCache", infiniteCache);
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setTag("cachedItems", items);
         getProxy().writeToNBT(aNBT);
@@ -279,9 +310,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                 }
             }
         }
-        if (aNBT.hasKey("infiniteCache")) {
-            infiniteCache = aNBT.getBoolean("infiniteCache");
-        }
         additionalConnection = aNBT.getBoolean("additionalConnection");
         getProxy().readFromNBT(aNBT);
     }
@@ -301,10 +329,13 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         ss.add(
             "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
                 : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
+        IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
+        ss.add(
+            "Item cache capacity: " +
+            nc.toWideReadableForm(getCacheCapacity()));
         if (itemCache.isEmpty()) {
             ss.add("The bus has no cached items");
         } else {
-            IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
             ss.add(String.format("The bus contains %d cached stacks: ", itemCache.size()));
             int counter = 0;
             for (IAEItemStack s : itemCache) {
@@ -322,6 +353,12 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     @Override
     public boolean useModularUI() {
-        return false;
+        return true;
     }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        getBaseMetaTileEntity().add1by1Slot(builder);
+    }
+
 }
