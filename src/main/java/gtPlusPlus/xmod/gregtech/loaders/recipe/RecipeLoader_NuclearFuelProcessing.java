@@ -42,7 +42,7 @@ public class RecipeLoader_NuclearFuelProcessing {
 
         // 7LiF - BeF2 - ZrF4 - U235 - 590C
         GT_Values.RA.stdBuilder()
-            .itemInputs(
+            .fluidInputs(
                 FluidUtils.getFluidStack(aLithiumFluoride, 550),
                 FluidUtils.getFluidStack(aBerylliumFluoride, 150),
                 FluidUtils.getFluidStack(aZirconiumFluoride, 60),
@@ -53,7 +53,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             .addTo(fissionFuelProcessingRecipes);
         // 7LiF - BeF2 - ZrF4 - UF4 - 650C
         GT_Values.RA.stdBuilder()
-            .itemInputs(
+            .fluidInputs(
                 FluidUtils.getFluidStack(aLithiumFluoride, 600),
                 FluidUtils.getFluidStack(aBerylliumFluoride, 250),
                 FluidUtils.getFluidStack(aZirconiumFluoride, 80),
@@ -64,7 +64,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             .addTo(fissionFuelProcessingRecipes);
         // 7liF - BeF2 - ThF4 - UF4 - 566C
         GT_Values.RA.stdBuilder()
-            .itemInputs(
+            .fluidInputs(
                 FluidUtils.getFluidStack(aLithiumFluoride, 580),
                 FluidUtils.getFluidStack(aBerylliumFluoride, 270),
                 FluidUtils.getFluidStack(aThoriumFluoride, 80),
@@ -151,7 +151,7 @@ public class RecipeLoader_NuclearFuelProcessing {
 
         // Reactor Blanket step 2 - Sorption + Cold Trap
         GT_Values.RA.stdBuilder()
-            .itemInputs(8, FLUORIDES.SODIUM_FLUORIDE.getCell(4))
+            .itemInputs(CI.getNumberedAdvancedCircuit(8), FLUORIDES.SODIUM_FLUORIDE.getCell(4))
             .itemOutputs(
                 ELEMENT.getInstance().FLUORINE.getCell(2),
                 FLUORIDES.URANIUM_HEXAFLUORIDE.getCell(2),
@@ -181,7 +181,6 @@ public class RecipeLoader_NuclearFuelProcessing {
         GT_Values.RA.stdBuilder()
             .itemInputs(CI.getNumberedAdvancedCircuit(1), ELEMENT.getInstance().FLUORINE.getCell(3))
             .itemOutputs(CI.emptyCells(1), NUCLIDE.UF6F2FP.getCell(2))
-            .outputChances(10000)
             .fluidInputs(NUCLIDE.Sparged_LiFBeF2UF4FP.getFluidStack(1000))
             .fluidOutputs(FluidUtils.getFluidStack(NuclearChem.Impure_LiFBeF2, 2000))
             .duration(60 * MINUTES)
@@ -190,7 +189,7 @@ public class RecipeLoader_NuclearFuelProcessing {
 
         // Reactor Core step 2A - Sorption + Cold Trap
         GT_Values.RA.stdBuilder()
-            .itemInputs(8, FLUORIDES.SODIUM_FLUORIDE.getCell(3))
+            .itemInputs(CI.getNumberedAdvancedCircuit(8), FLUORIDES.SODIUM_FLUORIDE.getCell(3))
             .itemOutputs(
                 ELEMENT.getInstance().FLUORINE.getCell(1),
                 FLUORIDES.URANIUM_HEXAFLUORIDE.getCell(2),
@@ -240,13 +239,13 @@ public class RecipeLoader_NuclearFuelProcessing {
             .addTo(chemicalPlantRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(100), NUCLIDE.LiFBeF2UF4.getFluidStack(900))
+            .fluidInputs(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(100), NUCLIDE.LiFBeF2UF4.getFluidStack(900))
             .fluidOutputs(NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(1000))
             .duration(12 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(fissionFuelProcessingRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(FLUORIDES.THORIUM_TETRAFLUORIDE.getFluidStack(100), NUCLIDE.LiFBeF2UF4.getFluidStack(900))
+            .fluidInputs(FLUORIDES.THORIUM_TETRAFLUORIDE.getFluidStack(100), NUCLIDE.LiFBeF2UF4.getFluidStack(900))
             .fluidOutputs(NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(1000))
             .duration(15 * MINUTES)
             .eut(TierEU.RECIPE_IV)
