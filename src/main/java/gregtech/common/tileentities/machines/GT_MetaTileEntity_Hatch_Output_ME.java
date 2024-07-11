@@ -78,7 +78,9 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             3,
             new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
                 "Can cache up to 128kL of fluids by default", "Change cache size by inserting a fluid storage cell",
-                "Change ME connection behavior by right-clicking with wire cutter" },
+                "Change ME connection behavior by right-clicking with wire cutter",
+                "Current base cache capacity: " + ReadableNumberConverter.INSTANCE.toWideReadableForm(128_000)
+                    + " mB" },
             1);
     }
 
@@ -153,8 +155,14 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         return false;
     }
 
+    /**
+     * Set the base capacity of the hatch
+     */
     public void setBaseCapacity(long capacity) {
         baseCapacity = capacity;
+        mDescriptionArray[5] = "Current base cache capacity: "
+            + ReadableNumberConverter.INSTANCE.toWideReadableForm(baseCapacity)
+            + " mB";
     }
 
     /**
@@ -342,6 +350,13 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         }
         additionalConnection = aNBT.getBoolean("additionalConnection");
         baseCapacity = aNBT.getLong("baseCapacity");
+        // Set the base capacity of existing hatches to be infinite
+        if (baseCapacity == 0) {
+            baseCapacity = Long.MAX_VALUE;
+        }
+        mDescriptionArray[5] = "Current base cache capacity: "
+            + ReadableNumberConverter.INSTANCE.toWideReadableForm(baseCapacity)
+            + " mB";
         getProxy().readFromNBT(aNBT);
     }
 

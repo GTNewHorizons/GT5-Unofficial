@@ -72,7 +72,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             3,
             new String[] { "Item Output for Multiblocks", "Stores directly into ME", "Can cache 1600 items by default",
                 "Change cache size by inserting a storage cell",
-                "Change ME connection behavior by right-clicking with wire cutter" },
+                "Change ME connection behavior by right-clicking with wire cutter",
+                "Current base cache capacity: " + ReadableNumberConverter.INSTANCE.toWideReadableForm(1_600) },
             1);
     }
 
@@ -139,6 +140,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
      */
     public void setBaseCapacity(long capacity) {
         baseCapacity = capacity;
+        mDescriptionArray[5] = "Current base cache capacity: "
+            + ReadableNumberConverter.INSTANCE.toWideReadableForm(baseCapacity);
     }
 
     /**
@@ -325,6 +328,12 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         }
         additionalConnection = aNBT.getBoolean("additionalConnection");
         baseCapacity = aNBT.getLong("baseCapacity");
+        // Set the base capacity of existing hatches to be infinite
+        if (baseCapacity == 0) {
+            baseCapacity = Long.MAX_VALUE;
+        }
+        mDescriptionArray[5] = "Current base cache capacity: "
+            + ReadableNumberConverter.INSTANCE.toWideReadableForm(baseCapacity);
         getProxy().readFromNBT(aNBT);
     }
 
