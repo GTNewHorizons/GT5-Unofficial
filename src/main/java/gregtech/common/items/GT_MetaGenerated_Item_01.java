@@ -183,6 +183,11 @@ import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UMV;
 import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UV;
 import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UXV;
 import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_ZPM;
+import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Iron;
+import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Neodymium;
+import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Samarium;
+import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Steel;
+import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Tengam;
 import static gregtech.common.items.ID_MetaItem_01.Emitter_EV;
 import static gregtech.common.items.ID_MetaItem_01.Emitter_HV;
 import static gregtech.common.items.ID_MetaItem_01.Emitter_IV;
@@ -3087,7 +3092,36 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 16L)));
-
+        ItemList.Electromagnet_Iron.set(
+            addItem(
+                Electromagnet_Iron.ID,
+                "Iron Electromagnet",
+                "Used in Industrial Electromagnetic Separator",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 8)));
+        ItemList.Electromagnet_Steel.set(
+            addItem(
+                Electromagnet_Steel.ID,
+                "Steel Electromagnet",
+                "Used in Industrial Electromagnetic Separator",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 8)));
+        ItemList.Electromagnet_Neodymium.set(
+            addItem(
+                Electromagnet_Neodymium.ID,
+                "Neodymium Electromagnet",
+                "Used in Industrial Electromagnetic Separator",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 8)));
+        ItemList.Electromagnet_Samarium.set(
+            addItem(
+                Electromagnet_Samarium.ID,
+                "Samarium Electromagnet",
+                "Used in Industrial Electromagnetic Separator",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 8)));
+        ItemList.Electromagnet_Tengam.set(
+            addItem(
+                Electromagnet_Tengam.ID,
+                "Tengam Electromagnet",
+                "Used in Industrial Electromagnetic Separator",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 8)));
         removeRecipes();
         setBurnValues();
         oredictBlacklistEntries();
