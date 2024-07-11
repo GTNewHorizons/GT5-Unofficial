@@ -2614,21 +2614,7 @@ public class RecipeLoader {
             .duration(5 * SECONDS)
             .addTo(centrifugeRecipes);
 
-        /**
-         * DephosphatedSamariumConcentrate has a simple and not shit process. Just burn in furnace, then use
-         * electolyzer.
-         */
-        GameRegistry.addSmelting(
-            DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1),
-            SamariumOxide.get(OrePrefixes.dustTiny, 2),
-            114);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1))
-            .itemOutputs(SamariumOxide.get(OrePrefixes.dust, 1))
-            .specialValue(1200)
-            .eut(514)
-            .duration(2 * SECONDS)
-            .addTo(blastFurnaceRecipes);
+        
         // GT_Values.RA.addBlastRecipe(
         // DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1),
         // null,
