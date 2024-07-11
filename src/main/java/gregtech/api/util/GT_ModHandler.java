@@ -602,35 +602,27 @@ public class GT_ModHandler {
                                 .contains("ic2.itemPurifiedCrushed"))))
                             continue;
                         switch (aGTRecipeMap.unlocalizedName) {
-                            case "gt.recipe.macerator", "gt.recipe.extractor", "gt.recipe.compressor" -> aGTRecipeMap
-                                .addRecipe(
-                                    true,
-                                    new ItemStack[] { GT_Utility.copyAmount(
+                            case "gt.recipe.macerator", "gt.recipe.extractor", "gt.recipe.compressor" -> GT_Values.RA
+                                .stdBuilder()
+                                .itemInputs(
+                                    GT_Utility.copyAmount(
                                         iRecipeInputRecipeOutputEntry.getKey()
                                             .getAmount(),
-                                        tStack) },
-                                    iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
-                                    null,
-                                    null,
-                                    null,
-                                    null,
-                                    300,
-                                    2,
-                                    0);
-                            case "gt.recipe.thermalcentrifuge" -> aGTRecipeMap.addRecipe(
-                                true,
-                                new ItemStack[] { GT_Utility.copyAmount(
-                                    iRecipeInputRecipeOutputEntry.getKey()
-                                        .getAmount(),
-                                    tStack) },
-                                iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
-                                null,
-                                null,
-                                null,
-                                null,
-                                500,
-                                48,
-                                0);
+                                        tStack))
+                                .itemOutputs(iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]))
+                                .duration(15 * SECONDS)
+                                .eut(2)
+                                .addTo(aGTRecipeMap);
+                            case "gt.recipe.thermalcentrifuge" -> GT_Values.RA.stdBuilder()
+                                .itemInputs(
+                                    GT_Utility.copyAmount(
+                                        iRecipeInputRecipeOutputEntry.getKey()
+                                            .getAmount(),
+                                        tStack))
+                                .itemOutputs(iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]))
+                                .duration(25 * SECONDS)
+                                .eut(48)
+                                .addTo(aGTRecipeMap);
                         }
                     } catch (Exception e) {
                         System.err.println(e);

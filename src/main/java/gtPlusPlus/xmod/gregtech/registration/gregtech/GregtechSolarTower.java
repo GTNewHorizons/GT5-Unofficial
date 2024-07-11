@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import net.minecraftforge.fluids.FluidStack;
-
+import gregtech.api.enums.GT_Values;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.material.MISC_MATERIALS;
@@ -31,16 +30,12 @@ public class GregtechSolarTower {
                 0).getStackForm(1L));
 
         // NEI recipe
-        GTPPRecipeMaps.solarTowerRecipes.addRecipe(
-            false,
-            null,
-            null,
-            null,
-            null,
-            new FluidStack[] { MISC_MATERIALS.SOLAR_SALT_COLD.getFluidStack(1000) },
-            new FluidStack[] { MISC_MATERIALS.SOLAR_SALT_HOT.getFluidStack(1000) },
-            0,
-            0,
-            0);
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(MISC_MATERIALS.SOLAR_SALT_COLD.getFluidStack(1000))
+            .fluidOutputs(MISC_MATERIALS.SOLAR_SALT_HOT.getFluidStack(1000))
+            .duration(0)
+            .eut(0)
+            .noOptimize()
+            .addTo(GTPPRecipeMaps.solarTowerRecipes);
     }
 }

@@ -435,19 +435,19 @@ public class RecipeLoader {
             .noOptimize()
             .addTo(dissolutionTankRecipes);
 
-        sifterRecipes.addRecipe(
-            false,
-            null,
-            new ItemStack[] { WerkstoffMaterialPool.MonaziteSulfate.get(OrePrefixes.dust, 1),
-                Materials.SiliconDioxide.getDust(1), Materials.Rutile.getDust(1),
-                WerkstoffLoader.RedZircon.get(OrePrefixes.dust, 1), Materials.Ilmenite.getDust(1) },
-            null,
-            new int[] { 9000, 7500, 2000, 500, 2000 },
-            new FluidStack[] { WerkstoffMaterialPool.DilutedRareEarthMonaziteMud.getFluidOrGas(1000) },
-            null,
-            400,
-            240,
-            0);
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(WerkstoffMaterialPool.DilutedRareEarthMonaziteMud.getFluidOrGas(1000))
+            .itemOutputs(
+                WerkstoffMaterialPool.MonaziteSulfate.get(OrePrefixes.dust, 1),
+                Materials.SiliconDioxide.getDust(1),
+                Materials.Rutile.getDust(1),
+                WerkstoffLoader.RedZircon.get(OrePrefixes.dust, 1),
+                Materials.Ilmenite.getDust(1))
+            .outputChances(90_00, 75_00, 20_00, 5_00, 20_00)
+            .duration(20 * SECONDS)
+            .eut(240)
+            .noOptimize()
+            .addTo(sifterRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(WerkstoffMaterialPool.MonaziteSulfate.get(OrePrefixes.dust, 1))
@@ -574,17 +574,15 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
 
-        sifterRecipes.addRecipe(
-            false,
-            null,
-            new ItemStack[] { WerkstoffMaterialPool.CeriumDioxide.get(OrePrefixes.dust, 1) },
-            null,
-            new int[] { 1111 },
-            new FluidStack[] { WerkstoffMaterialPool.NitricLeachedMonaziteMixture.getFluidOrGas(1000) },
-            new FluidStack[] { WerkstoffMaterialPool.NitricMonaziteLeachedConcentrate.getFluidOrGas(1000) },
-            400,
-            240,
-            0);
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(WerkstoffMaterialPool.NitricLeachedMonaziteMixture.getFluidOrGas(1000))
+            .itemOutputs(WerkstoffMaterialPool.CeriumDioxide.get(OrePrefixes.dust, 1))
+            .outputChances(11_11)
+            .fluidOutputs(WerkstoffMaterialPool.NitricMonaziteLeachedConcentrate.getFluidOrGas(1000))
+            .duration(20 * SECONDS)
+            .eut(240)
+            .noOptimize()
+            .addTo(sifterRecipes);
 
         // BEGIN Cerium
         // Cerium-rich mixture + 3HCl = CeCl3 + Monazite (to allow cerium processing without bastnazite/monazite)
@@ -621,23 +619,13 @@ public class RecipeLoader {
 
         // END Cerium (NMLC)
 
-        vacuumFreezerRecipes.addRecipe( // Uses fluid, outputs item. Yet another hacky recipe
-            false,
-            null,
-            new ItemStack[] { WerkstoffMaterialPool.CooledMonaziteRareEarthConcentrate.get(OrePrefixes.dust, 1), // TODO:
-                                                                                                                 // Perhaps
-                                                                                                                 // add
-                                                                                                                 // more
-                                                                                                                 // shit
-                                                                                                                 // on
-                                                                                                                 // output
-            },
-            null,
-            new FluidStack[] { WerkstoffMaterialPool.NitricMonaziteLeachedConcentrate.getFluidOrGas(1000) },
-            null,
-            100,
-            240,
-            0);
+        GT_Values.RA.stdBuilder()
+            .itemOutputs(WerkstoffMaterialPool.CooledMonaziteRareEarthConcentrate.get(OrePrefixes.dust, 1))
+            .fluidInputs(WerkstoffMaterialPool.NitricMonaziteLeachedConcentrate.getFluidOrGas(1000))
+            .duration(5 * SECONDS)
+            .eut(240)
+            .noOptimize()
+            .addTo(vacuumFreezerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(WerkstoffMaterialPool.CooledMonaziteRareEarthConcentrate.get(OrePrefixes.dust, 1))
@@ -765,20 +753,19 @@ public class RecipeLoader {
             .noOptimize()
             .addTo(dissolutionTankRecipes);
 
-        sifterRecipes.addRecipe(
-            false,
-            null,
-            new ItemStack[] { Materials.SiliconDioxide.getDust(1), Materials.Rutile.getDust(1),
-                WerkstoffLoader.RedZircon.get(OrePrefixes.dust, 1), // TODO:Change outputs to complement
-                                                                    // Monazite
-                Materials.Ilmenite.getDust(1) },
-            null,
-            new int[] { 9000, 7500, 1000, 500, 2000 },
-            new FluidStack[] { WerkstoffMaterialPool.DiltedRareEarthBastnasiteMud.getFluidOrGas(1000) },
-            new FluidStack[] { WerkstoffMaterialPool.FilteredBastnasiteMud.getFluidOrGas(400) },
-            400,
-            240,
-            0);
+        GT_Values.RA.stdBuilder()
+            .itemOutputs(
+                Materials.SiliconDioxide.getDust(1),
+                Materials.Rutile.getDust(1),
+                WerkstoffLoader.RedZircon.get(OrePrefixes.dust, 1),
+                Materials.Ilmenite.getDust(1))
+            .outputChances(90_00, 75_00, 10_00, 5_00, 20_00)
+            .fluidInputs(WerkstoffMaterialPool.DiltedRareEarthBastnasiteMud.getFluidOrGas(1000))
+            .fluidOutputs(WerkstoffMaterialPool.FilteredBastnasiteMud.getFluidOrGas(400))
+            .eut(240)
+            .duration(20 * SECONDS)
+            .noOptimize()
+            .addTo(sifterRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(1))

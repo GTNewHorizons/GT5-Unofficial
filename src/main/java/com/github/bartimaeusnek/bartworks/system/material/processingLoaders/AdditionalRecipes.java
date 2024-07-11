@@ -13,7 +13,6 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.processingLoaders;
 
-import static com.github.bartimaeusnek.bartworks.util.BW_Util.CLEANROOM;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.OrePrefixes.bolt;
 import static gregtech.api.enums.OrePrefixes.crushed;
@@ -31,11 +30,17 @@ import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.circuitAssemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.recipe.RecipeMaps.extremeNaquadahReactorFuels;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
+import static gregtech.api.recipe.RecipeMaps.hugeNaquadahReactorFuels;
 import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
+import static gregtech.api.recipe.RecipeMaps.largeNaquadahReactorFuels;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
+import static gregtech.api.recipe.RecipeMaps.smallNaquadahReactorFuels;
+import static gregtech.api.recipe.RecipeMaps.ultraHugeNaquadahReactorFuels;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -78,7 +83,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -368,17 +372,16 @@ public class AdditionalRecipes {
             .addTo(UniversalChemical);
 
         // Zr + 2O =Y22O3= ZrO2
-        blastFurnaceRecipes.addRecipe(
-            false,
-            new ItemStack[] { WerkstoffLoader.Zirconium.get(dust, 10), WerkstoffLoader.YttriumOxide.get(dust, 0) },
-            new ItemStack[] { WerkstoffLoader.CubicZirconia.get(gemFlawed, 40) },
-            null,
-            null,
-            new FluidStack[] { Materials.Oxygen.getGas(20000) },
-            null,
-            57600,
-            (int) TierEU.RECIPE_HV,
-            2953);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffLoader.Zirconium.get(dust, 10), WerkstoffLoader.YttriumOxide.get(dust, 0))
+            .itemOutputs(WerkstoffLoader.CubicZirconia.get(gemFlawed, 40))
+            .fluidInputs(Materials.Oxygen.getGas(20000))
+            .duration(48 * MINUTES)
+            .eut(TierEU.RECIPE_HV)
+            .metadata(COIL_HEAT, 2953)
+            .noOptimize()
+            .addTo(blastFurnaceRecipes);
+
         // Tellurium
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(crushed, Materials.Lead, 10L), GT_Utility.getIntegratedCircuit(17))
@@ -466,179 +469,202 @@ public class AdditionalRecipes {
             ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
             : FluidRegistry.getFluid("molten.solderingalloy");
         // ULV
-        RecipeMaps.circuitAssemblerRecipes.add(
-            new GT_Recipe(
-                false,
-                new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS()
-                    .getStack(3), WerkstoffLoader.MagnetoResonaticDust.get(gem), ItemList.NandChip.get(1),
-                    ItemList.Circuit_Parts_DiodeSMD.get(4), ItemList.Circuit_Parts_CapacitorSMD.get(4),
-                    ItemList.Circuit_Parts_TransistorSMD.get(4) },
-                new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS()
-                    .getStack(4) },
-                null,
-                null,
-                new FluidStack[] { Materials.SolderingAlloy.getMolten(36) },
-                null,
-                750,
-                (int) TierEU.RECIPE_LV,
-                CLEANROOM));
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(3),
+                WerkstoffLoader.MagnetoResonaticDust.get(gem),
+                ItemList.NandChip.get(1),
+                ItemList.Circuit_Parts_DiodeSMD.get(4),
+                ItemList.Circuit_Parts_CapacitorSMD.get(4),
+                ItemList.Circuit_Parts_TransistorSMD.get(4))
+            .itemOutputs(
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(4))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(36))
+            .duration(37 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .noOptimize()
+            .addTo(circuitAssemblerRecipes);
+
         // LV-EV
+        long[] voltages = new long[] { 0, TierEU.RECIPE_LV, TierEU.RECIPE_MV, TierEU.RECIPE_HV, TierEU.RECIPE_EV };
         for (int i = 1; i <= 4; i++) {
-            RecipeMaps.circuitAssemblerRecipes.add(
-                new GT_Recipe(
-                    false,
-                    new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS()
-                        .getStack(3), WerkstoffLoader.MagnetoResonaticDust.get(gem),
-                        BW_Meta_Items.getNEWCIRCUITS()
-                            .getStack(i + 3),
-                        ItemList.Circuit_Parts_DiodeSMD.get((i + 1) * 4),
-                        ItemList.Circuit_Parts_CapacitorSMD.get((i + 1) * 4),
-                        ItemList.Circuit_Parts_TransistorSMD.get((i + 1) * 4) },
-                    new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS()
-                        .getStack(i + 4) },
-                    null,
-                    null,
-                    new FluidStack[] { Materials.SolderingAlloy.getMolten((i + 1) * 36) },
-                    null,
-                    (i + 1) * 750,
-                    BW_Util.getMachineVoltageFromTier(i + 1),
-                    CLEANROOM));
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    BW_Meta_Items.getNEWCIRCUITS()
+                        .getStack(3),
+                    WerkstoffLoader.MagnetoResonaticDust.get(gem),
+                    BW_Meta_Items.getNEWCIRCUITS()
+                        .getStack(i + 3),
+                    ItemList.Circuit_Parts_DiodeSMD.get((i + 1) * 4),
+                    ItemList.Circuit_Parts_CapacitorSMD.get((i + 1) * 4),
+                    ItemList.Circuit_Parts_TransistorSMD.get((i + 1) * 4))
+                .itemOutputs(
+                    BW_Meta_Items.getNEWCIRCUITS()
+                        .getStack(i + 4))
+                .fluidInputs(Materials.SolderingAlloy.getMolten((i + 1) * 36))
+                .duration((i + 1) * (37 * SECONDS + 10 * TICKS))
+                .eut(voltages[i])
+                .noOptimize()
+                .addTo(circuitAssemblerRecipes);
         }
         // IV-LuV
-        for (int i = 5; i <= 6; i++) {
-            RecipeMaps.circuitAssemblerRecipes.add(
-                new GT_Recipe(
-                    false,
-                    new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS()
-                        .getStack(3), WerkstoffLoader.MagnetoResonaticDust.get(gem),
-                        BW_Meta_Items.getNEWCIRCUITS()
-                            .getStack(i + 3),
-                        ItemList.Circuit_Parts_DiodeASMD.get((i + 1) * 4),
-                        ItemList.Circuit_Parts_CapacitorASMD.get((i + 1) * 4),
-                        ItemList.Circuit_Parts_TransistorASMD.get((i + 1) * 4) },
-                    new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS()
-                        .getStack(i + 4) },
-                    null,
-                    null,
-                    new FluidStack[] { new FluidStack(solderIndalloy, (i + 1) * 36) },
-                    null,
-                    (i + 1) * 750,
-                    BW_Util.getMachineVoltageFromTier(i + 1),
-                    CLEANROOM));
-        }
-        // ZPM
-        RecipeMaps.circuitAssemblerRecipes.add(
-            new GT_Recipe(
-                false,
-                new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS()
-                    .getStack(3), WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, 1),
-                    BW_Meta_Items.getNEWCIRCUITS()
-                        .getStack(7 + 3),
-                    ItemList.Circuit_Parts_DiodeASMD.get((7 + 6) * 4),
-                    ItemList.Circuit_Parts_CapacitorASMD.get((7 + 6) * 4),
-                    ItemList.Circuit_Parts_TransistorASMD.get((7 + 6) * 4) },
-                new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS()
-                    .getStack(7 + 4) },
-                null,
-                null,
-                new FluidStack[] { new FluidStack(solderIndalloy, (7 + 1) * 36) },
-                null,
-                (7 + 1) * 1500,
-                BW_Util.getMachineVoltageFromTier(7 + 1),
-                CLEANROOM));
-        // UV
-        RecipeMaps.circuitAssemblerRecipes.add(
-            new GT_Recipe(
-                false,
-                new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS()
-                    .getStack(3), WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, 1),
-                    BW_Meta_Items.getNEWCIRCUITS()
-                        .getStack(8 + 3),
-                    ItemList.Circuit_Parts_DiodeASMD.get((8 + 6) * 4),
-                    ItemList.Circuit_Parts_CapacitorASMD.get((8 + 6) * 4),
-                    ItemList.Circuit_Parts_TransistorASMD.get((8 + 6) * 4) },
-                new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS()
-                    .getStack(8 + 4) },
-                null,
-                null,
-                new FluidStack[] { new FluidStack(solderUEV, (8 + 1) * 36) },
-                null,
-                (8 + 1) * 1500,
-                BW_Util.getMachineVoltageFromTier(8 + 1),
-                CLEANROOM));
-        // UHV-UEV
-        for (int i = 9; i <= 10; i++) {
-            RecipeMaps.circuitAssemblerRecipes.add(
-                new GT_Recipe(
-                    false,
-                    new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS()
-                        .getStack(3), WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, 1),
-                        BW_Meta_Items.getNEWCIRCUITS()
-                            .getStack(i + 3),
-                        ItemList.Circuit_Parts_DiodeXSMD.get((i + 6) * 4),
-                        ItemList.Circuit_Parts_CapacitorXSMD.get((i + 6) * 4),
-                        ItemList.Circuit_Parts_TransistorXSMD.get((i + 6) * 4) },
-                    new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS()
-                        .getStack(i + 4) },
-                    null,
-                    null,
-                    new FluidStack[] { new FluidStack(solderUEV, (i + 1) * 36) },
-                    null,
-                    (i + 1) * 1500,
-                    BW_Util.getMachineVoltageFromTier(i + 1),
-                    CLEANROOM));
-        }
-        RecipeMaps.smallNaquadahReactorFuels.addRecipe(
-            true,
-            new ItemStack[] { WerkstoffLoader.Tiberium.get(bolt) },
-            new ItemStack[] {},
-            null,
-            null,
-            null,
-            0,
-            0,
-            12500);
-        RecipeMaps.largeNaquadahReactorFuels.addRecipe(
-            true,
-            new ItemStack[] { WerkstoffLoader.Tiberium.get(stick) },
-            new ItemStack[] {},
-            null,
-            null,
-            null,
-            0,
-            0,
-            62500);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(3),
+                WerkstoffLoader.MagnetoResonaticDust.get(gem),
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(8),
+                ItemList.Circuit_Parts_DiodeASMD.get(24),
+                ItemList.Circuit_Parts_CapacitorASMD.get(24),
+                ItemList.Circuit_Parts_TransistorASMD.get(24))
+            .itemOutputs(
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(9))
+            .fluidInputs(new FluidStack(solderIndalloy, 216))
+            .duration(3 * MINUTES + 45 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .noOptimize()
+            .addTo(circuitAssemblerRecipes);
 
-        RecipeMaps.hugeNaquadahReactorFuels.addRecipe(
-            true,
-            new ItemStack[] { WerkstoffLoader.Tiberium.get(stickLong) },
-            new ItemStack[] {},
-            null,
-            null,
-            null,
-            0,
-            0,
-            125000);
-        RecipeMaps.extremeNaquadahReactorFuels.addRecipe(
-            true,
-            new ItemStack[] { WerkstoffLoader.Tiberium.get(stick) },
-            new ItemStack[] {},
-            null,
-            null,
-            null,
-            0,
-            0,
-            31250);
-        RecipeMaps.ultraHugeNaquadahReactorFuels.addRecipe(
-            true,
-            new ItemStack[] { WerkstoffLoader.Tiberium.get(stickLong) },
-            new ItemStack[] {},
-            null,
-            null,
-            null,
-            0,
-            0,
-            125000);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(3),
+                WerkstoffLoader.MagnetoResonaticDust.get(gem),
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(9),
+                ItemList.Circuit_Parts_DiodeASMD.get(28),
+                ItemList.Circuit_Parts_CapacitorASMD.get(28),
+                ItemList.Circuit_Parts_TransistorASMD.get(28))
+            .itemOutputs(
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(12))
+            .fluidInputs(new FluidStack(solderIndalloy, 252))
+            .duration(4 * MINUTES + 22 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_ZPM)
+            .noOptimize()
+            .addTo(circuitAssemblerRecipes);
+
+        // ZPM
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(3),
+                WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, 1),
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(10),
+                ItemList.Circuit_Parts_DiodeASMD.get(52),
+                ItemList.Circuit_Parts_CapacitorASMD.get(52),
+                ItemList.Circuit_Parts_TransistorASMD.get(52))
+            .itemOutputs(
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(11))
+            .fluidInputs(new FluidStack(solderIndalloy, 288))
+            .duration(10 * MINUTES)
+            .eut(TierEU.RECIPE_UV)
+            .requiresCleanRoom()
+            .noOptimize()
+            .addTo(circuitAssemblerRecipes);
+
+        // UV
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(3),
+                WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, 1),
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(11),
+                ItemList.Circuit_Parts_DiodeASMD.get(56),
+                ItemList.Circuit_Parts_CapacitorASMD.get(56),
+                ItemList.Circuit_Parts_TransistorASMD.get(56))
+            .itemOutputs(
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(12))
+            .fluidInputs(new FluidStack(solderUEV, 324))
+            .duration(11 * MINUTES + 15 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .requiresCleanRoom()
+            .noOptimize()
+            .addTo(circuitAssemblerRecipes);
+
+        // UHV-UEV
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(3),
+                WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, 1),
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(12),
+                ItemList.Circuit_Parts_DiodeXSMD.get(60),
+                ItemList.Circuit_Parts_CapacitorXSMD.get(60),
+                ItemList.Circuit_Parts_TransistorXSMD.get(60))
+            .itemOutputs(
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(13))
+            .fluidInputs(new FluidStack(solderUEV, 360))
+            .duration(12 * MINUTES + 30 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .requiresCleanRoom()
+            .noOptimize()
+            .addTo(circuitAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(3),
+                WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, 1),
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(13),
+                ItemList.Circuit_Parts_DiodeXSMD.get(64),
+                ItemList.Circuit_Parts_CapacitorXSMD.get(64),
+                ItemList.Circuit_Parts_TransistorXSMD.get(64))
+            .itemOutputs(
+                BW_Meta_Items.getNEWCIRCUITS()
+                    .getStack(14))
+            .fluidInputs(new FluidStack(solderUEV, 396))
+            .duration(13 * MINUTES + 45 * SECONDS)
+            .eut(TierEU.RECIPE_UIV)
+            .requiresCleanRoom()
+            .noOptimize()
+            .addTo(circuitAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffLoader.Tiberium.get(bolt))
+            .duration(0)
+            .eut(0)
+            .specialValue(12_500)
+            .addTo(smallNaquadahReactorFuels);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffLoader.Tiberium.get(stick))
+            .duration(0)
+            .eut(0)
+            .specialValue(62_500)
+            .addTo(largeNaquadahReactorFuels);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffLoader.Tiberium.get(stickLong))
+            .duration(0)
+            .eut(0)
+            .specialValue(125_000)
+            .addTo(hugeNaquadahReactorFuels);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffLoader.Tiberium.get(stick))
+            .duration(0)
+            .eut(0)
+            .specialValue(31_250)
+            .addTo(extremeNaquadahReactorFuels);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffLoader.Tiberium.get(stickLong))
+            .duration(0)
+            .eut(0)
+            .specialValue(125_000)
+            .addTo(ultraHugeNaquadahReactorFuels);
 
         LoadItemContainers.run();
 

@@ -1,5 +1,7 @@
 package com.github.technus.tectech.recipe;
 
+import static com.github.technus.tectech.recipe.TecTechRecipeMaps.godforgePlasmaRecipes;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -13,6 +15,7 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.CustomItemList;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -230,17 +233,26 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     public static boolean addFOGPlasmaRecipe(ItemStack[] itemInputs, FluidStack[] fluidOutputs, int machineDuration,
         int machineEUt, boolean multiStep, int recipeTier) {
         if (itemInputs == null) {
             itemInputs = nullItem;
         }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(itemInputs)
+            .fluidOutputs(fluidOutputs)
+            .duration(machineDuration)
+            .eut(machineEUt)
+            .special(multiStep)
+            .specialValue(recipeTier)
+            .noOptimize()
+            .addTo(godforgePlasmaRecipes);
 
-        TecTechRecipeMaps.godforgePlasmaRecipes
-            .addRecipe(false, itemInputs, null, multiStep, null, fluidOutputs, machineDuration, machineEUt, recipeTier);
         return true;
     }
 
+    @Deprecated
     public static boolean addFOGPlasmaRecipe(FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int machineDuration,
         int machineEUt, boolean multiStep, int recipeTier) {
 
@@ -248,16 +260,16 @@ public class TT_recipeAdder extends GT_RecipeAdder {
             fluidInputs = nullFluid;
         }
 
-        TecTechRecipeMaps.godforgePlasmaRecipes.addRecipe(
-            false,
-            null,
-            null,
-            multiStep,
-            fluidInputs,
-            fluidOutputs,
-            machineDuration,
-            machineEUt,
-            recipeTier);
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(fluidInputs)
+            .fluidOutputs(fluidOutputs)
+            .duration(machineDuration)
+            .eut(machineEUt)
+            .special(multiStep)
+            .specialValue(recipeTier)
+            .noOptimize()
+            .addTo(godforgePlasmaRecipes);
+
         return true;
     }
 

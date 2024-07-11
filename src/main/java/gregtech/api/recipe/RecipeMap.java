@@ -112,63 +112,6 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     }
 
     // region add recipe
-
-    @Nullable
-    public GT_Recipe addRecipe(boolean aOptimize, @Nullable ItemStack[] aInputs, @Nullable ItemStack[] aOutputs,
-        @Nullable Object aSpecial, @Nullable int[] aOutputChances, @Nullable FluidStack[] aFluidInputs,
-        @Nullable FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        return addRecipe(
-            new GT_Recipe(
-                aOptimize,
-                aInputs,
-                aOutputs,
-                aSpecial,
-                aOutputChances,
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                aSpecialValue));
-    }
-
-    @Nullable
-    public GT_Recipe addRecipe(@Nullable int[] aOutputChances, @Nullable FluidStack[] aFluidInputs,
-        @Nullable FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        return addRecipe(
-            new GT_Recipe(
-                false,
-                null,
-                null,
-                null,
-                aOutputChances,
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                aSpecialValue),
-            false,
-            false,
-            false);
-    }
-
-    @Nullable
-    public GT_Recipe addRecipe(boolean aOptimize, @Nullable ItemStack[] aInputs, @Nullable ItemStack[] aOutputs,
-        @Nullable Object aSpecial, @Nullable FluidStack[] aFluidInputs, @Nullable FluidStack[] aFluidOutputs,
-        int aDuration, int aEUt, int aSpecialValue) {
-        return addRecipe(
-            new GT_Recipe(
-                aOptimize,
-                aInputs,
-                aOutputs,
-                aSpecial,
-                null,
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                aSpecialValue));
-    }
-
     @Nullable
     public GT_Recipe addRecipe(GT_Recipe aRecipe) {
         return addRecipe(aRecipe, true, false, false);

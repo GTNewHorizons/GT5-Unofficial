@@ -1,5 +1,6 @@
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
+import static com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps.electricImplosionCompressorRecipes;
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.EternalSingularity;
@@ -12,8 +13,6 @@ import static gregtech.api.util.GT_ModHandler.getModItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps;
-
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -24,11 +23,20 @@ import gregtech.api.util.GT_OreDictUnificator;
 
 public class ElectricImplosionCompressorRecipes implements Runnable {
 
+    @Deprecated
     private static void addElectricImplosionRecipe(final ItemStack[] inputItems, final FluidStack[] inputFluids,
         final ItemStack[] outputItems, final FluidStack[] outputFluids, final int durationInTicks,
         final int EUPerTick) {
-        BartWorksRecipeMaps.electricImplosionCompressorRecipes
-            .addRecipe(false, inputItems, outputItems, null, inputFluids, outputFluids, durationInTicks, EUPerTick, 1);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(inputItems)
+            .itemOutputs(outputItems)
+            .fluidInputs(inputFluids)
+            .fluidOutputs(outputFluids)
+            .duration(durationInTicks)
+            .eut(EUPerTick)
+            .specialValue(1)
+            .noOptimize()
+            .addTo(electricImplosionCompressorRecipes);
     }
 
     private static final ItemStack[] circuits = { ItemList.Circuit_ExoticProcessor.get(1),

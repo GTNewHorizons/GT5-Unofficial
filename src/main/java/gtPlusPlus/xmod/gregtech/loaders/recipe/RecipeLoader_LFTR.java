@@ -1,9 +1,12 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
-import net.minecraft.item.ItemStack;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GasSpargingRecipeMap;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -60,49 +63,45 @@ public class RecipeLoader_LFTR {
         FluidStack Li2BeF4 = NUCLIDE.Li2BeF4.getFluidStack(200);
 
         // LiFBeF2ThF4UF4 - T3
-        GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes.addRecipe(
-            false,
-            new ItemStack[] {},
-            new ItemStack[] {},
-            null,
-            new int[] { 10000, 10000, 5000, 2500 },
-            new FluidStack[] { NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(100), Li2BeF4 },
-            new FluidStack[] { NUCLIDE.LiFBeF2UF4FP.getFluidStack(100), NUCLIDE.LiFBeF2ThF4.getFluidStack(200),
-                FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(20), FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(10) },
-            100 * 20, // time
-            0, // cost
-            32768 * 4 // fuel value
-        );
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(100), Li2BeF4)
+            .fluidOutputs(
+                NUCLIDE.LiFBeF2UF4FP.getFluidStack(100),
+                NUCLIDE.LiFBeF2ThF4.getFluidStack(200),
+                FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(20),
+                FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(10))
+            .duration(1 * MINUTES + 40 * SECONDS)
+            .eut(0)
+            .specialValue(32768 * 4)
+            .addTo(GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes);
 
         // LiFBeF2ZrF4UF4 - T2
-        GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes.addRecipe(
-            false,
-            new ItemStack[] {},
-            new ItemStack[] {},
-            null,
-            new int[] { 10000, 10000, 2500, 1250 },
-            new FluidStack[] { NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(100), Li2BeF4 },
-            new FluidStack[] { NUCLIDE.LiFBeF2UF4FP.getFluidStack(50), NUCLIDE.LiFBeF2ThF4.getFluidStack(100),
-                FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(10), FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(5) },
-            100 * 20, // time
-            0, // cost
-            8192 * 4 // fuel value
-        );
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(100), Li2BeF4)
+            .fluidOutputs(
+                NUCLIDE.LiFBeF2UF4FP.getFluidStack(50),
+                NUCLIDE.LiFBeF2ThF4.getFluidStack(100),
+                FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(10),
+                FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(5))
+            .duration(1 * MINUTES + 40 * SECONDS)
+            .eut(0)
+            .specialValue(8192 * 4)
+            .noOptimize()
+            .addTo(GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes);
 
         // LiFBeF2ZrF4U235 - T1
-        GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes.addRecipe(
-            false,
-            new ItemStack[] {},
-            new ItemStack[] {},
-            null,
-            new int[] { 10000, 10000, 1000, 500 },
-            new FluidStack[] { NUCLIDE.LiFBeF2ZrF4U235.getFluidStack(100), Li2BeF4 },
-            new FluidStack[] { NUCLIDE.LiFBeF2UF4FP.getFluidStack(25), NUCLIDE.LiFThF4.getFluidStack(50),
-                FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(4), FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(2) },
-            100 * 20, // time
-            0, // cost
-            8192 // fuel value
-        );
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(NUCLIDE.LiFBeF2ZrF4U235.getFluidStack(100), Li2BeF4)
+            .fluidOutputs(
+                NUCLIDE.LiFBeF2UF4FP.getFluidStack(25),
+                NUCLIDE.LiFThF4.getFluidStack(50),
+                FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(4),
+                FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(2))
+            .duration(1 * MINUTES + 40 * SECONDS)
+            .eut(0)
+            .specialValue(8192)
+            .noOptimize()
+            .addTo(GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes);
 
         // Sparging NEI Recipes
         GasSpargingRecipeMap.addRecipe(

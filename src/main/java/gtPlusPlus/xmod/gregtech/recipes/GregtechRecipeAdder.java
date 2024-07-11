@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.recipes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -120,17 +121,14 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     }
 
     @Override
+    @Deprecated
     public boolean addFuelForRTG(ItemStack aFuelPellet, int aFuelDays, int aVoltage) {
-        GTPPRecipeMaps.rtgFuels.addRecipe(
-            true,
-            new ItemStack[] { aFuelPellet },
-            new ItemStack[] {},
-            null,
-            null,
-            null,
-            0,
-            aVoltage,
-            aFuelDays);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(aFuelPellet)
+            .duration(0)
+            .eut(aVoltage)
+            .specialValue(aFuelDays)
+            .addTo(GTPPRecipeMaps.rtgFuels);
         return true;
     }
 }
