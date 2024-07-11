@@ -1983,6 +1983,8 @@ public enum ItemList implements IItemContainer {
     Hatch_CraftingInput_Bus_Slave,
     AdvDebugStructureWriter,
 
+    Hatch_Electromagnet,
+
     Superconducting_Magnet_Solenoid_MV,
     Superconducting_Magnet_Solenoid_HV,
     Superconducting_Magnet_Solenoid_EV,

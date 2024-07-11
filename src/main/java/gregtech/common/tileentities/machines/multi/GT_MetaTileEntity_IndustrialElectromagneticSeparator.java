@@ -9,6 +9,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE_GL
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.GT_MetaTileEntity_Hatch_MillingBalls;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -31,9 +33,13 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings10;
 
+import java.util.ArrayList;
+
 public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IndustrialElectromagneticSeparator>
     implements ISurvivalConstructable {
+
+    private final ArrayList<GT_MetaTileEntity_Hatch_MillingBalls> mMagHatches = new ArrayList<>();
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_IndustrialElectromagneticSeparator> STRUCTURE_DEFINITION = StructureDefinition
@@ -194,4 +200,22 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     public boolean supportsVoidProtection() {
         return true;
     }
+
+    public static boolean isValidElectromagnet(ItemStack aMagnet) {
+        return (aMagnet != null && aMagnet.getItem() instanceof GT_MetaGenerated_Tool
+            && aMagnet.getItemDamage() >= 170
+            && aMagnet.getItemDamage() <= 176);
+    }
+
+    /*private boolean addMagHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) {
+            return false;
+        } else {
+            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_MillingBalls) {
+                return addToMachineListInternal(mMagHatches, aMetaTileEntity, aBaseCasingIndex);
+            }
+        }
+        return false;
+    }*/
 }

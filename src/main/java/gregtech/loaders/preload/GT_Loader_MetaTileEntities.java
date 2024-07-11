@@ -225,6 +225,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_ABSORBER_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_CONVERTER_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_CONVERTER_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_CONVERTER_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.MAG_HATCH;
 import static gregtech.api.enums.MetaTileEntityIDs.MAINTENANCE_HATCH;
 import static gregtech.api.enums.MetaTileEntityIDs.MASS_FABRICATOR_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.MASS_FABRICATOR_HV;
@@ -457,6 +458,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MagHatch;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.GT_Mod;
@@ -602,7 +604,6 @@ import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperChest;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperTank;
 
 // Free IDs left for machines in GT as of 29th of July 2022 - Colen. Please try use them up in order.
-// 359
 // 366
 // 367
 // 368
@@ -2367,6 +2368,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Crafting Input Slave").getStackForm(1L));
     }
 
+    private static void registerMagHatch() {
+        ItemList.Hatch_Electromagnet.set(
+            new GT_MetaTileEntity_MagHatch(MAG_HATCH.ID, "hatch.mag_hatch", "Electromagnet Housing")
+                .getStackForm(1L));
+    }
+
     private static void registerInputBus() {
         ItemList.Hatch_Input_Bus_ULV.set(
             new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_ULV.ID, "hatch.input_bus.tier.00", "Input Bus (ULV)", 0)
@@ -4043,6 +4050,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         registerSuperChest();
         registerLongDistancePipe();
         registerAE2Hatches();
+        registerMagHatch();
         registerInputBus();
         registerOutputBus();
         registerMufflerHatch();
