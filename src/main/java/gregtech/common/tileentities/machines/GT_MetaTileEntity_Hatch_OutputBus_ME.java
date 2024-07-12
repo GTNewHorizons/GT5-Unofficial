@@ -72,7 +72,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             3,
             new String[] { "Item Output for Multiblocks", "Stores directly into ME", "Can cache 1600 items by default",
                 "Change cache size by inserting a storage cell",
-                "Change ME connection behavior by right-clicking with wire cutter"},
+                "Change ME connection behavior by right-clicking with wire cutter" },
             1);
     }
 
@@ -278,8 +278,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
             tooltip.add(
-                "Current cache capacity: "
-                    + EnumChatFormatting.YELLOW
+                "Current cache capacity: " + EnumChatFormatting.YELLOW
                     + ReadableNumberConverter.INSTANCE.toWideReadableForm(baseCapacity));
         }
     }
