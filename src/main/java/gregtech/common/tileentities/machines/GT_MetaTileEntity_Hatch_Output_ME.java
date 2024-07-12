@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -53,6 +54,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_Output implements IPowerChannelState {
@@ -78,9 +80,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             3,
             new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
                 "Can cache up to 128kL of fluids by default", "Change cache size by inserting a fluid storage cell",
-                "Change ME connection behavior by right-clicking with wire cutter",
-                "Current base cache capacity: " + ReadableNumberConverter.INSTANCE.toWideReadableForm(128_000)
-                    + " mB" },
+                "Change ME connection behavior by right-clicking with wire cutter"},
             1);
     }
 
@@ -158,11 +158,12 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     /**
      * Set the base capacity of the hatch
      */
-    public void setBaseCapacity(long capacity) {
+    public GT_MetaTileEntity_Hatch_Output_ME setBaseCapacity(long capacity) {
         baseCapacity = capacity;
         mDescriptionArray[5] = "Current base cache capacity: "
             + ReadableNumberConverter.INSTANCE.toWideReadableForm(baseCapacity)
             + " mB";
+        return this;
     }
 
     /**
@@ -305,6 +306,23 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             if (tickCounter % 20 == 0) getBaseMetaTileEntity().setActive(isActive());
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+
+        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
+            tooltip.add(
+                "Current cache capacity: "
+                    + EnumChatFormatting.YELLOW
+                    + ReadableNumberConverter.INSTANCE.toWideReadableForm(baseCapacity) + " mB");
+        }
+    }
+
+    @Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+        super.setItemNBT(aNBT);
+        aNBT.setLong("baseCapacity", baseCapacity);
     }
 
     @Override
