@@ -154,17 +154,6 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     }
 
     /**
-     * Set the base capacity of the hatch
-     */
-    public GT_MetaTileEntity_Hatch_Output_ME setBaseCapacity(long capacity) {
-        baseCapacity = capacity;
-        mDescriptionArray[5] = "Current base cache capacity: "
-            + ReadableNumberConverter.INSTANCE.toWideReadableForm(baseCapacity)
-            + " mB";
-        return this;
-    }
-
-    /**
      * Attempt to store fluid in connected ME network. Returns how much fluid is accepted (if the network was down e.g.)
      *
      * @param aFluid input fluid
@@ -312,8 +301,9 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
             tooltip.add(
                 "Current cache capacity: " + EnumChatFormatting.YELLOW
-                    + ReadableNumberConverter.INSTANCE.toWideReadableForm(baseCapacity)
-                    + " mB");
+                    + ReadableNumberConverter.INSTANCE
+                        .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity"))
+                    + "L");
         }
     }
 
@@ -370,9 +360,6 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         if (baseCapacity == 0) {
             baseCapacity = Long.MAX_VALUE;
         }
-        mDescriptionArray[5] = "Current base cache capacity: "
-            + ReadableNumberConverter.INSTANCE.toWideReadableForm(baseCapacity)
-            + " mB";
         getProxy().readFromNBT(aNBT);
     }
 

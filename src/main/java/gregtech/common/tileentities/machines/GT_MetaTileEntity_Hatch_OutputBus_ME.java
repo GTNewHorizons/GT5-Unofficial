@@ -135,15 +135,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     }
 
     /**
-     * Set the base capacity of the bus
-     */
-    public void setBaseCapacity(long capacity) {
-        baseCapacity = capacity;
-        mDescriptionArray[5] = "Current base cache capacity: "
-            + ReadableNumberConverter.INSTANCE.toWideReadableForm(baseCapacity);
-    }
-
-    /**
      * Attempt to store items in connected ME network. Returns how many items did not fit (if the network was down e.g.)
      *
      * @param stack input stack
@@ -279,7 +270,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
             tooltip.add(
                 "Current cache capacity: " + EnumChatFormatting.YELLOW
-                    + ReadableNumberConverter.INSTANCE.toWideReadableForm(baseCapacity));
+                    + ReadableNumberConverter.INSTANCE
+                        .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity")));
         }
     }
 
@@ -347,8 +339,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         if (baseCapacity == 0) {
             baseCapacity = Long.MAX_VALUE;
         }
-        mDescriptionArray[5] = "Current base cache capacity: "
-            + ReadableNumberConverter.INSTANCE.toWideReadableForm(baseCapacity);
         getProxy().readFromNBT(aNBT);
     }
 
