@@ -3096,32 +3096,32 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             addItem(
                 Electromagnet_Iron.ID,
                 "Iron Electromagnet",
-                "Used in Industrial Electromagnetic Separator",
+                "Used in Industrial Electromagnetic Separator/n 150% Speed/n 80% EU Cost/n 6 Parallels",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 8)));
         ItemList.Electromagnet_Steel.set(
             addItem(
                 Electromagnet_Steel.ID,
                 "Steel Electromagnet",
-                "Used in Industrial Electromagnetic Separator",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 8)));
+                "Used in Industrial Electromagnetic Separator/n 200% Speed/n 75% EU Cost/n 24 Parallels",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 16)));
         ItemList.Electromagnet_Neodymium.set(
             addItem(
                 Electromagnet_Neodymium.ID,
                 "Neodymium Electromagnet",
-                "Used in Industrial Electromagnetic Separator",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 8)));
+                "Used in Industrial Electromagnetic Separator/n 250% Speed/n 70% EU Cost/n 48 Parallels",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 24)));
         ItemList.Electromagnet_Samarium.set(
             addItem(
                 Electromagnet_Samarium.ID,
                 "Samarium Electromagnet",
-                "Used in Industrial Electromagnetic Separator",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 8)));
+                "Used in Industrial Electromagnetic Separator/n 300% Speed/n 60% EU Cost/n 96 Parallels",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 32)));
         ItemList.Electromagnet_Tengam.set(
             addItem(
                 Electromagnet_Tengam.ID,
                 "Tengam Electromagnet",
-                "Used in Industrial Electromagnetic Separator",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 8)));
+                "Used in Industrial Electromagnetic Separator/n 500% Speed/n 50% EU Cost/n 256 Parallels",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 40)));
         removeRecipes();
         setBurnValues();
         oredictBlacklistEntries();

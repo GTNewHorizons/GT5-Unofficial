@@ -11,7 +11,7 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 
-import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
+import gregtech.GT_Mod;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -174,6 +174,11 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     private void onCasingAdded() {
         mCasingAmount++;
+    }
+
+    @Override
+    public int getPollutionPerSecond(ItemStack aStack) {
+        return GT_Mod.gregtechproxy.mPollutionImplosionCompressorPerSecond;
     }
 
     @Override
