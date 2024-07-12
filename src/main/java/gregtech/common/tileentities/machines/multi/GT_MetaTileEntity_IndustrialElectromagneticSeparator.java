@@ -9,8 +9,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE_GL
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.GT_MetaTileEntity_Hatch_MillingBalls;
+import java.util.ArrayList;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -26,20 +26,20 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MagHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings10;
-
-import java.util.ArrayList;
+import gregtech.common.items.GT_MetaGenerated_Item_01;
 
 public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IndustrialElectromagneticSeparator>
     implements ISurvivalConstructable {
 
-    private final ArrayList<GT_MetaTileEntity_Hatch_MillingBalls> mMagHatches = new ArrayList<>();
+    private final ArrayList<GT_MetaTileEntity_MagHatch> mMagHatches = new ArrayList<>();
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_IndustrialElectromagneticSeparator> STRUCTURE_DEFINITION = StructureDefinition
@@ -49,14 +49,22 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             transpose(new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
         .addElement(
             'C',
-            buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
-                .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
-                .dot(1)
-                .buildAndChain(
-                    onElementPass(
-                        GT_MetaTileEntity_IndustrialElectromagneticSeparator::onCasingAdded,
-                        ofBlock(GregTech_API.sBlockCasings10, 0))))
+            ofChain(
+                buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
+                    .adder(GT_MetaTileEntity_IndustrialElectromagneticSeparator::addMagHatch)
+                    .hatchClass(GT_MetaTileEntity_MagHatch.class)
+                    .shouldReject(t -> !t.mMagHatches.isEmpty())
+                    .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
+                    .dot(1)
+                    .build(),
+                buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
+                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                    .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
+                    .dot(1)
+                    .buildAndChain(
+                        onElementPass(
+                            GT_MetaTileEntity_IndustrialElectromagneticSeparator::onCasingAdded,
+                            ofBlock(GregTech_API.sBlockCasings10, 0)))))
         .build();
 
     public GT_MetaTileEntity_IndustrialElectromagneticSeparator(final int aID, final String aName,
@@ -138,6 +146,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")
             .addCasingInfoMin("Electromagnetic Casings", 6, false)
+            .addOtherStructurePart("Electromagnet Housing", "1 Only, Any Casing")
             .addInputBus("Any Casing", 1)
             .addOutputBus("(Magnetic Outputs) Any Casing", 1)
             .addOutputBus("(Amagnetic Outputs) Any Casing", 1)
@@ -168,7 +177,8 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0) && mCasingAmount >= 6;
+        mMagHatches.clear();
+        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0) && mCasingAmount >= 6 && mMagHatches.size() == 1;
     }
 
     @Override
@@ -202,20 +212,19 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     }
 
     public static boolean isValidElectromagnet(ItemStack aMagnet) {
-        return (aMagnet != null && aMagnet.getItem() instanceof GT_MetaGenerated_Tool
-            && aMagnet.getItemDamage() >= 170
-            && aMagnet.getItemDamage() <= 176);
+        return (aMagnet != null && aMagnet.getItem() instanceof GT_MetaGenerated_Item_01
+            && aMagnet.getItemDamage() >= 32345
+            && aMagnet.getItemDamage() <= 32349);
     }
 
-    /*private boolean addMagHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_MillingBalls) {
-                return addToMachineListInternal(mMagHatches, aMetaTileEntity, aBaseCasingIndex);
+    private boolean addMagHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity != null) {
+            final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+            if (aMetaTileEntity instanceof GT_MetaTileEntity_MagHatch aMagHatch) {
+                mMagHatches.add(aMagHatch);
+                return true;
             }
         }
         return false;
-    }*/
+    }
 }

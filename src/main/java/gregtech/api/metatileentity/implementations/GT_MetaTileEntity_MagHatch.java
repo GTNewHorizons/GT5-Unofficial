@@ -1,21 +1,22 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
+
+import net.minecraft.entity.player.EntityPlayer;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialElectromagneticSeparator;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Turbine;
-import net.minecraft.entity.player.EntityPlayer;
-import org.apache.commons.lang3.ArrayUtils;
 
-import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
-
-public class GT_MetaTileEntity_MagHatch extends GT_MetaTileEntity_Hatch{
+public class GT_MetaTileEntity_MagHatch extends GT_MetaTileEntity_Hatch {
 
     public GT_MetaTileEntity_MagHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0, 1, "Holds electromagnet for the Industrial Electromagnetic Separator");
@@ -27,9 +28,7 @@ public class GT_MetaTileEntity_MagHatch extends GT_MetaTileEntity_Hatch{
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            AuthorFourIsTheNumber);
+        return ArrayUtils.addAll(this.mDescriptionArray, AuthorFourIsTheNumber);
     }
 
     @Override
@@ -40,8 +39,9 @@ public class GT_MetaTileEntity_MagHatch extends GT_MetaTileEntity_Hatch{
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new SlotWidget(inventoryHandler, 0).setFilter(GT_MetaTileEntity_IndustrialElectromagneticSeparator::isValidElectromagnet)
-                .setAccess(false, true)
+            new SlotWidget(inventoryHandler, 0)
+                .setFilter(GT_MetaTileEntity_IndustrialElectromagneticSeparator::isValidElectromagnet)
+                .setAccess(true, true)
                 .setPos(79, 34));
     }
 
