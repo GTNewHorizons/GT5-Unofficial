@@ -16,7 +16,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -54,7 +53,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_Output implements IPowerChannelState {
@@ -80,7 +78,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             3,
             new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
                 "Can cache up to 128kL of fluids by default", "Change cache size by inserting a fluid storage cell",
-                "Change ME connection behavior by right-clicking with wire cutter"},
+                "Change ME connection behavior by right-clicking with wire cutter" },
             1);
     }
 
@@ -313,9 +311,9 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
 
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
             tooltip.add(
-                "Current cache capacity: "
-                    + EnumChatFormatting.YELLOW
-                    + ReadableNumberConverter.INSTANCE.toWideReadableForm(baseCapacity) + " mB");
+                "Current cache capacity: " + EnumChatFormatting.YELLOW
+                    + ReadableNumberConverter.INSTANCE.toWideReadableForm(baseCapacity)
+                    + " mB");
         }
     }
 
