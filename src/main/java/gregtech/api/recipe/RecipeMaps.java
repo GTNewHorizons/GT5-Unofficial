@@ -1209,6 +1209,13 @@ public final class RecipeMaps {
         .progressBar(GT_UITextures.PROGRESSBAR_BOILER_HEAT)
         .disableOptimize()
         .build();
+    public static final RecipeMap<RecipeMapBackend> purificationUVTreatmentRecipes = RecipeMapBuilder
+        .of("gt.recipe.purificationplantuvtreatment")
+        .maxIO(0, 0, 1, 1)
+        .minInputs(0, 1)
+        .progressBar(GT_UITextures.PROGRESSBAR_ARROW)
+        .disableOptimize()
+        .build();
     public static final RecipeMap<RecipeMapBackend> ic2NuclearFakeRecipes = RecipeMapBuilder.of("gt.recipe.ic2nuke")
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)

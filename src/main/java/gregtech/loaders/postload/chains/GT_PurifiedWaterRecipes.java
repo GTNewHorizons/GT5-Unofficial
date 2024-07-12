@@ -11,6 +11,7 @@ import static gregtech.api.recipe.RecipeMaps.purificationFlocculationRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationOzonationRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPhAdjustmentRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPlasmaHeatingRecipes;
+import static gregtech.api.recipe.RecipeMaps.purificationUVTreatmentRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.init.Items;
@@ -122,7 +123,7 @@ public class GT_PurifiedWaterRecipes {
                 Materials.PolyvinylChloride.getNuggets(1))
             .outputChances(1000, 500, 100)
             .duration(duration)
-            .eut(TierEU.RECIPE_LuV)
+            .eut(TierEU.RECIPE_ZPM)
             .metadata(BASE_CHANCE, 1 * 10.0f)
             .addTo(purificationFlocculationRecipes);
 
@@ -164,5 +165,15 @@ public class GT_PurifiedWaterRecipes {
             .eut(TierEU.RECIPE_UV)
             .metadata(BASE_CHANCE, 0.0f)
             .addTo(purificationPlasmaHeatingRecipes);
+
+        // Grade 6 - UV treatment
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(Materials.Grade5PurifiedWater.getFluid(1000L))
+            .fluidOutputs(Materials.Grade6PurifiedWater.getFluid(900L))
+            .ignoreCollision()
+            .duration(duration)
+            .eut(TierEU.RECIPE_UV)
+            .metadata(BASE_CHANCE, 0.0f)
+            .addTo(purificationUVTreatmentRecipes);
     }
 }

@@ -1,8 +1,10 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.FluorBuergerit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GT_Values.AuthorNotAPenguin;
+import static gregtech.api.enums.MaterialsBotania.ManaDiamond;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
@@ -14,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -21,8 +24,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import goodgenerator.items.MyMaterial;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
@@ -31,8 +36,11 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.IGT_HatchAdder;
 
@@ -49,6 +57,38 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
 
     private GT_MetaTileEntity_Hatch_InputBus lensInputBus;
     private GT_MetaTileEntity_LensIndicator lensIndicator;
+
+    public static final List<ItemStack> LENSES_TO_CYCLE = Arrays.asList(
+        // It's a rainbow!
+        MyMaterial.orundum.get(OrePrefixes.lens, 1),
+        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amber, 1),
+        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedAir, 1),
+        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Emerald, 1),
+        GT_OreDictUnificator.get(OrePrefixes.lens, ManaDiamond, 1),
+        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.BlueTopaz, 1),
+        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amethyst, 1),
+        FluorBuergerit.get(OrePrefixes.lens, 1),
+        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 1));
+
+    private UVTreatmentLensCycle lensCycle = new UVTreatmentLensCycle(LENSES_TO_CYCLE);
+
+    /**
+     * Bonus chance to success for each lens swap
+     */
+    public static final float SUCCESS_PER_LENS = 10.0f;
+
+    /**
+     * Maximum amount of ticks between two lens swaps
+     */
+    public static final int MAX_TIME_BETWEEN_SWAPS = GT_MetaTileEntity_PurificationPlant.CYCLE_TIME_TICKS
+        / (int) (100.0f / SUCCESS_PER_LENS);
+    /**
+     * Minimum amount of time between two lens swaps
+     */
+    public static final int MIN_TIME_BETWEEN_SWAPS = MAX_TIME_BETWEEN_SWAPS / 6;
+
+    private int numSwapsPerformed = 0;
+    private int timeUntilNextSwap = 0;
 
     private static final String[][] structure = new String[][] {
         // spotless:off
@@ -174,6 +214,11 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     }
 
     @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.purificationUVTreatmentRecipes;
+    }
+
+    @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
     }
@@ -186,6 +231,20 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     @Override
     public long getActivePowerUsage() {
         return TierEU.RECIPE_UV;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("numSwapsPerformed", numSwapsPerformed);
+        aNBT.setInteger("timeUntilNextSwap", timeUntilNextSwap);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        numSwapsPerformed = aNBT.getInteger("numSwapsPerformed");
+        timeUntilNextSwap = aNBT.getInteger("timeUntilNextSwap");
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
