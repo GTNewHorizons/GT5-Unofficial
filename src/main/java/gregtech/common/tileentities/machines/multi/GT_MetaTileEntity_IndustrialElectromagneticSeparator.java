@@ -11,19 +11,19 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 
-import gregtech.GT_Mod;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Recipe;
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -34,20 +34,22 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMul
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MagHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings10;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nonnull;
 
 public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IndustrialElectromagneticSeparator>
     implements ISurvivalConstructable {
 
     public enum MagnetTiers {
+
         Iron(6, 0.8F, 1.5F),
         Steel(24, 0.75F, 2F),
         Neodymium(48, 0.7F, 2.5F),
@@ -60,8 +62,8 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         MagnetTiers(int maxParallel, float euModifier, float speedBoost) {
 
             this.maxParallel = maxParallel;
-            this.euModifier  = euModifier;
-            this.speedBoost  = 1F / speedBoost;
+            this.euModifier = euModifier;
+            this.speedBoost = 1F / speedBoost;
         }
     }
 
@@ -214,11 +216,10 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0) && mCasingAmount >= 6 && mMagHatches.size() == 1;
     }
 
-
-
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
+
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
@@ -229,7 +230,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                     return CheckRecipeResultRegistry.SUCCESSFUL;
                 }
                 return SimpleCheckRecipeResult.ofFailure("electromagnet_missing");
-                }
+            }
         };
     }
 
@@ -263,23 +264,12 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             && aMagnet.getItemDamage() >= 32345
             && aMagnet.getItemDamage() <= 32349) {
             switch (aMagnet.getItemDamage()) {
-                case 32345:
-                    magnetTier = MagnetTiers.Iron;
-                    break;
-                case 32346:
-                    magnetTier = MagnetTiers.Steel;
-                    break;
-                case 32347:
-                    magnetTier = MagnetTiers.Neodymium;
-                    break;
-                case 32348:
-                    magnetTier = MagnetTiers.Samarium;
-                    break;
-                case 32349:
-                    magnetTier = MagnetTiers.Tengam;
-                    break;
-                default:
-                    magnetTier = null;
+                case 32345 -> magnetTier = MagnetTiers.Iron;
+                case 32346 -> magnetTier = MagnetTiers.Steel;
+                case 32347 -> magnetTier = MagnetTiers.Neodymium;
+                case 32348 -> magnetTier = MagnetTiers.Samarium;
+                case 32349 -> magnetTier = MagnetTiers.Tengam;
+                default -> magnetTier = null;
             }
             return magnetTier != null;
         }

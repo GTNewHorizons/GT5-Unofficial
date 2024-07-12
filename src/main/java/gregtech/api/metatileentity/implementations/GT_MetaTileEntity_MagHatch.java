@@ -3,10 +3,9 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING;
 
-import gregtech.api.render.TextureFactory;
 import net.minecraft.entity.player.EntityPlayer;
-
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -17,6 +16,7 @@ import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.render.TextureFactory;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialElectromagneticSeparator;
 
 public class GT_MetaTileEntity_MagHatch extends GT_MetaTileEntity_Hatch {
