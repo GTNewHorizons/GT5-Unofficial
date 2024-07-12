@@ -1,9 +1,12 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING;
 
+import gregtech.api.render.TextureFactory;
 import net.minecraft.entity.player.EntityPlayer;
 
+import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -24,6 +27,16 @@ public class GT_MetaTileEntity_MagHatch extends GT_MetaTileEntity_Hatch {
 
     public GT_MetaTileEntity_MagHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription[0], aTextures);
+    }
+
+    @Override
+    public boolean isSimpleMachine() {
+        return true;
+    }
+
+    @Override
+    public boolean isFacingValid(ForgeDirection facing) {
+        return true;
     }
 
     @Override
@@ -58,12 +71,12 @@ public class GT_MetaTileEntity_MagHatch extends GT_MetaTileEntity_Hatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[0];
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_EMS_HOUSING) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[0];
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_EMS_HOUSING) };
     }
 
     @Override

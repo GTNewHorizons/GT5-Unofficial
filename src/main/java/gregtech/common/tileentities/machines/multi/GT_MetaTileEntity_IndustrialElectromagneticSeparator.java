@@ -11,6 +11,7 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 
+import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -135,11 +136,12 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Electromagnetic Separator")
             .addInfo("Controller Block for the Industrial Electromagnetic Separator")
-            .addInfo("Insert a magnetic core into the magnetic core housing to use")
-            .addInfo("Better magnetic cores give further bonuses")
-            .addInfo("???% faster than using single block machines of the same voltage")
-            .addInfo("Only uses ??% of the EU/t normally required")
-            .addInfo("Processes ?? items per voltage tier")
+            .addInfo("Insert an electromagnet into the electromagnet housing to use")
+            .addInfo("Better electromagnets give further bonuses")
+            .addInfo("With an iron electromagnet:")
+            .addInfo("-150% as fast as single block machines of the same voltage")
+            .addInfo("-Only uses 80% of the EU/t normally required")
+            .addInfo("-Processes 6 items per voltage tier")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addInfo(AuthorFourIsTheNumber)
             .addSeparator()
@@ -183,7 +185,9 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic();
+        return new ProcessingLogic().setEuModifier(0.8F)
+            .setSpeedBonus(1F / 1.5F)
+            .setMaxParallel(6);
     }
 
     @Override
@@ -221,6 +225,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof GT_MetaTileEntity_MagHatch aMagHatch) {
+                ((GT_MetaTileEntity_MagHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 mMagHatches.add(aMagHatch);
                 return true;
             }
