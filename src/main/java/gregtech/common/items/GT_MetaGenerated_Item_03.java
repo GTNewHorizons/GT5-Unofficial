@@ -1103,7 +1103,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.ActivatedCarbonFilterMesh.set(
             addItem(
-                233,
+                Activated_Carbon_Filter_Mesh.ID,
                 "Activated Carbon Filter Mesh",
                 "The most granular filter you could possibly make.",
                 SubTag.NO_UNIFICATION));
