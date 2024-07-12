@@ -1,0 +1,55 @@
+# RecipeMaps
+gtnhlanth.recipe.digester=Digester
+gtnhlanth.recipe.disstank=Dissolution Tank
+
+# NEI
+value.disstank=Ratio: %s:1
+
+DissolutionTank.hint.0=Dot 1: Clean Stainless Steel Machine Casing
+DissolutionTank.hint.1=24x Borosilicate Glass
+DissolutionTank.hint.2=9x Heat Proof Machine Casing
+DissolutionTank.hint.3=Input Bus, Output Bus, Input Hatches, Output Hatch
+DissolutionTank.hint.4=Energy Hatch, Maintenance Hatch
+
+Digester.hint.0=Dot 1: Robust Tungstensteel Machine Casing
+Digester.hint.1=9x Clean Stainless Steel Machine Casing
+Digester.hint.2=16x Heat Proof Machine Casing
+Digester.hint.3=16x Coil Block
+Digester.hint.4=Input Bus, Output Bus, Input Hatch, Output Hatch
+Digester.hint.5=Energy Hatch, Maintenance Hatch
+
+fluid.Antimony Pentafluoride Solution=Antimony Pentafluoride Solution
+fluid.Hafnium Tetrachloride Solution=Hafnium Tetrachloride Solution
+fluid.Zirconium Tetrachloride Solution=Zirconium Tetrachloride Solution
+fluid.Iodine=Iodine
+fluid.Muddy Monazite Rare Earth Solution=Muddy Monazite Rare Earth Solution
+fluid.Diluted Monazite Rare Earth Mud=Diluted Monazite Rare Earth Mud
+fluid.Diluted Monazite Sulfate=Diluted Monazite Sulfate
+fluid.Nitrogenated Monazite Rare Earth Concentrate=Nitrogenated Monazite Rare Earth Concentrate
+fluid.Nitric Monazite Leached Concentrate=Nitric Monazite Leached Concentrate
+fluid.Ammonium Nitrate Solution=Ammonium Nitrate Solution
+fluid.Seaweed Concentrate=Seaweed Concentrate
+fluid.Potassium Permanganate Solution=Potassium Permanganate Solution
+fluid.Seaweed Byproducts=Seaweed Byproducts
+fluid.Nitric-Leached Monazite Mixture=Nitric-Leached Monazite Mixture
+fluid.Muddy Bastnasite Rare Earth Solution=Muddy Bastnasite Rare Earth Solution
+fluid.Sodiumfluorosilicate=Sodiumfluorosilicate
+fluid.Steam-Cracked Bastnasite Mud=Steam-Cracked Bastnasite Mud
+fluid.Conditioned Bastnasite Mud=Conditioned Bastnasite Mud
+fluid.Diluted Bastnasite Mud=Diluted Bastnasite Mud
+fluid.Filtered Bastnasite Mud=Filtered Bastnasite Mud
+fluid.Nitrogenated Bastnasite Rarer Earth Oxides=Nitrogenated Bastnasite Rarer Earth Oxides
+fluid.Bastnasite Rarer Earth Oxide Suspension=Bastnasite Rarer Earth Oxide Suspension
+fluid.Calcium Fluoride=Calcium Fluoride
+fluid.Tetrahydrofuran=Tetrahydrofuran
+"fluid.1,4-Butanediol"="1,4-butanediol"
+"fluid.Acidicised 1,4-Butanediol"="acidicised 1,4-butanediol"
+fluid.Polytetrahydrofuran=Polytetrahydrofuran
+fluid.Tungstophosphoric Acid=Tungstophosphoric Acid
+fluid.Toluene Diisocyanate=Toluene Diisocyanate
+fluid.Dinitrotoluene=Dinitrotoluene
+fluid.Diaminotoluene=Diaminotoluene
+fluid.Toluene Tetramethyl Diisocyanate=Toluene Tetramethyl Diisocyanate
+fluid.Diluted Acetone=Diluted Acetone
+
+GT5U.gui.text.dissolution_ratio=§7Wrong fluid input ratio

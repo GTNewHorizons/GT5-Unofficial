@@ -1,0 +1,6 @@
+12501-13000
+
+12501-12600 are occupied by Crops++
+12900-13000 are occupied by EMT
+
+12600-12900 are aviable for bartworks

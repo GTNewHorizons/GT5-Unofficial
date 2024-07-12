@@ -319,7 +319,11 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         if (autoPullAvailable) {
             setAutoPullItemList(nbt.getBoolean("autoPull"));
             minAutoPullStackSize = nbt.getInteger("minStackSize");
-            autoPullRefreshTime = nbt.getInteger("refreshTime");
+            // Data sticks created before refreshTime was implemented should not cause stocking buses to
+            // spam divide by zero errors
+            if (nbt.hasKey("refreshTime")) {
+                autoPullRefreshTime = nbt.getInteger("refreshTime");
+            }
         }
 
         additionalConnection = nbt.getBoolean("additionalConnection");

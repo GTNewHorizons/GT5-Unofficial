@@ -2,11 +2,9 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.AvaritiaAddons;
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
 import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GTNHLanthanides;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
@@ -66,6 +64,33 @@ public class AssemblerRecipes implements Runnable {
         this.loadOutputBusesRecipes();
         this.loadOutputHatchesRecipes();
         this.withIC2NuclearControl();
+
+        // If Cleanroom is enabled, add an assembler recipe
+        if (GT_Mod.gregtechproxy.mEnableCleanroom) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_HV.get(1L),
+                    ItemList.Component_Filter.get(2L),
+                    GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L),
+                    ItemList.Electric_Motor_HV.get(1L),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
+                    GT_Utility.getIntegratedCircuit(1))
+                .itemOutputs(ItemList.Machine_Multi_Cleanroom.get(1L))
+                .fluidInputs(Materials.StainlessSteel.getMolten(864L))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(assemblerRecipes);
+        }
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_Shutter.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 1),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.FluidFilter.get(1L))
+            .duration(40 * SECONDS)
+            .eut(4)
+            .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -6447,9 +6472,6 @@ public class AssemblerRecipes implements Runnable {
     }
 
     public void withBartWorks() {
-        if (!BartWorks.isModLoaded()) {
-            return;
-        }
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -6632,9 +6654,6 @@ public class AssemblerRecipes implements Runnable {
     }
 
     public void withGTNHLanthAndGTPP() {
-        if (!(GTNHLanthanides.isModLoaded() && GTPlusPlus.isModLoaded())) {
-            return;
-        }
 
         GT_Values.RA.stdBuilder()
             .itemInputs(

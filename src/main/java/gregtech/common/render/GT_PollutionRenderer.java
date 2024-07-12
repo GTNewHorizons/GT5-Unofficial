@@ -133,7 +133,7 @@ public class GT_PollutionRenderer {
         if (!GT_Mod.gregtechproxy.mRenderPollutionFog) return;
 
         if ((!DEBUG && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
-            || (fogIntensityLastTick <= 0 && fogIntensityLastTick >= FOG_START_EXP_RATIO)) return;
+            || (fogIntensityLastTick < FOG_START_EXP_RATIO)) return;
 
         if (event.fogMode == 0) {
             double v = 1 - fogIntensityLastTick / FOG_START_EXP_RATIO;

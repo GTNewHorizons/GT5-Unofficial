@@ -498,6 +498,11 @@ public class GT_MetaTileEntity_ProcessingArray extends
     }
 
     @Override
+    protected boolean supportsSlotAutomation(int aSlot) {
+        return aSlot == getControllerSlotIndex();
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
 

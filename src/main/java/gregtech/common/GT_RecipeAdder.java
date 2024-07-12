@@ -627,32 +627,30 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 0,
                 0);
         }
-        if (GTPlusPlus.isModLoaded()) {
-            RecipeMaps.primitiveBlastRecipes.addRecipe(
-                true,
-                new ItemStack[] { aInput1, aInput2,
-                    GT_ModHandler.getModItem(GTPlusPlus.ID, "itemCactusCoke", (aCoalAmount * 2L)) },
-                new ItemStack[] { aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2) },
-                null,
-                null,
-                null,
-                null,
-                aDuration * 2 / 3,
-                0,
-                0);
-            RecipeMaps.primitiveBlastRecipes.addRecipe(
-                true,
-                new ItemStack[] { aInput1, aInput2,
-                    GT_ModHandler.getModItem(GTPlusPlus.ID, "itemSugarCoke", (aCoalAmount * 2L)) },
-                new ItemStack[] { aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2) },
-                null,
-                null,
-                null,
-                null,
-                aDuration * 2 / 3,
-                0,
-                0);
-        }
+        RecipeMaps.primitiveBlastRecipes.addRecipe(
+            true,
+            new ItemStack[] { aInput1, aInput2,
+                GT_ModHandler.getModItem(GTPlusPlus.ID, "itemCactusCoke", (aCoalAmount * 2L)) },
+            new ItemStack[] { aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2) },
+            null,
+            null,
+            null,
+            null,
+            aDuration * 2 / 3,
+            0,
+            0);
+        RecipeMaps.primitiveBlastRecipes.addRecipe(
+            true,
+            new ItemStack[] { aInput1, aInput2,
+                GT_ModHandler.getModItem(GTPlusPlus.ID, "itemSugarCoke", (aCoalAmount * 2L)) },
+            new ItemStack[] { aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2) },
+            null,
+            null,
+            null,
+            null,
+            aDuration * 2 / 3,
+            0,
+            0);
         if ((aInput1 == null || aInput1.stackSize <= 6) && (aInput2 == null || aInput2.stackSize <= 6)
             && (aOutput1 == null || aOutput1.stackSize <= 6)
             && (aOutput2 == null || aOutput2.stackSize <= 6)) {

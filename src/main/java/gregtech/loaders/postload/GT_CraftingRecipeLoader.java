@@ -690,10 +690,6 @@ public class GT_CraftingRecipeLoader implements Runnable {
             GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Rubber, 1L),
             bits_no_remove_buffered,
             new Object[] { "k", "X", 'X', OrePrefixes.plate.get(Materials.Rubber) });
-        GT_ModHandler.addCraftingRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.toolHeadArrow, Materials.Flint, 1L),
-            bits_no_remove_buffered,
-            new Object[] { "f", "X", 'X', new ItemStack(Items.flint, 1, 32767) });
 
         GT_ModHandler.addCraftingRecipe(
             new ItemStack(Items.arrow, 1),
@@ -2015,14 +2011,12 @@ public class GT_CraftingRecipeLoader implements Runnable {
             Materials.Fireclay.getDust(2),
             new Object[] { Materials.Brick.getDust(1), Materials.Clay.getDust(1) });
 
-        if (BartWorks.isModLoaded()) {
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Casing_Advanced_Rhodium_Palladium.get(1L),
-                bits,
-                new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
-                    GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedplate", 1L, 88), 'F',
-                    OrePrefixes.frameGt.get(Materials.Chrome) });
-        }
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Casing_Advanced_Rhodium_Palladium.get(1L),
+            bits,
+            new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
+                GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedplate", 1L, 88), 'F',
+                OrePrefixes.frameGt.get(Materials.Chrome) });
 
         if (Forestry.isModLoaded()) {
             ItemStack[] coverIDs = { ItemList.Plank_Larch.get(2L), ItemList.Plank_Teak.get(2L),
@@ -2049,5 +2043,15 @@ public class GT_CraftingRecipeLoader implements Runnable {
                     new Object[] { "s ", " P", 'P', slabWoodFireproof });
             }
         }
+        GT_ModHandler.addCraftingRecipe(
+            GT_ModHandler.getIC2Item("electronicCircuit", 1L),
+            GT_ModHandler.RecipeBits.BUFFERED,
+            new Object[] { "RIR", "VBV", "CCC", 'R', ItemList.Circuit_Parts_Resistor.get(1), 'C',
+                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.RedAlloy, 1), 'V',
+                ItemList.Circuit_Parts_Vacuum_Tube.get(1), 'B', ItemList.Circuit_Board_Coated_Basic.get(1), 'I',
+                ItemList.IC2_Item_Casing_Steel.get(1) });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            GT_ModHandler.getIC2Item("electronicCircuit", 1L),
+            new Object[] { ItemList.Circuit_Integrated.getWildcard(1L) });
     }
 }
