@@ -48,6 +48,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     private static final int STRUCTURE_Z_OFFSET = 0;
 
     private GT_MetaTileEntity_Hatch_InputBus lensInputBus;
+    private GT_MetaTileEntity_LensIndicator lensIndicator;
 
     private static final String[][] structure = new String[][] {
         // spotless:off
@@ -58,7 +59,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
         { " AAAAALAAAAA ", "DACCCCCCCCCAD", " B         B ", " B         B ", " B         B ", " B         B ", " B         B ", "DB         BD", "AAAAAAAAAAAAA" },
         { " AAAAAAAAAAA ", "DAACCCCCCCAAD", " BB       BB ", " BB       BB ", " BB       BB ", " BB       BB ", " BB       BB ", "DBB       BBD", "AAAAAAAAAAAAA" },
         { "   AAAAAAA   ", " DDAACCCAADD ", "   BB   BB   ", "   BB   BB   ", "   BB   BB   ", "   BB   BB   ", "   BB   BB   ", " DDBB   BBDD ", " AAAAAAAAAAA " },
-        { "     AAA     ", "   DDAAADD   ", "     BBB     ", "     BBB     ", "     BBB     ", "     BBB     ", "     BBB     ", "   DDBBBDD   ", "   AAAAAAA   " },
+        { "     AIA     ", "   DDAAADD   ", "     BBB     ", "     BBB     ", "     BBB     ", "     BBB     ", "     BBB     ", "   DDBBBDD   ", "   AAAAAAA   " },
         { "             ", "     DDD     ", "             ", "             ", "             ", "             ", "             ", "     DDD     ", "     AAA     " } };
         // spotless:on
 
@@ -78,8 +79,18 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
             lazy(
                 t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitUVTreatment>buildHatchAdder()
                     .atLeast(SpecialHatchElement.LensHousing)
-                    .dot(2)
+                    .dot(1)
                     .cacheHint(() -> "Lens Housing")
+                    .casingIndex(CASING_INDEX_MAIN)
+                    .build()))
+        // Lens indicator hatch
+        .addElement(
+            'I',
+            lazy(
+                t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitUVTreatment>buildHatchAdder()
+                    .atLeast(SpecialHatchElement.LensIndicator)
+                    .dot(2)
+                    .cacheHint(() -> "Lens Indicator")
                     .casingIndex(CASING_INDEX_MAIN)
                     .build()))
         .build();
@@ -193,6 +204,17 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
         return false;
     }
 
+    public boolean addLensIndicatorToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_LensIndicator) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            this.lensIndicator = (GT_MetaTileEntity_LensIndicator) aMetaTileEntity;
+            return true;
+        }
+        return false;
+    }
+
     private enum SpecialHatchElement implements IHatchElement<GT_MetaTileEntity_PurificationUnitUVTreatment> {
 
         LensHousing(GT_MetaTileEntity_PurificationUnitUVTreatment::addLensHousingToMachineList,
@@ -202,6 +224,17 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
             public long count(
                 GT_MetaTileEntity_PurificationUnitUVTreatment gtMetaTileEntityPurificationUnitUVTreatment) {
                 if (gtMetaTileEntityPurificationUnitUVTreatment.lensInputBus == null) return 0;
+                else return 1;
+            }
+        },
+
+        LensIndicator(GT_MetaTileEntity_PurificationUnitUVTreatment::addLensIndicatorToMachineList,
+            GT_MetaTileEntity_LensHousing.class) {
+
+            @Override
+            public long count(
+                GT_MetaTileEntity_PurificationUnitUVTreatment gtMetaTileEntityPurificationUnitUVTreatment) {
+                if (gtMetaTileEntityPurificationUnitUVTreatment.lensIndicator == null) return 0;
                 else return 1;
             }
         };
