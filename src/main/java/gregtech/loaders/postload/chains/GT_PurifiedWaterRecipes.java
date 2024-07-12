@@ -173,7 +173,7 @@ public class GT_PurifiedWaterRecipes {
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_UV)
-            .metadata(BASE_CHANCE, 0.0f)
+            .metadata(BASE_CHANCE, 10.0f)
             .addTo(purificationUVTreatmentRecipes);
     }
 }

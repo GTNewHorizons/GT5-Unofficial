@@ -3,6 +3,9 @@ package gregtech.common.tileentities.machines.multi.purification;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.FluorBuergerit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorNotAPenguin;
 import static gregtech.api.enums.MaterialsBotania.ManaDiamond;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
@@ -11,13 +14,19 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -38,9 +47,12 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.IGT_HatchAdder;
 
@@ -58,7 +70,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     private GT_MetaTileEntity_Hatch_InputBus lensInputBus;
     private GT_MetaTileEntity_LensIndicator lensIndicator;
 
-    public static final List<ItemStack> LENSES_TO_CYCLE = Arrays.asList(
+    public final List<ItemStack> LENSES_TO_CYCLE = Arrays.asList(
         // It's a rainbow!
         MyMaterial.orundum.get(OrePrefixes.lens, 1),
         GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amber, 1),
@@ -90,17 +102,19 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     private int numSwapsPerformed = 0;
     private int timeUntilNextSwap = 0;
 
+    private boolean removedTooEarly = false;
+
     private static final String[][] structure = new String[][] {
         // spotless:off
-        { "             ", "     DDD     ", "             ", "             ", "             ", "             ", "             ", "     DDD     ", "     A~A     " },
+        { "             ", "     DDD     ", "             ", "             ", "             ", "             ", "             ", "     DDD     ", "     H~H     " },
         { "     AAA     ", "   DDAAADD   ", "     BBB     ", "     BBB     ", "     BBB     ", "     BBB     ", "     BBB     ", "   DDBBBDD   ", "   AAAAAAA   " },
         { "   AAAAAAA   ", " DDAACCCAADD ", "   BB   BB   ", "   BB   BB   ", "   BB   BB   ", "   BB   BB   ", "   BB   BB   ", " DDBB   BBDD ", " AAAAAAAAAAA " },
-        { " AAAAAAAAAAA ", "DAACCCCCCCAAD", " BB       BB ", " BB       BB ", " BB       BB ", " BB       BB ", " BB       BB ", "DBB       BBD", "AAAAAAAAAAAAA" },
-        { " AAAAALAAAAA ", "DACCCCCCCCCAD", " B         B ", " B         B ", " B         B ", " B         B ", " B         B ", "DB         BD", "AAAAAAAAAAAAA" },
-        { " AAAAAAAAAAA ", "DAACCCCCCCAAD", " BB       BB ", " BB       BB ", " BB       BB ", " BB       BB ", " BB       BB ", "DBB       BBD", "AAAAAAAAAAAAA" },
+        { " AAAAAAAAAAA ", "DAACCCCCCCAAD", " BB       BB ", " BB       BB ", " BB       BB ", " BB       BB ", " BB       BB ", "DBB       BBD", "HAAAAAAAAAAAH" },
+        { " AAAAALAAAAA ", "DACCCCCCCCCAD", " B         B ", " B         B ", " B         B ", " B         B ", " B         B ", "DB         BD", "HAAAAAAAAAAAH" },
+        { " AAAAAAAAAAA ", "DAACCCCCCCAAD", " BB       BB ", " BB       BB ", " BB       BB ", " BB       BB ", " BB       BB ", "DBB       BBD", "HAAAAAAAAAAAH" },
         { "   AAAAAAA   ", " DDAACCCAADD ", "   BB   BB   ", "   BB   BB   ", "   BB   BB   ", "   BB   BB   ", "   BB   BB   ", " DDBB   BBDD ", " AAAAAAAAAAA " },
         { "     AIA     ", "   DDAAADD   ", "     BBB     ", "     BBB     ", "     BBB     ", "     BBB     ", "     BBB     ", "   DDBBBDD   ", "   AAAAAAA   " },
-        { "             ", "     DDD     ", "             ", "             ", "             ", "             ", "             ", "     DDD     ", "     AAA     " } };
+        { "             ", "     DDD     ", "             ", "             ", "             ", "             ", "             ", "     DDD     ", "     HHH     " } };
         // spotless:on
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitUVTreatment> STRUCTURE_DEFINITION = StructureDefinition
@@ -133,6 +147,19 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
                     .cacheHint(() -> "Lens Indicator")
                     .casingIndex(CASING_INDEX_MAIN)
                     .build()))
+        // Input or output hatch
+        .addElement(
+            'H',
+            ofChain(
+                lazy(
+                    t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitUVTreatment>buildHatchAdder()
+                        .atLeastList(Arrays.asList(InputHatch, OutputHatch))
+                        .dot(3)
+                        .cacheHint(() -> "Input Hatch, Output Hatch")
+                        .casingIndex(CASING_INDEX_MAIN)
+                        .build()),
+                // Naquadria-reinforced Water Plant Casing
+                ofBlock(GregTech_API.sBlockCasings9, 11)))
         .build();
 
     public GT_MetaTileEntity_PurificationUnitUVTreatment(int aID, String aName, String aNameRegional) {
@@ -218,6 +245,92 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
         return RecipeMaps.purificationUVTreatmentRecipes;
     }
 
+    @NotNull
+    @Override
+    public CheckRecipeResult checkProcessing() {
+        RecipeMap<?> recipeMap = this.getRecipeMap();
+
+        GT_Recipe recipe = recipeMap.findRecipeQuery()
+            .fluids(
+                this.getStoredFluids()
+                    .toArray(new FluidStack[] {}))
+            .find();
+
+        this.endRecipeProcessing();
+        if (recipe == null) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        if (this.protectsExcessFluid() && !this.canOutputAll(recipe.mFluidOutputs)) {
+            return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
+        }
+
+        // Make sure the first lens is loaded
+        ItemStack currentLens = this.getCurrentlyInsertedLens();
+        if (currentLens != null && !currentLens.isItemEqual(this.lensCycle.first())) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        this.currentRecipe = recipe;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    private int generateNextSwapTime() {
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        return random.nextInt(MIN_TIME_BETWEEN_SWAPS, MAX_TIME_BETWEEN_SWAPS);
+    }
+
+    @Override
+    public void startCycle(int cycleTime, int progressTime) {
+        super.startCycle(cycleTime, progressTime);
+        // Reset internal state
+        this.timeUntilNextSwap = generateNextSwapTime();
+        this.numSwapsPerformed = 0;
+        this.lensCycle.reset();
+        this.removedTooEarly = false;
+    }
+
+    private ItemStack getCurrentlyInsertedLens() {
+        return this.lensInputBus.getStackInSlot(0);
+    }
+
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.runMachine(aBaseMetaTileEntity, aTick);
+
+        ItemStack currentLens = getCurrentlyInsertedLens();
+
+        // If we are currently counting down to a next swap, do so
+        if (timeUntilNextSwap > 0) {
+            timeUntilNextSwap -= 1;
+            // Set the indicator to not output a signal for now
+            lensIndicator.updateRedstoneOutput(false);
+
+            // If we are counting down to the next swap, and there is no correct lens in the bus, we removed a lens
+            // too early
+            if (currentLens == null || !currentLens.isItemEqual(lensCycle.current())) {
+                removedTooEarly = true;
+            }
+
+            // If the time until the next swap became zero, move on to the next requested lens
+            if (timeUntilNextSwap == 0) {
+                lensCycle.advance();
+            }
+        }
+
+        // Time until next swap is zero, this means we are waiting for the user to output a lens.
+        else if (timeUntilNextSwap == 0) {
+            // Set the indicator to output a signal
+            lensIndicator.updateRedstoneOutput(true);
+
+            // If we now have a matching lens, we can accept it and move on to the next swap
+            if (currentLens != null && currentLens.isItemEqual(lensCycle.current())) {
+                numSwapsPerformed += 1;
+                timeUntilNextSwap = generateNextSwapTime();
+            }
+        }
+    }
+
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
@@ -231,6 +344,23 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     @Override
     public long getActivePowerUsage() {
         return TierEU.RECIPE_UV;
+    }
+
+    @Override
+    public float calculateFinalSuccessChance() {
+        if (removedTooEarly) return 0.0f;
+        return numSwapsPerformed * SUCCESS_PER_LENS + currentRecipeChance;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        infoData.add("Lens swaps performed this run: " + EnumChatFormatting.YELLOW + numSwapsPerformed);
+        infoData.add(
+            "Current lens requested: " + EnumChatFormatting.GREEN
+                + lensCycle.current()
+                    .getDisplayName());
+        return infoData.toArray(new String[] {});
     }
 
     @Override
@@ -269,6 +399,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
         if (aMetaTileEntity instanceof GT_MetaTileEntity_LensIndicator) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             this.lensIndicator = (GT_MetaTileEntity_LensIndicator) aMetaTileEntity;
+            lensIndicator.updateRedstoneOutput(false);
             return true;
         }
         return false;

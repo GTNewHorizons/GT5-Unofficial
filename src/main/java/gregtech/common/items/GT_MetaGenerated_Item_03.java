@@ -1111,7 +1111,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "The most granular filter you could possibly make.",
                 SubTag.NO_UNIFICATION));
 
-
         ItemList.Optical_Cpu_Containment_Housing
             .set(addItem(Optical_Cpu_Containment_Housing.ID, "Optical CPU Containment Housing", "CPU Housing", o));
         ItemList.Optically_Perfected_CPU
@@ -1318,7 +1317,6 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         registerTieredTooltip(ItemList.Circuit_TranscendentComputer.get(1), UXV);
         registerTieredTooltip(ItemList.Circuit_TranscendentMainframe.get(1), MAX);
     }
-
 
     private void registerAllAnimatedTooltips() {
         addItemTooltip(ItemList.Transdimensional_Alignment_Matrix.get(1), GT_Values.AuthorCloud);

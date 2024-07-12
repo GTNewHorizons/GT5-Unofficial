@@ -24,4 +24,12 @@ public class UVTreatmentLensCycle {
     public void advance() {
         currentLens = (currentLens + 1) % lenses.size();
     }
+
+    public void reset() {
+        currentLens = 0;
+    }
+
+    public ItemStack first() {
+        return lenses.get(0);
+    }
 }

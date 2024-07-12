@@ -514,7 +514,7 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     public float calculateFinalSuccessChance() {
         if (ruinedCycle) return 0.0f;
         // Success chance directly depends on number of cycles completed.
-        return cyclesCompleted * SUCCESS_PER_CYCLE;
+        return cyclesCompleted * SUCCESS_PER_CYCLE + currentRecipeChance;
     }
 
     @Override
