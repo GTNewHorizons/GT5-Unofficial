@@ -12,12 +12,14 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitBase.WATER_BOOST_BONUS_CHANCE;
 import static gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitBase.WATER_BOOST_NEEDED_FLUID;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,7 +32,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -69,9 +73,11 @@ import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.gui.modularui.widget.TextButtonWidget;
 
 public class GT_MetaTileEntity_PurificationPlant
-    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PurificationPlant> {
+    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PurificationPlant>
+    implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
 
     /**
      * Maximum distance in each axis between the purification plant main controller and the controller blocks of the
@@ -82,7 +88,7 @@ public class GT_MetaTileEntity_PurificationPlant
     /**
      * Time in ticks for a full processing cycle to complete.
      */
-    public static final int CYCLE_TIME_TICKS = 120 * 20; // TODO: Set to proper value after debugging
+    public static final int CYCLE_TIME_TICKS = 120 * SECONDS;
 
     /**
      * Stores all purification units linked to this controller.
@@ -94,18 +100,26 @@ public class GT_MetaTileEntity_PurificationPlant
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationPlant> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationPlant>builder()
         .addShape(STRUCTURE_PIECE_MAIN, PurificationPlantStructureString.STRUCTURE_STRING)
+        // Create an identical structure for survival autobuild, with water replaced with air
+        .addShape(
+            STRUCTURE_PIECE_MAIN_SURVIVAL,
+            Arrays.stream(PurificationPlantStructureString.STRUCTURE_STRING)
+                .map(
+                    sa -> Arrays.stream(sa)
+                        .map(s -> s.replaceAll("W", " "))
+                        .toArray(String[]::new))
+                .toArray(String[][]::new))
         // Concrete Water Plant Casing
         .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 4))
         // Industrial Water Plant Casing
         .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 3))
         // Industrial strength concrete
         .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 2))
-        // Door
+        // Door. Note that this behaves weirdly with creative autoplace, but should be fine in survival.
         .addElement('D', lazy(t -> ofBlock(GameRegistry.findBlock("IC2", "blockDoorAlloy"), 0)))
         // Tinted Industrial Glass
         .addElement('E', ofBlockAnyMeta(GregTech_API.sBlockTintedGlass, 0))
         .addElement('W', ofBlock(Blocks.water, 0))
-        // Material may change?
         .addElement('G', ofFrame(Materials.Tungsten))
         // Hatch space
         .addElement(
@@ -134,6 +148,18 @@ public class GT_MetaTileEntity_PurificationPlant
     }
 
     @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 24, 9, 20, elementBudget, env, true);
+        if (built == -1) {
+            GT_Utility.sendChatToPlayer(
+                env.getActor(),
+                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
+            return 0;
+        }
+        return built;
+    }
+
+    @Override
     public IStructureDefinition<GT_MetaTileEntity_PurificationPlant> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
@@ -153,7 +179,7 @@ public class GT_MetaTileEntity_PurificationPlant
             .addSeparator()
             .addInfo(
                 "Works in fixed time processing cycles of " + EnumChatFormatting.RED
-                    + CYCLE_TIME_TICKS / 20
+                    + CYCLE_TIME_TICKS / SECONDS
                     + EnumChatFormatting.GRAY
                     + " seconds.")
             .addInfo("All linked units follow this cycle.")
@@ -274,9 +300,11 @@ public class GT_MetaTileEntity_PurificationPlant
             return false;
         }
 
+        // Check hatches
         if (!checkHatches()) {
             return false;
         }
+
         // using nano forge method of detecting hatches.
         if (!checkExoticAndNormalEnergyHatches()) {
             return false;
@@ -286,6 +314,7 @@ public class GT_MetaTileEntity_PurificationPlant
     }
 
     private boolean checkHatches() {
+        // Exactly one maintenance hatch is required
         return mMaintenanceHatches.size() == 1;
     }
 
@@ -315,6 +344,7 @@ public class GT_MetaTileEntity_PurificationPlant
     @Override
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         updateCycleProgress();
+        // Calculate efficiency based on maintenance issues
         if (mMaxProgresstime > 0) {
             mEfficiency = Math.max(
                 0,

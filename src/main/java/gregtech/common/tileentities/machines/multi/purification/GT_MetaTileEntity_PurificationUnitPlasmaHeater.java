@@ -12,6 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
 import static gregtech.api.recipe.RecipeMaps.purificationPlasmaHeatingRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.ArrayList;
@@ -67,10 +68,23 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     private static final int STRUCTURE_X_OFFSET = 2;
     private static final int STRUCTURE_Y_OFFSET = 14;
     private static final int STRUCTURE_Z_OFFSET = 5;
-    private static final long CONSUME_INTERVAL = 20;
 
+    /**
+     * Fluid is consumed every CONSUME_INTERVAL ticks
+     */
+    private static final long CONSUME_INTERVAL = 1 * SECONDS;
+
+    /**
+     * Current internal temperature of the multiblock
+     */
     private long currentTemperature = 0;
+    /**
+     * Amount of successful heating cycles completed
+     */
     private int cyclesCompleted = 0;
+    /**
+     * Whether this recipe is ruined due to high temperature
+     */
     private boolean ruinedCycle = false;
 
     private enum CycleState {
@@ -377,6 +391,7 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     @Override
     public void startCycle(int cycleTime, int progressTime) {
         super.startCycle(cycleTime, progressTime);
+        // Reset internal state
         this.cyclesCompleted = 0;
         this.currentTemperature = 0;
         this.ruinedCycle = false;
@@ -428,6 +443,7 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
         // If the cycle was ruined, output steam
         if (this.ruinedCycle) {
             FluidStack insertedWater = currentRecipe.mFluidInputs[0];
+            // Multiply by 60 since that's the water:steam ratio in GTNH
             long steamAmount = insertedWater.amount * 60L;
             addOutput(GT_ModHandler.getSteam(steamAmount));
         }

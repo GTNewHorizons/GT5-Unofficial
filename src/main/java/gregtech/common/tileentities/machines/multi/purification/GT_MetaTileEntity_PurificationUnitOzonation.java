@@ -75,6 +75,9 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
     private static final int OFFSET_Y = 9;
     private static final int OFFSET_Z = 0;
 
+    /**
+     * If the player inserts more ozone gas than this amount, the multi will explode.
+     */
     public static final int MAX_OZONE_GAS_FOR_EXPLOSION = 1000 * (int) Math.pow(2, 10);
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitOzonation> STRUCTURE_DEFINITION = StructureDefinition
@@ -272,9 +275,9 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
         ArrayList<FluidStack> storedFluids = this.getStoredFluids();
         // Look for ozone, blow up if more than max allowed
         for (FluidStack fluid : storedFluids) {
-            if (fluid.isFluidEqual(Materials.Ozone.getGas(1000L))) {
+            if (fluid.isFluidEqual(Materials.Ozone.getGas(1L))) {
                 if (fluid.amount > MAX_OZONE_GAS_FOR_EXPLOSION) {
-                    // TODO: Fix this with stocking hatch?
+                    // TODO: Fix crash in hatch
                     // this.explodeMultiblock();
                 }
             }

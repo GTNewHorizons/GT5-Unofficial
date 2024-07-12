@@ -12,6 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.ArrayList;
@@ -81,23 +82,63 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     private static final int CASING_INDEX_MIDDLE = getTextureIndex(GregTech_API.sBlockCasings9, 6);
     private static final int CASING_INDEX_TOWER = getTextureIndex(GregTech_API.sBlockCasings9, 7);
 
+    /**
+     * The current pH value of the water inside the multiblock
+     */
     private float currentpHValue = 0.0f;
 
-    private static final int CONSUME_INTERVAL = 20;
+    /**
+     * The multiblock will try to consume catalyst every CONSUME_INTERVAL ticks.
+     */
+    private static final int CONSUME_INTERVAL = 1 * SECONDS;
 
+    /**
+     * Maximum deviation the initial pH value can have away from the neutral value.
+     */
     private static final float INITIAL_PH_DEVIATION = 2.5f;
 
+    /**
+     * pH value of entirely pH neutral water.
+     */
     private static final float PH_NEUTRAL_VALUE = 7.0f;
 
+    /**
+     * Maximum deviation from the neutral value that is allowed for the recipe to succeed.
+     */
     private static final float PH_MAX_DEVIATION = 0.05f;
 
+    /**
+     * Change in pH value for each piece of alkaline dust supplied.
+     */
     public static final float PH_PER_ALKALINE_DUST = 0.01f;
 
+    /**
+     * Change in pH value for every 10L of acid supplied.
+     */
     public static final float PH_PER_10_ACID_LITER = -0.01f;
 
+    /**
+     * Alkaline catalyst material
+     */
+    public static final Materials ALKALINE_MATERIAL = Materials.SodiumHydroxide;
+
+    /**
+     * Acidic catalyst material
+     */
+    public static final Materials ACIDIC_MATERIAL = Materials.HydrochloricAcid;
+
+    /**
+     * The input hatch for the acidic material
+     */
     private GT_MetaTileEntity_Hatch_Input acidInputHatch;
+    /**
+     * The input bus for the alkaline material
+     */
     private GT_MetaTileEntity_Hatch_InputBus alkalineInputBus;
 
+    /**
+     * List of all placed sensor hatches in the multi, so we can update them with the proper pH value when it changes.
+     */
     private final ArrayList<GT_MetaTileEntity_pHSensor> sensorHatches = new ArrayList<>();
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitPhAdjustment> STRUCTURE_DEFINITION = StructureDefinition
@@ -143,7 +184,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                     .atLeast(InputBus)
                     .dot(3)
                     .adder(GT_MetaTileEntity_PurificationUnitPhAdjustment::addAlkalineBusToMachineList)
-                    .cacheHint(() -> "Input Bus (Sodium Hydroxide)")
+                    .cacheHint(() -> "Input Bus (" + ALKALINE_MATERIAL.mLocalizedName + ")")
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -154,7 +195,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                     .atLeast(InputHatch)
                     .dot(4)
                     .adder(GT_MetaTileEntity_PurificationUnitPhAdjustment::addAcidHatchToMachineList)
-                    .cacheHint(() -> "Input Hatch (Hydrochloric Acid)")
+                    .cacheHint(() -> "Input Hatch (" + ACIDIC_MATERIAL.mLocalizedName + ")")
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -339,13 +380,13 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                     + EnumChatFormatting.GRAY
                     + " ticks, consumes ALL "
                     + EnumChatFormatting.WHITE
-                    + "Sodium Hydroxide "
+                    + ALKALINE_MATERIAL.mLocalizedName
                     + EnumChatFormatting.GRAY
-                    + "and "
+                    + " and "
                     + EnumChatFormatting.WHITE
-                    + "Hydrochloric Acid "
+                    + ACIDIC_MATERIAL.mLocalizedName
                     + EnumChatFormatting.GRAY
-                    + "in the special hatches.")
+                    + " in the special hatches.")
             .addInfo(
                 EnumChatFormatting.RED + "Raises "
                     + EnumChatFormatting.GRAY
@@ -356,7 +397,8 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                     + EnumChatFormatting.GRAY
                     + "per piece of "
                     + EnumChatFormatting.WHITE
-                    + "Sodium Hydroxide Dust"
+                    + ALKALINE_MATERIAL.getDust(1)
+                        .getDisplayName()
                     + EnumChatFormatting.GRAY
                     + ".")
             .addInfo(
@@ -373,7 +415,8 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                     + EnumChatFormatting.GRAY
                     + "of "
                     + EnumChatFormatting.WHITE
-                    + "Hydrochloric Acid"
+                    + ACIDIC_MATERIAL.getFluid(1L)
+                        .getLocalizedName()
                     + EnumChatFormatting.GRAY
                     + ".")
             .addInfo(AuthorNotAPenguin)
@@ -416,8 +459,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     @Override
     public void startCycle(int cycleTime, int progressTime) {
         super.startCycle(cycleTime, progressTime);
-        // Randomize current pH value
-
+        // Randomize initial pH value
         ThreadLocalRandom random = ThreadLocalRandom.current();
         // Generate random integer in [-RNG_PRECISION, RNG_PRECISION]
         final int RNG_PRECISION = 1000;
@@ -431,14 +473,14 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     @Override
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.runMachine(aBaseMetaTileEntity, aTick);
-        // Eat all NaOH and HCl every second
+        // Eat all acid and alkaline material every second
         if (mMaxProgresstime > 0 && aTick % CONSUME_INTERVAL == 0) {
             // Important that we drain backwards, since draining stacks can auto-sort the bus
             long totalAlkalineDrained = 0;
             for (int i = alkalineInputBus.getSizeInventory() - 1; i >= 0; --i) {
                 ItemStack stack = alkalineInputBus.getStackInSlot(i);
-                // If this ItemStack is sodium hydroxide, drain it entirely and record the amount drained
-                if (stack != null && stack.isItemEqual(Materials.SodiumHydroxide.getDust(1))) {
+                // If this ItemStack is the alkaline material, drain it entirely and record the amount drained
+                if (stack != null && stack.isItemEqual(ALKALINE_MATERIAL.getDust(1))) {
                     totalAlkalineDrained += stack.stackSize;
                     alkalineInputBus.decrStackSize(i, stack.stackSize);
                 }
@@ -447,7 +489,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
             // Now do fluid, this is simpler since we only need to bother with one slot
             FluidStack stack = acidInputHatch.getDrainableStack();
             int numMultiples = 0;
-            if (stack != null && stack.isFluidEqual(Materials.HydrochloricAcid.getFluid(1))) {
+            if (stack != null && stack.isFluidEqual(ACIDIC_MATERIAL.getFluid(1))) {
                 int acidAvailable = stack.amount;
                 // We only care about multiples of 10, but we still drain all.
                 numMultiples = Math.floorDiv(acidAvailable, 10);

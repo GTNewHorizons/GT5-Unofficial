@@ -27,6 +27,8 @@ import gregtech.common.gui.modularui.widget.CoverCycleButtonWidget;
 
 public class GT_MetaTileEntity_pHSensor extends GT_MetaTileEntity_Hatch {
 
+    // This implementation was largely copied from the neutron sensor hatch
+
     protected float threshold = 0;
     protected boolean inverted = false;
     private boolean isOn = false;

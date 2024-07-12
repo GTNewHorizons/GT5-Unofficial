@@ -42,9 +42,15 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
 
-    // TODO: Balancing
+    /**
+     * Ratio of output fluid that needs to be inserted back as input to trigger a "water boost".
+     * Must be in [0, 1].
+     */
     public static final float WATER_BOOST_NEEDED_FLUID = 0.1f;
-    // TODO: Balancing. This is an additive boost
+    /**
+     * Additive bonus to success chance when water boost is active.
+     * Must be in [0, 1]
+     */
     public static final float WATER_BOOST_BONUS_CHANCE = 0.15f;
 
     /**
@@ -82,8 +88,16 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
      */
     private GT_MetaTileEntity_PurificationPlant controller = null;
 
+    /**
+     * The current recipe being run in the purification unit. Note that purification unit recipes are a bit special,
+     * so input and output in the recipe might not exactly match the required inputs and produced outputs.
+     * For more information, always look at the purification unit tooltip and implementation.
+     */
     protected GT_Recipe currentRecipe = null;
 
+    /**
+     * Current chance of the recipe succeeding, always in [0, 100]. A chance above 100 will be interpreted as 100.
+     */
     protected float currentRecipeChance = 0.0f;
 
     protected GT_MetaTileEntity_PurificationUnitBase(int aID, String aName, String aNameRegional) {
@@ -115,6 +129,13 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         return true;
     }
 
+    /**
+     * Used to more easily grab a correct texture index from a block + meta.
+     * 
+     * @param block Block to use as base. Must implement GT_Block_Casings_Abstract
+     * @param meta  Metadata of the block to pick the actual block/
+     * @return The correct index into the global texture atlas.
+     */
     protected static int getTextureIndex(Block block, int meta) {
         return ((GT_Block_Casings_Abstract) block).getTextureIndex(meta);
     }
@@ -131,34 +152,51 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     @Override
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         // Main controller updates progress time. We can do I/O logic here.
+        // The logic for operating purification units is typically implemented by overriding this behaviour.
         if (mMaxProgresstime > 0) {
             this.markDirty();
-            mEfficiency = Math.max(
-                0,
-                Math.min(
-                    mEfficiency + mEfficiencyIncrease,
-                    getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
+            // Do not take maintenance into consideration, because purification units do not get
+            // maintenance issues.
+            // Technically, this entire efficiency stat is a bit useless for purification units, since
+            // their power draw does not actually depend on it, but it's nice to keep around for consistency with other
+            // multiblocks. This way, you still gradually see the efficiency go down when it powers down.
+            mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1])));
         }
     }
 
+    /**
+     * Equivalent to checkRecipe(), but public because the purification plant needs to access it and checkRecipe()
+     * is protected.
+     * 
+     * @return True if successfully found a recipe and/or started processing/
+     */
     public boolean doPurificationRecipeCheck() {
         return this.checkRecipe();
     }
 
     /**
-     * Get the success chance of the recipe, from 0 to 1. Never call this while a recipe is running, because items
+     * Get the success chance of the recipe, from 0 to 100. Never call this while a recipe is running, because items
      * or modifiers used to boost might disappear by the time recipe check comes around,
      * which would invalidate this result.
      */
     public float calculateBoostedSuccessChance() {
-        // TODO: Should we error if this is null?
+        // If this.currentRecipe is null, there is a bug, so throwing a NPE is fine.
         float recipeChance = this.currentRecipe.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f);
+        // Apply water boost if available.
         if (isWaterBoosted(this.currentRecipe)) {
-            recipeChance = Math.min(recipeChance + WATER_BOOST_BONUS_CHANCE, 1.0f);
+            recipeChance = Math.min(recipeChance + WATER_BOOST_BONUS_CHANCE * 100.0f, 100.0f);
         }
         return recipeChance;
     }
 
+    /**
+     * By default, the final recipe success chance is simply the success chance calculated on recipe check.
+     * This applies water boosts when needed to the base chance. Purification units can override this to perform
+     * more complex success chance calculations, that even take into account what happened during the runtime of the
+     * recipe.
+     * 
+     * @return The success chance of the recipe, at the point in time the outputs are to be produced.
+     */
     public float calculateFinalSuccessChance() {
         return this.currentRecipeChance;
     }
@@ -191,6 +229,9 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         return depleteInput(inputWater, true);
     }
 
+    /**
+     * Consumes all <b>fluid</b> inputs of the current recipe.
+     */
     public void depleteRecipeInputs() {
         for (FluidStack input : this.currentRecipe.mFluidInputs) {
             this.depleteInput(input);
@@ -214,11 +255,13 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             this.depleteInput(inputWater);
         }
 
+        // Consume inputs
         this.depleteRecipeInputs();
-
+        // Initialize recipe and progress information.
         this.mMaxProgresstime = cycleTime;
         this.mProgresstime = progressTime;
         this.mEfficiency = 10000;
+        // These need to be set so the GUI code can display the produced outputs
         this.mOutputFluids = this.currentRecipe.mFluidOutputs;
         this.mOutputItems = this.currentRecipe.mOutputs;
         // Set this value, so it can be displayed in Waila. Note that the logic for the units is
@@ -333,6 +376,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         // If a linked controller was found, load its coordinates.
         // The unit will try to link to the real controller block periodically in onPostTick()
         // We cannot do this linking here yet because the controller block might not be loaded yet.
+        // TODO: We could try though?
         if (aNBT.hasKey("controller")) {
             NBTTagCompound controllerNBT = aNBT.getCompoundTag("controller");
             controllerX = controllerNBT.getInteger("x");

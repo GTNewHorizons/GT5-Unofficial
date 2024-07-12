@@ -13,6 +13,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.ArrayList;
@@ -66,15 +67,37 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
     private static final int STRUCTURE_Y_OFFSET = 3;
     private static final int STRUCTURE_Z_OFFSET = 0;
 
+    /**
+     * Amount of input fluid needed to boost the success chance by another level
+     */
     public static final long INPUT_CHEMICAL_PER_LEVEL = 100000;
+    /**
+     * Amount of waste water produced for each success chance level. This matches the amount of input fluid
+     * so it can be perfectly recycled into each other.
+     */
     private static final long WASTE_WATER_PER_LEVEL = INPUT_CHEMICAL_PER_LEVEL;
+    /**
+     * Additive boost to success chance for each level of input fluid supplied
+     */
     public static final float SUCCESS_PER_LEVEL = 10.0f;
+    /**
+     * Amount of ticks between each tick the unit will try to consume input fluid
+     */
+    private static final int CONSUME_INTERVAL = 1 * SECONDS;
 
-    private static final int CONSUME_INTERVAL = 20;
-
+    /**
+     * Fluid that needs to be supplied to boost success chance
+     */
     private static final Materials INPUT_CHEMICAL = Materials.PolyAluminiumChloride;
+    /**
+     * Output fluid to be produced as waste. The intended behaviour is that this output fluid can be cycled
+     * semi-perfectly into the input fluid.
+     */
     private static final Materials OUTPUT_WASTE = Materials.FlocculationWasteLiquid;
 
+    /**
+     * Total amount of input fluid consumed during this recipe cycle.
+     */
     private long inputFluidConsumed = 0;
 
     private static final String[][] structure = new String[][]
@@ -370,6 +393,7 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
     @Override
     public void startCycle(int cycleTime, int progressTime) {
         super.startCycle(cycleTime, progressTime);
+        // Reset amount of fluid consumed in this cycle.
         this.inputFluidConsumed = 0;
     }
 
@@ -382,24 +406,19 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
         int levels = calculateBoostLevels();
         long amount = levels * WASTE_WATER_PER_LEVEL;
         this.addFluidOutputs(new FluidStack[] { OUTPUT_WASTE.getFluid(amount) });
+        // Make sure to reset consumed fluid (again)
         this.inputFluidConsumed = 0;
-    }
-
-    @Override
-    public void addRecipeOutputs() {
-        super.addRecipeOutputs();
     }
 
     @Override
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.runMachine(aBaseMetaTileEntity, aTick);
 
-        // Consume all input iron iii chloride periodically, only when running
+        // Consume all input fluid periodically, only when running
         if (aTick % CONSUME_INTERVAL == 0 && mMaxProgresstime > 0) {
             // Iterate over all fluids stored
             List<FluidStack> fluids = this.getStoredFluids();
-            for (int i = 0; i < fluids.size(); ++i) {
-                FluidStack fluid = fluids.get(i);
+            for (FluidStack fluid : fluids) {
                 // If this FluidStack is the input chemical, consume it all
                 if (fluid.getFluid()
                     .equals(INPUT_CHEMICAL.mFluid)) {
@@ -416,12 +435,16 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
 
     @Override
     public float calculateFinalSuccessChance() {
+        // Amount of times the required amount of input fluid was fully inserted
         int levels = calculateBoostLevels();
+        // Target amount of fluid needed to reach this amount of boost levels
         long targetAmount = levels * INPUT_CHEMICAL_PER_LEVEL;
+        // Amount of excess fluid inserted.
         long overflow = inputFluidConsumed - targetAmount;
+        // Base boost chance, before applying overflow penalty
         float boost = SUCCESS_PER_LEVEL * levels;
+        // If there was any overflow, apply an exponential penalty multiplier based on percentage overflow
         if (overflow > 0) {
-            // Exponential penalty multiplier based on percentage overflow
             float overflowPct = (float) overflow / INPUT_CHEMICAL_PER_LEVEL;
             float penaltyMultiplier = (float) Math.pow(2.0f, overflowPct * -10.0);
             return Math.max(0.0f, (this.currentRecipeChance + boost) * penaltyMultiplier);
@@ -442,7 +465,7 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
 
     @Override
     public long getActivePowerUsage() {
-        return TierEU.RECIPE_LuV;
+        return TierEU.RECIPE_ZPM;
     }
 
     @Override
