@@ -2037,6 +2037,7 @@ public enum ItemList implements IItemContainer {
     TierdDrone2,
     Hatch_DroneDownLink,
     Hatch_pHSensor,
+    Hatch_LensHousing,
     ActivatedCarbonFilterMesh,
     BlockIndustrialStrengthConcrete,
     GlassPHResistant,

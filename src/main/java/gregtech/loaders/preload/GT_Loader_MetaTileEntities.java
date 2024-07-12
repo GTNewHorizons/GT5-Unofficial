@@ -121,6 +121,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_LENS_HOUSING;
 import static gregtech.api.enums.MetaTileEntityIDs.HATCH_PH_SENSOR;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_COAL_BOILER;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_LAVA_BOILER;
@@ -589,6 +590,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Transcenden
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_LensHousing;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationPlant;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitClarifier;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitFlocculation;
@@ -4169,6 +4171,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 8).getStackForm(1L));
         ItemList.Hatch_pHSensor.set(
             new GT_MetaTileEntity_pHSensor(HATCH_PH_SENSOR.ID, "hatch.phsensor", "pH Sensor Hatch", 7).getStackForm(1));
+        ItemList.Hatch_LensHousing.set(
+            new GT_MetaTileEntity_LensHousing(HATCH_LENS_HOUSING.ID, "hatch.lenshousing", "Lens Housing")
+                .getStackForm(1));
         generateWiresAndPipes();
     }
 

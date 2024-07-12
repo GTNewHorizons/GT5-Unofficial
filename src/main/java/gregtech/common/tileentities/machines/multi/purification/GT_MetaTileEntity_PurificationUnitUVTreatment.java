@@ -23,6 +23,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 
@@ -36,6 +37,8 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     private static final int STRUCTURE_X_OFFSET = 6;
     private static final int STRUCTURE_Y_OFFSET = 8;
     private static final int STRUCTURE_Z_OFFSET = 0;
+
+    private GT_MetaTileEntity_Hatch_InputBus lensInputBus;
 
     private static final String[][] structure = new String[][] {
         // spotless:off
