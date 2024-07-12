@@ -265,12 +265,6 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
             return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
         }
 
-        // Make sure the first lens is loaded
-        ItemStack currentLens = this.getCurrentlyInsertedLens();
-        if (currentLens != null && !currentLens.isItemEqual(this.lensCycle.first())) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
         this.currentRecipe = recipe;
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
@@ -284,7 +278,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     public void startCycle(int cycleTime, int progressTime) {
         super.startCycle(cycleTime, progressTime);
         // Reset internal state
-        this.timeUntilNextSwap = generateNextSwapTime();
+        this.timeUntilNextSwap = 0;
         this.numSwapsPerformed = 0;
         this.lensCycle.reset();
         this.removedTooEarly = false;
