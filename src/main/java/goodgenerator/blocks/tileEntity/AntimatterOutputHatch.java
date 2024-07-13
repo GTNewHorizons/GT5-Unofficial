@@ -1,23 +1,28 @@
 package goodgenerator.blocks.tileEntity;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 public class AntimatterOutputHatch extends GT_MetaTileEntity_Hatch_Output {
+
+    private static final FluidStack ANTIMATTER = Materials.Antimatter.getFluid(1);
 
     public AntimatterOutputHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
         this.mDescriptionArray[1] = "Stores Antimatter";
         this.mDescriptionArray[2] = "Antimatter can be inserted from any side";
-        this.mDescriptionArray[3] = "Capacity: 100000000L";
+        this.mDescriptionArray[3] = "Capacity: 100 000 000L";
     }
 
     public AntimatterOutputHatch(String aName, int aTier, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+        setLockedFluidName(ANTIMATTER.getUnlocalizedName());
     }
 
     @Override
@@ -27,11 +32,21 @@ public class AntimatterOutputHatch extends GT_MetaTileEntity_Hatch_Output {
 
     @Override
     public int getCapacity() {
-        return 100000000;
+        return 100_000_000;
+    }
+
+    @Override
+    public boolean isFluidLocked() {
+        return true;
     }
 
     @Override
     public boolean isLiquidInput(ForgeDirection side) {
-        return !(side == this.getBaseMetaTileEntity().getFrontFacing());
+        return side != this.getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public boolean isLiquidOutput(ForgeDirection side) {
+        return side == getBaseMetaTileEntity().getFrontFacing();
     }
 }
