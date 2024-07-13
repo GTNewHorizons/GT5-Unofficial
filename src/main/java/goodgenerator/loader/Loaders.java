@@ -358,7 +358,7 @@ public class Loaders {
         CrackRecipeAdder.registerPipe(IDs_GoodGenerator.PipeIncoloy903.ID, MyMaterial.incoloy903, 15000, 8000, true);
         CrackRecipeAdder.registerWire(IDs_GoodGenerator.WireSignalium.ID, MyMaterial.signalium, 12, 131072, 16, true);
         CrackRecipeAdder.registerWire(IDs_GoodGenerator.WireLumiium.ID, MyMaterial.lumiium, 8, 524288, 64, true);
-        Loaders.AMForge = new AntimatterForge(IDOffset + 250, "AntimatterForge", "Semi-Stable Antimatter Stabilization Sequencer")
+        Loaders.AMForge = new AntimatterForge(IDs_GoodGenerator.AntimatterForge.ID, "AntimatterForge", "Semi-Stable Antimatter Stabilization Sequencer")
         .getStackForm(1L);
     }
 
