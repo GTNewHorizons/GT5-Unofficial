@@ -607,6 +607,21 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             return CheckRecipeResultRegistry.insufficientPower(energyCost);
         }
 
+        long protomatterCost = calculateProtoMatterCost(totalAntimatterAmount);
+        long containedProtomatter = 0;
+        List<FluidStack> inputFluids = getStoredFluids();
+        for (int i = 0; i < inputFluids.size(); i++) {
+            if (inputFluids.get(i).isFluidEqual(Materials.Antimatter.getFluid(1))) {
+                containedProtomatter += Math.min(inputFluids.get(i).amount, protomatterCost - containedProtomatter);
+                inputFluids.get(i).amount -= Math.min(protomatterCost - containedProtomatter, inputFluids.get(i).amount);
+            }
+        }
+
+        distributeAntimatterToHatch(antimatterOutputHatches, totalAntimatterAmount, ((float) containedProtomatter)/((float) protomatterCost));
+        mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        mEfficiencyIncrease = 10000;
+        mMaxProgresstime = speed;
+
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -620,6 +635,9 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> dd4a3d69ac (implement skeleton for antimatter production)
     private long calculateProtoMatterCost(long antimatterAmount) {
         return antimatterAmount;
     }
@@ -628,8 +646,11 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
 
     }
 
+<<<<<<< HEAD
 =======
 >>>>>>> d4f1bf606f (Implement the start of the processing of SSASS)
+=======
+>>>>>>> dd4a3d69ac (implement skeleton for antimatter production)
     @Override
     protected boolean shouldCheckRecipeThisTick(long aTick) {
         return (aTick % speed) == 0;
