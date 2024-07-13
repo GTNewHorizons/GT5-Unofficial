@@ -214,15 +214,6 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         mCasingAmount = 0;
         mMagHatches.clear();
 
-        // If there is more than 1 TT energy hatch, the structure check will fail.
-        // If there is a TT hatch and a normal hatch, the structure check will fail.
-        if (!mExoticEnergyHatches.isEmpty()) {
-            if (!mEnergyHatches.isEmpty()) return false;
-            if (mExoticEnergyHatches.size() > 1) return false;
-        }
-
-        if (mMaintenanceHatches.size() != 1) return false;
-
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0) && mCasingAmount >= 6 && mMagHatches.size() == 1;
     }
 

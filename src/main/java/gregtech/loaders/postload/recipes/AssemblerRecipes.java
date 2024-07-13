@@ -586,6 +586,72 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.IronMagnetic, 8L),
+                ItemList.IV_Coil.get(8L),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorIV, 16L)
+            )
+            .itemOutputs(ItemList.Electromagnet_Iron.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.IV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.SteelMagnetic, 16L),
+                ItemList.LuV_Coil.get(16L),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 3L)
+            )
+            .itemOutputs(ItemList.Electromagnet_Steel.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.LuV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NeodymiumMagnetic, 16L),
+                ItemList.ZPM_Coil.get(16L),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorZPM, 32L)
+            )
+            .itemOutputs(ItemList.Electromagnet_Neodymium.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.ZPM)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.SamariumMagnetic, 32L),
+                ItemList.UV_Coil.get(32L),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 64L)
+            )
+            .itemOutputs(ItemList.Electromagnet_Samarium.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.UV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.TengamAttuned, 32L),
+                ItemList.UHV_Coil.get(32L),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUHV, 64L)
+            )
+            .itemOutputs(ItemList.Electromagnet_Tengam.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.UHV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.IronMagnetic, 16L),
+                ItemList.IV_Coil.get(16L),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorIV, 32L)
+            )
+            .itemOutputs(ItemList.Electromagnet_Iron.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.IV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Steel, 2L),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 6L),
                 GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Steel, 2L),
