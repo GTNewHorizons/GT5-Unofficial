@@ -158,15 +158,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
-<<<<<<< HEAD
         return new AntimatterForge(this.MAINNAME);
     }
 
     protected OverclockDescriber createOverclockDescriber() {
         return new FusionOverclockDescriber((byte) tier(), capableStartupCanonical());
-=======
-        return new AntimatterForge(MAIN_NAME);
->>>>>>> f158c75f7f (Implement the start of the processing of SSASS)
     }
 
     @Override
@@ -192,7 +188,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
         return 100000000;
     }
 
-<<<<<<< HEAD
     /**
      * Unlike {@link #maxEUStore()}, this provides theoretical limit of startup EU, without considering the amount of
      * hatches nor the room for extra energy. Intended for simulation.
@@ -202,8 +197,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
         return 160000000;
     }
 
-=======
->>>>>>> f158c75f7f (Implement the start of the processing of SSASS)
     public Block getCasingBlock() {
         return Loaders.antimatterContainmentCasing;
     }
@@ -533,7 +526,29 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
                 maxParallel = getMaxPara() * extraPara(recipe.mSpecialValue);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
+<<<<<<< HEAD
 =======
+=======
+            stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+            return CheckRecipeResultRegistry.insufficientPower(energyCost);
+        }
+
+        long protomatterCost = calculateProtoMatterCost(totalAntimatterAmount);
+        long containedProtomatter = 0;
+        List<FluidStack> inputFluids = getStoredFluids();
+        for (int i = 0; i < inputFluids.size(); i++) {
+            if (inputFluids.get(i).isFluidEqual(Materials.Antimatter.getFluid(1))) {
+                containedProtomatter += Math.min(inputFluids.get(i).amount, protomatterCost - containedProtomatter);
+                inputFluids.get(i).amount -= Math.min(protomatterCost - containedProtomatter, inputFluids.get(i).amount);
+            }
+        }
+
+        distributeAntimatterToHatch(antimatterOutputHatches, totalAntimatterAmount, ((float) containedProtomatter)/((float) protomatterCost));
+        mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        mEfficiencyIncrease = 10000;
+        mMaxProgresstime = speed;
+
+>>>>>>> 579cb15fe5 (implement skeleton for antimatter production)
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 >>>>>>> f158c75f7f (Implement the start of the processing of SSASS)
@@ -544,6 +559,14 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
 
     private long calculateEnergyCost(long antimatterAmount) {
         return antimatterAmount;
+    }
+
+    private long calculateProtoMatterCost(long antimatterAmount) {
+        return antimatterAmount;
+    }
+
+    private void distributeAntimatterToHatch(List<AntimatterOutputHatch> hatches, long totalAntimatterAmount, float protomatterRequirement) {
+
     }
 
     @Override
@@ -604,14 +627,13 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
             tInput.mRecipeMap = getRecipeMap();
             return mInputHatches.add(tInput);
         }
-<<<<<<< HEAD
+
         if (aMetaTileEntity instanceof MTEHatchOutput tOutput) {
-=======
+
         if (aMetaTileEntity instanceof AntimatterOutputHatch tAntimatter) {
             return antimatterOutputHatches.add(tAntimatter);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output tOutput) {
->>>>>>> f158c75f7f (Implement the start of the processing of SSASS)
             if (tOutput.getTierForStructure() < hatchTier()) return false;
             return mOutputHatches.add(tOutput);
         }
