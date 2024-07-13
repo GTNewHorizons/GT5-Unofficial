@@ -17,7 +17,7 @@ public class GT_Block_Casings10 extends GT_Block_Casings_Abstract {
 
     public GT_Block_Casings10() {
         super(GT_Item_Casings10.class, "gt.blockcasings10", GT_Material_Casings.INSTANCE, 16);
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Electromagnetic Separator Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "MagTech Casing");
 
         ItemList.Casing_Electromagnetic_Separator.set(new ItemStack(this, 1, 0));
     }

@@ -10,10 +10,23 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -69,7 +82,8 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     }
 
     private final ArrayList<GT_MetaTileEntity_MagHatch> mMagHatches = new ArrayList<>();
-    private static MagnetTiers magnetTier = null;
+    private MagnetTiers magnetTier = null;
+    private boolean polarizerMode = false;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_IndustrialElectromagneticSeparator> STRUCTURE_DEFINITION = StructureDefinition
@@ -163,7 +177,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Electromagnetic Separator")
+        tt.addMachineType("Electromagnetic Separator/Polarizer")
             .addInfo("Controller Block for the Magnetic Flux Exhibitor")
             .addInfo("Insert an electromagnet into the electromagnet housing to use")
             .addInfo("Better electromagnets give further bonuses")
@@ -240,7 +254,55 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.electroMagneticSeparatorRecipes;
+        return polarizerMode ? RecipeMaps.polarizerRecipes : RecipeMaps.electroMagneticSeparatorRecipes;
+    }
+
+    @Nonnull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(RecipeMaps.polarizerRecipes, RecipeMaps.electroMagneticSeparatorRecipes);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setBoolean("polarizerMode", polarizerMode);
+        super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        polarizerMode = aNBT.getBoolean("polarizerMode");
+        super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        polarizerMode = !polarizerMode;
+        if (polarizerMode) {
+            PlayerUtils.messagePlayer(aPlayer, "Now running in Polarizing Mode.");
+        } else {
+            PlayerUtils.messagePlayer(aPlayer, "Now running in Separating Mode.");
+        }
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+                                int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setBoolean("mode", polarizerMode);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                + EnumChatFormatting.WHITE
+                + StatCollector
+                .translateToLocal("GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode." + (tag.getBoolean("mode") ? 1 : 0))
+                + EnumChatFormatting.RESET);
     }
 
     @Override
