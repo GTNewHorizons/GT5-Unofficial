@@ -22,7 +22,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialE
 public class GT_MetaTileEntity_MagHatch extends GT_MetaTileEntity_Hatch {
 
     public GT_MetaTileEntity_MagHatch(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 0, 1, "Holds electromagnet for the Industrial Electromagnetic Separator");
+        super(aID, aName, aNameRegional, 5, 1, "Holds electromagnet for the Industrial Electromagnetic Separator");
     }
 
     public GT_MetaTileEntity_MagHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
