@@ -204,7 +204,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GT_Mod.gregtechproxy.mPollutionImplosionCompressorPerSecond;
+        return GT_Mod.gregtechproxy.mPollutionIndustrialElectromagneticSeparatorPerSecond;
     }
 
     @Override
