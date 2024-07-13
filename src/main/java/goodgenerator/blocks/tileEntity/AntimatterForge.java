@@ -6,6 +6,7 @@ import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -75,18 +76,20 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
-public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase
+public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<AntimatterForge>
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
     public static final String MAIN_NAME = "antimatterForge";
     public static final int M = 1_000_000;
+    private int speed = 100;
     private boolean isLoadedChunk;
     public GT_Recipe mLastRecipe;
     public int para;
-    protected OverclockDescriber overclockDescriber;
+    private List<AntimatterOutputHatch> antimatterOutputHatches = new ArrayList<>(16);
     private static final ClassValue<IStructureDefinition<AntimatterForge>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<AntimatterForge>>() {
 
         @Override
@@ -149,21 +152,15 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
 
     public AntimatterForge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        this.overclockDescriber = createOverclockDescriber();
     }
 
     public AntimatterForge(String aName) {
         super(aName);
-        this.overclockDescriber = createOverclockDescriber();
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
-        return new AntimatterForge(this.MAIN_NAME);
-    }
-
-    protected OverclockDescriber createOverclockDescriber() {
-        return new FusionOverclockDescriber((byte) tier(), capableStartupCanonical());
+        return new AntimatterForge(MAIN_NAME);
     }
 
     @Override
@@ -173,12 +170,6 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             .addInfo("Dimensions not included!")
             .toolTipFinisher("Good Generator");
         return tt;
-    }
-
-    @Nullable
-    @Override
-    public OverclockDescriber getOverclockDescriber() {
-        return overclockDescriber;
     }
 
     @Override
@@ -193,15 +184,6 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     @Override
     public long maxEUStore() {
         return 100_000_000;
-    }
-
-    /**
-     * Unlike {@link #maxEUStore()}, this provides theoretical limit of startup EU, without considering the amount of
-     * hatches nor the room for extra energy. Intended for simulation.
-     */
-
-    public long capableStartupCanonical() {
-        return 160_000_000;
     }
 
     public Block getCasingBlock() {
@@ -273,15 +255,6 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        // Migration code
-        if (lEUt > 0) {
-            lEUt = -lEUt;
-        }
-    }
-
-    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return checkPiece(MAIN_NAME, 23, 3, 40);
     }
@@ -296,138 +269,6 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         return survivialBuildPiece(MAIN_NAME, stackSize, 23, 3, 40, realBudget, env, false, true);
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide() && !aBaseMetaTileEntity.isAllowedToWork()) {
-            // if machine has stopped, stop chunkloading
-            GT_ChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
-            this.isLoadedChunk = false;
-        } else if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && !this.isLoadedChunk) {
-            // load a 3x3 area when machine is running
-            GT_ChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
-            int offX = aBaseMetaTileEntity.getFrontFacing().offsetX;
-            int offZ = aBaseMetaTileEntity.getFrontFacing().offsetZ;
-            GT_ChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() + offZ));
-            GT_ChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() + 1 + offZ));
-            GT_ChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() + offZ));
-            GT_ChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() - 1 + offZ));
-            GT_ChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() + 1 + offZ));
-            GT_ChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() + offZ));
-            GT_ChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() - 1 + offZ));
-            GT_ChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() + 1 + offZ));
-            GT_ChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() - 1 + offZ));
-            this.isLoadedChunk = true;
-        }
-
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if (mEfficiency < 0) mEfficiency = 0;
-            if (mRunningOnLoad && checkMachine(aBaseMetaTileEntity, mInventory[1])) {
-                checkRecipe();
-            }
-            if (mUpdated) {
-                mUpdate = 50;
-                mUpdated = false;
-            }
-            if (--mUpdate == 0 || --mStartUpCheck == 0
-                || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
-                if (mUpdate <= -1000) {
-                    mUpdate = 5000;
-                }
-                checkStructure(true, aBaseMetaTileEntity);
-            }
-            if (mStartUpCheck < 0) {
-                if (mMachine) {
-                    if (aBaseMetaTileEntity.getStoredEU() <= 0 && mMaxProgresstime > 0) {
-                        criticalStopMachine();
-                    }
-
-                    long energyLimit = getSingleHatchPower();
-                    List<GT_MetaTileEntity_Hatch> hatches = getExoticAndNormalEnergyHatchList();
-                    for (GT_MetaTileEntity_Hatch hatch : filterValidMTEs(hatches)) {
-                        long consumableEnergy = Math.min(hatch.getEUVar(), energyLimit);
-                        long receivedEnergy = Math
-                            .min(consumableEnergy, maxEUStore() - aBaseMetaTileEntity.getStoredEU());
-                        if (receivedEnergy > 0) {
-                            hatch.getBaseMetaTileEntity()
-                                .decreaseStoredEnergyUnits(receivedEnergy, false);
-                            aBaseMetaTileEntity.increaseStoredEnergyUnits(receivedEnergy, true);
-                        }
-                    }
-
-                    if (mMaxProgresstime > 0) {
-                        this.getBaseMetaTileEntity()
-                            .decreaseStoredEnergyUnits(-lEUt, true);
-                        if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
-                            if (mOutputItems != null)
-                                for (ItemStack tStack : mOutputItems) if (tStack != null) addOutput(tStack);
-                            if (mOutputFluids != null)
-                                for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);
-                            mEfficiency = Math
-                                .max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1])));
-                            mOutputItems = null;
-                            mOutputFluids = null;
-                            mProgresstime = 0;
-                            mMaxProgresstime = 0;
-                            mEfficiencyIncrease = 0;
-                            para = 0;
-                            if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe();
-                        }
-                    } else {
-                        if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
-                            || aBaseMetaTileEntity.hasInventoryBeenModified()) {
-                            turnCasingActive(mMaxProgresstime > 0);
-                            if (aBaseMetaTileEntity.isAllowedToWork()) {
-                                if (checkRecipe()) {
-                                    if (aBaseMetaTileEntity.getStoredEU()
-                                        < this.mLastRecipe.mSpecialValue + this.lEUt) {
-                                        mMaxProgresstime = 0;
-                                        turnCasingActive(false);
-                                        criticalStopMachine();
-                                    }
-                                    getBaseMetaTileEntity()
-                                        .decreaseStoredEnergyUnits(this.mLastRecipe.mSpecialValue + this.lEUt, false);
-                                }
-                            }
-                            if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
-                        }
-                    }
-                } else {
-                    turnCasingActive(false);
-                    this.mLastRecipe = null;
-                    stopMachine();
-                }
-            }
-            aBaseMetaTileEntity
-                .setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
-            aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
-        }
-    }
-
-    /**
-     * @return The power one hatch can deliver to the reactor
-     */
-    protected long getSingleHatchPower() {
-        return GT_Values.V[tier()] * getMaxPara() * extraPara(100) / 32;
     }
 
     public boolean turnCasingActive(boolean status) {
@@ -484,68 +325,69 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     }
 
     @Override
-    public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.fusionRecipes;
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            FluidStack[] antimatterStored = new FluidStack[16];
+            long totalAntimatterAmount = 0;
+            for (int i = 0; i < antimatterOutputHatches.size(); i++) {
+                if (antimatterOutputHatches.get(i) == null || !antimatterOutputHatches.get(i).isValid() || antimatterOutputHatches.get(i).getFluid() == null) continue;
+                antimatterStored[i] = antimatterOutputHatches.get(i).getFluid().copy();
+                totalAntimatterAmount += antimatterStored[i].amount;
+            }
+            drainEnergyInput(calculateEnergyContainmentCost(totalAntimatterAmount));
+        }
     }
 
     @Override
-    public int getRecipeCatalystPriority() {
-        return -2;
+    public CheckRecipeResult checkProcessing() {
+        FluidStack[] antimatterStored = new FluidStack[16];
+        long totalAntimatterAmount = 0;
+        long minAntimatterAmount = Long.MAX_VALUE;
+        for (int i = 0; i < antimatterOutputHatches.size(); i++) {
+            if (antimatterOutputHatches.get(i) == null || !antimatterOutputHatches.get(i).isValid() || antimatterOutputHatches.get(i).getFluid() == null) continue;
+            antimatterStored[i] = antimatterOutputHatches.get(i).getFluid().copy();
+            totalAntimatterAmount += antimatterStored[i].amount;
+            minAntimatterAmount = Math.min(minAntimatterAmount, antimatterStored[i].amount);
+        }
+
+        for (int i = 0; i < antimatterOutputHatches.size(); i++) {
+            if (antimatterOutputHatches.get(i) == null || !antimatterOutputHatches.get(i).isValid() || antimatterOutputHatches.get(i).getFluid() == null) continue;
+            FluidStack fluid = antimatterOutputHatches.get(i).getFluid().copy();
+            antimatterOutputHatches.get(i).drain((int)((fluid.amount - minAntimatterAmount) / 2), true);
+        }
+
+        long energyCost = calculateEnergyCost(totalAntimatterAmount);
+        if (drainEnergyInput(energyCost)) {
+            for (int i = 0; i < antimatterOutputHatches.size(); i++) {
+                if (antimatterOutputHatches.get(i) == null || !antimatterOutputHatches.get(i).isValid() || antimatterOutputHatches.get(i).getFluid() == null) continue;
+                FluidStack fluid = antimatterOutputHatches.get(i).getFluid().copy();
+                antimatterOutputHatches.get(i).drain((int)Math.floor(fluid.amount * 0.1), true);
+            }
+            stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+            return CheckRecipeResultRegistry.insufficientPower(energyCost);
+        }
+
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    private long calculateEnergyContainmentCost(long antimatterAmount) {
+        return antimatterAmount;
+    }
+
+    private long calculateEnergyCost(long antimatterAmount) {
+        return antimatterAmount;
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            protected GT_ParallelHelper createParallelHelper(@NotNull GT_Recipe recipe) {
-                // When the fusion first loads and is still processing, it does the recipe check without consuming.
-                return super.createParallelHelper(recipe).setConsumption(!mRunningOnLoad);
-            }
-
-            @NotNull
-            @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
-                return overclockDescriber.createCalculator(super.createOverclockCalculator(recipe), recipe);
-            }
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
-                if (!mRunningOnLoad) {
-                    if (recipe.mSpecialValue > maxEUStore()) {
-                        return CheckRecipeResultRegistry.insufficientStartupPower(recipe.mSpecialValue);
-                    }
-                    if (recipe.mEUt > GT_Values.V[tier()]) {
-                        return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                    }
-                }
-                maxParallel = getMaxPara() * extraPara(recipe.mSpecialValue);
-                return CheckRecipeResultRegistry.SUCCESSFUL;
-            }
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                CheckRecipeResult result = super.process();
-                if (mRunningOnLoad) mRunningOnLoad = false;
-                turnCasingActive(result.wasSuccessful());
-                if (result.wasSuccessful()) {
-                    mLastRecipe = lastRecipe;
-                } else {
-                    mLastRecipe = null;
-                }
-                para = getCurrentParallels();
-                return result;
-            }
-        };
+    protected boolean shouldCheckRecipeThisTick(long aTick) {
+        return (aTick % speed) == 0;
     }
 
     @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GT_Values.V[tier()]);
-        logic.setAvailableAmperage(getSingleHatchPower() * 32 / GT_Values.V[tier()]);
+    public void clearHatches() {
+        super.clearHatches();
+        antimatterOutputHatches.clear();
     }
 
     @Override
@@ -589,6 +431,9 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             tInput.mRecipeMap = getRecipeMap();
             return mInputHatches.add(tInput);
         }
+        if (aMetaTileEntity instanceof AntimatterOutputHatch tAntimatter) {
+            return antimatterOutputHatches.add(tAntimatter);
+        }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output tOutput) {
             if (tOutput.getTierForStructure() < hatchTier()) return false;
             return mOutputHatches.add(tOutput);
@@ -613,6 +458,11 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public OverclockDescriber getOverclockDescriber() {
+        return null;
     }
 
     @Override
@@ -686,7 +536,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
-    
+
     public static final String[] L0 = {
         "                                               ",
         "                                               ",
@@ -735,7 +585,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         "                    FCCCCCF                    ",
         "                                               ",
         "                                               "};
-    
+
         public static final String[] L1 = {
             "                                               ",
             "                    FCCCCCF                    ",
@@ -785,7 +635,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "                    FCCCCCF                    ",
             "                                               "
         };
-    
+
         public static final String[] L2 = {
             "                    FCCCCCF                    ",
             "                   CC     CC                   ",
@@ -835,7 +685,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "                   CC     CC                   ",
             "                    FCCCCCF                    "
         };
-    
+
         public static final String[] L3 = {
             "                   FFFEEEFFF                   ",
             "                FFFCC     CCFFF                ",

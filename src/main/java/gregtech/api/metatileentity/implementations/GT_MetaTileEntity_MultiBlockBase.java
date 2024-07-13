@@ -493,7 +493,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return this.checkRecipeResult.wasSuccessful();
     }
 
-    private boolean shouldCheckRecipeThisTick(long aTick) {
+    protected boolean shouldCheckRecipeThisTick(long aTick) {
         // do a recipe check if any crafting input hatch just got pushed in items
         boolean shouldCheck = false;
         // check all of them (i.e. do not return early) to reset the state of all of them.
