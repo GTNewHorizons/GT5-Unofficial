@@ -3273,6 +3273,11 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         setFluidContainerStats(32000 + Large_Fluid_Cell_Iridium.ID, 8_192_000L, 2L);
         setFluidContainerStats(32000 + Large_Fluid_Cell_Osmium.ID, 32_768_000L, 1L);
         setFluidContainerStats(32000 + Large_Fluid_Cell_Neutronium.ID, 131_072_000L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Iron.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Steel.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Neodymium.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Samarium.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Tengam.ID, 0L, 1L);
     }
 
     private void oredictBlacklistEntries() {
