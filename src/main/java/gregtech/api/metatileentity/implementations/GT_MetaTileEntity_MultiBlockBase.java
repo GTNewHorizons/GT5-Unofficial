@@ -2125,9 +2125,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
         List<ItemStack> ret = new ArrayList<>();
         for (final GT_MetaTileEntity_Hatch tBus : filterValidMTEs(mOutputBusses)) {
-            final IInventory tBusInv = tBus.getBaseMetaTileEntity();
-            for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
-                ret.add(tBus.getStackInSlot(i));
+            if (!(tBus instanceof GT_MetaTileEntity_Hatch_OutputBus_ME)) {
+                final IInventory tBusInv = tBus.getBaseMetaTileEntity();
+                for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
+                    ret.add(tBus.getStackInSlot(i));
+                }
             }
         }
         return ret;
@@ -2165,7 +2167,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public boolean canDumpItemToME() {
         for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(mOutputBusses)) {
             if (tHatch instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
-                return true;
+                if ((((GT_MetaTileEntity_Hatch_OutputBus_ME) tHatch).canAcceptItem())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -2175,7 +2179,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public boolean canDumpFluidToME() {
         for (IFluidStore tHatch : getFluidOutputSlots(new FluidStack[0])) {
             if (tHatch instanceof GT_MetaTileEntity_Hatch_Output_ME) {
-                return true;
+                if ((((GT_MetaTileEntity_Hatch_Output_ME) tHatch).canAcceptFluid())) {
+                    return true;
+                }
             }
         }
         return false;

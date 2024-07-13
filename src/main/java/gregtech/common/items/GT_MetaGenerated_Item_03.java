@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_METRICS_TRANSMITTER;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
@@ -204,6 +205,7 @@ import static gregtech.common.items.ID_MetaItem_03.Optically_Compatible_Memory;
 import static gregtech.common.items.ID_MetaItem_03.Optically_Perfected_CPU;
 import static gregtech.common.items.ID_MetaItem_03.Spinneret;
 import static gregtech.common.items.ID_MetaItem_03.Timepiece;
+import static gregtech.common.items.ID_MetaItem_03.Transdimensional_Alignment_Matrix;
 import static gregtech.common.items.ID_MetaItem_03.Tube_Wires;
 import static gregtech.common.items.ID_MetaItem_03.UHV_Coil;
 import static gregtech.common.items.ID_MetaItem_03.ULV_Coil;
@@ -259,10 +261,10 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
     public GT_MetaGenerated_Item_03() {
         super(
             "metaitem.03",
-            OrePrefixes.crateGtDust,
-            OrePrefixes.crateGtIngot,
-            OrePrefixes.crateGtGem,
-            OrePrefixes.crateGtPlate,
+            OrePrefixes.___placeholder___,
+            OrePrefixes.___placeholder___,
+            OrePrefixes.___placeholder___,
+            OrePrefixes.___placeholder___,
             OrePrefixes.nanite,
             OrePrefixes.rawOre);
         INSTANCE = this;
@@ -1109,6 +1111,15 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
             .set(addItem(Optically_Compatible_Memory.ID, "Optically Compatible Memory", "Its in the name!", o));
 
         ItemList.Timepiece.set(addItem(Timepiece.ID, "Timepiece", "Beware of the kid with the hat", o));
+        ItemList.Transdimensional_Alignment_Matrix.set(
+            addItem(
+                Transdimensional_Alignment_Matrix.ID,
+                "Transdimensional Alignment Matrix",
+                String.join(
+                    "/n ",
+                    "Device supporting the alignment of transdimensional spaces.",
+                    "Enables Dimensional Convergence on the DTPF."),
+                o));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(
@@ -1251,6 +1262,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "White Dwarf Extruder Shape (Drill Head)",
                 "White Dwarf Extruder Shape for a Drill Head"));
         registerAllTieredTooltips();
+        registerAllAnimatedTooltips();
         initOrePrefixes();
         initOreDictUnificatorEntries();
         registerCovers();
@@ -1296,6 +1308,10 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         registerTieredTooltip(ItemList.Circuit_TranscendentAssembly.get(1), UMV);
         registerTieredTooltip(ItemList.Circuit_TranscendentComputer.get(1), UXV);
         registerTieredTooltip(ItemList.Circuit_TranscendentMainframe.get(1), MAX);
+    }
+
+    private void registerAllAnimatedTooltips() {
+        addItemTooltip(ItemList.Transdimensional_Alignment_Matrix.get(1), GT_Values.AuthorCloud);
     }
 
     private void initOreDictUnificatorEntries() {

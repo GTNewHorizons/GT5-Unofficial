@@ -18,13 +18,10 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import cpw.mods.fml.common.Optional;
-import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
-import gregtech.api.multitileentity.MultiTileEntityBlockInternal;
-import gregtech.api.multitileentity.MultiTileEntityItemInternal;
+import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 
 /*
@@ -172,8 +169,7 @@ public interface IMultiTileEntity extends ICoverable, ITurnable, IDebugableTileE
     boolean recolourBlock(ForgeDirection side, byte aColor);
 
     /** Adds to the Creative Tab. return false to prevent it from being added. */
-    boolean getSubItems(MultiTileEntityBlockInternal aBlock, Item aItem, CreativeTabs aTab, List<ItemStack> aList,
-        short aID);
+    boolean getSubItems(MultiTileEntityBlock block, Item item, CreativeTabs tab, List<ItemStack> list, short aID);
 
     ItemStack getPickBlock(MovingObjectPosition aTarget);
 
@@ -184,110 +180,58 @@ public interface IMultiTileEntity extends ICoverable, ITurnable, IDebugableTileE
     boolean onPlaced(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, ForgeDirection side,
         float aHitX, float aHitY, float aHitZ);
 
+    /** return true to prevent the TileEntity from being removed. */
+    boolean onBlockBroken();
+
+    default void onNeighborBlockChange(World aWorld, Block aBlock) {
+        /* Do Nothing */
+    }
+
     // ItemStack getPickBlock(MovingObjectPosition aTarget);
 
-    /*
-     * Various Sub Interfaces from GT6
-     */
-
-    interface IMTE_OnNeighborBlockChange extends IMultiTileEntity {
-
-        void onNeighborBlockChange(World aWorld, Block aBlock);
+    /** Remember that it passes the opposite Side due to the way vanilla works! */
+    default int isProvidingWeakPower(ForgeDirection oppositeSide) {
+        return 0;
     }
 
-    interface IMTE_IsProvidingWeakPower extends IMultiTileEntity {
-
-        /** Remember that it passes the opposite Side due to the way vanilla works! */
-        int isProvidingWeakPower(ForgeDirection oppositeSide);
+    default boolean providesStrongPower() {
+        return false;
     }
 
-    interface IMTE_IsProvidingStrongPower extends IMultiTileEntity {
-
-        /** Remember that it passes the opposite Side due to the way vanilla works! */
-        int isProvidingStrongPower(ForgeDirection oppositeSide);
+    /** Remember that it passes the opposite Side due to the way vanilla works! */
+    default int isProvidingStrongPower(ForgeDirection oppositeSide) {
+        return 0;
     }
 
-    interface IMTE_ShouldCheckWeakPower extends IMultiTileEntity {
-
-        boolean shouldCheckWeakPower(ForgeDirection side);
+    default boolean shouldCheckWeakPower(ForgeDirection side) {
+        return false;
     }
 
-    interface IMTE_GetWeakChanges extends IMultiTileEntity {
-
-        boolean getWeakChanges();
+    default boolean getWeakChanges() {
+        return false;
     }
 
-    interface IMTE_GetComparatorInputOverride extends IMultiTileEntity {
-
-        int getComparatorInputOverride(ForgeDirection side);
+    default boolean hasComparatorInputOverride() {
+        return false;
     }
 
-    interface IMTE_BreakBlock extends IMultiTileEntity {
-
-        /** return true to prevent the TileEntity from being removed. */
-        boolean breakBlock();
+    default int getComparatorInputOverride(ForgeDirection side) {
+        return 0;
     }
 
-    interface IMTE_HasMultiBlockMachineRelevantData extends IMultiTileEntity {
-
-        /** Return true to mark this Block as a Machine Block for Multiblocks. (Triggers machine update thread) */
-        boolean hasMultiBlockMachineRelevantData();
+    default float getBlockHardness() {
+        return 1.0f;
     }
 
-    interface IMTE_GetBlockHardness extends IMultiTileEntity {
-
-        float getBlockHardness();
+    /** Adds ToolTips to the Item. */
+    default void addToolTips(List<String> aList, ItemStack aStack, boolean aF3_H) {
+        // Do nothing
     }
 
-    interface IMTE_GetFoodValues extends IMultiTileEntity {
+    // interface IMTE_HasMultiBlockMachineRelevantData extends IMultiTileEntity {
+    //
+    // /** Return true to mark this Block as a Machine Block for Multiblocks. (Triggers machine update thread) */
+    // boolean hasMultiBlockMachineRelevantData();
+    // }
 
-        @Optional.Method(modid = Mods.Names.APPLE_CORE)
-        squeek.applecore.api.food.FoodValues getFoodValues(MultiTileEntityItemInternal aItem, ItemStack aStack);
-    }
-
-    interface IMTE_OnlyPlaceableWhenSneaking extends IMultiTileEntity {
-
-        /** Return true to prevent placing this Block without Sneaking. */
-        boolean onlyPlaceableWhenSneaking();
-    }
-
-    interface IMTE_IgnoreEntityCollisionWhenPlacing extends IMultiTileEntity {
-
-        /**
-         * Return true to ignore the Player standing in the way of placing this Block; useful for things like
-         * pipes/wires.
-         */
-        boolean ignoreEntityCollisionWhenPlacing(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY,
-            int aZ, ForgeDirection side, float aHitX, float aHitY, float aHitZ);
-    }
-
-    interface IMTE_CanPlace extends IMultiTileEntity {
-
-        /** Return false if this TileEntity cannot be placed at that Location. */
-        boolean canPlace(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-            ForgeDirection side, float aHitX, float aHitY, float aHitZ);
-    }
-
-    interface IMTE_GetMaxStackSize extends IMultiTileEntity {
-
-        /** Gets the Max Stacksize of this Item. */
-        byte getMaxStackSize(ItemStack aStack, byte aDefault);
-    }
-
-    interface IMTE_AddToolTips extends IMultiTileEntity {
-
-        /** Adds ToolTips to the Item. */
-        void addToolTips(List<String> aList, ItemStack aStack, boolean aF3_H);
-    }
-
-    interface IMTE_HasModes extends IMultiTileEntity {
-
-        int getMode();
-
-        void setMode(int mode);
-
-        int getAllowedModes();
-
-        void setAllowedModes(int allowedModes);
-    }
 }

@@ -565,6 +565,13 @@ public class GT_OverclockCalculator {
     }
 
     /**
+     * @return Whether the calculation has happened
+     */
+    public boolean getCalculationStatus() {
+        return calculated;
+    }
+
+    /**
      * Returns duration as a double to show how much it is overclocking too much to determine extra parallel. This
      * doesn't count as calculating
      */

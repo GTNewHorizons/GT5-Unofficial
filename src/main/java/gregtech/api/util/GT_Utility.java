@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.enums.GT_Values.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.GT;
@@ -172,6 +173,8 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
+import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -4074,12 +4077,42 @@ public class GT_Utility {
         return -1;
     }
 
+    public static Map<GT_Utility.ItemId, Long> convertItemListToMap(Collection<ItemStack> itemStacks) {
+        Map<GT_Utility.ItemId, Long> result = new Object2LongOpenHashMap<>();
+        for (ItemStack itemStack : itemStacks) {
+            if (itemStack != null && itemStack.stackSize > 0) {
+                GT_Utility.ItemId itemId = GT_Utility.ItemId.createNoCopy(itemStack);
+                result.merge(itemId, (long) itemStack.stackSize, Long::sum);
+            }
+        }
+        return result;
+    }
+
+    public static Map<Fluid, Long> convertFluidListToMap(Collection<FluidStack> fluidStacks) {
+        Map<Fluid, Long> result = new Reference2LongOpenHashMap<>();
+        for (FluidStack fluidStack : fluidStacks) {
+            if (fluidStack != null && fluidStack.amount > 0) {
+                result.merge(fluidStack.getFluid(), (long) fluidStack.amount, Long::sum);
+            }
+        }
+        return result;
+    }
+
     /**
      * @return Supplied collection that doesn't contain invalid MetaTileEntities
      */
     public static <T extends Collection<E>, E extends MetaTileEntity> T filterValidMTEs(T metaTileEntities) {
         metaTileEntities.removeIf(mte -> mte == null || !mte.isValid());
         return metaTileEntities;
+    }
+
+    public static ForgeDirection getSideFromPlayerFacing(Entity player) {
+        if (player == null) return ForgeDirection.UNKNOWN;
+        if (player.rotationPitch >= 65) return ForgeDirection.UP;
+        if (player.rotationPitch <= -65) return ForgeDirection.DOWN;
+        final byte facing = COMPASS_DIRECTIONS[MathHelper.floor_double(0.5D + 4.0F * player.rotationYaw / 360.0F)
+            & 0x3];
+        return ForgeDirection.getOrientation(facing);
     }
 
     public static class ItemNBT {
@@ -4385,86 +4418,6 @@ public class GT_Utility {
                 tList.appendTag(tEnchantmentTag);
             }
             aStack.setTagCompound(tNBT);
-        }
-    }
-
-    /**
-     * THIS IS BULLSHIT!!! WHY DO I HAVE TO DO THIS SHIT JUST TO HAVE ENCHANTS PROPERLY!?!
-     */
-    public static class GT_EnchantmentHelper {
-
-        private static final BullshitIteratorA mBullshitIteratorA = new BullshitIteratorA();
-        private static final BullshitIteratorB mBullshitIteratorB = new BullshitIteratorB();
-
-        private static void applyBullshit(IBullshit aBullshitModifier, ItemStack aStack) {
-            if (aStack != null) {
-                NBTTagList nbttaglist = aStack.getEnchantmentTagList();
-                if (nbttaglist != null) {
-                    try {
-                        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-                            short short1 = nbttaglist.getCompoundTagAt(i)
-                                .getShort("id");
-                            short short2 = nbttaglist.getCompoundTagAt(i)
-                                .getShort("lvl");
-                            if (Enchantment.enchantmentsList[short1] != null)
-                                aBullshitModifier.calculateModifier(Enchantment.enchantmentsList[short1], short2);
-                        }
-                    } catch (Throwable e) {
-                        /**/
-                    }
-                }
-            }
-        }
-
-        private static void applyArrayOfBullshit(IBullshit aBullshitModifier, ItemStack[] aStacks) {
-            for (ItemStack itemstack : aStacks) {
-                applyBullshit(aBullshitModifier, itemstack);
-            }
-        }
-
-        public static void applyBullshitA(EntityLivingBase aPlayer, Entity aEntity, ItemStack aStack) {
-            mBullshitIteratorA.mPlayer = aPlayer;
-            mBullshitIteratorA.mEntity = aEntity;
-            if (aPlayer != null) applyArrayOfBullshit(mBullshitIteratorA, aPlayer.getLastActiveItems());
-            if (aStack != null) applyBullshit(mBullshitIteratorA, aStack);
-        }
-
-        public static void applyBullshitB(EntityLivingBase aPlayer, Entity aEntity, ItemStack aStack) {
-            mBullshitIteratorB.mPlayer = aPlayer;
-            mBullshitIteratorB.mEntity = aEntity;
-            if (aPlayer != null) applyArrayOfBullshit(mBullshitIteratorB, aPlayer.getLastActiveItems());
-            if (aStack != null) applyBullshit(mBullshitIteratorB, aStack);
-        }
-
-        interface IBullshit {
-
-            void calculateModifier(Enchantment aEnchantment, int aLevel);
-        }
-
-        static final class BullshitIteratorA implements IBullshit {
-
-            public EntityLivingBase mPlayer;
-            public Entity mEntity;
-
-            BullshitIteratorA() {}
-
-            @Override
-            public void calculateModifier(Enchantment aEnchantment, int aLevel) {
-                aEnchantment.func_151367_b(mPlayer, mEntity, aLevel);
-            }
-        }
-
-        static final class BullshitIteratorB implements IBullshit {
-
-            public EntityLivingBase mPlayer;
-            public Entity mEntity;
-
-            BullshitIteratorB() {}
-
-            @Override
-            public void calculateModifier(Enchantment aEnchantment, int aLevel) {
-                aEnchantment.func_151368_a(mPlayer, mEntity, aLevel);
-            }
         }
     }
 
@@ -4946,6 +4899,7 @@ public class GT_Utility {
             return tag;
         }
 
+        @Nonnull
         public ItemStack getItemStack() {
             ItemStack itemStack = new ItemStack(item(), 1, metaData());
             itemStack.setTagCompound(nbt());

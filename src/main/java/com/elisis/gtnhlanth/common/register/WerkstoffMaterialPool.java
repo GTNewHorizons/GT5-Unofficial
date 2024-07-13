@@ -680,16 +680,6 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID2 + 8,
         TextureSet.SET_DULL);
 
-    public static final Werkstoff Gangue = new Werkstoff(
-        new short[] { 0, 0, 0 },
-        "Gangue",
-        subscriptNumbers("Useless..."),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        offsetID2 + 9,
-        TextureSet.SET_DULL);
     // TODO: Deal with colouring
     public static final Werkstoff RoastedRareEarthOxides = new Werkstoff(
         new short[] { 160, 82, 45 },
@@ -1106,7 +1096,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SamariumChloride = new Werkstoff(
         new short[] { 248, 248, 120 },
         "Samarium(III)-Chloride",
-        subscriptNumbers("SmCI3"),
+        subscriptNumbers("?SmCl3"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
