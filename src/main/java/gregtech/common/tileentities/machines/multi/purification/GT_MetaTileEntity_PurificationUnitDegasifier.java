@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_Values.AuthorNotAPenguin;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
@@ -11,7 +13,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
@@ -26,6 +31,20 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
 
     // TODO
     private static final int CASING_INDEX_MAIN = 0;
+
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+
+    private static final int STRUCTURE_X_OFFSET = 0;
+    private static final int STRUCTURE_Y_OFFSET = 0;
+    private static final int STRUCTURE_Z_OFFSET = 0;
+
+    private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitDegasifier> STRUCTURE_DEFINITION = StructureDefinition
+        .<GT_MetaTileEntity_PurificationUnitDegasifier>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            transpose(new String[][] { { "hhh", "hhh", "hhh" }, { "h~h", "h-h", "hhh" }, { "hhh", "hhh", "hhh" }, }))
+        .addElement('h', ofBlock(GregTech_API.sBlockCasings9, 11))
+        .build();
 
     public GT_MetaTileEntity_PurificationUnitDegasifier(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -70,12 +89,31 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            hintsOnly,
+            STRUCTURE_X_OFFSET,
+            STRUCTURE_Y_OFFSET,
+            STRUCTURE_Z_OFFSET);
+    }
 
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        return survivialBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            STRUCTURE_X_OFFSET,
+            STRUCTURE_Y_OFFSET,
+            STRUCTURE_Z_OFFSET,
+            elementBudget,
+            env,
+            true);
     }
 
     @Override
     public IStructureDefinition<GT_MetaTileEntity_PurificationUnitDegasifier> getStructureDefinition() {
-        return null;
+        return STRUCTURE_DEFINITION;
     }
 
     @Override
