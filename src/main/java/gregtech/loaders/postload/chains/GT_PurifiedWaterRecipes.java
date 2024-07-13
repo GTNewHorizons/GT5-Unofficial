@@ -1,5 +1,7 @@
 package gregtech.loaders.postload.chains;
 
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.FluorBuergerit;
+import static gregtech.api.enums.MaterialsBotania.ManaDiamond;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
@@ -14,9 +16,12 @@ import static gregtech.api.recipe.RecipeMaps.purificationPlasmaHeatingRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationUVTreatmentRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
+import java.util.Arrays;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import goodgenerator.items.MyMaterial;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
@@ -170,6 +175,18 @@ public class GT_PurifiedWaterRecipes {
         GT_Values.RA.stdBuilder()
             .fluidInputs(Materials.Grade5PurifiedWater.getFluid(1000L))
             .fluidOutputs(Materials.Grade6PurifiedWater.getFluid(900L))
+            // These are not actually consumed and are purely for display purposes
+            .special(
+                Arrays.asList(
+                    MyMaterial.orundum.get(OrePrefixes.lens, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amber, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedAir, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Emerald, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.lens, ManaDiamond, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.lens, Materials.BlueTopaz, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amethyst, 1),
+                    FluorBuergerit.get(OrePrefixes.lens, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 1)))
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_UV)

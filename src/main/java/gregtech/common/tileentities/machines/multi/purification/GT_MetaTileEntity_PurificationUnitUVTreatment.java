@@ -1,13 +1,11 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.FluorBuergerit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorNotAPenguin;
-import static gregtech.api.enums.MaterialsBotania.ManaDiamond;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
@@ -33,10 +31,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import goodgenerator.items.MyMaterial;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
@@ -51,7 +47,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.IGT_HatchAdder;
@@ -70,19 +65,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     private GT_MetaTileEntity_Hatch_InputBus lensInputBus;
     private GT_MetaTileEntity_LensIndicator lensIndicator;
 
-    public final List<ItemStack> LENSES_TO_CYCLE = Arrays.asList(
-        // It's a rainbow!
-        MyMaterial.orundum.get(OrePrefixes.lens, 1),
-        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amber, 1),
-        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedAir, 1),
-        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Emerald, 1),
-        GT_OreDictUnificator.get(OrePrefixes.lens, ManaDiamond, 1),
-        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.BlueTopaz, 1),
-        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amethyst, 1),
-        FluorBuergerit.get(OrePrefixes.lens, 1),
-        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 1));
-
-    private UVTreatmentLensCycle lensCycle = new UVTreatmentLensCycle(LENSES_TO_CYCLE);
+    private UVTreatmentLensCycle lensCycle = null;
 
     /**
      * Bonus chance to success for each lens swap
@@ -266,6 +249,8 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
         }
 
         this.currentRecipe = recipe;
+        // Note that this cast is fine, look at GT_PurifiedWaterRecipes.java
+        this.lensCycle = new UVTreatmentLensCycle((List<ItemStack>) recipe.mSpecialItems);
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -291,6 +276,9 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     @Override
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.runMachine(aBaseMetaTileEntity, aTick);
+
+        // Do no processing if no recipe is running
+        if (mMaxProgresstime <= 0) return;
 
         ItemStack currentLens = getCurrentlyInsertedLens();
 
