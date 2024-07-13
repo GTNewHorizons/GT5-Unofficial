@@ -60,7 +60,6 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         final float euModifier, speedBoost;
 
         MagnetTiers(int maxParallel, float euModifier, float speedBoost) {
-
             this.maxParallel = maxParallel;
             this.euModifier = euModifier;
             this.speedBoost = 1F / speedBoost;
@@ -178,8 +177,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             .addCasingInfoMin("Electromagnetic Casings", 6, false)
             .addOtherStructurePart("Electromagnet Housing", "1 Only, Any Casing")
             .addInputBus("Any Casing", 1)
-            .addOutputBus("(Magnetic Outputs) Any Casing", 1)
-            .addOutputBus("(Amagnetic Outputs) Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
@@ -223,6 +221,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+                findMagnet();
                 if (magnetTier != null) {
                     maxParallel = magnetTier.maxParallel;
                     euModifier = magnetTier.euModifier;
@@ -259,21 +258,30 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         return true;
     }
 
-    public static boolean isValidElectromagnet(ItemStack aMagnet) {
-        if (aMagnet != null && aMagnet.getItem() instanceof GT_MetaGenerated_Item_01
-            && aMagnet.getItemDamage() >= 32345
-            && aMagnet.getItemDamage() <= 32349) {
-            switch (aMagnet.getItemDamage()) {
-                case 32345 -> magnetTier = MagnetTiers.Iron;
-                case 32346 -> magnetTier = MagnetTiers.Steel;
-                case 32347 -> magnetTier = MagnetTiers.Neodymium;
-                case 32348 -> magnetTier = MagnetTiers.Samarium;
-                case 32349 -> magnetTier = MagnetTiers.Tengam;
-                default -> magnetTier = null;
+    private void findMagnet() {
+        magnetTier = null;
+        if (mMagHatches.size() == 1) {
+            GT_MetaTileEntity_MagHatch aBus = mMagHatches.get(0);
+            if (aBus != null) {
+                ItemStack aSlot = aBus.getStackInSlot(0);
+                if (aSlot != null) {
+                    switch (aSlot.getItemDamage()) {
+                        case 32345 -> magnetTier = MagnetTiers.Iron;
+                        case 32346 -> magnetTier = MagnetTiers.Steel;
+                        case 32347 -> magnetTier = MagnetTiers.Neodymium;
+                        case 32348 -> magnetTier = MagnetTiers.Samarium;
+                        case 32349 -> magnetTier = MagnetTiers.Tengam;
+                        default -> magnetTier = null;
+                    }
+                }
             }
-            return magnetTier != null;
         }
-        return false;
+    }
+
+    public static boolean isValidElectromagnet(ItemStack aMagnet) {
+        return (aMagnet != null && aMagnet.getItem() instanceof GT_MetaGenerated_Item_01
+            && aMagnet.getItemDamage() >= 32345
+            && aMagnet.getItemDamage() <= 32349);
     }
 
     private boolean addMagHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
