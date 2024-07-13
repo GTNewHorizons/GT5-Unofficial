@@ -551,6 +551,73 @@ public class AssemblyLineRecipes implements Runnable {
                 .addTo(AssemblyLine);
         }
 
+        // Electromagnets
+        {
+            // Steel Electromagnet
+            GT_Values.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Electromagnet_Iron.get(1))
+                .metadata(RESEARCH_TIME, 60 * SECONDS)
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.ring, Materials.SteelMagnetic, 16L),
+                    ItemList.LuV_Coil.get(16L),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 8L))
+                .itemOutputs(ItemList.Electromagnet_Steel.get(1))
+                //.fluidInputs(
+                    //new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
+                    //Materials.Cobalt.getMolten(1296))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(AssemblyLine);
+
+            // Neodymium Electromagnet
+            GT_Values.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Electromagnet_Steel.get(1))
+                .metadata(RESEARCH_TIME, 60 * SECONDS)
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NeodymiumMagnetic, 16L),
+                    ItemList.ZPM_Coil.get(16L),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorZPM, 32L))
+                .itemOutputs(ItemList.Electromagnet_Neodymium.get(1))
+                .fluidInputs(
+                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
+                    Materials.Cobalt.getMolten(1296))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(AssemblyLine);
+
+            // Samarium Electromagnet
+            GT_Values.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Electromagnet_Neodymium.get(1))
+                .metadata(RESEARCH_TIME, 60 * SECONDS)
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.ring, Materials.SamariumMagnetic, 32L),
+                    ItemList.UV_Coil.get(32L),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 64L))
+                .itemOutputs(ItemList.Electromagnet_Samarium.get(1))
+                .fluidInputs(
+                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
+                    Materials.Cobalt.getMolten(1296))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_UV)
+                .addTo(AssemblyLine);
+
+            // Tengam Electromagnet
+            GT_Values.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, ItemList.Electromagnet_Samarium.get(1))
+                .metadata(RESEARCH_TIME, 60 * SECONDS)
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.ring, Materials.TengamAttuned, 32L),
+                    ItemList.UHV_Coil.get(32L),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUHV, 64L))
+                .itemOutputs(ItemList.Electromagnet_Tengam.get(1))
+                .fluidInputs(
+                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
+                    Materials.Cobalt.getMolten(1296))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_UHV)
+                .addTo(AssemblyLine);
+        }
+
         // Energy Hatches
         {
             // LuV Energy Hatch
