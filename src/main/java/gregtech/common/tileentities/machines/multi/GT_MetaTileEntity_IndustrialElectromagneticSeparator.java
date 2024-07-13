@@ -50,19 +50,21 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     public enum MagnetTiers {
 
-        Iron(6, 0.8F, 1.5F),
-        Steel(24, 0.75F, 2F),
-        Neodymium(48, 0.7F, 2.5F),
-        Samarium(96, 0.6F, 3F),
-        Tengam(256, 0.5F, 5F);
+        Iron(6, 0.8F, 1.5F, false),
+        Steel(24, 0.75F, 2F, false),
+        Neodymium(48, 0.7F, 2.5F, false),
+        Samarium(96, 0.6F, 3F, true),
+        Tengam(256, 0.5F, 5F, true);
 
         final int maxParallel;
         final float euModifier, speedBoost;
+        final boolean supportsExotic;
 
-        MagnetTiers(int maxParallel, float euModifier, float speedBoost) {
+        MagnetTiers(int maxParallel, float euModifier, float speedBoost, boolean supportsExotic) {
             this.maxParallel = maxParallel;
             this.euModifier = euModifier;
             this.speedBoost = 1F / speedBoost;
+            this.supportsExotic = supportsExotic;
         }
     }
 
@@ -86,7 +88,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                     .dot(1)
                     .build(),
                 buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
-                    .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                    .atLeast(InputBus, OutputBus, Maintenance, Energy, ExoticEnergy, Muffler)
                     .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
                     .dot(1)
                     .buildAndChain(
@@ -211,6 +213,19 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
         mMagHatches.clear();
+
+        // If there is more than 1 TT energy hatch, the structure check will fail.
+        // If there is a TT hatch and a normal hatch, the structure check will fail.
+        if (mExoticEnergyHatches.size() > 0) {
+            if (mEnergyHatches.size() > 0) return false;
+            if (mExoticEnergyHatches.size() > 1) return false;
+        }
+
+        // If there is 0 or more than 2 energy hatches structure check will fail.
+        if (mEnergyHatches.size() > 0) {
+            if (mEnergyHatches.size() > 2) return false;
+        }
+
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0) && mCasingAmount >= 6 && mMagHatches.size() == 1;
     }
 
@@ -223,6 +238,8 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
                 findMagnet();
                 if (magnetTier != null) {
+                    if (!mExoticEnergyHatches.isEmpty() && !magnetTier.supportsExotic)
+                        return SimpleCheckRecipeResult.ofFailure("electromagnet_insufficient");
                     maxParallel = magnetTier.maxParallel;
                     euModifier = magnetTier.euModifier;
                     speedBoost = magnetTier.speedBoost;
@@ -258,6 +275,21 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         return true;
     }
 
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return true;
+    }
+
     private void findMagnet() {
         magnetTier = null;
         if (mMagHatches.size() == 1) {
@@ -279,9 +311,9 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     }
 
     public static boolean isValidElectromagnet(ItemStack aMagnet) {
-        return (aMagnet != null && aMagnet.getItem() instanceof GT_MetaGenerated_Item_01
+        return aMagnet != null && aMagnet.getItem() instanceof GT_MetaGenerated_Item_01
             && aMagnet.getItemDamage() >= 32345
-            && aMagnet.getItemDamage() <= 32349);
+            && aMagnet.getItemDamage() <= 32349;
     }
 
     private boolean addMagHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

@@ -480,6 +480,7 @@ GT5U.gui.text.fuel_quality_too_high=§7Fuel quality too high to run without boos
 GT5U.gui.text.no_data_sticks=§7No Data Sticks found
 GT5U.gui.text.bio_upgrade_missing=§7Recipe needs Bio Upgrade to start
 GT5U.gui.text.electromagnet_missing=§7Needs an Electromagnet to run
+GT5U.gui.text.electromagnet_insufficient=§7Electromagnet too weak to use exotic energy hatches
 GT5U.gui.text.cleanroom_running=§aCleanroom running
 GT5U.gui.text.no_machine=§7No valid processing machine
 GT5U.gui.text.machine_mismatch=§7Machine doesn't match to locked recipe

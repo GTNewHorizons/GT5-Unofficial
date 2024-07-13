@@ -3114,13 +3114,13 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             addItem(
                 Electromagnet_Samarium.ID,
                 "Samarium Electromagnet",
-                "Used in Industrial Electromagnetic Separator/n 300% Speed/n 60% EU Cost/n 96 Parallels",
+                "Used in Industrial Electromagnetic Separator/n 300% Speed/n 60% EU Cost/n 96 Parallels/n Enables exotic hatches",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 32)));
         ItemList.Electromagnet_Tengam.set(
             addItem(
                 Electromagnet_Tengam.ID,
                 "Tengam Electromagnet",
-                "Used in Industrial Electromagnetic Separator/n 500% Speed/n 50% EU Cost/n 256 Parallels",
+                "Used in Industrial Electromagnetic Separator/n 500% Speed/n 50% EU Cost/n 256 Parallels/n Enables exotic hatches",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 40)));
         removeRecipes();
         setBurnValues();

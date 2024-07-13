@@ -51,10 +51,11 @@ public class GT_MetaTileEntity_MagHatch extends GT_MetaTileEntity_Hatch {
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new SlotWidget(inventoryHandler, 0)
-            .setFilter(GT_MetaTileEntity_IndustrialElectromagneticSeparator::isValidElectromagnet)
-            .setAccess(true, true)
-            .setPos(79, 34));
+        builder.widget(
+            new SlotWidget(inventoryHandler, 0)
+                .setFilter(GT_MetaTileEntity_IndustrialElectromagneticSeparator::isValidElectromagnet)
+                .setAccess(true, true)
+                .setPos(79, 34));
     }
 
     @Override
