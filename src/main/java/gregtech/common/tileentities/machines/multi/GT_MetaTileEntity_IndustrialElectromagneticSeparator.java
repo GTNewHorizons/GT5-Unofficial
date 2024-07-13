@@ -164,7 +164,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Electromagnetic Separator")
-            .addInfo("Controller Block for the Industrial Electromagnetic Separator")
+            .addInfo("Controller Block for the Magnetic Flux Exhibitor")
             .addInfo("Insert an electromagnet into the electromagnet housing to use")
             .addInfo("Better electromagnets give further bonuses")
             .addInfo("With an iron electromagnet:")

@@ -1042,7 +1042,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_IndustrialElectromagneticSeparator(
                 INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR_CONTROLLER.ID,
                 "multimachine.electromagneticseparator",
-                "Industrial Electromagnetic Separator").getStackForm(1));
+                "Magnetic Flux Exhibitor").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
