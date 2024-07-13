@@ -368,6 +368,21 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             return CheckRecipeResultRegistry.insufficientPower(energyCost);
         }
 
+        long protomatterCost = calculateProtoMatterCost(totalAntimatterAmount);
+        long containedProtomatter = 0;
+        List<FluidStack> inputFluids = getStoredFluids();
+        for (int i = 0; i < inputFluids.size(); i++) {
+            if (inputFluids.get(i).isFluidEqual(Materials.Antimatter.getFluid(1))) {
+                containedProtomatter += Math.min(inputFluids.get(i).amount, protomatterCost - containedProtomatter);
+                inputFluids.get(i).amount -= Math.min(protomatterCost - containedProtomatter, inputFluids.get(i).amount);
+            }
+        }
+
+        distributeAntimatterToHatch(antimatterOutputHatches, totalAntimatterAmount, ((float) containedProtomatter)/((float) protomatterCost));
+        mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        mEfficiencyIncrease = 10000;
+        mMaxProgresstime = speed;
+
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -377,6 +392,14 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
 
     private long calculateEnergyCost(long antimatterAmount) {
         return antimatterAmount;
+    }
+
+    private long calculateProtoMatterCost(long antimatterAmount) {
+        return antimatterAmount;
+    }
+
+    private void distributeAntimatterToHatch(List<AntimatterOutputHatch> hatches, long totalAntimatterAmount, float protomatterRequirement) {
+
     }
 
     @Override
