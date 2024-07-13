@@ -69,7 +69,6 @@ import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.Samariu
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.SamariumExtractingNanoResin;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.SamariumOreConcentrate;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.SamariumOxalate;
-import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.SamariumOxide;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.SamariumRareEarthMud;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.TerbiumChlorideConcentrate;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.TerbiumExtractingNanoResin;
