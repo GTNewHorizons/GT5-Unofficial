@@ -87,5 +87,14 @@
         }
       }
     ]
+  },
+  "machines.PurificationPlasmaLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "PurificationPlasmaLoop",
+        "stream": false
+      }
+    ]
   }
 }

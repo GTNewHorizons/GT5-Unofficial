@@ -22,6 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -34,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
@@ -510,5 +512,10 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
         public IGT_HatchAdder<? super GT_MetaTileEntity_PurificationUnitUVTreatment> adder() {
             return adder;
         }
+    }
+
+    @Override
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.IC2_MACHINES_MAGNETIZER_LOOP.resourceLocation;
     }
 }

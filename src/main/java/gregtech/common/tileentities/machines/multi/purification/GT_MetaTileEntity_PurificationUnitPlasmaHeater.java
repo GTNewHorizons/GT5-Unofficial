@@ -24,6 +24,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -39,6 +40,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
@@ -561,5 +563,10 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
         return super.checkMachine(aBaseMetaTileEntity, aStack);
+    }
+
+    @Override
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_PURIFICATION_PLASMA_LOOP.resourceLocation;
     }
 }
