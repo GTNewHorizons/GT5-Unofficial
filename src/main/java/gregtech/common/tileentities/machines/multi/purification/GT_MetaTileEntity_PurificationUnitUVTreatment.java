@@ -10,6 +10,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 
 public class GT_MetaTileEntity_PurificationUnitUVTreatment
@@ -116,7 +118,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
             lazy(
                 t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitUVTreatment>buildHatchAdder()
                     .atLeast(SpecialHatchElement.LensHousing)
-                    .dot(1)
+                    .dot(2)
                     .cacheHint(() -> "Lens Housing")
                     .casingIndex(CASING_INDEX_MAIN)
                     .build()))
@@ -126,7 +128,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
             lazy(
                 t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitUVTreatment>buildHatchAdder()
                     .atLeast(SpecialHatchElement.LensIndicator)
-                    .dot(2)
+                    .dot(3)
                     .cacheHint(() -> "Lens Indicator")
                     .casingIndex(CASING_INDEX_MAIN)
                     .build()))
@@ -137,7 +139,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
                 lazy(
                     t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitUVTreatment>buildHatchAdder()
                         .atLeastList(Arrays.asList(InputHatch, OutputHatch))
-                        .dot(3)
+                        .dot(1)
                         .cacheHint(() -> "Input Hatch, Output Hatch")
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
@@ -218,7 +220,78 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addInfo(AuthorNotAPenguin)
+        tt.addMachineType("Purification Unit");
+        tt.addInfo(
+            EnumChatFormatting.AQUA + ""
+                + EnumChatFormatting.BOLD
+                + "Water Tier: "
+                + EnumChatFormatting.WHITE
+                + GT_Utility.formatNumbers(getWaterTier())
+                + EnumChatFormatting.RESET)
+            .addInfo("Controller block for the Ultraviolet Treatment Purification Unit.")
+            .addInfo("Must be linked to a Purification Plant to work.")
+            .addSeparator()
+            .addInfo("Removes microscopic impurities by precisely bombarding the water with various lasers.")
+            .addSeparator()
+            .addInfo(
+                "During operation, swap the lens in the " + EnumChatFormatting.WHITE
+                    + "Lens Housing"
+                    + EnumChatFormatting.GRAY
+                    + ".")
+            .addInfo(
+                "The multiblock will output a signal through the " + EnumChatFormatting.WHITE + "Lens Indicator Hatch")
+            .addInfo("when the current lens must be swapped.")
+            .addInfo(
+                "Lens swaps will be requested in random intervals of " + EnumChatFormatting.RED
+                    + (MIN_TIME_BETWEEN_SWAPS / SECONDS)
+                    + " to "
+                    + (MAX_TIME_BETWEEN_SWAPS / SECONDS)
+                    + "s"
+                    + EnumChatFormatting.GRAY
+                    + ".")
+            .addSeparator()
+            .addInfo(
+                "Success chance is boosted by " + EnumChatFormatting.RED
+                    + SUCCESS_PER_LENS
+                    + "% "
+                    + EnumChatFormatting.GRAY
+                    + "for each successful swap performed.")
+            .addInfo("Removing a lens too early will fail the recipe.")
+            .addInfo("Find the order of lenses in the recipe in NEI,")
+            .addInfo("or use a portable scanner to view the currently requested lens.")
+            .addSeparator()
+            .addInfo(AuthorNotAPenguin)
+            .beginStructureBlock(13, 9, 9, true)
+            .addCasingInfoRangeColored(
+                "Naquadria-Reinforced Water Plant Casing",
+                EnumChatFormatting.GRAY,
+                147,
+                155,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Neutronium-Coated UV-Resistant Glass",
+                EnumChatFormatting.GRAY,
+                144,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Ultraviolet Backlight Sterilizer Casing",
+                EnumChatFormatting.GRAY,
+                24,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Stellar Alloy Frame Box",
+                EnumChatFormatting.GRAY,
+                56,
+                EnumChatFormatting.GOLD,
+                false)
+            .addController("Front center")
+            .addOtherStructurePart("Input Hatch, Output Hatch", EnumChatFormatting.GOLD + "1+", 1)
+            .addOtherStructurePart("Lens Housing", EnumChatFormatting.GOLD + "1", 2)
+            .addOtherStructurePart("Lens Indicator", EnumChatFormatting.GOLD + "1", 3)
+            .addStructureInfo("Use the StructureLib Hologram Projector to build the structure.")
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -280,6 +353,12 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
         // Do no processing if no recipe is running
         if (mMaxProgresstime <= 0) return;
 
+        // This can happen because the lens cycle isn't saved to NBT correctly yet, FIXME
+        if (this.lensCycle == null) {
+            // FIXME: Properly save current recipe in NBT instead of exiting early
+            return;
+        }
+
         ItemStack currentLens = getCurrentlyInsertedLens();
 
         // If we are currently counting down to a next swap, do so
@@ -337,11 +416,13 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     @Override
     public String[] getInfoData() {
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        infoData.add("Lens swaps performed this run: " + EnumChatFormatting.YELLOW + numSwapsPerformed);
-        infoData.add(
-            "Current lens requested: " + EnumChatFormatting.GREEN
-                + lensCycle.current()
-                    .getDisplayName());
+        if (this.lensCycle != null) {
+            infoData.add("Lens swaps performed this run: " + EnumChatFormatting.YELLOW + numSwapsPerformed);
+            infoData.add(
+                "Current lens requested: " + EnumChatFormatting.GREEN
+                    + lensCycle.current()
+                        .getDisplayName());
+        }
         return infoData.toArray(new String[] {});
     }
 

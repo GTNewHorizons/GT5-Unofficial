@@ -36,7 +36,8 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Plasma Heating Casing");
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".11.name", "Naquadria-Reinforced Water Plant Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "UV Backlight Sterilizer Casing");
+        GT_LanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".12.name", "Ultraviolet Backlight Sterilizer Casing");
 
         ItemList.Casing_Pipe_Polybenzimidazole.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Vent_T2.set(new ItemStack(this, 1, 1));
