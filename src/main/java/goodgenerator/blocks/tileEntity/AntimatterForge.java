@@ -6,6 +6,7 @@ import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -149,21 +150,23 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
 
     public AntimatterForge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        this.overclockDescriber = createOverclockDescriber();
     }
 
     public AntimatterForge(String aName) {
         super(aName);
-        this.overclockDescriber = createOverclockDescriber();
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
+<<<<<<< HEAD
         return new AntimatterForge(this.MAINNAME);
     }
 
     protected OverclockDescriber createOverclockDescriber() {
         return new FusionOverclockDescriber((byte) tier(), capableStartupCanonical());
+=======
+        return new AntimatterForge(MAIN_NAME);
+>>>>>>> f158c75f7f (Implement the start of the processing of SSASS)
     }
 
     @Override
@@ -173,12 +176,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
             .addInfo("Dimensions not included!")
             .toolTipFinisher("Good Generator");
         return tt;
-    }
-
-    @Nullable
-    @Override
-    public OverclockDescriber getOverclockDescriber() {
-        return overclockDescriber;
     }
 
     @Override
@@ -195,6 +192,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
         return 100000000;
     }
 
+<<<<<<< HEAD
     /**
      * Unlike {@link #maxEUStore()}, this provides theoretical limit of startup EU, without considering the amount of
      * hatches nor the room for extra energy. Intended for simulation.
@@ -204,6 +202,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
         return 160000000;
     }
 
+=======
+>>>>>>> f158c75f7f (Implement the start of the processing of SSASS)
     public Block getCasingBlock() {
         return Loaders.antimatterContainmentCasing;
     }
@@ -273,15 +273,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        // Migration code
-        if (lEUt > 0) {
-            lEUt = -lEUt;
-        }
-    }
-
-    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return checkPiece(MAINNAME, 23, 3, 40);
     }
@@ -302,7 +293,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && !aBaseMetaTileEntity.isAllowedToWork()) {
             // if machine has stopped, stop chunkloading
-            GTChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
             this.isLoadedChunk = false;
         } else if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && !this.isLoadedChunk) {
             // load a 3x3 area when machine is running
@@ -433,8 +423,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
     public boolean turnCasingActive(boolean status) {
         if (this.mEnergyHatches != null) {
             for (MTEHatchEnergy hatch : this.mEnergyHatches) {
-                hatch.updateTexture(status ? 52 : 53);
-            }
         }
         //if (this.eEnergyMulti != null) {
         //    for (MTEHatchEnergyMulti hatch : this.eEnergyMulti) {
@@ -484,18 +472,35 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
     }
 
     @Override
-    public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.fusionRecipes;
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            FluidStack[] antimatterStored = new FluidStack[16];
+            long totalAntimatterAmount = 0;
+            for (int i = 0; i < antimatterOutputHatches.size(); i++) {
+                if (antimatterOutputHatches.get(i) == null || !antimatterOutputHatches.get(i).isValid() || antimatterOutputHatches.get(i).getFluid() == null) continue;
+                antimatterStored[i] = antimatterOutputHatches.get(i).getFluid().copy();
+                totalAntimatterAmount += antimatterStored[i].amount;
+            }
+            drainEnergyInput(calculateEnergyContainmentCost(totalAntimatterAmount));
+        }
     }
 
     @Override
-    public int getRecipeCatalystPriority() {
-        return -2;
-    }
+    public CheckRecipeResult checkProcessing() {
+        FluidStack[] antimatterStored = new FluidStack[16];
+        long totalAntimatterAmount = 0;
+        long minAntimatterAmount = Long.MAX_VALUE;
+        for (int i = 0; i < antimatterOutputHatches.size(); i++) {
+            if (antimatterOutputHatches.get(i) == null || !antimatterOutputHatches.get(i).isValid() || antimatterOutputHatches.get(i).getFluid() == null) continue;
+            antimatterStored[i] = antimatterOutputHatches.get(i).getFluid().copy();
+            totalAntimatterAmount += antimatterStored[i].amount;
+            minAntimatterAmount = Math.min(minAntimatterAmount, antimatterStored[i].amount);
+        }
 
+<<<<<<< HEAD
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
 
             @NotNull
             @Override
@@ -508,8 +513,12 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return overclockDescriber.createCalculator(super.createOverclockCalculator(recipe), recipe);
-            }
+=======
+        for (int i = 0; i < antimatterOutputHatches.size(); i++) {
+            if (antimatterOutputHatches.get(i) == null || !antimatterOutputHatches.get(i).isValid() || antimatterOutputHatches.get(i).getFluid() == null) continue;
+        }
 
+<<<<<<< HEAD
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
@@ -524,28 +533,34 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
                 maxParallel = getMaxPara() * extraPara(recipe.mSpecialValue);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
+=======
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+>>>>>>> f158c75f7f (Implement the start of the processing of SSASS)
 
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                CheckRecipeResult result = super.process();
-                if (mRunningOnLoad) mRunningOnLoad = false;
-                turnCasingActive(result.wasSuccessful());
-                if (result.wasSuccessful()) {
-                    mLastRecipe = lastRecipe;
-                } else {
-                    mLastRecipe = null;
-                }
-                para = getCurrentParallels();
-                return result;
-            }
-        };
+    private long calculateEnergyContainmentCost(long antimatterAmount) {
+        return antimatterAmount;
+    }
+
+    private long calculateEnergyCost(long antimatterAmount) {
+        return antimatterAmount;
     }
 
     @Override
+    protected boolean shouldCheckRecipeThisTick(long aTick) {
+        return (aTick % speed) == 0;
+    }
+
+    @Override
+<<<<<<< HEAD
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(GTValues.V[tier()]);
         logic.setAvailableAmperage(getSingleHatchPower() * 32 / GTValues.V[tier()]);
+=======
+    public void clearHatches() {
+        super.clearHatches();
+        antimatterOutputHatches.clear();
+>>>>>>> f158c75f7f (Implement the start of the processing of SSASS)
     }
 
     @Override
@@ -589,7 +604,14 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
             tInput.mRecipeMap = getRecipeMap();
             return mInputHatches.add(tInput);
         }
+<<<<<<< HEAD
         if (aMetaTileEntity instanceof MTEHatchOutput tOutput) {
+=======
+        if (aMetaTileEntity instanceof AntimatterOutputHatch tAntimatter) {
+            return antimatterOutputHatches.add(tAntimatter);
+        }
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output tOutput) {
+>>>>>>> f158c75f7f (Implement the start of the processing of SSASS)
             if (tOutput.getTierForStructure() < hatchTier()) return false;
             return mOutputHatches.add(tOutput);
         }
@@ -613,6 +635,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public OverclockDescriber getOverclockDescriber() {
+        return null;
     }
 
     @Override
@@ -686,7 +713,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
-    
+
     public static final String[] L0 = {
         "                                               ",
         "                                               ",
@@ -735,7 +762,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
         "                    FCCCCCF                    ",
         "                                               ",
         "                                               "};
-    
+
         public static final String[] L1 = {
             "                                               ",
             "                    FCCCCCF                    ",
@@ -785,7 +812,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
             "                    FCCCCCF                    ",
             "                                               "
         };
-    
+
         public static final String[] L2 = {
             "                    FCCCCCF                    ",
             "                   CC     CC                   ",
@@ -835,7 +862,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
             "                   CC     CC                   ",
             "                    FCCCCCF                    "
         };
-    
+
         public static final String[] L3 = {
             "                   FFFEEEFFF                   ",
             "                FFFCC     CCFFF                ",
