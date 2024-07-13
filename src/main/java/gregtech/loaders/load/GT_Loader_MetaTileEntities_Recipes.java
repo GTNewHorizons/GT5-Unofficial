@@ -4823,10 +4823,10 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Titanium), 'F',
                 OrePrefixes.frameGt.get(Materials.Titanium) });
         GT_ModHandler.addCraftingRecipe(
-          ItemList.Casing_Electromagnetic_Separator.get(1L),
-          bits,
+            ItemList.Casing_Electromagnetic_Separator.get(1L),
+            bits,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.TungstenSteel), 'F',
-                OrePrefixes.frameGt.get(Materials.Titanium)});
+                OrePrefixes.frameGt.get(Materials.Titanium) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Casing_HeatProof.get(1L),
             bits,
