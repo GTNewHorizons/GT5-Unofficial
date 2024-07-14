@@ -309,6 +309,8 @@ public enum CustomItemList implements IItemContainer {
     UncertaintyX_Hatch,
     dataIn_Hatch,
     dataOut_Hatch,
+    dataOut_Wireless_Hatch,
+    dataIn_Wireless_Hatch,
     dataInAss_Hatch,
     dataOutAss_Hatch,
     eM_Containment,

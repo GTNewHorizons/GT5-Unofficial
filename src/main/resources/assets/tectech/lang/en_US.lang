@@ -703,6 +703,7 @@ gt.blockmachines.multimachine.em.computer.cfgo.0=Current max. heat
 gt.blockmachines.multimachine.em.computer.cfgo.1=Produced computation
 gt.blockmachines.multimachine.em.computer.desc.0=Controller block of the Quantum Computer
 gt.blockmachines.multimachine.em.computer.desc.1=Used to generate computation (and heat)
+gt.blockmachines.multimachine.em.computer.desc.2=Use screwdriver to toggle wireless mode
 
 gt.blockmachines.multimachine.em.databank.name=Data Bank
 gt.blockmachines.multimachine.em.databank.hint.0=1 - Classic Hatches or high power casing
@@ -1226,6 +1227,7 @@ tt.keyword.Structure.EssentiaStorage=Essentia Storage
 tt.keyword.Structure.DataConnector=Data Connector
 tt.keyword.Structure.SuperconductingCoilBlock=Superconducting Coil Block
 tt.keyword.Structure.StainlessSteelCasing=Stainless Steel Casing
+tt.wirelessInputData.config.text=Configure how much computation to pull from wireless network
 
 
 tt.keyphrase.Hint_Details=Hint Details

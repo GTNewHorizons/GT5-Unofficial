@@ -24,6 +24,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,6 +38,7 @@ import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_WirelessComputation_Output;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
@@ -62,8 +64,10 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.common.WirelessComputationPacket;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -73,6 +77,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     // region variables
     private final ArrayList<GT_MetaTileEntity_Hatch_Rack> eRacks = new ArrayList<>();
+
+    private final ArrayList<GT_MetaTileEntity_Hatch_WirelessComputation_Output> eWirelessComputationOutputs = new ArrayList<>();
 
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
@@ -103,7 +109,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                     Energy.or(HatchElement.EnergyMulti),
                     Maintenance,
                     HatchElement.Uncertainty,
-                    HatchElement.OutputData)
+                    HatchElement.OutputData,
+                    WirelessComputationHatchElement.INSTANCE)
                 .casingIndex(textureOffset + 1)
                 .dot(1)
                 .buildAndChain(ofBlock(sBlockCasingsTT, 1)))
@@ -114,6 +121,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     // region parameters
     protected Parameters.Group.ParameterIn overclock, overvolt;
     protected Parameters.Group.ParameterOut maxCurrentTemp, availableData;
+
+    private boolean wirelessModeEnabled = false;
 
     private static final INameFunction<GT_MetaTileEntity_EM_computer> OC_NAME = (base,
         p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.0"); // Overclock ratio
@@ -208,6 +217,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setDouble("computation", availableData.get());
+        aNBT.setBoolean("wirelessModeEnabled", wirelessModeEnabled);
     }
 
     @Override
@@ -216,6 +226,19 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         if (availableData != null) {
             availableData.set(aNBT.getDouble("computation"));
             eAvailableData = (long) availableData.get();
+        }
+        if (aNBT.hasKey("wirelessModeEnabled")) {
+            wirelessModeEnabled = aNBT.getBoolean("wirelessModeEnabled");
+        } else {
+            wirelessModeEnabled = false;
+        }
+    }
+
+    @Override
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPreTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide() && wirelessModeEnabled) {
+            WirelessComputationPacket.updatePacket(aBaseMetaTileEntity, aTick);
         }
     }
 
@@ -307,7 +330,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 getBaseMetaTileEntity().getYCoord(),
                 getBaseMetaTileEntity().getZCoord());
 
-            QuantumDataPacket pack = new QuantumDataPacket(eAvailableData / eOutputData.size()).unifyTraceWith(pos);
+            QuantumDataPacket pack = new QuantumDataPacket(eAvailableData / (eOutputData.size())).unifyTraceWith(pos);
             if (pack == null) {
                 return;
             }
@@ -336,6 +359,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                                                                                            // the Quantum Computer
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.1")) // Used to generate
                                                                                            // computation (and heat)
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.2")) // Use screwdriver to toggle
+                                                                                           // wireless mode
             .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
             .addSeparator()
             .beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)
@@ -378,6 +403,20 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                                                                                                                 // slice
             .toolTipFinisher(CommonValues.TEC_MARK_EM);
         return tt;
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (getBaseMetaTileEntity().isServerSide()) {
+            wirelessModeEnabled = !wirelessModeEnabled;
+            if (wirelessModeEnabled) {
+                GT_Utility.sendChatToPlayer(aPlayer, "Wireless mode enabled");
+                WirelessComputationPacket.enableWirelessNetWork(getBaseMetaTileEntity());
+            } else {
+                GT_Utility.sendChatToPlayer(aPlayer, "Wireless mode disabled");
+                WirelessComputationPacket.disableWirelessNetWork(getBaseMetaTileEntity());
+            }
+        }
     }
 
     @Override
@@ -460,6 +499,24 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         return false;
     }
 
+    public final boolean addWirelessDataOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) {
+            return false;
+        }
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) {
+            return false;
+        }
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_WirelessComputation_Output) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            // Add to wireless computation outputs, so we can detect these and turn on wireless mode,
+            // but also add to regular outputs, so they are used as output data hatches by the quantum computer
+            return eWirelessComputationOutputs.add((GT_MetaTileEntity_Hatch_WirelessComputation_Output) aMetaTileEntity)
+                && eOutputData.add((GT_MetaTileEntity_Hatch_WirelessComputation_Output) aMetaTileEntity);
+        }
+        return false;
+    }
+
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         structureBuild_EM("front", 1, 2, 0, stackSize, hintsOnly);
@@ -520,6 +577,26 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         @Override
         public long count(GT_MetaTileEntity_EM_computer t) {
             return t.eRacks.size();
+        }
+    }
+
+    private enum WirelessComputationHatchElement implements IHatchElement<GT_MetaTileEntity_EM_computer> {
+
+        INSTANCE;
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return Collections.singletonList(GT_MetaTileEntity_Hatch_WirelessComputation_Output.class);
+        }
+
+        @Override
+        public IGT_HatchAdder<? super GT_MetaTileEntity_EM_computer> adder() {
+            return GT_MetaTileEntity_EM_computer::addWirelessDataOutputToMachineList;
+        }
+
+        @Override
+        public long count(GT_MetaTileEntity_EM_computer gtMetaTileEntityEmComputer) {
+            return gtMetaTileEntityEmComputer.eWirelessComputationOutputs.size();
         }
     }
 }

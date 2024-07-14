@@ -60,8 +60,10 @@ import static com.github.technus.tectech.thing.CustomItemList.UnusedStuff;
 import static com.github.technus.tectech.thing.CustomItemList.capacitor_Hatch;
 import static com.github.technus.tectech.thing.CustomItemList.dataInAss_Hatch;
 import static com.github.technus.tectech.thing.CustomItemList.dataIn_Hatch;
+import static com.github.technus.tectech.thing.CustomItemList.dataIn_Wireless_Hatch;
 import static com.github.technus.tectech.thing.CustomItemList.dataOutAss_Hatch;
 import static com.github.technus.tectech.thing.CustomItemList.dataOut_Hatch;
+import static com.github.technus.tectech.thing.CustomItemList.dataOut_Wireless_Hatch;
 import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoMulti16_EV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoMulti16_IV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoMulti16_LuV;
@@ -318,6 +320,8 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_ParamText;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Uncertainty;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_WirelessComputation_Input;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_WirelessComputation_Output;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_WirelessMulti;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_EyeOfHarmony;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_ForgeOfGods;
@@ -1929,7 +1933,18 @@ public class MachineLoader implements Runnable {
                 "hatch.dataoutass.tier.07",
                 "Data Bank Master Connector",
                 7).getStackForm(1L));
-
+        dataOut_Wireless_Hatch.set(
+            new GT_MetaTileEntity_Hatch_WirelessComputation_Output(
+                15444,
+                "hatch.dataout.wireless.tier.12",
+                "Wireless Optical Master Connector",
+                12).getStackForm(1L));
+        dataIn_Wireless_Hatch.set(
+            new GT_MetaTileEntity_Hatch_WirelessComputation_Input(
+                15445,
+                "hatch.datain.wireless.tier.12",
+                "Wireless Optical Slave Connector",
+                12).getStackForm(1L));
         rack_Hatch
             .set(new GT_MetaTileEntity_Hatch_Rack(15450, "hatch.rack.tier.08", "Computer Rack", 8).getStackForm(1L));
         holder_Hatch.set(

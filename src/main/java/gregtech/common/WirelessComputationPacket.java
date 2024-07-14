@@ -1,6 +1,6 @@
 package gregtech.common;
 
-import static gregtech.common.misc.GlobalVariableStorage.GlobalWirelessData;
+import static gregtech.common.misc.GlobalVariableStorage.GlobalWirelessComputation;
 
 import java.util.UUID;
 
@@ -10,7 +10,7 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
-public class WirelessDataPacket {
+public class WirelessComputationPacket {
 
     public boolean wirelessEnabled = false;
 
@@ -89,11 +89,11 @@ public class WirelessDataPacket {
         getPacketByUserId(entity.getOwnerUuid()).setWirelessEnabled(false);
     }
 
-    public static WirelessDataPacket getPacketByUserId(UUID userId) {
+    public static WirelessComputationPacket getPacketByUserId(UUID userId) {
         UUID team = SpaceProjectManager.getLeader(userId);
-        if (GlobalWirelessData.get(team) == null) {
-            GlobalWirelessData.put(team, new WirelessDataPacket());
+        if (GlobalWirelessComputation.get(team) == null) {
+            GlobalWirelessComputation.put(team, new WirelessComputationPacket());
         }
-        return GlobalWirelessData.get(team);
+        return GlobalWirelessComputation.get(team);
     }
 }
