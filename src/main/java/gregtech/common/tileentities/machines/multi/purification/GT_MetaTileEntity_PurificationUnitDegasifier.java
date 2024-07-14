@@ -30,7 +30,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
     implements ISurvivalConstructable {
 
     // TODO
-    private static final int CASING_INDEX_MAIN = 0;
+    private static final int CASING_INDEX_MAIN = getTextureIndex(GregTech_API.sBlockCasings9, 11);
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
