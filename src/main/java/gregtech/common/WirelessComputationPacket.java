@@ -18,6 +18,13 @@ public class WirelessComputationPacket {
     public long[] latestUpload = new long[20];
     public long[] latestDownload = new long[20];
 
+    // The main idea: 'Clearing' the computation net advances the index and sets the computation stored
+    // for this index to zero. Uploading is always done to the current index, but data can be downloaded from
+    // both indices
+    private final long[] computationStored = new long[] { 0, 0 };
+    private long computationDownloaded = 0;
+    private int currentIndex = 0;
+
     public final long[] previewUploaded = new long[20];
 
     public final long[] previewDownloaded = new long[20];
@@ -25,45 +32,90 @@ public class WirelessComputationPacket {
     public Vec3Impl controllerPosition = null;
     public int loopTags = 0;
 
-    private QuantumDataPacket download(long dataIn) {
-        long time = System.currentTimeMillis();
-        if (!wirelessEnabled || Math.abs(time - latestPacketUpdate) > 10000 || controllerPosition == null)
-            return new QuantumDataPacket(0L);
-        latestDownload[loopTags] += dataIn;
-        double totalRequired = 1, totalUploaded = 1;
-        for (int i = 0; i < 20; i++) {
-            totalRequired += latestDownload[i];
-            totalUploaded += latestUpload[i];
-        }
-        long result = (long) (Math.min(1.0, totalUploaded / totalRequired) * dataIn);
-        return new QuantumDataPacket(result).unifyTraceWith(controllerPosition);
+    private long getTotalComputationStored() {
+        return computationStored[0] + computationStored[1];
+    }
+
+    private long getAvailableComputationStored() {
+        return getTotalComputationStored() - computationDownloaded;
+    }
+
+    private QuantumDataPacket download(long dataIn, long aTick) {
+        if (!wirelessEnabled || controllerPosition == null) return new QuantumDataPacket(0L);
+
+        // If we have enough computation 'stored', download it
+        // Note that this means that if you do not have enough computation to go to all
+        // destinations, it won't be distributed equally. This is fine.
+        // This also means that if you don't have enough computation for a hatch, it will not receive any computation
+        // at all. This is also fine.
+        if (getAvailableComputationStored() >= dataIn) {
+            computationDownloaded += dataIn;
+            return new QuantumDataPacket(dataIn);
+        } else return new QuantumDataPacket(0L);
+
+        /*
+         * latestDownload[loopTags] += dataIn;
+         * double totalRequired = 1, totalUploaded = 1;
+         * for (int i = 0; i < 20; i++) {
+         * totalRequired += latestDownload[i];
+         * totalUploaded += latestUpload[i];
+         * }
+         * long result = (long) (Math.min(1.0, totalUploaded / totalRequired) * dataIn);
+         * return new QuantumDataPacket(result).unifyTraceWith(controllerPosition);
+         */
     }
 
     private void update(IGregTechTileEntity entity, long aTick) {
-        latestPacketUpdate = System.currentTimeMillis();
-        loopTags = (loopTags + 1) % 20;
-        latestUpload[loopTags] -= previewUploaded[loopTags];
-        latestDownload[loopTags] -= previewDownloaded[loopTags];
-        previewUploaded[loopTags] = latestUpload[loopTags];
-        previewDownloaded[loopTags] = latestDownload[loopTags];
+        // The reason we want this complex index cycling system is because hatches may upload and download computation
+        // in the same tick as the currently stored computation is cleared. To avoid interruptions, we want to
+        // try to double buffer these updates. This means that we keep two computation values around, and every update
+        // we only clear one of them. Only the most recent entry can be used for uploading computation, but we allow
+        // downloading computation from both the current and the previous index.
+
+        // Remove downloaded computation previous index (which is also the next index since there are only two),
+        // then remove the leftover from current index.
+        int nextIndex = (currentIndex + 1) % 2;
+        long availableInPrevious = computationStored[nextIndex];
+        // Clear stored computation for the next index, since we don't want to allow players to accumulate
+        // computation in their wireless network indefinitely. This would allow for cheesing research by passively
+        // banking computation and then setting the input hatch to a high value when the computation is needed.
+        computationStored[nextIndex] = 0;
+        if (computationDownloaded > availableInPrevious) {
+            long toDrainFromCurrent = computationDownloaded - availableInPrevious;
+            computationStored[currentIndex] -= toDrainFromCurrent;
+        }
+        // Reset our current tally of downloaded computation
+        computationDownloaded = 0;
+        // Now advance the current index to the next index
+        currentIndex = nextIndex;
+        /*
+         * latestPacketUpdate = System.currentTimeMillis();
+         * loopTags = (loopTags + 1) % 20;
+         * latestUpload[loopTags] -= previewUploaded[loopTags];
+         * latestDownload[loopTags] -= previewDownloaded[loopTags];
+         * previewUploaded[loopTags] = latestUpload[loopTags];
+         * previewDownloaded[loopTags] = latestDownload[loopTags];
+         */
     }
 
     private void setWirelessEnabled(boolean wirelessEnabled) {
         this.wirelessEnabled = wirelessEnabled;
     }
 
-    private void upload(long dataOut) {
+    private void upload(long dataOut, long aTick) {
+        // Store computation that is uploaded internally
+        computationStored[currentIndex] += dataOut;
         long time = System.currentTimeMillis();
         if (!wirelessEnabled || Math.abs(time - latestPacketUpdate) > 10000) return;
         latestUpload[loopTags] += dataOut;
     }
 
-    public static QuantumDataPacket downloadData(UUID userId, long dataIn) {
-        return getPacketByUserId(userId).download(dataIn);
+    public static QuantumDataPacket downloadData(UUID userId, long dataIn, long aTick) {
+        return getPacketByUserId(userId).download(dataIn, aTick);
     }
 
-    public static void uploadData(UUID userId, long dataOut) {
-        getPacketByUserId(userId).upload(dataOut);
+    public static void uploadData(UUID userId, long dataOut, long aTick) {
+        getPacketByUserId(userId).upload(dataOut, aTick);
     }
 
     public static void updatePacket(IGregTechTileEntity entity, long aTick) {

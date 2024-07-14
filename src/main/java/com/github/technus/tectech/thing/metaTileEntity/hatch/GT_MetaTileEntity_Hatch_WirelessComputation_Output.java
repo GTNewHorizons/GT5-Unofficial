@@ -44,7 +44,7 @@ public class GT_MetaTileEntity_Hatch_WirelessComputation_Output extends GT_MetaT
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && q != null) {
-            WirelessComputationPacket.uploadData(aBaseMetaTileEntity.getOwnerUuid(), q.getContent());
+            WirelessComputationPacket.uploadData(aBaseMetaTileEntity.getOwnerUuid(), q.getContent(), aTick);
             q = null;
         }
     }

@@ -74,7 +74,7 @@ public class GT_MetaTileEntity_Hatch_WirelessComputation_Input extends GT_MetaTi
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && q == null) {
-            q = WirelessComputationPacket.downloadData(aBaseMetaTileEntity.getOwnerUuid(), requiredComputation);
+            q = WirelessComputationPacket.downloadData(aBaseMetaTileEntity.getOwnerUuid(), requiredComputation, aTick);
         }
 
     }
@@ -113,8 +113,8 @@ public class GT_MetaTileEntity_Hatch_WirelessComputation_Input extends GT_MetaTi
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
             TextWidget.localised("tt.wirelessInputData.config.text")
-                .setPos(49, 18)
-                .setSize(81, 14))
+                .setPos(20, 12)
+                .setSize(140, 14))
             .widget(
                 new TextFieldWidget().setSetterInt(val -> requiredComputation = val)
                     .setGetterLong(() -> requiredComputation)

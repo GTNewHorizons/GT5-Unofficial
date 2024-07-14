@@ -18,6 +18,7 @@ import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -229,6 +230,9 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         }
         if (aNBT.hasKey("wirelessModeEnabled")) {
             wirelessModeEnabled = aNBT.getBoolean("wirelessModeEnabled");
+            if (wirelessModeEnabled) {
+                WirelessComputationPacket.enableWirelessNetWork(getBaseMetaTileEntity());
+            }
         } else {
             wirelessModeEnabled = false;
         }
@@ -237,7 +241,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && wirelessModeEnabled) {
+        if (aBaseMetaTileEntity.isServerSide() && wirelessModeEnabled && aTick % 20 == 0) {
             WirelessComputationPacket.updatePacket(aBaseMetaTileEntity, aTick);
         }
     }
@@ -558,6 +562,17 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
         return description;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        if (wirelessModeEnabled) {
+            data.add("Wireless mode: " + EnumChatFormatting.GREEN + "enabled");
+        } else {
+            data.add("Wireless mode: " + EnumChatFormatting.RED + "disabled");
+        }
+        return data.toArray(new String[] {});
     }
 
     private enum RackHatchElement implements IHatchElement<GT_MetaTileEntity_EM_computer> {
