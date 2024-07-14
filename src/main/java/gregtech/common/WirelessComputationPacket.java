@@ -23,7 +23,7 @@ public class WirelessComputationPacket {
 
     public Vec3Impl controllerPosition = null;
 
-    private long getTotalComputationStored() {
+    public long getTotalComputationStored() {
         return computationStored[0] + computationStored[1];
     }
 

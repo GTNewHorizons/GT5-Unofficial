@@ -568,7 +568,12 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public String[] getInfoData() {
         ArrayList<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
         if (wirelessModeEnabled) {
+            WirelessComputationPacket wirelessComputationPacket = WirelessComputationPacket
+                .getPacketByUserId(getBaseMetaTileEntity().getOwnerUuid());
             data.add("Wireless mode: " + EnumChatFormatting.GREEN + "enabled");
+            data.add(
+                "Total wireless computation available: " + EnumChatFormatting.YELLOW
+                    + wirelessComputationPacket.getTotalComputationStored());
         } else {
             data.add("Wireless mode: " + EnumChatFormatting.RED + "disabled");
         }
