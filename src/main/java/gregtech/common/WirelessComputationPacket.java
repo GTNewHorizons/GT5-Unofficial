@@ -14,10 +14,6 @@ public class WirelessComputationPacket {
 
     public boolean wirelessEnabled = false;
 
-    public long latestPacketUpdate = -1000000;
-    public long[] latestUpload = new long[20];
-    public long[] latestDownload = new long[20];
-
     // The main idea: 'Clearing' the computation net advances the index and sets the computation stored
     // for this index to zero. Uploading is always done to the current index, but data can be downloaded from
     // both indices
@@ -25,12 +21,7 @@ public class WirelessComputationPacket {
     private long computationDownloaded = 0;
     private int currentIndex = 0;
 
-    public final long[] previewUploaded = new long[20];
-
-    public final long[] previewDownloaded = new long[20];
-
     public Vec3Impl controllerPosition = null;
-    public int loopTags = 0;
 
     private long getTotalComputationStored() {
         return computationStored[0] + computationStored[1];
@@ -52,17 +43,6 @@ public class WirelessComputationPacket {
             computationDownloaded += dataIn;
             return new QuantumDataPacket(dataIn);
         } else return new QuantumDataPacket(0L);
-
-        /*
-         * latestDownload[loopTags] += dataIn;
-         * double totalRequired = 1, totalUploaded = 1;
-         * for (int i = 0; i < 20; i++) {
-         * totalRequired += latestDownload[i];
-         * totalUploaded += latestUpload[i];
-         * }
-         * long result = (long) (Math.min(1.0, totalUploaded / totalRequired) * dataIn);
-         * return new QuantumDataPacket(result).unifyTraceWith(controllerPosition);
-         */
     }
 
     private void update(IGregTechTileEntity entity, long aTick) {
@@ -88,14 +68,6 @@ public class WirelessComputationPacket {
         computationDownloaded = 0;
         // Now advance the current index to the next index
         currentIndex = nextIndex;
-        /*
-         * latestPacketUpdate = System.currentTimeMillis();
-         * loopTags = (loopTags + 1) % 20;
-         * latestUpload[loopTags] -= previewUploaded[loopTags];
-         * latestDownload[loopTags] -= previewDownloaded[loopTags];
-         * previewUploaded[loopTags] = latestUpload[loopTags];
-         * previewDownloaded[loopTags] = latestDownload[loopTags];
-         */
     }
 
     private void setWirelessEnabled(boolean wirelessEnabled) {
@@ -105,9 +77,6 @@ public class WirelessComputationPacket {
     private void upload(long dataOut, long aTick) {
         // Store computation that is uploaded internally
         computationStored[currentIndex] += dataOut;
-        long time = System.currentTimeMillis();
-        if (!wirelessEnabled || Math.abs(time - latestPacketUpdate) > 10000) return;
-        latestUpload[loopTags] += dataOut;
     }
 
     public static QuantumDataPacket downloadData(UUID userId, long dataIn, long aTick) {
