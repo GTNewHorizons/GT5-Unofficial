@@ -66,7 +66,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         Iron(6, 0.8F, 1.5F, false),
         Steel(24, 0.75F, 2F, false),
         Neodymium(48, 0.7F, 2.5F, false),
-        Samarium(96, 0.6F, 3F, true),
+        Samarium(96, 0.6F, 3F, false),
         Tengam(256, 0.5F, 5F, true);
 
         final int maxParallel;
@@ -179,12 +179,10 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Electromagnetic Separator/Polarizer")
             .addInfo("Controller Block for the Magnetic Flux Exhibitor")
+            .addInfo("Use screwdriver to switch mode")
             .addInfo("Insert an electromagnet into the electromagnet housing to use")
             .addInfo("Better electromagnets give further bonuses")
-            .addInfo("With an iron electromagnet:")
-            .addInfo("-150% as fast as single block machines of the same voltage")
-            .addInfo("-Only uses 80% of the EU/t normally required")
-            .addInfo("-Processes 6 items per voltage tier")
+            .addInfo("With Tengam electromagnet, exotic hatches are allowed")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addInfo(AuthorFourIsTheNumber)
             .addSeparator()

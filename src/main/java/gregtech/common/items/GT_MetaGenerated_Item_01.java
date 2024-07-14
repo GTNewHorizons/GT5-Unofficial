@@ -446,6 +446,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 
 import gregtech.api.GregTech_API;
@@ -3096,31 +3097,56 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             addItem(
                 Electromagnet_Iron.ID,
                 "Iron Electromagnet",
-                "Used in Magnetic Flux Exhibitor/n 150% Speed/n 80% EU Cost/n 6 Parallels",
+                "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
+                    + "150% Speed/n "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + "80% EU Cost/n "
+                    + EnumChatFormatting.AQUA
+                    + "6 Parallels",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 8)));
         ItemList.Electromagnet_Steel.set(
             addItem(
                 Electromagnet_Steel.ID,
                 "Steel Electromagnet",
-                "Used in Magnetic Flux Exhibitor/n 200% Speed/n 75% EU Cost/n 24 Parallels",
+                "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
+                    + "200% Speed/n "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + "75% EU Cost/n "
+                    + EnumChatFormatting.AQUA
+                    + "24 Parallels",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 16)));
         ItemList.Electromagnet_Neodymium.set(
             addItem(
                 Electromagnet_Neodymium.ID,
                 "Neodymium Electromagnet",
-                "Used in Magnetic Flux Exhibitor/n 250% Speed/n 70% EU Cost/n 48 Parallels",
+                "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
+                    + "250% Speed/n "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + "70% EU Cost/n "
+                    + EnumChatFormatting.AQUA
+                    + "48 Parallels",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 24)));
         ItemList.Electromagnet_Samarium.set(
             addItem(
                 Electromagnet_Samarium.ID,
-                "Samarium Electromagnet",
-                "Used in Magnetic Flux Exhibitor/n 300% Speed/n 60% EU Cost/n 96 Parallels/n Enables exotic hatches",
+                EnumChatFormatting.YELLOW + "Samarium Electromagnet",
+                "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
+                    + "300% Speed/n "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + "60% EU Cost/n "
+                    + EnumChatFormatting.AQUA
+                    + "96 Parallels",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 32)));
         ItemList.Electromagnet_Tengam.set(
             addItem(
                 Electromagnet_Tengam.ID,
-                "Tengam Electromagnet",
-                "Used in Magnetic Flux Exhibitor/n 500% Speed/n 50% EU Cost/n 256 Parallels/n Enables exotic hatches",
+                EnumChatFormatting.GREEN + "Tengam Electromagnet",
+                "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
+                    + "500% Speed/n "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + "50% EU Cost/n "
+                    + EnumChatFormatting.AQUA
+                    + "256 Parallels",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 40)));
         removeRecipes();
         setBurnValues();
