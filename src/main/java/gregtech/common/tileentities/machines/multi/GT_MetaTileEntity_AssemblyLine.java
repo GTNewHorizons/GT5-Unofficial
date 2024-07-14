@@ -395,7 +395,7 @@ public class GT_MetaTileEntity_AssemblyLine extends
     /**
      * @param state using bitmask, 1 for IntegratedCircuit, 2 for DataStick, 4 for DataOrb
      */
-    private boolean isCorrectDataItem(ItemStack aStack, int state) {
+    private static boolean isCorrectDataItem(ItemStack aStack, int state) {
         if ((state & 1) != 0 && ItemList.Circuit_Integrated.isStackEqual(aStack, true, true)) return true;
         if ((state & 2) != 0 && ItemList.Tool_DataStick.isStackEqual(aStack, false, true)) return true;
         return (state & 4) != 0 && ItemList.Tool_DataOrb.isStackEqual(aStack, false, true);
@@ -410,17 +410,7 @@ public class GT_MetaTileEntity_AssemblyLine extends
             rList.add(mInventory[1]);
         }
         for (GT_MetaTileEntity_Hatch_DataAccess tHatch : filterValidMTEs(mDataAccessHatches)) {
-            for (int i = 0; i < tHatch.getBaseMetaTileEntity()
-                .getSizeInventory(); i++) {
-                if (tHatch.getBaseMetaTileEntity()
-                    .getStackInSlot(i) != null && isCorrectDataItem(
-                        tHatch.getBaseMetaTileEntity()
-                            .getStackInSlot(i),
-                        state))
-                    rList.add(
-                        tHatch.getBaseMetaTileEntity()
-                            .getStackInSlot(i));
-            }
+            rList.addAll(tHatch.getInventoryItems(stack -> isCorrectDataItem(stack, state)));
         }
         return rList;
     }
