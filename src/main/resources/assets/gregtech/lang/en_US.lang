@@ -560,6 +560,9 @@ GT5U.hatch.infiniteCacheFluid.false=ME Output hatch will stop accepting fluid wh
 GT5U.hatch.additionalConnection.true=ME channels connect to any side
 GT5U.hatch.additionalConnection.false=ME channels connect to front side only
 
+GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
+GT5U.bus.filterTooltip.full=§aClick to clear output filter
+
 GT5U.multiblock.pollution=Pollution reduced to
 GT5U.multiblock.energy=Stored Energy
 GT5U.multiblock.Progress=Progress
