@@ -10,8 +10,11 @@ import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -43,6 +46,8 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+
+import javax.annotation.Nonnull;
 
 public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_AmazonPackager>
     implements ISurvivalConstructable {
@@ -97,6 +102,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Amazon Warehouse")
             .addInfo("This Multiblock is used for EXTREME packaging requirements")
+            .addInfo("Can be configured with a screwdriver to work as an Unpackager")
             .addInfo("Dust Schematics are inserted into the input busses")
             .addInfo("If inserted into the controller, it is shared across all busses")
             .addInfo("1x, 2x, 3x & Other Schematics are to be placed into the controller GUI slot")
@@ -135,6 +141,13 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
     @Override
     public RecipeMap<?> getRecipeMap() {
         return mPackageMode ? RecipeMaps.packagerRecipes : RecipeMaps.unpackagerRecipes;
+    }
+
+    @Nonnull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays
+            .asList(RecipeMaps.packagerRecipes, RecipeMaps.unpackagerRecipes);
     }
 
     @Override
