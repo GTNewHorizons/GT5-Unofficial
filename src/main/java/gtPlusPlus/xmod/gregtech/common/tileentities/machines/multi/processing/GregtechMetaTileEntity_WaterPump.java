@@ -87,7 +87,6 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
     private int mSetTier = 1;
 
     private float CURRENT_HUMIDITY;
-    private boolean CAN_SEE_SKY;
 
     private static final Fluid water = FluidRegistry.getFluid("water");
 
@@ -96,18 +95,6 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
     }
 
     private int mCountCasing;
-
-    private boolean canSeeSky() {
-        return this.getBaseMetaTileEntity()
-            .getWorld()
-            .canBlockSeeTheSky(
-                this.getBaseMetaTileEntity()
-                    .getXCoord(),
-                this.getBaseMetaTileEntity()
-                    .getYCoord() + 2,
-                this.getBaseMetaTileEntity()
-                    .getZCoord());
-    }
 
     private float getHumidity() {
         return this.getBaseMetaTileEntity()
@@ -206,7 +193,6 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
         if (this.mOutputHatches.size() != 1) return false;
 
         CURRENT_HUMIDITY = getHumidity();
-        CAN_SEE_SKY = canSeeSky();
         return mCountCasing >= 10;
     }
 
@@ -268,10 +254,6 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
-        if (!CAN_SEE_SKY) {
-            CAN_SEE_SKY = canSeeSky();
-            return CheckRecipeResultRegistry.NO_SEE_SKY;
-        }
 
         mMaxProgresstime = PROGRESSION_TIME;
         mOutputFluids = getWater();
@@ -296,7 +278,6 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick % 1200) == 0) {
                 CURRENT_HUMIDITY = getHumidity();
-                CAN_SEE_SKY = canSeeSky();
             }
         }
     }
