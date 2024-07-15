@@ -96,7 +96,6 @@ public class GregtechMetaTileEntity_WaterPump extends GregtechMeta_MultiBlockBas
 
     private int mCountCasing;
 
-
     private float getHumidity() {
         return this.getBaseMetaTileEntity()
             .getWorld()
