@@ -8,6 +8,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import gregtech.api.enums.Materials;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -90,9 +93,19 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         .<GT_MetaTileEntity_IndustrialElectromagneticSeparator>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            transpose(new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
+            (transpose(new String[][]{
+                {"           ","           ","           "," CD     DC "," CDD   DDC ","  CDD DDC  ","   CDDDC   ","    CCC    ","           "},
+                {"           ","           ","           "," CD     DC "," CDD   DDC ","  CDD DDC  ","   CDDDC   ","    CCC    ","           "},
+                {"           ","           ","           ","  CD   DC  ","           ","     D     ","     C     ","           ","           "},
+                {"           ","           ","           ","  CD   DC  ","           ","     D     ","     C     ","           ","           "},
+                {"           ","    BBB    ","   BBBBB   "," CDBBBBBDC ","   BBBBB   ","    BBB    ","     D     ","     C     ","           "},
+                {"           ","    AAA    ","   A   A   "," CDA D ADC ","   A   A   ","    AAA    ","     D     ","     C     ","           "},
+                {"           ","    BBB    ","   BBBBB   "," CDBBBBBDC ","   BBBBB   ","    BBB    ","     D     ","     C     ","           "},
+                {"    B~B    ","   BBBBB   ","  BBBBBBB  ","CDBBBBBBBDC","  BBBBBBB  ","   BBBBB   ","    BBB    ","     D     ","     C     "}
+            })))
+        .addElement('A', Glasses.chainAllGlasses())
         .addElement(
-            'C',
+            'B',
             ofChain(
                 buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
                     .adder(GT_MetaTileEntity_IndustrialElectromagneticSeparator::addMagHatch)
@@ -109,6 +122,8 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                         onElementPass(
                             GT_MetaTileEntity_IndustrialElectromagneticSeparator::onCasingAdded,
                             ofBlock(GregTech_API.sBlockCasings10, 0)))))
+        .addElement('C', ofFrame(Materials.NeodymiumMagnetic))
+        .addElement('D', ofFrame(Materials.SamariumMagnetic))
         .build();
 
     public GT_MetaTileEntity_IndustrialElectromagneticSeparator(final int aID, final String aName,
@@ -189,7 +204,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")
             .addCasingInfoMin("Electromagnetic Casings", 6, false)
-            .addOtherStructurePart("Electromagnet Housing", "1 Only, Any Casing")
+            .addOtherStructurePart("MagTech Housing", "1 Only, Any Casing")
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
@@ -201,13 +216,13 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 1, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 5, 7, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 5, 7, 0, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -226,7 +241,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         mCasingAmount = 0;
         mMagHatches.clear();
 
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0) && mCasingAmount >= 6 && mMagHatches.size() == 1;
+        return checkPiece(STRUCTURE_PIECE_MAIN, 5, 7, 0) && mCasingAmount >= 6 && mMagHatches.size() == 1;
     }
 
     @Override
@@ -240,14 +255,18 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                 if (magnetTier != null) {
                     if (!mExoticEnergyHatches.isEmpty() && !magnetTier.supportsExotic)
                         return SimpleCheckRecipeResult.ofFailure("electromagnet_insufficient");
-                    maxParallel = magnetTier.maxParallel;
                     euModifier = magnetTier.euModifier;
                     speedBoost = magnetTier.speedBoost;
                     return CheckRecipeResultRegistry.SUCCESSFUL;
                 }
                 return SimpleCheckRecipeResult.ofFailure("electromagnet_missing");
             }
-        };
+        }.setMaxParallelSupplier(this::getMaxParallels);
+    }
+
+    private int getMaxParallels() {
+        if (magnetTier != null) return magnetTier.maxParallel;
+        return 0;
     }
 
     @Override

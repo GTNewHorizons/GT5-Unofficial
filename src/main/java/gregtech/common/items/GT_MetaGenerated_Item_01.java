@@ -3146,7 +3146,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                     + EnumChatFormatting.DARK_PURPLE
                     + "50% EU Cost/n "
                     + EnumChatFormatting.AQUA
-                    + "256 Parallels",
+                    + "256 Parallels"
+                    + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.GREEN
+                    + "Can Use Exotic Hatches",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 40)));
         removeRecipes();
         setBurnValues();
