@@ -39,6 +39,7 @@ import com.github.technus.tectech.thing.CustomItemList;
 import com.rwtema.extrautils.ExtraUtils;
 
 import fox.spiteful.avaritia.compat.ticon.Tonkers;
+import goodgenerator.items.MyMaterial;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsBotania;
@@ -811,6 +812,26 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Casing_Dim_Trans.get(1),
                 20 * 20,
                 32_000_000);
+
+            // Transdimensional Alignment Matrix
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                ItemList.MicroTransmitter_UV.get(1),
+                32_000_000,
+                8192,
+                (int) TierEU.RECIPE_UMV,
+                64,
+                new Object[] { CustomItemList.EOH_Infinite_Energy_Casing.get(1),
+                    GregtechItemList.SpaceTimeContinuumRipper.get(4), ItemList.Robot_Arm_UMV.get(64),
+                    ItemList.Sensor_UMV.get(16), ItemList.Field_Generator_UMV.get(4), ItemList.ZPM5.get(1),
+                    ItemList.EnergisedTesseract.get(32),
+                    GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.TranscendentMetal, 16),
+                    GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Flerovium, 64),
+                    MyMaterial.metastableOganesson.get(OrePrefixes.plateDense, 32) },
+                new FluidStack[] { new FluidStack(solderUEV, 1024 * 144), Materials.Lead.getPlasma(64 * 144),
+                    MaterialsUEVplus.Space.getMolten(64 * 144) },
+                ItemList.Transdimensional_Alignment_Matrix.get(1),
+                50 * SECONDS,
+                (int) TierEU.RECIPE_UMV);
         }
 
         // Deep Dark Portal

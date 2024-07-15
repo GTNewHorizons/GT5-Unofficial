@@ -124,7 +124,7 @@ public class ForgeHammerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Firebrick.get(1))
-            .itemOutputs(Materials.Brick.getDust(1))
+            .itemOutputs(Materials.Fireclay.getDust(1))
             .duration(10 * TICKS)
             .eut(16)
             .addTo(hammerRecipes);

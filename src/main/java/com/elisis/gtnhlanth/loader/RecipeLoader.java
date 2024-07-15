@@ -4,7 +4,6 @@ import static com.elisis.gtnhlanth.api.recipe.LanthanidesRecipeMaps.digesterReci
 import static com.elisis.gtnhlanth.api.recipe.LanthanidesRecipeMaps.dissolutionTankRecipes;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.*;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
-import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
@@ -54,7 +53,6 @@ import com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool;
 import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.PlatinumSludgeOverHaul;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.items.MyMaterial;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -807,7 +805,6 @@ public class RecipeLoader {
                 WerkstoffMaterialPool.ConditionedBastnasiteMud.getFluidOrGas(1000))
             .itemInputs(Materials.Saltpeter.getDust(1))
             .fluidOutputs(WerkstoffMaterialPool.DiltedRareEarthBastnasiteMud.getFluidOrGas(11000))
-            .itemOutputs(WerkstoffMaterialPool.Gangue.get(OrePrefixes.dust, 1))
             .eut(1920)
             .duration(1000)
             .specialValue(10)
@@ -1011,7 +1008,7 @@ public class RecipeLoader {
             null,
             Materials.Samarium.getDust(1),
             WerkstoffLoader.Thorianit.get(OrePrefixes.dust, 2),
-            WerkstoffMaterialPool.Gangue.get(OrePrefixes.dust, 4),
+            null,
             null,
             null,
             null,
@@ -2615,28 +2612,13 @@ public class RecipeLoader {
             .duration(5 * SECONDS)
             .addTo(centrifugeRecipes);
 
-        /**
-         * DephosphatedSamariumConcentrate has a simple and not shit process. Just burn in furnace, then use
-         * electolyzer.
-         */
-        GameRegistry.addSmelting(
-            DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1),
-            SamariumOxide.get(OrePrefixes.dustTiny, 2),
-            114);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1))
-            .itemOutputs(SamariumOxide.get(OrePrefixes.dust, 1), Gangue.get(OrePrefixes.dust, 1))
-            .specialValue(1200)
-            .eut(514)
-            .duration(2 * SECONDS)
-            .addTo(blastFurnaceRecipes);
         // GT_Values.RA.addBlastRecipe(
         // DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1),
         // null,
         // null,
         // null,
         // SamariumOxide.get(OrePrefixes.dust, 1),
-        // Gangue.get(OrePrefixes.dust, 1),
+        // null,
         // 40,
         // 514,
         // 1200);

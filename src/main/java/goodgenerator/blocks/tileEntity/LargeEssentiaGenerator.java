@@ -361,9 +361,10 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
 
         if (R.nextInt(10000) < chance) {
             World world = getBaseMetaTileEntity().getWorld();
-            int tX = R.nextInt(4);
-            int tZ = R.nextInt(4);
-            if (world.isAirBlock(tX, 0, tZ)) world.setBlock(tX, 0, tZ, ConfigBlocks.blockFluxGas, R.nextInt(8), 3);
+            int tX = getBaseMetaTileEntity().getXCoord() + R.nextInt(5) - 2;
+            int tY = getBaseMetaTileEntity().getYCoord();
+            int tZ = getBaseMetaTileEntity().getZCoord() + R.nextInt(5) - 2;
+            if (world.isAirBlock(tX, tY, tZ)) world.setBlock(tX, tY, tZ, ConfigBlocks.blockFluxGas, R.nextInt(8), 3);
         }
 
         return (long) (baseValue * ceoOutput);
