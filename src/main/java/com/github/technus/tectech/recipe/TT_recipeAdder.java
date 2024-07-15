@@ -1,7 +1,5 @@
 package com.github.technus.tectech.recipe;
 
-import static com.github.technus.tectech.recipe.TecTechRecipeMaps.godforgePlasmaRecipes;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -230,63 +228,6 @@ public class TT_recipeAdder extends GT_RecipeAdder {
             tAlts);
         recipeTT.setPersistentHash(tPersistentHash);
         TecTechRecipeMaps.researchableALRecipeList.add(recipeTT);
-        return true;
-    }
-
-    @Deprecated
-    public static boolean addFOGPlasmaRecipe(ItemStack[] itemInputs, FluidStack[] fluidOutputs, int machineDuration,
-        int machineEUt, boolean multiStep, int recipeTier) {
-        if (itemInputs == null) {
-            itemInputs = nullItem;
-        }
-        GT_Values.RA.stdBuilder()
-            .itemInputs(itemInputs)
-            .fluidOutputs(fluidOutputs)
-            .duration(machineDuration)
-            .eut(machineEUt)
-            .special(multiStep)
-            .specialValue(recipeTier)
-            .noOptimize()
-            .addTo(godforgePlasmaRecipes);
-
-        return true;
-    }
-
-    @Deprecated
-    public static boolean addFOGPlasmaRecipe(FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int machineDuration,
-        int machineEUt, boolean multiStep, int recipeTier) {
-
-        if (fluidInputs == null) {
-            fluidInputs = nullFluid;
-        }
-
-        GT_Values.RA.stdBuilder()
-            .fluidInputs(fluidInputs)
-            .fluidOutputs(fluidOutputs)
-            .duration(machineDuration)
-            .eut(machineEUt)
-            .special(multiStep)
-            .specialValue(recipeTier)
-            .noOptimize()
-            .addTo(godforgePlasmaRecipes);
-
-        return true;
-    }
-
-    public static boolean addFOGExoticFakeRecipe(ItemStack[] itemInputs, FluidStack[] fluidInputs,
-        FluidStack[] fluidOutputs, int machineDuration, int machineEUt, int recipeTier) {
-
-        TecTechRecipeMaps.godforgeExoticMatterRecipes.addFakeRecipe(
-            false,
-            itemInputs,
-            null,
-            null,
-            fluidInputs,
-            fluidOutputs,
-            machineDuration,
-            machineEUt,
-            recipeTier,
-            false);
         return true;
     }
 }

@@ -103,6 +103,16 @@ public class GT_RecipeConstants {
         .create(Integer.class, "nano_forge_tier");
 
     /**
+     * FOG Exotic recipe tier.
+     */
+    public static final RecipeMetadataKey<Integer> FOG_EXOTIC_TIER = SimpleRecipeMetadataKey.create(Integer.class, "fog_exotic_tier");
+
+    /**
+     * FOG Plasma recipe tier.
+     */
+    public static final RecipeMetadataKey<Integer> FOG_PLASMA_TIER = SimpleRecipeMetadataKey.create(Integer.class, "fog_plasma_tier");
+
+    /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
      * Will override the fluid input with oxygen/plasma for the respective recipe maps, so there is no point setting it.
      */
@@ -335,5 +345,7 @@ public class GT_RecipeConstants {
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUSION_THRESHOLD);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUEL_VALUE);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NANO_FORGE_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_EXOTIC_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_PLASMA_TIER);
     }
 }
