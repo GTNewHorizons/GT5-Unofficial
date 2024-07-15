@@ -151,7 +151,6 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
                     .fluidOutputs(M.getFluidStack(fluidAmount))
                     .eut(aVoltage)
                     .duration(duration / (mTotalPartsCounter > 0 ? mTotalPartsCounter : 1) / 2)
-                    .specialValue(3700)
                     .addTo(alloyBlastSmelterRecipes);
 
                 Logger.WARNING("[BAS] Success.");
@@ -284,7 +283,6 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
                                 .fluidOutputs(M.getFluidStack(fluidAmount))
                                 .eut(aVoltage)
                                 .duration(duration)
-                                .specialValue(3700)
                                 .addTo(alloyBlastSmelterRecipes);
                             Logger.WARNING("[BAS] Success.");
 
@@ -295,7 +293,6 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
                                 .fluidOutputs(M.getFluidStack(fluidAmount))
                                 .eut(aVoltage / 2)
                                 .duration(duration)
-                                .specialValue(3700)
                                 .addTo(alloyBlastSmelterRecipes);
 
                             Logger.WARNING("[BAS] Success.");

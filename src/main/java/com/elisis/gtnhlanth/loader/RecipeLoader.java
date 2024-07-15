@@ -31,6 +31,7 @@ import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GT_RecipeConstants.DISSOLUTION_TANK_RATIO;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gregtech.common.items.GT_MetaGenerated_Item_01.registerCauldronCleaningFor;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
@@ -400,7 +401,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .eut(1920)
             .duration(400)
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .addTo(digesterRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -415,7 +416,7 @@ public class RecipeLoader {
                 Materials.Monazite.getDustTiny(2))
             .eut(480)
             .duration(900)
-            .specialValue(10)
+            .metadata(DISSOLUTION_TANK_RATIO,10)
             .noOptimize()
             .addTo(dissolutionTankRecipes);
 
@@ -431,7 +432,7 @@ public class RecipeLoader {
                 Materials.Monazite.getDust(2))
             .eut(480)
             .duration(8100)
-            .specialValue(10)
+            .metadata(DISSOLUTION_TANK_RATIO,10)
             .noOptimize()
             .addTo(dissolutionTankRecipes);
 
@@ -717,7 +718,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .eut(1920)
             .duration(400)
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .addTo(digesterRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -749,7 +750,7 @@ public class RecipeLoader {
             .fluidOutputs(WerkstoffMaterialPool.DiltedRareEarthBastnasiteMud.getFluidOrGas(11000))
             .eut(1920)
             .duration(1000)
-            .specialValue(10)
+            .metadata(DISSOLUTION_TANK_RATIO,10)
             .noOptimize()
             .addTo(dissolutionTankRecipes);
 
@@ -945,7 +946,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(3))
             .fluidInputs(Materials.Chlorine.getGas(36000))
             .fluidOutputs(LanthanumChlorideConcentrate.getFluidOrGas(3000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -954,7 +955,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .fluidInputs(Materials.Chlorine.getGas(12000))
             .fluidOutputs(LanthanumChlorideConcentrate.getFluidOrGas(1000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -977,7 +978,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(3))
             .fluidInputs(Materials.Chlorine.getGas(36000))
             .fluidOutputs(PraseodymiumChlorideConcentrate.getFluidOrGas(3000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -986,7 +987,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .fluidInputs(Materials.Chlorine.getGas(12000))
             .fluidOutputs(PraseodymiumChlorideConcentrate.getFluidOrGas(1000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1009,7 +1010,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(3))
             .fluidInputs(Materials.Chlorine.getGas(36000))
             .fluidOutputs(CeriumChlorideConcentrate.getFluidOrGas(3000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1018,7 +1019,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .fluidInputs(Materials.Chlorine.getGas(12000))
             .fluidOutputs(CeriumChlorideConcentrate.getFluidOrGas(1000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1039,7 +1040,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(3))
             .fluidInputs(Materials.Chlorine.getGas(36000))
             .fluidOutputs(NeodymiumChlorideConcentrate.getFluidOrGas(3000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1048,7 +1049,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .fluidInputs(Materials.Chlorine.getGas(12000))
             .fluidOutputs(NeodymiumChlorideConcentrate.getFluidOrGas(1000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1071,7 +1072,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(3))
             .fluidInputs(Materials.Chlorine.getGas(36000))
             .fluidOutputs(NeodymiumChlorideConcentrate.getFluidOrGas(3000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1080,7 +1081,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .fluidInputs(Materials.Chlorine.getGas(12000))
             .fluidOutputs(NeodymiumChlorideConcentrate.getFluidOrGas(1000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1103,7 +1104,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(3))
             .fluidInputs(Materials.Chlorine.getGas(36000))
             .fluidOutputs(PromethiumChlorideConcentrate.getFluidOrGas(3000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1112,7 +1113,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .fluidInputs(Materials.Chlorine.getGas(12000))
             .fluidOutputs(PromethiumChlorideConcentrate.getFluidOrGas(1000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1135,7 +1136,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(3))
             .fluidInputs(Materials.Chlorine.getGas(36000))
             .fluidOutputs(PromethiumChlorideConcentrate.getFluidOrGas(3000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1144,7 +1145,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .fluidInputs(Materials.Chlorine.getGas(12000))
             .fluidOutputs(PromethiumChlorideConcentrate.getFluidOrGas(1000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1167,7 +1168,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(3))
             .fluidInputs(Materials.Chlorine.getGas(36000))
             .fluidOutputs(SamariumChlorideConcentrate.getFluidOrGas(3000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1176,7 +1177,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .fluidInputs(Materials.Chlorine.getGas(12000))
             .fluidOutputs(SamariumChlorideConcentrate.getFluidOrGas(1000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1199,7 +1200,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(3))
             .fluidInputs(Materials.Chlorine.getGas(36000))
             .fluidOutputs(EuropiumChlorideConcentrate.getFluidOrGas(3000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1208,7 +1209,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .fluidInputs(Materials.Chlorine.getGas(12000))
             .fluidOutputs(EuropiumChlorideConcentrate.getFluidOrGas(1000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1231,7 +1232,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(3))
             .fluidInputs(Materials.Chlorine.getGas(36000))
             .fluidOutputs(GadoliniumChlorideConcentrate.getFluidOrGas(3000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1240,7 +1241,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .fluidInputs(Materials.Chlorine.getGas(12000))
             .fluidOutputs(GadoliniumChlorideConcentrate.getFluidOrGas(1000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1263,7 +1264,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(3))
             .fluidInputs(Materials.Chlorine.getGas(36000))
             .fluidOutputs(TerbiumChlorideConcentrate.getFluidOrGas(3000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1272,7 +1273,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .fluidInputs(Materials.Chlorine.getGas(12000))
             .fluidOutputs(TerbiumChlorideConcentrate.getFluidOrGas(1000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1293,7 +1294,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(3))
             .fluidInputs(Materials.Chlorine.getGas(36000))
             .fluidOutputs(DysprosiumChlorideConcentrate.getFluidOrGas(3000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1302,7 +1303,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .fluidInputs(Materials.Chlorine.getGas(12000))
             .fluidOutputs(DysprosiumChlorideConcentrate.getFluidOrGas(1000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1325,7 +1326,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(3))
             .fluidInputs(Materials.Chlorine.getGas(36000))
             .fluidOutputs(HolmiumChlorideConcentrate.getFluidOrGas(3000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1334,7 +1335,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .fluidInputs(Materials.Chlorine.getGas(12000))
             .fluidOutputs(HolmiumChlorideConcentrate.getFluidOrGas(1000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1355,7 +1356,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(3))
             .fluidInputs(Materials.Chlorine.getGas(36000))
             .fluidOutputs(ErbiumChlorideConcentrate.getFluidOrGas(3000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1364,7 +1365,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .fluidInputs(Materials.Chlorine.getGas(12000))
             .fluidOutputs(ErbiumChlorideConcentrate.getFluidOrGas(1000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1385,7 +1386,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(3))
             .fluidInputs(Materials.Chlorine.getGas(36000))
             .fluidOutputs(ThuliumChlorideConcentrate.getFluidOrGas(3000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1394,7 +1395,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .fluidInputs(Materials.Chlorine.getGas(12000))
             .fluidOutputs(ThuliumChlorideConcentrate.getFluidOrGas(1000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1415,7 +1416,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(3))
             .fluidInputs(Materials.Chlorine.getGas(36000))
             .fluidOutputs(YtterbiumChlorideConcentrate.getFluidOrGas(3000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1424,7 +1425,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .fluidInputs(Materials.Chlorine.getGas(12000))
             .fluidOutputs(YtterbiumChlorideConcentrate.getFluidOrGas(1000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1447,7 +1448,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(3))
             .fluidInputs(Materials.Chlorine.getGas(36000))
             .fluidOutputs(LutetiumChlorideConcentrate.getFluidOrGas(3000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -1456,7 +1457,7 @@ public class RecipeLoader {
             .itemOutputs(Materials.SiliconDioxide.getDust(1))
             .fluidInputs(Materials.Chlorine.getGas(12000))
             .fluidOutputs(LutetiumChlorideConcentrate.getFluidOrGas(1000))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
@@ -2342,7 +2343,7 @@ public class RecipeLoader {
             .fluidInputs(Materials.NitricAcid.getFluid(200))
             .itemOutputs(ThoriumPhosphateConcentrate.get(OrePrefixes.dust, 1))
             .fluidOutputs(MuddySamariumRareEarthSolution.getFluidOrGas(800))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_EV)
             .duration(10 * SECONDS)
             .addTo(digesterRecipes);
@@ -2353,7 +2354,7 @@ public class RecipeLoader {
             .fluidInputs(Materials.NitricAcid.getFluid(300))
             .itemOutputs(ThoriumPhosphateConcentrate.get(OrePrefixes.dust, 3))
             .fluidOutputs(MuddySamariumRareEarthSolution.getFluidOrGas(1200))
-            .specialValue(800)
+            .metadata(COIL_HEAT,800)
             .eut(TierEU.RECIPE_EV)
             .duration(10 * SECONDS)
             .addTo(digesterRecipes);
@@ -2365,7 +2366,7 @@ public class RecipeLoader {
             .fluidInputs(Materials.NitricAcid.getFluid(1000), MuddySamariumRareEarthSolution.getFluidOrGas(1000))
             .itemOutputs(CeriumDioxide.get(OrePrefixes.dust, 1), CeriumOreConcentrate.get(OrePrefixes.dust, 1))
             .fluidOutputs(SamariumRareEarthMud.getFluidOrGas(2000))
-            .specialValue(1)
+            .metadata(DISSOLUTION_TANK_RATIO,1)
             .outputChances(8000, 6000)
             .noOptimize()
             .eut(TierEU.RECIPE_EV)
@@ -2376,7 +2377,7 @@ public class RecipeLoader {
             .fluidInputs(Materials.NitricAcid.getFluid(9000), MuddySamariumRareEarthSolution.getFluidOrGas(9000))
             .itemOutputs(CeriumDioxide.get(OrePrefixes.dust, 9), CeriumOreConcentrate.get(OrePrefixes.dust, 9))
             .fluidOutputs(SamariumRareEarthMud.getFluidOrGas(18000))
-            .specialValue(1)
+            .metadata(DISSOLUTION_TANK_RATIO,1)
             .outputChances(8000, 6000)
             .noOptimize()
             .eut(TierEU.RECIPE_IV)
@@ -2402,7 +2403,7 @@ public class RecipeLoader {
                 NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 1),
                 NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 1))
             .fluidOutputs(DilutedSamariumRareEarthSolution.getFluidOrGas(10000))
-            .specialValue(9)
+            .metadata(DISSOLUTION_TANK_RATIO,9)
             .outputChances(9000, 6000)
             .noOptimize()
             .eut(TierEU.RECIPE_EV)
@@ -2415,7 +2416,7 @@ public class RecipeLoader {
                 NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 9),
                 NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 9))
             .fluidOutputs(DilutedSamariumRareEarthSolution.getFluidOrGas(90000))
-            .specialValue(9)
+            .metadata(DISSOLUTION_TANK_RATIO,9)
             .outputChances(9000, 6000)
             .noOptimize()
             .eut(TierEU.RECIPE_IV)
@@ -2543,7 +2544,7 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1))
             .itemOutputs(SamariumOxide.get(OrePrefixes.dust, 1))
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .eut(514)
             .duration(2 * SECONDS)
             .addTo(blastFurnaceRecipes);

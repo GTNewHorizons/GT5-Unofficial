@@ -47,6 +47,7 @@ import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GT_RecipeConstants.QFT_FOCUS_TIER;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gregtech.common.items.GT_MetaGenerated_Item_01.registerCauldronCleaningFor;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipes;
@@ -119,7 +120,7 @@ public class NaquadahReworkRecipeLoader {
                     Materials.Oxygen.getGas(100L))
                 .duration(10 * SECONDS)
                 .eut(GT_Values.VP[10])
-                .specialValue(2)
+                .metadata(QFT_FOCUS_TIER,2)
                 .addTo(quantumForceTransformerRecipes);
             // Enriched Naquadah (UIV)
             GT_Values.RA.stdBuilder()
@@ -134,7 +135,7 @@ public class NaquadahReworkRecipeLoader {
                 .fluidOutputs(wasteLiquid.getFluidOrGas(32000))
                 .duration(10 * SECONDS)
                 .eut(GT_Values.VP[11])
-                .specialValue(2)
+                .metadata(QFT_FOCUS_TIER,2)
                 .addTo(quantumForceTransformerRecipes);
             // Naquadria (UMV)
             GT_Values.RA.stdBuilder()
@@ -154,7 +155,7 @@ public class NaquadahReworkRecipeLoader {
                     Materials.Oxygen.getGas(100L))
                 .duration(5 * SECONDS)
                 .eut(GT_Values.VP[12])
-                .specialValue(3)
+                .metadata(QFT_FOCUS_TIER,3)
                 .addTo(quantumForceTransformerRecipes);
 
             // Activate Them

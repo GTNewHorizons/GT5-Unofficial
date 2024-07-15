@@ -56,7 +56,6 @@ public class RECIPES_SeleniumProcessing {
             .fluidOutputs(ELEMENT.getInstance().SELENIUM.getFluidStack(144 * 1))
             .eut(7200)
             .duration(5 * MINUTES)
-            .specialValue(3700)
             .addTo(alloyBlastSmelterRecipes);
     }
 

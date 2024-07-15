@@ -50,7 +50,7 @@ public class GT_FuelLoader implements Runnable {
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L))
             .duration(0)
             .eut(0)
-            .specialValue(50_000)
+            .metadata(FUEL_VALUE, 50_000)
             .addTo(smallNaquadahReactorFuels);
 
         GT_Values.RA.stdBuilder()
@@ -58,7 +58,7 @@ public class GT_FuelLoader implements Runnable {
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L))
             .duration(0)
             .eut(0)
-            .specialValue(250_000)
+            .metadata(FUEL_VALUE, 250_000)
             .addTo(largeNaquadahReactorFuels);
 
         GT_Values.RA.stdBuilder()
@@ -66,7 +66,7 @@ public class GT_FuelLoader implements Runnable {
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Naquadah, 1L))
             .duration(0)
             .eut(0)
-            .specialValue(500_000)
+            .metadata(FUEL_VALUE, 500_000)
             .addTo(hugeNaquadahReactorFuels);
 
         GT_Values.RA.stdBuilder()
@@ -74,7 +74,7 @@ public class GT_FuelLoader implements Runnable {
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L))
             .duration(0)
             .eut(0)
-            .specialValue(250_000)
+            .metadata(FUEL_VALUE, 250_000)
             .addTo(extremeNaquadahReactorFuels);
 
         GT_Values.RA.stdBuilder()
@@ -82,7 +82,7 @@ public class GT_FuelLoader implements Runnable {
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L))
             .duration(0)
             .eut(0)
-            .specialValue(1_000_000)
+            .metadata(FUEL_VALUE, 1_000_000)
             .addTo(ultraHugeNaquadahReactorFuels);
 
         GT_Values.RA.stdBuilder()
@@ -90,7 +90,7 @@ public class GT_FuelLoader implements Runnable {
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Naquadah, 1L))
             .duration(0)
             .eut(0)
-            .specialValue(1_400_000)
+            .metadata(FUEL_VALUE, 1_400_000)
             .addTo(RecipeMaps.fluidNaquadahReactorFuels);
 
         // BloodMagic
@@ -99,7 +99,7 @@ public class GT_FuelLoader implements Runnable {
             .itemOutputs(GT_ModHandler.getModItem(BloodMagic.ID, "blankSlate", 1L))
             .duration(0)
             .eut(0)
-            .specialValue(400)
+            .metadata(FUEL_VALUE, 400)
             .addTo(magicFuels);
 
         GT_Values.RA.stdBuilder()
@@ -107,7 +107,7 @@ public class GT_FuelLoader implements Runnable {
             .itemOutputs(GT_ModHandler.getModItem(BloodMagic.ID, "reinforcedSlate", 1L))
             .duration(0)
             .eut(0)
-            .specialValue(1000)
+            .metadata(FUEL_VALUE, 1000)
             .addTo(magicFuels);
 
         GT_Values.RA.stdBuilder()
@@ -115,7 +115,7 @@ public class GT_FuelLoader implements Runnable {
             .itemOutputs(GT_ModHandler.getModItem(BloodMagic.ID, "imbuedSlate", 1L))
             .duration(0)
             .eut(0)
-            .specialValue(8000)
+            .metadata(FUEL_VALUE, 8000)
             .addTo(magicFuels);
 
         GT_Values.RA.stdBuilder()
@@ -123,7 +123,7 @@ public class GT_FuelLoader implements Runnable {
             .itemOutputs(GT_ModHandler.getModItem(BloodMagic.ID, "demonicSlate", 1L))
             .duration(0)
             .eut(0)
-            .specialValue(20000)
+            .metadata(FUEL_VALUE, 20000)
             .addTo(magicFuels);
 
         GT_Values.RA.stdBuilder()

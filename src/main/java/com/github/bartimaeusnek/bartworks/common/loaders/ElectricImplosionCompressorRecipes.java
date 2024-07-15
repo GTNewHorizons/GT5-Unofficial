@@ -34,7 +34,6 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidOutputs(outputFluids)
             .duration(durationInTicks)
             .eut(EUPerTick)
-            .specialValue(1)
             .noOptimize()
             .addTo(electricImplosionCompressorRecipes);
     }

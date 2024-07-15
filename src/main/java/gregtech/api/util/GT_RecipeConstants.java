@@ -113,6 +113,26 @@ public class GT_RecipeConstants {
     public static final RecipeMetadataKey<Integer> FOG_PLASMA_TIER = SimpleRecipeMetadataKey.create(Integer.class, "fog_plasma_tier");
 
     /**
+     * DEFC Casing tier.
+     */
+    public static final RecipeMetadataKey<Integer> DEFC_CASING_TIER = SimpleRecipeMetadataKey.create(Integer.class, "defc_casing_tier");
+
+    /**
+     * Chemplant Casing tier. Beware, codewise index starts at 0, but it is tier 1.
+     */
+    public static final RecipeMetadataKey<Integer> CHEMPLANT_CASING_TIER = SimpleRecipeMetadataKey.create(Integer.class, "chemplant_casing_tier");
+
+    /**
+     * QFT Focus tier.
+     */
+    public static final RecipeMetadataKey<Integer> QFT_FOCUS_TIER = SimpleRecipeMetadataKey.create(Integer.class, "qft_focus_tier");
+
+    /**
+     * Dissolution Tank Ratio.
+     */
+    public static final RecipeMetadataKey<Integer> DISSOLUTION_TANK_RATIO = SimpleRecipeMetadataKey.create(Integer.class, "dissolution_tank_ratio");
+
+    /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
      * Will override the fluid input with oxygen/plasma for the respective recipe maps, so there is no point setting it.
      */
@@ -347,5 +367,9 @@ public class GT_RecipeConstants {
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NANO_FORGE_TIER);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_EXOTIC_TIER);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_PLASMA_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DEFC_CASING_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(CHEMPLANT_CASING_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(QFT_FOCUS_TIER);
+    GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DISSOLUTION_TANK_RATIO);
     }
 }

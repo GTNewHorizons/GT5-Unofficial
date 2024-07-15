@@ -46,6 +46,7 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
@@ -272,13 +273,13 @@ public class AdditionalRecipes {
                     fuel.getLeft()
                         .getCells(1))
                 .itemOutputs(Materials.Empty.getCells(1))
-                .metadata(GT_RecipeConstants.FUEL_VALUE, fuel.getRight())
+                .metadata(FUEL_VALUE, fuel.getRight())
                 .addTo(BartWorksRecipeMaps.acidGenFuels);
         }
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Redstone, 1))
             .itemOutputs(Materials.Empty.getCells(1))
-            .metadata(GT_RecipeConstants.FUEL_VALUE, 10)
+            .metadata(FUEL_VALUE, 10)
             .addTo(BartWorksRecipeMaps.acidGenFuels);
     }
 
@@ -635,35 +636,35 @@ public class AdditionalRecipes {
             .itemInputs(WerkstoffLoader.Tiberium.get(bolt))
             .duration(0)
             .eut(0)
-            .specialValue(12_500)
+            .metadata(FUEL_VALUE, 12_500)
             .addTo(smallNaquadahReactorFuels);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.Tiberium.get(stick))
             .duration(0)
             .eut(0)
-            .specialValue(62_500)
+            .metadata(FUEL_VALUE, 62_500)
             .addTo(largeNaquadahReactorFuels);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.Tiberium.get(stickLong))
             .duration(0)
             .eut(0)
-            .specialValue(125_000)
+            .metadata(FUEL_VALUE, 125_000)
             .addTo(hugeNaquadahReactorFuels);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.Tiberium.get(stick))
             .duration(0)
             .eut(0)
-            .specialValue(31_250)
+            .metadata(FUEL_VALUE, 31_250)
             .addTo(extremeNaquadahReactorFuels);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.Tiberium.get(stickLong))
             .duration(0)
             .eut(0)
-            .specialValue(125_000)
+            .metadata(FUEL_VALUE, 125_000)
             .addTo(ultraHugeNaquadahReactorFuels);
 
         LoadItemContainers.run();

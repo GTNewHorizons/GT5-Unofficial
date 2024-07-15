@@ -11,6 +11,7 @@ import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
@@ -62,7 +63,7 @@ public class RecipeLoader_GlueLine {
             .fluidOutputs(MISC_MATERIALS.ACETIC_ANHYDRIDE.getFluidStack(1000))
             .duration(10 * SECONDS)
             .eut(500)
-            .specialValue(3)
+            .metadata(CHEMPLANT_CASING_TIER,3)
             .addTo(chemicalPlantRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(18))
@@ -75,7 +76,7 @@ public class RecipeLoader_GlueLine {
                 MISC_MATERIALS.ACETIC_ANHYDRIDE.getFluidStack(950))
             .duration(2 * MINUTES + 30 * SECONDS)
             .eut(1000)
-            .specialValue(4)
+            .metadata(CHEMPLANT_CASING_TIER,4)
             .addTo(chemicalPlantRecipes);
         // Na2CO3 + NaCN + C2H3O2Cl + 2HCl = C3H3NO2 + 3NaCl + CO2 + H2O
         GT_Values.RA.stdBuilder()
@@ -90,7 +91,7 @@ public class RecipeLoader_GlueLine {
             .fluidOutputs(Materials.CarbonDioxide.getGas(1000), GT_ModHandler.getWater(1000))
             .duration(20 * SECONDS)
             .eut(1000)
-            .specialValue(4)
+            .metadata(CHEMPLANT_CASING_TIER,4)
             .addTo(chemicalPlantRecipes);
         // CuSO4 + 5C3H3NO2 + 5C2H6O = CuSO4·5(H2O) + 5C5H7NO2
         GT_Values.RA.stdBuilder()
@@ -104,7 +105,7 @@ public class RecipeLoader_GlueLine {
             .fluidOutputs(MISC_MATERIALS.ETHYL_CYANOACETATE.getFluidStack(5000))
             .duration(8 * MINUTES + 20 * SECONDS)
             .eut(6000)
-            .specialValue(5)
+            .metadata(CHEMPLANT_CASING_TIER,5)
             .addTo(chemicalPlantRecipes);
         // C3H3NO2 + C2H6O = C5H7NO2 + H2O
         GT_Values.RA.stdBuilder()
@@ -113,7 +114,7 @@ public class RecipeLoader_GlueLine {
             .fluidOutputs(MISC_MATERIALS.ETHYL_CYANOACETATE.getFluidStack(1000))
             .duration(16 * MINUTES + 40 * SECONDS)
             .eut(6000)
-            .specialValue(5)
+            .metadata(CHEMPLANT_CASING_TIER,5)
             .addTo(chemicalPlantRecipes);
 
         BioRecipes.mFormaldehyde = FluidUtils.getFluidStack("fluid.formaldehyde", 1)
@@ -129,7 +130,7 @@ public class RecipeLoader_GlueLine {
             .fluidOutputs(MISC_MATERIALS.CYANOACRYLATE_POLYMER.getFluidStack(100), FluidUtils.getWater(1000))
             .duration(10 * SECONDS)
             .eut(8000)
-            .specialValue(5)
+            .metadata(CHEMPLANT_CASING_TIER,5)
             .addTo(chemicalPlantRecipes);
         // CH4 + NH3 + 3O = HCN + 3H2O
         GT_Values.RA.stdBuilder()
@@ -141,7 +142,7 @@ public class RecipeLoader_GlueLine {
             .fluidOutputs(MISC_MATERIALS.HYDROGEN_CYANIDE.getFluidStack(2000), FluidUtils.getWater(6000))
             .duration(10 * SECONDS)
             .eut(500)
-            .specialValue(3)
+            .metadata(CHEMPLANT_CASING_TIER,3)
             .addTo(chemicalPlantRecipes);
 
     }
