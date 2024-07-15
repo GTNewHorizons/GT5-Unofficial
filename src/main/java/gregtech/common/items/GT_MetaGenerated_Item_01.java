@@ -3098,18 +3098,18 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Electromagnet_Iron.ID,
                 "Iron Electromagnet",
                 "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
-                    + "150% Speed/n "
+                    + "100% Speed/n "
                     + EnumChatFormatting.DARK_PURPLE
                     + "80% EU Cost/n "
                     + EnumChatFormatting.AQUA
-                    + "6 Parallels",
+                    + "8 Parallels",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 8)));
         ItemList.Electromagnet_Steel.set(
             addItem(
                 Electromagnet_Steel.ID,
                 "Steel Electromagnet",
                 "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
-                    + "200% Speed/n "
+                    + "125% Speed/n "
                     + EnumChatFormatting.DARK_PURPLE
                     + "75% EU Cost/n "
                     + EnumChatFormatting.AQUA
@@ -3120,7 +3120,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Electromagnet_Neodymium.ID,
                 "Neodymium Electromagnet",
                 "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
-                    + "250% Speed/n "
+                    + "150% Speed/n "
                     + EnumChatFormatting.DARK_PURPLE
                     + "70% EU Cost/n "
                     + EnumChatFormatting.AQUA
@@ -3131,7 +3131,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Electromagnet_Samarium.ID,
                 EnumChatFormatting.YELLOW + "Samarium Electromagnet",
                 "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
-                    + "300% Speed/n "
+                    + "200% Speed/n "
                     + EnumChatFormatting.DARK_PURPLE
                     + "60% EU Cost/n "
                     + EnumChatFormatting.AQUA
@@ -3142,7 +3142,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Electromagnet_Tengam.ID,
                 EnumChatFormatting.GREEN + "Tengam Electromagnet",
                 "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
-                    + "500% Speed/n "
+                    + "250% Speed/n "
                     + EnumChatFormatting.DARK_PURPLE
                     + "50% EU Cost/n "
                     + EnumChatFormatting.AQUA

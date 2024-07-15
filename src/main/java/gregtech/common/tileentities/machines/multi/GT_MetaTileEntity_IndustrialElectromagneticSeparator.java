@@ -66,11 +66,11 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     public enum MagnetTiers {
 
-        Iron(6, 0.8F, 1.5F, false),
-        Steel(24, 0.75F, 2F, false),
-        Neodymium(48, 0.7F, 2.5F, false),
-        Samarium(96, 0.6F, 3F, false),
-        Tengam(256, 0.5F, 5F, true);
+        Iron(8, 0.8F, 1F, false),
+        Steel(24, 0.75F, 1.25F, false),
+        Neodymium(48, 0.7F, 1.5F, false),
+        Samarium(96, 0.6F, 2F, false),
+        Tengam(256, 0.5F, 2.5F, true);
 
         final int maxParallel;
         final float euModifier, speedBoost;
@@ -203,7 +203,9 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")
-            .addCasingInfoMin("Electromagnetic Casings", 6, false)
+            .addCasingInfoMin("Electromagnetic Casings", 64, false)
+            .addOtherStructurePart("Magnetic Neodymium Frame Box", "40")
+            .addOtherStructurePart("Magnetic Samarium Frame Box", "45")
             .addOtherStructurePart("MagTech Housing", "1 Only, Any Casing")
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
