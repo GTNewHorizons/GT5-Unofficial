@@ -7140,9 +7140,8 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addCraftingRecipe(
             ItemList.Hatch_Electromagnet.get(1L),
             bitsd,
-            new Object[] { "CBC", "FMF", "CBC", 'M', ItemList.Hatch_Input_Bus_IV, 'B',
-                OrePrefixes.circuit.get(Materials.Elite), 'C', OrePrefixes.plate.get(Materials.TungstenSteel), 'F',
-                ItemList.Conveyor_Module_IV });
+            new Object[] { "CFC", "FMF", "CFC", 'M', ItemList.Hatch_Input_Bus_IV, 'C',
+                OrePrefixes.plate.get(Materials.Polystyrene), 'F', new ItemStack(Blocks.iron_bars, 1) });
     }
 
     @Override

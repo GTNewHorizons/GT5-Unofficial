@@ -3146,7 +3146,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                     + EnumChatFormatting.DARK_PURPLE
                     + "50% EU Cost/n "
                     + EnumChatFormatting.AQUA
-                    + "256 Parallels"
+                    + "256 Parallels/n "
                     + EnumChatFormatting.BOLD
                     + EnumChatFormatting.GREEN
                     + "Can Use Exotic Hatches",

@@ -894,11 +894,13 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 32L),
                     GT_OreDictUnificator.get(OrePrefixes.ring, Materials.SteelMagnetic, 16L),
                     ItemList.LuV_Coil.get(16L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 8L))
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 32L),
+                    ItemList.Field_Generator_LuV.get(2))
                 .itemOutputs(ItemList.Electromagnet_Steel.get(1))
                 .fluidInputs(
                     new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
-                    Materials.Cobalt.getMolten(1296))
+                    Materials.Cobalt.getMolten(2304),
+                    Materials.VanadiumGallium.getMolten(2304))
                 .duration(60 * SECONDS)
                 .eut((int) TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -911,11 +913,13 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 32L),
                     GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NeodymiumMagnetic, 16L),
                     ItemList.ZPM_Coil.get(16L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorZPM, 32L))
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorZPM, 32L),
+                    ItemList.Field_Generator_ZPM.get(2))
                 .itemOutputs(ItemList.Electromagnet_Neodymium.get(1))
                 .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
-                    Materials.Cobalt.getMolten(1296))
+                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000),
+                    Materials.Cobalt.getMolten(4608),
+                    Materials.Osmiridium.getMolten(2304))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -925,14 +929,16 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(RESEARCH_ITEM, ItemList.Electromagnet_Neodymium.get(1))
                 .metadata(RESEARCH_TIME, 60 * SECONDS)
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 32L),
+                    GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 32L),
                     GT_OreDictUnificator.get(OrePrefixes.ring, Materials.SamariumMagnetic, 32L),
                     ItemList.UV_Coil.get(32L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 64L))
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 64L),
+                    ItemList.Field_Generator_UV.get(2))
                 .itemOutputs(ItemList.Electromagnet_Samarium.get(1))
                 .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
-                    Materials.Cobalt.getMolten(1296))
+                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000),
+                    Materials.Cobalt.getMolten(6912),
+                    Materials.ElectrumFlux.getMolten(2304))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .addTo(AssemblyLine);
@@ -942,14 +948,16 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(RESEARCH_ITEM, ItemList.Electromagnet_Samarium.get(1))
                 .metadata(RESEARCH_TIME, 60 * SECONDS)
                 .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 32L),
+                    GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 32L),
                     GT_OreDictUnificator.get(OrePrefixes.ring, Materials.TengamAttuned, 32L),
                     ItemList.UHV_Coil.get(32L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUHV, 64L))
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUHV, 64L),
+                    ItemList.Field_Generator_UHV.get(2))
                 .itemOutputs(ItemList.Electromagnet_Tengam.get(1))
                 .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
-                    Materials.Cobalt.getMolten(1296))
+                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 64000),
+                    Materials.Cobalt.getMolten(9216),
+                    Materials.Naquadria.getMolten(2304))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(AssemblyLine);
