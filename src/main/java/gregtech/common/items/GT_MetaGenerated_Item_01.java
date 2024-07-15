@@ -183,6 +183,11 @@ import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UMV;
 import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UV;
 import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UXV;
 import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_ZPM;
+import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Iron;
+import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Neodymium;
+import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Samarium;
+import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Steel;
+import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Tengam;
 import static gregtech.common.items.ID_MetaItem_01.Emitter_EV;
 import static gregtech.common.items.ID_MetaItem_01.Emitter_HV;
 import static gregtech.common.items.ID_MetaItem_01.Emitter_IV;
@@ -441,6 +446,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 
 import gregtech.api.GregTech_API;
@@ -3087,7 +3093,64 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 16L)));
-
+        ItemList.Electromagnet_Iron.set(
+            addItem(
+                Electromagnet_Iron.ID,
+                "Iron Electromagnet",
+                "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
+                    + "150% Speed/n "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + "80% EU Cost/n "
+                    + EnumChatFormatting.AQUA
+                    + "6 Parallels",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 8)));
+        ItemList.Electromagnet_Steel.set(
+            addItem(
+                Electromagnet_Steel.ID,
+                "Steel Electromagnet",
+                "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
+                    + "200% Speed/n "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + "75% EU Cost/n "
+                    + EnumChatFormatting.AQUA
+                    + "24 Parallels",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 16)));
+        ItemList.Electromagnet_Neodymium.set(
+            addItem(
+                Electromagnet_Neodymium.ID,
+                "Neodymium Electromagnet",
+                "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
+                    + "250% Speed/n "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + "70% EU Cost/n "
+                    + EnumChatFormatting.AQUA
+                    + "48 Parallels",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 24)));
+        ItemList.Electromagnet_Samarium.set(
+            addItem(
+                Electromagnet_Samarium.ID,
+                EnumChatFormatting.YELLOW + "Samarium Electromagnet",
+                "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
+                    + "300% Speed/n "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + "60% EU Cost/n "
+                    + EnumChatFormatting.AQUA
+                    + "96 Parallels",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 32)));
+        ItemList.Electromagnet_Tengam.set(
+            addItem(
+                Electromagnet_Tengam.ID,
+                EnumChatFormatting.GREEN + "Tengam Electromagnet",
+                "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
+                    + "500% Speed/n "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + "50% EU Cost/n "
+                    + EnumChatFormatting.AQUA
+                    + "256 Parallels/n "
+                    + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.GREEN
+                    + "Can Use Exotic Hatches",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 40)));
         removeRecipes();
         setBurnValues();
         oredictBlacklistEntries();
@@ -3239,6 +3302,11 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         setFluidContainerStats(32000 + Large_Fluid_Cell_Iridium.ID, 8_192_000L, 2L);
         setFluidContainerStats(32000 + Large_Fluid_Cell_Osmium.ID, 32_768_000L, 1L);
         setFluidContainerStats(32000 + Large_Fluid_Cell_Neutronium.ID, 131_072_000L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Iron.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Steel.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Neodymium.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Samarium.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Tengam.ID, 0L, 1L);
     }
 
     private void oredictBlacklistEntries() {
