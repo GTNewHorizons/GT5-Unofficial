@@ -17,8 +17,8 @@ import gregtech.api.util.GT_Utility;
 public class GlitchEffectRenderer extends GT_GeneratedMaterial_Renderer {
 
     public Random rand = new Random();
-    int[] red = new int[] { 255, 50, 50 };
-    int[] cyan = new int[] { 0, 220, 220 };
+    int[] red = new int[] { 255, 50, 50, 192 };
+    int[] cyan = new int[] { 0, 220, 220, 160 };
     int counter = 0;
     double offsetRed = 0;
     double offsetCyan = 0;
@@ -40,7 +40,7 @@ public class GlitchEffectRenderer extends GT_GeneratedMaterial_Renderer {
             if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
                 t.startDrawingQuads();
                 if (shouldModulateColor) {
-                    t.setColorRGBA_F(color[0] / 255.0F, color[1] / 255.0F, color[2] / 255.0F, 0.75f);
+                    t.setColorRGBA_F(color[0] / 255.0F, color[1] / 255.0F, color[2] / 255.0F, color[3] / 255.0F);
                 } else {
                     t.setColorRGBA_F(1f, 1f, 1f, 0.75f);
                 }
