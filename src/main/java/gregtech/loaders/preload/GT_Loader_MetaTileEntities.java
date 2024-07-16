@@ -121,6 +121,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_DEGASIFIER_CONTROL;
 import static gregtech.api.enums.MetaTileEntityIDs.HATCH_LENS_HOUSING;
 import static gregtech.api.enums.MetaTileEntityIDs.HATCH_LENS_INDICATOR;
 import static gregtech.api.enums.MetaTileEntityIDs.HATCH_PH_SENSOR;
@@ -592,6 +593,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Transcenden
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_Hatch_DegasifierControlHatch;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_LensHousing;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_LensIndicator;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationPlant;
@@ -904,6 +906,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 PURIFICATION_UNIT_DEGASIFIER.ID,
                 "multimachine.purificationunitdegasifier",
                 "Degasifier Purification Unit").getStackForm(1L));
+        ItemList.Hatch_DegasifierControl.set(
+            new GT_MetaTileEntity_Hatch_DegasifierControlHatch(
+                HATCH_DEGASIFIER_CONTROL.ID,
+                "hatch.degasifiercontrol",
+                "Degasifier Control Hatch",
+                8).getStackForm(1L));
         ItemList.Machine_Multi_LargeBoiler_Bronze.set(
             new GT_MetaTileEntity_LargeBoiler_Bronze(
                 LARGE_BRONZE_BOILER_CONTROLLER.ID,
