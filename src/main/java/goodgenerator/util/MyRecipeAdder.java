@@ -20,31 +20,6 @@ public class MyRecipeAdder {
 
     public static final MyRecipeAdder instance = new MyRecipeAdder();
 
-    @Deprecated
-    public void addLiquidMentalFuel(FluidStack input, FluidStack output, int EUt, int ticks) {
-        GT_Values.RA.stdBuilder()
-            .fluidInputs(input)
-            .fluidOutputs(output)
-            .duration(ticks)
-            .eut(0)
-            .metadata(LNG_BASIC_OUTPUT, EUt)
-            .addTo(naquadahReactorFuels);
-    }
-
-    @Deprecated
-    public void addNaquadahFuelRefineRecipe(FluidStack[] input1, ItemStack[] input2, FluidStack output, int EUt,
-        int ticks, int tier) {
-        GT_Values.RA.stdBuilder()
-            .itemInputs(input2)
-            .fluidInputs(input1)
-            .fluidOutputs(output)
-            .duration(ticks)
-            .eut(EUt)
-            .metadata(NFR_COIL_TIER,tier)
-            .noOptimize()
-            .addTo(naquadahFuelRefineFactoryRecipes);
-    }
-
     public void addNeutronActivatorRecipe(FluidStack[] input1, ItemStack[] input2, FluidStack[] output1,
         ItemStack[] output2, int ticks, int maxNKE, int minNKE) {
         if (maxNKE <= 0) maxNKE = 1;
