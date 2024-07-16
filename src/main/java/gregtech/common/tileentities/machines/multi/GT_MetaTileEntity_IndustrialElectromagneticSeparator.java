@@ -212,10 +212,10 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")
-            .addCasingInfoMin("Electromagnetic Casings", 64, false)
+            .addCasingInfoMin("MagTech Casings", 64, false)
             .addOtherStructurePart("Magnetic Neodymium Frame Box", "x40")
             .addOtherStructurePart("Magnetic Samarium Frame Box", "x45")
-            .addOtherStructurePart("MagTech Housing", "x1 Only, Any Casing")
+            .addOtherStructurePart("Electromagnet Housing", "x1 Only, Any Casing")
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
@@ -258,6 +258,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             if (mExoticEnergyHatches.size() > 1) return false;
             if (mExoticEnergyHatches.get(0)
                 .getConnectionType() == GT_MetaTileEntity_Hatch.ConnectionType.LASER) return false;
+            if (mExoticEnergyHatches.get(0).maxWorkingAmperesIn() > 64) return false;
         }
 
         // All checks passed!
