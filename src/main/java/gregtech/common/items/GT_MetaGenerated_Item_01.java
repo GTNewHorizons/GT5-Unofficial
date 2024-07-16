@@ -3149,7 +3149,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                     + "256 Parallels/n "
                     + EnumChatFormatting.BOLD
                     + EnumChatFormatting.GREEN
-                    + "Can Use Exotic Hatches",
+                    + "Can Use Multiamp Hatches",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 40)));
         removeRecipes();
         setBurnValues();

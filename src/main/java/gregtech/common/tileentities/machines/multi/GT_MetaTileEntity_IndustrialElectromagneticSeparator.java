@@ -9,6 +9,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE_GL
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
+
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_WirelessMulti;
 import gregtech.api.enums.Materials;
 
 import java.util.ArrayList;
@@ -18,6 +22,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -189,6 +194,8 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         return rTexture;
     }
 
+    final String authorBaps = EnumChatFormatting.GOLD + "Ba" + EnumChatFormatting.LIGHT_PURPLE + "ps";
+
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
@@ -197,16 +204,16 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             .addInfo("Use screwdriver to switch mode")
             .addInfo("Insert an electromagnet into the electromagnet housing to use")
             .addInfo("Better electromagnets give further bonuses")
-            .addInfo("With Tengam electromagnet, exotic hatches are allowed")
+            .addInfo("With Tengam electromagnet, multiamp (NOT laser) hatches are allowed")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addInfo(AuthorFourIsTheNumber)
+            .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.GRAY + " & " + authorBaps)
             .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")
             .addCasingInfoMin("Electromagnetic Casings", 64, false)
-            .addOtherStructurePart("Magnetic Neodymium Frame Box", "40")
-            .addOtherStructurePart("Magnetic Samarium Frame Box", "45")
-            .addOtherStructurePart("MagTech Housing", "1 Only, Any Casing")
+            .addOtherStructurePart("Magnetic Neodymium Frame Box", "x40")
+            .addOtherStructurePart("Magnetic Samarium Frame Box", "x45")
+            .addOtherStructurePart("MagTech Housing", "x1 Only, Any Casing")
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
@@ -242,8 +249,20 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
         mMagHatches.clear();
+        mExoticEnergyHatches.clear();
 
-        return checkPiece(STRUCTURE_PIECE_MAIN, 5, 7, 0) && mCasingAmount >= 6 && mMagHatches.size() == 1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 5, 7, 0)) return false;
+        if (mCasingAmount < 64) return false;
+        if (mMagHatches.size() != 1) return false;
+
+        //If there are exotic hatches, ensure there is only 1, and it is not laser. Only multiamp allowed
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (mExoticEnergyHatches.size() > 1) return false;
+            if (mExoticEnergyHatches.get(0).getConnectionType() == GT_MetaTileEntity_Hatch.ConnectionType.LASER) return false;
+        }
+
+        //All checks passed!
+        return true;
     }
 
     @Override
