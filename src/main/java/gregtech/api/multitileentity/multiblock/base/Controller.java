@@ -4,11 +4,9 @@ import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static mcp.mobius.waila.api.SpecialChars.*;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,6 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,6 +30,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
@@ -57,10 +57,10 @@ import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.MuTEProcessingLogic;
 import gregtech.api.logic.PowerLogic;
+import gregtech.api.multitileentity.WeakTargetRef;
 import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_AddToolTips;
 import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
@@ -75,16 +75,15 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /**
  * Multi Tile Entities - or MuTEs - don't have dedicated hatches, but their casings can become hatches.
  */
-public abstract class Controller<C extends Controller<C, P>, P extends MuTEProcessingLogic<P>>
-    extends MultiTileBasicMachine<P>
-    implements IAlignment, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable {
+public abstract class Controller<C extends Controller<C, P>, P extends MuTEProcessingLogic<P>> extends
+    MultiTileBasicMachine<P> implements IAlignment, IMultiBlockController, IDescribable, ISurvivalConstructable {
 
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
 
     private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltip = new ConcurrentHashMap<>();
-    private final List<UpgradeCasing> upgradeCasings = new ArrayList<>();
-    private final List<FunctionalCasing> functionalCasings = new ArrayList<>();
+    private final List<WeakTargetRef<UpgradeCasing>> upgradeCasings = new ArrayList<>();
+    private final List<WeakTargetRef<FunctionalCasing>> functionalCasings = new ArrayList<>();
     protected BuildState buildState = new BuildState();
 
     private boolean structureOkay = false, structureChanged = false;
@@ -106,20 +105,20 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
 
     // A list of sides
     // Each side has a list of parts that have a cover that need to be ticked
-    protected List<LinkedList<WeakReference<IMultiBlockPart>>> registeredCoveredParts = Arrays.asList(
-        new LinkedList<>(),
-        new LinkedList<>(),
-        new LinkedList<>(),
-        new LinkedList<>(),
-        new LinkedList<>(),
-        new LinkedList<>());
+    protected List<List<WeakTargetRef<IMultiBlockPart>>> registeredCoveredParts = Arrays.asList(
+        new ArrayList<>(),
+        new ArrayList<>(),
+        new ArrayList<>(),
+        new ArrayList<>(),
+        new ArrayList<>(),
+        new ArrayList<>());
 
     // A list for each purpose that a casing can register to, to be ticked
-    protected List<LinkedList<WeakReference<IMultiBlockPart>>> registeredTickableParts = new ArrayList<>();
+    protected List<List<WeakTargetRef<IMultiBlockPart>>> registeredTickableParts = new ArrayList<>();
 
     public Controller() {
         for (int i = 0; i < MultiTileCasingPurpose.values().length; i++) {
-            registeredTickableParts.add(new LinkedList<>());
+            registeredTickableParts.add(new ArrayList<>());
         }
     }
 
@@ -159,11 +158,13 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     protected void calculateTier() {
-        double sum = 0;
-        if (functionalCasings == null || functionalCasings.size() == 0) {
+        if (functionalCasings.size() == 0) {
             return;
         }
-        for (FunctionalCasing casing : functionalCasings) {
+        double sum = 0;
+        for (WeakTargetRef<FunctionalCasing> casingRef : functionalCasings) {
+            final FunctionalCasing casing = casingRef.get();
+            if (casing == null) continue;
             sum += casing.getPartTier() * casing.getPartModifier();
         }
         tier = (int) Math.min(Math.floor(sum / functionalCasings.size()), 14);
@@ -434,17 +435,17 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     public void registerCoveredPartOnSide(final ForgeDirection side, IMultiBlockPart part) {
         if (side == ForgeDirection.UNKNOWN) return;
 
-        final LinkedList<WeakReference<IMultiBlockPart>> registeredCovers = registeredCoveredParts.get(side.ordinal());
+        final List<WeakTargetRef<IMultiBlockPart>> registeredCovers = registeredCoveredParts.get(side.ordinal());
         // TODO: Make sure that we're not already registered on this side
-        registeredCovers.add(new WeakReference<>(part));
+        registeredCovers.add(new WeakTargetRef<>(part, true));
     }
 
     @Override
     public void unregisterCoveredPartOnSide(final ForgeDirection side, IMultiBlockPart aPart) {
         if (side == ForgeDirection.UNKNOWN) return;
 
-        final LinkedList<WeakReference<IMultiBlockPart>> coveredParts = registeredCoveredParts.get(side.ordinal());
-        final Iterator<WeakReference<IMultiBlockPart>> it = coveredParts.iterator();
+        final List<WeakTargetRef<IMultiBlockPart>> coveredParts = registeredCoveredParts.get(side.ordinal());
+        final Iterator<WeakTargetRef<IMultiBlockPart>> it = coveredParts.listIterator();
         while (it.hasNext()) {
             final IMultiBlockPart part = (it.next()).get();
             if (part == null || part == aPart) it.remove();
@@ -453,8 +454,8 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
 
     @Override
     public void registerCaseWithPurpose(MultiTileCasingPurpose purpose, IMultiBlockPart part) {
-        final LinkedList<WeakReference<IMultiBlockPart>> tickableParts = registeredTickableParts.get(purpose.ordinal());
-        final Iterator<WeakReference<IMultiBlockPart>> it = tickableParts.iterator();
+        final List<WeakTargetRef<IMultiBlockPart>> tickableParts = registeredTickableParts.get(purpose.ordinal());
+        final Iterator<WeakTargetRef<IMultiBlockPart>> it = tickableParts.listIterator();
         while (it.hasNext()) {
             final IMultiBlockPart next = (it.next()).get();
             if (next == null) {
@@ -463,13 +464,13 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
                 return;
             }
         }
-        tickableParts.add(new WeakReference<>(part));
+        tickableParts.add(new WeakTargetRef<>(part, true));
     }
 
     @Override
     public void unregisterCaseWithPurpose(MultiTileCasingPurpose purpose, IMultiBlockPart part) {
-        final LinkedList<WeakReference<IMultiBlockPart>> tickableParts = registeredTickableParts.get(purpose.ordinal());
-        final Iterator<WeakReference<IMultiBlockPart>> it = tickableParts.iterator();
+        final List<WeakTargetRef<IMultiBlockPart>> tickableParts = registeredTickableParts.get(purpose.ordinal());
+        final Iterator<WeakTargetRef<IMultiBlockPart>> it = tickableParts.listIterator();
         while (it.hasNext()) {
             final IMultiBlockPart next = (it.next()).get();
             if (next == null || next == part) it.remove();
@@ -489,9 +490,8 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     private boolean tickCovers() {
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             // TODO: Tick controller covers, if any
-            final LinkedList<WeakReference<IMultiBlockPart>> coveredParts = this.registeredCoveredParts
-                .get(side.ordinal());
-            final Iterator<WeakReference<IMultiBlockPart>> it = coveredParts.iterator();
+            final List<WeakTargetRef<IMultiBlockPart>> coveredParts = this.registeredCoveredParts.get(side.ordinal());
+            final Iterator<WeakTargetRef<IMultiBlockPart>> it = coveredParts.listIterator();
             while (it.hasNext()) {
                 final IMultiBlockPart part = (it.next()).get();
                 if (part == null) {
@@ -507,9 +507,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
 
     @Override
     public void onTick(long tick, boolean isServerSide) {
-        if (!tickCovers()) {
-            return;
-        }
+        tickCovers();
     }
 
     @Override
@@ -537,9 +535,9 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
 
     protected void pushItemOutputs(long tick) {
         if (tick % AUTO_OUTPUT_FREQUENCY_TICK != 0) return;
-        final LinkedList<WeakReference<IMultiBlockPart>> registeredItemOutputs = registeredTickableParts
+        final List<WeakTargetRef<IMultiBlockPart>> registeredItemOutputs = registeredTickableParts
             .get(MultiTileCasingPurpose.ItemOutput.ordinal());
-        final Iterator<WeakReference<IMultiBlockPart>> itemOutputIterator = registeredItemOutputs.iterator();
+        final Iterator<WeakTargetRef<IMultiBlockPart>> itemOutputIterator = registeredItemOutputs.listIterator();
         while (itemOutputIterator.hasNext()) {
             final IMultiBlockPart part = (itemOutputIterator.next()).get();
             if (part == null) {
@@ -569,7 +567,8 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
                 (byte) 1,
                 part.getSizeInventory());
             for (int i = 0; i < part.getSizeInventory(); i++) {
-                if (part.getStackInSlot(i) != null && part.getStackInSlot(i).stackSize <= 0) {
+                final ItemStack stack = part.getStackInSlot(i);
+                if (stack != null && stack.stackSize <= 0) {
                     part.setInventorySlotContents(i, null);
                 }
             }
@@ -579,9 +578,9 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
 
     protected void pushFluidOutputs(long tick) {
         if (tick % AUTO_OUTPUT_FREQUENCY_TICK != 0) return;
-        final LinkedList<WeakReference<IMultiBlockPart>> registeredFluidOutputs = registeredTickableParts
+        final List<WeakTargetRef<IMultiBlockPart>> registeredFluidOutputs = registeredTickableParts
             .get(MultiTileCasingPurpose.FluidOutput.ordinal());
-        final Iterator<WeakReference<IMultiBlockPart>> fluidOutputIterator = registeredFluidOutputs.iterator();
+        final Iterator<WeakTargetRef<IMultiBlockPart>> fluidOutputIterator = registeredFluidOutputs.listIterator();
         while (fluidOutputIterator.hasNext()) {
             final IMultiBlockPart part = (fluidOutputIterator.next()).get();
             if (part == null) {
@@ -696,11 +695,11 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     public void registerSpecialCasings(MultiBlockPart part) {
-        if (part instanceof UpgradeCasing) {
-            upgradeCasings.add((UpgradeCasing) part);
+        if (part instanceof UpgradeCasing upgradeCasing) {
+            upgradeCasings.add(new WeakTargetRef<>(upgradeCasing, true));
         }
-        if (part instanceof FunctionalCasing) {
-            functionalCasings.add((FunctionalCasing) part);
+        if (part instanceof FunctionalCasing functionalCasing) {
+            functionalCasings.add(new WeakTargetRef<>(functionalCasing, true));
         }
     }
 
@@ -717,12 +716,13 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
         };
     }
 
-    @Nullable
-    public FluidInventoryLogic getFluidLogic(@Nonnull InventoryType type, @Nullable UUID id) {
+    @Override
+    @Nonnull
+    public @NotNull FluidInventoryLogic getFluidLogic(@Nonnull InventoryType type, @Nullable UUID id) {
         return switch (type) {
             case Input -> controllerFluidInput.getInventoryLogic(id);
             case Output -> controllerFluidOutput.getInventoryLogic(id);
-            default -> null;
+            default -> throw new IllegalStateException("Unexpected value: " + type);
         };
     }
 
@@ -755,9 +755,8 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
                 FluidInventoryLogic input = controllerFluidInput.removeInventory(id);
                 FluidInventoryLogic output = controllerFluidOutput.removeInventory(id);
                 yield new FluidInventoryLogic(
-                    Arrays.asList(input, output)
-                        .stream()
-                        .map(inv -> inv.getInventory())
+                    Stream.of(input, output)
+                        .map(FluidInventoryLogic::getInventory)
                         .collect(Collectors.toList()));
             }
         };
@@ -796,12 +795,12 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    @Nullable
+    @Nonnull
     public ItemInventoryLogic getItemLogic(@Nonnull InventoryType type, @Nullable UUID id) {
         return switch (type) {
             case Input -> controllerItemInput.getInventoryLogic(id);
             case Output -> controllerItemOutput.getInventoryLogic(id);
-            default -> null;
+            default -> throw new IllegalStateException("Unexpected value: " + type);
         };
     }
 

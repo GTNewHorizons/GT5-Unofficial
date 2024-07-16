@@ -34,7 +34,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -124,7 +123,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                     .dot(1)
                     .build(),
                 buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
-                    .atLeast(InputBus, OutputBus, Maintenance, Energy, ExoticEnergy, Muffler)
+                    .atLeast(InputBus, OutputBus, Maintenance, Energy, ExoticEnergy)
                     .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
                     .dot(1)
                     .buildAndChain(
@@ -209,7 +208,6 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             .addInfo("Insert an electromagnet into the electromagnet housing to use")
             .addInfo("Better electromagnets give further bonuses")
             .addInfo("With Tengam electromagnet, multiamp (NOT laser) hatches are allowed")
-            .addPollutionAmount(getPollutionPerSecond(null))
             .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.GRAY + " & " + authorBaps)
             .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
@@ -222,7 +220,6 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -245,15 +242,11 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     }
 
     @Override
-    public int getPollutionPerSecond(ItemStack aStack) {
-        return GT_Mod.gregtechproxy.mPollutionIndustrialElectromagneticSeparatorPerSecond;
-    }
-
-    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
         mMagHatches.clear();
         mExoticEnergyHatches.clear();
+        mEnergyHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 5, 7, 0)) return false;
         if (mCasingAmount < 64) return false;
@@ -261,6 +254,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
         // If there are exotic hatches, ensure there is only 1, and it is not laser. Only multiamp allowed
         if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty()) return false;
             if (mExoticEnergyHatches.size() > 1) return false;
             if (mExoticEnergyHatches.get(0)
                 .getConnectionType() == GT_MetaTileEntity_Hatch.ConnectionType.LASER) return false;
