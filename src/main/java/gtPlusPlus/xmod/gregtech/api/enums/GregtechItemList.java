@@ -242,6 +242,9 @@ public enum GregtechItemList implements GregtechItemContainer {
     Industrial_Electrolyzer,
     Casing_Electrolyzer,
 
+    // Industrial Electromagnetic Separator
+    Industrial_Electromagnetic_Separator,
+
     // Industrial Maceration Stack
     Industrial_MacerationStack,
     Casing_MacerationStack,

@@ -4823,6 +4823,11 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Titanium), 'F',
                 OrePrefixes.frameGt.get(Materials.Titanium) });
         GT_ModHandler.addCraftingRecipe(
+            ItemList.Casing_Electromagnetic_Separator.get(1L),
+            bits,
+            new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.TungstenSteel), 'F',
+                OrePrefixes.frameGt.get(Materials.Titanium) });
+        GT_ModHandler.addCraftingRecipe(
             ItemList.Casing_HeatProof.get(1L),
             bits,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Invar), 'F',
@@ -7133,6 +7138,22 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 OrePrefixes.circuit.get(Materials.Basic) });
     }
 
+    // registerMachineTypes is called after registerShapedCrafting, so you cannot make shaped recipes that use tiered
+    // machines. This runs after registerMachineTypes :)
+    private static void registerPostMachines() {
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Machine_Multi_IndustrialElectromagneticSeparator.get(1L),
+            bitsd,
+            new Object[] { "CBC", "FMF", "CBC", 'M', ItemList.Machine_IV_ElectromagneticSeparator, 'B',
+                OrePrefixes.circuit.get(Materials.Elite), 'C', OrePrefixes.plate.get(Materials.TungstenSteel), 'F',
+                ItemList.Conveyor_Module_IV });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hatch_Electromagnet.get(1L),
+            bitsd,
+            new Object[] { "CFC", "FMF", "CFC", 'M', ItemList.Hatch_Input_Bus_IV, 'C',
+                OrePrefixes.plate.get(Materials.Polystyrene), 'F', new ItemStack(Blocks.iron_bars, 1) });
+    }
+
     @Override
     public void run() {
         registerShapelessCraftingRecipes();
@@ -7140,6 +7161,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_Log.out.println("GT_Mod: Recipes for MetaTileEntities.");
         registerMachineTypes();
         GT_PCBFactoryMaterialLoader.load();
+        registerPostMachines();
         run4();
     }
 }

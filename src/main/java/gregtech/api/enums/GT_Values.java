@@ -650,6 +650,7 @@ public class GT_Values {
     public static final String AuthorQuerns = "Author: " + EnumChatFormatting.RED + "Querns";
     public static final String AuthorSilverMoon = "Author: " + EnumChatFormatting.AQUA + "SilverMoon";
     public static final String AuthorTheEpicGamer274 = "Author: " + "TheEpicGamer274";
+    public static final String AuthorFourIsTheNumber = "Author: " + EnumChatFormatting.LIGHT_PURPLE + "FourIsTheNumber";
 
     public static final String AuthorEvgenWarGold = "" + EnumChatFormatting.RED
         + EnumChatFormatting.BOLD
