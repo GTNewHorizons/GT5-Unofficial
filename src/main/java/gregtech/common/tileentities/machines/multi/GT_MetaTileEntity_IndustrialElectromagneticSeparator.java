@@ -34,7 +34,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -247,6 +246,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         mCasingAmount = 0;
         mMagHatches.clear();
         mExoticEnergyHatches.clear();
+        mEnergyHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 5, 7, 0)) return false;
         if (mCasingAmount < 64) return false;
@@ -254,6 +254,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
         // If there are exotic hatches, ensure there is only 1, and it is not laser. Only multiamp allowed
         if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty()) return false;
             if (mExoticEnergyHatches.size() > 1) return false;
             if (mExoticEnergyHatches.get(0)
                 .getConnectionType() == GT_MetaTileEntity_Hatch.ConnectionType.LASER) return false;
