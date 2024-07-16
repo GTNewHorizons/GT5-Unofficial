@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -71,12 +72,20 @@ public class GT_MetaTileEntity_MagHatch extends GT_MetaTileEntity_Hatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_EMS_HOUSING) };
+        return new ITexture[]{aBaseTexture, TextureFactory.builder()
+            .addIcon(OVERLAY_EMS_HOUSING)
+            .extFacing()
+            .build()
+        };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_EMS_HOUSING) };
+        return new ITexture[]{aBaseTexture, TextureFactory.builder()
+            .addIcon(OVERLAY_EMS_HOUSING)
+            .extFacing()
+            .build()
+        };
     }
 
     @Override
