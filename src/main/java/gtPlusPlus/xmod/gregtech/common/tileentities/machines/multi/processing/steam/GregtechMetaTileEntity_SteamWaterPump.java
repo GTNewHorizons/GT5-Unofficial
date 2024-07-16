@@ -11,7 +11,6 @@ import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.List;
 
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -88,7 +87,6 @@ public class GregtechMetaTileEntity_SteamWaterPump
     private int mSetTier = 1;
 
     private float currentHumidity;
-
 
     private static final Fluid water = FluidRegistry.getFluid("water");
 
@@ -237,13 +235,24 @@ public class GregtechMetaTileEntity_SteamWaterPump
             .addInfo("Steel tier extracts 2x water")
             .addInfo("Tiers can be configured with screwdriver")
             .addInfo(
-                EnumChatFormatting.AQUA + "Generation water: " + EnumChatFormatting.WHITE + ": (Humidity * 50) * Tier" + EnumChatFormatting.RESET)
+                EnumChatFormatting.AQUA + "Generation water: "
+                    + EnumChatFormatting.WHITE
+                    + ": (Humidity * 50) * Tier"
+                    + EnumChatFormatting.RESET)
             .addInfo(
-                EnumChatFormatting.RED + "Consume steam: " + EnumChatFormatting.WHITE + COUNT_STEAM_USAGE + EnumChatFormatting.RESET)
+                EnumChatFormatting.RED + "Consume steam: "
+                    + EnumChatFormatting.WHITE
+                    + COUNT_STEAM_USAGE
+                    + EnumChatFormatting.RESET)
             .addSeparator()
             .beginStructureBlock(3, 3, 5, false)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addStructureInfo(EnumChatFormatting.WHITE + "SteamInputHatch " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing")
+            .addStructureInfo(
+                EnumChatFormatting.WHITE + "SteamInputHatch "
+                    + EnumChatFormatting.GOLD
+                    + "1"
+                    + EnumChatFormatting.GRAY
+                    + " Any casing")
             .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1)
             .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Bronze Frame Box")
             .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Wooden Casing")
@@ -253,8 +262,6 @@ public class GregtechMetaTileEntity_SteamWaterPump
             .toolTipFinisher(AuthorEvgenWarGold);
         return tt;
     }
-
-
 
     @Override
     @NotNull
