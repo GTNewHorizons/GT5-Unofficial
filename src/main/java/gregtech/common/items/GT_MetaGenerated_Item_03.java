@@ -203,7 +203,10 @@ import static gregtech.common.items.ID_MetaItem_03.NuclearStar;
 import static gregtech.common.items.ID_MetaItem_03.Optical_Cpu_Containment_Housing;
 import static gregtech.common.items.ID_MetaItem_03.Optically_Compatible_Memory;
 import static gregtech.common.items.ID_MetaItem_03.Optically_Perfected_CPU;
+import static gregtech.common.items.ID_MetaItem_03.Phononic_Seed_Crystal;
+import static gregtech.common.items.ID_MetaItem_03.Relativistic_Heat_Capacitor;
 import static gregtech.common.items.ID_MetaItem_03.Spinneret;
+import static gregtech.common.items.ID_MetaItem_03.Thermal_Superconductor;
 import static gregtech.common.items.ID_MetaItem_03.Timepiece;
 import static gregtech.common.items.ID_MetaItem_03.Transdimensional_Alignment_Matrix;
 import static gregtech.common.items.ID_MetaItem_03.Tube_Wires;
@@ -240,8 +243,6 @@ import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Tu
 import static gregtech.common.items.ID_MetaItem_03.White_Dwarf_Shape_Extruder_Wire;
 import static gregtech.common.items.ID_MetaItem_03.WovenKevlar;
 import static gregtech.common.items.ID_MetaItem_03.ZPM_Coil;
-import static gregtech.common.items.ID_MetaItem_03.Thermal_Superconductor;
-import static gregtech.common.items.ID_MetaItem_03.Relativistic_Heat_Capacitor;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -1123,9 +1124,12 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                     "Enables Dimensional Convergence on the DTPF."),
                 o));
 
-        ItemList.Thermal_Superconductor.set(addItem(Thermal_Superconductor.ID, "Thermal Superconductor", "With the power of second sound!", o));
-
-        ItemList.Relativistic_Heat_Capacitor.set(addItem(Relativistic_Heat_Capacitor.ID, "Relativistic Heat Capacitor", "Thermal Resonance?", o));
+        ItemList.Thermal_Superconductor
+            .set(addItem(Thermal_Superconductor.ID, "Thermal Superconductor", "With the power of second sound!", o));
+        ItemList.Relativistic_Heat_Capacitor
+            .set(addItem(Relativistic_Heat_Capacitor.ID, "Relativistic Heat Capacitor", "Thermal Resonance?", o));
+        ItemList.Phononic_Seed_Crystal
+            .set(addItem(Phononic_Seed_Crystal.ID, "Phononic Seed Crystal", "Perfect Thermal Conductance", o));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(
