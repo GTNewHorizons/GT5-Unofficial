@@ -1,5 +1,6 @@
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
+import static com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps.electricImplosionCompressorRecipes;
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.EternalSingularity;
@@ -8,6 +9,8 @@ import static gregtech.api.enums.Mods.OpenComputers;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.enums.Mods.UniversalSingularities;
 import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -65,6 +68,15 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     new FluidStack[] { GT_Values.NF },
                     5 * 20,
                     (int) TierEU.RECIPE_UMV);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.TranscendentMetal, 1L),
+                    ItemList.EnergisedTesseract.get(8))
+                .itemOutputs(ItemList.Phononic_Seed_Crystal.get(8L) )
+                .fluidInputs(MaterialsUEVplus.Mellion.getMolten(128 * 144L))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_UMV)
+                .addTo(electricImplosionCompressorRecipes);
 
         }
 
@@ -151,6 +163,14 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 // Recipe stats.
                 1 * 1,
                 (int) TierEU.RECIPE_UIV);
+
+            // Copper Singularity
+            GT_Values.RA.stdBuilder()
+                .fluidInputs(Materials.Copper.getMolten(3648 * 9 * 144L))
+                .itemOutputs(getModItem(Avaritia.ID, "Singularity", 1L, 5) )
+                .duration(1 * TICKS)
+                .eut(TierEU.RECIPE_UIV)
+                .addTo(electricImplosionCompressorRecipes);
         }
         // MHDCSM V2
         addElectricImplosionRecipe(

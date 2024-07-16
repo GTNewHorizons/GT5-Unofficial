@@ -649,6 +649,28 @@ public class BlastFurnaceRecipes implements Runnable {
             .eut((int) TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 573)
             .addTo(blastFurnaceRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Phononic_Seed_Crystal.get(1),
+                MaterialsUEVplus.SixPhasedCopper.getNanite(1),
+                Materials.Dilithium.getDust(16),
+                GT_Utility.getIntegratedCircuit(2))
+            .fluidInputs(MaterialsUEVplus.Mellion.getMolten(16 * 144L))
+            .fluidOutputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(1000))
+            .duration(300 * SECONDS)
+            .eut((int) TierEU.RECIPE_UIV)
+            .metadata(COIL_HEAT, 17000)
+            .addTo(blastFurnaceRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(MaterialsUEVplus.Mellion.getDust(1), GT_Utility.getIntegratedCircuit(11))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.Mellion, 1))
+            .fluidInputs(Materials.Radon.getGas(1000))
+            .duration(50 * SECONDS)
+            .eut((int) TierEU.RECIPE_UXV)
+            .metadata(COIL_HEAT, 14000)
+            .addTo(blastFurnaceRecipes);
     }
 
     public void registerPrimitiveBlastFurnaceRecipes() {

@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -13,6 +14,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.TierEU;
+import gtPlusPlus.core.material.ELEMENT;
 
 public class PlasmaForgeRecipes implements Runnable {
 
@@ -46,5 +48,23 @@ public class PlasmaForgeRecipes implements Runnable {
             .eut((int) TierEU.RECIPE_UEV)
             .metadata(COIL_HEAT, 10800)
             .addTo(plasmaForgeRecipes);
+
+        if (Avaritia.isModLoaded()) {
+            // Six-Phased Copper
+            GT_Values.RA.stdBuilder()
+                .itemInputs(getModItem(Avaritia.ID, "Singularity", 8, 5))
+                .fluidInputs(
+                    ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(72 * 144),
+                    ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(4 * 72 * 144),
+                    ELEMENT.STANDALONE.HYPOGEN.getFluidStack(36 * 144),
+                    ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(8 * 72 * 144),
+                    ELEMENT.STANDALONE.RHUGNOR.getFluidStack(18 * 144),
+                    MaterialsUEVplus.Mellion.getMolten(72 * 144))
+                .fluidOutputs(MaterialsUEVplus.SixPhasedCopper.getMolten(72 * 144L))
+                .duration(60 * SECONDS)
+                .eut((int) TierEU.RECIPE_UMV)
+                .metadata(COIL_HEAT, 12600)
+                .addTo(plasmaForgeRecipes);
+        }
     }
 }

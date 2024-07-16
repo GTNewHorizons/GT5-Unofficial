@@ -10,6 +10,7 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
@@ -229,6 +230,14 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(GT_ModHandler.getDistilledWater(1000L))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
+            .addTo(autoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.round, MaterialsUEVplus.MagMatter, 1))
+            .itemOutputs(ItemList.Phononic_Seed_Crystal.get(5))
+            .fluidInputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(250))
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_UXV)
             .addTo(autoclaveRecipes);
     }
 }
