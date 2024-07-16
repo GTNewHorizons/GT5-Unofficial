@@ -1,12 +1,13 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static gregtech.api.enums.GT_Values.AuthorNotAPenguin;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
+import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,6 +18,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
@@ -34,16 +36,36 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private static final int STRUCTURE_X_OFFSET = 0;
-    private static final int STRUCTURE_Y_OFFSET = 0;
+    // Temporary, while testing
+    // spotless:off
+    private static final String[][] structure = new String[][] {
+        { "           ", "           ", "           ", "     E     ", "           ", "           ", "           ", "           ", "   AAAAA   ", "  AAA~AAA  ", " AAAAAAAAA " },
+        { "           ", "           ", "     E     ", "           ", "           ", "   CCCCC   ", "   CDCDC   ", "   CCCCC   ", "  ACCCCCA  ", " AAAAAAAAA ", "AAAAAAAAAAA" },
+        { "           ", "           ", "     E     ", "           ", "           ", "  CAAAAAC  ", "  C     C  ", "  C     C  ", " AC     CA ", "AAAAAAAAAAA", "AAAAAAAAAAA" },
+        { "           ", "     E     ", "           ", "    CCC    ", "   FCCCF   ", " CAA   AAC ", " C       C ", " C       C ", "AC       CA", "AAAAAAAAAAA", "AAAAAAAAAAA" },
+        { "     E     ", "           ", "    BBB    ", "   C   C   ", "   C   C   ", " CA     AC ", " D       D ", " C       C ", "AC       CA", "AAAAAAAAAAA", "AAAAAAAAAAA" },
+        { "     E     ", "     E     ", "    BEB    ", "   C E C   ", "   C E C   ", " CA  E  AC ", " C   E   C ", " C   E   C ", "AC   E   CA", "AAAAAAAAAAA", "AAAAAAAAAAA" },
+        { "           ", "           ", "    BBB    ", "   C   C   ", "   C   C   ", " CA     AC ", " D       D ", " C       C ", "AC       CA", "AAAAAAAAAAA", "AAAAAAAAAAA" },
+        { "           ", "           ", "           ", "    CCC    ", "   FCCCF   ", " CAA   AAC ", " C       C ", " C       C ", "AC       CA", "AAAAAAAAAAA", "AAAAAAAAAAA" },
+        { "           ", "           ", "           ", "           ", "           ", "  CAAAAAC  ", "  C     C  ", "  C     C  ", " AC     CA ", "AAAAAAAAAAA", "AAAAAAAAAAA" },
+        { "           ", "           ", "           ", "           ", "           ", "   CCCCC   ", "   CDCDC   ", "   CCCCC   ", "  ACCCCCA  ", " AAAAAAAAA ", "AAAAAAAAAAA" },
+        { "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "   AAAAA   ", "  AAAAAAA  ", " AAAAAAAAA " } };
+    // spotless:on
+
+    private static final int STRUCTURE_X_OFFSET = 5;
+    private static final int STRUCTURE_Y_OFFSET = 9;
     private static final int STRUCTURE_Z_OFFSET = 0;
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitDegasifier> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitDegasifier>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(new String[][] { { "hhh", "hhh", "hhh" }, { "h~h", "h-h", "hhh" }, { "hhh", "hhh", "hhh" }, }))
-        .addElement('h', ofBlock(GregTech_API.sBlockCasings9, 11))
+        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        // PLACEHOLDER ELEMENTS
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings8, 0))
+        .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 1))
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings8, 7))
+        .addElement('D', ofBlockAnyMeta(GregTech_API.sBlockTintedGlass, 0))
+        .addElement('E', ofFrame(Materials.Longasssuperconductornameforuvwire))
+        .addElement('F', ofFrame(Materials.Carbon))
         .build();
 
     public GT_MetaTileEntity_PurificationUnitDegasifier(int aID, String aName, String aNameRegional) {
