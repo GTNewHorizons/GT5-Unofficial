@@ -501,6 +501,7 @@ public class Textures {
         OVERLAY_MUFFLER,
 
         OVERLAY_EMS_HOUSING,
+        OVERLAY_EMS_HOUSING_GLOW,
 
         OVERLAY_CONTROLLER,
         OVERLAY_ACTIVITYDETECTOR,
