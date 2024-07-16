@@ -10,11 +10,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_WirelessMulti;
-import gregtech.api.enums.Materials;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,8 +17,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -43,13 +36,16 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MagHatch;
+import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -98,16 +94,24 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         .<GT_MetaTileEntity_IndustrialElectromagneticSeparator>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            (transpose(new String[][]{
-                {"           ","           ","           "," CD     DC "," CDD   DDC ","  CDD DDC  ","   CDDDC   ","    CCC    ","           "},
-                {"           ","           ","           "," CD     DC "," CDD   DDC ","  CDD DDC  ","   CDDDC   ","    CCC    ","           "},
-                {"           ","           ","           ","  CD   DC  ","           ","     D     ","     C     ","           ","           "},
-                {"           ","           ","           ","  CD   DC  ","           ","     D     ","     C     ","           ","           "},
-                {"           ","    BBB    ","   BBBBB   "," CDBBBBBDC ","   BBBBB   ","    BBB    ","     D     ","     C     ","           "},
-                {"           ","    AAA    ","   A   A   "," CDA D ADC ","   A   A   ","    AAA    ","     D     ","     C     ","           "},
-                {"           ","    BBB    ","   BBBBB   "," CDBBBBBDC ","   BBBBB   ","    BBB    ","     D     ","     C     ","           "},
-                {"    B~B    ","   BBBBB   ","  BBBBBBB  ","CDBBBBBBBDC","  BBBBBBB  ","   BBBBB   ","    BBB    ","     D     ","     C     "}
-            })))
+            (transpose(
+                new String[][] {
+                    { "           ", "           ", "           ", " CD     DC ", " CDD   DDC ", "  CDD DDC  ",
+                        "   CDDDC   ", "    CCC    ", "           " },
+                    { "           ", "           ", "           ", " CD     DC ", " CDD   DDC ", "  CDD DDC  ",
+                        "   CDDDC   ", "    CCC    ", "           " },
+                    { "           ", "           ", "           ", "  CD   DC  ", "           ", "     D     ",
+                        "     C     ", "           ", "           " },
+                    { "           ", "           ", "           ", "  CD   DC  ", "           ", "     D     ",
+                        "     C     ", "           ", "           " },
+                    { "           ", "    BBB    ", "   BBBBB   ", " CDBBBBBDC ", "   BBBBB   ", "    BBB    ",
+                        "     D     ", "     C     ", "           " },
+                    { "           ", "    AAA    ", "   A   A   ", " CDA D ADC ", "   A   A   ", "    AAA    ",
+                        "     D     ", "     C     ", "           " },
+                    { "           ", "    BBB    ", "   BBBBB   ", " CDBBBBBDC ", "   BBBBB   ", "    BBB    ",
+                        "     D     ", "     C     ", "           " },
+                    { "    B~B    ", "   BBBBB   ", "  BBBBBBB  ", "CDBBBBBBBDC", "  BBBBBBB  ", "   BBBBB   ",
+                        "    BBB    ", "     D     ", "     C     " } })))
         .addElement('A', Glasses.chainAllGlasses())
         .addElement(
             'B',
@@ -255,13 +259,14 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         if (mCasingAmount < 64) return false;
         if (mMagHatches.size() != 1) return false;
 
-        //If there are exotic hatches, ensure there is only 1, and it is not laser. Only multiamp allowed
+        // If there are exotic hatches, ensure there is only 1, and it is not laser. Only multiamp allowed
         if (!mExoticEnergyHatches.isEmpty()) {
             if (mExoticEnergyHatches.size() > 1) return false;
-            if (mExoticEnergyHatches.get(0).getConnectionType() == GT_MetaTileEntity_Hatch.ConnectionType.LASER) return false;
+            if (mExoticEnergyHatches.get(0)
+                .getConnectionType() == GT_MetaTileEntity_Hatch.ConnectionType.LASER) return false;
         }
 
-        //All checks passed!
+        // All checks passed!
         return true;
     }
 
