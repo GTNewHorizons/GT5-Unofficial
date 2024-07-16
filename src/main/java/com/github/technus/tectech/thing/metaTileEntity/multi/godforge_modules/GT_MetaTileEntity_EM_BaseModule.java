@@ -95,7 +95,7 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
                 { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
                 { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
                 { "       ", "       ", "       ", "   G   ", "       ", "       ", "       " } })
-        .addElement('A', ofBlock(GregTech_API.sSolenoidCoilCasings, 9))
+        .addElement('A', ofBlock(GodforgeCasings, 8))
         .addElement(
             'B',
             GT_StructureUtility.ofHatchAdderOptional(
