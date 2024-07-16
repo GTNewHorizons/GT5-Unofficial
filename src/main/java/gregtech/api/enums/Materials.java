@@ -1923,9 +1923,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             + "g"
             + EnumChatFormatting.OBFUSCATED
             + "X";
-        MaterialsUEVplus.PhononCrystalSolution.mChemicalFormula = "\u223F";
-        MaterialsUEVplus.PhononMedium.mChemicalFormula = "\u223F\u2082((C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085)\u2083";
+        MaterialsUEVplus.PhononCrystalSolution.mChemicalFormula = "\u3004";
+        MaterialsUEVplus.PhononMedium.mChemicalFormula = "((Si\u2085O\u2081\u2080Fe)\u2083(Bi\u2082Te\u2083)\u2084ZrO\u2082Fe\u2085\u2080C)\u2085Og*Pr\u2081\u2085((C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085)\u2086\u3004\u2084";
         MaterialsUEVplus.SixPhasedCopper.mChemicalFormula = "\u2722";
+        MaterialsUEVplus.Mellion.mChemicalFormula = "Tn\u2081\u2081Or\u2088Rb\u2081\u2081?\u2087?\u2081\u2083?\u2081\u2083";
     }
 
     private static void initSubTags() {
