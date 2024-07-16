@@ -1077,7 +1077,7 @@ public class RecipeLoader_02 {
             FluidRegistry.getFluidStack("ic2superheatedsteam", 3200000),
             FluidRegistry.getFluidStack("supercriticalsteam", 32000),
             8000);
-            
+
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
             FluidRegistry.getFluidStack("molten.solarsalthot", 3200),
             FluidRegistry.getFluidStack("molten.solarsaltcold", 3200),
@@ -1085,7 +1085,7 @@ public class RecipeLoader_02 {
             FluidRegistry.getFluidStack("ic2superheatedsteam", 3200000),
             FluidRegistry.getFluidStack("supercriticalsteam", 32000),
             1600);
-    
+
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Lepidolite, 1))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
