@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.CHEMPLANT_CASING_TIER;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.HashMap;
@@ -615,7 +616,7 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(PineOil, 500))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .specialValue(3)
+            .metadata(CHEMPLANT_CASING_TIER,3)
             .addTo(chemicalPlantRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(CI.getNumberedAdvancedCircuit(18), ItemUtils.getSimpleStack(aCrushedPine, 64))
@@ -628,7 +629,7 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(PineOil, 1500))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .specialValue(4)
+            .metadata(CHEMPLANT_CASING_TIER,4)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -650,7 +651,7 @@ public class MilledOreProcessing extends ItemPackage {
             .itemOutputs(aOutputs)
             .duration(aTime * 20)
             .eut(aEU)
-            .specialValue(3)
+            .metadata(CHEMPLANT_CASING_TIER,3)
             .addTo(chemicalPlantRecipes);
 
         return true;

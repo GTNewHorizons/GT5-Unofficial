@@ -14,6 +14,7 @@ import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
+import static gregtech.api.util.GT_RecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
@@ -844,7 +845,7 @@ public class RECIPES_Machines {
                 ALLOY.KANTHAL.getFluidStack(144 * 16))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
-            .specialValue(5)
+            .metadata(CHEMPLANT_CASING_TIER,5)
             .addTo(chemicalPlantRecipes);
     }
 

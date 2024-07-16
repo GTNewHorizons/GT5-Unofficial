@@ -5,16 +5,19 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.SemiFluidFuelHandler;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.common.helpers.FlotationRecipeHandler;
+
+import static gregtech.api.util.GT_RecipeConstants.RTG_DURATION_IN_DAYS;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.flotationCellRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.millingRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.rtgFuels;
 
 public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
@@ -70,18 +73,13 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         int[] aTime = new int[] { 2400, 3000, 1200, 1500 };
 
         for (int i = 0; i < 4; i++) {
-            GT_Recipe aOreRecipe = new GT_Recipe(
-                false,
-                aInputArray[i],
-                aOutputArray[i],
-                null,
-                new int[] {},
-                null,
-                null,
-                aTime[i],
-                aEU,
-                0);
-            GTPPRecipeMaps.millingRecipes.add(aOreRecipe);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aInputArray[i])
+                .itemOutputs(aOutputArray[i])
+                .duration(aTime[i])
+                .eut(aEU)
+                .noOptimize()
+                .addTo(millingRecipes);
         }
         return true;
     }
@@ -104,19 +102,20 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
         FlotationRecipeHandler.registerOreType(aMat);
 
-        GT_Recipe aRecipe = new GT_Recipe(
-            false,
-            new ItemStack[] { ItemUtils.getSimpleStack(aXanthate, 32), aMat.getMilled(64), aMat.getMilled(64),
-                aMat.getMilled(64), aMat.getMilled(64), },
-            new ItemStack[] {},
-            null,
-            new int[] {},
-            aInputFluids,
-            aOutputFluids,
-            aTime,
-            aEU,
-            0);
-        GTPPRecipeMaps.flotationCellRecipes.add(aRecipe);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(aXanthate, 32),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64)
+            )
+            .fluidInputs(aInputFluids)
+            .fluidOutputs(aOutputFluids)
+            .duration(aTime)
+            .eut(aEU)
+            .noOptimize()
+            .addTo(flotationCellRecipes);
         return true;
     }
 
@@ -127,8 +126,8 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
             .itemInputs(aFuelPellet)
             .duration(0)
             .eut(aVoltage)
-            .specialValue(aFuelDays)
-            .addTo(GTPPRecipeMaps.rtgFuels);
+            .metadata(RTG_DURATION_IN_DAYS, aFuelDays)
+            .addTo(rtgFuels);
         return true;
     }
 }

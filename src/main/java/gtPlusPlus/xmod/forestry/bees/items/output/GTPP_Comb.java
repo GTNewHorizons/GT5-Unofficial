@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.forestry.bees.items.output;
 
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.util.GT_RecipeConstants.CHEMPLANT_CASING_TIER;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.List;
@@ -123,7 +124,7 @@ public class GTPP_Comb extends Item {
             .itemOutputs(aOutputs)
             .duration(aTier * 20 * 60)
             .eut(aEU)
-            .specialValue(aTier)
+            .metadata(CHEMPLANT_CASING_TIER,aTier)
             .addTo(chemicalPlantRecipes);
 
     }

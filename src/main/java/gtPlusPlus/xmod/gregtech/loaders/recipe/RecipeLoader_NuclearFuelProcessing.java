@@ -5,6 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.coldTrapRecipes;
@@ -235,7 +236,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             .fluidOutputs(NUCLIDE.LiFBeF2UF4.getFluidStack(3000), FluidUtils.getFluidStack("hydrofluoricacid", 2000))
             .duration(2 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
-            .specialValue(4)
+            .metadata(CHEMPLANT_CASING_TIER,4)
             .addTo(chemicalPlantRecipes);
 
         GT_Values.RA.stdBuilder()

@@ -23,8 +23,6 @@ import gtPlusPlus.core.material.ELEMENT;
 public class FuelRecipeLoader {
 
     public static void RegisterFuel() {
-        // MyRecipeAdder.instance.addLiquidMentalFuel(Materials.NaquadahEnriched.getMolten(1L),Materials.Naquadah.getMolten(1L),32768,100);
-        // MyRecipeAdder.instance.addLiquidMentalFuel(Materials.Naquadria.getMolten(1L),Materials.Naquadah.getMolten(1L),262144,120);
         MyRecipeAdder.instance.addLiquidMentalFuel(
             MyMaterial.uraniumBasedLiquidFuelExcited.getFluidOrGas(1),
             MyMaterial.uraniumBasedLiquidFuelDepleted.getFluidOrGas(1),

@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.LFTR_OUTPUT_POWER;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -72,8 +74,8 @@ public class RecipeLoader_LFTR {
                 FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(10))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
-            .specialValue(32768 * 4)
-            .addTo(GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes);
+            .metadata(LFTR_OUTPUT_POWER,32768 * 4)
+            .addTo(liquidFluorineThoriumReactorRecipes);
 
         // LiFBeF2ZrF4UF4 - T2
         GT_Values.RA.stdBuilder()
@@ -85,9 +87,9 @@ public class RecipeLoader_LFTR {
                 FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(5))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
-            .specialValue(8192 * 4)
+            .metadata(LFTR_OUTPUT_POWER,8192 * 4)
             .noOptimize()
-            .addTo(GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes);
+            .addTo(liquidFluorineThoriumReactorRecipes);
 
         // LiFBeF2ZrF4U235 - T1
         GT_Values.RA.stdBuilder()
@@ -99,9 +101,9 @@ public class RecipeLoader_LFTR {
                 FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(2))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
-            .specialValue(8192)
+            .metadata(LFTR_OUTPUT_POWER,8192)
             .noOptimize()
-            .addTo(GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes);
+            .addTo(liquidFluorineThoriumReactorRecipes);
 
         // Sparging NEI Recipes
         GasSpargingRecipeMap.addRecipe(

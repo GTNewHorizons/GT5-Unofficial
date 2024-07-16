@@ -2876,7 +2876,7 @@ public class RecipeLoader {
             .itemInputs(CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.dust, 1))
             .itemOutputs(CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
             .fluidInputs(CeriumDopedLutetiumAluminiumOxygenBlend.getMolten(108))
-            .specialValue(9100)
+            .metadata(COIL_HEAT,9100)
             .eut(TierEU.RECIPE_UHV)
             .duration(5 * SECONDS)
             .addTo(vacuumFurnaceRecipes);

@@ -7,6 +7,15 @@ import goodgenerator.api.recipe.ExtremeHeatExchangerRecipe;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import gregtech.api.enums.GT_Values;
 
+import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.naquadahFuelRefineFactoryRecipes;
+import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.naquadahReactorFuels;
+import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.neutronActivatorRecipes;
+import static gregtech.api.util.GT_RecipeConstants.COAL_CASING_TIER;
+import static gregtech.api.util.GT_RecipeConstants.LNG_BASIC_OUTPUT;
+import static gregtech.api.util.GT_RecipeConstants.NFR_COIL_TIER;
+import static gregtech.api.util.GT_RecipeConstants.NKE_RANGE;
+import static gregtech.api.util.GT_RecipeConstants.PRECISE_ASSEMBLER_CASING_TIER;
+
 public class MyRecipeAdder {
 
     public static final MyRecipeAdder instance = new MyRecipeAdder();
@@ -18,8 +27,8 @@ public class MyRecipeAdder {
             .fluidOutputs(output)
             .duration(ticks)
             .eut(0)
-            .specialValue(EUt)
-            .addTo(GoodGeneratorRecipeMaps.naquadahReactorFuels);
+            .metadata(LNG_BASIC_OUTPUT, EUt)
+            .addTo(naquadahReactorFuels);
     }
 
     @Deprecated
@@ -31,9 +40,9 @@ public class MyRecipeAdder {
             .fluidOutputs(output)
             .duration(ticks)
             .eut(EUt)
-            .specialValue(tier)
+            .metadata(NFR_COIL_TIER,tier)
             .noOptimize()
-            .addTo(GoodGeneratorRecipeMaps.naquadahFuelRefineFactoryRecipes);
+            .addTo(naquadahFuelRefineFactoryRecipes);
     }
 
     public void addNeutronActivatorRecipe(FluidStack[] input1, ItemStack[] input2, FluidStack[] output1,
@@ -49,9 +58,9 @@ public class MyRecipeAdder {
             .fluidOutputs(output1)
             .duration(ticks)
             .eut(0)
-            .specialValue(maxNKE * 10000 + minNKE)
+            .metadata(NKE_RANGE,maxNKE * 10000 + minNKE)
             .noOptimize()
-            .addTo(GoodGeneratorRecipeMaps.neutronActivatorRecipes);
+            .addTo(neutronActivatorRecipes);
     }
 
     // todo: understand why it needs a custom recipe class and migrate it on RA2
@@ -75,7 +84,7 @@ public class MyRecipeAdder {
             .fluidInputs(aFluidInputs)
             .duration(aDuration)
             .eut(aEUt)
-            .specialValue(aTier)
+            .metadata(PRECISE_ASSEMBLER_CASING_TIER,aTier)
             .noOptimize()
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
     }
@@ -89,7 +98,7 @@ public class MyRecipeAdder {
             .fluidInputs(FluidInputArray)
             .duration(aDuration)
             .eut(aEUt)
-            .specialValue(casingLevel)
+            .metadata(COAL_CASING_TIER,casingLevel)
             .noOptimize()
             .addTo(GoodGeneratorRecipeMaps.componentAssemblyLineRecipes);
     }
