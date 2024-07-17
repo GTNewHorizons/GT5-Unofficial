@@ -33,7 +33,7 @@ public class DimensionHelper {
             "GalaxySpace_TcetiE", "GalaxySpace_VegaB",
             // T9
             "GalacticraftAmunRa_Anubis", "GalacticraftAmunRa_Horus", "GalacticraftAmunRa_Maahes",
-            "GalacticraftAmunRa_Mehen Belt", "GalacticraftAmunRa_Neper", "GalacticraftAmunRa_Seth",
+            "GalacticraftAmunRa_MehenBelt", "GalacticraftAmunRa_Neper", "GalacticraftAmunRa_Seth",
             // T10
             "Underdark", };
 
@@ -96,7 +96,7 @@ public class DimensionHelper {
             "An", // GalacticraftAmunRa_Anubis
             "Ho", // GalacticraftAmunRa_Horus
             "Mh", // GalacticraftAmunRa_Maahes
-            "MB", // GalacticraftAmunRa_Mehen Belt
+            "MB", // GalacticraftAmunRa_MehenBelt
             "Np", // GalacticraftAmunRa_Neper
             "Se", // GalacticraftAmunRa_Seth
             // T10
@@ -122,7 +122,7 @@ public class DimensionHelper {
                         case "Proteus", "Triton" -> "T6: " + s;
                         case "Haumea", "Kuiperbelt", "MakeMake", "Pluto" -> "T7: " + s;
                         case "BarnardC", "BarnardE", "BarnardF", "CentauriA", "TcetiE", "VegaB" -> "T8: " + s;
-                        case "Anubis", "Horus", "Maahes", "Mehen Belt", "Neper", "Seth" -> "T9: " + s;
+                        case "Anubis", "Horus", "Maahes", "MehenBelt", "Neper", "Seth" -> "T9: " + s;
                         case "Underdark" -> "T10: " + s;
                         default -> s;
                     };
