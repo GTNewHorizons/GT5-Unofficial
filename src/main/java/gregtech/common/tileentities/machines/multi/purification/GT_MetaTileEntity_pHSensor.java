@@ -130,11 +130,11 @@ public class GT_MetaTileEntity_pHSensor extends GT_MetaTileEntity_Hatch {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (isOn) {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 15);
+                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, (byte) 15);
             }
         } else {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 0);
+                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, (byte) 0);
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);

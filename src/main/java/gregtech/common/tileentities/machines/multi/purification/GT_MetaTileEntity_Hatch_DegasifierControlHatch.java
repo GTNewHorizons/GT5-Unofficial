@@ -92,11 +92,11 @@ public class GT_MetaTileEntity_Hatch_DegasifierControlHatch extends GT_MetaTileE
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (outputStrength > 0) {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, outputStrength);
+                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, outputStrength);
             }
         } else {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 0);
+                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, (byte) 0);
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);

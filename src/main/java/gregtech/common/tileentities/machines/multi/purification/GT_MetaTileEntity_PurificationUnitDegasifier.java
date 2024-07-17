@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
@@ -146,15 +147,37 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
             return signal;
         }
 
+        // Get integer value representing control bits 1 and 2
+        public int getControlBit12() {
+            return (signal >> 1) & 0b11;
+        }
+
+        public boolean isZero() {
+            return signal == (byte) 0;
+        }
+
         @Override
         public String toString() {
             return Integer.toBinaryString(((int) signal) & 0b1111);
         }
     }
 
+    private static class ControlBitStatus {
+
+        public FluidStack stack;
+        public boolean satisfied;
+
+        public ControlBitStatus(FluidStack stack, boolean satisfied) {
+            this.stack = stack;
+            this.satisfied = satisfied;
+        }
+    }
+
     private ControlSignal controlSignal = new ControlSignal((byte) 0);
 
     private final HashMap<Fluid, FluidStack> insertedStuffThisCycle = new HashMap<>();
+
+    private float outputMultiplier = 1.0f;
 
     private GT_MetaTileEntity_Hatch_DegasifierControlHatch controlHatch = null;
 
@@ -302,11 +325,129 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
                 .anyMatch(mat -> stack.isFluidEqual(mat.fluid));
     }
 
+    // Check if an exact match for this FluidStack was found in the map of inserted fluids
+    private boolean wasFluidInsertedExact(FluidStack toFind) {
+        FluidStack candidate = insertedStuffThisCycle.get(toFind.getFluid());
+        // Fluid was inserted if found and the amount matches
+        return candidate != null && candidate.amount == toFind.amount;
+    }
+
+    private ControlBitStatus isBit0Satisfied() {
+        // Check if instructions matching the first bit are satisfied.
+        // Instructions:
+        // If bit 0 is on, insert an inert gas. Bits 1-2 of the control signal determine which inert
+        // gas to insert.
+
+        if (controlSignal.getBit(0)) {
+            // Grab the gas to insert from the control bits
+            int gasToInsert = controlSignal.getControlBit12();
+            FluidStack gasStack = INERT_GASES.get()[gasToInsert];
+            // Check if it was inserted
+            if (wasFluidInsertedExact(gasStack)) new ControlBitStatus(gasStack, true);
+            else return new ControlBitStatus(null, false);
+        }
+
+        // Bit 0 is not on, so this is always satisfied
+        return new ControlBitStatus(null, true);
+    }
+
+    private ControlBitStatus isBit1Satisfied() {
+        // Check if instructions matching the second bit (bit 1) are satisfied.
+        // Instructions:
+        // If bit 1 is on, insert molten superconductor.
+        // Higher tier superconductor gives a better bonus.
+        // Only one type of superconductor may be inserted or the operation fails,
+        // so we don't care about the order in which we find it.
+        if (controlSignal.getBit(1)) {
+            // Find the first superconductor material in the list that was inserted with an exact match
+            Optional<SuperconductorMaterial> material = Arrays.stream(SUPERCONDUCTOR_MATERIALS.get())
+                .filter(candidate -> wasFluidInsertedExact(candidate.fluid))
+                .findFirst();
+            if (material.isPresent()) {
+                // Get the material and set the output multiplier, then
+                // report success with the matching fluid.
+                SuperconductorMaterial scMaterial = material.get();
+                this.outputMultiplier = scMaterial.multiplier;
+                return new ControlBitStatus(scMaterial.fluid, true);
+            }
+            // No superconductor was inserted but bit is on fail.
+            return new ControlBitStatus(null, false);
+        }
+
+        return new ControlBitStatus(null, true);
+    }
+
+    private ControlBitStatus isBit2Satisfied() {
+        // Check if instructions matching the third bit (bit 2) are satisfied.
+        // Instructions:
+        // If bit 2 is on, insert molten steel.
+        if (controlSignal.getBit(2)) {
+            // If steel was inserted, return it and report success.
+            if (wasFluidInsertedExact(CATALYST_FLUID)) return new ControlBitStatus(CATALYST_FLUID, true);
+            // Otherwise report failure.
+            return new ControlBitStatus(null, false);
+        }
+
+        return new ControlBitStatus(null, true);
+    }
+
+    private ControlBitStatus isBit3Satisfied() {
+        // Check if instructions matching the fourth bit (bit 3) are satisfied.
+        // Instructions:
+        // If bit 3 is on, do not insert anything.
+        if (controlSignal.getBit(3)) {
+            // Simply check if the map of inserted fluids is empty
+            if (insertedStuffThisCycle.isEmpty()) return new ControlBitStatus(null, true);
+            return new ControlBitStatus(null, false);
+        }
+        return new ControlBitStatus(null, true);
+    }
+
+    private boolean areAllBitsSatisfied() {
+        // Check if each individual bit is satisfied.
+        // Additional instructions: If no bits are on, insert super coolant
+
+        if (controlSignal.isZero()) {
+            return wasFluidInsertedExact(COOLANT_FLUID);
+        }
+
+        ControlBitStatus bit0 = isBit0Satisfied();
+        ControlBitStatus bit1 = isBit1Satisfied();
+        ControlBitStatus bit2 = isBit2Satisfied();
+        ControlBitStatus bit3 = isBit3Satisfied();
+
+        // If bit 3 is satisfied and on, all other bits are automatically satisfied,
+        // with no fluids being allowed to be inserted.
+        if (controlSignal.getBit(3) && bit3.satisfied) {
+            bit0 = bit1 = bit2 = new ControlBitStatus(null, true);
+        }
+
+        if (bit0.satisfied && bit1.satisfied && bit2.satisfied && bit3.satisfied) {
+            // Check if the map contains any other stacks than the ones in the control bit statuses
+            for (FluidStack inserted : insertedStuffThisCycle.values()) {
+                // If the inserted stack is null, or any of the fluids required, this stack is fine.
+                if (inserted == null) continue;
+                if (bit0.stack != null && inserted.isFluidEqual(bit0.stack)) continue;
+                if (bit1.stack != null && inserted.isFluidEqual(bit1.stack)) continue;
+                if (bit2.stack != null && inserted.isFluidEqual(bit2.stack)) continue;
+                if (bit3.stack != null && inserted.isFluidEqual(bit3.stack)) continue;
+                // Otherwise it's a nonrequested stack and the recipe should fail.
+                return false;
+            }
+            return true;
+        }
+
+        return false;
+    }
+
     @Override
     public void startCycle(int cycleTime, int progressTime) {
         super.startCycle(cycleTime, progressTime);
         this.controlSignal.randomize();
         this.insertedStuffThisCycle.clear();
+        this.outputMultiplier = 1.0f;
+        // Make sure to output the hatch control signal.
+        this.controlHatch.updateOutputSignal(this.controlSignal.getSignal());
     }
 
     private static ArrayList<FluidStack> getDrainableFluidsFromHatch(GT_MetaTileEntity_Hatch_Input hatch) {
@@ -335,13 +476,35 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
                         FluidStack drainedFluid = hatch.drain(front, fluid, true);
                         // If the fluid does not yet exist in the map, insert it.
                         // Otherwise, merge the amounts
-                        insertedStuffThisCycle.merge(fluid.getFluid(), drainedFluid, (a, b) -> {
-                            a.amount += b.amount;
-                            return a;
-                        });
+                        insertedStuffThisCycle.merge(
+                            fluid.getFluid(),
+                            drainedFluid,
+                            (a, b) -> { return new FluidStack(a.getFluid(), a.amount + b.amount); });
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    public void addRecipeOutputs() {
+        super.addRecipeOutputs();
+        if (outputMultiplier > 1.01f) {
+            FluidStack waterOutput = currentRecipe.mFluidOutputs[0];
+            FluidStack bonusOutput = new FluidStack(
+                waterOutput.getFluid(),
+                (int) (waterOutput.amount * (outputMultiplier - 1.0f)));
+            this.addOutput(bonusOutput);
+        }
+    }
+
+    @Override
+    public float calculateFinalSuccessChance() {
+        // Success chance is 100% when all bits are satisfied, 0% otherwise.
+        if (areAllBitsSatisfied()) {
+            return 100.0f;
+        } else {
+            return 0.0f;
         }
     }
 
@@ -384,7 +547,8 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        aNBT.setByte("controlSignal", controlSignal.getSignal());
+        controlSignal = new ControlSignal(aNBT.getByte("controlSignal"));
+        outputMultiplier = aNBT.getFloat("outputMultiplier");
         NBTTagCompound fluidMap = aNBT.getCompoundTag("insertedFluidMap");
         for (String key : fluidMap.func_150296_c()) {
             FluidStack fluid = FluidStack.loadFluidStackFromNBT(fluidMap.getCompoundTag(key));
@@ -399,7 +563,8 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        controlSignal = new ControlSignal(aNBT.getByte("controlSignal"));
+        aNBT.setByte("controlSignal", controlSignal.getSignal());
+        aNBT.setFloat("outputMultiplier", outputMultiplier);
         NBTTagCompound fluidMap = new NBTTagCompound();
         for (FluidStack stack : insertedStuffThisCycle.values()) {
             NBTTagCompound compound = new NBTTagCompound();
@@ -412,10 +577,20 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
         aNBT.setTag("insertedFluidMap", fluidMap);
     }
 
+    private static String generateInfoStringForBit(int i, ControlBitStatus status) {
+        String base = "Bit " + i + " status: ";
+        if (status.satisfied) {
+            return base + EnumChatFormatting.GREEN + "OK";
+        } else {
+            return base + EnumChatFormatting.RED + "NOT OK";
+        }
+    }
+
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add("Current control signal: " + EnumChatFormatting.YELLOW + controlSignal.toString());
+        info.add("Current output multiplier: " + EnumChatFormatting.YELLOW + outputMultiplier);
         for (FluidStack stack : insertedStuffThisCycle.values()) {
             info.add(
                 "Fluid inserted this cycle: " + EnumChatFormatting.YELLOW
@@ -423,6 +598,10 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
                     + "L "
                     + stack.getLocalizedName());
         }
+        info.add(generateInfoStringForBit(0, isBit0Satisfied()));
+        info.add(generateInfoStringForBit(1, isBit1Satisfied()));
+        info.add(generateInfoStringForBit(2, isBit2Satisfied()));
+        info.add(generateInfoStringForBit(3, isBit3Satisfied()));
         return info.toArray(new String[] {});
     }
 
