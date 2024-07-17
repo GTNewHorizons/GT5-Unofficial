@@ -8,8 +8,10 @@ import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
@@ -237,10 +239,27 @@ public class CoalTar extends ItemPackage {
             .duration(0)
             .eut(0)
             .addTo(GT_RecipeConstants.Fuel);
-        CORE.RA.addSemifluidFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricCoalTarOil", 1), 64);
-        CORE.RA.addSemifluidFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTarOil", 1), 32);
-        CORE.RA.addSemifluidFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTar", 1), 16);
 
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(FluidContainerRegistry.getFluidForFilledItem(ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricCoalTarOil", 1)))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 64)
+            .addTo(semiFluidFuels);
+
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(FluidContainerRegistry.getFluidForFilledItem(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTarOil", 1)))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 32)
+            .addTo(semiFluidFuels);
+
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(FluidContainerRegistry.getFluidForFilledItem(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTar", 1)))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 16)
+            .addTo(semiFluidFuels);
         return true;
     }
 

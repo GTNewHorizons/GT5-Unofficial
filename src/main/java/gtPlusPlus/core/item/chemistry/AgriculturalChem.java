@@ -7,8 +7,10 @@ import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -613,9 +615,26 @@ public class AgriculturalChem extends ItemPackage {
             .addTo(centrifugeRecipes);
 
         // Add Fuel Usages
-        CORE.RA.addSemifluidFuel(FluidUtils.getFluidStack(PoopJuice, 1000), 12);
-        CORE.RA.addSemifluidFuel(FluidUtils.getFluidStack(ManureSlurry, 1000), 24);
-        CORE.RA.addSemifluidFuel(FluidUtils.getFluidStack(FertileManureSlurry, 1000), 32);
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(FluidUtils.getFluidStack(PoopJuice, 1000))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 12)
+            .addTo(semiFluidFuels);
+
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(FluidUtils.getFluidStack(ManureSlurry, 1000))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 24)
+            .addTo(semiFluidFuels);
+
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(FluidUtils.getFluidStack(FertileManureSlurry, 1000))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 32)
+            .addTo(semiFluidFuels);
 
         // Red Slurry / Tailings Processing
         GT_Values.RA.stdBuilder()

@@ -1,7 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.items;
 
+import static gregtech.api.util.GT_RecipeConstants.RTG_DURATION_IN_DAYS;
 import static gregtech.client.GT_TooltipHandler.Tier.EV;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.rtgFuels;
 import static gtPlusPlus.core.util.Utils.getTcAspectStack;
 import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Battery_Casing_Gem_1;
 import static gtPlusPlus.xmod.gregtech.common.items.Ids_MetaGeneratedGregtechItems.Battery_Casing_Gem_2;
@@ -45,6 +47,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.TierEU;
 import gregtech.api.objects.GT_MultiTexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
@@ -329,11 +332,40 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
     }
 
     private void registerFuelRTGRecipes() {
-        CORE.RA.addFuelForRTG(GregtechItemList.Pellet_RTG_PU238.get(1), MathUtils.roundToClosestInt(87.7f), 64);
-        CORE.RA.addFuelForRTG(GregtechItemList.Pellet_RTG_SR90.get(1), MathUtils.roundToClosestInt(28.8f), 32);
-        CORE.RA.addFuelForRTG(GregtechItemList.Pellet_RTG_PO210.get(1), 1, 512);
-        CORE.RA.addFuelForRTG(GregtechItemList.Pellet_RTG_AM241.get(1), 216, 16);
-        CORE.RA.addFuelForRTG(GT_ModHandler.getIC2Item("RTGPellets", 1), MathUtils.roundToClosestInt(2.6f), 8);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GregtechItemList.Pellet_RTG_PU238.get(1))
+            .duration(0)
+            .eut(64)
+            .metadata(RTG_DURATION_IN_DAYS,  MathUtils.roundToClosestInt(87.7f))
+            .addTo(rtgFuels);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GregtechItemList.Pellet_RTG_SR90.get(1))
+            .duration(0)
+            .eut(32)
+            .metadata(RTG_DURATION_IN_DAYS,  MathUtils.roundToClosestInt(28.8f))
+            .addTo(rtgFuels);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GregtechItemList.Pellet_RTG_PO210.get(1))
+            .duration(0)
+            .eut(TierEU.HV)
+            .metadata(RTG_DURATION_IN_DAYS, 1)
+            .addTo(rtgFuels);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GregtechItemList.Pellet_RTG_AM241.get(1))
+            .duration(0)
+            .eut(16)
+            .metadata(RTG_DURATION_IN_DAYS, 216)
+            .addTo(rtgFuels);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getIC2Item("RTGPellets", 1))
+            .duration(0)
+            .eut(8)
+            .metadata(RTG_DURATION_IN_DAYS, MathUtils.roundToClosestInt(2.6f))
+            .addTo(rtgFuels);
     }
 
     private void registerCovers() {

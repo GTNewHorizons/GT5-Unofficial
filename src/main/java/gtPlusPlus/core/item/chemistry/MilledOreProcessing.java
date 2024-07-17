@@ -3,12 +3,15 @@ package gtPlusPlus.core.item.chemistry;
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.CHEMPLANT_CASING_TIER;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.flotationCellRecipes;
 
 import java.util.HashMap;
 
+import gtPlusPlus.xmod.gregtech.common.helpers.FlotationRecipeHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -350,8 +353,7 @@ public class MilledOreProcessing extends ItemPackage {
     public boolean generateRecipes() {
         addMiscRecipes();
         addPineOilExtraction();
-        addFlotationRecipes1();
-        addFlotationRecipes2();
+        addFlotationRecipes();
         addVacuumFurnaceRecipes();
         return true;
     }
@@ -450,109 +452,205 @@ public class MilledOreProcessing extends ItemPackage {
 
     }
 
-    private void addFlotationRecipes1() {
+    private void addFlotationRecipes() {
 
         // Sphalerite
-        CORE.RA.addFlotationRecipe(
-            Materials.Sphalerite,
-            ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
-            new FluidStack[] { FluidUtils.getFluidStack(PineOil, 14000), },
-            new FluidStack[] { FluidUtils.getFluidStack(SphaleriteFlotationFroth, 1000) },
-            20 * 480,
-            (int) TierEU.RECIPE_LuV);
+        Material aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Sphalerite);
+        FlotationRecipeHandler.registerOreType(aMat);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64)
+            )
+            .fluidInputs(FluidUtils.getFluidStack(PineOil, 14000))
+            .fluidOutputs(FluidUtils.getFluidStack(SphaleriteFlotationFroth, 1000))
+            .duration(8*MINUTES)
+            .eut(TierEU.RECIPE_LuV)
+            .noOptimize()
+            .addTo(flotationCellRecipes);
 
         // Chalcopyrite
-        CORE.RA.addFlotationRecipe(
-            Materials.Chalcopyrite,
-            ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
-            new FluidStack[] { FluidUtils.getFluidStack(PineOil, 12000), },
-            new FluidStack[] { FluidUtils.getFluidStack(ChalcopyriteFlotationFroth, 1000) },
-            20 * 480,
-            (int) TierEU.RECIPE_IV);
+        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Chalcopyrite);
+        FlotationRecipeHandler.registerOreType(aMat);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64)
+            )
+            .fluidInputs(FluidUtils.getFluidStack(PineOil, 12000))
+            .fluidOutputs(FluidUtils.getFluidStack(ChalcopyriteFlotationFroth, 1000))
+            .duration(8 * MINUTES)
+            .eut(TierEU.RECIPE_IV)
+            .noOptimize()
+            .addTo(flotationCellRecipes);
 
         // Nickel
-        CORE.RA.addFlotationRecipe(
-            Materials.Nickel,
-            ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 1),
-            new FluidStack[] { FluidUtils.getFluidStack(PineOil, 25000), },
-            new FluidStack[] { FluidUtils.getFluidStack(NickelFlotationFroth, 1000) },
-            20 * 480,
-            (int) TierEU.RECIPE_IV);
+        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Nickel);
+        FlotationRecipeHandler.registerOreType(aMat);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate,32),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64)
+            )
+            .fluidInputs(FluidUtils.getFluidStack(PineOil, 25000))
+            .fluidOutputs(FluidUtils.getFluidStack(NickelFlotationFroth, 1000))
+            .duration(8*MINUTES)
+            .eut(TierEU.RECIPE_IV)
+            .noOptimize()
+            .addTo(flotationCellRecipes);
 
         // Platinum
-        CORE.RA.addFlotationRecipe(
-            Materials.Platinum,
-            ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 1),
-            new FluidStack[] { FluidUtils.getFluidStack(PineOil, 35000), },
-            new FluidStack[] { FluidUtils.getFluidStack(PlatinumFlotationFroth, 1000) },
-            20 * 480,
-            (int) TierEU.RECIPE_LuV);
+        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Platinum);
+        FlotationRecipeHandler.registerOreType(aMat);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 32),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64)
+            )
+            .fluidInputs( FluidUtils.getFluidStack(PineOil, 35000))
+            .fluidOutputs(FluidUtils.getFluidStack(PlatinumFlotationFroth, 1000))
+            .duration(8*MINUTES)
+            .eut(TierEU.RECIPE_LuV)
+            .noOptimize()
+            .addTo(flotationCellRecipes);
 
         // Pentlandite
-        CORE.RA.addFlotationRecipe(
-            Materials.Pentlandite,
-            ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
-            new FluidStack[] { FluidUtils.getFluidStack(PineOil, 14000), },
-            new FluidStack[] { FluidUtils.getFluidStack(PentlanditeFlotationFroth, 1000) },
-            20 * 480,
-            (int) TierEU.RECIPE_LuV);
-    }
-
-    private void addFlotationRecipes2() {
+        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Pentlandite);
+        FlotationRecipeHandler.registerOreType(aMat);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate,  32),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64)
+            )
+            .fluidInputs(FluidUtils.getFluidStack(PineOil, 14000))
+            .fluidOutputs( FluidUtils.getFluidStack(PentlanditeFlotationFroth, 1000))
+            .duration(8*MINUTES)
+            .eut(TierEU.RECIPE_LuV)
+            .noOptimize()
+            .addTo(flotationCellRecipes);
 
         // Redstone
-        CORE.RA.addFlotationRecipe(
-            Materials.Redstone,
-            ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
-            new FluidStack[] { FluidUtils.getFluidStack(PineOil, 13000), },
-            new FluidStack[] { FluidUtils.getFluidStack(RedstoneFlotationFroth, 1000) },
-            20 * 480,
-            (int) TierEU.RECIPE_IV);
+        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Redstone);
+        FlotationRecipeHandler.registerOreType(aMat);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64)
+            )
+            .fluidInputs(FluidUtils.getFluidStack(PineOil, 13000))
+            .fluidOutputs(FluidUtils.getFluidStack(RedstoneFlotationFroth, 1000))
+            .duration(8*MINUTES)
+            .eut(TierEU.RECIPE_IV)
+            .noOptimize()
+            .addTo(flotationCellRecipes);
 
         // Spessartine
-        CORE.RA.addFlotationRecipe(
-            Materials.Spessartine,
-            ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 1),
-            new FluidStack[] { FluidUtils.getFluidStack(PineOil, 35000), },
-            new FluidStack[] { FluidUtils.getFluidStack(SpessartineFlotationFroth, 1000) },
-            20 * 480,
-            (int) TierEU.RECIPE_LuV);
+        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Spessartine);
+        FlotationRecipeHandler.registerOreType(aMat);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 32),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64)
+            )
+            .fluidInputs(FluidUtils.getFluidStack(PineOil, 35000))
+            .fluidOutputs(FluidUtils.getFluidStack(SpessartineFlotationFroth, 1000))
+            .duration(8*MINUTES)
+            .eut( TierEU.RECIPE_LuV)
+            .noOptimize()
+            .addTo(flotationCellRecipes);
 
         // Grossular
-        CORE.RA.addFlotationRecipe(
-            Materials.Grossular,
-            ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 1),
-            new FluidStack[] { FluidUtils.getFluidStack(PineOil, 28000), },
-            new FluidStack[] { FluidUtils.getFluidStack(GrossularFlotationFroth, 1000) },
-            20 * 480,
-            (int) TierEU.RECIPE_LuV);
+        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Grossular);
+        FlotationRecipeHandler.registerOreType(aMat);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 32),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64)
+            )
+            .fluidInputs(FluidUtils.getFluidStack(PineOil, 28000))
+            .fluidOutputs(FluidUtils.getFluidStack(GrossularFlotationFroth, 1000))
+            .duration(8*MINUTES)
+            .eut(TierEU.RECIPE_LuV)
+            .noOptimize()
+            .addTo(flotationCellRecipes);
 
         // Almandine
-        CORE.RA.addFlotationRecipe(
-            Materials.Almandine,
-            ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
-            new FluidStack[] { FluidUtils.getFluidStack(PineOil, 18000), },
-            new FluidStack[] { FluidUtils.getFluidStack(AlmandineFlotationFroth, 1000) },
-            20 * 480,
-            (int) TierEU.RECIPE_IV);
+        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Almandine);
+        FlotationRecipeHandler.registerOreType(aMat);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64)
+            )
+            .fluidInputs(FluidUtils.getFluidStack(PineOil, 18000))
+            .fluidOutputs( FluidUtils.getFluidStack(AlmandineFlotationFroth, 1000))
+            .duration(8*MINUTES)
+            .eut(TierEU.RECIPE_IV)
+            .noOptimize()
+            .addTo(flotationCellRecipes);
 
         // Pyrope
-        CORE.RA.addFlotationRecipe(
-            Materials.Pyrope,
-            ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 1),
-            new FluidStack[] { FluidUtils.getFluidStack(PineOil, 8000), },
-            new FluidStack[] { FluidUtils.getFluidStack(PyropeFlotationFroth, 1000) },
-            20 * 480,
-            (int) TierEU.RECIPE_EV);
+        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Pyrope);
+        FlotationRecipeHandler.registerOreType(aMat);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64)
+            )
+            .fluidInputs(FluidUtils.getFluidStack(PineOil, 8000))
+            .fluidOutputs(FluidUtils.getFluidStack(PyropeFlotationFroth, 1000))
+            .duration(8*MINUTES)
+            .eut(TierEU.RECIPE_EV)
+            .noOptimize()
+            .addTo(flotationCellRecipes);
 
         // Monazite
-        CORE.RA.addFlotationRecipe(
-            Materials.Monazite,
-            ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 1),
-            new FluidStack[] { FluidUtils.getFluidStack(PineOil, 30000), },
-            new FluidStack[] { FluidUtils.getFluidStack(MonaziteFlotationFroth, 1000) },
-            20 * 480,
-            (int) TierEU.RECIPE_LuV);
+        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Monazite);
+        FlotationRecipeHandler.registerOreType(aMat);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 32),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64),
+                aMat.getMilled(64)
+            )
+            .fluidInputs(FluidUtils.getFluidStack(PineOil, 30000))
+            .fluidOutputs(FluidUtils.getFluidStack(MonaziteFlotationFroth, 1000))
+            .duration(8*MINUTES)
+            .eut(TierEU.RECIPE_LuV)
+            .noOptimize()
+            .addTo(flotationCellRecipes);
     }
 
     private void addPineOilExtraction() {
