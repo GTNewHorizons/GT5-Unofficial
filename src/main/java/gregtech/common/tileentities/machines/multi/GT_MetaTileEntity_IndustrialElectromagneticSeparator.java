@@ -258,7 +258,8 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             if (mExoticEnergyHatches.size() > 1) return false;
             if (mExoticEnergyHatches.get(0)
                 .getConnectionType() == GT_MetaTileEntity_Hatch.ConnectionType.LASER) return false;
-            if (mExoticEnergyHatches.get(0).maxWorkingAmperesIn() > 64) return false;
+            if (mExoticEnergyHatches.get(0)
+                .maxWorkingAmperesIn() > 64) return false;
         }
 
         // All checks passed!
