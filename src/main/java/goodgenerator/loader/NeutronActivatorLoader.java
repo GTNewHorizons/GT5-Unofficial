@@ -1,7 +1,13 @@
 package goodgenerator.loader;
 
+import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.neutronActivatorRecipes;
 import static goodgenerator.items.MyMaterial.*;
+import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.NKE_RANGE;
 
+import gregtech.api.enums.GT_Values;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -14,33 +20,40 @@ import gregtech.api.util.GT_Utility;
 public class NeutronActivatorLoader {
 
     public static void NARecipeLoad() {
-        MyRecipeAdder.instance.addNeutronActivatorRecipe(
-            new FluidStack[] { thoriumBasedLiquidFuelExcited.getFluidOrGas(200) },
-            null,
-            new FluidStack[] { thoriumBasedLiquidFuelDepleted.getFluidOrGas(200) },
-            null,
-            10000,
-            700,
-            500);
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(
+                thoriumBasedLiquidFuelExcited.getFluidOrGas(200))
+            .fluidOutputs(
+                thoriumBasedLiquidFuelDepleted.getFluidOrGas(200))
+            .duration(8 * MINUTES + 20 * SECONDS)
+            .eut(0)
+            .metadata(NKE_RANGE,computeRangeNKE(700,500))
+            .noOptimize()
+            .addTo(neutronActivatorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tungsten, 1)))
+            .fluidInputs(
+                uraniumBasedLiquidFuel.getFluidOrGas(100))
+            .fluidOutputs(
+                uraniumBasedLiquidFuelExcited.getFluidOrGas(100))
+            .duration(4 * SECONDS)
+            .eut(0)
+            .metadata(NKE_RANGE,computeRangeNKE(550,450))
+            .noOptimize()
+            .addTo(neutronActivatorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 1)))
+            .fluidInputs(
+                plutoniumBasedLiquidFuel.getFluidOrGas(100))
+            .fluidOutputs(
+                plutoniumBasedLiquidFuelExcited.getFluidOrGas(100))
+            .duration(4 * SECONDS)
+            .eut(0)
+            .metadata(NKE_RANGE,computeRangeNKE(600,500))
+            .noOptimize()
+            .addTo(neutronActivatorRecipes);
 
-        MyRecipeAdder.instance.addNeutronActivatorRecipe(
-            new FluidStack[] { uraniumBasedLiquidFuel.getFluidOrGas(100) },
-            new ItemStack[] {
-                GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tungsten, 1)) },
-            new FluidStack[] { uraniumBasedLiquidFuelExcited.getFluidOrGas(100) },
-            null,
-            80,
-            550,
-            450);
-
-        MyRecipeAdder.instance.addNeutronActivatorRecipe(
-            new FluidStack[] { plutoniumBasedLiquidFuel.getFluidOrGas(100) },
-            new ItemStack[] {
-                GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 1)) },
-            new FluidStack[] { plutoniumBasedLiquidFuelExcited.getFluidOrGas(100) },
-            null,
-            80,
-            600,
-            500);
     }
 }

@@ -1,5 +1,6 @@
 package goodgenerator.loader;
 
+import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.neutronActivatorRecipes;
 import static goodgenerator.items.MyMaterial.P507;
 import static goodgenerator.items.MyMaterial.adamantine;
 import static goodgenerator.items.MyMaterial.concentratedEnrichedNaquadahSludge;
@@ -34,6 +35,7 @@ import static goodgenerator.items.MyMaterial.towEthyl1Hexanol;
 import static goodgenerator.items.MyMaterial.triniumSulphate;
 import static goodgenerator.items.MyMaterial.wasteLiquid;
 import static goodgenerator.main.GG_Config_Loader.EnableNaquadahRework;
+import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
@@ -47,6 +49,7 @@ import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GT_RecipeConstants.NKE_RANGE;
 import static gregtech.api.util.GT_RecipeConstants.QFT_FOCUS_TIER;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gregtech.common.items.GT_MetaGenerated_Item_01.registerCauldronCleaningFor;
@@ -159,31 +162,50 @@ public class NaquadahReworkRecipeLoader {
                 .addTo(quantumForceTransformerRecipes);
 
             // Activate Them
-            MyRecipeAdder.instance.addNeutronActivatorRecipe(
-                new FluidStack[] { Materials.Nickel.getPlasma(144 * 16) },
-                new ItemStack[] { inertNaquadah.get(OrePrefixes.dust, 64), inertNaquadah.get(OrePrefixes.dust, 32) },
-                new FluidStack[] { Materials.Naquadah.getMolten(144 * 9216) },
-                new ItemStack[] { Materials.Nickel.getDust(16) },
-                2000,
-                600,
-                500);
-            MyRecipeAdder.instance.addNeutronActivatorRecipe(
-                new FluidStack[] { Materials.Titanium.getPlasma(16 * 144) },
-                new ItemStack[] { inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
-                    inertEnrichedNaquadah.get(OrePrefixes.dust, 32) },
-                new FluidStack[] { Materials.NaquadahEnriched.getMolten(144 * 9216) },
-                new ItemStack[] { Materials.Titanium.getDust(16) },
-                2000,
-                900,
-                850);
-            MyRecipeAdder.instance.addNeutronActivatorRecipe(
-                new FluidStack[] { Materials.Americium.getPlasma(144 * 16) },
-                new ItemStack[] { inertNaquadria.get(OrePrefixes.dust, 64), inertNaquadria.get(OrePrefixes.dust, 32) },
-                new FluidStack[] { Materials.Naquadria.getMolten(144 * 9216) },
-                new ItemStack[] { Materials.Americium.getDust(16) },
-                2000,
-                1100,
-                1080);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    inertNaquadah.get(OrePrefixes.dust, 64), inertNaquadah.get(OrePrefixes.dust, 32))
+                .itemOutputs(
+                    Materials.Nickel.getDust(16))
+                .fluidInputs(
+                    Materials.Nickel.getPlasma(144 * 16))
+                .fluidOutputs(
+                    Materials.Naquadah.getMolten(144 * 9216))
+                .duration(1 * MINUTES + 40 * SECONDS)
+                .eut(0)
+                .metadata(NKE_RANGE,computeRangeNKE(600,500))
+                .noOptimize()
+                .addTo(neutronActivatorRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    inertEnrichedNaquadah.get(OrePrefixes.dust, 64),inertEnrichedNaquadah.get(OrePrefixes.dust, 32))
+                .itemOutputs(
+                    Materials.Titanium.getDust(16))
+                .fluidInputs(
+                    Materials.Titanium.getPlasma(16 * 144))
+                .fluidOutputs(
+                    Materials.NaquadahEnriched.getMolten(144 * 9216))
+                .duration(1 * MINUTES + 40 * SECONDS)
+                .eut(0)
+                .metadata(NKE_RANGE,computeRangeNKE(900,850))
+                .noOptimize()
+                .addTo(neutronActivatorRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    inertNaquadria.get(OrePrefixes.dust, 64), inertNaquadria.get(OrePrefixes.dust, 32))
+                .itemOutputs(
+                    Materials.Americium.getDust(16))
+                .fluidInputs(
+                    Materials.Americium.getPlasma(144 * 16))
+                .fluidOutputs(
+                    Materials.Naquadria.getMolten(144 * 9216))
+                .duration(1 * MINUTES + 40 * SECONDS)
+                .eut(0)
+                .metadata(NKE_RANGE,computeRangeNKE(1100,1080))
+                .noOptimize()
+                .addTo(neutronActivatorRecipes);
+
         } catch (Throwable t) {
             // Cry about it
         }
@@ -273,15 +295,19 @@ public class NaquadahReworkRecipeLoader {
             15 * SECONDS,
             TierEU.RECIPE_HV);
 
-        MyRecipeAdder.instance.addNeutronActivatorRecipe(
-            new FluidStack[] { naquadahAdamantiumSolution.getFluidOrGas(3000) },
-            null,
-            new FluidStack[] { naquadahRichSolution.getFluidOrGas(2000) },
-            new ItemStack[] { adamantine.get(OrePrefixes.dust, 4), naquadahEarth.get(OrePrefixes.dust, 2),
-                concentratedEnrichedNaquadahSludge.get(OrePrefixes.dust, 1) },
-            100,
-            230,
-            200);
+        GT_Values.RA.stdBuilder()
+            .itemOutputs(
+                adamantine.get(OrePrefixes.dust, 4), naquadahEarth.get(OrePrefixes.dust, 2),concentratedEnrichedNaquadahSludge.get(OrePrefixes.dust, 1))
+            .fluidInputs(
+                naquadahAdamantiumSolution.getFluidOrGas(3000))
+            .fluidOutputs(
+                naquadahRichSolution.getFluidOrGas(2000))
+            .duration(5 * SECONDS)
+            .eut(0)
+            .metadata(NKE_RANGE,computeRangeNKE(230,200))
+            .noOptimize()
+            .addTo(neutronActivatorRecipes);
+
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 27))
@@ -347,19 +373,16 @@ public class NaquadahReworkRecipeLoader {
             .eut(TierEU.RECIPE_HV)
             .addTo(autoclaveRecipes);
 
-        MyRecipeAdder.instance.addNeutronActivatorRecipe(
-            null,
-            new ItemStack[] { concentratedEnrichedNaquadahSludge.get(OrePrefixes.dust, 16), },
-            null,
-            new ItemStack[] { enrichedNaquadahSulphate.get(OrePrefixes.dust, 64),
-                enrichedNaquadahSulphate.get(OrePrefixes.dust, 64), enrichedNaquadahSulphate.get(OrePrefixes.dust, 37),
-                WerkstoffLoader.Sodiumsulfate.get(OrePrefixes.dust, 64),
-                WerkstoffLoader.Sodiumsulfate.get(OrePrefixes.dust, 64),
-                WerkstoffLoader.Sodiumsulfate.get(OrePrefixes.dust, 12),
-                lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 2), },
-            120,
-            480,
-            460);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                concentratedEnrichedNaquadahSludge.get(OrePrefixes.dust, 16))
+            .itemOutputs(
+                enrichedNaquadahSulphate.get(OrePrefixes.dust, 64),enrichedNaquadahSulphate.get(OrePrefixes.dust, 64), enrichedNaquadahSulphate.get(OrePrefixes.dust, 37),WerkstoffLoader.Sodiumsulfate.get(OrePrefixes.dust, 64),WerkstoffLoader.Sodiumsulfate.get(OrePrefixes.dust, 64),WerkstoffLoader.Sodiumsulfate.get(OrePrefixes.dust, 12),lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 2))
+            .duration(6 * SECONDS)
+            .eut(0)
+            .metadata(NKE_RANGE,computeRangeNKE(480,460))
+            .noOptimize()
+            .addTo(neutronActivatorRecipes);
 
         // Nq+(SO4)2 + 2Zn = Nq+ + 2ZnSO4
         GT_Values.RA.stdBuilder()
@@ -427,15 +450,17 @@ public class NaquadahReworkRecipeLoader {
             .eut(TierEU.RECIPE_IV)
             .addTo(UniversalChemical);
 
-        MyRecipeAdder.instance.addNeutronActivatorRecipe(
-            new FluidStack[] { naquadriaRichSolution.getFluidOrGas(9000) },
-            null,
-            null,
-            new ItemStack[] { naquadriaSulphate.get(OrePrefixes.dust, 44),
-                lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 6) },
-            100,
-            1100,
-            1050);
+        GT_Values.RA.stdBuilder()
+            .itemOutputs(
+                naquadriaSulphate.get(OrePrefixes.dust, 44), lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 6))
+            .fluidInputs(
+                naquadriaRichSolution.getFluidOrGas(9000))
+            .duration(5 * SECONDS)
+            .eut(0)
+            .metadata(NKE_RANGE,computeRangeNKE(1100,1050))
+            .noOptimize()
+            .addTo(neutronActivatorRecipes);
+
 
         GT_Values.RA.stdBuilder()
             .itemInputs(lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 3), Materials.Water.getCells(3))

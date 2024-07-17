@@ -3,6 +3,7 @@ package goodgenerator.loader;
 import static goodgenerator.util.StackUtils.getTotalItems;
 import static goodgenerator.util.StackUtils.mergeStacks;
 import static goodgenerator.util.StackUtils.multiplyAndSplitIntoStacks;
+import static gregtech.api.util.GT_RecipeConstants.COAL_CASING_TIER;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -107,14 +109,15 @@ public class ComponentAssemblyLineRecipeLoader {
                     replaceIntoFluids(fixedInputs, fixedFluids, 64);
                     int tier = info.getRight();
                     int energy = (int) Math.min(Integer.MAX_VALUE - 7, GT_Values.VP[tier - 1]);
-                    MyRecipeAdder.instance.addComponentAssemblyLineRecipe(
-                        fixedInputs.toArray(new ItemStack[0]),
-                        fixedFluids.toArray(new FluidStack[0]),
-                        info.getLeft()
-                            .get(OUTPUT_MULTIPLIER),
-                        recipe.mDuration * INPUT_MULTIPLIER,
-                        energy,
-                        info.getRight());
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(fixedInputs.toArray(new ItemStack[0]))
+                        .itemOutputs(info.getLeft().get(OUTPUT_MULTIPLIER))
+                        .fluidInputs(fixedFluids.toArray(new FluidStack[0]))
+                        .duration(recipe.mDuration * INPUT_MULTIPLIER)
+                        .eut(energy)
+                        .metadata(COAL_CASING_TIER,info.getRight())
+                        .noOptimize()
+                        .addTo(GoodGeneratorRecipeMaps.componentAssemblyLineRecipes);
                 }
             }
         });
@@ -173,14 +176,15 @@ public class ComponentAssemblyLineRecipeLoader {
                     if (addProgrammedCircuit) fixedInputs.add(GT_Utility.getIntegratedCircuit(componentCircuit));
 
                     addEternityForMHDCSM(fixedFluids);
-                    MyRecipeAdder.instance.addComponentAssemblyLineRecipe(
-                        fixedInputs.toArray(new ItemStack[0]),
-                        fixedFluids.toArray(new FluidStack[0]),
-                        info.getLeft()
-                            .get(OUTPUT_MULTIPLIER), // The component output
-                        recipe.mDuration * INPUT_MULTIPLIER, // Takes as long as this many
-                        recipe.mEUt,
-                        info.getRight()); // Casing tier
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs( fixedInputs.toArray(new ItemStack[0]))
+                        .itemOutputs(info.getLeft().get(OUTPUT_MULTIPLIER))
+                        .fluidInputs(fixedFluids.toArray(new FluidStack[0]))
+                        .duration(recipe.mDuration * INPUT_MULTIPLIER)
+                        .eut(recipe.mEUt)
+                        .metadata(COAL_CASING_TIER,info.getRight())
+                        .noOptimize()
+                        .addTo(GoodGeneratorRecipeMaps.componentAssemblyLineRecipes);
 
                     // Add a second recipe using Styrene-Butadiene
                     // Rubber instead of Silicone Rubber.
@@ -188,14 +192,15 @@ public class ComponentAssemblyLineRecipeLoader {
                     // @allSyntheticRubber so it's quite fragile, but
                     // it's also the least invasive change.
                     if (swapSiliconeForStyreneButadiene(fixedFluids)) {
-                        MyRecipeAdder.instance.addComponentAssemblyLineRecipe(
-                            fixedInputs.toArray(new ItemStack[0]),
-                            fixedFluids.toArray(new FluidStack[0]),
-                            info.getLeft()
-                                .get(OUTPUT_MULTIPLIER), // The component output
-                            recipe.mDuration * INPUT_MULTIPLIER, // Takes as long as this many
-                            recipe.mEUt,
-                            info.getRight()); // Casing tier
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(fixedInputs.toArray(new ItemStack[0]))
+                            .itemOutputs(info.getLeft().get(OUTPUT_MULTIPLIER))
+                            .fluidInputs(fixedFluids.toArray(new FluidStack[0]))
+                            .duration(recipe.mDuration * INPUT_MULTIPLIER)
+                            .eut(recipe.mEUt)
+                            .metadata(COAL_CASING_TIER,info.getRight())
+                            .noOptimize()
+                            .addTo(GoodGeneratorRecipeMaps.componentAssemblyLineRecipes);
                     }
                 }
             }
