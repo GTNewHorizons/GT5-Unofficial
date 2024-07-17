@@ -236,6 +236,7 @@ gt.recipe.purificationplantphadjustment=pH Neutralization
 gt.recipe.purificationplantozonation=Ozonation
 gt.recipe.purificationplantplasmaheating=Plasma Heating
 gt.recipe.purificationplantuvtreatment=UV Treatment
+gt.recipe.purificationplantdegasifier=Degasification
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling

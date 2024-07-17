@@ -9,6 +9,7 @@ import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationClarifierRecipes;
+import static gregtech.api.recipe.RecipeMaps.purificationDegasifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationFlocculationRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationOzonationRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPhAdjustmentRecipes;
@@ -192,5 +193,15 @@ public class GT_PurifiedWaterRecipes {
             .eut(TierEU.RECIPE_UV)
             .metadata(BASE_CHANCE, 0.0f)
             .addTo(purificationUVTreatmentRecipes);
+
+        // Grade 7 - Degasification
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(Materials.Grade6PurifiedWater.getFluid(1000L))
+            .fluidOutputs(Materials.Grade7PurifiedWater.getFluid(900L))
+            .ignoreCollision()
+            .duration(duration)
+            .eut(TierEU.RECIPE_UHV)
+            .metadata(BASE_CHANCE, 0.0f)
+            .addTo(purificationDegasifierRecipes);
     }
 }

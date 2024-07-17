@@ -51,6 +51,11 @@ public class GT_MetaTileEntity_Hatch_DegasifierControlHatch extends GT_MetaTileE
     }
 
     @Override
+    public boolean isFacingValid(ForgeDirection facing) {
+        return true;
+    }
+
+    @Override
     public void initDefaultModes(NBTTagCompound aNBT) {
         getBaseMetaTileEntity().setActive(true);
     }
