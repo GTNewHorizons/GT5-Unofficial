@@ -3,6 +3,7 @@ package goodgenerator.loader;
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.neutronActivatorRecipes;
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
 import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
+import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -1336,6 +1337,36 @@ public class RecipeLoader_02 {
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
+                    ItemList.Casing_LuV.get(3),
+                    ItemList.Robot_Arm_EV.get(2),
+                    GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Osmiridium, 2),
+                    MyMaterial.marM200.get(OrePrefixes.plateDouble, 2),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1),
+                    ELEMENT.getInstance().RUTHENIUM.getBolt(32),
+                    GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Platinum, 8))
+                .fluidInputs(MyMaterial.zircaloy4.getMolten(576))
+                .itemOutputs(ItemRefer.Imprecise_Electronic_Unit.get(2))
+                .duration(40 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(assemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Casing_ZPM.get(3),
+                    ItemList.Robot_Arm_IV.get(2),
+                    GT_OreDictUnificator.get(OrePrefixes.cableGt04, MyMaterial.lumiium.getBridgeMaterial(), 2),
+                    MyMaterial.marCeM200.get(OrePrefixes.plateDouble, 2),
+                    ItemRefer.HiC_T1.get(1),
+                    MyMaterial.signalium.get(OrePrefixes.bolt, 32),
+                    MyMaterial.titaniumBetaC.get(OrePrefixes.gearGtSmall, 8))
+                .fluidInputs(Materials.BlackSteel.getMolten(576))
+                .itemOutputs(ItemRefer.Precise_Electronic_Unit_T1.get(2))
+                .duration(40 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(assemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
                     ItemList.Casing_UV.get(3),
                     ItemList.Robot_Arm_LuV.get(2),
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.ElectrumFlux, 4),
@@ -1362,6 +1393,21 @@ public class RecipeLoader_02 {
                 .itemOutputs(ItemRefer.Precise_Electronic_Unit_T3.get(4))
                 .duration(4 * MINUTES)
                 .eut(TierEU.RECIPE_UV)
+                .addTo(assemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    getItemContainer("Casing_UEV").get(3),
+                    ItemList.Field_Generator_UV.get(2),
+                    GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 8),
+                    ItemRefer.HiC_T4.get(1),
+                    ItemRefer.Precise_Electronic_Unit_T3.get(1),
+                    MyMaterial.enrichedNaquadahAlloy.get(OrePrefixes.bolt, 32),
+                    MyMaterial.tairitsu.get(OrePrefixes.gearGtSmall, 8))
+                .fluidInputs(MyMaterial.preciousMetalAlloy.getMolten(1152))
+                .itemOutputs(ItemRefer.Precise_Electronic_Unit_T4.get(4))
+                .duration(4 * MINUTES)
+                .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
         }
 

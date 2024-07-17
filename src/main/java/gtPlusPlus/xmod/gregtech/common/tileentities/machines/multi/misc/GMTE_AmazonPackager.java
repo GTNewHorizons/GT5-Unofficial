@@ -10,7 +10,21 @@ import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -28,13 +42,18 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_AmazonPackager>
     implements ISurvivalConstructable {
 
     private int mCasing;
+
+    private boolean mPackageMode = true;
 
     private static IStructureDefinition<GMTE_AmazonPackager> STRUCTURE_DEFINITION = null;
 
@@ -53,7 +72,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
 
     @Override
     public String getMachineType() {
-        return "Packager";
+        return "Packager, Unpackager";
     }
 
     @Override
@@ -82,6 +101,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Amazon Warehouse")
             .addInfo("This Multiblock is used for EXTREME packaging requirements")
+            .addInfo("Can be configured with a screwdriver to work as an Unpackager")
             .addInfo("Dust Schematics are inserted into the input busses")
             .addInfo("If inserted into the controller, it is shared across all busses")
             .addInfo("1x, 2x, 3x & Other Schematics are to be placed into the controller GUI slot")
@@ -119,7 +139,13 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.packagerRecipes;
+        return mPackageMode ? RecipeMaps.packagerRecipes : RecipeMaps.unpackagerRecipes;
+    }
+
+    @Nonnull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(RecipeMaps.packagerRecipes, RecipeMaps.unpackagerRecipes);
     }
 
     @Override
@@ -164,5 +190,47 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
     @Override
     public boolean supportsInputSeparation() {
         return true;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setBoolean("mPackageMode", mPackageMode);
+        super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        mPackageMode = aNBT.getBoolean("mPackageMode");
+        super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setBoolean("mode", mPackageMode);
+    }
+
+    @Override
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        mPackageMode = !mPackageMode;
+        if (mPackageMode) {
+            PlayerUtils.messagePlayer(aPlayer, "Now running in Packager Mode.");
+        } else {
+            PlayerUtils.messagePlayer(aPlayer, "Now running in Unpackager Mode.");
+        }
+        mLastRecipe = null;
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                + EnumChatFormatting.WHITE
+                + StatCollector.translateToLocal("GT5U.GTPP_MULTI_PACKAGER.mode." + (tag.getBoolean("mode") ? 1 : 0))
+                + EnumChatFormatting.RESET);
     }
 }

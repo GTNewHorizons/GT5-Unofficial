@@ -4,6 +4,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+
 import gregtech.GT_Mod;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -28,9 +30,9 @@ public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
         try {
             while (!tQueue.isEmpty()) {
                 final long packedCoords = tQueue.dequeueLong();
-                posX = unpackLongX(packedCoords);
-                posY = unpackLongY(packedCoords);
-                posZ = unpackLongZ(packedCoords);
+                posX = CoordinatePacker.unpackX(packedCoords);
+                posY = CoordinatePacker.unpackY(packedCoords);
+                posZ = CoordinatePacker.unpackZ(packedCoords);
 
                 final TileEntity tTileEntity;
 
@@ -58,7 +60,8 @@ public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
                     for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
                         final ForgeDirection side = ForgeDirection.VALID_DIRECTIONS[i];
                         if (cable.isConnectedAtSide(side)) {
-                            final long tCoords = asLong(posX + side.offsetX, posY + side.offsetY, posZ + side.offsetZ);
+                            final long tCoords = CoordinatePacker
+                                .pack(posX + side.offsetX, posY + side.offsetY, posZ + side.offsetZ);
                             if (visited.add(tCoords)) {
                                 tQueue.enqueue(tCoords);
                             }

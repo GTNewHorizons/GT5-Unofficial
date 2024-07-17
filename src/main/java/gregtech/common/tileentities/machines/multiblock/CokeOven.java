@@ -142,7 +142,11 @@ public class CokeOven extends Controller<CokeOven, CokeOvenProcessingLogic> {
 
     @Override
     public String getLocalName() {
-        return StatCollector.translateToLocal("gt.multiBlock.controller.cokeOven");
+        return StatCollector.translateToLocal(getTileEntityName());
+    }
+
+    public String getTileEntityName() {
+        return "gt.multitileentity.multiblock.cokeOven";
     }
 
     @Override

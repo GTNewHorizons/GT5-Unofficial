@@ -5,7 +5,6 @@ import static com.elisis.gtnhlanth.api.recipe.LanthanidesRecipeMaps.dissolutionT
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.*;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
-import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
@@ -64,7 +63,6 @@ import com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool;
 import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.PlatinumSludgeOverHaul;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.items.MyMaterial;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -2548,16 +2546,6 @@ public class RecipeLoader {
             .eut(514)
             .duration(2 * SECONDS)
             .addTo(blastFurnaceRecipes);
-        // GT_Values.RA.addBlastRecipe(
-        // DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1),
-        // null,
-        // null,
-        // null,
-        // SamariumOxide.get(OrePrefixes.dust, 1),
-        // null,
-        // 40,
-        // 514,
-        // 1200);
 
     }
 
