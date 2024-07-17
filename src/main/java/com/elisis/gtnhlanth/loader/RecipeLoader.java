@@ -760,7 +760,7 @@ public class RecipeLoader {
                 Materials.Rutile.getDust(1),
                 WerkstoffLoader.RedZircon.get(OrePrefixes.dust, 1),
                 Materials.Ilmenite.getDust(1))
-            .outputChances(90_00, 75_00, 10_00, 5_00, 20_00)
+            .outputChances(90_00, 75_00, 10_00, 5_00)
             .fluidInputs(WerkstoffMaterialPool.DiltedRareEarthBastnasiteMud.getFluidOrGas(1000))
             .fluidOutputs(WerkstoffMaterialPool.FilteredBastnasiteMud.getFluidOrGas(400))
             .eut(240)
