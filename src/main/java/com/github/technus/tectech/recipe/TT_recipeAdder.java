@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import gregtech.api.enums.GT_Values;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,6 +21,8 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_RecipeAdder;
+
+import static gregtech.api.recipe.RecipeMaps.assemblylineVisualRecipes;
 
 public class TT_recipeAdder extends GT_RecipeAdder {
 
@@ -60,17 +63,18 @@ public class TT_recipeAdder extends GT_RecipeAdder {
             totalComputationRequired,
             researchEUt,
             researchAmperage | computationRequiredPerSec << 16);
-        RecipeMaps.assemblylineVisualRecipes.addFakeRecipe(
-            false,
-            aInputs,
-            new ItemStack[] { aOutput },
-            new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Reads Research result") },
-            aFluidInputs,
-            null,
-            assDuration,
-            assEUt,
-            0,
-            false);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(aInputs)
+            .itemOutputs(aOutput)
+            .fluidInputs(aFluidInputs)
+            .special(ItemList.Tool_DataStick.getWithName(1L, "Reads Research result"))
+            .duration(assDuration)
+            .eut(assEUt)
+            .ignoreCollision()
+            .fake()
+            .addTo(assemblylineVisualRecipes);
+
         GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(
             new GT_Recipe.GT_Recipe_AssemblyLine(
                 CustomItemList.UnusedStuff.get(1),
@@ -193,7 +197,7 @@ public class TT_recipeAdder extends GT_RecipeAdder {
             totalComputationRequired,
             researchEUt,
             researchAmperage | computationRequiredPerSec << 16);
-        RecipeMaps.assemblylineVisualRecipes.addFakeRecipe(
+        assemblylineVisualRecipes.addFakeRecipe(
             false,
             tInputs,
             new ItemStack[] { aOutput },

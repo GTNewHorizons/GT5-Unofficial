@@ -13,6 +13,7 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.processingLoaders;
 
+import static com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps.bioLabRecipes;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.OrePrefixes.bolt;
 import static gregtech.api.enums.OrePrefixes.crushed;
@@ -107,18 +108,18 @@ public class AdditionalRecipes {
                     ItemStack Detergent = BioItemList.getOther(1);
                     ItemStack DNAFlask = BioItemList.getDNASampleFlask(null);
                     ItemStack EthanolCell = Materials.Ethanol.getCells(1);
-                    BartWorksRecipeMaps.bioLabRecipes.addFakeRecipe(
-                        false,
-                        new ItemStack[] { stack, DNAFlask, Detergent, EthanolCell },
-                        new ItemStack[] { BioItemList.getDNASampleFlask(BioDNA.convertDataToDNA(DNA)),
-                            GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L) },
-                        BioItemList.mBioLabParts[0],
-                        new int[] { DNA.getChance(), 10000 },
-                        new FluidStack[] { FluidRegistry.getFluidStack("ic2distilledwater", 1000) },
-                        null,
-                        500,
-                        BW_Util.getMachineVoltageFromTier(3 + DNA.getTier()),
-                        BW_Util.STANDART);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(stack, DNAFlask, Detergent, EthanolCell)
+                        .itemOutputs(BioItemList.getDNASampleFlask(BioDNA.convertDataToDNA(DNA)),
+                            GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
+                        .outputChances(DNA.getChance(), 100_00)
+                        .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 1000))
+                        .special( BioItemList.mBioLabParts[0])
+                        .duration(25*SECONDS)
+                        .eut(BW_Util.getMachineVoltageFromTier(3 + DNA.getTier()))
+                        .ignoreCollision()
+                        .fake()
+                        .addTo(bioLabRecipes);
                 }
             }
 
@@ -130,18 +131,18 @@ public class AdditionalRecipes {
                     Behaviour_DataOrb.setDataTitle(Outp, "DNA Sample");
                     Behaviour_DataOrb.setDataName(Outp, DNA.getName());
 
-                    BartWorksRecipeMaps.bioLabRecipes.addFakeRecipe(
-                        false,
-                        new ItemStack[] { stack, FluidLoader.BioLabFluidCells[0], FluidLoader.BioLabFluidCells[3],
-                            ItemList.Tool_DataOrb.get(1L) },
-                        new ItemStack[] { Outp, ItemList.Cell_Empty.get(2L) },
-                        BioItemList.mBioLabParts[1],
-                        new int[] { DNA.getChance(), 10000 },
-                        dnaFluid,
-                        null,
-                        500,
-                        BW_Util.getMachineVoltageFromTier(4 + DNA.getTier()),
-                        BW_Util.STANDART);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(stack, FluidLoader.BioLabFluidCells[0], FluidLoader.BioLabFluidCells[3],
+                            ItemList.Tool_DataOrb.get(1L))
+                        .itemOutputs(Outp, ItemList.Cell_Empty.get(2L))
+                        .outputChances(DNA.getChance(), 100_00)
+                        .fluidInputs(dnaFluid)
+                        .special(BioItemList.mBioLabParts[1])
+                        .duration(25*SECONDS)
+                        .eut(BW_Util.getMachineVoltageFromTier(4 + DNA.getTier()))
+                        .ignoreCollision()
+                        .fake()
+                        .addTo(bioLabRecipes);
                 }
             }
 
@@ -156,18 +157,18 @@ public class AdditionalRecipes {
                     Behaviour_DataOrb.setDataTitle(inp2, "DNA Sample");
                     Behaviour_DataOrb.setDataName(inp2, BioCultureLoader.BIO_DATA_BETA_LACMATASE.getName());
 
-                    BartWorksRecipeMaps.bioLabRecipes.addFakeRecipe(
-                        false,
-                        new ItemStack[] { FluidLoader.BioLabFluidCells[1], BioItemList.getPlasmidCell(null), inp,
-                            inp2 },
-                        new ItemStack[] { stack, ItemList.Cell_Empty.get(1L) },
-                        BioItemList.mBioLabParts[2],
-                        new int[] { DNA.getChance(), 10000 },
-                        dnaFluid,
-                        null,
-                        500,
-                        BW_Util.getMachineVoltageFromTier(4 + DNA.getTier()),
-                        BW_Util.STANDART);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(FluidLoader.BioLabFluidCells[1], BioItemList.getPlasmidCell(null), inp,
+                            inp2)
+                        .itemOutputs(stack, ItemList.Cell_Empty.get(1L))
+                        .outputChances( DNA.getChance(), 100_00)
+                        .fluidInputs(dnaFluid)
+                        .special(BioItemList.mBioLabParts[2])
+                        .duration(25*SECONDS)
+                        .eut(BW_Util.getMachineVoltageFromTier(4 + DNA.getTier()))
+                        .ignoreCollision()
+                        .fake()
+                        .addTo(bioLabRecipes);
                 }
             }
 
@@ -179,19 +180,19 @@ public class AdditionalRecipes {
                     stack.getTagCompound()
                         .getCompoundTag("Plasmid"));
                 if (!Objects.equals(DNA.getName(), Plasmid.getName())) {
-                    BartWorksRecipeMaps.bioLabRecipes.addFakeRecipe(
-                        true,
-                        new ItemStack[] { BioItemList.getPetriDish(BioCulture.getBioCulture(DNA.getName())),
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(BioItemList.getPetriDish(BioCulture.getBioCulture(DNA.getName())),
                             BioItemList.getPlasmidCell(BioPlasmid.convertDataToPlasmid(Plasmid)),
-                            FluidLoader.BioLabFluidCells[2], },
-                        new ItemStack[] { stack, ItemList.Cell_Empty.get(1L) },
-                        BioItemList.mBioLabParts[3],
-                        new int[] { Plasmid.getChance(), 10000 },
-                        new FluidStack[] { FluidRegistry.getFluidStack("ic2distilledwater", 1000) },
-                        null,
-                        500,
-                        (int) TierEU.RECIPE_LuV,
-                        BW_Util.STANDART);
+                            FluidLoader.BioLabFluidCells[2])
+                        .itemOutputs( stack, ItemList.Cell_Empty.get(1L))
+                        .outputChances(Plasmid.getChance(), 100_00 )
+                        .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 1000) )
+                        .special(BioItemList.mBioLabParts[3])
+                        .duration(25*SECONDS)
+                        .eut(TierEU.RECIPE_LuV)
+                        .ignoreCollision()
+                        .fake()
+                        .addTo(bioLabRecipes);
                 }
             }
 
@@ -199,19 +200,18 @@ public class AdditionalRecipes {
             Behaviour_DataOrb.setDataTitle(Outp, "DNA Sample");
             Behaviour_DataOrb.setDataName(Outp, "Any DNA");
             // Clonal Cellular Synthesis- [Liquid DNA] + Medium Petri Dish + Plasma Membrane + Stem Cells + Genome Data
-            BartWorksRecipeMaps.bioLabRecipes.addFakeRecipe(
-                false,
-                new ItemStack[] { BioItemList.getPetriDish(null), BioItemList.getOther(4),
-                    ItemList.Circuit_Chip_Stemcell.get(2L), Outp },
-                new ItemStack[] { BioItemList.getPetriDish(null)
-                    .setStackDisplayName("The Culture made from DNA"), },
-                BioItemList.mBioLabParts[4],
-                new int[] { 7500, 10000 },
-                new FluidStack[] { new FluidStack(dnaFluid[0].getFluid(), 8000) },
-                null,
-                500,
-                (int) TierEU.RECIPE_LuV,
-                BW_Util.STANDART);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(BioItemList.getPetriDish(null), BioItemList.getOther(4),
+                    ItemList.Circuit_Chip_Stemcell.get(2L), Outp)
+                .itemOutputs(BioItemList.getPetriDish(null).setStackDisplayName("The Culture made from DNA"))
+                .outputChances(75_00)
+                .fluidInputs( new FluidStack(dnaFluid[0].getFluid(), 8000) )
+                .special(BioItemList.mBioLabParts[4])
+                .duration(25*SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .ignoreCollision()
+                .fake()
+                .addTo(bioLabRecipes);
 
             FluidStack[] easyFluids = { Materials.Water.getFluid(1000L),
                 FluidRegistry.getFluidStack("ic2distilledwater", 1000) };
@@ -233,23 +233,19 @@ public class AdditionalRecipes {
                                 1000,
                                 (int) TierEU.RECIPE_HV,
                                 BW_Util.STANDART));
-                        // aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs,
-                        // aDuration, aEUt, aSpecialValue
-                        BartWorksRecipeMaps.bioLabRecipes.addRecipe(
-                            new GT_Recipe(
-                                false,
-                                new ItemStack[] { BioItemList.getPetriDish(null),
-                                    fluidStack.equals(Materials.Water.getFluid(1000L)) ? Materials.Water.getCells(1)
-                                        : GT_Utility.getContainersFromFluid(GT_ModHandler.getDistilledWater(1000))
-                                            .get(0) },
-                                new ItemStack[] { BioItemList.getPetriDish(bioCulture), Materials.Empty.getCells(1) },
-                                null,
-                                new int[] { bioCulture.getChance(), 10000 },
-                                new FluidStack[] { new FluidStack(bioCulture.getFluid(), 1000) },
-                                null,
-                                500,
-                                (int) TierEU.RECIPE_HV,
-                                BW_Util.STANDART));
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs( BioItemList.getPetriDish(null),
+                                fluidStack.equals(Materials.Water.getFluid(1000L)) ? Materials.Water.getCells(1)
+                                    : GT_Utility.getContainersFromFluid(GT_ModHandler.getDistilledWater(1000))
+                                    .get(0))
+                            .itemOutputs( BioItemList.getPetriDish(bioCulture), Materials.Empty.getCells(1))
+                            .outputChances(bioCulture.getChance(), 100_00)
+                            .fluidInputs( new FluidStack(bioCulture.getFluid(), 1000))
+                            .duration(25*SECONDS)
+                            .eut(TierEU.RECIPE_HV)
+                            .ignoreCollision()
+                            .fake()
+                            .addTo(bioLabRecipes);
                     }
                 }
             }
