@@ -105,65 +105,78 @@ public class GT_RecipeConstants {
     /**
      * FOG Exotic recipe tier.
      */
-    public static final RecipeMetadataKey<Integer> FOG_EXOTIC_TIER = SimpleRecipeMetadataKey.create(Integer.class, "fog_exotic_tier");
+    public static final RecipeMetadataKey<Integer> FOG_EXOTIC_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "fog_exotic_tier");
 
     /**
      * FOG Plasma recipe tier.
      */
-    public static final RecipeMetadataKey<Integer> FOG_PLASMA_TIER = SimpleRecipeMetadataKey.create(Integer.class, "fog_plasma_tier");
+    public static final RecipeMetadataKey<Integer> FOG_PLASMA_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "fog_plasma_tier");
 
     /**
      * DEFC Casing tier.
      */
-    public static final RecipeMetadataKey<Integer> DEFC_CASING_TIER = SimpleRecipeMetadataKey.create(Integer.class, "defc_casing_tier");
+    public static final RecipeMetadataKey<Integer> DEFC_CASING_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "defc_casing_tier");
 
     /**
      * Chemplant Casing tier. Beware, codewise index starts at 0, but it is tier 1.
      */
-    public static final RecipeMetadataKey<Integer> CHEMPLANT_CASING_TIER = SimpleRecipeMetadataKey.create(Integer.class, "chemplant_casing_tier");
+    public static final RecipeMetadataKey<Integer> CHEMPLANT_CASING_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "chemplant_casing_tier");
 
     /**
      * QFT Focus tier.
      */
-    public static final RecipeMetadataKey<Integer> QFT_FOCUS_TIER = SimpleRecipeMetadataKey.create(Integer.class, "qft_focus_tier");
+    public static final RecipeMetadataKey<Integer> QFT_FOCUS_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "qft_focus_tier");
 
     /**
      * Dissolution Tank Ratio.
      */
-    public static final RecipeMetadataKey<Integer> DISSOLUTION_TANK_RATIO = SimpleRecipeMetadataKey.create(Integer.class, "dissolution_tank_ratio");
+    public static final RecipeMetadataKey<Integer> DISSOLUTION_TANK_RATIO = SimpleRecipeMetadataKey
+        .create(Integer.class, "dissolution_tank_ratio");
 
     /**
      * Duration in days for the RTG.
      */
-    public static final RecipeMetadataKey<Integer> RTG_DURATION_IN_DAYS = SimpleRecipeMetadataKey.create(Integer.class, "rtg_duration_in_days");
+    public static final RecipeMetadataKey<Integer> RTG_DURATION_IN_DAYS = SimpleRecipeMetadataKey
+        .create(Integer.class, "rtg_duration_in_days");
 
     /**
      * Basic output for the Large Naquadah Generator.
      */
-    public static final RecipeMetadataKey<Integer> LNG_BASIC_OUTPUT = SimpleRecipeMetadataKey.create(Integer.class, "lng_basic_output");
+    public static final RecipeMetadataKey<Integer> LNG_BASIC_OUTPUT = SimpleRecipeMetadataKey
+        .create(Integer.class, "lng_basic_output");
 
     /**
      * Coil tier for the Naquadah Fuel Refinery.
      */
-    public static final RecipeMetadataKey<Integer> NFR_COIL_TIER = SimpleRecipeMetadataKey.create(Integer.class, "nfr_coil_tier");
+    public static final RecipeMetadataKey<Integer> NFR_COIL_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "nfr_coil_tier");
 
     /**
      * NKE range for the neutron activator.
      */
-    public static final RecipeMetadataKey<Integer> NKE_RANGE = SimpleRecipeMetadataKey.create(Integer.class, "nke_range");
+    public static final RecipeMetadataKey<Integer> NKE_RANGE = SimpleRecipeMetadataKey
+        .create(Integer.class, "nke_range");
     /**
      * Precise Assembler casing tier.
      */
-    public static final RecipeMetadataKey<Integer> PRECISE_ASSEMBLER_CASING_TIER = SimpleRecipeMetadataKey.create(Integer.class, "precise_assembler_casing_tier");
+    public static final RecipeMetadataKey<Integer> PRECISE_ASSEMBLER_CASING_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "precise_assembler_casing_tier");
     /**
      * CoAL casing tier.
      */
-    public static final RecipeMetadataKey<Integer> COAL_CASING_TIER = SimpleRecipeMetadataKey.create(Integer.class, "coal_casing_tier");
+    public static final RecipeMetadataKey<Integer> COAL_CASING_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "coal_casing_tier");
 
     /**
      * LFTR output power.
      */
-    public static final RecipeMetadataKey<Integer> LFTR_OUTPUT_POWER = SimpleRecipeMetadataKey.create(Integer.class, "lftr_output_power");
+    public static final RecipeMetadataKey<Integer> LFTR_OUTPUT_POWER = SimpleRecipeMetadataKey
+        .create(Integer.class, "lftr_output_power");
 
     /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.

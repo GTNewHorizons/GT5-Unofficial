@@ -22,7 +22,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -241,21 +240,27 @@ public class CoalTar extends ItemPackage {
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
-            .fluidInputs(FluidContainerRegistry.getFluidForFilledItem(ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricCoalTarOil", 1)))
+            .fluidInputs(
+                FluidContainerRegistry
+                    .getFluidForFilledItem(ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricCoalTarOil", 1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 64)
             .addTo(semiFluidFuels);
 
         GT_Values.RA.stdBuilder()
-            .fluidInputs(FluidContainerRegistry.getFluidForFilledItem(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTarOil", 1)))
+            .fluidInputs(
+                FluidContainerRegistry
+                    .getFluidForFilledItem(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTarOil", 1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 32)
             .addTo(semiFluidFuels);
 
         GT_Values.RA.stdBuilder()
-            .fluidInputs(FluidContainerRegistry.getFluidForFilledItem(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTar", 1)))
+            .fluidInputs(
+                FluidContainerRegistry
+                    .getFluidForFilledItem(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTar", 1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 16)

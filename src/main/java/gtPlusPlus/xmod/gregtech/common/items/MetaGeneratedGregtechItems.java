@@ -51,7 +51,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.objects.GT_MultiTexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -336,14 +335,14 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
             .itemInputs(GregtechItemList.Pellet_RTG_PU238.get(1))
             .duration(0)
             .eut(64)
-            .metadata(RTG_DURATION_IN_DAYS,  MathUtils.roundToClosestInt(87.7f))
+            .metadata(RTG_DURATION_IN_DAYS, MathUtils.roundToClosestInt(87.7f))
             .addTo(rtgFuels);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GregtechItemList.Pellet_RTG_SR90.get(1))
             .duration(0)
             .eut(32)
-            .metadata(RTG_DURATION_IN_DAYS,  MathUtils.roundToClosestInt(28.8f))
+            .metadata(RTG_DURATION_IN_DAYS, MathUtils.roundToClosestInt(28.8f))
             .addTo(rtgFuels);
 
         GT_Values.RA.stdBuilder()

@@ -236,7 +236,7 @@ public class RecipeLoader_NuclearFuelProcessing {
             .fluidOutputs(NUCLIDE.LiFBeF2UF4.getFluidStack(3000), FluidUtils.getFluidStack("hydrofluoricacid", 2000))
             .duration(2 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
-            .metadata(CHEMPLANT_CASING_TIER,4)
+            .metadata(CHEMPLANT_CASING_TIER, 4)
             .addTo(chemicalPlantRecipes);
 
         GT_Values.RA.stdBuilder()

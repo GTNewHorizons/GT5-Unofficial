@@ -389,7 +389,7 @@ public class GenericChem extends ItemPackage {
             .fluidOutputs(ELEMENT.getInstance().HYDROGEN.getFluidStack(1000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,2)
+            .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
     }
 
@@ -406,7 +406,7 @@ public class GenericChem extends ItemPackage {
             .fluidInputs(Materials.CarbonDioxide.getGas(1000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,2)
+            .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -421,7 +421,7 @@ public class GenericChem extends ItemPackage {
             .fluidOutputs(FluidUtils.getWater(1000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,4)
+            .metadata(CHEMPLANT_CASING_TIER, 4)
             .addTo(chemicalPlantRecipes);
 
         // Sodium ethyl xanthate - CH3CH2ONa + CS2 → CH3CH2OCS2Na
@@ -431,7 +431,7 @@ public class GenericChem extends ItemPackage {
             .fluidInputs(FluidUtils.getFluidStack(Carbon_Disulfide, 1000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,4)
+            .metadata(CHEMPLANT_CASING_TIER, 4)
             .addTo(chemicalPlantRecipes);
     }
 
@@ -457,7 +457,7 @@ public class GenericChem extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Carbon_Disulfide, 2000))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_LV)
-            .metadata(CHEMPLANT_CASING_TIER,2)
+            .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -478,7 +478,7 @@ public class GenericChem extends ItemPackage {
             .fluidOutputs(MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 280))
             .duration(13 * MINUTES + 20 * SECONDS)
             .eut(3842160)
-            .metadata(CHEMPLANT_CASING_TIER,7)
+            .metadata(CHEMPLANT_CASING_TIER, 7)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -528,7 +528,7 @@ public class GenericChem extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Cyclohexane, 1000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,2)
+            .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -542,7 +542,7 @@ public class GenericChem extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Cyclohexanone, 1000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,2)
+            .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(getTierTwoChip())
@@ -550,7 +550,7 @@ public class GenericChem extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Cyclohexanone, 1000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,2)
+            .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -703,7 +703,7 @@ public class GenericChem extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Cadaverine, 250), FluidUtils.getFluidStack(Putrescine, 250))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
         // Advanced Recipe
         GT_Values.RA.stdBuilder()
@@ -715,7 +715,7 @@ public class GenericChem extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Cadaverine, 750), FluidUtils.getFluidStack(Putrescine, 750))
             .duration(2 * MINUTES)
             .eut(240)
-            .metadata(CHEMPLANT_CASING_TIER,2)
+            .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -729,7 +729,7 @@ public class GenericChem extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Aniline, 1000))
             .duration(30 * SECONDS)
             .eut(500)
-            .metadata(CHEMPLANT_CASING_TIER,3)
+            .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -747,7 +747,7 @@ public class GenericChem extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(NitroBenzene, 5000))
             .duration(30 * SECONDS)
             .eut(500)
-            .metadata(CHEMPLANT_CASING_TIER,4)
+            .metadata(CHEMPLANT_CASING_TIER, 4)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -763,7 +763,7 @@ public class GenericChem extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Ethylanthraquinone2, 1000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,2)
+            .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -779,7 +779,7 @@ public class GenericChem extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Ethylanthrahydroquinone2, 1000))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,2)
+            .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -807,7 +807,7 @@ public class GenericChem extends ItemPackage {
             .fluidInputs(FluidUtils.getFluidStack("fluid.hydrogenperoxide", 1000))
             .duration(30 * SECONDS)
             .eut(240)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -826,7 +826,7 @@ public class GenericChem extends ItemPackage {
                 FluidUtils.getFluidStack("fluid.hydrogenperoxide", 5000))
             .duration(30 * SECONDS)
             .eut(240)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(4))
@@ -839,7 +839,7 @@ public class GenericChem extends ItemPackage {
                 FluidUtils.getFluidStack("fluid.hydrogenperoxide", 5000))
             .duration(5 * SECONDS)
             .eut(240)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
     }

@@ -1,21 +1,19 @@
 package gregtech.api.util;
 
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.fishPondRecipes;
+
 import java.util.ArrayList;
 
-import gregtech.api.enums.GT_Values;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomFishable;
 import net.minecraftforge.common.FishingHooks;
-import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GT_Values;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.fishPondRecipes;
 
 public class FishPondFakeRecipe {
 
@@ -55,7 +53,7 @@ public class FishPondFakeRecipe {
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.getIntegratedCircuit(mType))
                             .itemOutputs(t)
-                            .duration(5*SECONDS)
+                            .duration(5 * SECONDS)
                             .eut(0)
                             .ignoreCollision()
                             .addTo(fishPondRecipes);

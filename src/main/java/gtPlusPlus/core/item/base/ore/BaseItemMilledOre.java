@@ -1,19 +1,18 @@
 package gtPlusPlus.core.item.base.ore;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import net.minecraft.item.Item;
-
-import gregtech.api.enums.Materials;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import net.minecraft.item.ItemStack;
-
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.millingRecipes;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class BaseItemMilledOre extends BaseOreComponent {
 
@@ -32,34 +31,30 @@ public class BaseItemMilledOre extends BaseOreComponent {
         ItemStack millingBall_Soapstone = GregtechItemList.Milling_Ball_Soapstone.get(0);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(10), oreStack,
-                millingBall_Alumina)
+            .itemInputs(GT_Utility.getIntegratedCircuit(10), oreStack, millingBall_Alumina)
             .itemOutputs(milledStackOres1)
-            .duration(2*MINUTES)
+            .duration(2 * MINUTES)
             .eut(materialEU)
             .noOptimize()
             .addTo(millingRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs( GT_Utility.getIntegratedCircuit(11), oreStack,
-                millingBall_Soapstone)
-            .itemOutputs( milledStackOres2)
-            .duration(2*MINUTES+30*SECONDS)
+            .itemInputs(GT_Utility.getIntegratedCircuit(11), oreStack, millingBall_Soapstone)
+            .itemOutputs(milledStackOres2)
+            .duration(2 * MINUTES + 30 * SECONDS)
             .eut(materialEU)
             .noOptimize()
             .addTo(millingRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs( GT_Utility.getIntegratedCircuit(10), crushedStack,
-                millingBall_Alumina )
+            .itemInputs(GT_Utility.getIntegratedCircuit(10), crushedStack, millingBall_Alumina)
             .itemOutputs(milledStackCrushed1)
-            .duration(1*MINUTES)
+            .duration(1 * MINUTES)
             .eut(materialEU)
             .noOptimize()
             .addTo(millingRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs( GT_Utility.getIntegratedCircuit(11), crushedStack,
-                millingBall_Soapstone)
-            .itemOutputs( milledStackCrushed2 )
-            .duration( 1*MINUTES+15*SECONDS)
+            .itemInputs(GT_Utility.getIntegratedCircuit(11), crushedStack, millingBall_Soapstone)
+            .itemOutputs(milledStackCrushed2)
+            .duration(1 * MINUTES + 15 * SECONDS)
             .eut(materialEU)
             .noOptimize()
             .addTo(millingRecipes);

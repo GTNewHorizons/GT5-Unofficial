@@ -395,7 +395,7 @@ public class BioRecipes {
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mLiquidPlastic, (1000)))
             .duration(10 * SECONDS)
             .eut(240)
-            .metadata(CHEMPLANT_CASING_TIER,2)
+            .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -518,7 +518,7 @@ public class BioRecipes {
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mAceticAcid, 700))
             .duration(2 * MINUTES)
             .eut(60)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -598,7 +598,7 @@ public class BioRecipes {
                     .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000))
                     .duration(30 * SECONDS)
                     .eut(2)
-                    .metadata(CHEMPLANT_CASING_TIER,0)
+                    .metadata(CHEMPLANT_CASING_TIER, 0)
                     .addTo(chemicalPlantRecipes);
 
             }
@@ -611,7 +611,7 @@ public class BioRecipes {
                     .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000))
                     .duration(30 * SECONDS)
                     .eut(2)
-                    .metadata(CHEMPLANT_CASING_TIER,0)
+                    .metadata(CHEMPLANT_CASING_TIER, 0)
                     .addTo(chemicalPlantRecipes);
 
             }
@@ -624,7 +624,7 @@ public class BioRecipes {
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .metadata(CHEMPLANT_CASING_TIER,0)
+            .metadata(CHEMPLANT_CASING_TIER, 0)
             .addTo(chemicalPlantRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -635,7 +635,7 @@ public class BioRecipes {
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 2000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .metadata(CHEMPLANT_CASING_TIER,0)
+            .metadata(CHEMPLANT_CASING_TIER, 0)
             .addTo(chemicalPlantRecipes);
 
         // Sugar Beet
@@ -647,7 +647,7 @@ public class BioRecipes {
                 .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000))
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .metadata(CHEMPLANT_CASING_TIER,0)
+                .metadata(CHEMPLANT_CASING_TIER, 0)
                 .addTo(chemicalPlantRecipes);
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -658,7 +658,7 @@ public class BioRecipes {
                 .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 2000))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .metadata(CHEMPLANT_CASING_TIER,0)
+                .metadata(CHEMPLANT_CASING_TIER, 0)
                 .addTo(chemicalPlantRecipes);
 
         }
@@ -676,7 +676,7 @@ public class BioRecipes {
                 FluidUtils.getFluidStack(BioRecipes.mEthanol, 3000))
             .duration(100 * SECONDS)
             .eut(32)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .noOptimize()
             .addTo(chemicalPlantRecipes);
     }
@@ -692,7 +692,7 @@ public class BioRecipes {
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mPropionicAcid, 1000))
             .duration(10 * SECONDS)
             .eut(60)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -737,7 +737,7 @@ public class BioRecipes {
                 FluidUtils.getFluidStack(BioRecipes.mHydrogen, 1000))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
         // Na + H2O = NaOH + H
         GT_Values.RA.stdBuilder()
@@ -747,7 +747,7 @@ public class BioRecipes {
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mHydrogen, 5000))
             .duration(60 * SECONDS)
             .eut(60)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -766,7 +766,7 @@ public class BioRecipes {
                 .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mCarbonDioxide, 1000))
                 .duration(2 * MINUTES)
                 .eut(TierEU.RECIPE_MV)
-                .metadata(CHEMPLANT_CASING_TIER,1)
+                .metadata(CHEMPLANT_CASING_TIER, 1)
                 .addTo(chemicalPlantRecipes);
 
         }
@@ -781,7 +781,7 @@ public class BioRecipes {
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mCarbonDioxide, 1000))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -871,7 +871,7 @@ public class BioRecipes {
                         .getFluidStack(AgriculturalChem.RedMud, 100 * (int) (Math.ceil(aOreData3.get(aOreName) * 1.4))))
                 .duration(60 * SECONDS)
                 .eut(aOreData1.get(aOreName))
-                .metadata(CHEMPLANT_CASING_TIER,aOreName.equals("Bauxite") ? 2 : 1)
+                .metadata(CHEMPLANT_CASING_TIER, aOreName.equals("Bauxite") ? 2 : 1)
                 .addTo(chemicalPlantRecipes);
 
         }
@@ -965,7 +965,7 @@ public class BioRecipes {
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mSulfuricAcid, 5000))
             .duration(50 * SECONDS)
             .eut(60)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -976,7 +976,7 @@ public class BioRecipes {
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mSulfuricAcid, 5000))
             .duration(6 * SECONDS)
             .eut(180)
-            .metadata(CHEMPLANT_CASING_TIER,3)
+            .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -994,7 +994,7 @@ public class BioRecipes {
                 FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 300))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(getBioChip(9))
@@ -1004,7 +1004,7 @@ public class BioRecipes {
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mLiquidResin, 200))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -1020,7 +1020,7 @@ public class BioRecipes {
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 100))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_LV)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -1033,7 +1033,7 @@ public class BioRecipes {
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mLiquidResin, 500))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(getBioChip(3), ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 8))
@@ -1041,7 +1041,7 @@ public class BioRecipes {
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mLiquidResin, 144))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -1059,7 +1059,7 @@ public class BioRecipes {
                 .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mUrea, 200))
                 .duration(30 * SECONDS)
                 .eut(60)
-                .metadata(CHEMPLANT_CASING_TIER,1)
+                .metadata(CHEMPLANT_CASING_TIER, 1)
                 .addTo(chemicalPlantRecipes);
 
         }
@@ -1074,7 +1074,7 @@ public class BioRecipes {
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mUrea, 200))
             .duration(30 * SECONDS)
             .eut(60)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -1087,7 +1087,7 @@ public class BioRecipes {
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mMethane, 500))
             .duration(5 * SECONDS)
             .eut(64)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1099,7 +1099,7 @@ public class BioRecipes {
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mEthylene, 2000))
             .duration(10 * SECONDS)
             .eut(60)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -1113,7 +1113,7 @@ public class BioRecipes {
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mBenzene, 1000), Materials.Hydrogen.getGas(18000))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,2)
+            .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -1127,7 +1127,7 @@ public class BioRecipes {
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mStyrene, 100), Materials.Hydrogen.getGas(200))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .metadata(CHEMPLANT_CASING_TIER,2)
+            .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
 
     }

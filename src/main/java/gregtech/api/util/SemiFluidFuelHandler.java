@@ -5,17 +5,18 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
 import java.util.HashMap;
 
-import gregtech.api.enums.GT_Values;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.recipe.RecipeMaps;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class SemiFluidFuelHandler {
+
     public static boolean generateFuels() {
         final FluidStack aCreosote = FluidUtils.getFluidStack("creosote", 1000);
         final FluidStack aHeavyFuel = FluidUtils.getFluidStack("liquid_heavy_fuel", 1000);
@@ -51,7 +52,9 @@ public class SemiFluidFuelHandler {
             }
         }
         for (Pair<FluidStack, Integer> p : aFoundFluidsFromItems.values()) {
-            if (p == null){continue;}
+            if (p == null) {
+                continue;
+            }
 
             int aFuelValue = p.getValue();
             if (p.getKey()
@@ -76,7 +79,8 @@ public class SemiFluidFuelHandler {
                     .addTo(semiFluidFuels);
 
                 Logger.INFO(
-                    "Added " + p.getKey().getLocalizedName()
+                    "Added " + p.getKey()
+                        .getLocalizedName()
                         + " to the Semi-Fluid Generator fuel map. Fuel Produces "
                         + (aFuelValue * 1000)
                         + "EU per 1000L.");

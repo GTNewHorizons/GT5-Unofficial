@@ -173,7 +173,7 @@ public class DEFCRecipes {
             .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 1, 0))
             .eut(500_000)
             .duration(400)
-        .metadata(DEFC_CASING_TIER,1)
+            .metadata(DEFC_CASING_TIER, 1)
             .addTo(fusionCraftingRecipes)
             .forEach(DEFCRecipes::addOldHiddenRecipe);
 
@@ -188,7 +188,7 @@ public class DEFCRecipes {
             .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "wyvernCore", 1, 0))
             .eut(2_000_000)
             .duration(800)
-        .metadata(DEFC_CASING_TIER,2)
+            .metadata(DEFC_CASING_TIER, 2)
             .addTo(fusionCraftingRecipes)
             .forEach(DEFCRecipes::addOldHiddenRecipe);
 
@@ -204,7 +204,7 @@ public class DEFCRecipes {
                 .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "awakenedCore", 1, 0))
                 .eut(8_000_000)
                 .duration(1600)
-            .metadata(DEFC_CASING_TIER,3)
+                .metadata(DEFC_CASING_TIER, 3)
                 .addTo(fusionCraftingRecipes)
                 .forEach(DEFCRecipes::addOldHiddenRecipe);
         } else {
@@ -219,7 +219,7 @@ public class DEFCRecipes {
                 .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "awakenedCore", 1, 0))
                 .eut(8_000_000)
                 .duration(1600)
-            .metadata(DEFC_CASING_TIER,3)
+                .metadata(DEFC_CASING_TIER, 3)
                 .addTo(fusionCraftingRecipes)
                 .forEach(DEFCRecipes::addOldHiddenRecipe);
         }
@@ -235,7 +235,7 @@ public class DEFCRecipes {
             .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "chaoticCore", 1, 0))
             .eut(24_000_000)
             .duration(3200)
-        .metadata(DEFC_CASING_TIER,4)
+            .metadata(DEFC_CASING_TIER, 4)
             .addTo(fusionCraftingRecipes)
             .forEach(DEFCRecipes::addOldHiddenRecipe);
 
@@ -251,7 +251,7 @@ public class DEFCRecipes {
             .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "draconiumEnergyCore", 1, 0))
             .eut(500_000)
             .duration(1000)
-        .metadata(DEFC_CASING_TIER,2)
+            .metadata(DEFC_CASING_TIER, 2)
             .addTo(fusionCraftingRecipes)
             .forEach(DEFCRecipes::addOldHiddenRecipe);
 
@@ -265,7 +265,7 @@ public class DEFCRecipes {
             .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "draconiumEnergyCore", 1, 1))
             .eut(2_000_000)
             .duration(2000)
-        .metadata(DEFC_CASING_TIER,3)
+            .metadata(DEFC_CASING_TIER, 3)
             .addTo(fusionCraftingRecipes)
             .forEach(DEFCRecipes::addOldHiddenRecipe);
 
@@ -279,7 +279,7 @@ public class DEFCRecipes {
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 288))
             .eut(1_966_080)
             .duration(4200)
-        .metadata(DEFC_CASING_TIER,3)
+            .metadata(DEFC_CASING_TIER, 3)
             .noOptimize()
             .addTo(fusionCraftingRecipes);
 
@@ -292,7 +292,7 @@ public class DEFCRecipes {
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
             .eut(1_966_080)
             .duration(3600)
-        .metadata(DEFC_CASING_TIER,3)
+            .metadata(DEFC_CASING_TIER, 3)
             .noOptimize()
             .addTo(fusionCraftingRecipes);
 
@@ -305,7 +305,7 @@ public class DEFCRecipes {
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
             .eut(1_966_080)
             .duration(2800)
-        .metadata(DEFC_CASING_TIER,3)
+            .metadata(DEFC_CASING_TIER, 3)
             .noOptimize()
             .addTo(fusionCraftingRecipes);
 
@@ -318,7 +318,7 @@ public class DEFCRecipes {
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 648))
             .eut(1_966_080)
             .duration(2400)
-        .metadata(DEFC_CASING_TIER,3)
+            .metadata(DEFC_CASING_TIER, 3)
             .noOptimize()
             .addTo(fusionCraftingRecipes);
     }

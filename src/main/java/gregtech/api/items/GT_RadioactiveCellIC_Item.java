@@ -2,19 +2,19 @@ package gregtech.api.items;
 
 import java.util.ArrayList;
 
-import gregtech.api.recipe.RecipeMaps;
-import ic2.core.init.MainConfig;
-import ic2.core.util.ConfigUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Utility;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
 import ic2.core.IC2Potion;
+import ic2.core.init.MainConfig;
+import ic2.core.util.ConfigUtil;
 
 public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implements IReactorComponent {
 
@@ -52,8 +52,13 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
                 .setNEIDesc(
                     aMox ? "MOX Model" : "Uranium Model",
                     "Neutron Pulse: " + aCellcount,
-                    aCellcount == 1 ? String.format("Heat: %.1f * n1 * (n1 + 1)", (aHeat * MYSTERIOUS_MULTIPLIER_HEAT) / 2f)
-                        : String.format("Heat: %.1f * (%d + n1) * (%d + n1)", (aHeat * MYSTERIOUS_MULTIPLIER_HEAT) * aCellcount / 2f, aCellcount, aCellcount + 1),
+                    aCellcount == 1
+                        ? String.format("Heat: %.1f * n1 * (n1 + 1)", (aHeat * MYSTERIOUS_MULTIPLIER_HEAT) / 2f)
+                        : String.format(
+                            "Heat: %.1f * (%d + n1) * (%d + n1)",
+                            (aHeat * MYSTERIOUS_MULTIPLIER_HEAT) * aCellcount / 2f,
+                            aCellcount,
+                            aCellcount + 1),
                     String.format(
                         "Energy: %.1f + n2 * %.1f EU/t",
                         aEnergy * aCellcount * pulses * nukePowerMult,

@@ -83,7 +83,7 @@ public class RecipeLoader_ChemicalSkips {
             .outputChances(1667, 1667, 1667, 1667, 1667, 1667)
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_FOCUS_TIER,1)
+            .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         // Early Plastics
         GT_Values.RA.stdBuilder()
@@ -102,7 +102,7 @@ public class RecipeLoader_ChemicalSkips {
                 Materials.Polybenzimidazole.getMolten(144 * 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(QFT_FOCUS_TIER,1)
+            .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         // Early Rubbers/Cable Materials
         GT_Values.RA.stdBuilder()
@@ -118,7 +118,7 @@ public class RecipeLoader_ChemicalSkips {
                 Materials.Rubber.getMolten(144 * 256))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(QFT_FOCUS_TIER,1)
+            .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         // Glues and Solders
         GT_Values.RA.stdBuilder()
@@ -136,7 +136,7 @@ public class RecipeLoader_ChemicalSkips {
                 Materials.SolderingAlloy.getMolten(144 * 128))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_FOCUS_TIER,1)
+            .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         // Titanium, Tungsten, Indium
         GT_Values.RA.stdBuilder()
@@ -153,7 +153,7 @@ public class RecipeLoader_ChemicalSkips {
             .outputChances(2500, 2500, 2500, 2500)
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_FOCUS_TIER,1)
+            .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         // Thorium, Uranium, Plutonium
         GT_Values.RA.stdBuilder()
@@ -171,7 +171,7 @@ public class RecipeLoader_ChemicalSkips {
             .outputChances(1667, 1667, 1667, 1667, 1667, 1667)
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_FOCUS_TIER,1)
+            .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         // Monaline
         GT_Values.RA.stdBuilder()
@@ -188,7 +188,7 @@ public class RecipeLoader_ChemicalSkips {
             .outputChances(1667, 1667, 1667, 1667, 1667, 1667)
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
-            .metadata(QFT_FOCUS_TIER,2)
+            .metadata(QFT_FOCUS_TIER, 2)
             .addTo(quantumForceTransformerRecipes);
         // Bastline
         GT_Values.RA.stdBuilder()
@@ -204,7 +204,7 @@ public class RecipeLoader_ChemicalSkips {
             .outputChances(2000, 2000, 2000, 2000, 2000)
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
-            .metadata(QFT_FOCUS_TIER,2)
+            .metadata(QFT_FOCUS_TIER, 2)
             .addTo(quantumForceTransformerRecipes);
         // Early Waterline skip (first 4 tiers)
         GT_Values.RA.stdBuilder()
@@ -217,7 +217,7 @@ public class RecipeLoader_ChemicalSkips {
                 Materials.Grade4PurifiedWater.getFluid(1000L))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
-            .metadata(QFT_FOCUS_TIER,2)
+            .metadata(QFT_FOCUS_TIER, 2)
             .addTo(quantumForceTransformerRecipes);
         // Stem Cells
         GT_Values.RA.stdBuilder()
@@ -233,7 +233,7 @@ public class RecipeLoader_ChemicalSkips {
                 Materials.GrowthMediumSterilized.getFluid(1000 * 512))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
-            .metadata(QFT_FOCUS_TIER,3)
+            .metadata(QFT_FOCUS_TIER, 3)
             .addTo(quantumForceTransformerRecipes);
         // Unknown Particles
         GT_Values.RA.stdBuilder()
@@ -248,7 +248,7 @@ public class RecipeLoader_ChemicalSkips {
             .fluidOutputs(FluidUtils.getFluidStack("plasma.hydrogen", 1000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
-            .metadata(QFT_FOCUS_TIER,3)
+            .metadata(QFT_FOCUS_TIER, 3)
             .addTo(quantumForceTransformerRecipes);
         // Lategame Plastics (Missing Radox Polymer and Heavy Radox)
         GT_Values.RA.stdBuilder()
@@ -264,7 +264,7 @@ public class RecipeLoader_ChemicalSkips {
                 MaterialsKevlar.Kevlar.getMolten(144 * 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
-            .metadata(QFT_FOCUS_TIER,4)
+            .metadata(QFT_FOCUS_TIER, 4)
             .addTo(quantumForceTransformerRecipes);
         // Lategame Kevlar using Kevlar bee comb
         GT_Values.RA.stdBuilder()
@@ -279,7 +279,7 @@ public class RecipeLoader_ChemicalSkips {
                 MaterialsKevlar.Kevlar.getMolten(144 * 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
-            .metadata(QFT_FOCUS_TIER,4)
+            .metadata(QFT_FOCUS_TIER, 4)
             .addTo(quantumForceTransformerRecipes);
         // Platline skip using Platline Combs (Palladium, Osmium, Iridium, Platinum)
         GT_Values.RA.stdBuilder()
@@ -296,7 +296,7 @@ public class RecipeLoader_ChemicalSkips {
                 Materials.Platinum.getMolten(144 * 256))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_FOCUS_TIER,1)
+            .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         // Bio Cells and Mutated Solder
         GT_Values.RA.stdBuilder()
@@ -312,7 +312,7 @@ public class RecipeLoader_ChemicalSkips {
                 Materials.BioMediumRaw.getFluid(1000 * 512))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
-            .metadata(QFT_FOCUS_TIER,4)
+            .metadata(QFT_FOCUS_TIER, 4)
             .addTo(quantumForceTransformerRecipes);
         // Advanced Waterline skip (last 4 tiers)
         GT_Values.RA.stdBuilder()
@@ -325,7 +325,7 @@ public class RecipeLoader_ChemicalSkips {
                 Materials.Grade8PurifiedWater.getFluid(1000L))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
-            .metadata(QFT_FOCUS_TIER,4)
+            .metadata(QFT_FOCUS_TIER, 4)
             .addTo(quantumForceTransformerRecipes);
         // Rare Particles
         GT_Values.RA.stdBuilder()
@@ -346,7 +346,7 @@ public class RecipeLoader_ChemicalSkips {
                 new FluidStack(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 30000))
             .duration(3 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
-            .metadata(QFT_FOCUS_TIER,4)
+            .metadata(QFT_FOCUS_TIER, 4)
             .addTo(quantumForceTransformerRecipes);
 
         if (GalaxySpace.isModLoaded()) {
@@ -366,7 +366,7 @@ public class RecipeLoader_ChemicalSkips {
                     FluidUtils.getFluidStack("iodine", 64_000))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
-                .metadata(QFT_FOCUS_TIER,4)
+                .metadata(QFT_FOCUS_TIER, 4)
                 .addTo(quantumForceTransformerRecipes);
 
         }

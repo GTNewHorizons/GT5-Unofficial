@@ -117,7 +117,7 @@ public class RocketFuels extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Nitrogen_Tetroxide, 1000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .metadata(CHEMPLANT_CASING_TIER,3)
+            .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -133,7 +133,7 @@ public class RocketFuels extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Hydrazine, 1000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -147,7 +147,7 @@ public class RocketFuels extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Monomethylhydrazine, 1000))
             .duration(48 * SECONDS)
             .eut(240)
-            .metadata(CHEMPLANT_CASING_TIER,2)
+            .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -170,7 +170,7 @@ public class RocketFuels extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Hydrated_Ammonium_Nitrate_Slurry, 5184))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -197,7 +197,7 @@ public class RocketFuels extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Formaldehyde, 32000))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,1)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -227,7 +227,7 @@ public class RocketFuels extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine, 2000), FluidUtils.getWater(2000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,3)
+            .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -314,7 +314,7 @@ public class RocketFuels extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(RP1_Plus_Liquid_Oxygen, 1500))
             .duration(15 * SECONDS)
             .eut(240)
-            .metadata(CHEMPLANT_CASING_TIER,3)
+            .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
         // Dense_Hydrazine_Mix
         GT_Values.RA.stdBuilder()
@@ -323,7 +323,7 @@ public class RocketFuels extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Dense_Hydrazine_Mix, 10000))
             .duration(30 * SECONDS)
             .eut(240)
-            .metadata(CHEMPLANT_CASING_TIER,4)
+            .metadata(CHEMPLANT_CASING_TIER, 4)
             .addTo(chemicalPlantRecipes);
         // Monomethylhydrazine_Plus_Nitric_Acid
         GT_Values.RA.stdBuilder()
@@ -334,7 +334,7 @@ public class RocketFuels extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Monomethylhydrazine_Plus_Nitric_Acid, 2000))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .metadata(CHEMPLANT_CASING_TIER,5)
+            .metadata(CHEMPLANT_CASING_TIER, 5)
             .addTo(chemicalPlantRecipes);
         // Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide
         GT_Values.RA.stdBuilder()
@@ -345,7 +345,7 @@ public class RocketFuels extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide, 5000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .metadata(CHEMPLANT_CASING_TIER,6)
+            .metadata(CHEMPLANT_CASING_TIER, 6)
             .addTo(chemicalPlantRecipes);
 
     }

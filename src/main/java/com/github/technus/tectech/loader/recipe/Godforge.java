@@ -12,12 +12,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import gregtech.api.enums.GT_Values;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.technus.tectech.recipe.TT_recipeAdder;
-
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.TierEU;
@@ -114,7 +112,7 @@ public class Godforge implements Runnable {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(solids_t0_1step[i])
                         .fluidOutputs(solid_plasmas_t0_1step[i])
-                        .duration(1*SECONDS)
+                        .duration(1 * SECONDS)
                         .eut(TierEU.RECIPE_MAX)
                         .special(multistep)
                         .metadata(FOG_PLASMA_TIER, 0)
@@ -143,11 +141,11 @@ public class Godforge implements Runnable {
                     Materials.Chrome.getPlasma(144), };
 
                 for (int i = 0; i < solids_t0_xstep.length; i++) {
-                    boolean multistep= true;
+                    boolean multistep = true;
                     GT_Values.RA.stdBuilder()
-                        .itemInputs(solids_t0_xstep[i] )
+                        .itemInputs(solids_t0_xstep[i])
                         .fluidOutputs(solid_plasmas_t0_xstep[i])
-                        .duration(3*SECONDS)
+                        .duration(3 * SECONDS)
                         .eut(TierEU.RECIPE_MAX)
                         .special(multistep)
                         .metadata(FOG_PLASMA_TIER, 0)
@@ -166,10 +164,10 @@ public class Godforge implements Runnable {
                 for (int i = 0; i < solids_t1_1step.length; i++) {
                     boolean multistep = false;
                     GT_Values.RA.stdBuilder()
-                        .itemInputs( solids_t1_1step[i])
+                        .itemInputs(solids_t1_1step[i])
                         .fluidOutputs(solid_plasmas_t1_1step[i])
                         .duration(5 * SECONDS)
-                        .eut( TierEU.RECIPE_MAX)
+                        .eut(TierEU.RECIPE_MAX)
                         .special(multistep)
                         .metadata(FOG_PLASMA_TIER, 1)
                         .noOptimize()
@@ -214,7 +212,7 @@ public class Godforge implements Runnable {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(solids_t2_1step[i])
                         .fluidOutputs(solid_plasmas_t2_1step[i])
-                        .duration(15*SECONDS)
+                        .duration(15 * SECONDS)
                         .eut(TierEU.RECIPE_MAX)
                         .special(multistep)
                         .metadata(FOG_PLASMA_TIER, 2)
@@ -232,9 +230,9 @@ public class Godforge implements Runnable {
                 for (int i = 0; i < solids_t2_xstep.length; i++) {
                     boolean multistep = true;
                     GT_Values.RA.stdBuilder()
-                        .itemInputs( solids_t2_xstep[i])
-                        .fluidOutputs( solid_plasmas_t2_xstep[i])
-                        .duration(25*SECONDS)
+                        .itemInputs(solids_t2_xstep[i])
+                        .fluidOutputs(solid_plasmas_t2_xstep[i])
+                        .duration(25 * SECONDS)
                         .eut(TierEU.RECIPE_MAX)
                         .special(multistep)
                         .metadata(FOG_PLASMA_TIER, 2)
@@ -262,13 +260,12 @@ public class Godforge implements Runnable {
                     Materials.Radon.getPlasma(1000), Materials.Tritium.getPlasma(1000),
                     Materials.Mercury.getPlasma(1000) };
 
-
                 for (int i = 0; i < fluids_t0_1step.length; i++) {
                     boolean multistep = false;
                     GT_Values.RA.stdBuilder()
-                        .fluidInputs(fluids_t0_1step[i] )
-                        .fluidOutputs( fluid_plasmas_t0_1step[i] )
-                        .duration(1*SECONDS)
+                        .fluidInputs(fluids_t0_1step[i])
+                        .fluidOutputs(fluid_plasmas_t0_1step[i])
+                        .duration(1 * SECONDS)
                         .eut(TierEU.RECIPE_MAX)
                         .special(multistep)
                         .metadata(FOG_PLASMA_TIER, 0)
@@ -287,9 +284,9 @@ public class Godforge implements Runnable {
                 for (int i = 0; i < fluids_t0_xstep.length; i++) {
                     boolean multistep = true;
                     GT_Values.RA.stdBuilder()
-                        .fluidInputs( fluids_t0_xstep[i])
-                        .fluidOutputs( fluid_plasmas_t0_xstep[i])
-                        .duration(3*SECONDS)
+                        .fluidInputs(fluids_t0_xstep[i])
+                        .fluidOutputs(fluid_plasmas_t0_xstep[i])
+                        .duration(3 * SECONDS)
                         .eut(TierEU.RECIPE_MAX)
                         .special(multistep)
                         .metadata(FOG_PLASMA_TIER, 0)
@@ -317,7 +314,7 @@ public class Godforge implements Runnable {
                 .itemInputs(Materials.Iron.getDust(1))
                 .fluidInputs(Materials.Iron.getMolten(1))
                 .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000))
-                .duration(10*SECONDS)
+                .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MAX)
                 .metadata(FOG_EXOTIC_TIER, 1)
                 .ignoreCollision()
@@ -328,7 +325,7 @@ public class Godforge implements Runnable {
                 .itemInputs(Materials.Iron.getDust(1))
                 .fluidInputs(Materials.Iron.getMolten(1), Materials.Bismuth.getMolten(1))
                 .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(144))
-                .duration(10*SECONDS)
+                .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MAX)
                 .metadata(FOG_EXOTIC_TIER, 1)
                 .ignoreCollision()

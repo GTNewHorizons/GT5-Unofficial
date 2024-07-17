@@ -8,7 +8,8 @@ import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 public class MyRecipeAdder {
 
     public static final MyRecipeAdder instance = new MyRecipeAdder();
-    public static int computeRangeNKE(int maxNKE, int minNKE){
+
+    public static int computeRangeNKE(int maxNKE, int minNKE) {
         if (maxNKE <= 0) maxNKE = 1;
         if (maxNKE >= 1100) maxNKE = 1100;
         if (minNKE < 0) minNKE = 0;

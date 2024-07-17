@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-import gregtech.api.enums.TierEU;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -43,6 +42,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
@@ -318,7 +318,7 @@ public class CellLoader implements IWerkstoffRunnable {
             Behaviour_DataOrb.setDataName(scannerOutput, werkstoff.getToolTip());
             GT_Values.RA.stdBuilder()
                 .itemInputs(werkstoff.get(cell))
-                .itemOutputs( scannerOutput)
+                .itemOutputs(scannerOutput)
                 .special(ItemList.Tool_DataOrb.get(1L))
                 .duration(werkstoffBridgeMaterial.getMass() * 8192)
                 .eut(TierEU.RECIPE_LV)

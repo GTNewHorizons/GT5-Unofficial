@@ -13,9 +13,9 @@ public class GT_FakeRecipeLoader implements Runnable {
             .itemOutputs(GT_ModHandler.getIC2Item("TritiumCell", 1))
             .setNEIDesc(
                 "Neutron reflecting Breeder",
-                String.format("Every %d reactor hull heat",3_000),
+                String.format("Every %d reactor hull heat", 3_000),
                 String.format("increase speed by %d00%%", 1),
-                String.format("Required pulses: %d",10_000))
+                String.format("Required pulses: %d", 10_000))
             .duration(0)
             .eut(0)
             .addTo(RecipeMaps.ic2NuclearFakeRecipes);

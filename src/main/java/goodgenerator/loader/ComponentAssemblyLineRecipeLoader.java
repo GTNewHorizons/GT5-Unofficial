@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -22,7 +21,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import goodgenerator.util.MyRecipeAdder;
+import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -111,11 +110,13 @@ public class ComponentAssemblyLineRecipeLoader {
                     int energy = (int) Math.min(Integer.MAX_VALUE - 7, GT_Values.VP[tier - 1]);
                     GT_Values.RA.stdBuilder()
                         .itemInputs(fixedInputs.toArray(new ItemStack[0]))
-                        .itemOutputs(info.getLeft().get(OUTPUT_MULTIPLIER))
+                        .itemOutputs(
+                            info.getLeft()
+                                .get(OUTPUT_MULTIPLIER))
                         .fluidInputs(fixedFluids.toArray(new FluidStack[0]))
                         .duration(recipe.mDuration * INPUT_MULTIPLIER)
                         .eut(energy)
-                        .metadata(COAL_CASING_TIER,info.getRight())
+                        .metadata(COAL_CASING_TIER, info.getRight())
                         .noOptimize()
                         .addTo(GoodGeneratorRecipeMaps.componentAssemblyLineRecipes);
                 }
@@ -177,12 +178,14 @@ public class ComponentAssemblyLineRecipeLoader {
 
                     addEternityForMHDCSM(fixedFluids);
                     GT_Values.RA.stdBuilder()
-                        .itemInputs( fixedInputs.toArray(new ItemStack[0]))
-                        .itemOutputs(info.getLeft().get(OUTPUT_MULTIPLIER))
+                        .itemInputs(fixedInputs.toArray(new ItemStack[0]))
+                        .itemOutputs(
+                            info.getLeft()
+                                .get(OUTPUT_MULTIPLIER))
                         .fluidInputs(fixedFluids.toArray(new FluidStack[0]))
                         .duration(recipe.mDuration * INPUT_MULTIPLIER)
                         .eut(recipe.mEUt)
-                        .metadata(COAL_CASING_TIER,info.getRight())
+                        .metadata(COAL_CASING_TIER, info.getRight())
                         .noOptimize()
                         .addTo(GoodGeneratorRecipeMaps.componentAssemblyLineRecipes);
 
@@ -194,11 +197,13 @@ public class ComponentAssemblyLineRecipeLoader {
                     if (swapSiliconeForStyreneButadiene(fixedFluids)) {
                         GT_Values.RA.stdBuilder()
                             .itemInputs(fixedInputs.toArray(new ItemStack[0]))
-                            .itemOutputs(info.getLeft().get(OUTPUT_MULTIPLIER))
+                            .itemOutputs(
+                                info.getLeft()
+                                    .get(OUTPUT_MULTIPLIER))
                             .fluidInputs(fixedFluids.toArray(new FluidStack[0]))
                             .duration(recipe.mDuration * INPUT_MULTIPLIER)
                             .eut(recipe.mEUt)
-                            .metadata(COAL_CASING_TIER,info.getRight())
+                            .metadata(COAL_CASING_TIER, info.getRight())
                             .noOptimize()
                             .addTo(GoodGeneratorRecipeMaps.componentAssemblyLineRecipes);
                     }

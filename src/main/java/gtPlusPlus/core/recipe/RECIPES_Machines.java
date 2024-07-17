@@ -845,7 +845,7 @@ public class RECIPES_Machines {
                 ALLOY.KANTHAL.getFluidStack(144 * 16))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
-            .metadata(CHEMPLANT_CASING_TIER,5)
+            .metadata(CHEMPLANT_CASING_TIER, 5)
             .addTo(chemicalPlantRecipes);
     }
 

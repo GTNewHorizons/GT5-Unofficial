@@ -12,7 +12,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GasSpargingRecipeMap;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
@@ -74,7 +73,7 @@ public class RecipeLoader_LFTR {
                 FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(10))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
-            .metadata(LFTR_OUTPUT_POWER,32768 * 4)
+            .metadata(LFTR_OUTPUT_POWER, 32768 * 4)
             .addTo(liquidFluorineThoriumReactorRecipes);
 
         // LiFBeF2ZrF4UF4 - T2
@@ -87,7 +86,7 @@ public class RecipeLoader_LFTR {
                 FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(5))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
-            .metadata(LFTR_OUTPUT_POWER,8192 * 4)
+            .metadata(LFTR_OUTPUT_POWER, 8192 * 4)
             .noOptimize()
             .addTo(liquidFluorineThoriumReactorRecipes);
 
@@ -101,7 +100,7 @@ public class RecipeLoader_LFTR {
                 FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(2))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
-            .metadata(LFTR_OUTPUT_POWER,8192)
+            .metadata(LFTR_OUTPUT_POWER, 8192)
             .noOptimize()
             .addTo(liquidFluorineThoriumReactorRecipes);
 

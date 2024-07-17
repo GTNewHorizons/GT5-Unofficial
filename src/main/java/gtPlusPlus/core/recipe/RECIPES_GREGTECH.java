@@ -149,7 +149,7 @@ public class RECIPES_GREGTECH {
             .fluidOutputs(FluidUtils.getFluidStack("nitricacid", 4000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .metadata(CHEMPLANT_CASING_TIER,3)
+            .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
 
         // Advanced recipe for Fluorine Production
@@ -167,7 +167,7 @@ public class RECIPES_GREGTECH {
             .fluidInputs(FluidUtils.getFluidStack("nitricacid", 4000), FluidUtils.getAir(8000))
             .duration(10 * SECONDS)
             .eut(1024)
-            .metadata(CHEMPLANT_CASING_TIER,5)
+            .metadata(CHEMPLANT_CASING_TIER, 5)
             .addTo(chemicalPlantRecipes);
         // Advanced recipe for Fluorine Production
         GT_Values.RA.stdBuilder()
@@ -184,7 +184,7 @@ public class RECIPES_GREGTECH {
             .fluidInputs(FluidUtils.getFluidStack("nitricacid", 5000), FluidUtils.getAir(12000))
             .duration(10 * SECONDS)
             .eut(1024)
-            .metadata(CHEMPLANT_CASING_TIER,5)
+            .metadata(CHEMPLANT_CASING_TIER, 5)
             .addTo(chemicalPlantRecipes);
 
         // 3NO2 + H2O = 2HNO3 + NO
@@ -194,7 +194,7 @@ public class RECIPES_GREGTECH {
             .fluidOutputs(FluidUtils.getFluidStack("nitricacid", 2000), Materials.NitricOxide.getGas(1000L))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .metadata(CHEMPLANT_CASING_TIER,2)
+            .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
         // Produce Boric Acid
         // Na2B4O7·10H2O + 2HCl = 4B(OH)3 + 2NaCl + 5H2O
@@ -205,7 +205,7 @@ public class RECIPES_GREGTECH {
             .fluidOutputs(FluidUtils.getFluidStack("boricacid", 4000), FluidUtils.getWater(5000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .metadata(CHEMPLANT_CASING_TIER,3)
+            .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
 
         // Produce Th232
@@ -219,7 +219,7 @@ public class RECIPES_GREGTECH {
             .fluidInputs(FluidUtils.getDistilledWater(2000), FluidUtils.getFluidStack("boricacid", 1500))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_EV)
-            .metadata(CHEMPLANT_CASING_TIER,4)
+            .metadata(CHEMPLANT_CASING_TIER, 4)
             .addTo(chemicalPlantRecipes);
 
         // Modify Sapling into Pine Sapling
@@ -229,7 +229,7 @@ public class RECIPES_GREGTECH {
             .fluidInputs(FluidUtils.getFluidStack("fluid.geneticmutagen", 2000), FluidUtils.getDistilledWater(8000))
             .duration(120 * SECONDS)
             .eut(64)
-            .metadata(CHEMPLANT_CASING_TIER,2)
+            .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
 
         int aLaureniumTier = ALLOY.LAURENIUM.vTier;
@@ -247,7 +247,7 @@ public class RECIPES_GREGTECH {
                 CI.getTertiaryTieredFluid(aLaureniumTier - 2, 6 * 144))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
-            .metadata(CHEMPLANT_CASING_TIER,5)
+            .metadata(CHEMPLANT_CASING_TIER, 5)
             .addTo(chemicalPlantRecipes);
 
         int aBotmiumTier = ALLOY.BOTMIUM.vTier;
@@ -265,7 +265,7 @@ public class RECIPES_GREGTECH {
                 CI.getTertiaryTieredFluid(aBotmiumTier - 2, 6 * 144))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
-            .metadata(CHEMPLANT_CASING_TIER,6)
+            .metadata(CHEMPLANT_CASING_TIER, 6)
             .addTo(chemicalPlantRecipes);
 
         // Refine GT HF into GT++ HF
@@ -276,7 +276,7 @@ public class RECIPES_GREGTECH {
                 .fluidOutputs(FluidUtils.getHydrofluoricAcid(4500))
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
-                .metadata(CHEMPLANT_CASING_TIER,3)
+                .metadata(CHEMPLANT_CASING_TIER, 3)
                 .addTo(chemicalPlantRecipes);
 
         }

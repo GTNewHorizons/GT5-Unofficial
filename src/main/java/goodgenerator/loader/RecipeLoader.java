@@ -30,7 +30,6 @@ import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.solderingMats;
 
-import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -38,11 +37,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
+import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.items.MyMaterial;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
 import goodgenerator.util.MaterialFix;
-import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -960,13 +959,16 @@ public class RecipeLoader {
                 GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 1), 'D', "dyeCyan" });
 
         GT_Values.RA.stdBuilder()
-            .itemInputs( ItemList.Circuit_Board_Coated_Basic.get(1), ItemList.Circuit_Chip_ULPIC.get(1),
-                ItemList.ULV_Coil.get(2), ItemList.Battery_RE_ULV_Tantalum.get(1))
+            .itemInputs(
+                ItemList.Circuit_Board_Coated_Basic.get(1),
+                ItemList.Circuit_Chip_ULPIC.get(1),
+                ItemList.ULV_Coil.get(2),
+                ItemList.Battery_RE_ULV_Tantalum.get(1))
             .itemOutputs(ItemRefer.Micro_Heater.get(1))
             .fluidInputs(Materials.RedAlloy.getMolten(144), Materials.Aluminium.getMolten(144))
-            .duration(2*SECONDS)
+            .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .metadata(PRECISE_ASSEMBLER_CASING_TIER,1)
+            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
             .noOptimize()
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
 
@@ -994,13 +996,16 @@ public class RecipeLoader {
             .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs( ItemRefer.Quartz_Wafer.get(1), ItemRefer.Special_Ceramics_Plate.get(2),
-                ItemRefer.Micro_Heater.get(1), ItemList.Circuit_Chip_ILC.get(4) )
+            .itemInputs(
+                ItemRefer.Quartz_Wafer.get(1),
+                ItemRefer.Special_Ceramics_Plate.get(2),
+                ItemRefer.Micro_Heater.get(1),
+                ItemList.Circuit_Chip_ILC.get(4))
             .itemOutputs(ItemRefer.Quartz_Crystal_Resonator.get(1))
             .fluidInputs(Materials.EnergeticAlloy.getMolten(72), Materials.Silver.getMolten(18))
-            .duration(2*SECONDS)
+            .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .metadata(PRECISE_ASSEMBLER_CASING_TIER,1)
+            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
             .noOptimize()
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
 
@@ -1195,9 +1200,9 @@ public class RecipeLoader {
             .itemInputs(ItemRefer.HiC_T2.get(2), ItemList.Emitter_EV.get(2), ItemRefer.Neutron_Source.get(1))
             .itemOutputs(Loaders.NA.copy())
             .fluidInputs(Materials.StainlessSteel.getMolten(576), Materials.TungstenCarbide.getMolten(144))
-            .duration(5*SECONDS)
+            .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_IV)
-            .metadata(PRECISE_ASSEMBLER_CASING_TIER,1)
+            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
             .noOptimize()
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
     }

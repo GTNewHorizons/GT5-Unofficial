@@ -1,11 +1,12 @@
 package com.github.technus.tectech.recipe;
 
+import static gregtech.api.recipe.RecipeMaps.assemblylineVisualRecipes;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import gregtech.api.enums.GT_Values;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -14,15 +15,13 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.CustomItemList;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_RecipeAdder;
-
-import static gregtech.api.recipe.RecipeMaps.assemblylineVisualRecipes;
 
 public class TT_recipeAdder extends GT_RecipeAdder {
 

@@ -11,11 +11,9 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.flotationCellRecipes;
 
 import java.util.HashMap;
 
-import gtPlusPlus.xmod.gregtech.common.helpers.FlotationRecipeHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -28,7 +26,6 @@ import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.data.Quad;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.base.ore.BaseItemMilledOre;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.NONMATERIAL;
@@ -39,6 +36,7 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.xmod.bop.HANDLER_BiomesOPlenty;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
+import gtPlusPlus.xmod.gregtech.common.helpers.FlotationRecipeHandler;
 
 public class MilledOreProcessing extends ItemPackage {
 
@@ -463,11 +461,10 @@ public class MilledOreProcessing extends ItemPackage {
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
-                aMat.getMilled(64)
-            )
+                aMat.getMilled(64))
             .fluidInputs(FluidUtils.getFluidStack(PineOil, 14000))
             .fluidOutputs(FluidUtils.getFluidStack(SphaleriteFlotationFroth, 1000))
-            .duration(8*MINUTES)
+            .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .noOptimize()
             .addTo(flotationCellRecipes);
@@ -481,8 +478,7 @@ public class MilledOreProcessing extends ItemPackage {
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
-                aMat.getMilled(64)
-            )
+                aMat.getMilled(64))
             .fluidInputs(FluidUtils.getFluidStack(PineOil, 12000))
             .fluidOutputs(FluidUtils.getFluidStack(ChalcopyriteFlotationFroth, 1000))
             .duration(8 * MINUTES)
@@ -495,15 +491,14 @@ public class MilledOreProcessing extends ItemPackage {
         FlotationRecipeHandler.registerOreType(aMat);
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate,32),
+                ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 32),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
-                aMat.getMilled(64)
-            )
+                aMat.getMilled(64))
             .fluidInputs(FluidUtils.getFluidStack(PineOil, 25000))
             .fluidOutputs(FluidUtils.getFluidStack(NickelFlotationFroth, 1000))
-            .duration(8*MINUTES)
+            .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .noOptimize()
             .addTo(flotationCellRecipes);
@@ -517,11 +512,10 @@ public class MilledOreProcessing extends ItemPackage {
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
-                aMat.getMilled(64)
-            )
-            .fluidInputs( FluidUtils.getFluidStack(PineOil, 35000))
+                aMat.getMilled(64))
+            .fluidInputs(FluidUtils.getFluidStack(PineOil, 35000))
             .fluidOutputs(FluidUtils.getFluidStack(PlatinumFlotationFroth, 1000))
-            .duration(8*MINUTES)
+            .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .noOptimize()
             .addTo(flotationCellRecipes);
@@ -531,15 +525,14 @@ public class MilledOreProcessing extends ItemPackage {
         FlotationRecipeHandler.registerOreType(aMat);
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate,  32),
+                ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
-                aMat.getMilled(64)
-            )
+                aMat.getMilled(64))
             .fluidInputs(FluidUtils.getFluidStack(PineOil, 14000))
-            .fluidOutputs( FluidUtils.getFluidStack(PentlanditeFlotationFroth, 1000))
-            .duration(8*MINUTES)
+            .fluidOutputs(FluidUtils.getFluidStack(PentlanditeFlotationFroth, 1000))
+            .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .noOptimize()
             .addTo(flotationCellRecipes);
@@ -553,11 +546,10 @@ public class MilledOreProcessing extends ItemPackage {
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
-                aMat.getMilled(64)
-            )
+                aMat.getMilled(64))
             .fluidInputs(FluidUtils.getFluidStack(PineOil, 13000))
             .fluidOutputs(FluidUtils.getFluidStack(RedstoneFlotationFroth, 1000))
-            .duration(8*MINUTES)
+            .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .noOptimize()
             .addTo(flotationCellRecipes);
@@ -571,12 +563,11 @@ public class MilledOreProcessing extends ItemPackage {
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
-                aMat.getMilled(64)
-            )
+                aMat.getMilled(64))
             .fluidInputs(FluidUtils.getFluidStack(PineOil, 35000))
             .fluidOutputs(FluidUtils.getFluidStack(SpessartineFlotationFroth, 1000))
-            .duration(8*MINUTES)
-            .eut( TierEU.RECIPE_LuV)
+            .duration(8 * MINUTES)
+            .eut(TierEU.RECIPE_LuV)
             .noOptimize()
             .addTo(flotationCellRecipes);
 
@@ -589,11 +580,10 @@ public class MilledOreProcessing extends ItemPackage {
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
-                aMat.getMilled(64)
-            )
+                aMat.getMilled(64))
             .fluidInputs(FluidUtils.getFluidStack(PineOil, 28000))
             .fluidOutputs(FluidUtils.getFluidStack(GrossularFlotationFroth, 1000))
-            .duration(8*MINUTES)
+            .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .noOptimize()
             .addTo(flotationCellRecipes);
@@ -607,11 +597,10 @@ public class MilledOreProcessing extends ItemPackage {
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
-                aMat.getMilled(64)
-            )
+                aMat.getMilled(64))
             .fluidInputs(FluidUtils.getFluidStack(PineOil, 18000))
-            .fluidOutputs( FluidUtils.getFluidStack(AlmandineFlotationFroth, 1000))
-            .duration(8*MINUTES)
+            .fluidOutputs(FluidUtils.getFluidStack(AlmandineFlotationFroth, 1000))
+            .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .noOptimize()
             .addTo(flotationCellRecipes);
@@ -625,11 +614,10 @@ public class MilledOreProcessing extends ItemPackage {
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
-                aMat.getMilled(64)
-            )
+                aMat.getMilled(64))
             .fluidInputs(FluidUtils.getFluidStack(PineOil, 8000))
             .fluidOutputs(FluidUtils.getFluidStack(PyropeFlotationFroth, 1000))
-            .duration(8*MINUTES)
+            .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .noOptimize()
             .addTo(flotationCellRecipes);
@@ -643,11 +631,10 @@ public class MilledOreProcessing extends ItemPackage {
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
-                aMat.getMilled(64)
-            )
+                aMat.getMilled(64))
             .fluidInputs(FluidUtils.getFluidStack(PineOil, 30000))
             .fluidOutputs(FluidUtils.getFluidStack(MonaziteFlotationFroth, 1000))
-            .duration(8*MINUTES)
+            .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .noOptimize()
             .addTo(flotationCellRecipes);
@@ -714,7 +701,7 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(PineOil, 500))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,3)
+            .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(CI.getNumberedAdvancedCircuit(18), ItemUtils.getSimpleStack(aCrushedPine, 64))
@@ -727,7 +714,7 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(PineOil, 1500))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .metadata(CHEMPLANT_CASING_TIER,4)
+            .metadata(CHEMPLANT_CASING_TIER, 4)
             .addTo(chemicalPlantRecipes);
 
     }
@@ -749,7 +736,7 @@ public class MilledOreProcessing extends ItemPackage {
             .itemOutputs(aOutputs)
             .duration(aTime * 20)
             .eut(aEU)
-            .metadata(CHEMPLANT_CASING_TIER,3)
+            .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
 
         return true;

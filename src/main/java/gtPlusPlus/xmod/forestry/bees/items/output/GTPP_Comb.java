@@ -124,7 +124,7 @@ public class GTPP_Comb extends Item {
             .itemOutputs(aOutputs)
             .duration(aTier * 20 * 60)
             .eut(aEU)
-            .metadata(CHEMPLANT_CASING_TIER,aTier)
+            .metadata(CHEMPLANT_CASING_TIER, aTier)
             .addTo(chemicalPlantRecipes);
 
     }
