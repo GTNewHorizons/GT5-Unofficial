@@ -1,9 +1,9 @@
 package goodgenerator.loader;
 
+import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.neutronActivatorRecipes;
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
 import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
-import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
