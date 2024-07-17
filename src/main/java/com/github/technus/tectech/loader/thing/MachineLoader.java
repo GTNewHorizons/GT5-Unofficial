@@ -1941,13 +1941,13 @@ public class MachineLoader implements Runnable {
             new GT_MetaTileEntity_Hatch_WirelessComputation_Output(
                 15444,
                 "hatch.dataout.wireless.tier.12",
-                "Cloud Computation Upload Hatch",
+                "Cloud Computation Server Hatch",
                 12).getStackForm(1L));
         dataIn_Wireless_Hatch.set(
             new GT_MetaTileEntity_Hatch_WirelessComputation_Input(
                 15445,
                 "hatch.datain.wireless.tier.12",
-                "Cloud Computation Download Hatch",
+                "Cloud Computation Client Hatch",
                 12).getStackForm(1L));
         dataInAss_Wireless_Hatch.set(
             new GT_MetaTileEntity_Hatch_WirelessInputDataItems(
