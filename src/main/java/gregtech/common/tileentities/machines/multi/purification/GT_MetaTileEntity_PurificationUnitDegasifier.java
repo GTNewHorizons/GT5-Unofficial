@@ -104,16 +104,16 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
 
     private static final long SUPERCON_FLUID_AMOUNT = 1440L;
 
-    private static final SuperconductorMaterial[] SUPERCONDUCTOR_MATERIALS = new SuperconductorMaterial[] {
-        new SuperconductorMaterial(Materials.Longasssuperconductornameforuvwire.getFluid(SUPERCON_FLUID_AMOUNT), 1.0f),
+    private static final Supplier<SuperconductorMaterial[]> SUPERCONDUCTOR_MATERIALS = () -> new SuperconductorMaterial[] {
+        new SuperconductorMaterial(Materials.Longasssuperconductornameforuvwire.getMolten(SUPERCON_FLUID_AMOUNT), 1.0f),
         new SuperconductorMaterial(
-            Materials.Longasssuperconductornameforuhvwire.getFluid(SUPERCON_FLUID_AMOUNT),
+            Materials.Longasssuperconductornameforuhvwire.getMolten(SUPERCON_FLUID_AMOUNT),
             1.25f),
-        new SuperconductorMaterial(Materials.SuperconductorUEVBase.getFluid(SUPERCON_FLUID_AMOUNT), 1.5f),
-        new SuperconductorMaterial(Materials.SuperconductorUIVBase.getFluid(SUPERCON_FLUID_AMOUNT), 1.75f),
-        new SuperconductorMaterial(Materials.SuperconductorUMVBase.getFluid(SUPERCON_FLUID_AMOUNT), 2.0f), };
+        new SuperconductorMaterial(Materials.SuperconductorUEVBase.getMolten(SUPERCON_FLUID_AMOUNT), 1.5f),
+        new SuperconductorMaterial(Materials.SuperconductorUIVBase.getMolten(SUPERCON_FLUID_AMOUNT), 1.75f),
+        new SuperconductorMaterial(Materials.SuperconductorUMVBase.getMolten(SUPERCON_FLUID_AMOUNT), 2.0f), };
 
-    private static final FluidStack CATALYST_FLUID = Materials.Steel.getFluid(14400L);
+    private static final FluidStack CATALYST_FLUID = Materials.Steel.getMolten(14400L);
     private static final FluidStack COOLANT_FLUID = Materials.SuperCoolant.getFluid(10000L);
 
     private static final long CONSUME_INTERVAL = 20;
@@ -298,7 +298,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
         return stack.isFluidEqual(CATALYST_FLUID) || stack.isFluidEqual(COOLANT_FLUID)
             || Arrays.stream(INERT_GASES.get())
                 .anyMatch(stack::isFluidEqual)
-            || Arrays.stream(SUPERCONDUCTOR_MATERIALS)
+            || Arrays.stream(SUPERCONDUCTOR_MATERIALS.get())
                 .anyMatch(mat -> stack.isFluidEqual(mat.fluid));
     }
 
@@ -332,10 +332,10 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
                         ForgeDirection front = hatch.getBaseMetaTileEntity()
                             .getFrontFacing();
                         // Drain the fluid and save it
-                        hatch.drain(front, fluid, true);
+                        FluidStack drainedFluid = hatch.drain(front, fluid, true);
                         // If the fluid does not yet exist in the map, insert it.
                         // Otherwise, merge the amounts
-                        insertedStuffThisCycle.merge(fluid.getFluid(), fluid, (a, b) -> {
+                        insertedStuffThisCycle.merge(fluid.getFluid(), drainedFluid, (a, b) -> {
                             a.amount += b.amount;
                             return a;
                         });
@@ -386,8 +386,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
         super.loadNBTData(aNBT);
         aNBT.setByte("controlSignal", controlSignal.getSignal());
         NBTTagCompound fluidMap = aNBT.getCompoundTag("insertedFluidMap");
-        for (Object uglyKey : fluidMap.tagMap.keySet()) {
-            String key = (String) uglyKey;
+        for (String key : fluidMap.func_150296_c()) {
             FluidStack fluid = FluidStack.loadFluidStackFromNBT(fluidMap.getCompoundTag(key));
             // Ignore if fluid failed to load, for example if the fluid ID was changed between versions
             if (fluid == null) {
@@ -403,7 +402,12 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
         controlSignal = new ControlSignal(aNBT.getByte("controlSignal"));
         NBTTagCompound fluidMap = new NBTTagCompound();
         for (FluidStack stack : insertedStuffThisCycle.values()) {
-            stack.writeToNBT(fluidMap);
+            NBTTagCompound compound = new NBTTagCompound();
+            stack.writeToNBT(compound);
+            fluidMap.setTag(
+                stack.getFluid()
+                    .getName(),
+                compound);
         }
         aNBT.setTag("insertedFluidMap", fluidMap);
     }
