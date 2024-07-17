@@ -2,6 +2,9 @@ package gregtech.api.items;
 
 import java.util.ArrayList;
 
+import gregtech.api.recipe.RecipeMaps;
+import ic2.core.init.MainConfig;
+import ic2.core.util.ConfigUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -36,13 +39,28 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
         this.sMox = aMox;
         if (aDepleted != null && aEnergy > 0 && aHeat > 0) {
             // avoid adding depleted cells to recipe map
-            GT_Values.RA.addIC2ReactorFuelCell(
-                new ItemStack(this),
-                aDepleted,
-                aMox,
-                aHeat * MYSTERIOUS_MULTIPLIER_HEAT,
-                aEnergy,
-                aCellcount);
+
+            int pulses = aCellcount / 2 + 1;
+
+            // for the mysterious constant 5.0f,
+            // see ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric.getOfferedEnergy
+            // don't ask, just accept
+            float nukePowerMult = 5.0f * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear");
+            GT_Values.RA.stdBuilder()
+                .itemInputs(new ItemStack(this))
+                .itemOutputs(aDepleted)
+                .setNEIDesc(
+                    aMox ? "MOX Model" : "Uranium Model",
+                    "Neutron Pulse: " + aCellcount,
+                    aCellcount == 1 ? String.format("Heat: %.1f * n1 * (n1 + 1)", (aHeat * MYSTERIOUS_MULTIPLIER_HEAT) / 2f)
+                        : String.format("Heat: %.1f * (%d + n1) * (%d + n1)", (aHeat * MYSTERIOUS_MULTIPLIER_HEAT) * aCellcount / 2f, aCellcount, aCellcount + 1),
+                    String.format(
+                        "Energy: %.1f + n2 * %.1f EU/t",
+                        aEnergy * aCellcount * pulses * nukePowerMult,
+                        aEnergy * nukePowerMult))
+                .duration(0)
+                .eut(0)
+                .addTo(RecipeMaps.ic2NuclearFakeRecipes);
         }
     }
 
