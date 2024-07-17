@@ -79,7 +79,7 @@ public class GregtechMetaTileEntity_SteamWaterPump
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
 
-    private static final int COUNT_OF_WATER_WITH_HUMIDITY = 5_000;
+    private static final int COUNT_OF_WATER_WITH_HUMIDITY = 1_500;
     private static final int PROGRESSION_TIME = 20;
 
     private static final int COUNT_STEAM_USAGE = 400;
@@ -235,12 +235,12 @@ public class GregtechMetaTileEntity_SteamWaterPump
             .addInfo("Steel tier extracts 2x water")
             .addInfo("Tiers can be configured with screwdriver")
             .addInfo(
-                EnumChatFormatting.AQUA + "Generation water: "
+                EnumChatFormatting.AQUA + "Generation water per second: "
                     + EnumChatFormatting.WHITE
                     + ": (Humidity * 50) * Tier"
                     + EnumChatFormatting.RESET)
             .addInfo(
-                EnumChatFormatting.RED + "Consume steam: "
+                EnumChatFormatting.RED + "Consume steam per second: "
                     + EnumChatFormatting.WHITE
                     + COUNT_STEAM_USAGE
                     + EnumChatFormatting.RESET)
@@ -267,24 +267,23 @@ public class GregtechMetaTileEntity_SteamWaterPump
     @NotNull
     public CheckRecipeResult checkProcessing() {
 
-        if (getTotalSteamStored() >= COUNT_STEAM_USAGE) {
-            mMaxProgresstime = PROGRESSION_TIME;
-            tryConsumeSteam(COUNT_STEAM_USAGE);
-            mOutputFluids = getWater();
-            updateSlots();
-            return CheckRecipeResultRegistry.SUCCESSFUL;
-        }
-
         VoidProtectionHelper voidProtection = new VoidProtectionHelper().setMachine(this)
-            .setFluidOutputs(mOutputFluids)
+            .setFluidOutputs(getWater())
             .build();
 
         if (voidProtection.isFluidFull()) {
             mOutputFluids = null;
             mMaxProgresstime = 0;
             return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
+        } else {
+            if (getTotalSteamStored() >= COUNT_STEAM_USAGE) {
+                mMaxProgresstime = PROGRESSION_TIME;
+                tryConsumeSteam(COUNT_STEAM_USAGE);
+                mOutputFluids = getWater();
+                updateSlots();
+                return CheckRecipeResultRegistry.SUCCESSFUL;
+            } else return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     @Override
