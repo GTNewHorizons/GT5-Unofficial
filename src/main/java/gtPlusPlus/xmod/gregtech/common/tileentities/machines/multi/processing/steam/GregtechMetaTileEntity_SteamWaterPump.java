@@ -79,10 +79,11 @@ public class GregtechMetaTileEntity_SteamWaterPump
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
 
-    private static final int COUNT_OF_WATER_WITH_HUMIDITY = 1_500;
-    private static final int PROGRESSION_TIME = 20;
+    // Base amount of water produced per second, before applying humidity and tier modifiers.
+    private static final int BASE_WATER_PER_SECOND = 1_500;
+    private static final int PROGRESSION_TIME_TICKS = 20;
 
-    private static final int COUNT_STEAM_USAGE = 400;
+    private static final int BASE_STEAM_PER_SECOND = 400;
 
     private int mSetTier = 1;
 
@@ -91,7 +92,7 @@ public class GregtechMetaTileEntity_SteamWaterPump
     private static final Fluid water = FluidRegistry.getFluid("water");
 
     private FluidStack[] getWater() {
-        return new FluidStack[] { new FluidStack(water, getWaterCount()) };
+        return new FluidStack[] { new FluidStack(water, calculateFinalWaterOutput()) };
     }
 
     private int mCountCasing;
@@ -102,8 +103,8 @@ public class GregtechMetaTileEntity_SteamWaterPump
             .getBiomeGenForCoords(getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getZCoord()).rainfall;
     }
 
-    private int getWaterCount() {
-        return (int) (currentHumidity * COUNT_OF_WATER_WITH_HUMIDITY * mSetTier);
+    private int calculateFinalWaterOutput() {
+        return (int) (currentHumidity * BASE_WATER_PER_SECOND * mSetTier);
     }
 
     // spotless:off
@@ -192,9 +193,12 @@ public class GregtechMetaTileEntity_SteamWaterPump
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (mSetTier >= 2) {
-            if (!checkPiece(tier2, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        } else if (!checkPiece(tier1, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        mCountCasing = 0;
+        mSetTier = 1;
+        if (!checkPiece(tier1, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) {
+            if (!checkPiece(tier2, HORIZONTAL_OFF_SET,VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+            mSetTier = 2;
+        }
 
         if (this.mOutputHatches.size() != 1 || this.mSteamInputFluids.size() != 1) return false;
 
@@ -230,25 +234,26 @@ public class GregtechMetaTileEntity_SteamWaterPump
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Water Pump")
-            .addInfo("Generates water based on biomes humidity")
+            .addInfo("Generates water based on biome humidity")
             .addInfo("Has 2 tiers: Bronze and Steel")
             .addInfo("Steel tier extracts 2x water")
-            .addInfo("Tiers can be configured with screwdriver")
             .addInfo(
-                EnumChatFormatting.AQUA + "Generation water per second: "
+                EnumChatFormatting.AQUA + "Generates: "
                     + EnumChatFormatting.WHITE
-                    + ": (Humidity * 50) * Tier"
+                    + " humidity * Tier * " + BASE_WATER_PER_SECOND + " L/s"
+                    + EnumChatFormatting.AQUA + " of water."
                     + EnumChatFormatting.RESET)
             .addInfo(
-                EnumChatFormatting.RED + "Consume steam per second: "
+                EnumChatFormatting.RED + "Consumes: "
                     + EnumChatFormatting.WHITE
-                    + COUNT_STEAM_USAGE
+                    + BASE_STEAM_PER_SECOND + " L/s"
+                    + EnumChatFormatting.RED + " of steam."
                     + EnumChatFormatting.RESET)
             .addSeparator()
             .beginStructureBlock(3, 3, 5, false)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addStructureInfo(
-                EnumChatFormatting.WHITE + "SteamInputHatch "
+                EnumChatFormatting.WHITE + "Steam Input Hatch "
                     + EnumChatFormatting.GOLD
                     + "1"
                     + EnumChatFormatting.GRAY
@@ -276,9 +281,9 @@ public class GregtechMetaTileEntity_SteamWaterPump
             mMaxProgresstime = 0;
             return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
         } else {
-            if (getTotalSteamStored() >= COUNT_STEAM_USAGE) {
-                mMaxProgresstime = PROGRESSION_TIME;
-                tryConsumeSteam(COUNT_STEAM_USAGE);
+            if (getTotalSteamStored() >= BASE_STEAM_PER_SECOND) {
+                mMaxProgresstime = PROGRESSION_TIME_TICKS;
+                tryConsumeSteam(BASE_STEAM_PER_SECOND);
                 mOutputFluids = getWater();
                 updateSlots();
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -308,7 +313,7 @@ public class GregtechMetaTileEntity_SteamWaterPump
                 + tag.getInteger("mSetTier")
                 + EnumChatFormatting.RESET);
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.machines.water_pump") + " "
+            StatCollector.translateToLocal("GT5U.biomes.humidity") + " "
                 + EnumChatFormatting.BLUE
                 + tag.getFloat("humidity")
                 + " %"
@@ -333,14 +338,6 @@ public class GregtechMetaTileEntity_SteamWaterPump
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mSetTier = aNBT.getInteger("mSetTier");
-    }
-
-    @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        mSetTier++;
-        if (mSetTier > 2) mSetTier = 1;
-        mUpdated = true;
-        PlayerUtils.messagePlayer(aPlayer, "Tier: " + mSetTier);
     }
 
     @Override

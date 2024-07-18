@@ -251,7 +251,6 @@ GT5U.machines.autoretract.disabled=Auto retract disabled
 GT5U.machines.radius=radius
 GT5U.machines.blocks=Blocks
 GT5U.machines.chunks=Chunks
-GT5U.machines.water_pump=Humidity:
 GT5U.machines.miner=Miner
 GT5U.machines.powersource.power=power
 GT5U.machines.powersource.steam=steam
@@ -641,6 +640,8 @@ GT5U.interface.coverTabs.east=East
 
 GT5U.steam_variant.bronze=Bronze
 GT5U.steam_variant.steel=Steel
+
+GT5U.biomes.humidity=Humidity:
 
 # NEI options
 nei.options.tools.dump.gt5u=GT5u
