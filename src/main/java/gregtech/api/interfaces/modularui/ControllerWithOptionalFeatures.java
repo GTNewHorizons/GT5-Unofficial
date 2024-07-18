@@ -163,9 +163,6 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(getMachineModeSwitchButtonPos())
             .setSize(16, 16);
-        if (!supportsMachineModeSwitch()) {
-            button.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
-        }
         return (ButtonWidget) button;
     }
 
