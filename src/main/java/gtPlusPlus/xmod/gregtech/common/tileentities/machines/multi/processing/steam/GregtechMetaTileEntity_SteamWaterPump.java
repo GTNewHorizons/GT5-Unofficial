@@ -11,7 +11,6 @@ import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -45,7 +44,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.blocks.GT_Block_Casings9;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -196,7 +194,7 @@ public class GregtechMetaTileEntity_SteamWaterPump
         mCountCasing = 0;
         mSetTier = 1;
         if (!checkPiece(tier1, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) {
-            if (!checkPiece(tier2, HORIZONTAL_OFF_SET,VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+            if (!checkPiece(tier2, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
             mSetTier = 2;
         }
 
@@ -240,14 +238,19 @@ public class GregtechMetaTileEntity_SteamWaterPump
             .addInfo(
                 EnumChatFormatting.AQUA + "Generates: "
                     + EnumChatFormatting.WHITE
-                    + " humidity * Tier * " + BASE_WATER_PER_SECOND + " L/s"
-                    + EnumChatFormatting.AQUA + " of water."
+                    + " humidity * Tier * "
+                    + BASE_WATER_PER_SECOND
+                    + " L/s"
+                    + EnumChatFormatting.AQUA
+                    + " of water."
                     + EnumChatFormatting.RESET)
             .addInfo(
                 EnumChatFormatting.RED + "Consumes: "
                     + EnumChatFormatting.WHITE
-                    + BASE_STEAM_PER_SECOND + " L/s"
-                    + EnumChatFormatting.RED + " of steam."
+                    + BASE_STEAM_PER_SECOND
+                    + " L/s"
+                    + EnumChatFormatting.RED
+                    + " of steam."
                     + EnumChatFormatting.RESET)
             .addSeparator()
             .beginStructureBlock(3, 3, 5, false)
