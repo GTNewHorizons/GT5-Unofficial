@@ -409,6 +409,7 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
 
     @Override
     public void setMachineModeIcons() {
+        machineModeIcons.clear();
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT);
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_CHEMBATH);

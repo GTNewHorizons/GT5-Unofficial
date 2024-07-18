@@ -219,6 +219,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
 
     @Override
     public void setMachineModeIcons() {
+        machineModeIcons.clear();
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_BENDING);
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_FORMING);
     }
