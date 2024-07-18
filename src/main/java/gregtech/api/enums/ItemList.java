@@ -852,6 +852,7 @@ public enum ItemList implements IItemContainer {
     Casing_Grate,
     Casing_Vent,
     Casing_Vent_T2,
+    WoodenCasing,
     Casing_RadiationProof,
     Casing_AdvancedRadiationProof,
     Casing_Firebox_Bronze,
@@ -1450,6 +1451,17 @@ public enum ItemList implements IItemContainer {
     Machine_IV_FluidHeater,
 
     Machine_Multi_LargeChemicalReactor,
+
+    Machine_Multi_IndustrialElectromagneticSeparator,
+    Casing_Electromagnetic_Separator,
+    Hatch_Electromagnet,
+    Electromagnet_Iron,
+    Electromagnet_Steel,
+    Electromagnet_Neodymium,
+    Electromagnet_Samarium,
+    Electromagnet_Tengam,
+
+    Machine_Multi_Canner,
 
     Machine_LV_Miner,
     Machine_MV_Miner,

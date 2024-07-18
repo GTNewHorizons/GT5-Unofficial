@@ -4941,6 +4941,16 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { "PSP", "SFS", "PSP", 'P', OrePrefixes.plate.get(Materials.Bronze), 'F',
                 OrePrefixes.frameGt.get(Materials.Bronze), 'S', OrePrefixes.stick.get(Materials.Bronze) });
         GT_ModHandler.addCraftingRecipe(
+            ItemList.WoodenCasing.get(1L),
+            bits,
+            new Object[] { "PSP", "PFP", "PSP", 'F', OrePrefixes.gear.get(Materials.Wood), 'P',
+                OrePrefixes.frameGt.get(Materials.Wood), 'S', OrePrefixes.screw.get(Materials.Wood) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hatch_Output_ULV.get(1L),
+            bits,
+            new Object[] { " S ", " F ", " P ", 'S', GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1),
+                'F', ItemList.Hull_ULV.get(1), 'P', ItemList.IC2_Resin.get(1) });
+        GT_ModHandler.addCraftingRecipe(
             ItemList.Casing_Firebox_Steel.get(1L),
             bits,
             new Object[] { "PSP", "SFS", "PSP", 'P', OrePrefixes.plate.get(Materials.Steel), 'F',

@@ -165,6 +165,7 @@ public enum Mods {
     TravellersGear(Names.TRAVELLERS_GEAR),
     TwilightForest(Names.TWILIGHT_FOREST),
     UniversalSingularities(Names.UNIVERSAL_SINGULARITIES),
+    VisualProspecting(Names.VISUAL_PROSPECTING),
     Waila(Names.WAILA),
     WarpTheory(Names.WARP_THEORY),
     WirelessRedstoneCBEAddons(Names.WIRELESS_REDSTONE_CBE_ADDONS),
@@ -346,6 +347,7 @@ public enum Mods {
         public static final String TRAVELLERS_GEAR = "TravellersGear";
         public static final String TWILIGHT_FOREST = "TwilightForest";
         public static final String UNIVERSAL_SINGULARITIES = "universalsingularities";
+        public static final String VISUAL_PROSPECTING = "visualprospecting";
         public static final String WAILA = "Waila";
         public static final String WARP_THEORY = "WarpTheory";
         public static final String WIRELESS_REDSTONE_CBE_ADDONS = "WR-CBE|Addons";

@@ -16,7 +16,7 @@ import gregtech.GT_Mod;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.ModelRenderLogic;
 import gregtech.api.logic.interfaces.ModelRenderLogicHost;
-import gregtech.api.multitileentity.MultiTileEntityBlockInternal;
+import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityClassContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
@@ -35,22 +35,22 @@ public class GT_MultiTile_Renderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
-        if (!(block instanceof MultiTileEntityBlockInternal)) {
+        if (!(block instanceof MultiTileEntityBlock muteBlock)) {
             return;
         }
 
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
-        MultiTileEntityBlockInternal mteBlock = (MultiTileEntityBlockInternal) block;
-        MultiTileEntityRegistry registry = mteBlock.getRegistry();
+        final MultiTileEntityRegistry registry = muteBlock.getRegistry();
         if (registry == null) return;
-        MultiTileEntityClassContainer classContainer = registry.getClassContainer(metadata);
+        final MultiTileEntityClassContainer classContainer = registry.getClassContainer(metadata);
         if (classContainer == null) return;
-        renderer.setRenderBoundsFromBlock(mteBlock);
+        renderer.setRenderBoundsFromBlock(muteBlock);
 
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            ITexture texture = classContainer.mCanonicalTileEntity.getTexture(side);
+            final ITexture texture = classContainer.getReferenceTileEntity()
+                .getTexture(side);
             if (texture == null) continue;
             switch (side) {
                 case DOWN -> renderYNegative(null, renderer, 0, 0, 0, block, texture, side);
@@ -71,7 +71,7 @@ public class GT_MultiTile_Renderer implements ISimpleBlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
         RenderBlocks renderer) {
-        TileEntity entity = world.getTileEntity(x, y, z);
+        final TileEntity entity = world.getTileEntity(x, y, z);
         if (entity == null) {
             return false;
         }
@@ -84,21 +84,19 @@ public class GT_MultiTile_Renderer implements ISimpleBlockRenderingHandler {
             return true;
         }
 
-        if (!(entity instanceof MultiTileBasicRender)) {
+        if (!(entity instanceof MultiTileBasicRender renderedEntity)) {
             return false;
         }
 
         if (entity instanceof MultiBlockPart) {
-            IMultiBlockController controller = ((MultiBlockPart) entity).getTarget(false);
+            final IMultiBlockController controller = ((MultiBlockPart) entity).getTarget(false);
             if (controller instanceof ModelRenderLogicHost && ((ModelRenderLogicHost) controller).shouldRenderModel()) {
                 return false;
             }
         }
 
-        MultiTileBasicRender renderedEntity = (MultiTileBasicRender) entity;
-
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            ITexture texture = renderedEntity.getTexture(side);
+            final ITexture texture = renderedEntity.getTexture(side);
             if (texture == null) continue;
             switch (side) {
                 case DOWN -> renderYNegative(world, renderer, x, y, z, block, texture, side);
