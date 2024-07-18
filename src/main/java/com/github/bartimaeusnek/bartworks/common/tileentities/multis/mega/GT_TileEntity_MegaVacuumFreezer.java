@@ -107,7 +107,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
         }
     }
 
-    public static final ArrayList<SubspaceCoolingFluid> SUBSPACE_COOLING_FLUIDS = new ArrayList<>(
+    private static final ArrayList<SubspaceCoolingFluid> SUBSPACE_COOLING_FLUIDS = new ArrayList<>(
         Arrays.asList(
             new SubspaceCoolingFluid(MaterialsUEVplus.SpaceTime, 1, 7500),
             new SubspaceCoolingFluid(MaterialsUEVplus.Space, 2, 5000),
