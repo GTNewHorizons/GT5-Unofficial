@@ -231,8 +231,8 @@ public class GT_MetaTileEntity_MultiCanner
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_PACKAGER);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }
 
     @Override
