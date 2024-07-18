@@ -26,6 +26,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZE
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -40,6 +43,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -49,6 +53,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.GT_Block_Casings_Abstract;
 
 public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaVacuumFreezer>
     implements ISurvivalConstructable {
@@ -66,69 +71,136 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
         return new GT_TileEntity_MegaVacuumFreezer(this.mName);
     }
 
-    private int mCasing = 0;
+    private int mCasingFrostProof = 0;
+    private int mTier = 1;
+
+    public static class SubspaceCoolingFluid {
+
+        public Materials material = null;
+        public int perfectOverclocks = 0;
+        public long amount = 0;
+    }
+
+    private boolean subspaceCoolingActive = false;
 
     private static final int CASING_INDEX = 17;
+    private static final int CASING_INDEX_T2 = ((GT_Block_Casings_Abstract) GregTech_API.sBlockCasings8)
+        .getTextureIndex(14);
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN_T2 = "main_t2";
+
+    private static final String[][] structure = transpose(
+        new String[][] {
+            { "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
+                "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
+                "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ccccccc~ccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
+                "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
+                "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc" } });
+    private static final String[][] structure_tier2 = transpose(
+        new String[][] {
+            { "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
+                "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
+                "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc" },
+            { "ddddddddddddddd", "d             d", "d             d", "d             d", "d             d",
+                "d             d", "d             d", "d             d", "d             d", "d             d",
+                "d             d", "d             d", "d             d", "d             d", "ddddddddddddddd" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ddddddddddddddd", "d             d", "d             d", "d             d", "d             d",
+                "d             d", "d             d", "d             d", "d             d", "d             d",
+                "d             d", "d             d", "d             d", "d             d", "ddddddddddddddd" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ddddddddddddddd", "d             d", "d             d", "d             d", "d             d",
+                "d             d", "d             d", "d             d", "d             d", "d             d",
+                "d             d", "d             d", "d             d", "d             d", "ddddddddddddddd" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ccccccc~ccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ddddddddddddddd", "d             d", "d             d", "d             d", "d             d",
+                "d             d", "d             d", "d             d", "d             d", "d             d",
+                "d             d", "d             d", "d             d", "d             d", "ddddddddddddddd" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ddddddddddddddd", "d             d", "d             d", "d             d", "d             d",
+                "d             d", "d             d", "d             d", "d             d", "d             d",
+                "d             d", "d             d", "d             d", "d             d", "ddddddddddddddd" },
+            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "c             c",
+                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
+            { "ddddddddddddddd", "d             d", "d             d", "d             d", "d             d",
+                "d             d", "d             d", "d             d", "d             d", "d             d",
+                "d             d", "d             d", "d             d", "d             d", "ddddddddddddddd" },
+            { "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
+                "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
+                "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc" } });
+
     private static final IStructureDefinition<GT_TileEntity_MegaVacuumFreezer> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_TileEntity_MegaVacuumFreezer>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(
-                new String[][] {
-                    { "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                        "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                        "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc" },
-                    { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-                    { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-                    { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-                    { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-                    { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-                    { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-                    { "ccccccc~ccccccc", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-                    { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-                    { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-                    { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-                    { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-                    { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-                    { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "c             c",
-                        "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-                    { "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                        "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                        "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                        "ccccccccccccccc" } }))
+        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addShape(STRUCTURE_PIECE_MAIN_T2, structure_tier2)
         .addElement(
             'c',
             buildHatchAdder(GT_TileEntity_MegaVacuumFreezer.class)
                 .atLeast(Energy.or(ExoticEnergy), InputHatch, InputBus, OutputHatch, OutputBus, Maintenance)
                 .casingIndex(CASING_INDEX)
                 .dot(1)
-                .buildAndChain(onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 1))))
+                .buildAndChain(onElementPass(x -> x.mCasingFrostProof++, ofBlock(GregTech_API.sBlockCasings2, 1))))
+        .addElement(
+            'd',
+            buildHatchAdder(GT_TileEntity_MegaVacuumFreezer.class).casingIndex(CASING_INDEX_T2)
+                .dot(2)
+                // Tier 2 uses infinity cooled casing
+                .buildAndChain(ofBlock(GregTech_API.sBlockCasings8, 14)))
         .build();
 
     @Override
@@ -137,10 +209,11 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
         tt.addMachineType("Vacuum Freezer")
             .addInfo("Controller Block for the Mega Vacuum Freezer")
             .addInfo("Cools hot ingots and cells")
+            // TODO: Add info about subspace cooling
             .addSeparator()
             .beginStructureBlock(15, 15, 15, true)
             .addController("Front center")
-            .addCasingInfoMin("Frost Proof Machine Casing", 900, false)
+            .addCasingInfoMin("Frost Proof Machine Casing", 800, false)
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
             .addInputHatch("Any casing", 1)
@@ -158,15 +231,33 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
 
     @Override
     public void construct(ItemStack aStack, boolean aHintsOnly) {
-        this.buildPiece(STRUCTURE_PIECE_MAIN, aStack, aHintsOnly, 7, 7, 0);
+        if (aStack.stackSize == 1) {
+            this.buildPiece(STRUCTURE_PIECE_MAIN, aStack, aHintsOnly, 7, 7, 0);
+        } else {
+            this.buildPiece(STRUCTURE_PIECE_MAIN_T2, aStack, aHintsOnly, 7, 7, 0);
+        }
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return this
-            .survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 7, 0, realBudget, source, actor, false, true);
+        if (stackSize.stackSize == 1) {
+            return this
+                .survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 7, 0, realBudget, source, actor, false, true);
+        } else {
+            return this.survivialBuildPiece(
+                STRUCTURE_PIECE_MAIN_T2,
+                stackSize,
+                7,
+                7,
+                0,
+                realBudget,
+                source,
+                actor,
+                false,
+                true);
+        }
     }
 
     @Override
@@ -180,6 +271,15 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
         if (!aNBT.hasKey(BATCH_MODE_NBT_KEY)) {
             this.batchMode = aNBT.getBoolean("mUseMultiparallelMode");
         }
+        if (aNBT.hasKey("subspaceActive")) {
+            this.subspaceCoolingActive = aNBT.getBoolean("subspaceActive");
+        }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("subspaceActive", subspaceCoolingActive);
     }
 
     @Override
@@ -206,9 +306,19 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.mCasing = 0;
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 7, 7, 0)) return false;
-        return this.mMaintenanceHatches.size() == 1 && this.mCasing >= 900;
+        this.mCasingFrostProof = 0;
+        this.mTier = 1;
+        // If check for T1 fails, also do a check for T2 structure
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 7, 7, 0)) {
+            // Reset mCasing in between checks, so they don't count again
+            this.mCasingFrostProof = 0;
+            if (!this.checkPiece(STRUCTURE_PIECE_MAIN_T2, 7, 7, 0)) {
+                return false;
+            }
+            // Structure is Tier 2
+            this.mTier = 2;
+        }
+        return this.mMaintenanceHatches.size() == 1 && this.mCasingFrostProof >= 800;
     }
 
     @Override
@@ -241,6 +351,13 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
             rTexture = new ITexture[] { casingTexturePages[0][17] };
         }
         return rTexture;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        info.add("Tier: " + mTier);
+        return info.toArray(new String[] {});
     }
 
     @Override
