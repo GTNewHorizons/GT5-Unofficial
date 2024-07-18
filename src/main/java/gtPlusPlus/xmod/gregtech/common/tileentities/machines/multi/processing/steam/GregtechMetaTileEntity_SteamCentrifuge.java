@@ -71,7 +71,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
 
     private static final String STRUCTUR_PIECE_MAIN = "main";
 
-    private static IStructureDefinition<GregtechMetaTileEntity_SteamCentrifuge> STRUCTURE_DEFINITION = null;
+    private IStructureDefinition<GregtechMetaTileEntity_SteamCentrifuge> STRUCTURE_DEFINITION = null;
     private final String[][] shape = new String[][] { { " AAA ", "AAAAA", "AAAAA", "AAAAA", " AAA " },
         { "     ", " ABA ", " BDB ", " ABA ", "     " }, { "  A  ", " ACA ", "ACDCA", " ACA ", "  A  " },
         { " A~A ", "AABAA", "ABDBA", "AABAA", " AAA " }, { " AAA ", "AAAAA", "AAAAA", "AAAAA", " AAA " } };
@@ -85,14 +85,22 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     private int tierFireBoxCasing = -1;
     private int tierMachineCasing = -1;
 
+    private int tCountCasing = 0;
+
     private int tierMachine = 1;
 
     private String tMachineCasing = "Solid Bronze or Steel Machine Casing";
 
-    public static int getTierMachineCasing(Block block, int meta) {
-        if (block == sBlockCasings1 && 10 == meta) return 1;
-        if (block == sBlockCasings2 && 0 == meta) return 2;
-        return -1;
+    public int getTierMachineCasing(Block block, int meta) {
+        if (block == sBlockCasings1 && 10 == meta) {
+            tCountCasing++;
+            return 1;
+        }
+        if (block == sBlockCasings2 && 0 == meta) {
+            tCountCasing++;
+            return 2;
+        }
+        return 0;
     }
 
     private String tFireBoxCasing = "Bronze or Steel Firebox Casing";
@@ -100,7 +108,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     public static int getTierFireBoxCasing(Block block, int meta) {
         if (block == sBlockCasings3 && 13 == meta) return 1;
         if (block == sBlockCasings3 && 14 == meta) return 2;
-        return -1;
+        return 0;
     }
 
     private String tGearBoxCasing = "Bronze or Steel Gear Box Casing";
@@ -108,7 +116,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     public static int getTierGearBoxCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 2 == meta) return 1;
         if (block == sBlockCasings2 && 3 == meta) return 2;
-        return -1;
+        return 0;
     }
 
     private String tPipeCasing = "Bronze or Steel Pipe Casing";
@@ -116,7 +124,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     public static int getTierPipeCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 12 == meta) return 1;
         if (block == sBlockCasings2 && 13 == meta) return 2;
-        return -1;
+        return 0;
     }
 
     protected void updateHatchTexture() {
@@ -181,14 +189,21 @@ public class GregtechMetaTileEntity_SteamCentrifuge
         tierPipeCasing = -1;
         tierFireBoxCasing = -1;
         tierMachineCasing = -1;
+        tCountCasing = 0;
         if (!checkPiece(STRUCTUR_PIECE_MAIN, horizontalOffSet, verticalOffSet, depthOffSet)) return false;
         if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierFireBoxCasing < 0 && tierMachineCasing < 0) return false;
-        if (tierGearBoxCasing == 1 && tierPipeCasing == 1 && tierFireBoxCasing == 1 && tierMachineCasing == 1) {
+        if (tierGearBoxCasing == 1 && tierPipeCasing == 1
+            && tierFireBoxCasing == 1
+            && tierMachineCasing == 1
+            && tCountCasing > 60) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
-        if (tierGearBoxCasing == 2 && tierPipeCasing == 2 && tierFireBoxCasing == 2 && tierMachineCasing == 2) {
+        if (tierGearBoxCasing == 2 && tierPipeCasing == 2
+            && tierFireBoxCasing == 2
+            && tierMachineCasing == 2
+            && tCountCasing > 60) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
@@ -215,55 +230,45 @@ public class GregtechMetaTileEntity_SteamCentrifuge
                 .addShape(STRUCTUR_PIECE_MAIN, transpose(shape))
                 .addElement(
                     'B',
-                    withChannel(
-                        "tier",
-                        ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamCentrifuge::getTierGearBoxCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
-                            -1,
-                            (t, m) -> t.tierGearBoxCasing = m,
-                            t -> t.tierGearBoxCasing)))
+                    ofBlocksTiered(
+                        GregtechMetaTileEntity_SteamCentrifuge::getTierGearBoxCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
+                        -1,
+                        (t, m) -> t.tierGearBoxCasing = m,
+                        t -> t.tierGearBoxCasing))
                 .addElement(
                     'C',
-                    withChannel(
-                        "tier",
-                        ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamCentrifuge::getTierPipeCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
-                            -1,
-                            (t, m) -> t.tierPipeCasing = m,
-                            t -> t.tierPipeCasing)))
+                    ofBlocksTiered(
+                        GregtechMetaTileEntity_SteamCentrifuge::getTierPipeCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
+                        -1,
+                        (t, m) -> t.tierPipeCasing = m,
+                        t -> t.tierPipeCasing))
                 .addElement(
                     'D',
-                    withChannel(
-                        "tier",
-                        ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamCentrifuge::getTierFireBoxCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
-                            -1,
-                            (t, m) -> t.tierFireBoxCasing = m,
-                            t -> t.tierFireBoxCasing)))
+                    ofBlocksTiered(
+                        GregtechMetaTileEntity_SteamCentrifuge::getTierFireBoxCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
+                        -1,
+                        (t, m) -> t.tierFireBoxCasing = m,
+                        t -> t.tierFireBoxCasing))
                 .addElement(
                     'A',
-                    withChannel(
-                        "tier",
-                        ofChain(
-                            ofBlocksTiered(
-                                GregtechMetaTileEntity_SteamCentrifuge::getTierMachineCasing,
-                                ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                                -1,
-                                (t, m) -> t.tierMachineCasing = m,
-                                t -> t.tierMachineCasing),
-                            buildSteamInput(GregtechMetaTileEntity_SteamCentrifuge.class).casingIndex(10)
-                                .dot(1)
-                                .build(),
-                            buildHatchAdder(GregtechMetaTileEntity_SteamCentrifuge.class)
-                                .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
-                                .casingIndex(10)
-                                .dot(1)
-                                .buildAndChain()
-
-                        )))
+                    ofChain(
+                        buildSteamInput(GregtechMetaTileEntity_SteamCentrifuge.class).casingIndex(10)
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(GregtechMetaTileEntity_SteamCentrifuge.class)
+                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
+                            .casingIndex(10)
+                            .dot(1)
+                            .buildAndChain(),
+                        ofBlocksTiered(
+                            this::getTierMachineCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                            -1,
+                            (t, m) -> t.tierMachineCasing = m,
+                            t -> t.tierMachineCasing)))
                 .build();
 
         }
