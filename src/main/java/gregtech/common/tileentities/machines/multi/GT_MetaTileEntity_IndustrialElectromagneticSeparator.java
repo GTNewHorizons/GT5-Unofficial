@@ -36,6 +36,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -102,7 +103,6 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     final int MIN_CASING = 64;
     private GT_MetaTileEntity_MagHatch mMagHatch = null;
     private MagnetTiers magnetTier = null;
-    private boolean polarizerMode = false;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_IndustrialElectromagneticSeparator> STRUCTURE_DEFINITION = StructureDefinition
@@ -312,7 +312,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return polarizerMode ? RecipeMaps.polarizerRecipes : RecipeMaps.electroMagneticSeparatorRecipes;
+        return (machineMode == 1) ? RecipeMaps.polarizerRecipes : RecipeMaps.electroMagneticSeparatorRecipes;
     }
 
     @Nonnull
@@ -323,20 +323,31 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setBoolean("polarizerMode", polarizerMode);
+        aNBT.setInteger("machineMode", machineMode);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        polarizerMode = aNBT.getBoolean("polarizerMode");
+        machineMode = aNBT.getInteger("machineMode");
         super.loadNBTData(aNBT);
     }
 
     @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_SEPARATOR);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_POLARIZER);
+    }
+
+    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        polarizerMode = !polarizerMode;
-        if (polarizerMode) {
+        setMachineMode(nextMachineMode());
+        if (machineMode == 1) {
             PlayerUtils.messagePlayer(aPlayer, "Now running in Polarizing Mode.");
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Now running in Separating Mode.");
@@ -353,7 +364,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setBoolean("mode", polarizerMode);
+        tag.setInteger("mode", machineMode);
     }
 
     @Override
@@ -364,8 +375,8 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         currentTip.add(
             StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + StatCollector.translateToLocal(
-                    "GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode." + (tag.getBoolean("mode") ? 1 : 0))
+                + StatCollector
+                    .translateToLocal("GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
     }
 

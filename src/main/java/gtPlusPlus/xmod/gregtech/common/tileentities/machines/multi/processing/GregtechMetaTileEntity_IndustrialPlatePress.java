@@ -32,6 +32,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.SoundResource;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -51,7 +52,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class GregtechMetaTileEntity_IndustrialPlatePress
     extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialPlatePress> implements ISurvivalConstructable {
 
-    private boolean mFormingMode = false;
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialPlatePress> STRUCTURE_DEFINITION = null;
 
@@ -155,7 +155,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return mFormingMode ? RecipeMaps.formingPressRecipes : RecipeMaps.benderRecipes;
+        return (machineMode == 1) ? RecipeMaps.formingPressRecipes : RecipeMaps.benderRecipes;
     }
 
     @Nonnull
@@ -187,7 +187,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        if (this.mFormingMode) return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
+        if (machineMode == 1) return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeBending;
     }
 
@@ -198,20 +198,36 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setBoolean("mFormingMode", mFormingMode);
+        aNBT.setInteger("machineMode", machineMode);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mFormingMode = aNBT.getBoolean("mFormingMode");
+        // Migrates old NBT tag to the new one
         super.loadNBTData(aNBT);
+        if (aNBT.hasKey("mFormingMode")) {
+            if (aNBT.getBoolean("mFormingMode")) machineMode = 1;
+            else machineMode = 0;
+        } else machineMode = aNBT.getInteger("machineMode");
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.clear();
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_BENDING);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_FORMING);
     }
 
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        mFormingMode = !mFormingMode;
-        if (mFormingMode) {
+        setMachineMode(nextMachineMode());
+        if (machineMode == 1) {
             PlayerUtils.messagePlayer(aPlayer, "Now running in Forming Press Mode.");
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Now running in Bending Mode.");
@@ -228,7 +244,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setBoolean("mode", mFormingMode);
+        tag.setInteger("mode", machineMode);
     }
 
     @Override
@@ -240,7 +256,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
             StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
                 + StatCollector
-                    .translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_PLATE_PRESS.mode." + (tag.getBoolean("mode") ? 1 : 0))
+                    .translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_PLATE_PRESS.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
     }
 }

@@ -34,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.TAE;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -53,7 +54,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
     GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialCuttingMachine> implements ISurvivalConstructable {
 
-    private boolean mCuttingMode = true;
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialCuttingMachine> STRUCTURE_DEFINITION = null;
 
@@ -154,7 +154,7 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return mCuttingMode ? RecipeMaps.cutterRecipes : RecipeMaps.slicerRecipes;
+        return (machineMode == 1) ? RecipeMaps.cutterRecipes : RecipeMaps.slicerRecipes;
     }
 
     @Nonnull
@@ -213,9 +213,21 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
     }
 
     @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.clear();
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_SLICING);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_CUTTING);
+    }
+
+    @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        mCuttingMode = !mCuttingMode;
-        String aMode = mCuttingMode ? "Cutting" : "Slicing";
+        setMachineMode(nextMachineMode());
+        String aMode = machineMode == 1 ? "Cutting" : "Slicing";
         PlayerUtils.messagePlayer(aPlayer, "Mode: " + aMode);
         mLastRecipe = null;
     }
@@ -223,24 +235,24 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("mCuttingMode", mCuttingMode);
+        aNBT.setInteger("machineMode", machineMode);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
+        // Migrates old NBT tag to the new one
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("mCuttingMode")) {
-            mCuttingMode = aNBT.getBoolean("mCuttingMode");
-        } else {
-            mCuttingMode = true;
-        }
+            if (aNBT.getBoolean("mCuttingMode")) machineMode = 1;
+            else machineMode = 0;
+        } else machineMode = aNBT.getInteger("machineMode");
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setBoolean("mode", mCuttingMode);
+        tag.setInteger("mode", machineMode);
     }
 
     @Override
@@ -251,8 +263,7 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
         currentTip.add(
             StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + StatCollector
-                    .translateToLocal("GT5U.GTPP_MULTI_CUTTING_MACHINE.mode." + (tag.getBoolean("mode") ? 1 : 0))
+                + StatCollector.translateToLocal("GT5U.GTPP_MULTI_CUTTING_MACHINE.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
     }
 }

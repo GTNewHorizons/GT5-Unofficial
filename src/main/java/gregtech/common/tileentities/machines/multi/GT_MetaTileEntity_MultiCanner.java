@@ -32,6 +32,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -49,8 +50,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_MultiCanner
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_MultiCanner> implements ISurvivalConstructable {
-
-    private boolean fluidMode = false;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_MultiCanner> STRUCTURE_DEFINITION = StructureDefinition
@@ -204,7 +203,7 @@ public class GT_MetaTileEntity_MultiCanner
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return fluidMode ? RecipeMaps.fluidCannerRecipes : RecipeMaps.cannerRecipes;
+        return (machineMode == 1) ? RecipeMaps.fluidCannerRecipes : RecipeMaps.cannerRecipes;
     }
 
     @Nonnull
@@ -215,20 +214,31 @@ public class GT_MetaTileEntity_MultiCanner
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setBoolean("fluidMode", fluidMode);
+        aNBT.setInteger("machineMode", machineMode);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        fluidMode = aNBT.getBoolean("fluidMode");
+        machineMode = aNBT.getInteger("machineMode");
         super.loadNBTData(aNBT);
     }
 
     @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_PACKAGER);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
+    }
+
+    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        fluidMode = !fluidMode;
-        if (fluidMode) {
+        setMachineMode(nextMachineMode());
+        if (machineMode == 1) {
             PlayerUtils.messagePlayer(aPlayer, "Now running in Fluid Canning Mode.");
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Now running in Canning Mode.");
@@ -239,7 +249,7 @@ public class GT_MetaTileEntity_MultiCanner
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setBoolean("mode", fluidMode);
+        tag.setInteger("mode", machineMode);
     }
 
     @Override
@@ -250,7 +260,7 @@ public class GT_MetaTileEntity_MultiCanner
         currentTip.add(
             StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + StatCollector.translateToLocal("GT5U.MULTI_CANNER.mode." + (tag.getBoolean("mode") ? 1 : 0))
+                + StatCollector.translateToLocal("GT5U.MULTI_CANNER.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
     }
 
