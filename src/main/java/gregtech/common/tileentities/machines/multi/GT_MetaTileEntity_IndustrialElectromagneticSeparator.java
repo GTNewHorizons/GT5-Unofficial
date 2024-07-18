@@ -10,7 +10,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -42,7 +41,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MagHatch;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
@@ -82,9 +80,27 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             this.speedBoost = 1F / speedBoost;
             this.supportsExotic = supportsExotic;
         }
+
+        public static String buildMagnetTooltip(MagnetTiers m) {
+            String tooltip = "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
+                + Math.round(1F / m.speedBoost * 100)
+                + "% Speed/n "
+                + EnumChatFormatting.DARK_PURPLE
+                + Math.round(m.euModifier * 100)
+                + "% EU Cost/n "
+                + EnumChatFormatting.AQUA
+                + m.maxParallel
+                + " Parallels/n ";
+
+            if (m.supportsExotic)
+                tooltip = tooltip + EnumChatFormatting.BOLD + EnumChatFormatting.GREEN + "Can Use Multiamp Hatches";
+
+            return tooltip;
+        }
     }
 
-    private final ArrayList<GT_MetaTileEntity_MagHatch> mMagHatches = new ArrayList<>();
+    final int MIN_CASING = 64;
+    private GT_MetaTileEntity_MagHatch mMagHatch = null;
     private MagnetTiers magnetTier = null;
     private boolean polarizerMode = false;
 
@@ -118,7 +134,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                 buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
                     .adder(GT_MetaTileEntity_IndustrialElectromagneticSeparator::addMagHatch)
                     .hatchClass(GT_MetaTileEntity_MagHatch.class)
-                    .shouldReject(t -> !t.mMagHatches.isEmpty())
+                    .shouldReject(t -> !(t.mMagHatch == null))
                     .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
                     .dot(1)
                     .build(),
@@ -197,8 +213,6 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         return rTexture;
     }
 
-    final String authorBaps = EnumChatFormatting.GOLD + "Ba" + EnumChatFormatting.LIGHT_PURPLE + "ps";
-
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
@@ -208,11 +222,17 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             .addInfo("Insert an electromagnet into the electromagnet housing to use")
             .addInfo("Better electromagnets give further bonuses")
             .addInfo("With Tengam electromagnet, multiamp (NOT laser) hatches are allowed")
-            .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.GRAY + " & " + authorBaps)
+            .addInfo(
+                AuthorFourIsTheNumber + EnumChatFormatting.GRAY
+                    + " & "
+                    + EnumChatFormatting.GOLD
+                    + "Ba"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "ps")
             .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")
-            .addCasingInfoMin("MagTech Casings", 64, false)
+            .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
             .addOtherStructurePart("Magnetic Neodymium Frame Box", "x40")
             .addOtherStructurePart("Magnetic Samarium Frame Box", "x45")
             .addOtherStructurePart("Electromagnet Housing", "x1 Only, Any Casing")
@@ -244,20 +264,18 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        mMagHatches.clear();
+        mMagHatch = null;
         mExoticEnergyHatches.clear();
         mEnergyHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 5, 7, 0)) return false;
-        if (mCasingAmount < 64) return false;
-        if (mMagHatches.size() != 1) return false;
+        if (mCasingAmount < MIN_CASING) return false;
+        if (mMagHatch == null) return false;
 
         // If there are exotic hatches, ensure there is only 1, and it is not laser. Only multiamp allowed
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) return false;
             if (mExoticEnergyHatches.size() > 1) return false;
-            if (mExoticEnergyHatches.get(0)
-                .getConnectionType() == GT_MetaTileEntity_Hatch.ConnectionType.LASER) return false;
             if (mExoticEnergyHatches.get(0)
                 .maxWorkingAmperesIn() > 64) return false;
         }
@@ -387,21 +405,19 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     private void findMagnet() {
         magnetTier = null;
-        if (mMagHatches.size() == 1) {
-            GT_MetaTileEntity_MagHatch aBus = mMagHatches.get(0);
-            if (aBus != null) {
-                ItemStack aSlot = aBus.getStackInSlot(0);
-                if (aSlot != null) {
-                    switch (aSlot.getItemDamage()) {
-                        case 32345 -> magnetTier = MagnetTiers.Iron;
-                        case 32346 -> magnetTier = MagnetTiers.Steel;
-                        case 32347 -> magnetTier = MagnetTiers.Neodymium;
-                        case 32348 -> magnetTier = MagnetTiers.Samarium;
-                        case 32349 -> magnetTier = MagnetTiers.Tengam;
-                        default -> magnetTier = null;
-                    }
+        if (mMagHatch != null) {
+            ItemStack aSlot = mMagHatch.getStackInSlot(0);
+            if (aSlot != null) {
+                switch (aSlot.getItemDamage()) {
+                    case 32345 -> magnetTier = MagnetTiers.Iron;
+                    case 32346 -> magnetTier = MagnetTiers.Steel;
+                    case 32347 -> magnetTier = MagnetTiers.Neodymium;
+                    case 32348 -> magnetTier = MagnetTiers.Samarium;
+                    case 32349 -> magnetTier = MagnetTiers.Tengam;
+                    default -> magnetTier = null;
                 }
             }
+
         }
     }
 
@@ -414,10 +430,12 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     private boolean addMagHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_MagHatch aMagHatch) {
+            if (aMetaTileEntity instanceof GT_MetaTileEntity_MagHatch) {
                 ((GT_MetaTileEntity_MagHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                mMagHatches.add(aMagHatch);
-                return true;
+                if (mMagHatch == null) {
+                    mMagHatch = (GT_MetaTileEntity_MagHatch) aMetaTileEntity;
+                    return true;
+                }
             }
         }
         return false;

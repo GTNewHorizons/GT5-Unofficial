@@ -437,6 +437,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialElectromagneticSeparator.MagnetTiers;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -3097,59 +3098,31 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             addItem(
                 Electromagnet_Iron.ID,
                 "Iron Electromagnet",
-                "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
-                    + "100% Speed/n "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "80% EU Cost/n "
-                    + EnumChatFormatting.AQUA
-                    + "8 Parallels",
+                MagnetTiers.buildMagnetTooltip(MagnetTiers.Iron),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 8)));
         ItemList.Electromagnet_Steel.set(
             addItem(
                 Electromagnet_Steel.ID,
                 "Steel Electromagnet",
-                "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
-                    + "125% Speed/n "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "75% EU Cost/n "
-                    + EnumChatFormatting.AQUA
-                    + "24 Parallels",
+                MagnetTiers.buildMagnetTooltip(MagnetTiers.Steel),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 16)));
         ItemList.Electromagnet_Neodymium.set(
             addItem(
                 Electromagnet_Neodymium.ID,
                 "Neodymium Electromagnet",
-                "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
-                    + "150% Speed/n "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "70% EU Cost/n "
-                    + EnumChatFormatting.AQUA
-                    + "48 Parallels",
+                MagnetTiers.buildMagnetTooltip(MagnetTiers.Neodymium),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 24)));
         ItemList.Electromagnet_Samarium.set(
             addItem(
                 Electromagnet_Samarium.ID,
                 EnumChatFormatting.YELLOW + "Samarium Electromagnet",
-                "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
-                    + "200% Speed/n "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "60% EU Cost/n "
-                    + EnumChatFormatting.AQUA
-                    + "96 Parallels",
+                MagnetTiers.buildMagnetTooltip(MagnetTiers.Samarium),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 32)));
         ItemList.Electromagnet_Tengam.set(
             addItem(
                 Electromagnet_Tengam.ID,
                 EnumChatFormatting.GREEN + "Tengam Electromagnet",
-                "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
-                    + "250% Speed/n "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "50% EU Cost/n "
-                    + EnumChatFormatting.AQUA
-                    + "256 Parallels/n "
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.GREEN
-                    + "Can Use Multiamp Hatches",
+                MagnetTiers.buildMagnetTooltip(MagnetTiers.Tengam),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 40)));
         removeRecipes();
         setBurnValues();
