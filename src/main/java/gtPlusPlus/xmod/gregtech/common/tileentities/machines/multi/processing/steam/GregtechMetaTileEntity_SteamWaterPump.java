@@ -73,9 +73,9 @@ public class GregtechMetaTileEntity_SteamWaterPump
 
     private static IStructureDefinition<GregtechMetaTileEntity_SteamWaterPump> STRUCTURE_DEFINITION = null;
 
-    private static final int horizontalOffSet = 1;
-    private static final int verticalOffSet = 2;
-    private static final int depthOffSet = 0;
+    private static final int HORIZONTAL_OFF_SET = 1;
+    private static final int VERTICAL_OFF_SET = 2;
+    private static final int DEPTH_OFF_SET = 0;
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
 
@@ -153,9 +153,9 @@ public class GregtechMetaTileEntity_SteamWaterPump
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         if (stackSize.stackSize == 1) {
-            this.buildPiece(tier1, stackSize, hintsOnly, horizontalOffSet, verticalOffSet, depthOffSet);
+            this.buildPiece(tier1, stackSize, hintsOnly, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
         } else {
-            this.buildPiece(tier2, stackSize, hintsOnly, horizontalOffSet, verticalOffSet, depthOffSet);
+            this.buildPiece(tier2, stackSize, hintsOnly, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
         }
     }
 
@@ -168,9 +168,9 @@ public class GregtechMetaTileEntity_SteamWaterPump
             built += this.survivialBuildPiece(
                 tier1,
                 stackSize,
-                horizontalOffSet,
-                verticalOffSet,
-                depthOffSet,
+                HORIZONTAL_OFF_SET,
+                VERTICAL_OFF_SET,
+                DEPTH_OFF_SET,
                 elementBudget,
                 env,
                 false,
@@ -180,9 +180,9 @@ public class GregtechMetaTileEntity_SteamWaterPump
             built += this.survivialBuildPiece(
                 tier2,
                 stackSize,
-                horizontalOffSet,
-                verticalOffSet,
-                depthOffSet,
+                HORIZONTAL_OFF_SET,
+                VERTICAL_OFF_SET,
+                DEPTH_OFF_SET,
                 elementBudget,
                 env,
                 false,
@@ -193,8 +193,8 @@ public class GregtechMetaTileEntity_SteamWaterPump
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (mSetTier >= 2) {
-            if (!checkPiece(tier2, horizontalOffSet, verticalOffSet, depthOffSet)) return false;
-        } else if (!checkPiece(tier1, horizontalOffSet, verticalOffSet, depthOffSet)) return false;
+            if (!checkPiece(tier2, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        } else if (!checkPiece(tier1, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
 
         if (this.mOutputHatches.size() != 1 || this.mSteamInputFluids.size() != 1) return false;
 
