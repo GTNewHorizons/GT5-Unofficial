@@ -1,7 +1,9 @@
 package gtPlusPlus.core.config;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gtPlusPlus.core.lib.CORE.*;
+import static gtPlusPlus.core.lib.CORE.EVERGLADES_ID;
+import static gtPlusPlus.core.lib.CORE.EVERGLADESBIOME_ID;
+import static gtPlusPlus.core.lib.CORE.turbineCutoffBase;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.*;
 
 import java.io.File;
