@@ -457,7 +457,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiCanner;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.GT_Mod;
@@ -563,6 +562,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbin
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_HPSteam;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Plasma;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Steam;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiCanner;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiFurnace;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_NanoForge;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilCracker;
@@ -1039,10 +1039,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 .getStackForm(1));
 
         ItemList.Machine_Multi_Canner.set(
-            new GT_MetaTileEntity_MultiCanner(
-                MULTI_CANNER_CONTROLLER.ID,
-                "multimachine.canner",
-                "Super Canner").getStackForm(1));
+            new GT_MetaTileEntity_MultiCanner(MULTI_CANNER_CONTROLLER.ID, "multimachine.canner", "TurboCan Pro")
+                .getStackForm(1));
     }
 
     private static void registerSteamMachines() {

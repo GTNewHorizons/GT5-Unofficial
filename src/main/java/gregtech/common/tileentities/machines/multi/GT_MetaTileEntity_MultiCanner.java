@@ -3,17 +3,18 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CANNER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CANNER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CANNER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CANNER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.common.blocks.GT_Block_Casings2;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -34,21 +35,20 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-
-import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import gregtech.common.blocks.GT_Block_Casings2;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_MultiCanner
-    extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_MultiCanner>
-    implements ISurvivalConstructable {
+    extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_MultiCanner> implements ISurvivalConstructable {
 
     private boolean fluidMode = false;
 
@@ -58,25 +58,25 @@ public class GT_MetaTileEntity_MultiCanner
         .addShape(
             STRUCTURE_PIECE_MAIN,
             (transpose(
-                new String[][]{
-                    {"  AAA  "," AAAAA ","AAAAAAA","AAAAAAA","AAAAAAA"," AAAAA ","  AAA  "},
-                    {"       ","  B B  "," BAAAB ","  A A  "," BAAAB ","  B B  ","       "},
-                    {"       ","  B B  "," BA~AB ","  A A  "," BAAAB ","  B B  ","       "},
-                    {"       ","  B B  "," BAAAB ","  A A  "," BAAAB ","  B B  ","       "},
-                    {"  AAA  "," AAAAA ","AAAAAAA","AAAAAAA","AAAAAAA"," AAAAA ","  AAA  "}})))
-        .addElement('A', buildHatchAdder(GT_MetaTileEntity_MultiCanner.class)
-            .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
-            .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
-            .dot(1)
-            .buildAndChain(
-                onElementPass(
-                    GT_MetaTileEntity_MultiCanner::onCasingAdded,
-                    ofBlock(GregTech_API.sBlockCasings2, 0))))
+                new String[][] { { "  AAA  ", " AAAAA ", "AAAAAAA", "AAAAAAA", "AAAAAAA", " AAAAA ", "  AAA  " },
+                    { "       ", "  B B  ", " BAAAB ", "  A A  ", " BAAAB ", "  B B  ", "       " },
+                    { "       ", "  B B  ", " BA~AB ", "  A A  ", " BAAAB ", "  B B  ", "       " },
+                    { "       ", "  B B  ", " BAAAB ", "  A A  ", " BAAAB ", "  B B  ", "       " },
+                    { "  AAA  ", " AAAAA ", "AAAAAAA", "AAAAAAA", "AAAAAAA", " AAAAA ", "  AAA  " } })))
+        .addElement(
+            'A',
+            buildHatchAdder(GT_MetaTileEntity_MultiCanner.class)
+                .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
+                .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                .dot(1)
+                .buildAndChain(
+                    onElementPass(
+                        GT_MetaTileEntity_MultiCanner::onCasingAdded,
+                        ofBlock(GregTech_API.sBlockCasings2, 0))))
         .addElement('B', ofBlock(GregTech_API.sBlockCasings2, 13))
         .build();
 
-    public GT_MetaTileEntity_MultiCanner(final int aID, final String aName,
-                                         final String aNameRegional) {
+    public GT_MetaTileEntity_MultiCanner(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
@@ -101,7 +101,7 @@ public class GT_MetaTileEntity_MultiCanner
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-                                 int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
@@ -109,11 +109,11 @@ public class GT_MetaTileEntity_MultiCanner
                     Textures.BlockIcons
                         .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_CANNER_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_CANNER_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -122,11 +122,11 @@ public class GT_MetaTileEntity_MultiCanner
                     Textures.BlockIcons
                         .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_CANNER)
+                        .addIcon(OVERLAY_FRONT_MULTI_CANNER)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_CANNER_GLOW)
+                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -142,7 +142,7 @@ public class GT_MetaTileEntity_MultiCanner
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Canner/Fluid Canner")
-            .addInfo("Controller Block for the Super Canning Machine")
+            .addInfo("Controller Block for the TurboCan Pro")
             .addInfo("Use screwdriver to switch mode")
             .addInfo("200% the speed of single block machines of the same voltage")
             .addInfo("Gains 8 parallels per voltage tier")
@@ -194,8 +194,7 @@ public class GT_MetaTileEntity_MultiCanner
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic()
-            .setSpeedBonus(1F / 2F)
+        return new ProcessingLogic().setSpeedBonus(1F / 2F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
@@ -238,21 +237,20 @@ public class GT_MetaTileEntity_MultiCanner
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-                                int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setBoolean("mode", fluidMode);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-                             IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
             StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + StatCollector.translateToLocal(
-                "GT5U.MULTI_CANNER.mode." + (tag.getBoolean("mode") ? 1 : 0))
+                + StatCollector.translateToLocal("GT5U.MULTI_CANNER.mode." + (tag.getBoolean("mode") ? 1 : 0))
                 + EnumChatFormatting.RESET);
     }
 
