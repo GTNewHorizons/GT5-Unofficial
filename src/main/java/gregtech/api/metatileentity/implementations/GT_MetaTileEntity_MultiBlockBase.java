@@ -21,6 +21,7 @@ import java.util.function.IntConsumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -127,6 +128,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public String mNEI;
     public int damageFactorLow = 5;
     public float damageFactorHigh = 0.6f;
+    public int machineMode = 0;
+    public List<UITexture> machineModeIcons = new ArrayList<UITexture>();
 
     public boolean mLockedToSingleRecipe = getDefaultRecipeLockingMode();
     protected boolean inputSeparation = getDefaultInputSeparationMode();
@@ -2212,6 +2215,42 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return new Pos2d(26, 91);
     }
 
+    public void setMachineModeIcons() {
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return false;
+    }
+
+    @Override
+    public int getMachineMode() {
+        return machineMode;
+    }
+
+    @Override
+    public UITexture getMachineModeIcon(int index) {
+        return machineModeIcons.get(index);
+    }
+
+    @Override
+    public void setMachineMode(int index) {
+        machineMode = index;
+    }
+
+    @Override
+    public int nextMachineMode() {
+        if (machineMode == 0) return 1;
+        else return 0;
+    }
+
+    @Override
+    public Pos2d getMachineModeSwitchButtonPos() {
+        return new Pos2d(80, 91);
+    }
+
     @Override
     public boolean supportsBatchMode() {
         return false;
@@ -2300,9 +2339,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         drawTexts(screenElements, inventorySlot);
         builder.widget(screenElements);
 
+        setMachineModeIcons();
         builder.widget(createPowerSwitchButton(builder))
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
+            .widget(createModeSwitchButton(builder))
             .widget(createBatchModeButton(builder))
             .widget(createLockToSingleRecipeButton(builder));
     }
