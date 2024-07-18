@@ -586,26 +586,6 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.IronMagnetic, 8L),
-                ItemList.IV_Coil.get(8L),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorIV, 16L))
-            .itemOutputs(ItemList.Electromagnet_Iron.get(1))
-            .fluidInputs(Materials.Cobalt.getMolten(1152))
-            .duration(30 * SECONDS)
-            .eut(TierEU.IV)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 6L),
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1L))
-            .itemOutputs(ItemList.Casing_Electromagnetic_Separator.get(1))
-            .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Steel, 2L),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 6L),
                 GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Steel, 2L),
