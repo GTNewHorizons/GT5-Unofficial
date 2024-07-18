@@ -123,112 +123,111 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
 
     private static final String[][] structure = transpose(
         new String[][] {
-            { "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ccccccc~ccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc" } });
-    private static final String[][] structure_tier2 = transpose(
-        new String[][] {
-            { "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc" },
-            { "ddddddddddddddd", "d             d", "d             d", "d             d", "d             d",
-                "d             d", "d             d", "d             d", "d             d", "d             d",
-                "d             d", "d             d", "d             d", "d             d", "ddddddddddddddd" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ddddddddddddddd", "d             d", "d             d", "d             d", "d             d",
-                "d             d", "d             d", "d             d", "d             d", "d             d",
-                "d             d", "d             d", "d             d", "d             d", "ddddddddddddddd" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ddddddddddddddd", "d             d", "d             d", "d             d", "d             d",
-                "d             d", "d             d", "d             d", "d             d", "d             d",
-                "d             d", "d             d", "d             d", "d             d", "ddddddddddddddd" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ccccccc~ccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ddddddddddddddd", "d             d", "d             d", "d             d", "d             d",
-                "d             d", "d             d", "d             d", "d             d", "d             d",
-                "d             d", "d             d", "d             d", "d             d", "ddddddddddddddd" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ddddddddddddddd", "d             d", "d             d", "d             d", "d             d",
-                "d             d", "d             d", "d             d", "d             d", "d             d",
-                "d             d", "d             d", "d             d", "d             d", "ddddddddddddddd" },
-            { "ccccccccccccccc", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "c             c",
-                "c             c", "c             c", "c             c", "c             c", "ccccccccccccccc" },
-            { "ddddddddddddddd", "d             d", "d             d", "d             d", "d             d",
-                "d             d", "d             d", "d             d", "d             d", "d             d",
-                "d             d", "d             d", "d             d", "d             d", "ddddddddddddddd" },
-            { "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc",
-                "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc" } });
+            { "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA",
+                "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA",
+                "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA" },
+            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
+            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
+            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
+            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
+            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
+            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
+            { "AAAAAAA~AAAAAAA", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
+            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
+            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
+            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
+            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
+            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
+            { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "A             A",
+                "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
+            { "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA",
+                "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA",
+                "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA" } });
+    private static final String[][] structure_tier2 = new String[][] {
+        { "AAAAAAAAAAAAAAA", "ABBBBBBBBBBBBBA", "ABAAAAAAAAAAABA", "ABABBBBBBBBBABA", "ABABAAAAAAABABA",
+            "ABABABBBBBABABA", "ABABABAAABABABA", "ABABABA~ABABABA", "ABABABAAABABABA", "ABABABBBBBABABA",
+            "ABABAAAAAAABABA", "ABABBBBBBBBBABA", "ABAAAAAAAAAAABA", "ABBBBBBBBBBBBBA", "AAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAA", "B             B", "B             B", "B             B", "B             B",
+            "B             B", "B             B", "B             B", "B             B", "B             B",
+            "B             B", "B             B", "B             B", "B             B", "AAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "A             A", "A             A",
+            "A             A", "A             A", "A             A", "A             A", "A             A",
+            "A             A", "A             A", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "B             B",
+            "B             B", "B             B", "B             B", "B             B", "B             B",
+            "B             B", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A",
+            "A             A", "A             A", "A             A", "A             A", "A             A",
+            "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A",
+            "B             B", "B             B", "B             B", "B             B", "B             B",
+            "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A",
+            "B             B", "A             A", "A             A", "A             A", "B             B",
+            "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A",
+            "B             B", "A             A", "A             A", "A             A", "B             B",
+            "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A",
+            "B             B", "A             A", "A             A", "A             A", "B             B",
+            "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A",
+            "B             B", "B             B", "B             B", "B             B", "B             B",
+            "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "A             A",
+            "A             A", "A             A", "A             A", "A             A", "A             A",
+            "A             A", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "B             B", "B             B",
+            "B             B", "B             B", "B             B", "B             B", "B             B",
+            "B             B", "B             B", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAA", "B             B", "A             A", "A             A", "A             A",
+            "A             A", "A             A", "A             A", "A             A", "A             A",
+            "A             A", "A             A", "A             A", "B             B", "AAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAA", "B             B", "B             B", "B             B", "B             B",
+            "B             B", "B             B", "B             B", "B             B", "B             B",
+            "B             B", "B             B", "B             B", "B             B", "AAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAA", "ABBBBBBBBBBBBBA", "ABAAAAAAAAAAABA", "ABABBBBBBBBBABA", "ABABAAAAAAABABA",
+            "ABABABBBBBABABA", "ABABABAAABABABA", "ABABABAAABABABA", "ABABABAAABABABA", "ABABABBBBBABABA",
+            "ABABAAAAAAABABA", "ABABBBBBBBBBABA", "ABAAAAAAAAAAABA", "ABBBBBBBBBBBBBA", "AAAAAAAAAAAAAAA" } };
 
     private static final IStructureDefinition<GT_TileEntity_MegaVacuumFreezer> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_TileEntity_MegaVacuumFreezer>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
         .addShape(STRUCTURE_PIECE_MAIN_T2, structure_tier2)
         .addElement(
-            'c',
+            'A',
             buildHatchAdder(GT_TileEntity_MegaVacuumFreezer.class)
                 .atLeast(Energy.or(ExoticEnergy), InputHatch, InputBus, OutputHatch, OutputBus, Maintenance)
                 .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(onElementPass(x -> x.mCasingFrostProof++, ofBlock(GregTech_API.sBlockCasings2, 1))))
         // Infinity Cooled Casing
-        .addElement('d', ofBlock(GregTech_API.sBlockCasings8, 14))
+        .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 14))
         .build();
 
     @Override
@@ -237,16 +236,59 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
         tt.addMachineType("Vacuum Freezer")
             .addInfo("Controller Block for the Mega Vacuum Freezer")
             .addInfo("Cools hot ingots and cells")
-            // TODO: Add info about subspace cooling
+            .addSeparator()
+            .addInfo("Upgrade to Tier 2 to unlock " + EnumChatFormatting.LIGHT_PURPLE + "Subspace Cooling.")
+            .addInfo(
+                "To activate " + EnumChatFormatting.LIGHT_PURPLE
+                    + "Subspace Cooling "
+                    + EnumChatFormatting.GRAY
+                    + "supply a coolant while running recipes.")
+            .addInfo(
+                EnumChatFormatting.RED + "7500 L/s "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + "Molten SpaceTime"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.RED
+                    + "1"
+                    + EnumChatFormatting.GRAY
+                    + " perfect overclock.")
+            .addInfo(
+                EnumChatFormatting.RED + "5000 L/s "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + "Spatially Enlarged Fluid"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.RED
+                    + "2"
+                    + EnumChatFormatting.GRAY
+                    + " perfect overclocks.")
+            .addInfo(
+                EnumChatFormatting.RED + "2500 L/s "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + "Molten Eternity"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.RED
+                    + "3"
+                    + EnumChatFormatting.GRAY
+                    + " perfect overclocks.")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + "Reinforcing the structure allows the injection of exotic coolants,")
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE
+                    + "enabling the capture of heat energy in miniature tears in spacetime,")
+            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "massively increasing the efficiency of the cooling process.")
             .addSeparator()
             .beginStructureBlock(15, 15, 15, true)
             .addController("Front center")
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addInputHatch("Any casing", 1)
-            .addOutputHatch("Any casing", 1)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
+            .addEnergyHatch("Any Frost Proof Machine Casing", 1)
+            .addMaintenanceHatch("Any Frost Proof Machine Casing", 1)
+            .addInputHatch("Any Frost Proof Machine Casing", 1)
+            .addOutputHatch("Any Frost Proof Machine Casing", 1)
+            .addInputBus("Any Frost Proof Machine Casing", 1)
+            .addOutputBus("Any Frost Proof Machine Casing", 1)
             .addStructureInfo(
                 EnumChatFormatting.BLUE + "Base Multi (Tier "
                     + EnumChatFormatting.DARK_PURPLE
@@ -269,10 +311,16 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
                     + 1
                     + EnumChatFormatting.BLUE
                     + "):")
+            .addCasingInfoMinColored(
+                "Frost Proof Machine Casing",
+                EnumChatFormatting.GRAY,
+                800,
+                EnumChatFormatting.GOLD,
+                false)
             .addCasingInfoExactlyColored(
                 "Infinity Cooled Casing",
                 EnumChatFormatting.GRAY,
-                336,
+                384,
                 EnumChatFormatting.GOLD,
                 false)
             .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
