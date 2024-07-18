@@ -144,11 +144,11 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
 
     default ButtonWidget createModeSwitchButton(IWidgetBuilder<?> builder) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (supportsMachineModeSwitch()) {
-                    onMachineModeSwitchClick();
-                    setMachineMode(nextMachineMode());
-                }
-            })
+            if (supportsMachineModeSwitch()) {
+                onMachineModeSwitchClick();
+                setMachineMode(nextMachineMode());
+            }
+        })
             .setPlayClickSound(supportsInputSeparation())
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();

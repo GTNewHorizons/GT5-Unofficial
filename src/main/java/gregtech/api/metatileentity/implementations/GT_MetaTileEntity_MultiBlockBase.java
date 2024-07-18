@@ -21,7 +21,6 @@ import java.util.function.IntConsumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -45,6 +44,7 @@ import org.lwjgl.input.Keyboard;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -2215,11 +2215,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return new Pos2d(26, 91);
     }
 
+    /**
+     * Creates the icon list for this machine. Override this and add the overlays to machineModeIcons in order.
+     */
     public void setMachineModeIcons() {
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
     }
 
+    /**
+     * Override this if you are a multi-machine and want a GUI button. You will also want to override
+     * setMachineModeIcons().
+     * Override nextMachineMode() if you have more than 2 modes.
+     */
     @Override
     public boolean supportsMachineModeSwitch() {
         return false;
@@ -2240,6 +2248,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         machineMode = index;
     }
 
+    /**
+     * Determines which machine mode should come next if user changes mode.
+     */
     @Override
     public int nextMachineMode() {
         if (machineMode == 0) return 1;
