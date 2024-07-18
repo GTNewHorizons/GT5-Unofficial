@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import gregtech.api.interfaces.tileentity.IMachineMode;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialMultiMachine;
 import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;

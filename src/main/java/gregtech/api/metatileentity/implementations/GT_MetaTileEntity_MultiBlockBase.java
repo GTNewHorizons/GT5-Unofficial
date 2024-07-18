@@ -128,7 +128,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public String mNEI;
     public int damageFactorLow = 5;
     public float damageFactorHigh = 0.6f;
-    public int machineMode = 0;
+    public int machineModeID = 0;
     public List<UITexture> machineModeIcons = new ArrayList<UITexture>();
 
     public boolean mLockedToSingleRecipe = getDefaultRecipeLockingMode();
@@ -256,6 +256,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         aNBT.setInteger("mEfficiency", mEfficiency);
         aNBT.setInteger("mPollution", mPollution);
         aNBT.setInteger("mRuntime", mRuntime);
+        aNBT.setInteger("machineMode", machineModeID);
         if (supportsSingleRecipeLocking()) {
             aNBT.setBoolean("mLockedToSingleRecipe", mLockedToSingleRecipe);
             if (mLockedToSingleRecipe && mSingleRecipeCheck != null)
@@ -309,6 +310,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
         batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
         inputSeparation = aNBT.getBoolean(INPUT_SEPARATION_NBT_KEY);
+        if (aNBT.hasKey("machineMode")) {
+            //backward compatibility
+            machineModeID = aNBT.getInteger("machineMode");
+        }
         if (aNBT.hasKey(VOIDING_MODE_NBT_KEY, Constants.NBT.TAG_STRING)) {
             voidingMode = VoidingMode.fromName(aNBT.getString(VOIDING_MODE_NBT_KEY));
         } else if (aNBT.hasKey(VOID_EXCESS_NBT_KEY)) {
@@ -2235,7 +2240,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     @Override
     public int getMachineMode() {
-        return machineMode;
+        return machineModeID;
     }
 
     @Override
@@ -2245,7 +2250,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     @Override
     public void setMachineMode(int index) {
-        machineMode = index;
+        machineModeID = index;
     }
 
     /**
@@ -2253,7 +2258,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
      */
     @Override
     public int nextMachineMode() {
-        if (machineMode == 0) return 1;
+        if (machineModeID == 0) return 1;
         else return 0;
     }
 
