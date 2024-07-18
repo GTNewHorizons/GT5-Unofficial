@@ -230,9 +230,10 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "ps")
             .addSeparator()
-            .beginStructureBlock(3, 3, 3, true)
+            .beginStructureBlock(11, 8, 9, false)
             .addController("Front Center")
             .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
+            .addOtherStructurePart("Any glass", "x12")
             .addOtherStructurePart("Magnetic Neodymium Frame Box", "x40")
             .addOtherStructurePart("Magnetic Samarium Frame Box", "x45")
             .addOtherStructurePart("Electromagnet Housing", "x1 Only, Any Casing")
