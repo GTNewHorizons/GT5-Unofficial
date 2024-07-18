@@ -437,7 +437,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialElectromagneticSeparator.MagnetTiers;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -512,6 +511,7 @@ import gregtech.common.items.behaviors.Behaviour_Sonictron;
 import gregtech.common.items.behaviors.Behaviour_Spray_Color;
 import gregtech.common.items.behaviors.Behaviour_Spray_Color_Remover;
 import gregtech.common.items.behaviors.Behaviour_WrittenBook;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialElectromagneticSeparator.MagnetTiers;
 
 public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
