@@ -149,16 +149,15 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
                 setMachineMode(nextMachineMode());
             }
         })
-            .setPlayClickSound(supportsInputSeparation())
+            .setPlayClickSound(supportsMachineModeSwitch())
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
                 if (supportsMachineModeSwitch()) {
-                    ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(GT_UITextures.BUTTON_STANDARD);
                     ret.add(getMachineModeIcon(getMachineMode()));
                 } else return null;
                 return ret.toArray(new IDrawable[0]);
             })
-
             .attachSyncer(new FakeSyncWidget.IntegerSyncer(this::getMachineMode, this::setMachineMode), builder)
             .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.mode_switch"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
