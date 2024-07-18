@@ -262,13 +262,16 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
      */
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
+        depth = 0;
+
         // return early if no input busses are present, the first bus is invalid or the TE is not on a space station
         if (mInputBusses.isEmpty() || !mInputBusses.get(0).isValid()) {
-            resetMachine(true);
+            resetMachine();
             return SimpleCheckRecipeResult.ofFailure("no_mining_pipe");
         }
+
         if (!(this.getBaseMetaTileEntity().getWorld().provider instanceof IOrbitDimension provider)) {
-            resetMachine(true);
+            resetMachine();
             return SimpleCheckRecipeResult.ofFailure("no_space_station");
         }
 
@@ -276,7 +279,7 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
 
         // return early if there are no recipes for the planet the station is orbiting
         if (planetRecipes == null) {
-            resetMachine(true);
+            resetMachine();
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
@@ -284,6 +287,20 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
         int numPipes = 0;
 
         // count mining pipes, get depth
+        for (int i = 0; i < mInventory.length; i++) {
+            ItemStack stack = mInventory[i];
+            if (stack == null) {
+                continue;
+            }
+            if (stack.getItem() == ItemList.Circuit_Integrated.getItem()) {
+                depth = stack.getItemDamage();
+                continue;
+            }
+            if (Objects.equals(stack.getItem(), GT_ModHandler.getIC2Item("miningPipe", 0).getItem())) {
+                numPipes += stack.stackSize;
+            }
+        }
+
         for (int i = 0; i < bus.getBaseMetaTileEntity().getSizeInventory(); i++) {
             ItemStack stack = bus.getBaseMetaTileEntity().getStackInSlot(i);
             if (stack == null) {
@@ -298,9 +315,14 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
             }
         }
 
+        if (depth == 0) {
+            resetMachine();
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
         // return early if not enough mining pipes are in the input bus
-        if (depth == 0 || numPipes < depth * 64) {
-            resetMachine(false);
+        if (numPipes < depth * 64) {
+            resetMachine();
             return SimpleCheckRecipeResult.ofFailure("no_mining_pipe");
         }
 
@@ -308,9 +330,10 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
 
         // return early if invalid depth
         if (recipeFluid == null) {
-            resetMachine(true);
+            resetMachine();
             return SimpleCheckRecipeResult.ofFailure("invalid_depth");
         }
+
         if (!canOutputAll(new FluidStack[] { recipeFluid })) {
             return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
         }
@@ -323,10 +346,12 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
         // apply recipe
         if (ocLevel < 0) {
             // no underclocking allowed
-            resetMachine(false);
+            resetMachine();
             return CheckRecipeResultRegistry.insufficientPower(recipeEUt);
         }
+
         fluid = recipeFluid.copy();
+
         if (ocLevel == 0) {
             mEUt = -recipeEUt;
         } else {
@@ -455,10 +480,7 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
      *
      * @param resetDepth should depth be reset too?
      */
-    private void resetMachine(boolean resetDepth) {
-        if (resetDepth) {
-            depth = 0;
-        }
+    private void resetMachine() {
         mEUt = 0;
         mEfficiency = 0;
     }
