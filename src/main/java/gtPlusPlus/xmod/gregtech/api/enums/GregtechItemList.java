@@ -408,6 +408,9 @@ public enum GregtechItemList implements GregtechItemContainer {
     Casing_Vacuum_Furnace,
     Controller_Vacuum_Furnace,
 
+    // Water pump
+    WaterPump,
+
     // Large Rocket Engine
     Casing_RocketEngine,
     Controller_RocketEngine,

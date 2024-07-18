@@ -649,6 +649,8 @@ GT5U.interface.coverTabs.east=East
 GT5U.steam_variant.bronze=Bronze
 GT5U.steam_variant.steel=Steel
 
+GT5U.biomes.humidity=Humidity:
+
 # NEI options
 nei.options.tools.dump.gt5u=GT5u
 nei.options.tools.dump.gt5u.metatileentity=MetaTileEntity
