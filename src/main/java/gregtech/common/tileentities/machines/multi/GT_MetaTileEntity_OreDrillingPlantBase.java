@@ -16,7 +16,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import joptsimple.internal.Objects;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -471,7 +470,6 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     }
 
     private void updateVeinNameFromVP(@NotNull ChunkCoordIntPair coords) {
-        Objects.ensureNotNull(coords);
         if (VisualProspecting.isModLoaded()) {
             OreVeinPosition oreVein = ServerCache.instance.getOreVein(
                 getBaseMetaTileEntity().getWorld().provider.dimensionId,
