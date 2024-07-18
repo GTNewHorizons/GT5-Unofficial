@@ -113,7 +113,6 @@ public class ConfigHandler {
             GregTech.ID,
             true,
             "Electrolyzes things with extra bling factor.");
-        enableMultiblock_WaterPump = config.getBoolean("enableMultiblockWaterPump", GregTech.ID, true, "Water pump.");
         enableMultiblock_IndustrialMacerationStack = config.getBoolean(
             "enableMultiblockIndustrialMacerationStack",
             GregTech.ID,
