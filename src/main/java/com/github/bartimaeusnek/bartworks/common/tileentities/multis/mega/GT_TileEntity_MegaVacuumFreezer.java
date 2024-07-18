@@ -84,7 +84,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
     private int mCasingFrostProof = 0;
     private int mTier = 1;
 
-    public static class SubspaceCoolingFluid {
+    private static class SubspaceCoolingFluid {
 
         public Materials material;
         public int perfectOverclocks;
