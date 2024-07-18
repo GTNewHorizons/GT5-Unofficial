@@ -28,13 +28,18 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -44,15 +49,20 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 
 public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaVacuumFreezer>
@@ -76,12 +86,34 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
 
     public static class SubspaceCoolingFluid {
 
-        public Materials material = null;
-        public int perfectOverclocks = 0;
-        public long amount = 0;
+        public Materials material;
+        public int perfectOverclocks;
+        // Consumption per second of runtime
+        public long amount;
+
+        public SubspaceCoolingFluid(Materials material, int perfectOverclocks, long amount) {
+            this.material = material;
+            this.perfectOverclocks = perfectOverclocks;
+            this.amount = amount;
+        }
+
+        public FluidStack getStack() {
+            FluidStack stack = material.getFluid(amount);
+            // FUCK THIS FUCK THIS FUCK THIS
+            if (stack == null) {
+                return material.getMolten(amount);
+            }
+            return stack;
+        }
     }
 
-    private boolean subspaceCoolingActive = false;
+    public static final ArrayList<SubspaceCoolingFluid> SUBSPACE_COOLING_FLUIDS = new ArrayList<>(
+        Arrays.asList(
+            new SubspaceCoolingFluid(MaterialsUEVplus.SpaceTime, 1, 7500),
+            new SubspaceCoolingFluid(MaterialsUEVplus.Space, 2, 5000),
+            new SubspaceCoolingFluid(MaterialsUEVplus.Eternity, 3, 2500)));
+
+    private SubspaceCoolingFluid currentCoolingFluid = null;
 
     private static final int CASING_INDEX = 17;
     private static final int CASING_INDEX_T2 = ((GT_Block_Casings_Abstract) GregTech_API.sBlockCasings8)
@@ -195,12 +227,8 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
                 .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(onElementPass(x -> x.mCasingFrostProof++, ofBlock(GregTech_API.sBlockCasings2, 1))))
-        .addElement(
-            'd',
-            buildHatchAdder(GT_TileEntity_MegaVacuumFreezer.class).casingIndex(CASING_INDEX_T2)
-                .dot(2)
-                // Tier 2 uses infinity cooled casing
-                .buildAndChain(ofBlock(GregTech_API.sBlockCasings8, 14)))
+        // Infinity Cooled Casing
+        .addElement('d', ofBlock(GregTech_API.sBlockCasings8, 14))
         .build();
 
     @Override
@@ -213,13 +241,40 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
             .addSeparator()
             .beginStructureBlock(15, 15, 15, true)
             .addController("Front center")
-            .addCasingInfoMin("Frost Proof Machine Casing", 800, false)
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
             .addInputHatch("Any casing", 1)
             .addOutputHatch("Any casing", 1)
             .addInputBus("Any casing", 1)
             .addOutputBus("Any casing", 1)
+            .addStructureInfo(
+                EnumChatFormatting.BLUE + "Base Multi (Tier "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + 1
+                    + EnumChatFormatting.BLUE
+                    + "):")
+            .addCasingInfoMinColored(
+                "Frost Proof Machine Casing",
+                EnumChatFormatting.GRAY,
+                800,
+                EnumChatFormatting.GOLD,
+                false)
+            .addStructureInfo(
+                EnumChatFormatting.BLUE + "Tier "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + 2
+                    + EnumChatFormatting.BLUE
+                    + " (Upgrades from Tier "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + 1
+                    + EnumChatFormatting.BLUE
+                    + "):")
+            .addCasingInfoExactlyColored(
+                "Infinity Cooled Casing",
+                EnumChatFormatting.GRAY,
+                336,
+                EnumChatFormatting.GOLD,
+                false)
             .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
         return tt;
     }
@@ -271,15 +326,11 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
         if (!aNBT.hasKey(BATCH_MODE_NBT_KEY)) {
             this.batchMode = aNBT.getBoolean("mUseMultiparallelMode");
         }
-        if (aNBT.hasKey("subspaceActive")) {
-            this.subspaceCoolingActive = aNBT.getBoolean("subspaceActive");
-        }
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("subspaceActive", subspaceCoolingActive);
     }
 
     @Override
@@ -297,9 +348,61 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
         return false;
     }
 
+    public SubspaceCoolingFluid findSubspaceCoolingFluid() {
+        // Loop over all hatches and find the first match with a valid fluid
+        for (GT_MetaTileEntity_Hatch_Input hatch : mInputHatches) {
+            Optional<SubspaceCoolingFluid> fluid = SUBSPACE_COOLING_FLUIDS.stream()
+                .filter(candidate -> drain(hatch, candidate.getStack(), false))
+                .findFirst();
+            if (fluid.isPresent()) return fluid.get();
+        }
+        return null;
+    }
+
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setMaxParallel(ConfigHandler.megaMachinesMax);
+        return new ProcessingLogic() {
+
+            @Nonnull
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+                // Check if the freezer is T2
+                if (mTier == 1) return super.createOverclockCalculator(recipe);
+
+                // First try to detect the current fluid used for subspace cooling.
+                currentCoolingFluid = findSubspaceCoolingFluid();
+
+                return super.createOverclockCalculator(recipe)
+                    .setMachineHeat(currentCoolingFluid == null ? 0 : currentCoolingFluid.perfectOverclocks * 1800)
+                    .setRecipeHeat(0)
+                    .setHeatOC(true)
+                    .setHeatDiscount(false);
+            }
+        }.setMaxParallel(ConfigHandler.megaMachinesMax);
+    }
+
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.runMachine(aBaseMetaTileEntity, aTick);
+        // Every second while running, consume subspace coolant fluid
+        if (mMaxProgresstime > 0 && aTick % 20 == 0) {
+            // Subspace cooling only allowed for T2 freezer
+            if (mTier == 2) {
+                // Try to drain the coolant fluid if it exists. If failed, stop the machine with an error
+                if (this.currentCoolingFluid != null) {
+                    FluidStack fluid = this.currentCoolingFluid.getStack();
+                    for (GT_MetaTileEntity_Hatch_Input hatch : mInputHatches) {
+                        if (drain(hatch, fluid, false)) {
+                            drain(hatch, fluid, true);
+                            return;
+                        }
+                    }
+                    // If we exited this loop without returning from the function, no matching fluid was found, so
+                    // stop the machine - we ran out of coolant
+                    stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
+                }
+            }
+        }
     }
 
     // -------------- TEC TECH COMPAT ----------------
@@ -357,6 +460,18 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add("Tier: " + mTier);
+        if (mTier == 2) {
+            if (currentCoolingFluid != null) {
+                info.add(
+                    "Subspace cooling: " + EnumChatFormatting.GREEN
+                        + "Active ("
+                        + currentCoolingFluid.getStack()
+                            .getLocalizedName()
+                        + ")");
+            } else {
+                info.add("Subspace cooling: " + EnumChatFormatting.RED + "Inactive");
+            }
+        }
         return info.toArray(new String[] {});
     }
 
