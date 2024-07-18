@@ -146,6 +146,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.HULL_WROUGHT_IRON;
 import static gregtech.api.enums.MetaTileEntityIDs.HULL_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.IMPLOSION_COMPRESSOR_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_APIARY;
+import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_IV;
@@ -224,6 +225,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_ABSORBER_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_CONVERTER_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_CONVERTER_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_CONVERTER_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.MAG_HATCH;
 import static gregtech.api.enums.MetaTileEntityIDs.MAINTENANCE_HATCH;
 import static gregtech.api.enums.MetaTileEntityIDs.MASS_FABRICATOR_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.MASS_FABRICATOR_HV;
@@ -483,6 +485,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Multi
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_QuadrupleHumongous;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MagHatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Wireless_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Wireless_Hatch;
@@ -551,6 +554,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionCompu
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer3;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_HeatExchanger;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ImplosionCompressor;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialElectromagneticSeparator;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IntegratedOreFactory;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Bronze;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Steel;
@@ -602,8 +606,6 @@ import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperChest;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperTank;
 
 // Free IDs left for machines in GT as of 29th of July 2022 - Colen. Please try use them up in order.
-// 358
-// 359
 // 366
 // 367
 // 368
@@ -1037,6 +1039,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Machine_Multi_DroneCentre.set(
             new GT_MetaTileEntity_DroneCentre(Drone_Centre.ID, "multimachine_DroneCentre", "Drone Centre")
                 .getStackForm(1));
+
+        ItemList.Machine_Multi_IndustrialElectromagneticSeparator.set(
+            new GT_MetaTileEntity_IndustrialElectromagneticSeparator(
+                INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR_CONTROLLER.ID,
+                "multimachine.electromagneticseparator",
+                "Magnetic Flux Exhibitor").getStackForm(1));
 
         ItemList.Machine_Multi_Canner.set(
             new GT_MetaTileEntity_MultiCanner(MULTI_CANNER_CONTROLLER.ID, "multimachine.canner", "TurboCan Pro")
@@ -2364,6 +2372,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 CRAFTING_INPUT_SLAVE.ID,
                 "hatch.crafting_input.slave",
                 "Crafting Input Slave").getStackForm(1L));
+    }
+
+    private static void registerMagHatch() {
+        ItemList.Hatch_Electromagnet.set(
+            new GT_MetaTileEntity_MagHatch(MAG_HATCH.ID, "hatch.mag_hatch", "Electromagnet Housing").getStackForm(1L));
     }
 
     private static void registerInputBus() {
@@ -4042,6 +4055,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         registerSuperChest();
         registerLongDistancePipe();
         registerAE2Hatches();
+        registerMagHatch();
         registerInputBus();
         registerOutputBus();
         registerMufflerHatch();
