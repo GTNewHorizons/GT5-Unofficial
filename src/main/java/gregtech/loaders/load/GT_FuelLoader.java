@@ -3,6 +3,12 @@ package gregtech.loaders.load;
 import static gregtech.api.enums.Mods.BloodMagic;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.recipe.RecipeMaps.extremeNaquadahReactorFuels;
+import static gregtech.api.recipe.RecipeMaps.hugeNaquadahReactorFuels;
+import static gregtech.api.recipe.RecipeMaps.largeNaquadahReactorFuels;
+import static gregtech.api.recipe.RecipeMaps.magicFuels;
+import static gregtech.api.recipe.RecipeMaps.smallNaquadahReactorFuels;
+import static gregtech.api.recipe.RecipeMaps.ultraHugeNaquadahReactorFuels;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 
@@ -20,7 +26,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeConstants;
 
 public class GT_FuelLoader implements Runnable {
@@ -39,117 +44,87 @@ public class GT_FuelLoader implements Runnable {
         ItemList.sLeadZincSolution = GT_FluidFactory
             .of("leadzincsolution", "Lead-Zinc solution", null, FluidState.LIQUID, 295);
         ItemList.sRocketFuel = GT_FluidFactory.of("rocket_fuel", "Rocket Fuel", null, FluidState.LIQUID, 295);
-        new GT_Recipe(
-            new ItemStack(Items.lava_bucket),
-            new ItemStack(Blocks.obsidian),
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Electrum, 1L),
-            30,
-            2);
 
-        RecipeMaps.smallNaquadahReactorFuels.addRecipe(
-            true,
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.NaquadahEnriched, 1L) },
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L) },
-            null,
-            null,
-            null,
-            0,
-            0,
-            50000);
-        RecipeMaps.largeNaquadahReactorFuels.addRecipe(
-            true,
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahEnriched, 1L) },
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L) },
-            null,
-            null,
-            null,
-            0,
-            0,
-            250000);
-        RecipeMaps.hugeNaquadahReactorFuels.addRecipe(
-            true,
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahEnriched, 1L) },
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Naquadah, 1L) },
-            null,
-            null,
-            null,
-            0,
-            0,
-            500000);
-        RecipeMaps.extremeNaquadahReactorFuels.addRecipe(
-            true,
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadria, 1L) },
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L) },
-            null,
-            null,
-            null,
-            0,
-            0,
-            250000);
-        RecipeMaps.ultraHugeNaquadahReactorFuels.addRecipe(
-            true,
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Naquadria, 1L) },
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L) },
-            null,
-            null,
-            null,
-            0,
-            0,
-            1000000);
-        RecipeMaps.fluidNaquadahReactorFuels.addRecipe(
-            true,
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NaquadahEnriched, 1L) },
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Naquadah, 1L) },
-            null,
-            null,
-            null,
-            0,
-            0,
-            1400000);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.NaquadahEnriched, 1L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 50_000)
+            .addTo(smallNaquadahReactorFuels);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahEnriched, 1L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 250_000)
+            .addTo(largeNaquadahReactorFuels);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahEnriched, 1L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Naquadah, 1L))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 500_000)
+            .addTo(hugeNaquadahReactorFuels);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadria, 1L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 250_000)
+            .addTo(extremeNaquadahReactorFuels);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Naquadria, 1L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 1_000_000)
+            .addTo(ultraHugeNaquadahReactorFuels);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NaquadahEnriched, 1L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Naquadah, 1L))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 1_400_000)
+            .addTo(RecipeMaps.fluidNaquadahReactorFuels);
 
         // BloodMagic
-        RecipeMaps.magicFuels.addRecipe(
-            true,
-            new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "reinforcedSlate", 1L) },
-            new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "blankSlate", 1L) },
-            null,
-            null,
-            null,
-            0,
-            0,
-            400);
-        RecipeMaps.magicFuels.addRecipe(
-            true,
-            new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "imbuedSlate", 1L) },
-            new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "reinforcedSlate", 1L) },
-            null,
-            null,
-            null,
-            0,
-            0,
-            1000);
-        RecipeMaps.magicFuels.addRecipe(
-            true,
-            new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "demonicSlate", 1L) },
-            new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "imbuedSlate", 1L) },
-            null,
-            null,
-            null,
-            0,
-            0,
-            8000);
-        RecipeMaps.magicFuels.addRecipe(
-            true,
-            new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "bloodMagicBaseItems", 1L, 27) },
-            new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "demonicSlate", 1L) },
-            null,
-            null,
-            null,
-            0,
-            0,
-            20000);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getModItem(BloodMagic.ID, "reinforcedSlate", 1L))
+            .itemOutputs(GT_ModHandler.getModItem(BloodMagic.ID, "blankSlate", 1L))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 400)
+            .addTo(magicFuels);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getModItem(BloodMagic.ID, "imbuedSlate", 1L))
+            .itemOutputs(GT_ModHandler.getModItem(BloodMagic.ID, "reinforcedSlate", 1L))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 1000)
+            .addTo(magicFuels);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getModItem(BloodMagic.ID, "demonicSlate", 1L))
+            .itemOutputs(GT_ModHandler.getModItem(BloodMagic.ID, "imbuedSlate", 1L))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 8000)
+            .addTo(magicFuels);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getModItem(BloodMagic.ID, "bloodMagicBaseItems", 1L, 27))
+            .itemOutputs(GT_ModHandler.getModItem(BloodMagic.ID, "demonicSlate", 1L))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 20000)
+            .addTo(magicFuels);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 4))

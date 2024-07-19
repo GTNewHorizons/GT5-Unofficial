@@ -28,7 +28,7 @@ public class PrinterRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Paper_Punch_Card_Empty.get(1L))
-            .specialItem(ItemList.Tool_DataStick.getWithName(0L, "With Punch Card Data"))
+            .special(ItemList.Tool_DataStick.getWithName(0L, "With Punch Card Data"))
             .itemOutputs(ItemList.Paper_Punch_Card_Encoded.get(1L))
             .fluidInputs(getFluidStack("squidink", 36))
             .duration(5 * SECONDS)
@@ -37,7 +37,7 @@ public class PrinterRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 3L))
-            .specialItem(ItemList.Tool_DataStick.getWithName(0L, "With Scanned Book Data"))
+            .special(ItemList.Tool_DataStick.getWithName(0L, "With Scanned Book Data"))
             .itemOutputs(ItemList.Paper_Printed_Pages.get(1L))
             .fluidInputs(getFluidStack("squidink", 144))
             .duration(20 * SECONDS)
@@ -46,7 +46,7 @@ public class PrinterRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.map, 1, 32767))
-            .specialItem(ItemList.Tool_DataStick.getWithName(0L, "With Scanned Map Data"))
+            .special(ItemList.Tool_DataStick.getWithName(0L, "With Scanned Map Data"))
             .itemOutputs(new ItemStack(Items.filled_map, 1, 0))
             .fluidInputs(getFluidStack("squidink", 144))
             .duration(20 * SECONDS)

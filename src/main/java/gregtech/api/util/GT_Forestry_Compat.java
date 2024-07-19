@@ -1,5 +1,10 @@
 package gregtech.api.util;
 
+import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
@@ -139,28 +144,21 @@ public class GT_Forestry_Compat {
                         .copy();
                     i++;
                 }
-                RecipeMaps.centrifugeRecipes.addRecipe(
-                    true,
-                    new ItemStack[] { tRecipe.getInput() },
-                    tOutputs,
-                    null,
-                    tChances,
-                    null,
-                    null,
-                    128,
-                    5,
-                    0);
-                RecipeMaps.centrifugeNonCellRecipes.addRecipe(
-                    true,
-                    new ItemStack[] { tRecipe.getInput() },
-                    tOutputs,
-                    null,
-                    tChances,
-                    null,
-                    null,
-                    128,
-                    5,
-                    0);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(tRecipe.getInput())
+                    .itemOutputs(tOutputs)
+                    .outputChances(tChances)
+                    .duration(6 * SECONDS + 8 * TICKS)
+                    .eut(5)
+                    .addTo(centrifugeRecipes);
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(tRecipe.getInput())
+                    .itemOutputs(tOutputs)
+                    .outputChances(tChances)
+                    .duration(6 * SECONDS + 8 * TICKS)
+                    .eut(5)
+                    .addTo(centrifugeNonCellRecipes);
             }
         } catch (Throwable e) {
             if (GT_Values.D1) {
@@ -173,17 +171,14 @@ public class GT_Forestry_Compat {
         try {
             for (ISqueezerRecipe tRecipe : RecipeManagers.squeezerManager.recipes()) {
                 if ((tRecipe.getResources().length == 1) && (tRecipe.getFluidOutput() != null)) {
-                    RecipeMaps.fluidExtractionRecipes.addRecipe(
-                        true,
-                        new ItemStack[] { tRecipe.getResources()[0] },
-                        new ItemStack[] { tRecipe.getRemnants() },
-                        null,
-                        new int[] { (int) (tRecipe.getRemnantsChance() * 10000) },
-                        null,
-                        new FluidStack[] { tRecipe.getFluidOutput() },
-                        32,
-                        8,
-                        0);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(tRecipe.getResources()[0])
+                        .itemOutputs(tRecipe.getRemnants())
+                        .outputChances((int) (tRecipe.getRemnantsChance() * 10000))
+                        .fluidOutputs(tRecipe.getFluidOutput())
+                        .duration(1 * SECONDS + 12 * TICKS)
+                        .eut(8)
+                        .addTo(RecipeMaps.fluidExtractionRecipes);
                 }
             }
         } catch (Throwable e) {

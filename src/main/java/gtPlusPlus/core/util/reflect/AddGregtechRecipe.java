@@ -1,13 +1,15 @@
 package gtPlusPlus.core.util.reflect;
 
+import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Recipe;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.recipe.common.CI;
+import gregtech.api.util.GT_Utility;
 
 public final class AddGregtechRecipe {
 
@@ -29,7 +31,7 @@ public final class AddGregtechRecipe {
         }
 
         int aCircuitNumber = -1;
-        Item aCircuit = CI.getNumberedCircuit(1)
+        Item aCircuit = GT_Utility.getIntegratedCircuit(1)
             .getItem();
         boolean hasCircuit = false;
 
@@ -53,24 +55,32 @@ public final class AddGregtechRecipe {
             }
         }
 
-        return CORE.RA.addCokeOvenRecipe(
-            aCircuitNumber,
-            aInputItem,
-            aRecipe.mFluidInputs,
-            aRecipe.mFluidOutputs,
-            aRecipe.mOutputs,
-            aModifiedTime,
-            aRecipe.mEUt);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitNumber), aInputItem)
+            .itemOutputs(aRecipe.mOutputs)
+            .fluidInputs(aRecipe.mFluidInputs)
+            .fluidOutputs(aRecipe.mFluidOutputs)
+            .eut(aRecipe.mEUt)
+            .duration(aModifiedTime)
+            .addTo(cokeOvenRecipes);
+
+        return true;
     }
 
-    @Deprecated
     public static boolean addCokeAndPyrolyseRecipes(ItemStack input1, int circuitNumber, FluidStack inputFluid1,
         ItemStack output1, FluidStack outputFluid1, int timeInSeconds, int euTick) {
         // Seconds Conversion
         int TIME = timeInSeconds * 20;
         int TIMEPYRO = TIME + (TIME / 5);
         // Even though it says coke and pyrolyse, ICO recipes are imported from pyrolyse by #importPyroRecipe
-        GT_Values.RA.addPyrolyseRecipe(input1, inputFluid1, circuitNumber, output1, outputFluid1, TIMEPYRO, euTick);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(circuitNumber), input1)
+            .itemOutputs(output1)
+            .fluidInputs(inputFluid1)
+            .fluidOutputs(outputFluid1)
+            .duration(TIMEPYRO)
+            .eut(euTick)
+            .addTo(pyrolyseRecipes);
 
         return false;
     }

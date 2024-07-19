@@ -2,6 +2,10 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import static gregtech.api.enums.GT_Values.L;
 import static gregtech.api.enums.GT_Values.M;
+import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -12,15 +16,14 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
@@ -124,8 +127,13 @@ public class RecipeGen_Recycling implements Runnable {
 
                     // Maceration
                     if (ItemUtils.checkForInvalidItems(tempStack)) {
-                        // mValidItems[mSlotIndex++] = tempStack;
-                        if ((mDust != null) && GT_ModHandler.addPulverisationRecipe(tempStack, mDust)) {
+                        if (mDust != null) {
+                            RA.stdBuilder()
+                                .itemInputs(tempStack)
+                                .itemOutputs(mDust)
+                                .eut(2)
+                                .duration(20 * SECONDS)
+                                .addTo(maceratorRecipes);
                             Logger.WARNING(
                                 "Recycle Recipe: " + material.getLocalizedName()
                                     + " - Success - Recycle "
@@ -140,54 +148,36 @@ public class RecipeGen_Recycling implements Runnable {
                         }
                     }
 
-                    // Arc Furnace
-                    if (ItemUtils.checkForInvalidItems(tempStack)) {}
-
                     // Fluid Extractor
                     if (ItemUtils.checkForInvalidItems(tempStack)) {
-                        // mValidItems[mSlotIndex++] = tempStack;
-
                         int aFluidAmount = (int) ((L * validPrefix.getKey().mMaterialAmount)
                             / (M * tempStack.stackSize));
                         int aDuration = (int) Math.max(1, (24 * validPrefix.getKey().mMaterialAmount) / M);
-                        boolean aGenFluidExtraction = CORE.RA.addFluidExtractionRecipe(
-                            tempStack,
-                            material.getFluidStack(aFluidAmount),
-                            aDuration,
-                            material.vVoltageMultiplier);
-                        if (aGenFluidExtraction /*
-                                                 * (mDust != null) && CORE.RA.addFluidExtractionRecipe(tempStack,
-                                                 * material.getFluidStack(mFluidAmount), 30,
-                                                 * material.vVoltageMultiplier)
-                                                 */) {
-                            Logger.WARNING(
-                                "Fluid Recycle Recipe: " + material.getLocalizedName()
-                                    + " - Success - Recycle "
-                                    + tempStack.getDisplayName()
-                                    + " and obtain "
-                                    + aFluidAmount
-                                    + "mb of "
-                                    + material.getFluidStack(1)
-                                        .getLocalizedName()
-                                    + ". Time: "
-                                    + aDuration
-                                    + ", Voltage: "
-                                    + material.vVoltageMultiplier);
-                        } else {
-                            Logger.WARNING("Fluid Recycle Recipe: " + material.getLocalizedName() + " - Failed");
-                            if (mDust == null) {
-                                Logger.WARNING("Invalid Dust output.");
-                            }
-                        }
+
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(tempStack)
+                            .fluidOutputs(material.getFluidStack(aFluidAmount))
+                            .duration(aDuration)
+                            .eut(material.vVoltageMultiplier)
+                            .addTo(fluidExtractionRecipes);
+
+                        Logger.WARNING(
+                            "Fluid Recycle Recipe: " + material.getLocalizedName()
+                                + " - Success - Recycle "
+                                + tempStack.getDisplayName()
+                                + " and obtain "
+                                + aFluidAmount
+                                + "mb of "
+                                + material.getFluidStack(1)
+                                    .getLocalizedName()
+                                + ". Time: "
+                                + aDuration
+                                + ", Voltage: "
+                                + material.vVoltageMultiplier);
                     }
 
                 } catch (final Throwable t) {
                     t.printStackTrace();
-                    // Utils.LOG_WARNING("Returning Null. Throwable Info:
-                    // "+t.getMessage());
-                    // Utils.LOG_WARNING("Throwable Info: "+t.toString());
-                    // Utils.LOG_WARNING("Throwable Info:
-                    // "+t.getCause().toString());
                 }
             }
         }

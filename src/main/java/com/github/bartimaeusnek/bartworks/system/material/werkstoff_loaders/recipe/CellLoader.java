@@ -20,6 +20,7 @@ import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
+import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
@@ -314,19 +316,16 @@ public class CellLoader implements IWerkstoffRunnable {
             ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
             Behaviour_DataOrb.setDataTitle(scannerOutput, "Elemental-Scan");
             Behaviour_DataOrb.setDataName(scannerOutput, werkstoff.getToolTip());
-            RecipeMaps.scannerFakeRecipes.addFakeRecipe(
-                false,
-                new GT_Recipe(
-                    false,
-                    new ItemStack[] { werkstoff.get(cell) },
-                    new ItemStack[] { scannerOutput },
-                    ItemList.Tool_DataOrb.get(1L),
-                    null,
-                    null,
-                    null,
-                    (int) (werkstoffBridgeMaterial.getMass() * 8192L),
-                    30,
-                    0));
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(cell))
+                .itemOutputs(scannerOutput)
+                .special(ItemList.Tool_DataOrb.get(1L))
+                .duration(werkstoffBridgeMaterial.getMass() * 8192)
+                .eut(TierEU.RECIPE_LV)
+                .noOptimize()
+                .ignoreCollision()
+                .fake()
+                .addTo(scannerFakeRecipes);
         }
     }
 }
