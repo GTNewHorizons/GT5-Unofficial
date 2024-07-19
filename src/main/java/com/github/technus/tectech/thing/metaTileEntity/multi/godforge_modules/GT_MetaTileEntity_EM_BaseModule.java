@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -79,37 +80,6 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int VOLTAGE_WINDOW_ID = 9;
     private static final int TEXTURE_INDEX = 960;
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_BaseModule> STRUCTURE_DEFINITION = StructureDefinition
-        .<GT_MetaTileEntity_EM_BaseModule>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            new String[][] { { "       ", "  BBB  ", " BBBBB ", " BB~BB ", " BBBBB ", "  BBB  ", "       " },
-                { "  CCC  ", " CFFFC ", "CFFFFFC", "CFFFFFC", "CFFFFFC", " CFFFC ", "  CCC  " },
-                { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
-                { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
-                { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
-                { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
-                { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
-                { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
-                { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
-                { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
-                { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
-                { "       ", "       ", "       ", "   G   ", "       ", "       ", "       " } })
-        .addElement('A', ofBlock(GodforgeCasings, 8))
-        .addElement(
-            'B',
-            GT_StructureUtility.ofHatchAdderOptional(
-                GT_MetaTileEntity_EM_BaseModule::addClassicToMachineList,
-                TEXTURE_INDEX,
-                1,
-                GodforgeCasings,
-                0))
-        .addElement('C', ofBlock(GodforgeCasings, 0))
-        .addElement('D', ofBlock(GodforgeCasings, 1))
-        .addElement('E', ofBlock(GodforgeCasings, 2))
-        .addElement('F', ofBlock(GodforgeCasings, 3))
-        .addElement('G', ofBlock(GodforgeCasings, 4))
-        .build();
 
     public GT_MetaTileEntity_EM_BaseModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -277,7 +247,10 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
 
     @Override
     public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
-        return STRUCTURE_DEFINITION;
+        if (this instanceof GT_MetaTileEntity_EM_SmeltingModule) {
+            return getStructureDefinition(GregTech_API.sBlockCasings5, 12);
+        }
+        return getStructureDefinition(GodforgeCasings, 8);
     }
 
     @Override
@@ -435,6 +408,40 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
     @Override
     public boolean willExplodeInRain() {
         return false;
+    }
+
+    private static IStructureDefinition<GT_MetaTileEntity_EM_BaseModule> getStructureDefinition(Block coilBlock,
+        int meta) {
+        return StructureDefinition.<GT_MetaTileEntity_EM_BaseModule>builder()
+            .addShape(
+                STRUCTURE_PIECE_MAIN,
+                new String[][] { { "       ", "  BBB  ", " BBBBB ", " BB~BB ", " BBBBB ", "  BBB  ", "       " },
+                    { "  CCC  ", " CFFFC ", "CFFFFFC", "CFFFFFC", "CFFFFFC", " CFFFC ", "  CCC  " },
+                    { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
+                    { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
+                    { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
+                    { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
+                    { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
+                    { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
+                    { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
+                    { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
+                    { "       ", "       ", "       ", "   D   ", "       ", "       ", "       " },
+                    { "       ", "       ", "       ", "   G   ", "       ", "       ", "       " } })
+            .addElement('A', ofBlock(coilBlock, meta))
+            .addElement(
+                'B',
+                GT_StructureUtility.ofHatchAdderOptional(
+                    GT_MetaTileEntity_EM_BaseModule::addClassicToMachineList,
+                    TEXTURE_INDEX,
+                    1,
+                    GodforgeCasings,
+                    0))
+            .addElement('C', ofBlock(GodforgeCasings, 0))
+            .addElement('D', ofBlock(GodforgeCasings, 1))
+            .addElement('E', ofBlock(GodforgeCasings, 2))
+            .addElement('F', ofBlock(GodforgeCasings, 3))
+            .addElement('G', ofBlock(GodforgeCasings, 4))
+            .build();
     }
 
     private Text connectionStatus() {
