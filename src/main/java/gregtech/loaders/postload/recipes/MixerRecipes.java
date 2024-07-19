@@ -711,6 +711,8 @@ public class MixerRecipes implements Runnable {
             .eut(16)
             .addTo(mixerRecipes);
 
+        // McGuffium239 is non-renewable and only obtainable though world gen.
+        // It's a meme, don't think too deep about it.
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),

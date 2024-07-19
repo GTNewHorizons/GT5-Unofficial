@@ -2548,16 +2548,6 @@ public class RecipeLoader {
             .eut(514)
             .duration(2 * SECONDS)
             .addTo(blastFurnaceRecipes);
-        // GT_Values.RA.addBlastRecipe(
-        // DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1),
-        // null,
-        // null,
-        // null,
-        // SamariumOxide.get(OrePrefixes.dust, 1),
-        // null,
-        // 40,
-        // 514,
-        // 1200);
 
     }
 
