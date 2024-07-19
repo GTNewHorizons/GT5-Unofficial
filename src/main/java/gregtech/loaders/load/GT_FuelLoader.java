@@ -22,7 +22,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.fluid.GT_FluidFactory;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -84,14 +83,6 @@ public class GT_FuelLoader implements Runnable {
             .eut(0)
             .metadata(FUEL_VALUE, 1_000_000)
             .addTo(ultraHugeNaquadahReactorFuels);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NaquadahEnriched, 1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Naquadah, 1L))
-            .duration(0)
-            .eut(0)
-            .metadata(FUEL_VALUE, 1_400_000)
-            .addTo(RecipeMaps.fluidNaquadahReactorFuels);
 
         // BloodMagic
         GT_Values.RA.stdBuilder()
