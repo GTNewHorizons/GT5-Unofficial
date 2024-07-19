@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.enums.GT_Values.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.GT;
@@ -4105,6 +4106,15 @@ public class GT_Utility {
         return metaTileEntities;
     }
 
+    public static ForgeDirection getSideFromPlayerFacing(Entity player) {
+        if (player == null) return ForgeDirection.UNKNOWN;
+        if (player.rotationPitch >= 65) return ForgeDirection.UP;
+        if (player.rotationPitch <= -65) return ForgeDirection.DOWN;
+        final byte facing = COMPASS_DIRECTIONS[MathHelper.floor_double(0.5D + 4.0F * player.rotationYaw / 360.0F)
+            & 0x3];
+        return ForgeDirection.getOrientation(facing);
+    }
+
     public static class ItemNBT {
 
         public static void setNBT(ItemStack aStack, NBTTagCompound aNBT) {
@@ -4408,86 +4418,6 @@ public class GT_Utility {
                 tList.appendTag(tEnchantmentTag);
             }
             aStack.setTagCompound(tNBT);
-        }
-    }
-
-    /**
-     * THIS IS BULLSHIT!!! WHY DO I HAVE TO DO THIS SHIT JUST TO HAVE ENCHANTS PROPERLY!?!
-     */
-    public static class GT_EnchantmentHelper {
-
-        private static final BullshitIteratorA mBullshitIteratorA = new BullshitIteratorA();
-        private static final BullshitIteratorB mBullshitIteratorB = new BullshitIteratorB();
-
-        private static void applyBullshit(IBullshit aBullshitModifier, ItemStack aStack) {
-            if (aStack != null) {
-                NBTTagList nbttaglist = aStack.getEnchantmentTagList();
-                if (nbttaglist != null) {
-                    try {
-                        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-                            short short1 = nbttaglist.getCompoundTagAt(i)
-                                .getShort("id");
-                            short short2 = nbttaglist.getCompoundTagAt(i)
-                                .getShort("lvl");
-                            if (Enchantment.enchantmentsList[short1] != null)
-                                aBullshitModifier.calculateModifier(Enchantment.enchantmentsList[short1], short2);
-                        }
-                    } catch (Throwable e) {
-                        /**/
-                    }
-                }
-            }
-        }
-
-        private static void applyArrayOfBullshit(IBullshit aBullshitModifier, ItemStack[] aStacks) {
-            for (ItemStack itemstack : aStacks) {
-                applyBullshit(aBullshitModifier, itemstack);
-            }
-        }
-
-        public static void applyBullshitA(EntityLivingBase aPlayer, Entity aEntity, ItemStack aStack) {
-            mBullshitIteratorA.mPlayer = aPlayer;
-            mBullshitIteratorA.mEntity = aEntity;
-            if (aPlayer != null) applyArrayOfBullshit(mBullshitIteratorA, aPlayer.getLastActiveItems());
-            if (aStack != null) applyBullshit(mBullshitIteratorA, aStack);
-        }
-
-        public static void applyBullshitB(EntityLivingBase aPlayer, Entity aEntity, ItemStack aStack) {
-            mBullshitIteratorB.mPlayer = aPlayer;
-            mBullshitIteratorB.mEntity = aEntity;
-            if (aPlayer != null) applyArrayOfBullshit(mBullshitIteratorB, aPlayer.getLastActiveItems());
-            if (aStack != null) applyBullshit(mBullshitIteratorB, aStack);
-        }
-
-        interface IBullshit {
-
-            void calculateModifier(Enchantment aEnchantment, int aLevel);
-        }
-
-        static final class BullshitIteratorA implements IBullshit {
-
-            public EntityLivingBase mPlayer;
-            public Entity mEntity;
-
-            BullshitIteratorA() {}
-
-            @Override
-            public void calculateModifier(Enchantment aEnchantment, int aLevel) {
-                aEnchantment.func_151367_b(mPlayer, mEntity, aLevel);
-            }
-        }
-
-        static final class BullshitIteratorB implements IBullshit {
-
-            public EntityLivingBase mPlayer;
-            public Entity mEntity;
-
-            BullshitIteratorB() {}
-
-            @Override
-            public void calculateModifier(Enchantment aEnchantment, int aLevel) {
-                aEnchantment.func_151368_a(mPlayer, mEntity, aLevel);
-            }
         }
     }
 

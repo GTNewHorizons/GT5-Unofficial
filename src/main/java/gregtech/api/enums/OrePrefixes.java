@@ -261,16 +261,6 @@ public enum OrePrefixes {
         false, B[6] | B[8], M / 6, 64, -1),
     bulletGtLarge("Large Bullets", "Large ", " Bullet", true, true, false, false, true, false, true, false, true, false,
         B[6] | B[8], M / 3, 64, -1),
-    /** Arrow made of 1/4 Ingot/Dust + Wooden Stick. */
-    arrowGtWood("Regular Arrows", "", " Arrow", true, true, false, false, true, false, true, false, true, false, B[6],
-        M / 4, 64, 57),
-    /** Arrow made of 1/4 Ingot/Dust + Plastic Stick. */
-    arrowGtPlastic("Light Arrows", "Light ", " Arrow", true, true, false, false, true, false, true, false, true, false,
-        B[6], M / 4, 64, 58),
-    arrow("Arrows", "", "", false, false, true, false, false, false, false, false, true, false, B[6], -1, 64, 57),
-    /** consisting out of 1/4 Ingot. */
-    toolHeadArrow("Arrow Heads", "", " Arrow Head", true, true, false, false, false, false, true, true, false, false,
-        B[6], M / 4, 64, 46),
     /** consisting out of 2 Ingots. */
     toolHeadSword("Sword Blades", "", " Sword Blade", true, true, false, false, false, false, true, true, false, false,
         B[6], M * 2, 64, 32),
@@ -780,11 +770,6 @@ public enum OrePrefixes {
         block.mNotGeneratedItems.add(Materials.Redstone);
         block.mNotGeneratedItems.add(Materials.Diamond);
         block.mNotGeneratedItems.add(Materials.Coal);
-        toolHeadArrow.mNotGeneratedItems.add(Materials.Glass);
-        toolHeadArrow.mNotGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
-        arrowGtPlastic.mNotGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
-        arrow.mNotGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
-        arrowGtWood.mNotGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
         stickLong.mNotGeneratedItems.add(Materials.Obsidian);
         dust.mNotGeneratedItems.add(Materials.CertusQuartzCharged);
 
@@ -980,8 +965,6 @@ public enum OrePrefixes {
         toolHeadWrench.mSecondaryMaterial = new MaterialStack(
             Materials.Steel,
             ring.mMaterialAmount + screw.mMaterialAmount * 2);
-        arrowGtWood.mSecondaryMaterial = new MaterialStack(Materials.Wood, stick.mMaterialAmount);
-        arrowGtPlastic.mSecondaryMaterial = new MaterialStack(Materials.Plastic, stick.mMaterialAmount);
         bulletGtSmall.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.mMaterialAmount / 9);
         bulletGtMedium.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.mMaterialAmount / 6);
         bulletGtLarge.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.mMaterialAmount / 3);
@@ -1047,7 +1030,6 @@ public enum OrePrefixes {
             OrePrefixes.toolHeadUniversalSpade,
             OrePrefixes.toolHeadSense,
             OrePrefixes.toolHeadPlow,
-            OrePrefixes.toolHeadArrow,
             OrePrefixes.toolHeadBuzzSaw,
             OrePrefixes.turbineBlade,
             OrePrefixes.wireFine,
@@ -1056,8 +1038,6 @@ public enum OrePrefixes {
             OrePrefixes.stickLong,
             OrePrefixes.springSmall,
             OrePrefixes.spring,
-            OrePrefixes.arrowGtWood,
-            OrePrefixes.arrowGtPlastic,
             OrePrefixes.gemChipped,
             OrePrefixes.gemFlawed,
             OrePrefixes.gemFlawless,

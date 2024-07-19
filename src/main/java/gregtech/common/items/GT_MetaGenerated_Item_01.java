@@ -52,33 +52,6 @@ import static gregtech.client.GT_TooltipHandler.Tier.UV;
 import static gregtech.client.GT_TooltipHandler.Tier.UXV;
 import static gregtech.client.GT_TooltipHandler.Tier.ZPM;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Holy_Water;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Poison;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Poison_Long;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Poison_Strong;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Slowness;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Slowness_Long;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Weakness;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Head_Glass_Weakness_Long;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Holy_Water;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Poison;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Poison_Long;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Poison_Strong;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Slowness;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Slowness_Long;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Weakness;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Plastic_Glass_Weakness_Long;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Holy_Water;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Poison;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Poison_Long;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Poison_Strong;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Slowness;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Slowness_Long;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Weakness;
-import static gregtech.common.items.ID_MetaItem_01.Arrow_Wooden_Glass_Weakness_Long;
 import static gregtech.common.items.ID_MetaItem_01.Battery_Hull_HV;
 import static gregtech.common.items.ID_MetaItem_01.Battery_Hull_LV;
 import static gregtech.common.items.ID_MetaItem_01.Battery_Hull_MV;
@@ -210,6 +183,11 @@ import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UMV;
 import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UV;
 import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UXV;
 import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_ZPM;
+import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Iron;
+import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Neodymium;
+import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Samarium;
+import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Steel;
+import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Tengam;
 import static gregtech.common.items.ID_MetaItem_01.Emitter_EV;
 import static gregtech.common.items.ID_MetaItem_01.Emitter_HV;
 import static gregtech.common.items.ID_MetaItem_01.Emitter_IV;
@@ -468,9 +446,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -520,7 +500,6 @@ import gregtech.common.covers.GT_Cover_Shutter;
 import gregtech.common.covers.GT_Cover_SolarPanel;
 import gregtech.common.covers.GT_Cover_SteamRegulator;
 import gregtech.common.covers.GT_Cover_SteamValve;
-import gregtech.common.items.behaviors.Behaviour_Arrow_Potion;
 import gregtech.common.items.behaviors.Behaviour_Cover_Tool;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gregtech.common.items.behaviors.Behaviour_DataStick;
@@ -532,6 +511,7 @@ import gregtech.common.items.behaviors.Behaviour_Sonictron;
 import gregtech.common.items.behaviors.Behaviour_Spray_Color;
 import gregtech.common.items.behaviors.Behaviour_Spray_Color_Remover;
 import gregtech.common.items.behaviors.Behaviour_WrittenBook;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialElectromagneticSeparator.MagnetTiers;
 
 public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
@@ -696,217 +676,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 OrePrefixes.stick.get(Materials.Steel) });
 
         ItemList.CompressedFireclay.set(addItem(Compressed_Fireclay.ID, "Compressed Fireclay", "Brick-shaped"));
+        GT_OreDictUnificator.addItemDataFromInputs(ItemList.CompressedFireclay.get(1), Materials.Fireclay.getDust(1));
+
         ItemList.Firebrick.set(addItem(Firebrick.ID, "Firebrick", "Heat resistant"));
-
-        ItemList.Arrow_Head_Glass_Emtpy.set(
-            addItem(
-                Arrow_Head_Glass_Empty.ID,
-                "Empty Glass Arrow Head",
-                "Fill with Potions before use",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)));
-        ItemList.Arrow_Head_Glass_Poison.set(
-            addItem(
-                Arrow_Head_Glass_Poison.ID,
-                "Poison Glass Arrow Head",
-                "Glass Arrow filled with Poison",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Head_Glass_Poison_Long.set(
-            addItem(
-                Arrow_Head_Glass_Poison_Long.ID,
-                "Poison Glass Arrow Head",
-                "Glass Arrow filled with stretched Poison",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Head_Glass_Poison_Strong.set(
-            addItem(
-                Arrow_Head_Glass_Poison_Strong.ID,
-                "Poison Glass Arrow Head",
-                "Glass Arrow filled with strong Poison",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Head_Glass_Slowness.set(
-            addItem(
-                Arrow_Head_Glass_Slowness.ID,
-                "Slowness Glass Arrow Head",
-                "Glass Arrow filled with Laming Brew",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Head_Glass_Slowness_Long.set(
-            addItem(
-                Arrow_Head_Glass_Slowness_Long.ID,
-                "Slowness Glass Arrow Head",
-                "Glass Arrow filled with stretched Laming Brew",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Head_Glass_Weakness.set(
-            addItem(
-                Arrow_Head_Glass_Weakness.ID,
-                "Weakness Glass Arrow Head",
-                "Glass Arrow filled with Weakening Brew",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Head_Glass_Weakness_Long.set(
-            addItem(
-                Arrow_Head_Glass_Weakness_Long.ID,
-                "Weakness Glass Arrow Head",
-                "Glass Arrow filled with stretched Weakening Brew",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Head_Glass_Holy_Water.set(
-            addItem(
-                Arrow_Head_Glass_Holy_Water.ID,
-                "Holy Water Glass Arrow Head",
-                "Glass Arrow filled with Holy Water",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 1L)));
-
-        ItemList.Arrow_Wooden_Glass_Emtpy.set(
-            addItem(
-                Arrow_Wooden_Glass_Empty.ID,
-                "Regular Glass Vial Arrow",
-                "Empty Glass Arrow",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)));
-        ItemList.Arrow_Wooden_Glass_Poison.set(
-            addItem(
-                Arrow_Wooden_Glass_Poison.ID,
-                "Regular Poison Arrow",
-                "Glass Arrow filled with Poison",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F, Potion.poison.id, 450, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Wooden_Glass_Poison_Long.set(
-            addItem(
-                Arrow_Wooden_Glass_Poison_Long.ID,
-                "Regular Poison Arrow",
-                "Glass Arrow filled with stretched Poison",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F, Potion.poison.id, 900, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Wooden_Glass_Poison_Strong.set(
-            addItem(
-                Arrow_Wooden_Glass_Poison_Strong.ID,
-                "Regular Poison Arrow",
-                "Glass Arrow filled with strong Poison",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F, Potion.poison.id, 450, 1, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Wooden_Glass_Slowness.set(
-            addItem(
-                Arrow_Wooden_Glass_Slowness.ID,
-                "Regular Slowness Arrow",
-                "Glass Arrow filled with Laming Brew",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F, Potion.moveSlowdown.id, 900, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Wooden_Glass_Slowness_Long.set(
-            addItem(
-                Arrow_Wooden_Glass_Slowness_Long.ID,
-                "Regular Slowness Arrow",
-                "Glass Arrow filled with stretched Laming Brew",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F, Potion.moveSlowdown.id, 1800, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Wooden_Glass_Weakness.set(
-            addItem(
-                Arrow_Wooden_Glass_Weakness.ID,
-                "Regular Weakness Arrow",
-                "Glass Arrow filled with Weakening Brew",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F, Potion.weakness.id, 900, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Wooden_Glass_Weakness_Long.set(
-            addItem(
-                Arrow_Wooden_Glass_Weakness_Long.ID,
-                "Regular Weakness Arrow",
-                "Glass Arrow filled with stretched Weakening Brew",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F, Potion.weakness.id, 1800, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Wooden_Glass_Holy_Water.set(
-            addItem(
-                Arrow_Wooden_Glass_Holy_Water.ID,
-                "Regular Holy Water Arrow",
-                "Glass Arrow filled with Holy Water",
-                new Behaviour_Arrow_Potion(1.0F, 6.0F, Enchantment.smite, 10),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 1L)));
-
-        ItemList.Arrow_Plastic_Glass_Emtpy.set(
-            addItem(
-                Arrow_Plastic_Glass_Empty.ID,
-                "Light Glass Vial Arrow",
-                "Empty Glass Arrow",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1L)));
-        ItemList.Arrow_Plastic_Glass_Poison.set(
-            addItem(
-                Arrow_Plastic_Glass_Poison.ID,
-                "Light Poison Arrow",
-                "Glass Arrow filled with Poison",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F, Potion.poison.id, 450, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Plastic_Glass_Poison_Long.set(
-            addItem(
-                Arrow_Plastic_Glass_Poison_Long.ID,
-                "Light Poison Arrow",
-                "Glass Arrow filled with stretched Poison",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F, Potion.poison.id, 900, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Plastic_Glass_Poison_Strong.set(
-            addItem(
-                Arrow_Plastic_Glass_Poison_Strong.ID,
-                "Light Poison Arrow",
-                "Glass Arrow filled with strong Poison",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F, Potion.poison.id, 450, 1, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Plastic_Glass_Slowness.set(
-            addItem(
-                Arrow_Plastic_Glass_Slowness.ID,
-                "Light Slowness Arrow",
-                "Glass Arrow filled with Laming Brew",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F, Potion.moveSlowdown.id, 900, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Plastic_Glass_Slowness_Long.set(
-            addItem(
-                Arrow_Plastic_Glass_Slowness_Long.ID,
-                "Light Slowness Arrow",
-                "Glass Arrow filled with stretched Laming Brew",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F, Potion.moveSlowdown.id, 1800, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Plastic_Glass_Weakness.set(
-            addItem(
-                Arrow_Plastic_Glass_Weakness.ID,
-                "Light Weakness Arrow",
-                "Glass Arrow filled with Weakening Brew",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F, Potion.weakness.id, 900, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Plastic_Glass_Weakness_Long.set(
-            addItem(
-                Arrow_Plastic_Glass_Weakness_Long.ID,
-                "Light Weakness Arrow",
-                "Glass Arrow filled with stretched Weakening Brew",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F, Potion.weakness.id, 1800, 0, 100),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 1L)));
-        ItemList.Arrow_Plastic_Glass_Holy_Water.set(
-            addItem(
-                Arrow_Plastic_Glass_Holy_Water.ID,
-                "Light Holy Water Arrow",
-                "Glass Arrow filled with Holy Water",
-                new Behaviour_Arrow_Potion(1.5F, 6.0F, Enchantment.smite, 10),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 1L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 1L)));
+        GT_OreDictUnificator.addItemDataFromInputs(ItemList.Firebrick.get(1), Materials.Fireclay.getDust(1));
 
         ItemList.Shape_Empty.set(
             addItem(
@@ -3321,7 +3094,36 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 16L)));
-
+        ItemList.Electromagnet_Iron.set(
+            addItem(
+                Electromagnet_Iron.ID,
+                "Iron Electromagnet",
+                MagnetTiers.buildMagnetTooltip(MagnetTiers.Iron),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 8)));
+        ItemList.Electromagnet_Steel.set(
+            addItem(
+                Electromagnet_Steel.ID,
+                "Steel Electromagnet",
+                MagnetTiers.buildMagnetTooltip(MagnetTiers.Steel),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 16)));
+        ItemList.Electromagnet_Neodymium.set(
+            addItem(
+                Electromagnet_Neodymium.ID,
+                "Neodymium Electromagnet",
+                MagnetTiers.buildMagnetTooltip(MagnetTiers.Neodymium),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 24)));
+        ItemList.Electromagnet_Samarium.set(
+            addItem(
+                Electromagnet_Samarium.ID,
+                EnumChatFormatting.YELLOW + "Samarium Electromagnet",
+                MagnetTiers.buildMagnetTooltip(MagnetTiers.Samarium),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 32)));
+        ItemList.Electromagnet_Tengam.set(
+            addItem(
+                Electromagnet_Tengam.ID,
+                EnumChatFormatting.GREEN + "Tengam Electromagnet",
+                MagnetTiers.buildMagnetTooltip(MagnetTiers.Tengam),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 40)));
         removeRecipes();
         setBurnValues();
         oredictBlacklistEntries();
@@ -3473,6 +3275,11 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         setFluidContainerStats(32000 + Large_Fluid_Cell_Iridium.ID, 8_192_000L, 2L);
         setFluidContainerStats(32000 + Large_Fluid_Cell_Osmium.ID, 32_768_000L, 1L);
         setFluidContainerStats(32000 + Large_Fluid_Cell_Neutronium.ID, 131_072_000L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Iron.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Steel.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Neodymium.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Samarium.ID, 0L, 1L);
+        setFluidContainerStats(32000 + Electromagnet_Tengam.ID, 0L, 1L);
     }
 
     private void oredictBlacklistEntries() {
@@ -4744,117 +4551,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             new Object[] { "PSP", "PCP", "PBP", 'P', OrePrefixes.plate.get(Materials.Aluminium), 'S',
                 ItemList.Tool_DataStick.get(1L), 'C', ItemList.Cover_Screen.get(1L), 'B',
                 ItemList.Battery_RE_MV_Lithium.get(1L) });
-
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Emtpy.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Emtpy, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Poison.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Poison, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Poison_Long.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Poison_Long, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Poison_Strong.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Poison_Strong, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Slowness.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Slowness, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Slowness_Long.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Slowness_Long, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Weakness.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Weakness, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Weakness_Long.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Weakness_Long, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Wooden_Glass_Holy_Water.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Holy_Water, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Wood) });
-
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Emtpy.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Emtpy, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Poison.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Poison, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Poison_Long.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Poison_Long, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Poison_Strong.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Poison_Strong, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Slowness.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Slowness, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Slowness_Long.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Slowness_Long, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Weakness.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Weakness, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Weakness_Long.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Weakness_Long, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Arrow_Plastic_Glass_Holy_Water.get(1L),
-            GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-                | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextArrow, aTextStick, aTextFeather, 'A', ItemList.Arrow_Head_Glass_Holy_Water, 'F',
-                OreDictNames.craftingFeather, 'S', OrePrefixes.stick.get(Materials.Plastic) });
-
     }
 
     private void craftingShapelessRecipes() {
@@ -5083,7 +4779,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 ItemList.Spray_Empty.get(1L),
                 ItemList.SPRAY_CAN_DYES_USED[i].get(1L),
                 ItemList.SPRAY_CAN_DYES[i].get(1L),
-                512L,
+                GregTech_API.sSpecialFile.get(ConfigCategories.general, "SprayCanUses", 512),
                 i);
             addItemBehavior(32000 + Spray_Colors[i], behaviourSprayColor);
             addItemBehavior(32000 + Spray_Colors_Used[i], behaviourSprayColor);

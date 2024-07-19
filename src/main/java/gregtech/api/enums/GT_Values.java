@@ -650,6 +650,21 @@ public class GT_Values {
     public static final String AuthorQuerns = "Author: " + EnumChatFormatting.RED + "Querns";
     public static final String AuthorSilverMoon = "Author: " + EnumChatFormatting.AQUA + "SilverMoon";
     public static final String AuthorTheEpicGamer274 = "Author: " + "TheEpicGamer274";
+    public static final String AuthorFourIsTheNumber = "Author: " + EnumChatFormatting.LIGHT_PURPLE + "FourIsTheNumber";
+    public static final String authorBaps = "Author: " + EnumChatFormatting.GOLD
+        + "Ba"
+        + EnumChatFormatting.LIGHT_PURPLE
+        + "ps";
+
+    public static final String AuthorEvgenWarGold = "" + EnumChatFormatting.RED
+        + EnumChatFormatting.BOLD
+        + "Evgen"
+        + EnumChatFormatting.BLUE
+        + EnumChatFormatting.BOLD
+        + "War"
+        + EnumChatFormatting.GOLD
+        + EnumChatFormatting.BOLD
+        + "Gold";
 
     // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
     public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {

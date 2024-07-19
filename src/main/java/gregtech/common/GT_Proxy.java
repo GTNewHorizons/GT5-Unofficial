@@ -67,7 +67,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
@@ -169,7 +168,6 @@ import gregtech.api.util.GT_Shaped_Recipe;
 import gregtech.api.util.GT_Shapeless_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.items.GT_MetaGenerated_Item_98;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.ID_MetaTool_01;
@@ -1551,21 +1549,17 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     @SubscribeEvent
     public void onEntitySpawningEvent(EntityJoinWorldEvent aEvent) {
-        if ((aEvent.entity != null) && (!aEvent.entity.worldObj.isRemote)) {
-            if ((aEvent.entity instanceof EntityItem)) {
-                ((EntityItem) aEvent.entity).setEntityItemStack(
-                    GT_OreDictUnificator.get(true, ((EntityItem) aEvent.entity).getEntityItem(), true));
-            }
-            if ((this.mSkeletonsShootGTArrows > 0) && (aEvent.entity.getClass() == EntityArrow.class)
-                && (aEvent.entity.worldObj.rand.nextInt(this.mSkeletonsShootGTArrows) == 0)
-                && ((((EntityArrow) aEvent.entity).shootingEntity instanceof EntitySkeleton))) {
-                aEvent.entity.worldObj.spawnEntityInWorld(
-                    new GT_Entity_Arrow(
-                        (EntityArrow) aEvent.entity,
-                        OrePrefixes.arrowGtWood.mPrefixedItems
-                            .get(aEvent.entity.worldObj.rand.nextInt(OrePrefixes.arrowGtWood.mPrefixedItems.size()))));
-                aEvent.entity.setDead();
-            }
+        if (aEvent.entity == null) {
+            return;
+        }
+
+        if (aEvent.entity.worldObj.isRemote) {
+            return;
+        }
+
+        if ((aEvent.entity instanceof EntityItem)) {
+            ((EntityItem) aEvent.entity)
+                .setEntityItemStack(GT_OreDictUnificator.get(true, ((EntityItem) aEvent.entity).getEntityItem(), true));
         }
     }
 

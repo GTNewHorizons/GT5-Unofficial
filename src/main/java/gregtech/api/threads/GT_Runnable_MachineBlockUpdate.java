@@ -9,6 +9,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
@@ -18,36 +20,6 @@ import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 
 public class GT_Runnable_MachineBlockUpdate implements Runnable {
-
-    // Borrowed from Angelica until moving to GTNHLib or something
-    final static int SIZE_BITS_X = 26; // 1 + log2(MathHelper.roundUpToPowerOfTwo(30000000), RoundingMode.UNNECESSARY);
-    final static int SIZE_BITS_Z = SIZE_BITS_X;
-    final static int SIZE_BITS_Y = 64 - SIZE_BITS_X - SIZE_BITS_Z;
-    final static long BITS_X = (1L << SIZE_BITS_X) - 1L;
-    final static long BITS_Y = (1L << SIZE_BITS_Y) - 1L;
-    final static long BITS_Z = (1L << SIZE_BITS_Z) - 1L;
-    final static int BIT_SHIFT_Z = SIZE_BITS_Y;
-    final static int BIT_SHIFT_X = SIZE_BITS_Y + SIZE_BITS_Z;
-
-    static long asLong(int x, int y, int z) {
-        long l = 0L;
-        l |= ((long) x & BITS_X) << BIT_SHIFT_X;
-        l |= ((long) y & BITS_Y) << 0;
-        l |= ((long) z & BITS_Z) << BIT_SHIFT_Z;
-        return l;
-    }
-
-    public static int unpackLongX(long packedPos) {
-        return (int) (packedPos << 64 - BIT_SHIFT_X - SIZE_BITS_X >> 64 - SIZE_BITS_X);
-    }
-
-    public static int unpackLongY(long packedPos) {
-        return (int) (packedPos << 64 - SIZE_BITS_Y >> 64 - SIZE_BITS_Y);
-    }
-
-    public static int unpackLongZ(long packedPos) {
-        return (int) (packedPos << 64 - BIT_SHIFT_Z - SIZE_BITS_Z >> 64 - SIZE_BITS_Z);
-    }
 
     // used by runner thread
     protected final int initialX, initialY, initialZ;
@@ -69,7 +41,7 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
         this.initialX = posX;
         this.initialY = posY;
         this.initialZ = posZ;
-        final long coords = asLong(posX, posY, posZ);
+        final long coords = CoordinatePacker.pack(posX, posY, posZ);
         visited.add(coords);
         tQueue.enqueue(coords);
     }
@@ -152,9 +124,9 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
         try {
             while (!tQueue.isEmpty()) {
                 final long packedCoords = tQueue.dequeueLong();
-                posX = unpackLongX(packedCoords);
-                posY = unpackLongY(packedCoords);
-                posZ = unpackLongZ(packedCoords);
+                posX = CoordinatePacker.unpackX(packedCoords);
+                posY = CoordinatePacker.unpackY(packedCoords);
+                posZ = CoordinatePacker.unpackZ(packedCoords);
 
                 final TileEntity tTileEntity;
                 final boolean isMachineBlock;
@@ -186,7 +158,8 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
                     || isMachineBlock) {
                     for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
                         final ForgeDirection side = ForgeDirection.VALID_DIRECTIONS[i];
-                        final long tCoords = asLong(posX + side.offsetX, posY + side.offsetY, posZ + side.offsetZ);
+                        final long tCoords = CoordinatePacker
+                            .pack(posX + side.offsetX, posY + side.offsetY, posZ + side.offsetZ);
                         if (visited.add(tCoords)) {
                             tQueue.enqueue(tCoords);
                         }

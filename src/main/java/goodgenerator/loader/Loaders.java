@@ -209,10 +209,13 @@ public class Loaders {
     public static final Block pressureResistantWalls = new Casing(
         "pressureResistantWalls",
         new String[] { GoodGenerator.MOD_ID + ":pressureResistantWalls" });
+    public static final Block impreciseUnitCasing = new Casing(
+        "impreciseUnitCasing",
+        new String[] { GoodGenerator.MOD_ID + ":preciseUnitCasing/0" });
     public static final Block preciseUnitCasing = new Casing(
         "preciseUnitCasing",
         new String[] { GoodGenerator.MOD_ID + ":preciseUnitCasing/1", GoodGenerator.MOD_ID + ":preciseUnitCasing/2",
-            GoodGenerator.MOD_ID + ":preciseUnitCasing/3" });
+            GoodGenerator.MOD_ID + ":preciseUnitCasing/3", GoodGenerator.MOD_ID + ":preciseUnitCasing/4" });
     public static final Block compactFusionCoil = new Casing(
         "compactFusionCoil",
         new String[] { GoodGenerator.MOD_ID + ":fuison/1", GoodGenerator.MOD_ID + ":fuison/2",
@@ -368,6 +371,7 @@ public class Loaders {
             .registerBlock(supercriticalFluidTurbineCasing, MyItemBlocks.class, "supercriticalFluidTurbineCasing");
         GameRegistry.registerBlock(componentAssemblylineCasing, MyItemBlocks.class, "componentAssemblylineCasing");
         GameRegistry.registerBlock(pressureResistantWalls, MyItemBlocks.class, "pressureResistantWalls");
+        GameRegistry.registerBlock(impreciseUnitCasing, MyItemBlocks.class, "impreciseUnitCasing");
         GameRegistry.registerBlock(preciseUnitCasing, MyItemBlocks.class, "preciseUnitCasing");
         GameRegistry.registerBlock(compactFusionCoil, MyItemBlocks.class, "compactFusionCoil");
         GameRegistry.registerItem(radiationProtectionPlate, "radiationProtectionPlate", GoodGenerator.MOD_ID);
@@ -451,13 +455,17 @@ public class Loaders {
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][2] = TextureFactory
                 .of(supercriticalFluidTurbineCasing);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][3] = TextureFactory
-                .of(preciseUnitCasing, 0);
-            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][4] = TextureFactory
-                .of(preciseUnitCasing, 1);
-            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][5] = TextureFactory
-                .of(preciseUnitCasing, 2);
-            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][6] = TextureFactory
                 .of(GregTech_API.sBlockConcretes, 8);
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][4] = TextureFactory
+                .of(impreciseUnitCasing, 0);
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][5] = TextureFactory
+                .of(preciseUnitCasing, 0);
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][6] = TextureFactory
+                .of(preciseUnitCasing, 1);
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][7] = TextureFactory
+                .of(preciseUnitCasing, 2);
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][8] = TextureFactory
+                .of(preciseUnitCasing, 3);
         }
     }
 
