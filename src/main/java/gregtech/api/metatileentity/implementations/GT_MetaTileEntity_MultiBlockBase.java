@@ -452,8 +452,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (!shouldCheckMaintenance()) return;
 
         boolean broken = !(mWrench && mScrewdriver && mSoftHammer && mHardHammer && mSolderingTool && mCrowbar);
-        for (GT_MetaTileEntity_Hatch_Maintenance tHatch : filterValidMTEs(mMaintenanceHatches)) {
-            if (broken) {
+        if (broken) {
+            for (GT_MetaTileEntity_Hatch_Maintenance tHatch : filterValidMTEs(mMaintenanceHatches)) {
                 if (tHatch.mAuto) tHatch.autoMaintainance();
                 if (tHatch.mWrench) mWrench = true;
                 if (tHatch.mScrewdriver) mScrewdriver = true;
