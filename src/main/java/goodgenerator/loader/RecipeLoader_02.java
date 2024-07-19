@@ -639,7 +639,7 @@ public class RecipeLoader_02 {
                 .itemInputs(
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 2),
                     ItemRefer.Fluid_Storage_Core_T9.get(2),
-                    new Object[] { OrePrefixes.circuit.get(Materials.Piko), 8L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 8L },
                     ItemList.Electric_Pump_UIV.get(8),
                     GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NetherStar, 12),
                     GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 12),
@@ -660,7 +660,7 @@ public class RecipeLoader_02 {
                 .itemInputs(
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 2),
                     ItemRefer.Fluid_Storage_Core_T10.get(2),
-                    new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 12L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 12L },
                     ItemList.Electric_Pump_UMV.get(8),
                     GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NetherStar, 64),
                     GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 12),
