@@ -36,7 +36,6 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IMachineMode;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
@@ -52,47 +51,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class GT_MetaTileEntity_MultiCanner
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_MultiCanner> implements ISurvivalConstructable {
 
-    enum MachineMode implements IMachineMode {
-
-        Canner(0, "Canning"),
-        FluidCanner(1, "Fluid Canning");
-
-        final int modeID;
-        final String modeName;
-
-        MachineMode(int ID, String name) {
-            this.modeID = ID;
-            this.modeName = name;
-        }
-
-        @Override
-        public int getModeID() {
-            return modeID;
-        }
-
-        @Override
-        public String getModeName() {
-            return modeName;
-        }
-
-        @Override
-        public MachineMode getByID(int index) {
-            switch (index) {
-                case 0 -> {
-                    return MachineMode.Canner;
-                }
-                default -> {
-                    return MachineMode.FluidCanner;
-                }
-            }
-        }
-
-        @Override
-        public MachineMode nextMachineMode() {
-            if (modeID == 0) return FluidCanner;
-            return Canner;
-        }
-    }
+    private final int MACHINEMODE_CANNER = 0;
+    private final int MACHINEMODE_FLUIDCANNER = 1;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_MultiCanner> STRUCTURE_DEFINITION = StructureDefinition
@@ -246,14 +206,21 @@ public class GT_MetaTileEntity_MultiCanner
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        if (machineMode == MachineMode.Canner) return RecipeMaps.cannerRecipes;
-        else return RecipeMaps.fluidCannerRecipes;
+        return (machineMode == MACHINEMODE_FLUIDCANNER) ? RecipeMaps.fluidCannerRecipes : RecipeMaps.cannerRecipes;
     }
 
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
         return Arrays.asList(RecipeMaps.fluidCannerRecipes, RecipeMaps.cannerRecipes);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        if (aNBT.hasKey("fluidMode")) {
+            machineMode = aNBT.getBoolean("fluidMode") ? MACHINEMODE_FLUIDCANNER : MACHINEMODE_CANNER;
+        }
+        super.loadNBTData(aNBT);
     }
 
     @Override
@@ -268,27 +235,20 @@ public class GT_MetaTileEntity_MultiCanner
     }
 
     @Override
-    public IMachineMode defaultMachineMode() {
-        return MachineMode.Canner;
-    }
-
-    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        machineMode = machineMode.nextMachineMode();
-        PlayerUtils.messagePlayer(aPlayer, "Now running in " + machineMode.getModeName() + " Mode.");
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        if (machineMode == null) machineMode = MachineMode.Canner;
-        super.loadNBTData(aNBT);
+        setMachineMode(nextMachineMode());
+        if (machineMode == MACHINEMODE_FLUIDCANNER) {
+            PlayerUtils.messagePlayer(aPlayer, "Now running in Fluid Canning Mode.");
+        } else {
+            PlayerUtils.messagePlayer(aPlayer, "Now running in Canning Mode.");
+        }
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode.getModeID());
+        tag.setInteger("mode", machineMode);
     }
 
     @Override

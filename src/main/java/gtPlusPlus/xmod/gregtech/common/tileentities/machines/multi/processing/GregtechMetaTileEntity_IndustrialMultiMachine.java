@@ -43,7 +43,6 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IMachineMode;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
@@ -74,6 +73,11 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMultiMachine> implements ISurvivalConstructable {
 
+    private final int MACHINEMODE_METAL = 0;
+    private final int MACHINEMODE_FLUID = 1;
+    private final int MACHINEMODE_MISC = 2;
+
+
     private static final int MODE_COMPRESSOR = 0;
     private static final int MODE_LATHE = 1;
     private static final int MODE_MAGNETIC = 2;
@@ -87,61 +91,6 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     public static final String[] aToolTipNames = new String[9];
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialMultiMachine> STRUCTURE_DEFINITION = null;
-
-    enum MachineMode implements IMachineMode {
-
-        Metal(0, "Metal"),
-        Fluid(1, "Fluid"),
-        Misc(2, "Misc");
-
-        final int modeID;
-        final String modeName;
-
-        MachineMode(int ID, String name) {
-            this.modeID = ID;
-            this.modeName = name;
-        }
-
-        @Override
-        public int getModeID() {
-            return modeID;
-        }
-
-        @Override
-        public String getModeName() {
-            return modeName;
-        }
-
-        @Override
-        public MachineMode getByID(int index) {
-            switch (index) {
-                case 0 -> {
-                    return MachineMode.Metal;
-                }
-                case 1 -> {
-                    return MachineMode.Fluid;
-                }
-                default -> {
-                    return MachineMode.Misc;
-                }
-            }
-        }
-
-        @Override
-        public MachineMode nextMachineMode() {
-            switch (modeID) {
-                case 0 -> {
-                    return Fluid;
-                }
-                case 1 -> {
-                    return Misc;
-                }
-                default -> {
-                    return Metal;
-                }
-            }
-        }
-    }
 
     static {
         for (int id = 0; id < 9; id++) {
@@ -272,12 +221,10 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        if (machineMode == MachineMode.Metal) {
-            return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
-        } else if (machineMode == MachineMode.Fluid) {
-            return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
-        } else { // config 2
-            return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
+        switch (machineMode)  {
+            case MACHINEMODE_METAL -> { return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal; }
+            case MACHINEMODE_FLUID -> { return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid; }
+            default -> { return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc; }
         }
     }
 
@@ -305,7 +252,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     private int getCircuitID(ItemStack circuit) {
         int H = circuit.getItemDamage();
         int T = (H == 20 ? 0 : (H == 21 ? 1 : (H == 22 ? 2 : -1)));
-        return MODE_MAP[machineMode.getModeID()][T];
+        return MODE_MAP[machineMode][T];
     }
 
     @Override
@@ -362,7 +309,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
         return new ProcessingLogic() {
 
             private ItemStack lastCircuit = null;
-            private IMachineMode lastMode = null;
+            private int lastMode = -1;
 
             @Nonnull
             @Override
@@ -392,30 +339,34 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
 
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        machineMode = machineMode.nextMachineMode();
-        PlayerUtils.messagePlayer(aPlayer, "Multi-Machine is now in " + machineMode.getModeName() + " mode.");
+        setMachineMode(nextMachineMode());
+        String mModeString;
+        switch (machineMode) {
+            case MACHINEMODE_METAL -> mModeString = "Metal";
+            case MACHINEMODE_FLUID -> mModeString = "Fluid";
+            default -> mModeString = "Misc";
+        }
+        PlayerUtils.messagePlayer(aPlayer, "Multi-Machine is now in " + mModeString + " mode.");
     }
 
     @Override
     public String[] getInfoData() {
         String[] data = super.getInfoData();
         ArrayList<String> mInfo = new ArrayList<>(Arrays.asList(data));
-        String mode = "Bad Machine Mode!";
-        if (machineMode.equals(MachineMode.Metal)) {
-            mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.metal");
-        } else if (machineMode.equals(MachineMode.Fluid)) {
-            mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.fluid");
-        } else {
-            mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.misc");
+        String mode;
+        switch (machineMode) {
+            case MACHINEMODE_METAL -> mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.metal");
+            case MACHINEMODE_FLUID -> mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.fluid");
+            default -> mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.misc");
         }
+        mInfo.add(mode);
         return mInfo.toArray(new String[0]);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        if (machineMode == null) machineMode = MachineMode.Metal;
         if (aNBT.hasKey("mInternalMode")) {
-            machineMode = machineMode.getByID(aNBT.getInteger("mInternalMode"));
+            machineMode = aNBT.getInteger("mInternalMode");
         }
         super.loadNBTData(aNBT);
     }
@@ -428,7 +379,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     @Override
     protected CheckRecipeResult doCheckRecipe() {
 
-        if (machineMode != MachineMode.Misc || !isInputSeparationEnabled()) {
+        if (machineMode != MACHINEMODE_MISC || !isInputSeparationEnabled()) {
             return super.doCheckRecipe();
         } else {
             CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
@@ -545,7 +496,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode.getModeID());
+        tag.setInteger("mode", machineMode);
     }
 
     @Override
@@ -569,15 +520,18 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     }
 
     @Override
+    public int nextMachineMode() {
+        mLastRecipe = null;
+        if (machineMode == MACHINEMODE_METAL) return MACHINEMODE_FLUID;
+        else if (machineMode == MACHINEMODE_FLUID) return MACHINEMODE_MISC;
+        else return MACHINEMODE_METAL;
+    }
+
+    @Override
     public void setMachineModeIcons() {
         machineModeIcons.clear();
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
-    }
-
-    @Override
-    public IMachineMode defaultMachineMode() {
-        return MachineMode.Metal;
     }
 }

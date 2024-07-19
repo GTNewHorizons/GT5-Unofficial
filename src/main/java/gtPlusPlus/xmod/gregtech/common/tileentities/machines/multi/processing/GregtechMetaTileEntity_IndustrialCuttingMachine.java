@@ -38,7 +38,6 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IMachineMode;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -56,49 +55,10 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
     GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialCuttingMachine> implements ISurvivalConstructable {
 
     private int mCasing;
+    private final int MACHINEMODE_CUTTER = 0;
+    private final int MACHINEMODE_SLICER = 1;
+
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialCuttingMachine> STRUCTURE_DEFINITION = null;
-
-    enum MachineMode implements IMachineMode {
-
-        Cutter(0, "Cutting"),
-        Slicer(1, "Slicing");
-
-        final int modeID;
-        final String modeName;
-
-        MachineMode(int ID, String name) {
-            this.modeID = ID;
-            this.modeName = name;
-        }
-
-        @Override
-        public int getModeID() {
-            return modeID;
-        }
-
-        @Override
-        public String getModeName() {
-            return modeName;
-        }
-
-        @Override
-        public MachineMode getByID(int index) {
-            switch (index) {
-                case 0 -> {
-                    return MachineMode.Cutter;
-                }
-                default -> {
-                    return MachineMode.Slicer;
-                }
-            }
-        }
-
-        @Override
-        public MachineMode nextMachineMode() {
-            if (modeID == 0) return Slicer;
-            return Cutter;
-        }
-    }
 
     public GregtechMetaTileEntity_IndustrialCuttingMachine(final int aID, final String aName,
         final String aNameRegional) {
@@ -197,8 +157,7 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        if (machineMode == MachineMode.Cutter) return RecipeMaps.cutterRecipes;
-        else return RecipeMaps.slicerRecipes;
+        return (machineMode == MACHINEMODE_CUTTER) ? RecipeMaps.cutterRecipes : RecipeMaps.slicerRecipes;
     }
 
     @Nonnull
@@ -264,29 +223,23 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
     @Override
     public void setMachineModeIcons() {
         machineModeIcons.clear();
-        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_SLICING);
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_CUTTING);
-    }
-
-    @Override
-    public IMachineMode defaultMachineMode() {
-        return MachineMode.Cutter;
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_SLICING);
     }
 
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        machineMode = machineMode.nextMachineMode();
-        PlayerUtils.messagePlayer(aPlayer, "Mode: " + machineMode.getModeName());
+        setMachineMode(nextMachineMode());
+        String aMode = machineMode == MACHINEMODE_CUTTER ? "Cutting" : "Slicing";
+        PlayerUtils.messagePlayer(aPlayer, "Mode: " + aMode);
         mLastRecipe = null;
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        if (machineMode == null) machineMode = MachineMode.Cutter;
         // Migrates old NBT tag to the new one
         if (aNBT.hasKey("mCuttingMode")) {
-            if (aNBT.getBoolean("mCuttingMode")) machineMode = MachineMode.Cutter;
-            else machineMode = MachineMode.Slicer;
+            machineMode = aNBT.getBoolean("mCuttingMode") ? MACHINEMODE_CUTTER : MACHINEMODE_SLICER;
         }
         super.loadNBTData(aNBT);
     }
@@ -295,7 +248,7 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode.getModeID());
+        tag.setInteger("mode", machineMode);
     }
 
     @Override

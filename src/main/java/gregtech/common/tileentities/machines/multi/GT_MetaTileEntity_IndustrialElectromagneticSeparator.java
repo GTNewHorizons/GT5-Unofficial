@@ -40,7 +40,6 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IMachineMode;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MagHatch;
@@ -101,51 +100,12 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         }
     }
 
-    enum MachineMode implements IMachineMode {
-
-        Separator(0, "Electromagnetic Separator"),
-        Polarizer(1, "Electromagnetic Polarizer");
-
-        final int modeID;
-        final String modeName;
-
-        MachineMode(int ID, String name) {
-            this.modeID = ID;
-            this.modeName = name;
-        }
-
-        @Override
-        public int getModeID() {
-            return modeID;
-        }
-
-        @Override
-        public String getModeName() {
-            return modeName;
-        }
-
-        @Override
-        public MachineMode getByID(int index) {
-            switch (index) {
-                case 0 -> {
-                    return MachineMode.Separator;
-                }
-                default -> {
-                    return MachineMode.Polarizer;
-                }
-            }
-        }
-
-        @Override
-        public MachineMode nextMachineMode() {
-            if (modeID == 0) return Polarizer;
-            return Separator;
-        }
-    }
-
     final int MIN_CASING = 64;
     private GT_MetaTileEntity_MagHatch mMagHatch = null;
     private MagnetTiers magnetTier = null;
+
+    private final int MACHINEMODE_SEPARATOR = 0;
+    private final int MACHINEMODE_POLARIZER = 1;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_IndustrialElectromagneticSeparator> STRUCTURE_DEFINITION = StructureDefinition
@@ -355,14 +315,21 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        if (machineMode == MachineMode.Polarizer) return RecipeMaps.polarizerRecipes;
-        else return RecipeMaps.electroMagneticSeparatorRecipes;
+        return (machineMode == MACHINEMODE_POLARIZER) ? RecipeMaps.polarizerRecipes : RecipeMaps.electroMagneticSeparatorRecipes;
     }
 
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
         return Arrays.asList(RecipeMaps.polarizerRecipes, RecipeMaps.electroMagneticSeparatorRecipes);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        if (aNBT.hasKey("polarizerMode")) {
+            machineMode = aNBT.getBoolean("polarizerMode") ? MACHINEMODE_POLARIZER : MACHINEMODE_SEPARATOR;
+        }
+        super.loadNBTData(aNBT);
     }
 
     @Override
@@ -377,20 +344,13 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     }
 
     @Override
-    public IMachineMode defaultMachineMode() {
-        return MachineMode.Separator;
-    }
-
-    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        machineMode = machineMode.nextMachineMode();
-        PlayerUtils.messagePlayer(aPlayer, "Now running in " + machineMode.getModeName() + " Mode.");
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        if (machineMode == null) machineMode = MachineMode.Polarizer;
-        super.loadNBTData(aNBT);
+        setMachineMode(nextMachineMode());
+        if (machineMode == MACHINEMODE_POLARIZER) {
+            PlayerUtils.messagePlayer(aPlayer, "Now running in Polarizing Mode.");
+        } else {
+            PlayerUtils.messagePlayer(aPlayer, "Now running in Separating Mode.");
+        }
     }
 
     @Override
@@ -403,7 +363,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode.getModeID());
+        tag.setInteger("mode", machineMode);
     }
 
     @Override
