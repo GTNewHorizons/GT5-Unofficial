@@ -311,7 +311,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
         inputSeparation = aNBT.getBoolean(INPUT_SEPARATION_NBT_KEY);
         if (aNBT.hasKey("machineMode")) {
-            //backward compatibility
+            // backward compatibility
             machineModeID = aNBT.getInteger("machineMode");
         }
         if (aNBT.hasKey(VOIDING_MODE_NBT_KEY, Constants.NBT.TAG_STRING)) {

@@ -12,6 +12,7 @@ import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,7 +22,6 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.api.interfaces.tileentity.IMachineMode;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -43,6 +43,7 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IMachineMode;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
@@ -88,6 +89,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialMultiMachine> STRUCTURE_DEFINITION = null;
 
     static enum MachineMode implements IMachineMode {
+
         Metal(0, "Metal"),
         Fluid(1, "Fluid"),
         Misc(2, "Misc");
@@ -103,9 +105,15 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
         @Override
         public MachineMode nextMachineMode() {
             switch (modeID) {
-                case 0 -> {return Fluid;}
-                case 1 -> {return Misc;}
-                default -> {return Metal;}
+                case 0 -> {
+                    return Fluid;
+                }
+                case 1 -> {
+                    return Misc;
+                }
+                default -> {
+                    return Metal;
+                }
             }
         }
     }
@@ -373,7 +381,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
         switch (machineMode) {
             case Metal -> mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.metal");
             case Fluid -> mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.fluid");
-            case Misc ->  mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.misc");
+            case Misc -> mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.misc");
         }
         mInfo.add(mode);
         return mInfo.toArray(new String[0]);
