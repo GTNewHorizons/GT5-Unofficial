@@ -8,8 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import gregtech.api.interfaces.tileentity.IMachineMode;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialMultiMachine;
 import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -130,11 +128,25 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
      */
     int getMachineMode();
 
+    /**
+     * Get button texture from index
+     * 
+     * @param index Position in ModeIcon array to pull from
+     * @return A UITexture representing a button
+     */
     UITexture getMachineModeIcon(int index);
 
+    /**
+     * Sets the MachineMode by an index
+     * 
+     * @param index Mode to set to
+     */
     void setMachineMode(int index);
 
-    int nextMachineMode();
+    /**
+     * Sets the MachineMode to the next in the sequence
+     */
+    void nextMachineMode();
 
     default boolean getDefaultModeSwitch() {
         return supportsMachineModeSwitch();
@@ -142,13 +154,10 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
 
     Pos2d getMachineModeSwitchButtonPos();
 
-    default void onMachineModeSwitchClick() {}
-
     default ButtonWidget createModeSwitchButton(IWidgetBuilder<?> builder) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (supportsMachineModeSwitch()) {
-                onMachineModeSwitchClick();
-                setMachineMode(nextMachineMode());
+                nextMachineMode();
             }
         })
             .setPlayClickSound(supportsMachineModeSwitch())

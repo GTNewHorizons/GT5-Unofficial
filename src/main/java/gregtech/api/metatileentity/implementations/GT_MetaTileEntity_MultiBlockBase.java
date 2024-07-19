@@ -72,6 +72,7 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IMachineMode;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -128,7 +129,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public String mNEI;
     public int damageFactorLow = 5;
     public float damageFactorHigh = 0.6f;
-    public int machineModeID = 0;
+    public IMachineMode machineMode;
     public List<UITexture> machineModeIcons = new ArrayList<UITexture>();
 
     public boolean mLockedToSingleRecipe = getDefaultRecipeLockingMode();
@@ -256,7 +257,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         aNBT.setInteger("mEfficiency", mEfficiency);
         aNBT.setInteger("mPollution", mPollution);
         aNBT.setInteger("mRuntime", mRuntime);
-        aNBT.setInteger("machineMode", machineModeID);
+        if (machineMode != null) {
+            aNBT.setInteger("machineMode", machineMode.getModeID());
+        }
         if (supportsSingleRecipeLocking()) {
             aNBT.setBoolean("mLockedToSingleRecipe", mLockedToSingleRecipe);
             if (mLockedToSingleRecipe && mSingleRecipeCheck != null)
@@ -311,8 +314,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
         inputSeparation = aNBT.getBoolean(INPUT_SEPARATION_NBT_KEY);
         if (aNBT.hasKey("machineMode")) {
-            //backward compatibility
-            machineModeID = aNBT.getInteger("machineMode");
+            // backward compatibility
+            machineMode = machineMode.getByID(aNBT.getInteger("machineMode"));
         }
         if (aNBT.hasKey(VOIDING_MODE_NBT_KEY, Constants.NBT.TAG_STRING)) {
             voidingMode = VoidingMode.fromName(aNBT.getString(VOIDING_MODE_NBT_KEY));
@@ -2230,17 +2233,31 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     /**
      * Override this if you are a multi-machine and want a GUI button. You will also want to override
-     * setMachineModeIcons().
-     * Override nextMachineMode() if you have more than 2 modes.
+     * setMachineModeIcons() and add a MachineMode enum.
      */
     @Override
     public boolean supportsMachineModeSwitch() {
         return false;
     }
 
+    /**
+     * Override to give multi-machines a default mode. Required!
+     * 
+     * @return A MachineMode
+     */
+    public IMachineMode defaultMachineMode() {
+        return null;
+    }
+
+    /**
+     * Gets the current machinemode. If there is no machinemode, it selects the default
+     * 
+     * @return A MachineMode
+     */
     @Override
     public int getMachineMode() {
-        return machineModeID;
+        if (machineMode == null) machineMode = defaultMachineMode();
+        return machineMode.getModeID();
     }
 
     @Override
@@ -2248,18 +2265,17 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return machineModeIcons.get(index);
     }
 
-    @Override
-    public void setMachineMode(int index) {
-        machineModeID = index;
-    }
-
     /**
      * Determines which machine mode should come next if user changes mode.
      */
     @Override
-    public int nextMachineMode() {
-        if (machineModeID == 0) return 1;
-        else return 0;
+    public void nextMachineMode() {
+        if (machineMode != null) machineMode = machineMode.nextMachineMode();
+    }
+
+    @Override
+    public void setMachineMode(int index) {
+        machineMode = machineMode.getByID(index);
     }
 
     @Override

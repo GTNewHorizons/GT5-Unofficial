@@ -1,23 +1,32 @@
 package gregtech.api.interfaces.tileentity;
 
 public interface IMachineMode {
-    int modeID = 0;
-    String modeName = "";
 
     /**
      * Gets the numeric value associated with this machine mode
+     * 
      * @return Integer representing mode
      */
-    default int getModeID() {return modeID;}
+    int getModeID();
 
     /**
      * Gets the name associated with this machine mode
+     * 
      * @return String representing mode
      */
-    default String getModeName() {return modeName;}
+    String getModeName();
+
+    /**
+     * Gets the mode associated with this index
+     * 
+     * @param index ID
+     * @return MachineMode associated with index
+     */
+    IMachineMode getByID(int index);
 
     /**
      * Gets the mode that should be next in the sequence
+     * 
      * @return MachineMode representing next in sequence
      */
     IMachineMode nextMachineMode();

@@ -40,6 +40,7 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IMachineMode;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MagHatch;
@@ -97,6 +98,48 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                 tooltip = tooltip + EnumChatFormatting.BOLD + EnumChatFormatting.GREEN + "Can Use Multiamp Hatches";
 
             return tooltip;
+        }
+    }
+
+    enum MachineMode implements IMachineMode {
+
+        Separator(0, "Electromagnetic Separator"),
+        Polarizer(1, "Electromagnetic Polarizer");
+
+        final int modeID;
+        final String modeName;
+
+        MachineMode(int ID, String name) {
+            this.modeID = ID;
+            this.modeName = name;
+        }
+
+        @Override
+        public int getModeID() {
+            return modeID;
+        }
+
+        @Override
+        public String getModeName() {
+            return modeName;
+        }
+
+        @Override
+        public MachineMode getByID(int index) {
+            switch (index) {
+                case 0 -> {
+                    return MachineMode.Separator;
+                }
+                default -> {
+                    return MachineMode.Polarizer;
+                }
+            }
+        }
+
+        @Override
+        public MachineMode nextMachineMode() {
+            if (modeID == 0) return Polarizer;
+            return Separator;
         }
     }
 
@@ -312,25 +355,14 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return (machineMode == 1) ? RecipeMaps.polarizerRecipes : RecipeMaps.electroMagneticSeparatorRecipes;
+        if (machineMode == MachineMode.Polarizer) return RecipeMaps.polarizerRecipes;
+        else return RecipeMaps.electroMagneticSeparatorRecipes;
     }
 
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
         return Arrays.asList(RecipeMaps.polarizerRecipes, RecipeMaps.electroMagneticSeparatorRecipes);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("machineMode", machineMode);
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        machineMode = aNBT.getInteger("machineMode");
-        super.loadNBTData(aNBT);
     }
 
     @Override
@@ -345,13 +377,20 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     }
 
     @Override
+    public IMachineMode defaultMachineMode() {
+        return MachineMode.Separator;
+    }
+
+    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        setMachineMode(nextMachineMode());
-        if (machineMode == 1) {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Polarizing Mode.");
-        } else {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Separating Mode.");
-        }
+        machineMode = machineMode.nextMachineMode();
+        PlayerUtils.messagePlayer(aPlayer, "Now running in " + machineMode.getModeName() + " Mode.");
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        if (machineMode == null) machineMode = MachineMode.Polarizer;
+        super.loadNBTData(aNBT);
     }
 
     @Override
@@ -364,7 +403,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode);
+        tag.setInteger("mode", machineMode.getModeID());
     }
 
     @Override
