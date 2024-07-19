@@ -302,7 +302,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mEfficiency = aNBT.getInteger("mEfficiency");
         mPollution = aNBT.getInteger("mPollution");
         mRuntime = aNBT.getInteger("mRuntime");
-        if (supportsMachineModeSwitch()) {
+        if (aNBT.hasKey("machineMode")) {
             machineMode = aNBT.getInteger("machineMode");
         }
         if (supportsSingleRecipeLocking()) {
