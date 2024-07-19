@@ -138,7 +138,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return (machineMode == 1) ? RecipeMaps.packagerRecipes : RecipeMaps.unpackagerRecipes;
+        return (machineModeID == 1) ? RecipeMaps.packagerRecipes : RecipeMaps.unpackagerRecipes;
     }
 
     @Nonnull
@@ -193,13 +193,13 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mPackageMode", machineMode);
+        aNBT.setInteger("mPackageMode", machineModeID);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        machineMode = aNBT.getInteger("mPackageMode");
+        machineModeID = aNBT.getInteger("mPackageMode");
         super.loadNBTData(aNBT);
     }
 
@@ -207,13 +207,13 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode);
+        tag.setInteger("mode", machineModeID);
     }
 
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         setMachineMode(nextMachineMode());
-        if (machineMode == 1) {
+        if (machineModeID == 1) {
             PlayerUtils.messagePlayer(aPlayer, "Now running in Packager Mode.");
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Now running in Unpackager Mode.");

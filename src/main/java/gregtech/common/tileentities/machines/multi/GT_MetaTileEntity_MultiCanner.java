@@ -203,7 +203,7 @@ public class GT_MetaTileEntity_MultiCanner
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return (machineMode == 1) ? RecipeMaps.fluidCannerRecipes : RecipeMaps.cannerRecipes;
+        return (machineModeID == 1) ? RecipeMaps.fluidCannerRecipes : RecipeMaps.cannerRecipes;
     }
 
     @Nonnull
@@ -214,13 +214,13 @@ public class GT_MetaTileEntity_MultiCanner
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("machineMode", machineMode);
+        aNBT.setInteger("machineMode", machineModeID);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        machineMode = aNBT.getInteger("machineMode");
+        machineModeID = aNBT.getInteger("machineMode");
         super.loadNBTData(aNBT);
     }
 
@@ -238,7 +238,7 @@ public class GT_MetaTileEntity_MultiCanner
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         setMachineMode(nextMachineMode());
-        if (machineMode == 1) {
+        if (machineModeID == 1) {
             PlayerUtils.messagePlayer(aPlayer, "Now running in Fluid Canning Mode.");
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Now running in Canning Mode.");
@@ -249,7 +249,7 @@ public class GT_MetaTileEntity_MultiCanner
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode);
+        tag.setInteger("mode", machineModeID);
     }
 
     @Override

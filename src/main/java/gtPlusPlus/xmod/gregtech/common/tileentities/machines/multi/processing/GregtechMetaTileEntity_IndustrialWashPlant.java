@@ -190,8 +190,8 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return machineMode == 0 ? RecipeMaps.oreWasherRecipes
-            : machineMode == 1 ? GTPPRecipeMaps.simpleWasherRecipes : RecipeMaps.chemicalBathRecipes;
+        return machineModeID == 0 ? RecipeMaps.oreWasherRecipes
+            : machineModeID == 1 ? GTPPRecipeMaps.simpleWasherRecipes : RecipeMaps.chemicalBathRecipes;
     }
 
     @Nonnull
@@ -234,7 +234,7 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        if (machineMode == 2) return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
+        if (machineModeID == 2) return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
     }
 
@@ -342,7 +342,7 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mMode", machineMode);
+        aNBT.setInteger("mMode", machineModeID);
         super.saveNBTData(aNBT);
     }
 
@@ -351,14 +351,14 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
         if (aNBT.hasKey("mChemicalMode")) {
             boolean aTempMode = aNBT.getBoolean("mChemicalMode");
             if (aTempMode) {
-                machineMode = 2;
+                machineModeID = 2;
             } else {
-                machineMode = 0;
+                machineModeID = 0;
             }
             aNBT.removeTag("mChemicalMode");
         }
         if (aNBT.hasKey("mMode")) {
-            machineMode = aNBT.getInteger("mMode");
+            machineModeID = aNBT.getInteger("mMode");
         }
         super.loadNBTData(aNBT);
     }
@@ -366,9 +366,9 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         setMachineMode(nextMachineMode());
-        if (machineMode == 0) {
+        if (machineModeID == 0) {
             PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Ore Washer Mode.");
-        } else if (machineMode == 1) {
+        } else if (machineModeID == 1) {
             PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Simple Washer Mode.");
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Chemical Bath Mode.");
@@ -380,7 +380,7 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode);
+        tag.setInteger("mode", machineModeID);
     }
 
     @Override
@@ -402,8 +402,8 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
 
     @Override
     public int nextMachineMode() {
-        if (machineMode == 0) return 1;
-        else if (machineMode == 1) return 2;
+        if (machineModeID == 0) return 1;
+        else if (machineModeID == 1) return 2;
         else return 0;
     }
 
