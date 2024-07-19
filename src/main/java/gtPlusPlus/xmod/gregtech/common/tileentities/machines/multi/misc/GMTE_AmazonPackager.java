@@ -283,7 +283,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
     }
 
     @Override
-    public IMachineMode defaultMode() {
+    public IMachineMode defaultMachineMode() {
         return MachineMode.Packager;
     }
 }
