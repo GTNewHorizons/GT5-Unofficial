@@ -5,6 +5,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialCuttingMachine;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_CuttingFactoryController;
+
 public class GregtechIndustrialCuttingFactory {
 
     public static void run() {
@@ -18,7 +20,7 @@ public class GregtechIndustrialCuttingFactory {
         // Industrial Wire Factory Multiblock
         GregtechItemList.Industrial_CuttingFactoryController.set(
             new GregtechMetaTileEntity_IndustrialCuttingMachine(
-                992,
+                Industrial_CuttingFactoryController.ID,
                 "industrialcuttingmachine.controller.tier.01",
                 "Cutting Factory Controller").getStackForm(1L));
     }

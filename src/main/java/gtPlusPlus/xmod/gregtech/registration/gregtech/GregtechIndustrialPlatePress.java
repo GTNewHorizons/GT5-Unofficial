@@ -5,6 +5,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialPlatePress;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_PlatePress;
+
 public class GregtechIndustrialPlatePress {
 
     public static void run() {
@@ -18,7 +20,7 @@ public class GregtechIndustrialPlatePress {
         // Industrial Presser Multiblock
         GregtechItemList.Industrial_PlatePress.set(
             new GregtechMetaTileEntity_IndustrialPlatePress(
-                792,
+                Industrial_PlatePress.ID,
                 "industrialbender.controller.tier.single",
                 "Industrial Material Press").getStackForm(1L));
     }

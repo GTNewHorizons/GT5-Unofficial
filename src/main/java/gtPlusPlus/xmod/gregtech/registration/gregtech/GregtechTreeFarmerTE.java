@@ -5,6 +5,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaTreeFarmerStructural;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.TreeFarmer_Structural;
+
 public class GregtechTreeFarmerTE {
 
     public static void run() {
@@ -16,6 +18,6 @@ public class GregtechTreeFarmerTE {
 
     private static void run1() {
         GregtechItemList.TreeFarmer_Structural
-            .set(new GregtechMetaTreeFarmerStructural(752, "treefarmer.structural", "Farm Keeper", 0).getStackForm(1L));
+            .set(new GregtechMetaTreeFarmerStructural(TreeFarmer_Structural.ID, "treefarmer.structural", "Farm Keeper", 0).getStackForm(1L));
     }
 }

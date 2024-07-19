@@ -5,6 +5,13 @@ import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Basi
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_Vacuum_Furnace;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_Dehydrator_EV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_Dehydrator_HV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_Dehydrator_IV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_Dehydrator_LuV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_Dehydrator_MV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.GT_Dehydrator_ZPM;
 
 import net.minecraft.item.ItemStack;
 
@@ -76,7 +83,7 @@ public class GregtechDehydrator {
         // Basic
         GregtechItemList.GT_Dehydrator_MV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                911,
+                GT_Dehydrator_MV.ID,
                 "machine.dehydrator.tier.00",
                 "Basic Dehydrator I",
                 2,
@@ -96,7 +103,7 @@ public class GregtechDehydrator {
 
         GregtechItemList.GT_Dehydrator_HV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                912,
+                GT_Dehydrator_HV.ID,
                 "machine.dehydrator.tier.01",
                 "Basic Dehydrator II",
                 3,
@@ -117,7 +124,7 @@ public class GregtechDehydrator {
         // Chemical
         GregtechItemList.GT_Dehydrator_EV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                813,
+                GT_Dehydrator_EV.ID,
                 "advancedmachine.dehydrator.tier.01",
                 "Chemical Dehydrator I",
                 4,
@@ -136,7 +143,7 @@ public class GregtechDehydrator {
 
         GregtechItemList.GT_Dehydrator_IV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                814,
+                GT_Dehydrator_IV.ID,
                 "advancedmachine.dehydrator.tier.02",
                 "Chemical Dehydrator II",
                 5,
@@ -155,7 +162,7 @@ public class GregtechDehydrator {
 
         GregtechItemList.GT_Dehydrator_LuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                815,
+                GT_Dehydrator_LuV.ID,
                 "advancedmachine.dehydrator.tier.03",
                 "Chemical Dehydrator III",
                 6,
@@ -174,7 +181,7 @@ public class GregtechDehydrator {
 
         GregtechItemList.GT_Dehydrator_ZPM.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                816,
+                GT_Dehydrator_ZPM.ID,
                 "advancedmachine.dehydrator.tier.04",
                 "Chemical Dehydrator IV",
                 7,
@@ -193,7 +200,7 @@ public class GregtechDehydrator {
 
         // Advanced
         GregtechItemList.Controller_Vacuum_Furnace.set(
-            new GregtechMetaTileEntity_IndustrialDehydrator(995, "multimachine.adv.vacuumfurnace", "Utupu-Tanuri")
+            new GregtechMetaTileEntity_IndustrialDehydrator(Controller_Vacuum_Furnace.ID, "multimachine.adv.vacuumfurnace", "Utupu-Tanuri")
                 .getStackForm(1L));
     }
 }

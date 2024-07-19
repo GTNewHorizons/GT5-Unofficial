@@ -6,6 +6,9 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_AlloyBlastSmelter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.mega.GregTechMetaTileEntity_MegaAlloyBlastSmelter;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_AlloyBlastSmelter;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Mega_AlloyBlastSmelter;
+
 public class GregtechIndustrialBlastSmelter {
 
     public static void run() {
@@ -19,12 +22,12 @@ public class GregtechIndustrialBlastSmelter {
         // Industrial Alloy Blast Smelter Multiblock
         GregtechItemList.Industrial_AlloyBlastSmelter.set(
             new GregtechMetaTileEntity_AlloyBlastSmelter(
-                810,
+                Industrial_AlloyBlastSmelter.ID,
                 "industrialsalloyamelter.controller.tier.single",
                 "Alloy Blast Smelter").getStackForm(1L));
         GregtechItemList.Mega_AlloyBlastSmelter.set(
             new GregTechMetaTileEntity_MegaAlloyBlastSmelter(
-                31150,
+                Mega_AlloyBlastSmelter.ID,
                 "industrialsalloyamelter.controller.tier.mega",
                 "Mega Alloy Blast Smelter").getStackForm(1L));
     }

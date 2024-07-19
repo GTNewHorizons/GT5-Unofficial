@@ -5,6 +5,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialMacerator;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_MacerationStack;
+
 public class GregtechIndustrialMacerator {
 
     public static void run() {
@@ -18,7 +20,7 @@ public class GregtechIndustrialMacerator {
         // Industrial Maceration Stack Multiblock
         GregtechItemList.Industrial_MacerationStack.set(
             new GregtechMetaTileEntity_IndustrialMacerator(
-                797,
+                Industrial_MacerationStack.ID,
                 "industrialmacerator.controller.tier.single",
                 "Maceration Stack Controller").getStackForm(1L));
     }

@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import java.util.List;
 
+import gregtech.api.enums.GT_Values;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -21,6 +22,18 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_EV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_HV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_IV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_LV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_LuV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_MV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_ULV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_UV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_ZPM;
+
 public class GregtechSimpleWasher {
 
     public static void run() {
@@ -33,32 +46,32 @@ public class GregtechSimpleWasher {
             // every other tier, and they were numbered numerically. In order to maintain backwards compatibility,
             // the tier numbers need to stay as they were.
             List<Quad<GregtechItemList, Integer, String, String>> washers = ImmutableList.of(
-                new Quad<>(GregtechItemList.SimpleDustWasher_LV, 31790, "simplewasher.01.tier.06", "Simple Washer I"),
-                new Quad<>(GregtechItemList.SimpleDustWasher_MV, 31017, "simplewasher.01.tier.02", "Simple Washer II"),
-                new Quad<>(GregtechItemList.SimpleDustWasher_HV, 31791, "simplewasher.01.tier.07", "Simple Washer III"),
-                new Quad<>(GregtechItemList.SimpleDustWasher_EV, 31018, "simplewasher.01.tier.03", "Simple Washer IV"),
-                new Quad<>(GregtechItemList.SimpleDustWasher_IV, 31792, "simplewasher.01.tier.08", "Simple Washer V"),
-                new Quad<>(GregtechItemList.SimpleDustWasher_LuV, 31019, "simplewasher.01.tier.04", "Simple Washer VI"),
+                new Quad<>(GregtechItemList.SimpleDustWasher_LV, SimpleDustWasher_LV.ID, "simplewasher.01.tier.06", "Simple Washer I"),
+                new Quad<>(GregtechItemList.SimpleDustWasher_MV, SimpleDustWasher_MV.ID, "simplewasher.01.tier.02", "Simple Washer II"),
+                new Quad<>(GregtechItemList.SimpleDustWasher_HV, SimpleDustWasher_HV.ID, "simplewasher.01.tier.07", "Simple Washer III"),
+                new Quad<>(GregtechItemList.SimpleDustWasher_EV, SimpleDustWasher_EV.ID, "simplewasher.01.tier.03", "Simple Washer IV"),
+                new Quad<>(GregtechItemList.SimpleDustWasher_IV, SimpleDustWasher_IV.ID, "simplewasher.01.tier.08", "Simple Washer V"),
+                new Quad<>(GregtechItemList.SimpleDustWasher_LuV, SimpleDustWasher_LuV.ID, "simplewasher.01.tier.04", "Simple Washer VI"),
                 new Quad<>(
                     GregtechItemList.SimpleDustWasher_ZPM,
-                    31793,
+                    SimpleDustWasher_ZPM.ID,
                     "simplewasher.01.tier.09",
                     "Simple Washer VII"),
                 new Quad<>(
                     GregtechItemList.SimpleDustWasher_UV,
-                    31020,
+                    SimpleDustWasher_UV.ID,
                     "simplewasher.01.tier.05",
                     "Simple Washer VIII"));
 
             GregtechItemList.SimpleDustWasher_ULV.set(
                 new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                    767,
+                    SimpleDustWasher_ULV.ID,
                     "simplewasher.01.tier.01",
                     "Deprecated ULV Simple Washer",
                     0,
                     new String[] { "It's like an automatic Cauldron for washing dusts.",
                         "§cDEPRECATED: No recipe.§r Make a Simple Washer I.", CORE.GT_Tooltip.get() },
-                    GTPPRecipeMaps.simpleWasherRecipes,
+                    simpleWasherRecipes,
                     1,
                     1,
                     true,
@@ -80,7 +93,7 @@ public class GregtechSimpleWasher {
                             tier,
                             new String[] { "It's like an automatic Cauldron for washing dusts.",
                                 CORE.GT_Tooltip.get() },
-                            GTPPRecipeMaps.simpleWasherRecipes,
+                            simpleWasherRecipes,
                             1,
                             1,
                             true,
@@ -121,12 +134,12 @@ public class GregtechSimpleWasher {
             addSimpleWashRecipe(dustPure, dustClean);
         }
 
-        return GTPPRecipeMaps.simpleWasherRecipes.getAllRecipes()
+        return simpleWasherRecipes.getAllRecipes()
             .size() > mRecipeCount;
     }
 
     private static boolean generateDirtyCrushedRecipes() {
-        int mRecipeCount = GTPPRecipeMaps.simpleWasherRecipes.getAllRecipes()
+        int mRecipeCount = simpleWasherRecipes.getAllRecipes()
             .size();
         // Generate Recipe Map for the Dust Washer.
         ItemStack crushedClean;
@@ -143,24 +156,19 @@ public class GregtechSimpleWasher {
             addSimpleWashRecipe(crushedDirty, crushedClean);
         }
 
-        return GTPPRecipeMaps.simpleWasherRecipes.getAllRecipes()
+        return simpleWasherRecipes.getAllRecipes()
             .size() > mRecipeCount;
     }
 
     private static void addSimpleWashRecipe(ItemStack aInput, ItemStack aOutput) {
         if (aInput != null && aOutput != null) {
-            GT_Recipe aRecipe = new GT_Recipe(
-                false,
-                new ItemStack[] { aInput },
-                new ItemStack[] { aOutput },
-                null,
-                new int[] {},
-                new FluidStack[] { FluidUtils.getFluidStack("water", 100) },
-                new FluidStack[] {},
-                5,
-                8,
-                0);
-            GTPPRecipeMaps.simpleWasherRecipes.addRecipe(aRecipe);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aInput)
+                .itemOutputs(aOutput)
+                .fluidInputs(FluidUtils.getFluidStack("water", 100))
+                .duration(5*TICKS)
+                .eut(8)
+                .addTo(simpleWasherRecipes);
         }
     }
 }

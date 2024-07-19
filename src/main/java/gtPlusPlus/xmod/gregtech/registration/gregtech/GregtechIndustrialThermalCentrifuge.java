@@ -5,6 +5,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialThermalCentrifuge;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_ThermalCentrifuge;
+
 public class GregtechIndustrialThermalCentrifuge {
 
     public static void run() {
@@ -17,7 +19,7 @@ public class GregtechIndustrialThermalCentrifuge {
     private static void run1() {
         GregtechItemList.Industrial_ThermalCentrifuge.set(
             new GregtechMetaTileEntity_IndustrialThermalCentrifuge(
-                849,
+                Industrial_ThermalCentrifuge.ID,
                 "industrialthermalcentrifuge.controller.tier.single",
                 "Large Thermal Refinery").getStackForm(1L));
     }

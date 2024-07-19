@@ -5,6 +5,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialMultiMachine;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_MultiMachine;
+
 public class GregtechIndustrialMultiMachine {
 
     public static void run() {
@@ -17,7 +19,7 @@ public class GregtechIndustrialMultiMachine {
     private static void run1() {
         GregtechItemList.Industrial_MultiMachine.set(
             new GregtechMetaTileEntity_IndustrialMultiMachine(
-                860,
+                Industrial_MultiMachine.ID,
                 "industrialmultimachine.controller.tier.single",
                 "Large Processing Factory").getStackForm(1L));
     }

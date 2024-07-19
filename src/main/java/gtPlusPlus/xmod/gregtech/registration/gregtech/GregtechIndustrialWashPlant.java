@@ -5,6 +5,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialWashPlant;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_WashPlant;
+
 public class GregtechIndustrialWashPlant {
 
     public static void run() {
@@ -17,7 +19,7 @@ public class GregtechIndustrialWashPlant {
     private static void run1() {
         GregtechItemList.Industrial_WashPlant.set(
             new GregtechMetaTileEntity_IndustrialWashPlant(
-                850,
+                Industrial_WashPlant.ID,
                 "industrialwashplant.controller.tier.single",
                 "Ore Washing Plant").getStackForm(1L));
     }

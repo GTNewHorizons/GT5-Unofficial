@@ -8,6 +8,9 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_SolarTower;
 import gtPlusPlus.xmod.gregtech.common.tileentities.misc.TileEntitySolarHeater;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_Solar_Tower;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Solar_Tower_Reflector;
+
 public class GregtechSolarTower {
 
     public static void run() {
@@ -18,11 +21,11 @@ public class GregtechSolarTower {
     private static void run1() {
         // Solar Tower
         GregtechItemList.Industrial_Solar_Tower.set(
-            new GregtechMetaTileEntity_SolarTower(863, "solartower.controller.tier.single", "Solar Tower")
+            new GregtechMetaTileEntity_SolarTower(Industrial_Solar_Tower.ID, "solartower.controller.tier.single", "Solar Tower")
                 .getStackForm(1L));
         GregtechItemList.Solar_Tower_Reflector.set(
             new TileEntitySolarHeater(
-                864,
+                Solar_Tower_Reflector.ID,
                 "solarreflector.simple.single",
                 "Solar Reflector",
                 8,

@@ -7,22 +7,27 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaWirelessCharger;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_EV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_HV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_IV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_LV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_LuV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_MV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_UHV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_UV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_ZPM;
+
 public class GregtechWirelessChargers {
 
     public static void run() {
 
         Logger.INFO("Gregtech5u Content | Registering Wireless Chargers.");
-
-        long bitsd = GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-            | GT_ModHandler.RecipeBits.REVERSIBLE
-            | GT_ModHandler.RecipeBits.BUFFERED;
-        int mID = 890;
-
+        
         Utils.registerEvent(new ChargingHelper());
 
         GregtechItemList.Charger_LV.set(
             new GregtechMetaWirelessCharger(
-                mID++,
+                Charger_LV.ID,
                 "wificharger.01.tier.single",
                 "Wireless Charger MK I",
                 1,
@@ -30,7 +35,7 @@ public class GregtechWirelessChargers {
                 0).getStackForm(1L));
         GregtechItemList.Charger_MV.set(
             new GregtechMetaWirelessCharger(
-                mID++,
+                Charger_MV.ID,
                 "wificharger.02.tier.single",
                 "Wireless Charger MK II",
                 2,
@@ -38,7 +43,7 @@ public class GregtechWirelessChargers {
                 0).getStackForm(1L));
         GregtechItemList.Charger_HV.set(
             new GregtechMetaWirelessCharger(
-                mID++,
+                Charger_HV.ID,
                 "wificharger.03.tier.single",
                 "Wireless Charger MK III",
                 3,
@@ -46,7 +51,7 @@ public class GregtechWirelessChargers {
                 0).getStackForm(1L));
         GregtechItemList.Charger_EV.set(
             new GregtechMetaWirelessCharger(
-                mID++,
+                Charger_EV.ID,
                 "wificharger.04.tier.single",
                 "Wireless Charger MK IV",
                 4,
@@ -54,7 +59,7 @@ public class GregtechWirelessChargers {
                 0).getStackForm(1L));
         GregtechItemList.Charger_IV.set(
             new GregtechMetaWirelessCharger(
-                mID++,
+                Charger_IV.ID,
                 "wificharger.05.tier.single",
                 "Wireless Charger MK V",
                 5,
@@ -62,7 +67,7 @@ public class GregtechWirelessChargers {
                 0).getStackForm(1L));
         GregtechItemList.Charger_LuV.set(
             new GregtechMetaWirelessCharger(
-                mID++,
+                Charger_LuV.ID,
                 "wificharger.06.tier.single",
                 "Wireless Charger MK VI",
                 6,
@@ -70,7 +75,7 @@ public class GregtechWirelessChargers {
                 0).getStackForm(1L));
         GregtechItemList.Charger_ZPM.set(
             new GregtechMetaWirelessCharger(
-                mID++,
+                Charger_ZPM.ID,
                 "wificharger.07.tier.single",
                 "Wireless Charger MK VII",
                 7,
@@ -78,7 +83,7 @@ public class GregtechWirelessChargers {
                 0).getStackForm(1L));
         GregtechItemList.Charger_UV.set(
             new GregtechMetaWirelessCharger(
-                mID++,
+                Charger_UV.ID,
                 "wificharger.08.tier.single",
                 "Wireless Charger MK VIII",
                 8,
@@ -86,7 +91,7 @@ public class GregtechWirelessChargers {
                 0).getStackForm(1L));
         GregtechItemList.Charger_UHV.set(
             new GregtechMetaWirelessCharger(
-                mID++,
+                Charger_UHV.ID,
                 "wificharger.09.tier.single",
                 "Wireless Charger MK IX",
                 9,

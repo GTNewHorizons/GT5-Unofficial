@@ -5,6 +5,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_NuclearSaltProcessingPlant;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Nuclear_Salt_Processing_Plant;
+
 public class GregtechNuclearSaltProcessingPlant {
 
     public static void run() {
@@ -13,7 +15,7 @@ public class GregtechNuclearSaltProcessingPlant {
             // Nuclear Salt Processing Plant Multiblock
             GregtechItemList.Nuclear_Salt_Processing_Plant.set(
                 new GregtechMetaTileEntity_NuclearSaltProcessingPlant(
-                    749,
+                    Nuclear_Salt_Processing_Plant.ID,
                     "nuclearsaltprocessingplant.controller.tier.single",
                     "Nuclear Salt Processing Plant").getStackForm(1L));
         }

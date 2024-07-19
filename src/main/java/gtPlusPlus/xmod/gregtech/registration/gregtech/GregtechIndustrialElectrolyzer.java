@@ -5,6 +5,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialElectrolyzer;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_Electrolyzer;
+
 public class GregtechIndustrialElectrolyzer {
 
     public static void run() {
@@ -18,7 +20,7 @@ public class GregtechIndustrialElectrolyzer {
         // Industrial Electrolyzer Multiblock
         GregtechItemList.Industrial_Electrolyzer.set(
             new GregtechMetaTileEntity_IndustrialElectrolyzer(
-                796,
+                Industrial_Electrolyzer.ID,
                 "industrialelectrolyzer.controller.tier.single",
                 "Industrial Electrolyzer").getStackForm(1L));
     }
