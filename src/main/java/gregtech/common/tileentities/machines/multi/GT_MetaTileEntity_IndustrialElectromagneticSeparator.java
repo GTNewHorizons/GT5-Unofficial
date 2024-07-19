@@ -327,10 +327,11 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
         if (aNBT.hasKey("polarizerMode")) {
             machineMode = aNBT.getBoolean("polarizerMode") ? MACHINEMODE_POLARIZER : MACHINEMODE_SEPARATOR;
+            aNBT.removeTag("polarizerMode");
         }
-        super.loadNBTData(aNBT);
     }
 
     @Override

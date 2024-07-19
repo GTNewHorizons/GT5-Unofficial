@@ -356,6 +356,7 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
         if (aNBT.hasKey("mChemicalMode")) {
             boolean aTempMode = aNBT.getBoolean("mChemicalMode");
             if (aTempMode) {
@@ -368,7 +369,6 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
         if (aNBT.hasKey("mMode")) {
             machineMode = aNBT.getInteger("mMode");
         }
-        super.loadNBTData(aNBT);
     }
 
     @Override
