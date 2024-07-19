@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.gui.CreativeTabTecTech;
 import com.github.technus.tectech.loader.recipe.BaseRecipeLoader;
+import com.github.technus.tectech.loader.recipe.ResearchStationAssemblyLine;
 import com.github.technus.tectech.loader.thing.CoverLoader;
 import com.github.technus.tectech.loader.thing.MachineLoader;
 import com.github.technus.tectech.loader.thing.ThingsLoader;
@@ -198,5 +199,9 @@ public final class MainLoader {
             safeSetResistance(GameRegistry.findBlock("TwilightForest", "tile.TFTowerTranslucent"), 30);
             safeSetResistance(GameRegistry.findBlock("TwilightForest", "tile.TFDeadrock"), 5);
         }
+    }
+
+    public static void onLoadCompleted() {
+        new ResearchStationAssemblyLine().runLateRecipes();
     }
 }

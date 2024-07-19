@@ -12,6 +12,7 @@ import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GTPlusPlusEverglades;
+import static gregtech.api.enums.Mods.GalacticraftAmunRa;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.GraviSuite;
@@ -34,12 +35,18 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
+import com.github.technus.tectech.thing.block.GodforgeGlassBlock;
+import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.rwtema.extrautils.ExtraUtils;
+import common.Blocks;
 
 import fox.spiteful.avaritia.compat.ticon.Tonkers;
 import goodgenerator.items.MyMaterial;
+import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsBotania;
@@ -51,6 +58,8 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MISC_MATERIALS;
+import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import tconstruct.tools.TinkerTools;
@@ -67,6 +76,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         itemPartsUMVAsslineRecipes();
         itemPartsUXVAsslineRecipes();
         addWirelessEnergyRecipes();
+        addGodforgeRecipes();
 
         if (TinkersGregworks.isModLoaded() && Avaritia.isModLoaded() // Infinity, Cosmic Neutronium
             && ExtraUtilities.isModLoaded() // Bedrockium
@@ -3016,6 +3026,219 @@ public class ResearchStationAssemblyLine implements Runnable {
             CustomItemList.astralArrayFabricator.get(1),
             300 * SECONDS,
             (int) TierEU.RECIPE_UXV);
+    }
+
+    private void addGodforgeRecipes() {
+        if (EternalSingularity.isModLoaded()) {
+            // Controller
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                CustomItemList.Godforge_StellarEnergySiphonCasing.get(1),
+                48_000_000,
+                8_192,
+                (int) TierEU.RECIPE_UMV,
+                64,
+                new Object[] { CustomItemList.Godforge_StellarEnergySiphonCasing.get(4),
+                    new ItemStack(Blocks.lscLapotronicEnergyUnit, 8, 8), ItemList.Casing_Dim_Bridge.get(64),
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 64L),
+                    GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Mellion, 16),
+                    GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SixPhasedCopper, 16),
+                    GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Creon, 16),
+                    MyMaterial.metastableOganesson.get(OrePrefixes.plateDense, 16),
+                    new ItemStack(
+                        Particle.getBaseParticle(Particle.GRAVITON)
+                            .getItem(),
+                        64),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 16),
+                    ItemList.Sensor_UIV.get(32), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Optical, 64),
+                    CustomItemList.eM_energyTunnel7_UIV.get(1), ItemRegistry.energyDistributor[11] },
+                new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(2048 * 144),
+                    MaterialsUEVplus.ExcitedDTEC.getFluid(8_192_000), Materials.Thorium.getPlasma(256 * 144),
+                    MaterialsUEVplus.TranscendentMetal.getMolten(2048 * 144) },
+                CustomItemList.Machine_Multi_ForgeOfGods.get(1),
+                300 * SECONDS,
+                (int) TierEU.RECIPE_UMV);
+
+        }
+
+        // Magnetic Confinement Casing
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 1),
+            48_000_000,
+            8_192,
+            (int) TierEU.RECIPE_UMV,
+            64,
+            new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 8),
+                WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.block, 16),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.TengamAttuned, 32),
+                GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.Creon, 16),
+                ELEMENT.STANDALONE.HYPOGEN.getScrew(8),
+                GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.SixPhasedCopper, 8),
+                ItemList.SuperconductorComposite.get(1), ItemList.Emitter_UIV.get(2) },
+            new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(16 * 144),
+                Materials.Plutonium241.getPlasma(16 * 144) },
+            CustomItemList.Godforge_MagneticConfinementCasing.get(8),
+            50 * SECONDS,
+            (int) TierEU.RECIPE_UIV);
+
+        if (GalacticraftAmunRa.isModLoaded()) {
+            // Structure Casing
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                CustomItemList.Godforge_MagneticConfinementCasing.get(1),
+                48_000_000,
+                8_192,
+                (int) TierEU.RECIPE_UMV,
+                64,
+                new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Mellion, 16),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SixPhasedCopper, 16),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 8),
+                    ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFrameBox(8),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.Creon, 6),
+                    new ItemStack(
+                        Particle.getBaseParticle(Particle.GRAVITON)
+                            .getItem(),
+                        8),
+                    ItemList.Field_Generator_UEV.get(4),
+                    // Artificial Gravity Generator
+                    getModItem(GalacticraftAmunRa.ID, "tile.machines3", 4L, 1) },
+                new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(16 * 144),
+                    Materials.Lead.getPlasma(2 * 144) },
+                CustomItemList.Godforge_BoundlessStructureCasing.get(1),
+                10 * SECONDS,
+                (int) TierEU.RECIPE_UIV);
+        }
+
+        // Guidance Casing
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            CustomItemList.Godforge_BoundlessStructureCasing.get(1),
+            48_000_000,
+            8_192,
+            (int) TierEU.RECIPE_UMV,
+            64,
+            new Object[] { CustomItemList.Godforge_BoundlessStructureCasing.get(1), ItemList.ZPM2.get(1),
+                GregtechItemList.CosmicFabricManipulator.get(1), ItemList.Field_Generator_UEV.get(4),
+                ItemList.Emitter_UIV.get(8), GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.Creon, 6),
+                GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.Creon, 8),
+                GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.Mellion, 8) },
+            new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(16 * 144),
+                Materials.Thorium.getPlasma(2 * 144) },
+            CustomItemList.Godforge_GuidanceCasing.get(1),
+            10 * SECONDS,
+            (int) TierEU.RECIPE_UIV);
+
+        // Energy Siphon Casing
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            CustomItemList.Godforge_GuidanceCasing.get(1),
+            48_000_000,
+            8_192,
+            (int) TierEU.RECIPE_UMV,
+            64,
+            new Object[] { CustomItemList.Godforge_BoundlessStructureCasing.get(1),
+                ItemList.Casing_Coil_Hypogen.get(64), ItemList.Casing_Coil_Hypogen.get(64),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUIV, 32),
+                ItemList.neutroniumHeatCapacitor.get(1L), ItemList.neutroniumHeatCapacitor.get(1L),
+                ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
+                CustomItemList.eM_energyTunnel7_UIV.get(1), getItemContainer("Generator_Plasma_UV").get(64),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Creon, 6),
+                ELEMENT.STANDALONE.HYPOGEN.getPlate(6) },
+            new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(16 * 144),
+                Materials.SuperconductorUIV.getMolten(32 * 144L), MaterialsUEVplus.ExcitedDTEC.getFluid(128_000L) },
+            CustomItemList.Godforge_StellarEnergySiphonCasing.get(1),
+            10 * SECONDS,
+            (int) TierEU.RECIPE_UIV);
+
+        // Gravitational Lens
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            new ItemStack(QuantumGlassBlock.INSTANCE, 1),
+            48_000_000,
+            8_192,
+            (int) TierEU.RECIPE_UMV,
+            64,
+            new Object[] { new ItemStack(QuantumGlassBlock.INSTANCE, 8),
+                new ItemStack(ItemRegistry.bw_glasses[1], 8, 0), GregtechItemList.ForceFieldGlass.get(8),
+                new ItemStack(
+                    Particle.getBaseParticle(Particle.GRAVITON)
+                        .getItem(),
+                    32),
+                getItemContainer("RadoxPolymerLens").get(6), getItemContainer("ChromaticLens").get(6),
+                getItemContainer("MysteriousCrystalLens").get(6),
+                WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.lens, 6),
+                ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getPlateDense(36),
+                GT_OreDictUnificator.get(OrePrefixes.stickLong, MaterialsUEVplus.Creon, 6),
+                GT_OreDictUnificator.get(OrePrefixes.stickLong, MaterialsUEVplus.Mellion, 6),
+                GT_OreDictUnificator.get(OrePrefixes.stickLong, MaterialsUEVplus.SixPhasedCopper, 6) },
+            new FluidStack[] { ELEMENT.STANDALONE.RHUGNOR.getFluidStack(16 * 144),
+                MaterialsUEVplus.Creon.getMolten(16 * 144),
+                ELEMENT.STANDALONE.ADVANCED_NITINOL.getFluidStack(1024 * 144) },
+            new ItemStack(GodforgeGlassBlock.INSTANCE, 1),
+            10 * SECONDS,
+            (int) TierEU.RECIPE_UIV);
+
+        // Graviton Modulator 1
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            GregtechItemList.Battery_Gem_4.get(1),
+            48_000_000,
+            8_192,
+            (int) TierEU.RECIPE_UMV,
+            64,
+            new Object[] { CustomItemList.Godforge_MagneticConfinementCasing.get(1),
+                ItemRefer.Field_Restriction_Coil_T3.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.Creon, 8),
+                GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.Mellion, 4),
+                GregtechItemList.Battery_Gem_4.get(1), GregtechItemList.Laser_Lens_Special.get(2),
+                ItemList.Emitter_UIV.get(4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 8),
+                GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 1) },
+            new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(16 * 144),
+                Materials.SuperconductorUIVBase.getMolten(16 * 144), Materials.Infinity.getMolten(16 * 144) },
+            CustomItemList.Godforge_GravitonFlowModulatorTier1.get(1),
+            10 * SECONDS,
+            (int) TierEU.RECIPE_UIV);
+
+        // Graviton Modulator 2
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            CustomItemList.Godforge_GravitonFlowModulatorTier1.get(1),
+            96_000_000,
+            16_384,
+            (int) TierEU.RECIPE_UXV,
+            128,
+            new Object[] { CustomItemList.Godforge_MagneticConfinementCasing.get(1),
+                ItemRefer.Field_Restriction_Coil_T4.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Creon, 8),
+                GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.Mellion, 4),
+                GregtechItemList.Battery_Gem_4.get(4), GregtechItemList.Laser_Lens_Special.get(8),
+                ItemList.Emitter_UMV.get(4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Piko, 8),
+                GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 2),
+                GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 2) },
+            new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(64 * 144),
+                Materials.SuperconductorUMVBase.getMolten(64 * 144), MaterialsUEVplus.SpaceTime.getMolten(64 * 144) },
+            CustomItemList.Godforge_GravitonFlowModulatorTier2.get(1),
+            10 * SECONDS,
+            (int) TierEU.RECIPE_UMV);
+
+        // Graviton Modulator 3
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            CustomItemList.Godforge_GravitonFlowModulatorTier2.get(1),
+            192_000_000,
+            32_768,
+            (int) TierEU.RECIPE_MAX,
+            256,
+            new Object[] { CustomItemList.Godforge_MagneticConfinementCasing.get(1),
+                ItemRefer.Field_Restriction_Coil_T4.get(4),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Creon, 64),
+                GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.Mellion, 64),
+                GregtechItemList.SpaceTimeContinuumRipper.get(8), GregtechItemList.Battery_Gem_4.get(8),
+                GregtechItemList.Laser_Lens_Special.get(8), ItemList.Emitter_UXV.get(4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Quantum, 8),
+                GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 8),
+                GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 8),
+                GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.SixPhasedCopper, 8),
+                GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.Universium, 8) },
+            new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(256 * 144),
+                Materials.SuperconductorUMVBase.getMolten(256 * 144),
+                MaterialsUEVplus.WhiteDwarfMatter.getMolten(256 * 144),
+                MaterialsUEVplus.Eternity.getMolten(256 * 144) },
+            CustomItemList.Godforge_GravitonFlowModulatorTier3.get(1),
+            10 * SECONDS,
+            (int) TierEU.RECIPE_UXV);
 
     }
 
@@ -3278,6 +3501,33 @@ public class ResearchStationAssemblyLine implements Runnable {
                 wirelessDynamos[i],
                 recipeDurationTicks,
                 recipeEuPerTick);
+        }
+    }
+
+    public void runLateRecipes() {
+        if (EternalSingularity.isModLoaded()) {
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.block, MaterialsUEVplus.TranscendentMetal, 1),
+                48_000_000,
+                8_192,
+                (int) TierEU.RECIPE_UMV,
+                64,
+                new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SixPhasedCopper, 4),
+                    GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.CosmicNeutronium, 16),
+                    MyMaterial.tairitsu.get(OrePrefixes.plateDense, 16),
+                    GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 16),
+                    GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 8),
+                    getModItem(EternalSingularity.ID, "combined_singularity", 1L, 2),
+                    getModItem(EternalSingularity.ID, "combined_singularity", 1L, 4),
+                    ItemRefer.Advanced_Radiation_Protection_Plate.get(64),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.Mellion, 16),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.Creon, 16), ALLOY.QUANTUM.getPlate(16),
+                    ALLOY.ABYSSAL.getFrameBox(4) },
+                new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(128 * 144),
+                    Materials.Bedrockium.getMolten(16_384 * 144), Materials.Neutronium.getMolten(2_048 * 144) },
+                CustomItemList.Godforge_SingularityShieldingCasing.get(4),
+                30 * SECONDS,
+                (int) TierEU.RECIPE_UIV);
         }
     }
 }
