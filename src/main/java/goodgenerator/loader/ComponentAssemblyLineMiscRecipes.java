@@ -53,7 +53,7 @@ import gtPlusPlus.core.recipe.common.CI;
 public class ComponentAssemblyLineMiscRecipes {
 
     public static final String[] circuitTierMaterials = { "Primitive", "Basic", "Good", "Advanced", "Data", "Elite",
-        "Master", "Ultimate", "Superconductor", "Infinite", "Bio", "Optical", "Piko", "Quantum" };
+        "Master", "Ultimate", "Superconductor", "Infinite", "Bio", "Optical", "Exotic", "Cosmic" };
 
     static final HashMap<String, Integer> NameToTier = new HashMap<>();
 

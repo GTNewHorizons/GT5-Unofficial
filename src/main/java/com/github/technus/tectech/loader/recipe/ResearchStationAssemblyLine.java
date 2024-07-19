@@ -609,7 +609,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UIV,
             1,
             new Object[] { CustomItemList.eM_energyTunnel7_UV.get(32),
-                new Object[] { OrePrefixes.circuit.get(Materials.Piko), 32L }, ItemList.Electric_Pump_UIV.get(16),
+                new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 32L }, ItemList.Electric_Pump_UIV.get(16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.TranscendentMetal, 64),
 
                 GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.TranscendentMetal, 16),
@@ -844,10 +844,10 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { getModItem(ExtraUtilities.ID, "cobblestone_compressed", 1, 7),
                 getModItem(IndustrialCraft2.ID, "blockMachine2", 1, 0),
                 GT_OreDictUnificator.get(OrePrefixes.block, Materials.Infinity, 4L),
-                new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 1 },
                 getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32, 0), ItemList.Robot_Arm_UMV.get(4),
                 ItemList.Emitter_UMV.get(4), ItemList.Sensor_UMV.get(4), },
             new FluidStack[] { new FluidStack(FluidRegistry.getFluid("oganesson"), 50000),
@@ -936,10 +936,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                     32,
                     new Object[] { ELEMENT.STANDALONE.HYPOGEN.getPlateDouble(32),
                         ELEMENT.STANDALONE.HYPOGEN.getPlateDouble(32),
-                        new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 },
-                        new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 },
-                        new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 },
-                        new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 }, ItemList.ZPM4.get(8L),
+                        new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 1 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 1 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 1 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 1 }, ItemList.ZPM4.get(8L),
                         ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
                         ItemList.Circuit_Wafer_QPIC.get(64),
                         GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.RawPicoWafer", 64),
@@ -961,10 +961,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                     64,
                     new Object[] { ELEMENT.STANDALONE.DRAGON_METAL.getPlateDouble(32),
                         ELEMENT.STANDALONE.DRAGON_METAL.getPlateDouble(32),
-                        new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
-                        new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
-                        new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
-                        new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 }, ItemList.ZPM5.get(8L),
+                        new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 1 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 1 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 1 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 1 }, ItemList.ZPM5.get(8L),
                         ItemList.Field_Generator_UMV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
                         ItemList.Circuit_Wafer_QPIC.get(64),
                         GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 64),
@@ -1177,7 +1177,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new Object[] { getModItem(DraconicEvolution.ID, "awakenedCore", 8, 0),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 4L),
                     GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 1L),
-                    new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 }, },
+                    new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 1 }, },
                 new FluidStack[] { MaterialsUEVplus.SpaceTime.getMolten(14400L), Materials.Void.getMolten(230400L), },
                 getModItem(KubaTech.ID, "kubaitems", 1, 41),
                 36000,
@@ -1210,7 +1210,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             6,
             new Object[] { CustomItemList.eM_Computer_Bus.get(1), CustomItemList.hatch_CreativeMaintenance.get(1),
                 ItemList.Field_Generator_UIV.get(1L), GregtechItemList.Laser_Lens_Special.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.Piko), 2 }, CustomItemList.DATApipe.get(64),
+                new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 2 }, CustomItemList.DATApipe.get(64),
                 CustomItemList.DATApipe.get(64), ItemList.Cover_Screen.get(1) },
             new FluidStack[] { Materials.Iridium.getMolten(INGOTS * 100), new FluidStack(solderUEV, 2592),
                 new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 20000),
@@ -1850,7 +1850,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.TranscendentMetal, 6L),
                 ItemList.Gravistar.get(16L), ItemList.Emitter_UIV.get(4L),
-                new Object[] { OrePrefixes.circuit.get(Materials.Piko), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 4 },
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
@@ -1980,7 +1980,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.gear, MaterialsUEVplus.SpaceTime, 2L),
                 GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.SpaceTime, 6L),
                 ItemList.Electric_Motor_UMV.get(2L), ItemList.Electric_Piston_UMV.get(1L),
-                new Object[] { OrePrefixes.circuit.get(Materials.Piko), 2L },
+                new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 2L },
                 new Object[] { OrePrefixes.circuit.get(Materials.Optical), 4L },
                 new Object[] { OrePrefixes.circuit.get(Materials.Bio), 8L },
                 GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 6L) },
@@ -2025,7 +2025,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 1L),
                 ItemList.Electric_Motor_UMV.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.stick, MaterialsUEVplus.SpaceTime, 16L),
-                ItemList.Gravistar.get(64), new Object[] { OrePrefixes.circuit.get(Materials.Piko), 4L },
+                ItemList.Gravistar.get(64), new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 4L },
                 getModItem(GTPlusPlus.ID, "itemFoilCelestialTungsten", 64, 0),
                 getModItem(GTPlusPlus.ID, "itemFoilQuantum", 64, 0),
                 getModItem(GTPlusPlus.ID, "itemFoilAstralTitanium", 64, 0),
@@ -2049,7 +2049,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 1L),
                 ItemList.Electric_Motor_UMV.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 8L), ItemList.Gravistar.get(64),
-                new Object[] { OrePrefixes.circuit.get(Materials.Piko), 4L },
+                new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 4L },
                 getModItem(GTPlusPlus.ID, "itemFoilCelestialTungsten", 64, 0),
                 getModItem(GTPlusPlus.ID, "itemFoilQuantum", 64, 0),
                 getModItem(GTPlusPlus.ID, "itemFoilAstralTitanium", 64, 0),
@@ -2073,7 +2073,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 6L),
                 ItemList.Gravistar.get(32L), ItemList.Emitter_UMV.get(4L),
-                new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 4 },
                 getModItem(GTPlusPlus.ID, "itemFineWireHypogen", 64, 0),
                 getModItem(GTPlusPlus.ID, "itemFineWireHypogen", 64, 0),
                 getModItem(GTPlusPlus.ID, "itemFineWireHypogen", 64, 0),
@@ -2230,8 +2230,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GT_OreDictUnificator
                     .get(OrePrefixes.gearGtSmall, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 6L),
                 GT_OreDictUnificator.get("gearGtSmallShirabon", 6L), ItemList.Electric_Motor_UXV.get(2L),
-                ItemList.Electric_Piston_UXV.get(1L), new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 2L },
-                new Object[] { OrePrefixes.circuit.get(Materials.Piko), 4L },
+                ItemList.Electric_Piston_UXV.get(1L), new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 2L },
+                new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 4L },
                 new Object[] { OrePrefixes.circuit.get(Materials.Optical), 8L },
                 GT_OreDictUnificator.get(OrePrefixes.wireGt04, MaterialsUEVplus.SpaceTime, 6L),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Infinity, 6L),
@@ -2290,7 +2290,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Electric_Motor_UXV.get(1L),
                 GT_OreDictUnificator
                     .get(OrePrefixes.stick, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 16L),
-                ItemList.NuclearStar.get(16), new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 4L },
+                ItemList.NuclearStar.get(16), new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 4L },
                 GT_OreDictUnificator
                     .get(OrePrefixes.foil, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 64),
                 GT_OreDictUnificator.get("foilShirabon", 64),
@@ -2322,7 +2322,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Electric_Motor_UXV.get(1L),
                 GT_OreDictUnificator
                     .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 8L),
-                ItemList.NuclearStar.get(16), new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 4L },
+                ItemList.NuclearStar.get(16), new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 4L },
                 GT_OreDictUnificator
                     .get(OrePrefixes.foil, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 64),
                 GT_OreDictUnificator.get("foilShirabon", 64),
@@ -2352,7 +2352,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GT_OreDictUnificator
                     .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 6L),
                 ItemList.NuclearStar.get(64L), ItemList.Emitter_UXV.get(4L),
-                new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 8 },
+                new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 8 },
 
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.SuperconductorUMVBase, 64L),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.SuperconductorUMVBase, 64L),
@@ -3083,12 +3083,12 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 1L }, // UHV
             new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1L }, // UEV
             new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L }, // UIV
-            new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1L }, // UMV
-            new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1L }, // UXV
-            new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 4L }, // MAX (Technically not MAX, can be
+            new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 1L }, // UMV
+            new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 1L }, // UXV
+            new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 4L }, // MAX (Technically not MAX, can be
             // changed once MAX circuits become
             // craftable)
-            new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 16L } // MAX (Technically not MAX, can be
+            new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 16L } // MAX (Technically not MAX, can be
             // changed once MAX circuits become
             // craftable)
         };
