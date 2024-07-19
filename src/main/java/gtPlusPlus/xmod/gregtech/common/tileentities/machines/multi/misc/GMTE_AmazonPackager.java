@@ -196,7 +196,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        if (aNBT.hasKey("mPackageMode"))  {
+        if (aNBT.hasKey("mPackageMode")) {
             machineMode = aNBT.getInteger("mPackageMode");
         }
         super.loadNBTData(aNBT);

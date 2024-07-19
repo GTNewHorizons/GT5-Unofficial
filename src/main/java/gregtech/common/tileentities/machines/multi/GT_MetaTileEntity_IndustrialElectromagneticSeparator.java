@@ -315,7 +315,8 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return (machineMode == MACHINEMODE_POLARIZER) ? RecipeMaps.polarizerRecipes : RecipeMaps.electroMagneticSeparatorRecipes;
+        return (machineMode == MACHINEMODE_POLARIZER) ? RecipeMaps.polarizerRecipes
+            : RecipeMaps.electroMagneticSeparatorRecipes;
     }
 
     @Nonnull

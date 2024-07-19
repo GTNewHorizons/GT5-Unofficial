@@ -121,18 +121,24 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
     /**
      * @return if the multi has more than 1 mode
      */
-    default boolean supportsMachineModeSwitch() {return false;}
+    default boolean supportsMachineModeSwitch() {
+        return false;
+    }
 
     /**
      * @return the current mode number. This is a getter is used for displaying the icon in the GUI
      */
-    default int getMachineMode() {return 0;}
+    default int getMachineMode() {
+        return 0;
+    }
 
     /**
      * @param index Index of machineModeIcons to pull from
      * @return UITexture associated with that machineMode
      */
-    default UITexture getMachineModeIcon(int index) {return null;}
+    default UITexture getMachineModeIcon(int index) {
+        return null;
+    }
 
     /**
      * @param index Number to set machineMode to
@@ -142,7 +148,9 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
     /**
      * @return Returns the next machineMode number in the sequence
      */
-    default int nextMachineMode() {return 0;}
+    default int nextMachineMode() {
+        return 0;
+    }
 
     /**
      * @return Returns whether machine supports mode switch by default

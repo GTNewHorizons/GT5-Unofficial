@@ -195,9 +195,15 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
     @Override
     public RecipeMap<?> getRecipeMap() {
         switch (machineMode) {
-            case MACHINEMODE_OREWASH -> { return RecipeMaps.oreWasherRecipes; }
-            case MACHINEMODE_SIMPLEWASH -> { return GTPPRecipeMaps.simpleWasherRecipes; }
-            default -> { return RecipeMaps.chemicalBathRecipes; }
+            case MACHINEMODE_OREWASH -> {
+                return RecipeMaps.oreWasherRecipes;
+            }
+            case MACHINEMODE_SIMPLEWASH -> {
+                return GTPPRecipeMaps.simpleWasherRecipes;
+            }
+            default -> {
+                return RecipeMaps.chemicalBathRecipes;
+            }
         }
     }
 
@@ -241,7 +247,8 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        if (machineMode == MACHINEMODE_CHEMBATH) return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
+        if (machineMode == MACHINEMODE_CHEMBATH)
+            return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
     }
 

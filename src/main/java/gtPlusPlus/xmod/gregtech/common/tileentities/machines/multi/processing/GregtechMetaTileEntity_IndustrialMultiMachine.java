@@ -77,7 +77,6 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     private final int MACHINEMODE_FLUID = 1;
     private final int MACHINEMODE_MISC = 2;
 
-
     private static final int MODE_COMPRESSOR = 0;
     private static final int MODE_LATHE = 1;
     private static final int MODE_MAGNETIC = 2;
@@ -221,10 +220,16 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        switch (machineMode)  {
-            case MACHINEMODE_METAL -> { return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal; }
-            case MACHINEMODE_FLUID -> { return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid; }
-            default -> { return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc; }
+        switch (machineMode) {
+            case MACHINEMODE_METAL -> {
+                return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
+            }
+            case MACHINEMODE_FLUID -> {
+                return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
+            }
+            default -> {
+                return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
+            }
         }
     }
 

@@ -191,7 +191,8 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        if (machineMode == MACHINEMODE_FORMER) return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
+        if (machineMode == MACHINEMODE_FORMER)
+            return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeBending;
     }
 
