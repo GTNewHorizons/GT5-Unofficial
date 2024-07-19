@@ -237,11 +237,11 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
         // Migrates old NBT tag to the new one
         if (aNBT.hasKey("mCuttingMode")) {
             machineMode = aNBT.getBoolean("mCuttingMode") ? MACHINEMODE_CUTTER : MACHINEMODE_SLICER;
         }
-        super.loadNBTData(aNBT);
     }
 
     @Override

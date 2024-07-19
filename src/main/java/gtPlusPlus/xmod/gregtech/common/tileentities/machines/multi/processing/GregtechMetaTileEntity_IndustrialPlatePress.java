@@ -203,11 +203,11 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
         // Migrates old NBT tag to the new one
         if (aNBT.hasKey("mFormingMode")) {
             machineMode = aNBT.getBoolean("mFormingMode") ? MACHINEMODE_FORMER : MACHINEMODE_BENDER;
         }
-        super.loadNBTData(aNBT);
     }
 
     @Override

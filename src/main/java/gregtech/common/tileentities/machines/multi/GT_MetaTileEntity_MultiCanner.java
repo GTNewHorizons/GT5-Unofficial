@@ -217,10 +217,10 @@ public class GT_MetaTileEntity_MultiCanner
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
         if (aNBT.hasKey("fluidMode")) {
             machineMode = aNBT.getBoolean("fluidMode") ? MACHINEMODE_FLUIDCANNER : MACHINEMODE_CANNER;
         }
-        super.loadNBTData(aNBT);
     }
 
     @Override

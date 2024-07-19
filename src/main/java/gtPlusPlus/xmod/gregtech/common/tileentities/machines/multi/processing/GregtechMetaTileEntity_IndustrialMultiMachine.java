@@ -370,10 +370,10 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
         if (aNBT.hasKey("mInternalMode")) {
             machineMode = aNBT.getInteger("mInternalMode");
         }
-        super.loadNBTData(aNBT);
     }
 
     @Override
