@@ -73,9 +73,9 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMultiMachine> implements ISurvivalConstructable {
 
-    private final int MACHINEMODE_METAL = 0;
-    private final int MACHINEMODE_FLUID = 1;
-    private final int MACHINEMODE_MISC = 2;
+    private final static int MACHINEMODE_METAL = 0;
+    private final static int MACHINEMODE_FLUID = 1;
+    private final static int MACHINEMODE_MISC = 2;
 
     private static final int MODE_COMPRESSOR = 0;
     private static final int MODE_LATHE = 1;
@@ -370,10 +370,10 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
         if (aNBT.hasKey("mInternalMode")) {
             machineMode = aNBT.getInteger("mInternalMode");
         }
+        super.loadNBTData(aNBT);
     }
 
     @Override

@@ -55,8 +55,8 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
     GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialCuttingMachine> implements ISurvivalConstructable {
 
     private int mCasing;
-    private final int MACHINEMODE_CUTTER = 0;
-    private final int MACHINEMODE_SLICER = 1;
+    private static final int MACHINEMODE_CUTTER = 0;
+    private static final int MACHINEMODE_SLICER = 1;
 
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialCuttingMachine> STRUCTURE_DEFINITION = null;
 
@@ -237,11 +237,11 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
         // Migrates old NBT tag to the new one
         if (aNBT.hasKey("mCuttingMode")) {
             machineMode = aNBT.getBoolean("mCuttingMode") ? MACHINEMODE_CUTTER : MACHINEMODE_SLICER;
         }
+        super.loadNBTData(aNBT);
     }
 
     @Override

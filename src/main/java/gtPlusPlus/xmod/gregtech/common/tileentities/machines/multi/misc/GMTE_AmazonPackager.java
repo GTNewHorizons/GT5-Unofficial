@@ -54,8 +54,8 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
 
     private int mCasing;
 
-    private final int MACHINEMODE_PACKAGER = 0;
-    private final int MACHINEMODE_UNPACKAGER = 1;
+    private static final int MACHINEMODE_PACKAGER = 0;
+    private static final int MACHINEMODE_UNPACKAGER = 1;
 
     private static IStructureDefinition<GMTE_AmazonPackager> STRUCTURE_DEFINITION = null;
 
@@ -196,10 +196,10 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
         if (aNBT.hasKey("mPackageMode")) {
             machineMode = aNBT.getInteger("mPackageMode");
         }
+        super.loadNBTData(aNBT);
     }
 
     @Override

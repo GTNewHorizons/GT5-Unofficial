@@ -104,8 +104,8 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     private GT_MetaTileEntity_MagHatch mMagHatch = null;
     private MagnetTiers magnetTier = null;
 
-    private final int MACHINEMODE_SEPARATOR = 0;
-    private final int MACHINEMODE_POLARIZER = 1;
+    private static final int MACHINEMODE_SEPARATOR = 0;
+    private static final int MACHINEMODE_POLARIZER = 1;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_IndustrialElectromagneticSeparator> STRUCTURE_DEFINITION = StructureDefinition
@@ -327,11 +327,11 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
         if (aNBT.hasKey("polarizerMode")) {
             machineMode = aNBT.getBoolean("polarizerMode") ? MACHINEMODE_POLARIZER : MACHINEMODE_SEPARATOR;
             aNBT.removeTag("polarizerMode");
         }
+        super.loadNBTData(aNBT);
     }
 
     @Override

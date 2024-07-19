@@ -76,9 +76,9 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
 
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialWashPlant> STRUCTURE_DEFINITION = null;
 
-    private final int MACHINEMODE_OREWASH = 0;
-    private final int MACHINEMODE_SIMPLEWASH = 1;
-    private final int MACHINEMODE_CHEMBATH = 2;
+    private static final int MACHINEMODE_OREWASH = 0;
+    private static final int MACHINEMODE_SIMPLEWASH = 1;
+    private static final int MACHINEMODE_CHEMBATH = 2;
 
     public GregtechMetaTileEntity_IndustrialWashPlant(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -356,7 +356,6 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
         if (aNBT.hasKey("mChemicalMode")) {
             boolean aTempMode = aNBT.getBoolean("mChemicalMode");
             if (aTempMode) {
@@ -369,6 +368,7 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
         if (aNBT.hasKey("mMode")) {
             machineMode = aNBT.getInteger("mMode");
         }
+        super.loadNBTData(aNBT);
     }
 
     @Override

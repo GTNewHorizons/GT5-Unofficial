@@ -51,8 +51,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class GT_MetaTileEntity_MultiCanner
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_MultiCanner> implements ISurvivalConstructable {
 
-    private final int MACHINEMODE_CANNER = 0;
-    private final int MACHINEMODE_FLUIDCANNER = 1;
+    private static final int MACHINEMODE_CANNER = 0;
+    private static final int MACHINEMODE_FLUIDCANNER = 1;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_MultiCanner> STRUCTURE_DEFINITION = StructureDefinition
@@ -217,10 +217,10 @@ public class GT_MetaTileEntity_MultiCanner
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
         if (aNBT.hasKey("fluidMode")) {
             machineMode = aNBT.getBoolean("fluidMode") ? MACHINEMODE_FLUIDCANNER : MACHINEMODE_CANNER;
         }
+        super.loadNBTData(aNBT);
     }
 
     @Override

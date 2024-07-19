@@ -54,8 +54,8 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
 
     private int mCasing;
 
-    private final int MACHINEMODE_BENDER = 0;
-    private final int MACHINEMODE_FORMER = 1;
+    private static final int MACHINEMODE_BENDER = 0;
+    private static final int MACHINEMODE_FORMER = 1;
 
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialPlatePress> STRUCTURE_DEFINITION = null;
 
@@ -203,11 +203,11 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
         // Migrates old NBT tag to the new one
         if (aNBT.hasKey("mFormingMode")) {
             machineMode = aNBT.getBoolean("mFormingMode") ? MACHINEMODE_FORMER : MACHINEMODE_BENDER;
         }
+        super.loadNBTData(aNBT);
     }
 
     @Override
