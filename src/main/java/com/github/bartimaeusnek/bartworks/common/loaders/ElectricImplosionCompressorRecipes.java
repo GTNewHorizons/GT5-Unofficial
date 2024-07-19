@@ -55,7 +55,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 100 * 20,
                 (int) TierEU.RECIPE_UMV);
 
-            if (UniversalSingularities.isModLoaded())
+            if (UniversalSingularities.isModLoaded()) {
                 // Raw Exposed Optical Chip
                 addElectricImplosionRecipe(
                     // IN.
@@ -69,16 +69,39 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     5 * 20,
                     (int) TierEU.RECIPE_UMV);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.TranscendentMetal, 1L),
-                    ItemList.EnergisedTesseract.get(8))
-                .itemOutputs(ItemList.Phononic_Seed_Crystal.get(8L) )
-                .fluidInputs(MaterialsUEVplus.Mellion.getMolten(128 * 144L))
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(electricImplosionCompressorRecipes);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        // fluxed electrum singularity
+                        getModItem(UniversalSingularities.ID, "universal.general.singularity", 1L, 20))
+                    .fluidInputs(MaterialsUEVplus.Mellion.getMolten(4 * 144L))
+                    // spaghettic singularity
+                    .itemOutputs(getModItem(EternalSingularity.ID, "combined_singularity", 1L, 2))
+                    .duration(1 * SECONDS)
+                    .eut(TierEU.RECIPE_UMV)
+                    .addTo(electricImplosionCompressorRecipes);
 
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        // iron singularity
+                        getModItem(Avaritia.ID, "Singularity", 1L, 0))
+                    .fluidInputs(MaterialsUEVplus.Creon.getMolten(4 * 144L))
+                    // cryptic singularity
+                    .itemOutputs(getModItem(EternalSingularity.ID, "combined_singularity", 1L, 4))
+                    .duration(1 * SECONDS)
+                    .eut(TierEU.RECIPE_UMV)
+                    .addTo(electricImplosionCompressorRecipes);
+            }
         }
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.TranscendentMetal, 1L),
+                ItemList.EnergisedTesseract.get(8))
+            .itemOutputs(ItemList.Phononic_Seed_Crystal.get(8L))
+            .fluidInputs(MaterialsUEVplus.Mellion.getMolten(128 * 144L))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_UMV)
+            .addTo(electricImplosionCompressorRecipes);
 
         addElectricImplosionRecipe(
             // IN.
@@ -167,7 +190,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             // Copper Singularity
             GT_Values.RA.stdBuilder()
                 .fluidInputs(Materials.Copper.getMolten(3648 * 9 * 144L))
-                .itemOutputs(getModItem(Avaritia.ID, "Singularity", 1L, 5) )
+                .itemOutputs(getModItem(Avaritia.ID, "Singularity", 1L, 5))
                 .duration(1 * TICKS)
                 .eut(TierEU.RECIPE_UIV)
                 .addTo(electricImplosionCompressorRecipes);
