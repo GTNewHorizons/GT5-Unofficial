@@ -52,7 +52,8 @@ public class GodforgeCasings extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Remote Graviton Flow Modulator");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Medial Graviton Flow Modulator");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Central Graviton Flow Modulator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Harmonic Phonon Transmission Conduit");
+        GT_LanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".8.name", "Harmonic Phonon Transmission Conduit");
 
         CustomItemList.Godforge_SingularityShieldingCasing.set(new ItemStack(this, 1, 0));
         CustomItemList.Godforge_GuidanceCasing.set(new ItemStack(this, 1, 1));
