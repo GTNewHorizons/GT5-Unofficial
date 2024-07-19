@@ -11,6 +11,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -354,7 +356,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                 .setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
         } else {
-            soundMagic(getActivitySound());
+            soundMagic(getActivitySoundLoop());
         }
     }
 
@@ -564,8 +566,9 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
         return false;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySound() {
+    protected ResourceLocation getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_FUSION_LOOP.resourceLocation;
     }
 
