@@ -130,7 +130,7 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
 
     /**
      * Get button texture from index
-     * 
+     *
      * @param index Position in ModeIcon array to pull from
      * @return A UITexture representing a button
      */
@@ -138,7 +138,7 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
 
     /**
      * Sets the MachineMode by an index
-     * 
+     *
      * @param index Mode to set to
      */
     void setMachineMode(int index);
@@ -155,10 +155,11 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
     Pos2d getMachineModeSwitchButtonPos();
 
     default ButtonWidget createModeSwitchButton(IWidgetBuilder<?> builder) {
+        if (!supportsMachineModeSwitch()) return null;
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (supportsMachineModeSwitch()) {
                 nextMachineMode();
-            }
+            } ;
         })
             .setPlayClickSound(supportsMachineModeSwitch())
             .setBackground(() -> {
