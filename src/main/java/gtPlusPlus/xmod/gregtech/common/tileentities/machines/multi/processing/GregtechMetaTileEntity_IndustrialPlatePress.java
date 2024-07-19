@@ -155,7 +155,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return (machineMode == 1) ? RecipeMaps.formingPressRecipes : RecipeMaps.benderRecipes;
+        return (machineModeID == 1) ? RecipeMaps.formingPressRecipes : RecipeMaps.benderRecipes;
     }
 
     @Nonnull
@@ -187,7 +187,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        if (machineMode == 1) return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
+        if (machineModeID == 1) return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeBending;
     }
 
@@ -198,7 +198,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("machineMode", machineMode);
+        aNBT.setInteger("machineMode", machineModeID);
         super.saveNBTData(aNBT);
     }
 
@@ -207,9 +207,9 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
         // Migrates old NBT tag to the new one
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("mFormingMode")) {
-            if (aNBT.getBoolean("mFormingMode")) machineMode = 1;
-            else machineMode = 0;
-        } else machineMode = aNBT.getInteger("machineMode");
+            if (aNBT.getBoolean("mFormingMode")) machineModeID = 1;
+            else machineModeID = 0;
+        } else machineModeID = aNBT.getInteger("machineMode");
     }
 
     @Override
@@ -227,7 +227,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         setMachineMode(nextMachineMode());
-        if (machineMode == 1) {
+        if (machineModeID == 1) {
             PlayerUtils.messagePlayer(aPlayer, "Now running in Forming Press Mode.");
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Now running in Bending Mode.");
@@ -244,7 +244,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode);
+        tag.setInteger("mode", machineModeID);
     }
 
     @Override

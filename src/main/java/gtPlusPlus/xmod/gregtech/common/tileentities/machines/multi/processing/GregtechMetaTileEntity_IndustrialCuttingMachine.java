@@ -154,7 +154,7 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return (machineMode == 1) ? RecipeMaps.cutterRecipes : RecipeMaps.slicerRecipes;
+        return (machineModeID == 1) ? RecipeMaps.cutterRecipes : RecipeMaps.slicerRecipes;
     }
 
     @Nonnull
@@ -227,7 +227,7 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         setMachineMode(nextMachineMode());
-        String aMode = machineMode == 1 ? "Cutting" : "Slicing";
+        String aMode = machineModeID == 1 ? "Cutting" : "Slicing";
         PlayerUtils.messagePlayer(aPlayer, "Mode: " + aMode);
         mLastRecipe = null;
     }
@@ -235,7 +235,7 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("machineMode", machineMode);
+        aNBT.setInteger("machineMode", machineModeID);
     }
 
     @Override
@@ -243,16 +243,16 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
         // Migrates old NBT tag to the new one
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("mCuttingMode")) {
-            if (aNBT.getBoolean("mCuttingMode")) machineMode = 1;
-            else machineMode = 0;
-        } else machineMode = aNBT.getInteger("machineMode");
+            if (aNBT.getBoolean("mCuttingMode")) machineModeID = 1;
+            else machineModeID = 0;
+        } else machineModeID = aNBT.getInteger("machineMode");
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode);
+        tag.setInteger("mode", machineModeID);
     }
 
     @Override
