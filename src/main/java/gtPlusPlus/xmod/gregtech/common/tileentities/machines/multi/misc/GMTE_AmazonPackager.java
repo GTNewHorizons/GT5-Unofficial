@@ -32,9 +32,11 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.TAE;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IMachineMode;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -53,9 +55,49 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
 
     private int mCasing;
 
-    private boolean mPackageMode = true;
-
     private static IStructureDefinition<GMTE_AmazonPackager> STRUCTURE_DEFINITION = null;
+
+    enum MachineMode implements IMachineMode {
+
+        Packager(0, "Packager"),
+        Unpackager(1, "Unpackager");
+
+        final int modeID;
+        final String modeName;
+
+        MachineMode(int ID, String name) {
+            this.modeID = ID;
+            this.modeName = name;
+        }
+
+        @Override
+        public int getModeID() {
+            return modeID;
+        }
+
+        @Override
+        public String getModeName() {
+            return modeName;
+        }
+
+        @Override
+        public MachineMode getByID(int index) {
+            switch (index) {
+                case 0 -> {
+                    return MachineMode.Packager;
+                }
+                default -> {
+                    return MachineMode.Unpackager;
+                }
+            }
+        }
+
+        @Override
+        public MachineMode nextMachineMode() {
+            if (modeID == 0) return Unpackager;
+            return Packager;
+        }
+    }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -139,7 +181,8 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return mPackageMode ? RecipeMaps.packagerRecipes : RecipeMaps.unpackagerRecipes;
+        if (machineMode == MachineMode.Packager) return RecipeMaps.packagerRecipes;
+        else return RecipeMaps.unpackagerRecipes;
     }
 
     @Nonnull
@@ -193,14 +236,11 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setBoolean("mPackageMode", mPackageMode);
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mPackageMode = aNBT.getBoolean("mPackageMode");
+        if (machineMode == null) machineMode = MachineMode.Packager;
+        if (aNBT.hasKey("mPackageMode")) {
+            machineMode = machineMode.getByID(aNBT.getBoolean("mPackageMode") ? 0 : 1);
+        }
         super.loadNBTData(aNBT);
     }
 
@@ -208,17 +248,13 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setBoolean("mode", mPackageMode);
+        tag.setInteger("mode", machineMode.getModeID());
     }
 
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        mPackageMode = !mPackageMode;
-        if (mPackageMode) {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Packager Mode.");
-        } else {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Unpackager Mode.");
-        }
+        machineMode = machineMode.nextMachineMode();
+        PlayerUtils.messagePlayer(aPlayer, "Now running in " + machineMode.getModeName() + " Mode.");
         mLastRecipe = null;
     }
 
@@ -230,7 +266,24 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
         currentTip.add(
             StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + StatCollector.translateToLocal("GT5U.GTPP_MULTI_PACKAGER.mode." + (tag.getBoolean("mode") ? 1 : 0))
+                + StatCollector.translateToLocal("GT5U.GTPP_MULTI_PACKAGER.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.clear();
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_UNPACKAGER);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_PACKAGER);
+    }
+
+    @Override
+    public IMachineMode defaultMachineMode() {
+        return MachineMode.Packager;
     }
 }

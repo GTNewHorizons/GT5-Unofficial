@@ -43,9 +43,11 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.TAE;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IMachineMode;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -71,10 +73,64 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class GregtechMetaTileEntity_IndustrialWashPlant
     extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialWashPlant> implements ISurvivalConstructable {
 
-    private int mMode = 0;
     private int mCasing;
 
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialWashPlant> STRUCTURE_DEFINITION = null;
+
+    enum MachineMode implements IMachineMode {
+
+        WashPlant(0, "Ore Washer"),
+        SimpleWasher(1, "Simple Washer"),
+        ChemBath(2, "Chemical Bath");
+
+        final int modeID;
+        final String modeName;
+
+        MachineMode(int ID, String name) {
+            this.modeID = ID;
+            this.modeName = name;
+        }
+
+        @Override
+        public int getModeID() {
+            return modeID;
+        }
+
+        @Override
+        public String getModeName() {
+            return modeName;
+        }
+
+        @Override
+        public MachineMode getByID(int index) {
+            switch (index) {
+                case 0 -> {
+                    return MachineMode.WashPlant;
+                }
+                case 1 -> {
+                    return MachineMode.SimpleWasher;
+                }
+                default -> {
+                    return MachineMode.ChemBath;
+                }
+            }
+        }
+
+        @Override
+        public MachineMode nextMachineMode() {
+            switch (modeID) {
+                case 0 -> {
+                    return SimpleWasher;
+                }
+                case 1 -> {
+                    return ChemBath;
+                }
+                default -> {
+                    return WashPlant;
+                }
+            }
+        }
+    }
 
     public GregtechMetaTileEntity_IndustrialWashPlant(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -190,8 +246,12 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return mMode == 0 ? RecipeMaps.oreWasherRecipes
-            : mMode == 1 ? GTPPRecipeMaps.simpleWasherRecipes : RecipeMaps.chemicalBathRecipes;
+        if (machineMode.equals(MachineMode.WashPlant)) {
+            return RecipeMaps.oreWasherRecipes;
+        } else if (machineMode.equals(MachineMode.SimpleWasher)) {
+            return GTPPRecipeMaps.simpleWasherRecipes;
+        }
+        return RecipeMaps.chemicalBathRecipes;
     }
 
     @Nonnull
@@ -234,7 +294,8 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        if (mMode == 2) return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
+        if (machineMode == MachineMode.ChemBath)
+            return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
     }
 
@@ -341,41 +402,27 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mMode", mMode);
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
+        if (machineMode == null) machineMode = MachineMode.WashPlant;
         if (aNBT.hasKey("mChemicalMode")) {
             boolean aTempMode = aNBT.getBoolean("mChemicalMode");
             if (aTempMode) {
-                mMode = 2;
+                machineMode = MachineMode.ChemBath;
             } else {
-                mMode = 0;
+                machineMode = MachineMode.WashPlant;
             }
             aNBT.removeTag("mChemicalMode");
         }
         if (aNBT.hasKey("mMode")) {
-            mMode = aNBT.getInteger("mMode");
+            machineMode = machineMode.getByID(aNBT.getInteger("mMode"));
         }
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        mMode++;
-        if (mMode > 2) {
-            mMode = 0;
-        }
-        if (mMode == 0) {
-            PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Ore Washer Mode.");
-        } else if (mMode == 1) {
-            PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Simple Washer Mode.");
-        } else {
-            PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Chemical Bath Mode.");
-        }
+        machineMode = machineMode.nextMachineMode();
+        PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in " + machineMode.getModeName() + " Mode.");
         mLastRecipe = null;
     }
 
@@ -383,7 +430,7 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", mMode);
+        tag.setInteger("mode", machineMode.getModeID());
     }
 
     @Override
@@ -396,5 +443,23 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
                 + EnumChatFormatting.WHITE
                 + StatCollector.translateToLocal("GT5U.GTPP_MULTI_WASH_PLANT.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.clear();
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_CHEMBATH);
+    }
+
+    @Override
+    public IMachineMode defaultMachineMode() {
+        return MachineMode.WashPlant;
     }
 }

@@ -44,6 +44,7 @@ import org.lwjgl.input.Keyboard;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -71,6 +72,7 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IMachineMode;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -127,6 +129,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public String mNEI;
     public int damageFactorLow = 5;
     public float damageFactorHigh = 0.6f;
+    public IMachineMode machineMode;
+    public List<UITexture> machineModeIcons = new ArrayList<UITexture>();
 
     public boolean mLockedToSingleRecipe = getDefaultRecipeLockingMode();
     protected boolean inputSeparation = getDefaultInputSeparationMode();
@@ -253,6 +257,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         aNBT.setInteger("mEfficiency", mEfficiency);
         aNBT.setInteger("mPollution", mPollution);
         aNBT.setInteger("mRuntime", mRuntime);
+        if (machineMode != null) {
+            aNBT.setInteger("machineMode", machineMode.getModeID());
+        }
         if (supportsSingleRecipeLocking()) {
             aNBT.setBoolean("mLockedToSingleRecipe", mLockedToSingleRecipe);
             if (mLockedToSingleRecipe && mSingleRecipeCheck != null)
@@ -306,6 +313,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
         batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
         inputSeparation = aNBT.getBoolean(INPUT_SEPARATION_NBT_KEY);
+        if (aNBT.hasKey("machineMode")) {
+            // backward compatibility
+            machineMode = machineMode.getByID(aNBT.getInteger("machineMode"));
+        }
         if (aNBT.hasKey(VOIDING_MODE_NBT_KEY, Constants.NBT.TAG_STRING)) {
             voidingMode = VoidingMode.fromName(aNBT.getString(VOIDING_MODE_NBT_KEY));
         } else if (aNBT.hasKey(VOID_EXCESS_NBT_KEY)) {
@@ -2212,6 +2223,66 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return new Pos2d(26, 91);
     }
 
+    /**
+     * Creates the icon list for this machine. Override this and add the overlays to machineModeIcons in order.
+     */
+    public void setMachineModeIcons() {
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
+    }
+
+    /**
+     * Override this if you are a multi-machine and want a GUI button. You will also want to override
+     * setMachineModeIcons() and add a MachineMode enum.
+     */
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return false;
+    }
+
+    /**
+     * Override to give multi-machines a default mode. Required!
+     * 
+     * @return A MachineMode
+     */
+    public IMachineMode defaultMachineMode() {
+        return null;
+    }
+
+    /**
+     * Gets the current machinemode. If there is no machinemode, it selects the default
+     * 
+     * @return A MachineMode
+     */
+    @Override
+    public int getMachineMode() {
+        if (machineMode == null) machineMode = defaultMachineMode();
+        return machineMode.getModeID();
+    }
+
+    @Override
+    public UITexture getMachineModeIcon(int index) {
+        return machineModeIcons.get(index);
+    }
+
+    /**
+     * Determines which machine mode should come next if user changes mode.
+     */
+    @Override
+    public void nextMachineMode() {
+        if (machineMode != null) machineMode = machineMode.nextMachineMode();
+    }
+
+    @Override
+    public void setMachineMode(int index) {
+        machineMode = machineMode.getByID(index);
+    }
+
+    @Override
+    public Pos2d getMachineModeSwitchButtonPos() {
+        return new Pos2d(80, 91);
+    }
+
     @Override
     public boolean supportsBatchMode() {
         return false;
@@ -2300,9 +2371,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         drawTexts(screenElements, inventorySlot);
         builder.widget(screenElements);
 
+        setMachineModeIcons();
         builder.widget(createPowerSwitchButton(builder))
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
+            .widget(createModeSwitchButton(builder))
             .widget(createBatchModeButton(builder))
             .widget(createLockToSingleRecipeButton(builder));
     }

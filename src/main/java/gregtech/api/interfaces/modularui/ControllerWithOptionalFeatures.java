@@ -33,6 +33,7 @@ import gregtech.api.interfaces.tileentity.IVoidable;
  * <li>Separated input buses</li>
  * <li>Batch mode</li>
  * <li>Recipe locking</li>
+ * <li>Multiple machine modes</li>
  * </ul>
  */
 public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockable {
@@ -114,6 +115,65 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
         if (!supportsVoidProtection()) {
             button.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
         }
+        return (ButtonWidget) button;
+    }
+
+    /**
+     * @return if the multi has more than 1 mode
+     */
+    boolean supportsMachineModeSwitch();
+
+    /**
+     * @return the current mode number. This is a getter is used for displaying the icon in the GUI
+     */
+    int getMachineMode();
+
+    /**
+     * Get button texture from index
+     * 
+     * @param index Position in ModeIcon array to pull from
+     * @return A UITexture representing a button
+     */
+    UITexture getMachineModeIcon(int index);
+
+    /**
+     * Sets the MachineMode by an index
+     * 
+     * @param index Mode to set to
+     */
+    void setMachineMode(int index);
+
+    /**
+     * Sets the MachineMode to the next in the sequence
+     */
+    void nextMachineMode();
+
+    default boolean getDefaultModeSwitch() {
+        return supportsMachineModeSwitch();
+    }
+
+    Pos2d getMachineModeSwitchButtonPos();
+
+    default ButtonWidget createModeSwitchButton(IWidgetBuilder<?> builder) {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (supportsMachineModeSwitch()) {
+                nextMachineMode();
+            }
+        })
+            .setPlayClickSound(supportsMachineModeSwitch())
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (supportsMachineModeSwitch()) {
+                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(getMachineModeIcon(getMachineMode()));
+                } else return null;
+                return ret.toArray(new IDrawable[0]);
+            })
+            .attachSyncer(new FakeSyncWidget.IntegerSyncer(this::getMachineMode, this::setMachineMode), builder)
+            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.mode_switch"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(getMachineModeSwitchButtonPos())
+            .setSize(16, 16);
         return (ButtonWidget) button;
     }
 
