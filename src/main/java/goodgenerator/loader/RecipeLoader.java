@@ -790,7 +790,7 @@ public class RecipeLoader {
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 8),
                     GT_OreDictUnificator.get(OrePrefixes.pipeMedium, MaterialsUEVplus.SpaceTime, 16),
                     ItemList.Circuit_Wafer_PPIC.get(64),
-                    new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1L })
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 1))
                 .fluidInputs(
                     MyMaterial.metastableOganesson.getMolten(1000),
                     MaterialsUEVplus.TranscendentMetal.getMolten(9216),
