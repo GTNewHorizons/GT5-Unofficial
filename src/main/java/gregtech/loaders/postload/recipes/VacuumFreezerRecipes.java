@@ -411,8 +411,10 @@ public class VacuumFreezerRecipes implements Runnable {
             .addTo(vacuumFreezerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.Mellion, 1L))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.Mellion, 1L))
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.Mellion, 9L))
+            .fluidInputs(MaterialsUEVplus.Creon.getPlasma(1296L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.Mellion, 9L))
+            .fluidOutputs(MaterialsUEVplus.Creon.getMolten(1296L))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(vacuumFreezerRecipes);
