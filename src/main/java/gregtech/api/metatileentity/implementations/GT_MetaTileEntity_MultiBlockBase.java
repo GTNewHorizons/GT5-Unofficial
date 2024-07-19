@@ -2256,9 +2256,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         machineMode = index;
     }
 
-    /**
-     * Determines which machine mode should come next if user changes mode.
-     */
     @Override
     public int nextMachineMode() {
         if (machineMode == 0) return 1;

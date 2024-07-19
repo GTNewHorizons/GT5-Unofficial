@@ -121,45 +121,47 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
     /**
      * @return if the multi has more than 1 mode
      */
-    boolean supportsMachineModeSwitch();
+    default boolean supportsMachineModeSwitch() {return false;}
 
     /**
      * @return the current mode number. This is a getter is used for displaying the icon in the GUI
      */
-    int getMachineMode();
+    default int getMachineMode() {return 0;}
 
     /**
-     * Get button texture from index
-     *
-     * @param index Position in ModeIcon array to pull from
-     * @return A UITexture representing a button
+     * @param index Index of machineModeIcons to pull from
+     * @return UITexture associated with that machineMode
      */
-    UITexture getMachineModeIcon(int index);
+    default UITexture getMachineModeIcon(int index) {return null;}
 
     /**
-     * Sets the MachineMode by an index
-     *
-     * @param index Mode to set to
+     * @param index Number to set machineMode to
      */
-    void setMachineMode(int index);
+    default void setMachineMode(int index) {}
 
     /**
-     * Sets the MachineMode to the next in the sequence
+     * @return Returns the next machineMode number in the sequence
      */
-    void nextMachineMode();
+    default int nextMachineMode() {return 0;}
 
+    /**
+     * @return Returns whether machine supports mode switch by default
+     */
     default boolean getDefaultModeSwitch() {
         return supportsMachineModeSwitch();
     }
 
     Pos2d getMachineModeSwitchButtonPos();
 
+    default void onMachineModeSwitchClick() {}
+
     default ButtonWidget createModeSwitchButton(IWidgetBuilder<?> builder) {
         if (!supportsMachineModeSwitch()) return null;
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (supportsMachineModeSwitch()) {
-                nextMachineMode();
-            } ;
+                onMachineModeSwitchClick();
+                setMachineMode(nextMachineMode());
+            }
         })
             .setPlayClickSound(supportsMachineModeSwitch())
             .setBackground(() -> {
