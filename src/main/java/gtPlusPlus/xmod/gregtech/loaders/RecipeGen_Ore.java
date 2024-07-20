@@ -614,8 +614,16 @@ public class RecipeGen_Ore extends RecipeGen_Base {
                 for (int i = 0; i < internalOutputs.size(); i++) {
                     chances[i] = mChances[i];
                 }
+
+                ItemStack[] inputs;
+                if (emptyCell == null) {
+                    inputs = new ItemStack[] { mainDust };
+                } else {
+                    inputs = new ItemStack[] { mainDust, emptyCell };
+                }
+
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(mainDust, emptyCell)
+                    .itemInputs(inputs)
                     .itemOutputs(internalOutputs.toArray(new ItemStack[0]))
                     .outputChances(chances)
                     .eut(tVoltageMultiplier)

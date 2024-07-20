@@ -8,7 +8,10 @@ import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
@@ -231,17 +234,19 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
         input = ItemUtils.cleanItemStackArray(input);
 
         // Add mixer Recipe
+        List<ItemStack> inputs = Arrays.asList(input);
+        inputs.removeIf(Objects::isNull);
 
         if (oxygen == null) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(input[0], input[1], input[2], input[3])
+                .itemInputs(inputs.toArray(new ItemStack[0]))
                 .itemOutputs(outputStacks)
                 .duration((int) Math.max(material.getMass() * 2L * 1, 1))
                 .eut(material.vVoltageMultiplier)
                 .addTo(mixerRecipes);
         } else {
             GT_Values.RA.stdBuilder()
-                .itemInputs(input[0], input[1], input[2], input[3])
+                .itemInputs(inputs.toArray(new ItemStack[0]))
                 .itemOutputs(outputStacks)
                 .fluidInputs(oxygen)
                 .duration((int) Math.max(material.getMass() * 2L * 1, 1))

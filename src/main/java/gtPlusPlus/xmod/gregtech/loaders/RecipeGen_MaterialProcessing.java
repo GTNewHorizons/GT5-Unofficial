@@ -148,6 +148,7 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
                                 + " as input.");
                     } else {
                         Logger.MATERIALS("[Centrifuge] Could not find valid input dust, exiting.");
+                        return;
                     }
                 }
 
@@ -170,8 +171,14 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
                     chances[i] = mChances[i];
                 }
 
+                ItemStack[] inputs;
+                if (emptyCell == null) {
+                    inputs = new ItemStack[] { mainDust };
+                } else {
+                    inputs = new ItemStack[] { mainDust, emptyCell };
+                }
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(mainDust, emptyCell)
+                    .itemInputs(inputs)
                     .itemOutputs(internalOutputs.toArray(new ItemStack[0]))
                     .outputChances(chances)
                     .eut(tVoltageMultiplier)
@@ -258,6 +265,7 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
                                 + " as input.");
                     } else {
                         Logger.MATERIALS("[Dehydrator] Could not find valid input dust, exiting.");
+                        return;
                     }
                 }
 
@@ -279,8 +287,15 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
                     chances[i] = mChances[i];
                 }
 
+                ItemStack[] inputs;
+                if (emptyCell == null) {
+                    inputs = new ItemStack[] { mainDust };
+                } else {
+                    inputs = new ItemStack[] { mainDust, emptyCell };
+                }
+
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(mainDust, emptyCell)
+                    .itemInputs(inputs)
                     .itemOutputs(internalOutputs.toArray(new ItemStack[0]))
                     .outputChances(chances)
                     .eut(tVoltageMultiplier)
