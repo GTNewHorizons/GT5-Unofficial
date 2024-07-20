@@ -421,7 +421,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
             if (aMatInfo.requiresBlastFurnace()) {
                 aOutput = aMatInfo.getHotIngot(1);
                 if (ItemUtils.checkForInvalidItems(aOutput)) {
-                    if (addBlastFurnaceRecipe(aMatInfo, aDust, null, aOutput, null, aMatInfo.getMeltingPointK())) {
+                    if (addBlastFurnaceRecipe(aMatInfo, aDust, aOutput, aMatInfo.getMeltingPointK())) {
                         Logger
                             .MATERIALS("Successfully added a blast furnace recipe for " + aMatInfo.getLocalizedName());
                     } else {
@@ -445,32 +445,26 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
         }
     }
 
-    private boolean addBlastFurnaceRecipe(Material aMatInfo, final ItemStack input1, final ItemStack input2,
-        final ItemStack output1, final ItemStack output2, final int tempRequired) {
+    private boolean addBlastFurnaceRecipe(Material aMatInfo, final ItemStack input1, final ItemStack output1,
+        final int tempRequired) {
 
-        try {
-            int timeTaken = 125 * aMatInfo.vTier * 10;
-
-            if (aMatInfo.vTier <= 4) {
-                timeTaken = 25 * aMatInfo.vTier * 10;
-            }
-            int aSlot = aMatInfo.vTier;
-            if (aSlot < 2) {
-                aSlot = 2;
-            }
-            long aVoltage = aMatInfo.vVoltageMultiplier;
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(input1, input2)
-                .itemOutputs(output1, output2)
-                .duration(timeTaken)
-                .eut(aVoltage)
-                .metadata(COIL_HEAT, tempRequired)
-                .addTo(blastFurnaceRecipes);
-            return true;
-        } catch (Throwable t) {
-            t.printStackTrace();
-            return false;
+        int timeTaken;
+        if (aMatInfo.vTier <= 4) {
+            timeTaken = 25 * aMatInfo.vTier * 10;
+        } else {
+            timeTaken = 125 * aMatInfo.vTier * 10;
         }
+
+        long aVoltage = aMatInfo.vVoltageMultiplier;
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(input1)
+            .itemOutputs(output1)
+            .duration(timeTaken)
+            .eut(aVoltage)
+            .metadata(COIL_HEAT, tempRequired)
+            .addTo(blastFurnaceRecipes);
+        return true;
+
     }
 }

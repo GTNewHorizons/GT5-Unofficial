@@ -2,6 +2,7 @@ package gtPlusPlus.core.item.chemistry;
 
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
+import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
@@ -26,7 +27,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 
 public class CoalTar extends ItemPackage {
 
@@ -108,43 +108,46 @@ public class CoalTar extends ItemPackage {
 
     public static void recipeCoalToCoalTar() {
         // Charcoal
-        AddGregtechRecipe.addCokeAndPyrolyseRecipes(
-            GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 32L),
-            8,
-            GT_Values.NF,
-            ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDirt", 2),
-            FluidUtils.getFluidStack("fluid.coaltar", 800),
-            15,
-            120);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(8),
+                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 32L))
+            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDirt", 2))
+            .fluidOutputs(FluidUtils.getFluidStack("fluid.coaltar", 800))
+            .duration(18 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(pyrolyseRecipes);
+
         // Lignite
-        AddGregtechRecipe.addCokeAndPyrolyseRecipes(
-            GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 16L),
-            8,
-            GT_Values.NF,
-            ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2),
-            FluidUtils.getFluidStack("fluid.coaltar", 800),
-            45,
-            60);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(8),
+                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 16L))
+            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2))
+            .fluidOutputs(FluidUtils.getFluidStack("fluid.coaltar", 800))
+            .duration(54 * SECONDS)
+            .eut(60)
+            .addTo(pyrolyseRecipes);
 
         // Coal
-        AddGregtechRecipe.addCokeAndPyrolyseRecipes(
-            GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 12L),
-            8,
-            GT_Values.NF,
-            ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2),
-            FluidUtils.getFluidStack("fluid.coaltar", 2200),
-            30,
-            120);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(8),
+                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 12L))
+            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2))
+            .fluidOutputs(FluidUtils.getFluidStack("fluid.coaltar", 2200))
+            .duration(36 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(pyrolyseRecipes);
 
         // Coke
-        AddGregtechRecipe.addCokeAndPyrolyseRecipes(
-            ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 8),
-            8,
-            GT_Values.NF,
-            ItemUtils.getItemStackOfAmountFromOreDict("dustSmallAsh", 3),
-            FluidUtils.getFluidStack("fluid.coaltar", 3400),
-            15,
-            240);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(8), ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 8))
+            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustSmallAsh", 3))
+            .fluidOutputs(FluidUtils.getFluidStack("fluid.coaltar", 3400))
+            .duration(18 * SECONDS)
+            .eut(240)
+            .addTo(pyrolyseRecipes);
     }
 
     private static void recipeCoalTarToCoalTarOil() {
