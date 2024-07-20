@@ -1,6 +1,20 @@
 # RecipeMaps
 gtnhlanth.recipe.digester=Digester
 gtnhlanth.recipe.disstank=Dissolution Tank
+gtnhlanth.recipe.tc=Target Chamber
+gtnhlanth.recipe.sc=Source Chamber
+
+gtnhlanth.tt.beaminfo=Use a §bportable scanner §7for info about the input/output of this multiblock.
+gtnhlanth.tt.blueprint=Follow the §9Structure§2Lib §7hologram projector to build the main structure.
+gtnhlanth.tt.pc=§6Partially consumed: §7Takes damage in the process
+
+gtnhlanth.tt.hintdot=Hint block with dot %s
+
+GT5U.gui.text.gtnhlanth.nocoolant=No coolant present in machine!
+GT5U.gui.text.gtnhlanth.inscoolant=Insufficient coolant in machine!
+GT5U.gui.text.gtnhlanth.noaccel=Particle type can't be accelerated!
+GT5U.gui.text.gtnhlanth.low_input_rate=Input amount too low!
+GT5U.gui.text.gtnhlanth.scerror=Math error, broken recipe?
 
 # NEI
 value.disstank=Ratio: %s:1
@@ -17,6 +31,54 @@ Digester.hint.2=16x Heat Proof Machine Casing
 Digester.hint.3=16x Coil Block
 Digester.hint.4=Input Bus, Output Bus, Input Hatch, Output Hatch
 Digester.hint.5=Energy Hatch, Maintenance Hatch
+
+SourceChamber.hint.0=56x Shielded Accelerator Casing
+SourceChamber.hint.1=52x Shielded Accelerator Glass
+SourceChamber.hint.2=16x Electrode Casing
+SourceChamber.hint.3=Dot 1: Input Bus
+SourceChamber.hint.4=Dot 2: Output Bus
+SourceChamber.hint.5=Dot 3: Maintenance Hatch, Energy Hatch
+SourceChamber.hint.6=Dot 4: Beamline Output Hatch
+
+LINAC.hint.0=325-1285x Shielded Accelerator Casing
+LINAC.hint.1=148-852x Coolant Delivery Casing
+LINAC.hint.2=127-703x Shielded Accelerator Glass
+LINAC.hint.3=56-312x Superconducting Coil Block
+LINAC.hint.4=156-732x Electrode Casing
+LINAC.hint.5=47x Grate Machine Casing
+LINAC.hint.6=48x Borosilicate Glass (LuV+)
+LINAC.hint.7=Dot 1: Energy Hatch, Maintenance Hatch
+LINAC.hint.8=Dot 2: Input Hatch, Output Hatch
+LINAC.hint.9=Dot 3: Beamline Input Hatch
+LINAC.hint.10=Dot 4: Beamline Output Hatch
+
+Synchrotron.hint.0=676x Shielded Accelerator Casing
+Synchrotron.hint.1=90x Superconducting Coil Block
+Synchrotron.hint.2=64x Niobium Block
+Synchrotron.hint.3=28x Coolant Delivery Casing
+Synchrotron.hint.4=16x Borosilicate Glass (LuV+)
+Synchrotron.hint.5=4x Antenna Casing
+Synchrotron.hint.6=Dot 1: Beamline Input Hatch
+Synchrotron.hint.7=Dot 2: Beamline Output Hatch
+Synchrotron.hint.8=Dot 3: Maintenance Hatch
+Synchrotron.hint.9=Dot 4: Input Hatch
+Synchrotron.hint.10=Dot 5: Output Hatch
+Synchrotron.hint.11=Dot 6: Energy Hatch
+
+TargetChamber.hint.0=28x Shielded Accelerator Casing
+TargetChamber.hint.1=34x Shielded Accelerator Glass
+TargetChamber.hint.2=16x Borosilicate Glass (any)
+TargetChamber.hint.3=29x Grate Machine Casing
+TargetChamber.hint.4=4x Focus Manipulation Casing
+TargetChamber.hint.5=4x Target Receptacle Casing
+TargetChamber.hint.6=1x Focus Holder
+TargetChamber.hint.7=1x Target Holder
+TargetChamber.hint.8=Dot 1: Focus Input Bus
+TargetChamber.hint.9=Dot 2: Energy Hatch, Maintenance Hatch
+TargetChamber.hint.10=Dot 3: Input Bus
+TargetChamber.hint.11=Dot 4: Output Bus
+TargetChamber.hint.12=Dot 5: Beamline Input Hatch
+
 
 fluid.Antimony Pentafluoride Solution=Antimony Pentafluoride Solution
 fluid.Hafnium Tetrachloride Solution=Hafnium Tetrachloride Solution
@@ -52,4 +114,53 @@ fluid.Diaminotoluene=Diaminotoluene
 fluid.Toluene Tetramethyl Diisocyanate=Toluene Tetramethyl Diisocyanate
 fluid.Diluted Acetone=Diluted Acetone
 
+tile.casing.shielded_accelerator_glass.name=Shielded Accelerator Glass
+casing.electrode.name=Electrode Casing
+casing.coolant_delivery.name=Coolant Delivery Casing
+casing.antenna_t1.name=Antenna Casing (T1)
+casing.antenna_t2.name=Antenna Casing (T2)
+casing.focus_manipulator.name=Focus Manipulator
+casing.focus_holder.name=Focus Holder
+casing.target_receptacle.name=Target Receptacle
+casing.target_holder.name=Target Holder
+casing.shielded_accelerator.name=Shielded Accelerator Casing
+
+item.capillary_exchange.name=Capillary Exchange
+item.mm_lattice.name=Mu-Metal Lattice
+item.iron_quartz_plate.name=Iron Quartz Plate
+item.mask_substrate.name=Mask Substrate
+item.etched_mask1.name=Etched Mask
+item.substrate_precursor.name=Substrate Precursor
+item.masked_mask_substrate.name=Processed Mask Substrate
+
+
+
+
+beamline.info=Machine Information
+
+beamline.in_pre=Multiblock Beamline Input
+beamline.particle=Particle
+beamline.energy=Energy
+beamline.focus=Focus
+beamline.amount=Amount
+beamline.rate=Rate
+
+beamline.temperature=Temperature
+beamline.coolusage=Coolant Usage
+
+beamline.out_pre=Multiblock Beamline Output
+
+beamline.particleinput=Input Particle Info:
+
+beamline.pipe.desc.0=Transport for particles
+beamline.pipe.desc.1=Signal does not cross or bend
+
+tile.recipe.tc=Target Chamber
+tile.recipe.sc=Source Chamber
+
+particle.electron=Electron
+particle.photon=Photon
+particle.alpha=Alpha
+particle.neutron=Neutron
+particle.proton=Proton
 GT5U.gui.text.dissolution_ratio=§7Wrong fluid input ratio
