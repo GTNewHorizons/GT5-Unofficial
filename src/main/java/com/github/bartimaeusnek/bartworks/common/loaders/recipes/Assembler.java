@@ -1,11 +1,13 @@
 package com.github.bartimaeusnek.bartworks.common.loaders.recipes;
 
+import static gregtech.api.enums.ItemList.Machine_Multi_BlastFurnace;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -63,7 +65,7 @@ public class Assembler implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 64, 1000),
+                ItemList.Machine_Multi_BlastFurnace.get(64),
                 GT_Utility.getIntegratedCircuit(17))
             .itemOutputs(ItemRegistry.megaMachines[0])
             .fluidInputs(Materials.SolderingAlloy.getMolten(9216))
@@ -73,7 +75,7 @@ public class Assembler implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 64, 1002),
+                ItemList.Machine_Multi_VacuumFreezer.get(64),
                 GT_Utility.getIntegratedCircuit(17))
             .itemOutputs(ItemRegistry.megaMachines[1])
             .fluidInputs(Materials.SolderingAlloy.getMolten(9216))
@@ -83,7 +85,7 @@ public class Assembler implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 64, 1126),
+                ItemList.Distillation_Tower.get(64),
                 GT_Utility.getIntegratedCircuit(17))
             .itemOutputs(ItemRegistry.megaMachines[2])
             .fluidInputs(Materials.SolderingAlloy.getMolten(9216))
@@ -93,7 +95,7 @@ public class Assembler implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 64, 1169),
+                ItemList.Machine_Multi_LargeChemicalReactor.get(64),
                 GT_Utility.getIntegratedCircuit(17))
             .itemOutputs(ItemRegistry.megaMachines[3])
             .fluidInputs(Materials.SolderingAlloy.getMolten(9216))
@@ -103,7 +105,7 @@ public class Assembler implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 64, 1160),
+                ItemList.OilCracker.get(64),
                 GT_Utility.getIntegratedCircuit(17))
             .itemOutputs(ItemRegistry.megaMachines[4])
             .fluidInputs(Materials.SolderingAlloy.getMolten(9216))

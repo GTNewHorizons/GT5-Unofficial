@@ -146,198 +146,233 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
         }
 
         // Is this a composite?
-        if ((inputStacks != null) && !disableOptional) {
-            // Is this a composite?
-            Logger.WARNING("mixer length: " + inputStacks.length);
-            if ((inputStacks.length != 0) && (inputStacks.length <= 4)) {
-                // Log Input items
-                Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
-                final long[] inputStackSize = material.vSmallestRatio;
-                Logger.WARNING("mixer is stacksizeVar null? " + (inputStackSize != null));
-                // Is smallest ratio invalid?
-                if (inputStackSize != null) {
-                    // set stack sizes on an input ItemStack[]
-                    for (short x = 0; x < inputStacks.length; x++) {
-                        if ((inputStacks[x] != null) && (inputStackSize[x] != 0)) {
-                            inputStacks[x].stackSize = (int) inputStackSize[x];
-                        }
-                    }
-                    // Relog input values, with stack sizes
-                    Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
+        if ((inputStacks == null) || disableOptional) {
+            return;
+        }
 
-                    // Get us four ItemStacks to input into the mixer
-                    ItemStack[] input = new ItemStack[4];
+        // Is this a composite?
+        Logger.WARNING("mixer length: " + inputStacks.length);
+        if (!((inputStacks.length != 0) && (inputStacks.length <= 4))) {
+            return;
+        }
+        // Log Input items
+        Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
+        final long[] inputStackSize = material.vSmallestRatio;
+        Logger.WARNING("mixer is stacksizeVar null? " + (inputStackSize != null));
+        // Is smallest ratio invalid?
+        if (inputStackSize == null) {
+            return;
+        }
+        // set stack sizes on an input ItemStack[]
+        for (short x = 0; x < inputStacks.length; x++) {
+            if ((inputStacks[x] != null) && (inputStackSize[x] != 0)) {
+                inputStacks[x].stackSize = (int) inputStackSize[x];
+            }
+        }
+        // Relog input values, with stack sizes
+        Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
 
-                    input[0] = (inputStacks.length >= 1) ? ((inputStacks[0] == null) ? null : inputStacks[0]) : null;
-                    input[1] = (inputStacks.length >= 2) ? ((inputStacks[1] == null) ? null : inputStacks[1]) : null;
-                    input[2] = (inputStacks.length >= 3) ? ((inputStacks[2] == null) ? null : inputStacks[2]) : null;
-                    input[3] = (inputStacks.length >= 4) ? ((inputStacks[3] == null) ? null : inputStacks[3]) : null;
+        // Get us four ItemStacks to input into the mixer
+        ItemStack[] input = new ItemStack[4];
 
-                    if (inputStacks.length == 1) {
-                        input[1] = input[0];
-                        input[0] = GT_Utility.getIntegratedCircuit(inputStacks.length + 10);
-                    } else if (inputStacks.length == 2) {
-                        input[2] = input[1];
-                        input[1] = input[0];
-                        input[0] = GT_Utility.getIntegratedCircuit(inputStacks.length + 10);
+        input[0] = (inputStacks.length >= 1) ? ((inputStacks[0] == null) ? null : inputStacks[0]) : null;
+        input[1] = (inputStacks.length >= 2) ? ((inputStacks[1] == null) ? null : inputStacks[1]) : null;
+        input[2] = (inputStacks.length >= 3) ? ((inputStacks[2] == null) ? null : inputStacks[2]) : null;
+        input[3] = (inputStacks.length >= 4) ? ((inputStacks[3] == null) ? null : inputStacks[3]) : null;
 
-                    } else if (inputStacks.length == 3) {
-                        input[3] = input[2];
-                        input[2] = input[1];
-                        input[1] = input[0];
-                        input[0] = GT_Utility.getIntegratedCircuit(inputStacks.length + 10);
-                    }
+        if (inputStacks.length == 1) {
+            input[1] = input[0];
+            input[0] = GT_Utility.getIntegratedCircuit(inputStacks.length + 10);
+        } else if (inputStacks.length == 2) {
+            input[2] = input[1];
+            input[1] = input[0];
+            input[0] = GT_Utility.getIntegratedCircuit(inputStacks.length + 10);
 
-                    /*
-                     * for (int g = 0; g<4; g++) { if(inputStacks.length > g) { input[g] = inputStacks[g] != null ?
-                     * inputStacks[g] : null; } else { input[g] = GT_Utility.getIntegratedCircuit(g+10); break; } }
-                     */
+        } else if (inputStacks.length == 3) {
+            input[3] = input[2];
+            input[2] = input[1];
+            input[1] = input[0];
+            input[0] = GT_Utility.getIntegratedCircuit(inputStacks.length + 10);
+        }
 
-                    // Add mixer Recipe
-                    FluidStack oxygen = GT_Values.NF;
-                    if (material.getComposites() != null) {
-                        for (final MaterialStack x : material.getComposites()) {
-                            if (!material.getComposites()
-                                .isEmpty()) {
-                                if (x != null) {
-                                    if (x.getStackMaterial() != null) {
-                                        if (x.getStackMaterial()
-                                            .getDust(1) == null) {
-                                            if (x.getStackMaterial()
-                                                .getState() != MaterialState.SOLID
-                                                && x.getStackMaterial()
-                                                    .getState() != MaterialState.ORE
-                                                && x.getStackMaterial()
-                                                    .getState() != MaterialState.PLASMA) {
-                                                oxygen = x.getStackMaterial()
-                                                    .getFluidStack(1000);
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
 
-                    input = ItemUtils.cleanItemStackArray(input);
+        // Add mixer Recipe
+        FluidStack oxygen = GT_Values.NF;
+        if (material.getComposites() != null) {
+            for (final MaterialStack x : material.getComposites()) {
+                if (material.getComposites().isEmpty()){
+                    continue;
+                }
+                if (x == null){
+                    continue;
+                }
+                if (x.getStackMaterial() == null){
+                    continue;
+                }
 
-                    // Add mixer Recipe
-                    GT_Values.RA.stdBuilder()
-                        .itemInputs(input[0], input[1], input[2], input[3])
-                        .itemOutputs(outputStacks)
-                        .fluidInputs(oxygen)
-                        .duration((int) Math.max(material.getMass() * 2L * 1, 1))
-                        .eut(material.vVoltageMultiplier)
-                        .addTo(mixerRecipes);
+                if (x.getStackMaterial().getDust(1) != null) {
+                    continue;
+                }
 
-                    Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
+                if (x.getStackMaterial()
+                    .getState() != MaterialState.SOLID
+                    && x.getStackMaterial()
+                    .getState() != MaterialState.ORE
+                    && x.getStackMaterial()
+                    .getState() != MaterialState.PLASMA) {
+                    oxygen = x.getStackMaterial()
+                        .getFluidStack(1000);
+                    break;
                 }
             }
         }
+
+        input = ItemUtils.cleanItemStackArray(input);
+
+        // Add mixer Recipe
+
+        if (oxygen == null){
+            GT_Values.RA.stdBuilder()
+                .itemInputs(input[0], input[1], input[2], input[3])
+                .itemOutputs(outputStacks)
+                .duration((int) Math.max(material.getMass() * 2L * 1, 1))
+                .eut(material.vVoltageMultiplier)
+                .addTo(mixerRecipes);
+        }
+        else {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(input[0], input[1], input[2], input[3])
+                .itemOutputs(outputStacks)
+                .fluidInputs(oxygen)
+                .duration((int) Math.max(material.getMass() * 2L * 1, 1))
+                .eut(material.vVoltageMultiplier)
+                .addTo(mixerRecipes);
+        }
+
+        Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
     }
 
     public static boolean addMixerRecipe_Standalone(final Material material) {
         final ItemStack[] inputStacks = material.getMaterialComposites();
         final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
         // Is this a composite?
-        if ((inputStacks != null)) {
-            // Is this a composite?
-            Logger.WARNING("mixer length: " + inputStacks.length);
-            if ((inputStacks.length >= 1) && (inputStacks.length <= 4)) {
-                // Log Input items
-                Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
-                final long[] inputStackSize = material.vSmallestRatio;
-                Logger.WARNING("mixer is stacksizeVar not null? " + (inputStackSize != null));
-                // Is smallest ratio invalid?
-                if (inputStackSize != null) {
-                    // set stack sizes on an input ItemStack[]
-                    for (short x = 0; x < inputStacks.length; x++) {
-                        if ((inputStacks[x] != null) && (inputStackSize[x] != 0)) {
-                            inputStacks[x].stackSize = (int) inputStackSize[x];
-                        }
-                    }
-                    // Relog input values, with stack sizes
-                    Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
-
-                    // Get us four ItemStacks to input into the mixer
-                    ItemStack input1, input2, input3, input4;
-                    input1 = inputStacks[0];
-                    input2 = (inputStacks.length >= 2) ? (input2 = (inputStacks[1] == null) ? null : inputStacks[1])
-                        : null;
-                    input3 = (inputStacks.length >= 3) ? (input3 = (inputStacks[2] == null) ? null : inputStacks[2])
-                        : null;
-                    input4 = (inputStacks.length >= 4) ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3])
-                        : null;
-
-                    if (inputStacks.length == 1) {
-                        input2 = input1;
-                        input1 = GT_Utility.getIntegratedCircuit(20);
-                    } else if (inputStacks.length == 2) {
-                        input3 = input2;
-                        input2 = input1;
-                        input1 = GT_Utility.getIntegratedCircuit(20);
-
-                    } else if (inputStacks.length == 3) {
-                        input4 = input3;
-                        input3 = input2;
-                        input2 = input1;
-                        input1 = GT_Utility.getIntegratedCircuit(20);
-                    }
-
-                    // Add mixer Recipe
-                    FluidStack oxygen = GT_Values.NF;
-                    if (material.getComposites() != null) {
-                        int compSlot = 0;
-                        for (final MaterialStack x : material.getComposites()) {
-                            if (!material.getComposites()
-                                .isEmpty()) {
-                                if (x != null) {
-                                    if (x.getStackMaterial() != null) {
-                                        if (x.getStackMaterial()
-                                            .getDust(1) == null) {
-                                            MaterialState f = x.getStackMaterial()
-                                                .getState();
-                                            if (f == MaterialState.GAS || f == MaterialState.LIQUID
-                                                || f == MaterialState.PURE_LIQUID
-                                                || f == MaterialState.PURE_GAS) {
-                                                oxygen = x.getStackMaterial()
-                                                    .getFluidStack((int) (material.vSmallestRatio[compSlot] * 1000));
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            compSlot++;
-                        }
-                    }
-
-                    // Add mixer Recipe
-                    try {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(input1, input2, input3, input4)
-                            .itemOutputs(outputStacks)
-                            .fluidInputs(oxygen)
-                            .duration((int) Math.max(material.getMass() * 2L * 1, 1))
-                            .eut(material.vVoltageMultiplier)
-                            .addTo(mixerRecipes);
-
-                        Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
-                        return true;
-
-                    } catch (Throwable t) {
-                        t.printStackTrace();
-                    }
-                } else {
-                    Logger.WARNING("inputStackSize == NUll - " + material.getLocalizedName());
-                }
-            } else {
-                Logger.WARNING("InputStacks is out range 1-4 - " + material.getLocalizedName());
-            }
-        } else {
+        if (inputStacks == null){
             Logger.WARNING("InputStacks == NUll - " + material.getLocalizedName());
+            return false;
         }
-        return false;
+
+        // Is this a composite?
+        Logger.WARNING("mixer length: " + inputStacks.length);
+        if (!((inputStacks.length >= 1) && (inputStacks.length <= 4))){
+            Logger.WARNING("InputStacks is out range 1-4 - " + material.getLocalizedName());
+            return false;
+        }
+        // Log Input items
+        Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
+        final long[] inputStackSize = material.vSmallestRatio;
+        Logger.WARNING("mixer is stacksizeVar not null? " + (inputStackSize != null));
+
+        // Is smallest ratio invalid?
+        if (inputStackSize == null){
+            Logger.WARNING("inputStackSize == NUll - " + material.getLocalizedName());
+            return true;
+        }
+
+        // set stack sizes on an input ItemStack[]
+        for (short x = 0; x < inputStacks.length; x++) {
+            if ((inputStacks[x] != null) && (inputStackSize[x] != 0)) {
+                inputStacks[x].stackSize = (int) inputStackSize[x];
+            }
+        }
+
+        // Relog input values, with stack sizes
+        Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
+
+        // Get us four ItemStacks to input into the mixer
+        ItemStack input1, input2, input3, input4;
+        input1 = inputStacks[0];
+        input2 = (inputStacks.length >= 2) ? (input2 = (inputStacks[1] == null) ? null : inputStacks[1])
+            : null;
+        input3 = (inputStacks.length >= 3) ? (input3 = (inputStacks[2] == null) ? null : inputStacks[2])
+            : null;
+        input4 = (inputStacks.length >= 4) ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3])
+            : null;
+
+        if (inputStacks.length == 1) {
+            input2 = input1;
+            input1 = GT_Utility.getIntegratedCircuit(20);
+        } else if (inputStacks.length == 2) {
+            input3 = input2;
+            input2 = input1;
+            input1 = GT_Utility.getIntegratedCircuit(20);
+
+        } else if (inputStacks.length == 3) {
+            input4 = input3;
+            input3 = input2;
+            input2 = input1;
+            input1 = GT_Utility.getIntegratedCircuit(20);
+        }
+
+        // Add mixer Recipe
+        FluidStack oxygen = GT_Values.NF;
+        if (material.getComposites() != null) {
+            int compSlot = 0;
+            for (final MaterialStack x : material.getComposites()) {
+
+                if (material.getComposites().isEmpty()) {
+                    compSlot++;
+                    continue;
+                }
+                if (x == null) {
+                    compSlot++;
+                    continue;
+                }
+
+                if (x.getStackMaterial() == null) {
+                    compSlot++;
+                    continue;
+                }
+
+                if (x.getStackMaterial().getDust(1) == null) {
+                    compSlot++;
+                    continue;
+                }
+
+                MaterialState f = x.getStackMaterial().getState();
+                if (f == MaterialState.GAS || f == MaterialState.LIQUID
+                    || f == MaterialState.PURE_LIQUID
+                    || f == MaterialState.PURE_GAS) {
+                    oxygen = x.getStackMaterial().getFluidStack((int) (material.vSmallestRatio[compSlot] * 1000));
+                }
+                compSlot++;
+            }
+        }
+
+        // Add mixer Recipe
+        try {
+            if (oxygen == null){
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(input1, input2, input3, input4)
+                    .itemOutputs(outputStacks)
+                    .duration((int) Math.max(material.getMass() * 2L * 1, 1))
+                    .eut(material.vVoltageMultiplier)
+                    .addTo(mixerRecipes);
+            } else {
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(input1, input2, input3, input4)
+                    .itemOutputs(outputStacks)
+                    .fluidInputs(oxygen)
+                    .duration((int) Math.max(material.getMass() * 2L * 1, 1))
+                    .eut(material.vVoltageMultiplier)
+                    .addTo(mixerRecipes);
+            }
+
+            Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
+
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        return true;
     }
 
     public static boolean generatePackagerRecipes(Material aMatInfo) {

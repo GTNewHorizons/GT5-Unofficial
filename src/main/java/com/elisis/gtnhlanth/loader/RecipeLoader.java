@@ -387,7 +387,7 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(WerkstoffMaterialPool.CeriumIIIOxide.get(OrePrefixes.dust, 5))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cerium, 2))
-            .fluidOutputs(Materials.Oxygen.getFluid(3000))
+            .fluidOutputs(Materials.Oxygen.getGas(3000))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);

@@ -29,6 +29,7 @@ import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
+import common.TileEntities;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -2958,7 +2959,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 16_384, // comp/s
                 (int) TierEU.RECIPE_MAX, // eu/t
                 32, // amperage
-                new Object[] { getModItem(GregTech.ID, "gt.blockmachines", 1, 13106),
+                new Object[] {TileEntities.lsc.getStackForm(1),
                     // UV Solar panel
                     getModItem(SuperSolarPanels.ID, "PhotonicSolarPanel", 1, 0),
                     // UHV Capacitor block

@@ -2872,31 +2872,75 @@ public class RECIPES_Machines {
             .addTo(assemblerRecipes);
 
         // Player Doors
-        ItemStack[] aDoorInputs = new ItemStack[] { ItemUtils.getSimpleStack(Blocks.log2),
-            ItemUtils.getSimpleStack(Blocks.iron_block), ItemUtils.getSimpleStack(Blocks.glass),
-            ItemUtils.getSimpleStack(Blocks.packed_ice), ItemUtils.getSimpleStack(Blocks.cactus), };
-        ItemStack[] aDoorOutputs = new ItemStack[] { ItemUtils.getSimpleStack(ModBlocks.blockPlayerDoorWooden),
-            ItemUtils.getSimpleStack(ModBlocks.blockPlayerDoorIron),
-            ItemUtils.getSimpleStack(ModBlocks.blockPlayerDoorCustom_Glass),
-            ItemUtils.getSimpleStack(ModBlocks.blockPlayerDoorCustom_Ice),
-            ItemUtils.getSimpleStack(ModBlocks.blockPlayerDoorCustom_Cactus), };
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(Items.iron_door),
+                ItemUtils.getSimpleStack(Blocks.log2),
+                ItemList.Sensor_LV.get(1, CI.circuitTier7),
+                CI.getTieredComponent(OrePrefixes.plate, 1, 2 * aCostMultiplier),
+                CI.getTieredComponent(OrePrefixes.wireGt02, 1, 2 * aCostMultiplier),
+                ItemUtils.getSimpleStack(Items.redstone, 16))
+            .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPlayerDoorWooden))
+            .fluidInputs(CI.getTieredFluid(1, (144 * 2)))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(assemblerRecipes);
 
-        for (int y = 0; y < aDoorInputs.length; y++) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemUtils.getSimpleStack(Items.iron_door),
-                    aDoorInputs[y],
-                    ItemList.Sensor_LV.get(1, CI.circuitTier7),
-                    CI.getTieredComponent(OrePrefixes.plate, 1, 2 * aCostMultiplier),
-                    CI.getTieredComponent(OrePrefixes.wireGt02, 1, 2 * aCostMultiplier),
-                    ItemUtils.getSimpleStack(Items.redstone, 16))
-                .itemOutputs(aDoorOutputs[y])
-                .fluidInputs(CI.getTieredFluid(1, (144 * 2)))
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(Items.iron_door),
+                ItemUtils.getSimpleStack(Blocks.iron_block),
+                ItemList.Sensor_LV.get(1, CI.circuitTier7),
+                CI.getTieredComponent(OrePrefixes.plate, 1, 2 * aCostMultiplier),
+                CI.getTieredComponent(OrePrefixes.wireGt02, 1, 2 * aCostMultiplier),
+                ItemUtils.getSimpleStack(Items.redstone, 16))
+            .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPlayerDoorIron))
+            .fluidInputs(CI.getTieredFluid(1, (144 * 2)))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(assemblerRecipes);
 
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(Items.iron_door),
+                ItemUtils.getSimpleStack(Blocks.glass),
+                ItemList.Sensor_LV.get(1, CI.circuitTier7),
+                CI.getTieredComponent(OrePrefixes.plate, 1, 2 * aCostMultiplier),
+                CI.getTieredComponent(OrePrefixes.wireGt02, 1, 2 * aCostMultiplier),
+                ItemUtils.getSimpleStack(Items.redstone, 16))
+            .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPlayerDoorCustom_Glass))
+            .fluidInputs(CI.getTieredFluid(1, (144 * 2)))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(Items.iron_door),
+                ItemUtils.getSimpleStack(Blocks.packed_ice),
+                ItemList.Sensor_LV.get(1, CI.circuitTier7),
+                CI.getTieredComponent(OrePrefixes.plate, 1, 2 * aCostMultiplier),
+                CI.getTieredComponent(OrePrefixes.wireGt02, 1, 2 * aCostMultiplier),
+                ItemUtils.getSimpleStack(Items.redstone, 16))
+            .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPlayerDoorCustom_Ice))
+            .fluidInputs(CI.getTieredFluid(1, (144 * 2)))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(Items.iron_door),
+                ItemUtils.getSimpleStack(Blocks.cactus),
+                ItemList.Sensor_LV.get(1, CI.circuitTier7),
+                CI.getTieredComponent(OrePrefixes.plate, 1, 2 * aCostMultiplier),
+                CI.getTieredComponent(OrePrefixes.wireGt02, 1, 2 * aCostMultiplier),
+                ItemUtils.getSimpleStack(Items.redstone, 16))
+            .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPlayerDoorCustom_Cactus))
+            .fluidInputs(CI.getTieredFluid(1, (144 * 2)))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(assemblerRecipes);
 
         Logger.INFO("Done loading recipes for the Various machine blocks.");
     }
