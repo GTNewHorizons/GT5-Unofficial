@@ -658,7 +658,7 @@ public class DistilleryRecipes implements Runnable {
             new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(15), Materials.SulfuricLightFuel.getFluid(60),
                 Materials.SulfuricNaphtha.getFluid(200), Materials.SulfuricGas.getGas(80) },
             null,
-            20,
+            30,
             96);
         addUniversalDistillationRecipewithCircuit(
             Materials.Oil.getFluid(150L),
@@ -666,7 +666,7 @@ public class DistilleryRecipes implements Runnable {
             new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(45), Materials.SulfuricLightFuel.getFluid(150),
                 Materials.SulfuricNaphtha.getFluid(60), Materials.SulfuricGas.getGas(60) },
             null,
-            20,
+            60,
             96);
         addUniversalDistillationRecipewithCircuit(
             Materials.OilHeavy.getFluid(150),
@@ -674,7 +674,7 @@ public class DistilleryRecipes implements Runnable {
             new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(140), Materials.SulfuricLightFuel.getFluid(90),
                 Materials.SulfuricNaphtha.getFluid(40), Materials.SulfuricGas.getGas(30) },
             null,
-            20,
+            30,
             288);
 
         // 2 0.5HCl(Diluted) = HCl + H2O
