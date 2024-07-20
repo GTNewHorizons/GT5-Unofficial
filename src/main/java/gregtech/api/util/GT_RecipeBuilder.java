@@ -178,6 +178,9 @@ public class GT_RecipeBuilder {
         GT_Log.err.print("null detected in ");
         GT_Log.err.println(componentType);
         new NullPointerException().printStackTrace(GT_Log.err);
+        if (PANIC_MODE_NULL) {
+            throw new IllegalArgumentException("null in argument");
+        }
     }
 
     private static boolean debugNull() {
@@ -191,6 +194,9 @@ public class GT_RecipeBuilder {
         // place a breakpoint here to catch all these issues
         GT_Log.err.print("invalid recipe");
         new IllegalArgumentException().printStackTrace(GT_Log.err);
+        if (PANIC_MODE_INVALID) {
+            throw new IllegalArgumentException("invalid recipe");
+        }
     }
 
     public static void handleRecipeCollision(String details) {
@@ -199,10 +205,12 @@ public class GT_RecipeBuilder {
         }
         GT_Log.err.print("Recipe collision resulting in recipe loss detected with ");
         GT_Log.err.println(details);
-
-        // place a breakpoint here to catch all these issues
-        new IllegalArgumentException().printStackTrace(GT_Log.err);
-
+        if (PANIC_MODE_COLLISION) {
+            throw new IllegalArgumentException("Recipe Collision");
+        } else {
+            // place a breakpoint here to catch all these issues
+            new IllegalArgumentException().printStackTrace(GT_Log.err);
+        }
     }
 
     public static void onConfigLoad() {
