@@ -36,6 +36,8 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -354,7 +356,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                 .setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
         } else {
-            soundMagic(getActivitySound());
+            soundMagic(getActivitySoundLoop());
         }
     }
 
@@ -564,8 +566,9 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
         return false;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySound() {
+    protected ResourceLocation getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_FUSION_LOOP.resourceLocation;
     }
 
