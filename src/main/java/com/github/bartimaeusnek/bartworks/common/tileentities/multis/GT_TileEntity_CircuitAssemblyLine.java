@@ -255,7 +255,9 @@ public class GT_TileEntity_CircuitAssemblyLine extends
         this.imprintedItemName = this.type == null ? ""
             : GT_LanguageManager.getTranslateableItemStackName(ItemStack.loadItemStackFromNBT(this.type));
         mode = aNBT.getInteger(RUNNING_MODE_KEY);
-        length = aNBT.getInteger(LENGTH_KEY);
+        if (aNBT.hasKey(LENGTH_KEY)) {
+            length = aNBT.getInteger(LENGTH_KEY);
+        }
         super.loadNBTData(aNBT);
     }
 
@@ -263,7 +265,6 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     public void setItemNBT(NBTTagCompound aNBT) {
         if (!this.type.equals(new NBTTagCompound())) aNBT.setTag(IMPRINT_KEY, this.type);
         aNBT.setInteger(RUNNING_MODE_KEY, mode);
-        aNBT.setInteger(LENGTH_KEY, length);
         super.saveNBTData(aNBT);
     }
 
