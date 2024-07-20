@@ -1267,7 +1267,7 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(WerkstoffMaterialPool.NeutralizedMonaziteRareEarthFiltrate.get(OrePrefixes.dust, 1))
             .itemOutputs(
-                WerkstoffMaterialPool.MonaziteRareEarthHydroxideConcentrate.get(OrePrefixes.dust, 1),master
+                WerkstoffMaterialPool.MonaziteRareEarthHydroxideConcentrate.get(OrePrefixes.dust, 1),
                 WerkstoffMaterialPool.UraniumFiltrate.get(OrePrefixes.dust, 1),
                 WerkstoffMaterialPool.UraniumFiltrate.get(OrePrefixes.dust, 1))
             .outputChances(9000, 5000, 4000)
