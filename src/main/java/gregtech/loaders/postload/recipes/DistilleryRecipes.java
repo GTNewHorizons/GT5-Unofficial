@@ -130,30 +130,6 @@ public class DistilleryRecipes implements Runnable {
             .addTo(distilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(4))
-            .fluidInputs(Materials.OilLight.getFluid(300L))
-            .fluidOutputs(Materials.Oil.getFluid(100L))
-            .duration(16 * TICKS)
-            .eut(24)
-            .addTo(distilleryRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(4))
-            .fluidInputs(Materials.OilMedium.getFluid(200L))
-            .fluidOutputs(Materials.Oil.getFluid(100L))
-            .duration(16 * TICKS)
-            .eut(24)
-            .addTo(distilleryRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(4))
-            .fluidInputs(Materials.OilHeavy.getFluid(100L))
-            .fluidOutputs(Materials.Oil.getFluid(100L))
-            .duration(16 * TICKS)
-            .eut(24)
-            .addTo(distilleryRecipes);
-
-        GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(MaterialsOreAlum.SluiceSand.getDust(1))
             .fluidInputs(MaterialsOreAlum.SluiceJuice.getFluid(1000))
