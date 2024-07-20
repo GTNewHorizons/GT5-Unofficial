@@ -1,13 +1,5 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaAtmosphericReconditioner;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaPollutionCreator;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaPollutionDetector;
-
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Pollution_Cleaner_EV;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Pollution_Cleaner_HV;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Pollution_Cleaner_IV;
@@ -19,6 +11,14 @@ import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.P
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Pollution_Cleaner_ZPM;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Pollution_Creator;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Pollution_Detector;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaAtmosphericReconditioner;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaPollutionCreator;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaPollutionDetector;
 
 public class GregtechPollutionDevices {
 
@@ -68,8 +68,11 @@ public class GregtechPollutionDevices {
                     "Precision Pollution Scrubber",
                     3).getStackForm(1L));
             GregtechItemList.Pollution_Cleaner_EV.set(
-                new GregtechMetaAtmosphericReconditioner(Pollution_Cleaner_EV.ID, "pollutioncleaner.05.tier.single", "Air Recycler", 4)
-                    .getStackForm(1L));
+                new GregtechMetaAtmosphericReconditioner(
+                    Pollution_Cleaner_EV.ID,
+                    "pollutioncleaner.05.tier.single",
+                    "Air Recycler",
+                    4).getStackForm(1L));
             GregtechItemList.Pollution_Cleaner_IV.set(
                 new GregtechMetaAtmosphericReconditioner(
                     Pollution_Cleaner_IV.ID,

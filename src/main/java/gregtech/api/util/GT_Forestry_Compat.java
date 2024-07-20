@@ -9,7 +9,6 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 import forestry.api.recipes.ICentrifugeRecipe;
 import forestry.api.recipes.ISqueezerRecipe;
@@ -26,8 +25,8 @@ public class GT_Forestry_Compat {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.FR_Bee_Drone.getWildcard(1L))
                 .itemOutputs(ItemList.FR_Bee_Drone.getWithName(1L, "Scanned Drone"))
-                .fluidInputs( Materials.Honey.getFluid(100L))
-                .duration(25*SECONDS)
+                .fluidInputs(Materials.Honey.getFluid(100L))
+                .duration(25 * SECONDS)
                 .eut(2)
                 .noOptimize()
                 .ignoreCollision()
@@ -38,8 +37,8 @@ public class GT_Forestry_Compat {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.FR_Bee_Princess.getWildcard(1L))
                 .itemOutputs(ItemList.FR_Bee_Princess.getWithName(1L, "Scanned Princess"))
-                .fluidInputs(Materials.Honey.getFluid(100L) )
-                .duration(25*SECONDS)
+                .fluidInputs(Materials.Honey.getFluid(100L))
+                .duration(25 * SECONDS)
                 .eut(2)
                 .noOptimize()
                 .ignoreCollision()
@@ -49,9 +48,9 @@ public class GT_Forestry_Compat {
         if (ItemList.FR_Bee_Queen.get(1L) != null) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.FR_Bee_Queen.getWildcard(1L))
-                .itemOutputs( ItemList.FR_Bee_Queen.getWithName(1L, "Scanned Queen"))
-                .fluidInputs( Materials.Honey.getFluid(100L))
-                .duration(25*SECONDS)
+                .itemOutputs(ItemList.FR_Bee_Queen.getWithName(1L, "Scanned Queen"))
+                .fluidInputs(Materials.Honey.getFluid(100L))
+                .duration(25 * SECONDS)
                 .eut(2)
                 .noOptimize()
                 .ignoreCollision()
@@ -62,8 +61,8 @@ public class GT_Forestry_Compat {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.FR_Tree_Sapling.getWildcard(1L))
                 .itemOutputs(ItemList.FR_Tree_Sapling.getWithName(1L, "Scanned Sapling"))
-                .fluidInputs(Materials.Honey.getFluid(100L) )
-                .duration(25*SECONDS)
+                .fluidInputs(Materials.Honey.getFluid(100L))
+                .duration(25 * SECONDS)
                 .eut(2)
                 .noOptimize()
                 .ignoreCollision()
@@ -74,8 +73,8 @@ public class GT_Forestry_Compat {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.FR_Butterfly.getWildcard(1L))
                 .itemOutputs(ItemList.FR_Butterfly.getWithName(1L, "Scanned Butterfly"))
-                .fluidInputs( Materials.Honey.getFluid(100L) )
-                .duration(25*SECONDS)
+                .fluidInputs(Materials.Honey.getFluid(100L))
+                .duration(25 * SECONDS)
                 .eut(2)
                 .noOptimize()
                 .ignoreCollision()
@@ -86,8 +85,8 @@ public class GT_Forestry_Compat {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.FR_Larvae.getWildcard(1L))
                 .itemOutputs(ItemList.FR_Larvae.getWithName(1L, "Scanned Larvae"))
-                .fluidInputs(Materials.Honey.getFluid(100L) )
-                .duration(25*SECONDS)
+                .fluidInputs(Materials.Honey.getFluid(100L))
+                .duration(25 * SECONDS)
                 .eut(2)
                 .noOptimize()
                 .ignoreCollision()
@@ -99,7 +98,7 @@ public class GT_Forestry_Compat {
                 .itemInputs(ItemList.FR_Serum.getWildcard(1L))
                 .itemOutputs(ItemList.FR_Serum.getWithName(1L, "Scanned Serum"))
                 .fluidInputs(Materials.Honey.getFluid(100L))
-                .duration(25*SECONDS)
+                .duration(25 * SECONDS)
                 .eut(2)
                 .noOptimize()
                 .ignoreCollision()
@@ -110,8 +109,8 @@ public class GT_Forestry_Compat {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.FR_Caterpillar.getWildcard(1L))
                 .itemOutputs(ItemList.FR_Caterpillar.getWithName(1L, "Scanned Caterpillar"))
-                .fluidInputs(Materials.Honey.getFluid(100L) )
-                .duration(25*SECONDS)
+                .fluidInputs(Materials.Honey.getFluid(100L))
+                .duration(25 * SECONDS)
                 .eut(2)
                 .noOptimize()
                 .ignoreCollision()
@@ -122,8 +121,8 @@ public class GT_Forestry_Compat {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.FR_PollenFertile.getWildcard(1L))
                 .itemOutputs(ItemList.FR_PollenFertile.getWithName(1L, "Scanned Pollen"))
-                .fluidInputs( Materials.Honey.getFluid(100L))
-                .duration(25*SECONDS)
+                .fluidInputs(Materials.Honey.getFluid(100L))
+                .duration(25 * SECONDS)
                 .eut(2)
                 .noOptimize()
                 .ignoreCollision()
@@ -171,7 +170,8 @@ public class GT_Forestry_Compat {
     public static void transferSqueezerRecipes() {
         try {
             for (ISqueezerRecipe tRecipe : RecipeManagers.squeezerManager.recipes()) {
-                if ((tRecipe.getResources().length == 1) && (tRecipe.getFluidOutput() != null) && (tRecipe.getResources()[0]!=null)) {
+                if ((tRecipe.getResources().length == 1) && (tRecipe.getFluidOutput() != null)
+                    && (tRecipe.getResources()[0] != null)) {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(tRecipe.getResources()[0])
                         .itemOutputs(tRecipe.getRemnants())

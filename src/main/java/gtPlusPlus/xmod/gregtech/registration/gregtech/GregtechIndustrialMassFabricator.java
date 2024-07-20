@@ -1,24 +1,19 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import gregtech.api.enums.TierEU;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_MassFabricator;
-
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.multiblockMassFabricatorRecipes;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_MassFab;
+
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.TierEU;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_MassFabricator;
 
 public class GregtechIndustrialMassFabricator {
 
@@ -45,18 +40,22 @@ public class GregtechIndustrialMassFabricator {
 
         // Basic UUA1
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(9), ItemUtils.getSimpleStack(ItemUtils.getItemFromFQRN("IC2:itemScrap"), 9))
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(9),
+                ItemUtils.getSimpleStack(ItemUtils.getItemFromFQRN("IC2:itemScrap"), 9))
             .fluidOutputs(Materials.UUAmplifier.getFluid(1))
-            .duration(9*SECONDS)
+            .duration(9 * SECONDS)
             .eut(TierEU.LV)
             .noOptimize()
             .addTo(multiblockMassFabricatorRecipes);
 
         // Basic UUA2
         GT_Values.RA.stdBuilder()
-            .itemInputs( GT_Utility.getIntegratedCircuit(19), ItemUtils.getSimpleStack(ItemUtils.getItemFromFQRN("IC2:itemScrapbox")))
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(19),
+                ItemUtils.getSimpleStack(ItemUtils.getItemFromFQRN("IC2:itemScrapbox")))
             .fluidOutputs(Materials.UUAmplifier.getFluid(1))
-            .duration(9*SECONDS)
+            .duration(9 * SECONDS)
             .eut(TierEU.LV)
             .noOptimize()
             .addTo(multiblockMassFabricatorRecipes);
@@ -65,7 +64,7 @@ public class GregtechIndustrialMassFabricator {
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .fluidOutputs(Materials.UUMatter.getFluid(16))
-            .duration(2*MINUTES+40*SECONDS)
+            .duration(2 * MINUTES + 40 * SECONDS)
             .eut(4096)
             .noOptimize()
             .addTo(multiblockMassFabricatorRecipes);
@@ -75,7 +74,7 @@ public class GregtechIndustrialMassFabricator {
             .itemInputs(GT_Utility.getIntegratedCircuit(2))
             .fluidInputs(Materials.UUAmplifier.getFluid(16))
             .fluidOutputs(Materials.UUMatter.getFluid(16))
-            .duration(40*SECONDS)
+            .duration(40 * SECONDS)
             .eut(4096)
             .noOptimize()
             .addTo(multiblockMassFabricatorRecipes);
@@ -84,7 +83,7 @@ public class GregtechIndustrialMassFabricator {
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(3))
             .fluidOutputs(Materials.UUMatter.getFluid(256))
-            .duration(2*MINUTES+40*SECONDS)
+            .duration(2 * MINUTES + 40 * SECONDS)
             .eut(65536)
             .noOptimize()
             .addTo(multiblockMassFabricatorRecipes);
@@ -94,7 +93,7 @@ public class GregtechIndustrialMassFabricator {
             .itemInputs(GT_Utility.getIntegratedCircuit(3))
             .fluidInputs(Materials.UUAmplifier.getFluid(256))
             .fluidOutputs(Materials.UUMatter.getFluid(256))
-            .duration(40*SECONDS)
+            .duration(40 * SECONDS)
             .eut(65536)
             .noOptimize()
             .addTo(multiblockMassFabricatorRecipes);

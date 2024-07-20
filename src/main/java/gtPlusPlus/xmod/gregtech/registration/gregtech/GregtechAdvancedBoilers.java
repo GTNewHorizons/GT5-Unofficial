@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Boiler_Advanced_HV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Boiler_Advanced_LV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Boiler_Advanced_MV;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.ItemList;
@@ -14,10 +18,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity_Boiler_HV;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity_Boiler_LV;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity_Boiler_MV;
-
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Boiler_Advanced_HV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Boiler_Advanced_LV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Boiler_Advanced_MV;
 
 public class GregtechAdvancedBoilers {
 
@@ -51,20 +51,16 @@ public class GregtechAdvancedBoilers {
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "WCW", "GMG", "WPW", 'M', ItemList.Hull_ULV, 'P',
-                OrePrefixes.pipeLarge.get(Materials.Bronze), 'C',
-                OrePrefixes.circuit.get(Materials.Primitive), 'W',
-                OrePrefixes.plate.get(Materials.Lead), 'G',
-                OrePrefixes.pipeSmall.get(Materials.Copper) });
+                OrePrefixes.pipeLarge.get(Materials.Bronze), 'C', OrePrefixes.circuit.get(Materials.Primitive), 'W',
+                OrePrefixes.plate.get(Materials.Lead), 'G', OrePrefixes.pipeSmall.get(Materials.Copper) });
 
         GT_ModHandler.addCraftingRecipe(
             chassisT2,
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
-            new Object[] { "WCW", "GMG", "WPW", 'M', ItemList.Hull_LV, 'P',
-                OrePrefixes.pipeLarge.get(Materials.Steel), 'C',
-                OrePrefixes.circuit.get(Materials.Basic), 'W',
-                OrePrefixes.plate.get(Materials.Steel), 'G',
+            new Object[] { "WCW", "GMG", "WPW", 'M', ItemList.Hull_LV, 'P', OrePrefixes.pipeLarge.get(Materials.Steel),
+                'C', OrePrefixes.circuit.get(Materials.Basic), 'W', OrePrefixes.plate.get(Materials.Steel), 'G',
                 OrePrefixes.pipeSmall.get(Materials.Bronze) });
 
         GT_ModHandler.addCraftingRecipe(
@@ -73,10 +69,8 @@ public class GregtechAdvancedBoilers {
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "WCW", "GMG", "WPW", 'M', ItemList.Hull_MV, 'P',
-                OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C',
-                OrePrefixes.circuit.get(Materials.Good), 'W',
-                OrePrefixes.plate.get(Materials.Aluminium), 'G',
-                OrePrefixes.pipeSmall.get(Materials.Steel) });
+                OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.Good), 'W',
+                OrePrefixes.plate.get(Materials.Aluminium), 'G', OrePrefixes.pipeSmall.get(Materials.Steel) });
 
         ItemStack pipeTier1 = ItemUtils.getItemStackOfAmountFromOreDict(RECIPES_MachineComponents.pipeTier7, 1);
         ItemStack pipeTier2 = ItemUtils.getItemStackOfAmountFromOreDict(RECIPES_MachineComponents.pipeTier8, 1);
@@ -88,26 +82,23 @@ public class GregtechAdvancedBoilers {
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
-            new Object[] { "dCw", "WMW", "GPG", 'M', ItemList.Hull_LV, 'P',
-                pipeTier1, 'C', OrePrefixes.circuit.get(Materials.Basic), 'W',
-                chassisT1, 'G', OrePrefixes.gear.get(Materials.Steel) });
+            new Object[] { "dCw", "WMW", "GPG", 'M', ItemList.Hull_LV, 'P', pipeTier1, 'C',
+                OrePrefixes.circuit.get(Materials.Basic), 'W', chassisT1, 'G', OrePrefixes.gear.get(Materials.Steel) });
 
         GT_ModHandler.addCraftingRecipe(
             GregtechItemList.Boiler_Advanced_MV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
-            new Object[] { "dCw", "WMW", "GPG", 'M', ItemList.Hull_MV, 'P',
-                pipeTier2, 'C', OrePrefixes.circuit.get(Materials.Good), 'W',
-                chassisT2, 'G', ALLOY.SILICON_CARBIDE.getGear(1) });
+            new Object[] { "dCw", "WMW", "GPG", 'M', ItemList.Hull_MV, 'P', pipeTier2, 'C',
+                OrePrefixes.circuit.get(Materials.Good), 'W', chassisT2, 'G', ALLOY.SILICON_CARBIDE.getGear(1) });
 
         GT_ModHandler.addCraftingRecipe(
             GregtechItemList.Boiler_Advanced_HV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
-            new Object[] { "dCw", "WMW", "GPG", 'M', ItemList.Hull_HV, 'P',
-                pipeTier3, 'C', OrePrefixes.circuit.get(Materials.Advanced), 'W',
-                chassisT3, 'G', ALLOY.SILICON_CARBIDE.getGear(1) });
+            new Object[] { "dCw", "WMW", "GPG", 'M', ItemList.Hull_HV, 'P', pipeTier3, 'C',
+                OrePrefixes.circuit.get(Materials.Advanced), 'W', chassisT3, 'G', ALLOY.SILICON_CARBIDE.getGear(1) });
     }
 }

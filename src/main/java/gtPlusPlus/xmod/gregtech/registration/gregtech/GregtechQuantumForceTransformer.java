@@ -1,11 +1,11 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.QuantumForceTransformer;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_QuantumForceTransformer;
-
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.QuantumForceTransformer;
 
 public class GregtechQuantumForceTransformer {
 

@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Geothermal_Engine_EV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Geothermal_Engine_IV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Geothermal_Engine_LuV;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.ItemList;
@@ -12,10 +16,6 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntityGeothermalGenerator;
-
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Geothermal_Engine_EV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Geothermal_Engine_IV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Geothermal_Engine_LuV;
 
 public class GregtechGeothermalThermalGenerator {
 
@@ -51,20 +51,17 @@ public class GregtechGeothermalThermalGenerator {
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
-            new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_EV, 'P',
-                ItemList.Electric_Piston_EV, 'E', ItemList.Electric_Motor_EV, 'C',
-                OrePrefixes.circuit.get(Materials.Ultimate), 'W',
-                OrePrefixes.cableGt04.get(Materials.Aluminium), 'G',
-                ALLOY.TANTALLOY_61.getGear(1) });
+            new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
+                ItemList.Electric_Motor_EV, 'C', OrePrefixes.circuit.get(Materials.Ultimate), 'W',
+                OrePrefixes.cableGt04.get(Materials.Aluminium), 'G', ALLOY.TANTALLOY_61.getGear(1) });
 
         GT_ModHandler.addCraftingRecipe(
             GregtechItemList.Geothermal_Engine_IV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
-            new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_IV, 'P',
-                ItemList.Electric_Piston_IV, 'E', ItemList.Electric_Motor_IV, 'C',
-                OrePrefixes.circuit.get(Materials.SuperconductorUHV), 'W',
+            new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
+                ItemList.Electric_Motor_IV, 'C', OrePrefixes.circuit.get(Materials.SuperconductorUHV), 'W',
                 OrePrefixes.cableGt04.get(Materials.Platinum), 'G', ALLOY.STELLITE.getGear(1) });
 
         final ItemStack INGREDIENT_1 = CI.electricPiston_LuV;
@@ -74,9 +71,8 @@ public class GregtechGeothermalThermalGenerator {
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
-            new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_LuV, 'P',
-                INGREDIENT_1, 'E', INGREDIENT_2, 'C',
-                OrePrefixes.circuit.get(Materials.Infinite), 'W',
-                OrePrefixes.cableGt04.get(Materials.Tungsten), 'G', ALLOY.ZERON_100.getGear(1) });
+            new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_LuV, 'P', INGREDIENT_1, 'E', INGREDIENT_2, 'C',
+                OrePrefixes.circuit.get(Materials.Infinite), 'W', OrePrefixes.cableGt04.get(Materials.Tungsten), 'G',
+                ALLOY.ZERON_100.getGear(1) });
     }
 }

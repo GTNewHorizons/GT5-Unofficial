@@ -1,22 +1,5 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ChiselBus;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake_Extreme;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler_Adv;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Naquadah;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Reservoir;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Solidifier;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_TurbineProvider;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SuperBus_Input;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SuperBus_Output;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GT_MetaTileEntity_Hatch_CustomFluidBase;
-
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Air_Intake;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Air_Intake_Extreme;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_Cryotheum;
@@ -33,6 +16,23 @@ import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.H
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_UV;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Muffler_Adv_ZPM;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Reservoir;
+
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ChiselBus;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake_Extreme;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler_Adv;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Naquadah;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Reservoir;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Solidifier;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_TurbineProvider;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SuperBus_Input;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SuperBus_Output;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GT_MetaTileEntity_Hatch_CustomFluidBase;
 
 public class GregtechCustomHatches {
 
@@ -93,8 +93,11 @@ public class GregtechCustomHatches {
 
         // Multiblock Air Intake Hatch
         GregtechItemList.Hatch_Air_Intake.set(
-            new GT_MetaTileEntity_Hatch_AirIntake(Hatch_Air_Intake.ID, "hatch.air.intake.tier.00", "Air Intake Hatch", 5)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_AirIntake(
+                Hatch_Air_Intake.ID,
+                "hatch.air.intake.tier.00",
+                "Air Intake Hatch",
+                5).getStackForm(1L));
         GregtechItemList.Hatch_Air_Intake_Extreme.set(
             new GT_MetaTileEntity_Hatch_AirIntake_Extreme(
                 Hatch_Air_Intake_Extreme.ID,
@@ -104,8 +107,11 @@ public class GregtechCustomHatches {
 
         // Multiblock Reservoir Hatch
         GregtechItemList.Hatch_Reservoir.set(
-            new GT_MetaTileEntity_Hatch_Reservoir(Hatch_Reservoir.ID, "hatch.water.intake.tier.00", "Reservoir Hatch", 4)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Reservoir(
+                Hatch_Reservoir.ID,
+                "hatch.water.intake.tier.00",
+                "Reservoir Hatch",
+                4).getStackForm(1L));
 
         // Steam Hatch
         GregtechItemList.Hatch_Input_Steam.set(

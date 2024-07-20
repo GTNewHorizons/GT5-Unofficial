@@ -1,12 +1,5 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import gregtech.api.util.GT_ModHandler;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaWirelessCharger;
-
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_EV;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_HV;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_IV;
@@ -17,12 +10,18 @@ import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.C
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_UV;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Charger_ZPM;
 
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaWirelessCharger;
+
 public class GregtechWirelessChargers {
 
     public static void run() {
 
         Logger.INFO("Gregtech5u Content | Registering Wireless Chargers.");
-        
+
         Utils.registerEvent(new ChargingHelper());
 
         GregtechItemList.Charger_LV.set(

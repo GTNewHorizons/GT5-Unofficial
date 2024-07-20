@@ -1,27 +1,5 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import java.util.List;
-
-import gregtech.api.enums.GT_Values;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.google.common.collect.ImmutableList;
-
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SoundResource;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gtPlusPlus.api.objects.data.Quad;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_EV;
@@ -33,6 +11,25 @@ import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.S
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_ULV;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_UV;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.SimpleDustWasher_ZPM;
+
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+
+import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
+import com.google.common.collect.ImmutableList;
+
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects;
+import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.api.objects.data.Quad;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class GregtechSimpleWasher {
 
@@ -46,12 +43,36 @@ public class GregtechSimpleWasher {
             // every other tier, and they were numbered numerically. In order to maintain backwards compatibility,
             // the tier numbers need to stay as they were.
             List<Quad<GregtechItemList, Integer, String, String>> washers = ImmutableList.of(
-                new Quad<>(GregtechItemList.SimpleDustWasher_LV, SimpleDustWasher_LV.ID, "simplewasher.01.tier.06", "Simple Washer I"),
-                new Quad<>(GregtechItemList.SimpleDustWasher_MV, SimpleDustWasher_MV.ID, "simplewasher.01.tier.02", "Simple Washer II"),
-                new Quad<>(GregtechItemList.SimpleDustWasher_HV, SimpleDustWasher_HV.ID, "simplewasher.01.tier.07", "Simple Washer III"),
-                new Quad<>(GregtechItemList.SimpleDustWasher_EV, SimpleDustWasher_EV.ID, "simplewasher.01.tier.03", "Simple Washer IV"),
-                new Quad<>(GregtechItemList.SimpleDustWasher_IV, SimpleDustWasher_IV.ID, "simplewasher.01.tier.08", "Simple Washer V"),
-                new Quad<>(GregtechItemList.SimpleDustWasher_LuV, SimpleDustWasher_LuV.ID, "simplewasher.01.tier.04", "Simple Washer VI"),
+                new Quad<>(
+                    GregtechItemList.SimpleDustWasher_LV,
+                    SimpleDustWasher_LV.ID,
+                    "simplewasher.01.tier.06",
+                    "Simple Washer I"),
+                new Quad<>(
+                    GregtechItemList.SimpleDustWasher_MV,
+                    SimpleDustWasher_MV.ID,
+                    "simplewasher.01.tier.02",
+                    "Simple Washer II"),
+                new Quad<>(
+                    GregtechItemList.SimpleDustWasher_HV,
+                    SimpleDustWasher_HV.ID,
+                    "simplewasher.01.tier.07",
+                    "Simple Washer III"),
+                new Quad<>(
+                    GregtechItemList.SimpleDustWasher_EV,
+                    SimpleDustWasher_EV.ID,
+                    "simplewasher.01.tier.03",
+                    "Simple Washer IV"),
+                new Quad<>(
+                    GregtechItemList.SimpleDustWasher_IV,
+                    SimpleDustWasher_IV.ID,
+                    "simplewasher.01.tier.08",
+                    "Simple Washer V"),
+                new Quad<>(
+                    GregtechItemList.SimpleDustWasher_LuV,
+                    SimpleDustWasher_LuV.ID,
+                    "simplewasher.01.tier.04",
+                    "Simple Washer VI"),
                 new Quad<>(
                     GregtechItemList.SimpleDustWasher_ZPM,
                     SimpleDustWasher_ZPM.ID,
@@ -166,7 +187,7 @@ public class GregtechSimpleWasher {
                 .itemInputs(aInput)
                 .itemOutputs(aOutput)
                 .fluidInputs(FluidUtils.getFluidStack("water", 100))
-                .duration(5*TICKS)
+                .duration(5 * TICKS)
                 .eut(8)
                 .addTo(simpleWasherRecipes);
         }

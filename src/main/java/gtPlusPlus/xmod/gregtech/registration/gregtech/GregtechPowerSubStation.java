@@ -1,5 +1,11 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_Battery_EV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_Battery_MV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Output_Battery_EV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Output_Battery_MV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.PowerSubStation;
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
@@ -9,12 +15,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.GregtechMetaTileEntity_PowerSubStationController;
-
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_Battery_EV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Input_Battery_MV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Output_Battery_EV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Hatch_Output_Battery_MV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.PowerSubStation;
 
 public class GregtechPowerSubStation {
 
@@ -34,18 +34,30 @@ public class GregtechPowerSubStation {
                 "Power Station Control Node").getStackForm(1L));
         int tID = 886;
         GregtechItemList.Hatch_Input_Battery_MV.set(
-            new GT_MetaTileEntity_Hatch_InputBattery(Hatch_Input_Battery_MV.ID, "hatch.input_battery.tier.00", "Charging Bus (MV)", 2)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_InputBattery(
+                Hatch_Input_Battery_MV.ID,
+                "hatch.input_battery.tier.00",
+                "Charging Bus (MV)",
+                2).getStackForm(1L));
         GregtechItemList.Hatch_Input_Battery_EV.set(
-            new GT_MetaTileEntity_Hatch_InputBattery(Hatch_Input_Battery_EV.ID, "hatch.input_battery.tier.01", "Charging Bus (EV)", 4)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_InputBattery(
+                Hatch_Input_Battery_EV.ID,
+                "hatch.input_battery.tier.01",
+                "Charging Bus (EV)",
+                4).getStackForm(1L));
 
         GregtechItemList.Hatch_Output_Battery_MV.set(
-            new GT_MetaTileEntity_Hatch_OutputBattery(Hatch_Output_Battery_MV.ID, "hatch.output_battery.tier.00", "Discharging Bus (MV)", 2)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_OutputBattery(
+                Hatch_Output_Battery_MV.ID,
+                "hatch.output_battery.tier.00",
+                "Discharging Bus (MV)",
+                2).getStackForm(1L));
         GregtechItemList.Hatch_Output_Battery_EV.set(
-            new GT_MetaTileEntity_Hatch_OutputBattery(Hatch_Output_Battery_EV.ID, "hatch.output_battery.tier.01", "Discharging Bus (EV)", 4)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_OutputBattery(
+                Hatch_Output_Battery_EV.ID,
+                "hatch.output_battery.tier.01",
+                "Discharging Bus (EV)",
+                4).getStackForm(1L));
 
         GT_ModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Input_Battery_MV.get(1L),

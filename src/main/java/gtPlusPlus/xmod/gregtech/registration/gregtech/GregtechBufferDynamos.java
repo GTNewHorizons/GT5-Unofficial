@@ -21,6 +21,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DynamoBuffer;
 
 public class GregtechBufferDynamos {
+
     public static void run() {
         run2();
     }

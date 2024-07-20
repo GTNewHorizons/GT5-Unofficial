@@ -1,6 +1,8 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
-//todo: unify this enum with the GT5U one
+
+// todo: unify this enum with the GT5U one
 public enum MetaTileEntityIDs {
+
     Nuclear_Salt_Processing_Plant(749),
     ThoriumReactor(751),
     TreeFarmer_Structural(752),
@@ -204,8 +206,7 @@ public enum MetaTileEntityIDs {
     SimpleDustWasher_LV(31790),
     SimpleDustWasher_HV(31791),
     SimpleDustWasher_IV(31792),
-    SimpleDustWasher_ZPM(31793),
-    ;
+    SimpleDustWasher_ZPM(31793),;
 
     public final int ID;
 

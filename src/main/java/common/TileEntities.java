@@ -33,10 +33,19 @@ public class TileEntities {
 
     public static void init() {
         // Multiblock controllers
-        sofc1 = new GTMTE_SOFuelCellMK1(MetaTileEntityIDs.sofc1.ID, "multimachine.fuelcellmk1", "Solid-Oxide Fuel Cell Mk I");
-        sofc2 = new GTMTE_SOFuelCellMK2(MetaTileEntityIDs.sofc2.ID, "multimachine.fuelcellmk2", "Solid-Oxide Fuel Cell Mk II");
+        sofc1 = new GTMTE_SOFuelCellMK1(
+            MetaTileEntityIDs.sofc1.ID,
+            "multimachine.fuelcellmk1",
+            "Solid-Oxide Fuel Cell Mk I");
+        sofc2 = new GTMTE_SOFuelCellMK2(
+            MetaTileEntityIDs.sofc2.ID,
+            "multimachine.fuelcellmk2",
+            "Solid-Oxide Fuel Cell Mk II");
         tfft = new GTMTE_TFFT(MetaTileEntityIDs.tfft.ID, "multimachine.tfft", "T.F.F.T");
-        lsc = new GTMTE_LapotronicSuperCapacitor(MetaTileEntityIDs.lsc.ID, "multimachine.supercapacitor", "Lapotronic Supercapacitor");
+        lsc = new GTMTE_LapotronicSuperCapacitor(
+            MetaTileEntityIDs.lsc.ID,
+            "multimachine.supercapacitor",
+            "Lapotronic Supercapacitor");
 
         // Singleblocks
         tfftHatch = new GTMTE_TFFTHatch(MetaTileEntityIDs.tfftHatch.ID, "machine.tffthatch", "T.F.F.T Multi I/O Hatch");

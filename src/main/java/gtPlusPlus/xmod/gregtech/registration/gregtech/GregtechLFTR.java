@@ -1,5 +1,12 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ColdTrap_IV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ColdTrap_ZPM;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_Sparge_Tower;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ReactorProcessingUnit_IV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ReactorProcessingUnit_ZPM;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ThoriumReactor;
+
 import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects;
@@ -9,13 +16,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_SpargeTower;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMTE_NuclearReactor;
-
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ColdTrap_IV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ColdTrap_ZPM;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_Sparge_Tower;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ReactorProcessingUnit_IV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ReactorProcessingUnit_ZPM;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ThoriumReactor;
 
 public class GregtechLFTR {
 
@@ -29,7 +29,8 @@ public class GregtechLFTR {
     private static void run1() {
         // LFTR
         GregtechItemList.ThoriumReactor.set(
-            new GregtechMTE_NuclearReactor(ThoriumReactor.ID, "lftr.controller.single", "Thorium Reactor [LFTR]").getStackForm(1L));
+            new GregtechMTE_NuclearReactor(ThoriumReactor.ID, "lftr.controller.single", "Thorium Reactor [LFTR]")
+                .getStackForm(1L));
         // Reactor Processing Units
         GregtechItemList.ReactorProcessingUnit_IV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -94,7 +95,9 @@ public class GregtechLFTR {
                 null).getStackForm(1L));
         // Sparge Tower
         GregtechItemList.Controller_Sparge_Tower.set(
-            new GregtechMetaTileEntity_SpargeTower(Controller_Sparge_Tower.ID, "sparge.controller.single", "Sparge Tower Controller")
-                .getStackForm(1L));
+            new GregtechMetaTileEntity_SpargeTower(
+                Controller_Sparge_Tower.ID,
+                "sparge.controller.single",
+                "Sparge Tower Controller").getStackForm(1L));
     }
 }

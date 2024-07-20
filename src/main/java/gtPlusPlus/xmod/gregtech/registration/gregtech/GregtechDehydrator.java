@@ -200,7 +200,9 @@ public class GregtechDehydrator {
 
         // Advanced
         GregtechItemList.Controller_Vacuum_Furnace.set(
-            new GregtechMetaTileEntity_IndustrialDehydrator(Controller_Vacuum_Furnace.ID, "multimachine.adv.vacuumfurnace", "Utupu-Tanuri")
-                .getStackForm(1L));
+            new GregtechMetaTileEntity_IndustrialDehydrator(
+                Controller_Vacuum_Furnace.ID,
+                "multimachine.adv.vacuumfurnace",
+                "Utupu-Tanuri").getStackForm(1L));
     }
 }

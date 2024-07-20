@@ -1,5 +1,10 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_RocketEngine;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Rocket_Engine_EV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Rocket_Engine_IV;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Rocket_Engine_LuV;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.ItemList;
@@ -13,11 +18,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntityRocketFuelGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_LargeRocketEngine;
-
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_RocketEngine;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Rocket_Engine_EV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Rocket_Engine_IV;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Rocket_Engine_LuV;
 
 public class GregtechRocketFuelGenerator {
 
@@ -73,20 +73,17 @@ public class GregtechRocketFuelGenerator {
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P',
-                ItemList.Electric_Piston_EV, 'E', ItemList.Electric_Motor_EV, 'C',
-                OrePrefixes.circuit.get(Materials.Elite), 'W',
-                OrePrefixes.cableGt02.get(Materials.Aluminium), 'G',
-                ALLOY.TANTALLOY_61.getGear(1) });
+            new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
+                ItemList.Electric_Motor_EV, 'C', OrePrefixes.circuit.get(Materials.Elite), 'W',
+                OrePrefixes.cableGt02.get(Materials.Aluminium), 'G', ALLOY.TANTALLOY_61.getGear(1) });
 
         GT_ModHandler.addCraftingRecipe(
             GregtechItemList.Rocket_Engine_IV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_IV, 'P',
-                ItemList.Electric_Piston_IV, 'E', ItemList.Electric_Motor_IV, 'C',
-                OrePrefixes.circuit.get(Materials.Master), 'W',
+            new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
+                ItemList.Electric_Motor_IV, 'C', OrePrefixes.circuit.get(Materials.Master), 'W',
                 OrePrefixes.cableGt02.get(Materials.Platinum), 'G', ALLOY.STELLITE.getGear(1) });
         final ItemStack INGREDIENT_1 = CI.electricPiston_LuV;
         final ItemStack INGREDIENT_2 = CI.electricMotor_LuV;
@@ -95,9 +92,8 @@ public class GregtechRocketFuelGenerator {
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_LuV, 'P',
-                INGREDIENT_1, 'E', INGREDIENT_2, 'C',
-                OrePrefixes.circuit.get(Materials.Ultimate), 'W',
-                OrePrefixes.cableGt02.get(Materials.Tungsten), 'G', ALLOY.ZERON_100.getGear(1) });
+            new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_LuV, 'P', INGREDIENT_1, 'E', INGREDIENT_2, 'C',
+                OrePrefixes.circuit.get(Materials.Ultimate), 'W', OrePrefixes.cableGt02.get(Materials.Tungsten), 'G',
+                ALLOY.ZERON_100.getGear(1) });
     }
 }

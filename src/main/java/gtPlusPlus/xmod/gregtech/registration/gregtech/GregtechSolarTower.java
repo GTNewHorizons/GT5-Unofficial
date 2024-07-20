@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_Solar_Tower;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Solar_Tower_Reflector;
+
 import gregtech.api.enums.GT_Values;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -7,9 +10,6 @@ import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_SolarTower;
 import gtPlusPlus.xmod.gregtech.common.tileentities.misc.TileEntitySolarHeater;
-
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_Solar_Tower;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Solar_Tower_Reflector;
 
 public class GregtechSolarTower {
 
@@ -21,8 +21,10 @@ public class GregtechSolarTower {
     private static void run1() {
         // Solar Tower
         GregtechItemList.Industrial_Solar_Tower.set(
-            new GregtechMetaTileEntity_SolarTower(Industrial_Solar_Tower.ID, "solartower.controller.tier.single", "Solar Tower")
-                .getStackForm(1L));
+            new GregtechMetaTileEntity_SolarTower(
+                Industrial_Solar_Tower.ID,
+                "solartower.controller.tier.single",
+                "Solar Tower").getStackForm(1L));
         GregtechItemList.Solar_Tower_Reflector.set(
             new TileEntitySolarHeater(
                 Solar_Tower_Reflector.ID,

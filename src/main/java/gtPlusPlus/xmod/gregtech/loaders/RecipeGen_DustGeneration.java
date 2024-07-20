@@ -195,31 +195,32 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
             input[0] = GT_Utility.getIntegratedCircuit(inputStacks.length + 10);
         }
 
-
         // Add mixer Recipe
         FluidStack oxygen = GT_Values.NF;
         if (material.getComposites() != null) {
             for (final MaterialStack x : material.getComposites()) {
-                if (material.getComposites().isEmpty()){
+                if (material.getComposites()
+                    .isEmpty()) {
                     continue;
                 }
-                if (x == null){
+                if (x == null) {
                     continue;
                 }
-                if (x.getStackMaterial() == null){
+                if (x.getStackMaterial() == null) {
                     continue;
                 }
 
-                if (x.getStackMaterial().getDust(1) != null) {
+                if (x.getStackMaterial()
+                    .getDust(1) != null) {
                     continue;
                 }
 
                 if (x.getStackMaterial()
                     .getState() != MaterialState.SOLID
                     && x.getStackMaterial()
-                    .getState() != MaterialState.ORE
+                        .getState() != MaterialState.ORE
                     && x.getStackMaterial()
-                    .getState() != MaterialState.PLASMA) {
+                        .getState() != MaterialState.PLASMA) {
                     oxygen = x.getStackMaterial()
                         .getFluidStack(1000);
                     break;
@@ -231,15 +232,14 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
         // Add mixer Recipe
 
-        if (oxygen == null){
+        if (oxygen == null) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(input[0], input[1], input[2], input[3])
                 .itemOutputs(outputStacks)
                 .duration((int) Math.max(material.getMass() * 2L * 1, 1))
                 .eut(material.vVoltageMultiplier)
                 .addTo(mixerRecipes);
-        }
-        else {
+        } else {
             GT_Values.RA.stdBuilder()
                 .itemInputs(input[0], input[1], input[2], input[3])
                 .itemOutputs(outputStacks)
@@ -256,14 +256,14 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
         final ItemStack[] inputStacks = material.getMaterialComposites();
         final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
         // Is this a composite?
-        if (inputStacks == null){
+        if (inputStacks == null) {
             Logger.WARNING("InputStacks == NUll - " + material.getLocalizedName());
             return false;
         }
 
         // Is this a composite?
         Logger.WARNING("mixer length: " + inputStacks.length);
-        if (!((inputStacks.length >= 1) && (inputStacks.length <= 4))){
+        if (!((inputStacks.length >= 1) && (inputStacks.length <= 4))) {
             Logger.WARNING("InputStacks is out range 1-4 - " + material.getLocalizedName());
             return false;
         }
@@ -273,7 +273,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
         Logger.WARNING("mixer is stacksizeVar not null? " + (inputStackSize != null));
 
         // Is smallest ratio invalid?
-        if (inputStackSize == null){
+        if (inputStackSize == null) {
             Logger.WARNING("inputStackSize == NUll - " + material.getLocalizedName());
             return true;
         }
@@ -291,12 +291,9 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
         // Get us four ItemStacks to input into the mixer
         ItemStack input1, input2, input3, input4;
         input1 = inputStacks[0];
-        input2 = (inputStacks.length >= 2) ? (input2 = (inputStacks[1] == null) ? null : inputStacks[1])
-            : null;
-        input3 = (inputStacks.length >= 3) ? (input3 = (inputStacks[2] == null) ? null : inputStacks[2])
-            : null;
-        input4 = (inputStacks.length >= 4) ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3])
-            : null;
+        input2 = (inputStacks.length >= 2) ? (input2 = (inputStacks[1] == null) ? null : inputStacks[1]) : null;
+        input3 = (inputStacks.length >= 3) ? (input3 = (inputStacks[2] == null) ? null : inputStacks[2]) : null;
+        input4 = (inputStacks.length >= 4) ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3]) : null;
 
         if (inputStacks.length == 1) {
             input2 = input1;
@@ -319,7 +316,8 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
             int compSlot = 0;
             for (final MaterialStack x : material.getComposites()) {
 
-                if (material.getComposites().isEmpty()) {
+                if (material.getComposites()
+                    .isEmpty()) {
                     compSlot++;
                     continue;
                 }
@@ -333,16 +331,19 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
                     continue;
                 }
 
-                if (x.getStackMaterial().getDust(1) == null) {
+                if (x.getStackMaterial()
+                    .getDust(1) == null) {
                     compSlot++;
                     continue;
                 }
 
-                MaterialState f = x.getStackMaterial().getState();
+                MaterialState f = x.getStackMaterial()
+                    .getState();
                 if (f == MaterialState.GAS || f == MaterialState.LIQUID
                     || f == MaterialState.PURE_LIQUID
                     || f == MaterialState.PURE_GAS) {
-                    oxygen = x.getStackMaterial().getFluidStack((int) (material.vSmallestRatio[compSlot] * 1000));
+                    oxygen = x.getStackMaterial()
+                        .getFluidStack((int) (material.vSmallestRatio[compSlot] * 1000));
                 }
                 compSlot++;
             }
@@ -350,7 +351,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
         // Add mixer Recipe
         try {
-            if (oxygen == null){
+            if (oxygen == null) {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(input1, input2, input3, input4)
                     .itemOutputs(outputStacks)
