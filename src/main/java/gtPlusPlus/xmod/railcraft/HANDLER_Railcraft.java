@@ -150,7 +150,7 @@ public class HANDLER_Railcraft {
                 .itemInputs(aOutputs[i], GT_Utility.getIntegratedCircuit(6))
                 .itemOutputs(Materials.Ash.getDustSmall(1))
                 .fluidInputs(FluidUtils.getFluidStack("steam", 100))
-                .fluidOutputs(Materials.WoodGas.getFluid(300))
+                .fluidOutputs(Materials.WoodGas.getGas(300))
                 .eut(3 * SECONDS)
                 .duration(240)
                 .addTo(cokeOvenRecipes);
