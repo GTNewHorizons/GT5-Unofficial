@@ -24,6 +24,7 @@ import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 
 public class ElectricImplosionCompressorRecipes implements Runnable {
 
@@ -191,6 +192,16 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                 .fluidInputs(Materials.Copper.getMolten(3648 * 9 * 144L))
                 .itemOutputs(getModItem(Avaritia.ID, "Singularity", 1L, 5))
+                .duration(1 * TICKS)
+                .eut(TierEU.RECIPE_UIV)
+                .addTo(electricImplosionCompressorRecipes);
+
+            ItemStack diamondBlocks = GT_Utility
+                .copyAmountUnsafe(729, GT_OreDictUnificator.get(OrePrefixes.block, Materials.Diamond, 1L));
+            // Diamond Singularity
+            GT_Values.RA.stdBuilder()
+                .itemInputs(diamondBlocks)
+                .itemOutputs(getModItem(UniversalSingularities.ID, "universal.vanilla.singularity", 1L, 2))
                 .duration(1 * TICKS)
                 .eut(TierEU.RECIPE_UIV)
                 .addTo(electricImplosionCompressorRecipes);

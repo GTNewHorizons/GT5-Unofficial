@@ -3037,9 +3037,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 8_192,
                 (int) TierEU.RECIPE_UMV,
                 64,
-                new Object[] { CustomItemList.Godforge_StellarEnergySiphonCasing.get(4),
-                    new ItemStack(Blocks.lscLapotronicEnergyUnit, 8, 8), ItemList.Casing_Dim_Bridge.get(64),
-                    getModItem(EternalSingularity.ID, "eternal_singularity", 64L),
+                new Object[] { CustomItemList.Godforge_StellarEnergySiphonCasing.get(4), ItemList.ZPM4.get(8),
+                    ItemList.Casing_Dim_Bridge.get(64), getModItem(EternalSingularity.ID, "eternal_singularity", 64L),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Mellion, 16),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SixPhasedCopper, 16),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Creon, 16),
@@ -3073,7 +3072,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.Creon, 16),
                 ELEMENT.STANDALONE.HYPOGEN.getScrew(8),
                 GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.SixPhasedCopper, 8),
-                ItemList.SuperconductorComposite.get(1), ItemList.Emitter_UIV.get(2) },
+                ItemList.SuperconductorComposite.get(1), ItemList.Emitter_UIV.get(2),
+                ItemList.Electromagnet_Tengam.get(2) },
             new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(16 * 144),
                 Materials.Plutonium241.getPlasma(16 * 144) },
             CustomItemList.Godforge_MagneticConfinementCasing.get(8),
@@ -3240,6 +3240,118 @@ public class ResearchStationAssemblyLine implements Runnable {
             10 * SECONDS,
             (int) TierEU.RECIPE_UXV);
 
+        // Phonon Transmission Conduit
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            ItemList.Relativistic_Heat_Capacitor.get(1),
+            48_000_000,
+            8_192,
+            (int) TierEU.RECIPE_UMV,
+            64,
+            new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 1),
+                GT_OreDictUnificator.get(OrePrefixes.stickLong, MaterialsUEVplus.Creon, 12),
+                new ItemStack(Blocks.tfftStorageField, 1, 9), ItemList.Tesseract.get(8),
+                ItemList.Relativistic_Heat_Capacitor.get(4), ItemList.Thermal_Superconductor.get(6),
+                ItemList.Field_Generator_UEV.get(4),
+                GT_OreDictUnificator.get(OrePrefixes.bolt, MaterialsUEVplus.SixPhasedCopper, 24) },
+            new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(64 * 144),
+                MaterialsUEVplus.PhononMedium.getFluid(1000), Materials.Plutonium241.getPlasma(16 * 144) },
+            CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(1),
+            10 * SECONDS,
+            (int) TierEU.RECIPE_UIV);
+
+        ItemStack megaEBF = getModItem(GregTech.ID, "gt.blockmachines", 64L, 12730);
+
+        // Smelting Module Controller
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            // mega ebf controller
+            ItemRegistry.megaMachines[0],
+            48_000_000,
+            8_192,
+            (int) TierEU.RECIPE_UMV,
+            64,
+            new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(4), megaEBF,
+                ItemList.Machine_Multi_Furnace.get(64), ItemList.ZPM4.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 16),
+                ItemList.Robot_Arm_UIV.get(16), ItemList.Conveyor_Module_UIV.get(32),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SixPhasedCopper, 16),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Creon, 8),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Mellion, 8),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Optical, 32) },
+            new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(1024 * 144),
+                MaterialsUEVplus.ExcitedDTEC.getFluid(2_048_000), Materials.Lead.getPlasma(256 * 144),
+                MaterialsUEVplus.TranscendentMetal.getMolten(1024 * 144) },
+            CustomItemList.Machine_Multi_SmeltingModule.get(1),
+            300 * SECONDS,
+            (int) TierEU.RECIPE_UMV);
+
+        // Molten Module Controller
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            GregtechItemList.Mega_AlloyBlastSmelter.get(1),
+            48_000_000,
+            8_192,
+            (int) TierEU.RECIPE_UMV,
+            64,
+            new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(4), megaEBF,
+                GregtechItemList.Mega_AlloyBlastSmelter.get(64), ItemList.ZPM4.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 32),
+                ItemList.Robot_Arm_UIV.get(16), ItemList.Conveyor_Module_UIV.get(32),
+                ItemList.Electric_Pump_UIV.get(64), ItemList.Relativistic_Heat_Capacitor.get(8),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SixPhasedCopper, 16),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Creon, 8),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Mellion, 8),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Optical, 32) },
+            new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(1024 * 144),
+                MaterialsUEVplus.ExcitedDTEC.getFluid(2_048_000), MaterialsUEVplus.PhononMedium.getFluid(32000),
+                MaterialsUEVplus.TranscendentMetal.getMolten(1024 * 144) },
+            CustomItemList.Machine_Multi_MoltenModule.get(1),
+            300 * SECONDS,
+            (int) TierEU.RECIPE_UMV);
+
+        // Plasma Module Controller
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            getItemContainer("FluidHeaterUIV").get(1),
+            48_000_000,
+            8_192,
+            (int) TierEU.RECIPE_UMV,
+            64,
+            new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(4),
+                getItemContainer("FluidHeaterUIV").get(64), GregtechItemList.FusionComputer_UV3.get(8),
+                ItemList.ZPM4.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 32),
+                ItemList.Robot_Arm_UIV.get(16), ItemList.Conveyor_Module_UIV.get(32),
+                ItemList.Electric_Pump_UIV.get(64), ItemList.Relativistic_Heat_Capacitor.get(8),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SixPhasedCopper, 16),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Creon, 8),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Mellion, 8),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Optical, 32) },
+            new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(1024 * 144),
+                MaterialsUEVplus.ExcitedDTEC.getFluid(2_048_000), MaterialsUEVplus.PhononMedium.getFluid(32000),
+                MaterialsUEVplus.TranscendentMetal.getMolten(1024 * 144) },
+            CustomItemList.Machine_Multi_PlasmaModule.get(1),
+            300 * SECONDS,
+            (int) TierEU.RECIPE_UMV);
+
+        // Exotic Module Controller
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            ItemList.Machine_Multi_TranscendentPlasmaMixer.get(1),
+            48_000_000,
+            8_192,
+            (int) TierEU.RECIPE_UMV,
+            64,
+            new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(4),
+                ItemList.Machine_Multi_TranscendentPlasmaMixer.get(4), ItemRefer.Compact_Fusion_MK5.get(1),
+                ItemList.ZPM4.get(4), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 64),
+                ItemList.Robot_Arm_UIV.get(16), ItemList.Conveyor_Module_UIV.get(32),
+                ItemList.Electric_Pump_UIV.get(64), CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(8),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SixPhasedCopper, 32),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Creon, 16),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Mellion, 16),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Optical, 64) },
+            new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(1024 * 144),
+                MaterialsUEVplus.ExcitedDTEC.getFluid(2_048_000), MaterialsUEVplus.PhononMedium.getFluid(64000),
+                MaterialsUEVplus.TranscendentMetal.getMolten(1024 * 144) },
+            CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(1),
+            300 * SECONDS,
+            (int) TierEU.RECIPE_UMV);
     }
 
     private void addWirelessEnergyRecipes() {
@@ -3506,6 +3618,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
     public void runLateRecipes() {
         if (EternalSingularity.isModLoaded()) {
+            // Shielding Casing
             TT_recipeAdder.addResearchableAssemblylineRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.block, MaterialsUEVplus.TranscendentMetal, 1),
                 48_000_000,
