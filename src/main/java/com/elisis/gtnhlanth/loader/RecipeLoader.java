@@ -2,7 +2,86 @@ package com.elisis.gtnhlanth.loader;
 
 import static com.elisis.gtnhlanth.api.recipe.LanthanidesRecipeMaps.digesterRecipes;
 import static com.elisis.gtnhlanth.api.recipe.LanthanidesRecipeMaps.dissolutionTankRecipes;
-import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.*;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.CeriumChlorideConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.CeriumDioxide;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumOxygenBlend;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.CeriumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.CeriumOreConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.ChlorinatedRareEarthConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.ChlorinatedRareEarthDilutedSolution;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.ChlorinatedRareEarthEnrichedSolution;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.DephosphatedSamariumConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.DilutedSamariumRareEarthSolution;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.DysprosiumChlorideConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.DysprosiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.DysprosiumOreConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.ErbiumChlorideConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.ErbiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.ErbiumOreConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.EuropiumChlorideConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.EuropiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.EuropiumOreConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.FilledCeriumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.FilledDysprosiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.FilledErbiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.FilledEuropiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.FilledGadoliniumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.FilledHolmiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.FilledLanthanumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.FilledLutetiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.FilledNeodymiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.FilledPraseodymiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.FilledPromethiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.FilledSamariumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.FilledTerbiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.FilledThuliumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.FilledYtterbiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.GadoliniumChlorideConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.GadoliniumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.GadoliniumOreConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.HolmiumChlorideConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.HolmiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.HolmiumOreConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.ImpureLanthanumChloride;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.LanthaniumChloride;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.LanthanumChlorideConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.LanthanumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.LanthanumOreConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.LutetiumChlorideConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.LutetiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.LutetiumOreConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.MuddySamariumRareEarthSolution;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.NeodymicRareEarthConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.NeodymiumChlorideConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.NeodymiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.NeodymiumOreConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.PraseodymiumChlorideConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.PraseodymiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.PraseodymiumOreConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.PromethiumChlorideConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.PromethiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.PromethiumOreConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.RarestEarthResidue;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.SamariumChloride;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.SamariumChlorideConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.SamariumChlorideSodiumChlorideBlend;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.SamariumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.SamariumOreConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.SamariumOxalate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.SamariumOxide;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.SamariumRareEarthMud;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.TerbiumChlorideConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.TerbiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.TerbiumOreConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.ThoriumPhosphateConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.ThuliumChlorideConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.ThuliumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.ThuliumOreConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumChlorideConcentrate;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumExtractingNanoResin;
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumOreConcentrate;
+import static gregtech.api.enums.OrePrefixes.blockCasingAdvanced;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
@@ -30,6 +109,7 @@ import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.DISSOLUTION_TANK_RATIO;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
@@ -950,14 +1030,14 @@ public class RecipeLoader {
 
         // Sodium Fluorosilicate
         // 2NaCl + H2SiF6 = 2HCl + Na2SiF6
-        GT_Values.RA.addChemicalRecipe(
-            Materials.Empty.getCells(2),
-            Materials.Salt.getDust(4),
-            WerkstoffLoader.HexafluorosilicicAcid.getFluidOrGas(1000),
-            WerkstoffMaterialPool.SodiumFluorosilicate.getFluidOrGas(1000),
-            Materials.HydrochloricAcid.getCells(2),
-            600,
-            450);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Empty.getCells(2), Materials.Salt.getDust(4))
+            .itemOutputs(Materials.HydrochloricAcid.getCells(2))
+            .fluidInputs(WerkstoffLoader.HexafluorosilicicAcid.getFluidOrGas(1000))
+            .fluidOutputs(WerkstoffMaterialPool.SodiumFluorosilicate.getFluidOrGas(1000))
+            .duration(30 * SECONDS)
+            .eut(450)
+            .addTo(UniversalChemical);
 
         // Lanthanum Oxide
         GT_Values.RA.stdBuilder()
