@@ -864,7 +864,7 @@ public class RECIPES_Machines {
                     CI.getElectricMotor(tier, 2),
                     CI.getPlate(tier, 4))
                 .itemOutputs(aOutputs[tier - 1].copy())
-                .fluidInputs(Materials.SolderingAlloy.getFluid(tier * (144)))
+                .fluidInputs(Materials.SolderingAlloy.getMolten(tier * (144)))
                 .duration(20 * SECONDS)
                 .eut(voltageTiers[tier - 1])
                 .addTo(assemblerRecipes);
