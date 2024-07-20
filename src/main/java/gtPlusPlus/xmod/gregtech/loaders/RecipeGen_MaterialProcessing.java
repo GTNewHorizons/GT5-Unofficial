@@ -1,17 +1,19 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+
 import java.util.HashSet;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
@@ -157,28 +159,24 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
                 }
 
                 try {
-                    if (addCentrifgeRecipe(
-                        mainDust,
-                        emptyCell, // input 2
-                        null, // Input fluid 1
-                        null, // Output fluid 1
-                        mInternalOutputs[0],
-                        mInternalOutputs[1],
-                        mInternalOutputs[2],
-                        mInternalOutputs[3],
-                        mInternalOutputs[4],
-                        mInternalOutputs[5],
-                        mChances,
-                        20 * 1 * (tVoltageMultiplier / 10),
-                        tVoltageMultiplier)) {
-                        Logger.MATERIALS(
-                            "[Centrifuge] Generated Centrifuge recipe for " + material.getDust(1)
-                                .getDisplayName());
-                    } else {
-                        Logger.MATERIALS(
-                            "[Centrifuge] Failed to generate Centrifuge recipe for " + material.getDust(1)
-                                .getDisplayName());
-                    }
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(mainDust, emptyCell)
+                        .itemOutputs(
+                            mInternalOutputs[0],
+                            mInternalOutputs[1],
+                            mInternalOutputs[2],
+                            mInternalOutputs[3],
+                            mInternalOutputs[4],
+                            mInternalOutputs[5])
+                        .outputChances(mChances)
+                        .eut(tVoltageMultiplier)
+                        .duration((tVoltageMultiplier / 10) * SECONDS)
+                        .addTo(centrifugeRecipes);
+
+                    Logger.MATERIALS(
+                        "[Centrifuge] Generated Centrifuge recipe for " + material.getDust(1)
+                            .getDisplayName());
+
                 } catch (Throwable t) {
                     t.printStackTrace();
                 }
@@ -272,47 +270,22 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
                 }
 
                 try {
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(mainDust, emptyCell)
+                        .itemOutputs(mInternalOutputs)
+                        .outputChances(mChances)
+                        .eut(tVoltageMultiplier)
+                        .duration(20 * (tVoltageMultiplier / 10))
+                        .addTo(chemicalDehydratorRecipes);
 
-                    if (CORE.RA.addDehydratorRecipe(
-                        new ItemStack[] { mainDust, emptyCell },
-                        null,
-                        null,
-                        mInternalOutputs,
-                        mChances,
-                        20 * 1 * (tVoltageMultiplier / 10),
-                        tVoltageMultiplier)) {
-                        Logger.MATERIALS(
-                            "[Dehydrator] Generated Dehydrator recipe for " + material.getDust(1)
-                                .getDisplayName());
-                    } else {
-                        Logger.MATERIALS(
-                            "[Dehydrator] Failed to generate Dehydrator recipe for " + material.getDust(1)
-                                .getDisplayName());
-                    }
+                    Logger.MATERIALS(
+                        "[Dehydrator] Generated Dehydrator recipe for " + material.getDust(1)
+                            .getDisplayName());
+
                 } catch (Throwable t) {
                     t.printStackTrace();
                 }
             }
         }
-    }
-
-    @Deprecated
-    public static boolean addCentrifgeRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput,
-        FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4,
-        ItemStack aOutput5, ItemStack aOutput6, int[] aChances, int aDuration, int aEUt) {
-        return GT_Values.RA.addCentrifugeRecipe(
-            aInput1,
-            aInput2,
-            aFluidInput,
-            aFluidOutput,
-            aOutput1,
-            aOutput2,
-            aOutput3,
-            aOutput4,
-            aOutput5,
-            aOutput6,
-            aChances,
-            aDuration,
-            aEUt);
     }
 }

@@ -5,6 +5,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.recipe.common.CI;
 
 public class SlotIntegratedCircuit extends Slot {
@@ -39,7 +40,7 @@ public class SlotIntegratedCircuit extends Slot {
     public static synchronized boolean isItemValidForSlot(int aLockedCircuitNumber, final ItemStack itemstack) {
         boolean isValid = false;
         if (mCircuitItem == null) {
-            mCircuitItem = CI.getNumberedCircuit(0)
+            mCircuitItem = GT_Utility.getIntegratedCircuit(0)
                 .getItem();
         }
         if (mCircuitItem2 == null) {
@@ -69,13 +70,13 @@ public class SlotIntegratedCircuit extends Slot {
 
     /**
      * Returns the circuit type. -1 is invalid, 0 is standard, 1 is GT++ bio.
-     * 
+     *
      * @param itemstack - the Circuit Stack.
      * @return
      */
     public static synchronized int isRegularProgrammableCircuit(final ItemStack itemstack) {
         if (mCircuitItem == null) {
-            mCircuitItem = CI.getNumberedCircuit(0)
+            mCircuitItem = GT_Utility.getIntegratedCircuit(0)
                 .getItem();
         }
         if (mCircuitItem2 == null) {

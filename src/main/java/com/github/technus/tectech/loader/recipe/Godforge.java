@@ -1,7 +1,11 @@
 package com.github.technus.tectech.loader.recipe;
 
+import static com.github.technus.tectech.recipe.TecTechRecipeMaps.godforgeExoticMatterRecipes;
+import static com.github.technus.tectech.recipe.TecTechRecipeMaps.godforgePlasmaRecipes;
 import static com.github.technus.tectech.util.GodforgeMath.getRandomIntInRange;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.FOG_EXOTIC_TIER;
+import static gregtech.api.util.GT_RecipeConstants.FOG_PLASMA_TIER;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,8 +15,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.technus.tectech.recipe.TT_recipeAdder;
-
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.TierEU;
@@ -105,13 +108,16 @@ public class Godforge implements Runnable {
                     new FluidStack(ELEMENT.getInstance().CURIUM.getPlasma(), 144) };
 
                 for (int i = 0; i < solids_t0_1step.length; i++) {
-                    TT_recipeAdder.addFOGPlasmaRecipe(
-                        new ItemStack[] { solids_t0_1step[i] },
-                        new FluidStack[] { solid_plasmas_t0_1step[i] },
-                        1 * SECONDS,
-                        (int) TierEU.RECIPE_MAX,
-                        false,
-                        0);
+                    boolean multistep = false;
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(solids_t0_1step[i])
+                        .fluidOutputs(solid_plasmas_t0_1step[i])
+                        .duration(1 * SECONDS)
+                        .eut(TierEU.RECIPE_MAX)
+                        .special(multistep)
+                        .metadata(FOG_PLASMA_TIER, 0)
+                        .noOptimize()
+                        .addTo(godforgePlasmaRecipes);
                 }
 
                 // Multi-step
@@ -135,13 +141,16 @@ public class Godforge implements Runnable {
                     Materials.Chrome.getPlasma(144), };
 
                 for (int i = 0; i < solids_t0_xstep.length; i++) {
-                    TT_recipeAdder.addFOGPlasmaRecipe(
-                        new ItemStack[] { solids_t0_xstep[i] },
-                        new FluidStack[] { solid_plasmas_t0_xstep[i] },
-                        3 * SECONDS,
-                        (int) TierEU.RECIPE_MAX,
-                        true,
-                        0);
+                    boolean multistep = true;
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(solids_t0_xstep[i])
+                        .fluidOutputs(solid_plasmas_t0_xstep[i])
+                        .duration(3 * SECONDS)
+                        .eut(TierEU.RECIPE_MAX)
+                        .special(multistep)
+                        .metadata(FOG_PLASMA_TIER, 0)
+                        .noOptimize()
+                        .addTo(godforgePlasmaRecipes);
                 }
             }
             // Fusion tier 4-5
@@ -153,13 +162,16 @@ public class Godforge implements Runnable {
                     Materials.Plutonium241.getPlasma(144), Materials.Thorium.getPlasma(144) };
 
                 for (int i = 0; i < solids_t1_1step.length; i++) {
-                    TT_recipeAdder.addFOGPlasmaRecipe(
-                        new ItemStack[] { solids_t1_1step[i] },
-                        new FluidStack[] { solid_plasmas_t1_1step[i] },
-                        5 * SECONDS,
-                        (int) TierEU.RECIPE_MAX,
-                        false,
-                        1);
+                    boolean multistep = false;
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(solids_t1_1step[i])
+                        .fluidOutputs(solid_plasmas_t1_1step[i])
+                        .duration(5 * SECONDS)
+                        .eut(TierEU.RECIPE_MAX)
+                        .special(multistep)
+                        .metadata(FOG_PLASMA_TIER, 1)
+                        .noOptimize()
+                        .addTo(godforgePlasmaRecipes);
                 }
 
                 // Multi-step
@@ -170,13 +182,16 @@ public class Godforge implements Runnable {
                     new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 144) };
 
                 for (int i = 0; i < solids_t1_xstep.length; i++) {
-                    TT_recipeAdder.addFOGPlasmaRecipe(
-                        new ItemStack[] { solids_t1_xstep[i] },
-                        new FluidStack[] { solid_plasmas_t1_xstep[i] },
-                        7 * SECONDS,
-                        (int) TierEU.RECIPE_MAX,
-                        true,
-                        1);
+                    boolean multistep = true;
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(solids_t1_xstep[i])
+                        .fluidOutputs(solid_plasmas_t1_xstep[i])
+                        .duration(7 * SECONDS)
+                        .eut(TierEU.RECIPE_MAX)
+                        .special(multistep)
+                        .metadata(FOG_PLASMA_TIER, 1)
+                        .noOptimize()
+                        .addTo(godforgePlasmaRecipes);
                 }
             }
             // Exotic Plasmas
@@ -193,13 +208,16 @@ public class Godforge implements Runnable {
                     Materials.DraconiumAwakened.getPlasma(144), Materials.Ichorium.getPlasma(144) };
 
                 for (int i = 0; i < solids_t2_1step.length; i++) {
-                    TT_recipeAdder.addFOGPlasmaRecipe(
-                        new ItemStack[] { solids_t2_1step[i] },
-                        new FluidStack[] { solid_plasmas_t2_1step[i] },
-                        15 * SECONDS,
-                        (int) TierEU.RECIPE_MAX,
-                        false,
-                        2);
+                    boolean multistep = false;
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(solids_t2_1step[i])
+                        .fluidOutputs(solid_plasmas_t2_1step[i])
+                        .duration(15 * SECONDS)
+                        .eut(TierEU.RECIPE_MAX)
+                        .special(multistep)
+                        .metadata(FOG_PLASMA_TIER, 2)
+                        .noOptimize()
+                        .addTo(godforgePlasmaRecipes);
                 }
 
                 // Multi-step
@@ -210,13 +228,16 @@ public class Godforge implements Runnable {
                     Materials.Neutronium.getPlasma(144), };
 
                 for (int i = 0; i < solids_t2_xstep.length; i++) {
-                    TT_recipeAdder.addFOGPlasmaRecipe(
-                        new ItemStack[] { solids_t2_xstep[i] },
-                        new FluidStack[] { solid_plasmas_t2_xstep[i] },
-                        25 * SECONDS,
-                        (int) TierEU.RECIPE_MAX,
-                        true,
-                        2);
+                    boolean multistep = true;
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(solids_t2_xstep[i])
+                        .fluidOutputs(solid_plasmas_t2_xstep[i])
+                        .duration(25 * SECONDS)
+                        .eut(TierEU.RECIPE_MAX)
+                        .special(multistep)
+                        .metadata(FOG_PLASMA_TIER, 2)
+                        .noOptimize()
+                        .addTo(godforgePlasmaRecipes);
                 }
 
             }
@@ -240,13 +261,16 @@ public class Godforge implements Runnable {
                     Materials.Mercury.getPlasma(1000) };
 
                 for (int i = 0; i < fluids_t0_1step.length; i++) {
-                    TT_recipeAdder.addFOGPlasmaRecipe(
-                        new FluidStack[] { fluids_t0_1step[i] },
-                        new FluidStack[] { fluid_plasmas_t0_1step[i] },
-                        1 * SECONDS,
-                        (int) TierEU.RECIPE_MAX,
-                        false,
-                        0);
+                    boolean multistep = false;
+                    GT_Values.RA.stdBuilder()
+                        .fluidInputs(fluids_t0_1step[i])
+                        .fluidOutputs(fluid_plasmas_t0_1step[i])
+                        .duration(1 * SECONDS)
+                        .eut(TierEU.RECIPE_MAX)
+                        .special(multistep)
+                        .metadata(FOG_PLASMA_TIER, 0)
+                        .noOptimize()
+                        .addTo(godforgePlasmaRecipes);
                 }
 
                 // Multi-step
@@ -258,13 +282,16 @@ public class Godforge implements Runnable {
                     new FluidStack(ELEMENT.getInstance().XENON.getPlasma(), 1000) };
 
                 for (int i = 0; i < fluids_t0_xstep.length; i++) {
-                    TT_recipeAdder.addFOGPlasmaRecipe(
-                        new FluidStack[] { fluids_t0_xstep[i] },
-                        new FluidStack[] { fluid_plasmas_t0_xstep[i] },
-                        3 * SECONDS,
-                        (int) TierEU.RECIPE_MAX,
-                        true,
-                        0);
+                    boolean multistep = true;
+                    GT_Values.RA.stdBuilder()
+                        .fluidInputs(fluids_t0_xstep[i])
+                        .fluidOutputs(fluid_plasmas_t0_xstep[i])
+                        .duration(3 * SECONDS)
+                        .eut(TierEU.RECIPE_MAX)
+                        .special(multistep)
+                        .metadata(FOG_PLASMA_TIER, 0)
+                        .noOptimize()
+                        .addTo(godforgePlasmaRecipes);
                 }
             }
             // Fusion tier 4-5
@@ -283,21 +310,27 @@ public class Godforge implements Runnable {
 
         // Exotic module fake recipes
         {
-            TT_recipeAdder.addFOGExoticFakeRecipe(
-                new ItemStack[] { Materials.Iron.getDust(1) },
-                new FluidStack[] { Materials.Iron.getMolten(1) },
-                new FluidStack[] { MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000) },
-                10 * SECONDS,
-                (int) TierEU.RECIPE_MAX,
-                1);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(Materials.Iron.getDust(1))
+                .fluidInputs(Materials.Iron.getMolten(1))
+                .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_MAX)
+                .metadata(FOG_EXOTIC_TIER, 1)
+                .ignoreCollision()
+                .fake()
+                .addTo(godforgeExoticMatterRecipes);
 
-            TT_recipeAdder.addFOGExoticFakeRecipe(
-                new ItemStack[] { Materials.Iron.getDust(1) },
-                new FluidStack[] { Materials.Iron.getMolten(1), Materials.Bismuth.getMolten(1) },
-                new FluidStack[] { MaterialsUEVplus.MagMatter.getMolten(144) },
-                10 * SECONDS,
-                (int) TierEU.RECIPE_MAX,
-                1);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(Materials.Iron.getDust(1))
+                .fluidInputs(Materials.Iron.getMolten(1), Materials.Bismuth.getMolten(1))
+                .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(144))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_MAX)
+                .metadata(FOG_EXOTIC_TIER, 1)
+                .ignoreCollision()
+                .fake()
+                .addTo(godforgeExoticMatterRecipes);
         }
 
         // Exotic module plasma material maps

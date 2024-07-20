@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.Textures.BlockIcons.COVER_WOOD_PLATE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR;
@@ -34,6 +35,7 @@ import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_ZPM;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -518,9 +520,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
     public static GT_MetaGenerated_Item_01 INSTANCE;
     private final String mToolTipPurify = GT_LanguageManager
         .addStringLocalization("metaitem.01.tooltip.purify", "Throw into Cauldron to get clean Dust");
-    private static final String aTextArrow = "  A";
-    private static final String aTextStick = " S ";
-    private static final String aTextFeather = "F  ";
     private static final String aTextEmptyRow = "   ";
     private static final String aTextShape = " P ";
     private static final String PartCoverText = " L/t (";
@@ -3287,7 +3286,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
     }
 
     private void compressorRecipes() {
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 8L))
             .itemOutputs(new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID))
             .duration(15 * SECONDS)
@@ -3642,7 +3641,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
     }
 
     private void assemblerRecipes() {
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
@@ -3652,7 +3651,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(1)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Aluminium, 2L),
@@ -3662,7 +3661,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(1)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, 4L),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.AnyBronze, 4L),
@@ -3672,7 +3671,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenSteel, 4L),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Platinum, 4L),
@@ -3682,7 +3681,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, 4L),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Silver, 4L),
@@ -3692,7 +3691,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(64)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.StainlessSteel, 4L),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Electrum, 4L),
@@ -3702,7 +3701,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Titanium, 4L),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.RoseGold, 4L),
@@ -3712,7 +3711,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(256)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Chrome, 4L),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Palladium, 4L),
@@ -3722,7 +3721,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(1024)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium, 4L),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Naquadah, 4L),
@@ -3732,7 +3731,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium, 4L),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.ElectrumFlux, 4L),
@@ -3742,7 +3741,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(4096)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 4L),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Draconium, 4L),
@@ -3752,7 +3751,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
                 ItemList.Large_Fluid_Cell_Aluminium.get(1),
@@ -3762,7 +3761,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(1)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Wood, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Phosphorus, 1L),
@@ -3771,7 +3770,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(16 * TICKS)
             .eut(16)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Wood, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.TricalciumPhosphate, 1L),
@@ -3780,7 +3779,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(16 * TICKS)
             .eut(16)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Wood, 4L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 1L),
@@ -3789,7 +3788,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Wood, 4L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TricalciumPhosphate, 1L),
@@ -3799,7 +3798,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(16)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Invar, 2L),
                 new ItemStack(Items.flint, 1),
@@ -3809,7 +3808,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(16)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Platinum, 2L),
                 new ItemStack(Items.flint, 1),
@@ -3819,7 +3818,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(256)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
@@ -3828,7 +3827,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(2)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
@@ -3837,7 +3836,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(2)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
@@ -3846,7 +3845,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(2)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
@@ -3855,7 +3854,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(2)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
@@ -3864,7 +3863,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(2)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
@@ -3873,7 +3872,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(2)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L),
@@ -3882,7 +3881,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(5 * MINUTES + 20 * SECONDS)
             .eut(16)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L),
@@ -3891,7 +3890,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(5 * MINUTES + 20 * SECONDS)
             .eut(16)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L),
@@ -3901,7 +3900,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(16)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 ItemList.Sensor_EV.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L),
@@ -3911,7 +3910,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
                 ItemList.Cover_Drain.get(1L),
@@ -3920,7 +3919,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(40 * SECONDS)
             .eut(16)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
                 ItemList.Cover_Drain.get(1L),
@@ -3929,7 +3928,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(40 * SECONDS)
             .eut(16)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
                 ItemList.Cover_Drain.get(1L),
@@ -3938,7 +3937,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(40 * SECONDS)
             .eut(16)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L),
                 new ItemStack(Blocks.iron_bars, 2),
@@ -3947,7 +3946,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(40 * SECONDS)
             .eut(16)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2L),
                 new ItemStack(Blocks.iron_bars, 2),
@@ -3956,7 +3955,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(40 * SECONDS)
             .eut(16)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 2L),
                 new ItemStack(Blocks.iron_bars, 2),
@@ -3965,7 +3964,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(40 * SECONDS)
             .eut(16)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
                 new ItemStack(Blocks.crafting_table, 1),
@@ -3974,7 +3973,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(40 * SECONDS)
             .eut(16)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
                 new ItemStack(Blocks.crafting_table, 1),
@@ -3983,7 +3982,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(40 * SECONDS)
             .eut(16)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
                 new ItemStack(Blocks.crafting_table, 1),
@@ -3992,7 +3991,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(40 * SECONDS)
             .eut(16)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 ItemList.Cover_Screen.get(1L),
                 ItemList.Cover_FluidDetector.get(1L),
@@ -4002,14 +4001,14 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(4)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(ItemList.Sensor_LV.get(1L), ItemList.Emitter_LV.get(1L), GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.NC_SensorKit.get(1L))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(2)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 ItemList.Emitter_EV.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L),
@@ -4018,7 +4017,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 ItemList.Sensor_EV.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L),
@@ -4028,7 +4027,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 ItemList.Emitter_MV.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
@@ -4038,7 +4037,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 2L),
                 ItemList.Component_Filter.get(1L),
@@ -4048,7 +4047,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 2L),
                 ItemList.Component_Filter.get(1L),
@@ -4061,7 +4060,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
     }
 
     private void cannerRecipes() {
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 2L),
                 ItemList.Battery_Hull_LV.get(1L))
@@ -4069,7 +4068,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 2L),
                 ItemList.Battery_Hull_LV.get(1L))
@@ -4077,7 +4076,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 2L),
                 ItemList.Battery_Hull_LV.get(1L))
@@ -4085,7 +4084,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 8L),
                 ItemList.Battery_Hull_MV.get(1L))
@@ -4093,7 +4092,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 8L),
                 ItemList.Battery_Hull_MV.get(1L))
@@ -4101,7 +4100,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 8L),
                 ItemList.Battery_Hull_MV.get(1L))
@@ -4109,7 +4108,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 32L),
                 ItemList.Battery_Hull_HV.get(1L))
@@ -4117,7 +4116,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 32L),
                 ItemList.Battery_Hull_HV.get(1L))
@@ -4125,7 +4124,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 32L),
                 ItemList.Battery_Hull_HV.get(1L))
@@ -4136,7 +4135,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
     }
 
     private void packagerRecipes() {
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(
                 ItemList.Tool_Matches.get(16L),
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Paper, 1L))
@@ -4144,7 +4143,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
             .addTo(packagerRecipes);
-        GT_Values.RA.stdBuilder()
+        RA.stdBuilder()
             .itemInputs(ItemList.Tool_MatchBox_Full.get(1L))
             .itemOutputs(ItemList.Tool_Matches.get(16L))
             .duration(1 * SECONDS + 12 * TICKS)
@@ -4153,24 +4152,96 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
     }
 
     private void extractorRecipes() {
-        GT_ModHandler
-            .addExtractionRecipe(ItemList.Battery_SU_LV_SulfuricAcid.get(1L), ItemList.Battery_Hull_LV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_SU_LV_Mercury.get(1L), ItemList.Battery_Hull_LV.get(1L));
-        GT_ModHandler
-            .addExtractionRecipe(ItemList.Battery_SU_MV_SulfuricAcid.get(1L), ItemList.Battery_Hull_MV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_SU_MV_Mercury.get(1L), ItemList.Battery_Hull_MV.get(1L));
-        GT_ModHandler
-            .addExtractionRecipe(ItemList.Battery_SU_HV_SulfuricAcid.get(1L), ItemList.Battery_Hull_HV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_SU_HV_Mercury.get(1L), ItemList.Battery_Hull_HV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_LV_Cadmium.get(1L), ItemList.Battery_Hull_LV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_LV_Lithium.get(1L), ItemList.Battery_Hull_LV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_LV_Sodium.get(1L), ItemList.Battery_Hull_LV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_MV_Cadmium.get(1L), ItemList.Battery_Hull_MV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_MV_Lithium.get(1L), ItemList.Battery_Hull_MV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_MV_Sodium.get(1L), ItemList.Battery_Hull_MV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_HV_Cadmium.get(1L), ItemList.Battery_Hull_HV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_HV_Lithium.get(1L), ItemList.Battery_Hull_HV.get(1L));
-        GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_HV_Sodium.get(1L), ItemList.Battery_Hull_HV.get(1L));
+        RA.stdBuilder()
+            .itemInputs(ItemList.Battery_SU_LV_SulfuricAcid.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_LV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Battery_SU_LV_Mercury.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_LV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Battery_SU_MV_SulfuricAcid.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_MV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Battery_SU_MV_Mercury.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_MV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Battery_SU_HV_SulfuricAcid.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_HV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Battery_SU_HV_Mercury.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_HV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_LV_Cadmium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_LV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_LV_Lithium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_LV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_LV_Sodium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_LV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_MV_Cadmium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_MV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_MV_Lithium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_MV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_MV_Sodium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_MV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_HV_Cadmium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_HV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_HV_Lithium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_HV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_HV_Sodium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_HV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
     }
 
     private void craftingShapedRecipes() {

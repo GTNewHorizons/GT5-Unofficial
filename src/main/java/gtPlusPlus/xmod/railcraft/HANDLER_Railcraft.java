@@ -7,6 +7,7 @@ import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
 import net.minecraft.init.Blocks;
@@ -20,8 +21,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BaseItemBurnable;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.railcraft.utils.RailcraftUtils;
@@ -103,56 +102,58 @@ public class HANDLER_Railcraft {
         for (int i = 0; i < aOutputs.length; i++) {
             // Recipes for the Charcoals and Cokes, outputting either Creosote or Charcoal Byproducts depending on the
             // fluid input
-            CORE.RA.addCokeOvenRecipe(
-                aInputs1[i],
-                CI.getNumberedCircuit(3),
-                null,
-                FluidUtils.getFluidStack("creosote", 100),
-                aInputs2[i],
-                20,
-                16);
-            CORE.RA.addCokeOvenRecipe(
-                aInputs1[i],
-                CI.getNumberedCircuit(4),
-                FluidUtils.getFluidStack("nitrogen", 100),
-                FluidUtils.getFluidStack("charcoal_byproducts", 200),
-                aInputs2[i],
-                10,
-                16);
-            CORE.RA.addCokeOvenRecipe(
-                aInputs2[i],
-                CI.getNumberedCircuit(3),
-                null,
-                FluidUtils.getFluidStack("creosote", 200),
-                aOutputs[i],
-                40,
-                16);
-            CORE.RA.addCokeOvenRecipe(
-                aInputs2[i],
-                CI.getNumberedCircuit(4),
-                FluidUtils.getFluidStack("nitrogen", 50),
-                FluidUtils.getFluidStack("charcoal_byproducts", 100),
-                aOutputs[i],
-                20,
-                16);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aInputs1[i], GT_Utility.getIntegratedCircuit(3))
+                .itemOutputs(aInputs2[i])
+                .fluidOutputs(FluidUtils.getFluidStack("creosote", 100))
+                .eut(16)
+                .duration(1 * SECONDS)
+                .addTo(cokeOvenRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aInputs1[i], GT_Utility.getIntegratedCircuit(4))
+                .itemOutputs(aInputs2[i])
+                .fluidInputs(FluidUtils.getFluidStack("nitrogen", 100))
+                .fluidOutputs(FluidUtils.getFluidStack("charcoal_byproducts", 200))
+                .eut(16)
+                .duration(10 * TICKS)
+                .addTo(cokeOvenRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aInputs2[i], GT_Utility.getIntegratedCircuit(3))
+                .itemOutputs(aOutputs[i])
+                .fluidOutputs(FluidUtils.getFluidStack("creosote", 200))
+                .eut(16)
+                .duration(2 * SECONDS)
+                .addTo(cokeOvenRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aInputs2[i], GT_Utility.getIntegratedCircuit(4))
+                .itemOutputs(aOutputs[i])
+                .fluidInputs(FluidUtils.getFluidStack("nitrogen", 50))
+                .fluidOutputs(FluidUtils.getFluidStack("charcoal_byproducts", 100))
+                .eut(16)
+                .duration(1 * SECONDS)
+                .addTo(cokeOvenRecipes);
 
             // Generate Wood Tar and Wood Gas from these Cokes
-            CORE.RA.addCokeOvenRecipe(
-                aOutputs[i],
-                CI.getNumberedCircuit(5),
-                FluidUtils.getFluidStack("steam", 100),
-                Materials.WoodTar.getFluid(200),
-                Materials.Ash.getDustSmall(1),
-                60,
-                240);
-            CORE.RA.addCokeOvenRecipe(
-                aOutputs[i],
-                CI.getNumberedCircuit(6),
-                FluidUtils.getFluidStack("steam", 100),
-                Materials.WoodGas.getFluid(300),
-                Materials.Ash.getDustSmall(1),
-                60,
-                240);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aOutputs[i], GT_Utility.getIntegratedCircuit(5))
+                .itemOutputs(Materials.Ash.getDustSmall(1))
+                .fluidInputs(FluidUtils.getFluidStack("steam", 100))
+                .fluidOutputs(Materials.WoodTar.getFluid(200))
+                .eut(240)
+                .duration(3 * SECONDS)
+                .addTo(cokeOvenRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aOutputs[i], GT_Utility.getIntegratedCircuit(6))
+                .itemOutputs(Materials.Ash.getDustSmall(1))
+                .fluidInputs(FluidUtils.getFluidStack("steam", 100))
+                .fluidOutputs(Materials.WoodGas.getFluid(300))
+                .eut(3 * SECONDS)
+                .duration(240)
+                .addTo(cokeOvenRecipes);
 
             // Fluid Extracting the Charcoals for Wood Tar
             GT_Values.RA.stdBuilder()

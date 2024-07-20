@@ -19,6 +19,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
@@ -267,7 +268,7 @@ public class RECIPES_General {
                 CI.getElectricPump(2, 1),
                 CI.getPlate(2, 4),
                 ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(0), 2),
-                CI.getNumberedCircuit(16))
+                GT_Utility.getIntegratedCircuit(16))
             .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPestKiller))
             .fluidInputs(FluidUtils.getHotWater(500))
             .duration(1 * MINUTES)
