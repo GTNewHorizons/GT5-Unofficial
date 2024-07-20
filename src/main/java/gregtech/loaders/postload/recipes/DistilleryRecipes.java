@@ -648,31 +648,31 @@ public class DistilleryRecipes implements Runnable {
             Materials.OilLight.getFluid(150),
             new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
             new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(10), Materials.SulfuricLightFuel.getFluid(20),
-                Materials.SulfuricNaphtha.getFluid(30), Materials.SulfuricGas.getGas(240) },
+                Materials.SulfuricNaphtha.getFluid(90), Materials.SulfuricGas.getGas(250) },
             null,
             20,
             96);
         addUniversalDistillationRecipewithCircuit(
-            Materials.OilMedium.getFluid(100),
+            Materials.OilMedium.getFluid(150),
             new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
-            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(10), Materials.SulfuricLightFuel.getFluid(50),
-                Materials.SulfuricNaphtha.getFluid(150), Materials.SulfuricGas.getGas(60) },
+            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(15), Materials.SulfuricLightFuel.getFluid(60),
+                Materials.SulfuricNaphtha.getFluid(200), Materials.SulfuricGas.getGas(80) },
             null,
             20,
             96);
         addUniversalDistillationRecipewithCircuit(
-            Materials.Oil.getFluid(50L),
+            Materials.Oil.getFluid(150L),
             new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
-            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(15), Materials.SulfuricLightFuel.getFluid(50),
-                Materials.SulfuricNaphtha.getFluid(20), Materials.SulfuricGas.getGas(60) },
+            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(45), Materials.SulfuricLightFuel.getFluid(150),
+                Materials.SulfuricNaphtha.getFluid(60), Materials.SulfuricGas.getGas(60) },
             null,
             20,
             96);
         addUniversalDistillationRecipewithCircuit(
-            Materials.OilHeavy.getFluid(100),
+            Materials.OilHeavy.getFluid(150),
             new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
-            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(250), Materials.SulfuricLightFuel.getFluid(45),
-                Materials.SulfuricNaphtha.getFluid(15), Materials.SulfuricGas.getGas(60) },
+            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(140), Materials.SulfuricLightFuel.getFluid(90),
+                Materials.SulfuricNaphtha.getFluid(40), Materials.SulfuricGas.getGas(30) },
             null,
             20,
             288);
