@@ -606,13 +606,13 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     }
 
     @Override
-    public boolean isInputSeparationEnabled() {
-        return mode == 1 && super.isInputSeparationEnabled();
+    public boolean supportsSingleRecipeLocking() {
+        return true;
     }
 
     @Override
-    public boolean isRecipeLockingEnabled() {
-        return this.mode == 0 && this.imprintedItemName != null && !"".equals(this.imprintedItemName);
+    public boolean isInputSeparationEnabled() {
+        return mode == 1 && super.isInputSeparationEnabled();
     }
 
     @Override
