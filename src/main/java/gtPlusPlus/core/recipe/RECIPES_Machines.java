@@ -1047,6 +1047,20 @@ public class RECIPES_Machines {
             aBronzeBricks,
             GregtechItemList.Controller_SteamWasherMulti.get(1));
 
+        ItemStack aWoodenCasing = ItemUtils.simpleMetaStack(GregTech_API.sBlockCasings9, 2, 1);
+        // WaterPump
+        RecipeUtils.addShapedGregtechRecipe(
+            "frameGtBronze",
+            "frameGtBronze",
+            "frameGtBronze",
+            "frameGtBronze",
+            "gearBronze",
+            "frameGtBronze",
+            aWoodenCasing,
+            aWoodenCasing,
+            aWoodenCasing,
+            GregtechItemList.WaterPump.get(1));
+
         // Steam Centrifuge Multi
         RecipeUtils.addShapedGregtechRecipe(
             aBronzeBricks,
