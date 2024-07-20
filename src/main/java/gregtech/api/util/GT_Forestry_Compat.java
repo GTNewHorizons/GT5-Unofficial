@@ -171,7 +171,7 @@ public class GT_Forestry_Compat {
         try {
             for (ISqueezerRecipe tRecipe : RecipeManagers.squeezerManager.recipes()) {
                 if ((tRecipe.getResources().length == 1) && (tRecipe.getFluidOutput() != null)
-                    && (tRecipe.getResources()[0] != null)) {
+                    && (tRecipe.getResources()[0] != null) && (tRecipe.getRemnants() != null)) {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(tRecipe.getResources()[0])
                         .itemOutputs(tRecipe.getRemnants())
