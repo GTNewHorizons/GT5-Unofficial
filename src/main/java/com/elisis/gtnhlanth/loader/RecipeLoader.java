@@ -10,7 +10,7 @@ import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.CeriumE
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.CeriumOreConcentrate;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.ChlorinatedRareEarthConcentrate;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.ChlorinatedRareEarthDilutedSolution;
-import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.ChlorinatedRareEarthEnrichedSolution;master
+import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.ChlorinatedRareEarthEnrichedSolution;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.DephosphatedSamariumConcentrate;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.DilutedSamariumRareEarthSolution;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.DysprosiumChlorideConcentrate;
