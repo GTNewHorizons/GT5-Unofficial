@@ -341,7 +341,7 @@ public final class ModItems {
             MaterialGenerator.generate(ELEMENT.STANDALONE.WHITE_METAL);
             MaterialGenerator.generateOreMaterialWithAllExcessComponents(ELEMENT.STANDALONE.GRANITE);
             MaterialGenerator.generateOreMaterialWithAllExcessComponents(ELEMENT.STANDALONE.RUNITE);
-            MaterialGenerator.generate(ELEMENT.STANDALONE.DRAGON_METAL, false);
+            MaterialGenerator.generate(ELEMENT.STANDALONE.DRAGON_METAL);
 
             MISC_MATERIALS.run();
 
