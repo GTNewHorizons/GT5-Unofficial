@@ -130,7 +130,16 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
 
         public void randomize() {
             ThreadLocalRandom random = ThreadLocalRandom.current();
-            signal = (byte) random.nextInt(0, 16);
+            // We want to give the final bit a lower chance at being on, since this bypasses most of the automation.
+            // If this bit has a 50% chance of being on, you could opt to not automate the degasser at all and never
+            // insert anything. This way you still get 50% output which might just be good enough.
+
+            // To do this weighting, we simply only generate the lower 3 bits, and then with a smaller chance we add
+            // 8 to the result
+            signal = (byte) random.nextInt(0, 8);
+            if (random.nextInt(0, 5) == 0) {
+                signal += 8;
+            }
         }
 
         public boolean getBit(int bit) {
