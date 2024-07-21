@@ -208,7 +208,8 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
             .addInfo("Must be linked to a Purification Plant to work.")
             .addSeparator()
             .addInfo(
-                "Inserts highly reactive " + EnumChatFormatting.WHITE
+                EnumChatFormatting.AQUA + "Inserts highly reactive "
+                    + EnumChatFormatting.WHITE
                     + "Ozone Gas"
                     + EnumChatFormatting.GRAY
                     + " into the water.")

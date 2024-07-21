@@ -20,7 +20,7 @@ public class GT_MetaTileEntity_Hatch_DegasifierControlHatch extends GT_MetaTileE
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_PH_SENSOR_GLOW;
 
     public GT_MetaTileEntity_Hatch_DegasifierControlHatch(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Outputs a control signal for the Degasifier Purification Unit");
+        super(aID, aName, aNameRegional, aTier, 0, "Outputs a control signal for the Degasser Purification Unit");
     }
 
     public GT_MetaTileEntity_Hatch_DegasifierControlHatch(String aName, int aTier, String[] aDescription,
@@ -67,7 +67,7 @@ public class GT_MetaTileEntity_Hatch_DegasifierControlHatch extends GT_MetaTileE
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Can be installed in the Degasifier Purification Unit.",
+        return new String[] { "Can be installed in the Degasser Purification Unit.",
             "Outputs Redstone Signal Strength based on the current control signal." };
     }
 

@@ -267,7 +267,8 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
             .addInfo("Controller block for the Flocculation Purification Unit.")
             .addInfo("Must be linked to a Purification Plant to work.")
             .addSeparator()
-            .addInfo("Filters out smaller dusts, algae and microplastics by mixing in chemicals.")
+            .addInfo(
+                EnumChatFormatting.AQUA + "Filters out smaller dusts, algae and microplastics by mixing in chemicals.")
             .addInfo(
                 "Supply with " + EnumChatFormatting.WHITE
                     + INPUT_CHEMICAL.mLocalizedName

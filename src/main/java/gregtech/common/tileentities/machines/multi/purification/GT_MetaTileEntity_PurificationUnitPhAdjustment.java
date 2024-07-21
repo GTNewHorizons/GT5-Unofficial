@@ -354,7 +354,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
             .addInfo("Controller block for the pH Adjustment Purification Unit.")
             .addInfo("Must be linked to a Purification Plant to work.")
             .addSeparator()
-            .addInfo("Neutralizes the acidity of the water by adding in acids and bases.")
+            .addInfo(EnumChatFormatting.AQUA + "Neutralizes the acidity of the water by adding in acids and bases.")
             .addInfo(
                 "Initial pH value every cycle varies from " + EnumChatFormatting.RED
                     + (PH_NEUTRAL_VALUE - INITIAL_PH_DEVIATION)

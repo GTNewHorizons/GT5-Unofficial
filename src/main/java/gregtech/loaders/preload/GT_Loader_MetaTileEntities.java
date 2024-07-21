@@ -905,12 +905,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_PurificationUnitDegasifier(
                 PURIFICATION_UNIT_DEGASIFIER.ID,
                 "multimachine.purificationunitdegasifier",
-                "Degasifier Purification Unit").getStackForm(1L));
+                "Degasser Purification Unit").getStackForm(1L));
         ItemList.Hatch_DegasifierControl.set(
             new GT_MetaTileEntity_Hatch_DegasifierControlHatch(
                 HATCH_DEGASIFIER_CONTROL.ID,
                 "hatch.degasifiercontrol",
-                "Degasifier Control Hatch",
+                "Degasser Control Hatch",
                 8).getStackForm(1L));
         ItemList.Machine_Multi_LargeBoiler_Bronze.set(
             new GT_MetaTileEntity_LargeBoiler_Bronze(

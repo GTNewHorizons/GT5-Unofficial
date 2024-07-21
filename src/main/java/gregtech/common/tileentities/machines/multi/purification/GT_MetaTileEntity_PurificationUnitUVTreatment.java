@@ -233,7 +233,9 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
             .addInfo("Controller block for the Ultraviolet Treatment Purification Unit.")
             .addInfo("Must be linked to a Purification Plant to work.")
             .addSeparator()
-            .addInfo("Removes microscopic impurities by precisely bombarding the water with various lasers.")
+            .addInfo(
+                EnumChatFormatting.AQUA
+                    + "Removes microscopic impurities by precisely bombarding the water with various lasers.")
             .addSeparator()
             .addInfo(
                 "During operation, swap the lens in the " + EnumChatFormatting.WHITE

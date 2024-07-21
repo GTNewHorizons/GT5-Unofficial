@@ -56,6 +56,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 
 public class GT_MetaTileEntity_PurificationUnitDegasifier
@@ -134,7 +135,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
 
         public boolean getBit(int bit) {
             if (bit < 0 || bit > 3) {
-                throw new IllegalArgumentException("Invalid bit index for degasifier control signal");
+                throw new IllegalArgumentException("Invalid bit index for degasser control signal");
             }
 
             // Shift signal so the requested bit is in the lowermost bit
@@ -277,6 +278,113 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Purification Unit")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.BOLD
+                    + "Water Tier: "
+                    + EnumChatFormatting.WHITE
+                    + GT_Utility.formatNumbers(getWaterTier())
+                    + EnumChatFormatting.RESET)
+            .addInfo("Controller block for the Degasser Purification Unit.")
+            .addInfo("Must be linked to a Purification Plant to work.")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.AQUA
+                    + "Removes excess oxygen and other gases from the water by using complex methods.")
+            .addSeparator()
+            .addInfo(
+                "At the start of the operation, the " + EnumChatFormatting.WHITE
+                    + "Degasser Control Hatch"
+                    + EnumChatFormatting.GRAY
+                    + " will output a redstone signal")
+            .addInfo("To succeed the recipe, you will need to successfully decode the instructions in the signal.")
+            .addInfo("To decode the signal, interpret the signal strength as a 4-bit number from 0-15.")
+            .addInfo("Denote the lowest bit as bit 1, and the highest as bit 4.")
+            .addSeparator()
+            .addInfo(EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "Bit 1: Sparging by Inert Gas")
+            .addInfo(
+                "If this bit is on, you must insert an " + EnumChatFormatting.WHITE
+                    + "inert gas"
+                    + EnumChatFormatting.GRAY
+                    + " into the machine.")
+            .addInfo(
+                "To determine which gas to insert, interpret bits " + EnumChatFormatting.WHITE
+                    + "2-3"
+                    + EnumChatFormatting.GRAY
+                    + " as a 2-bit number.")
+            .addInfo(
+                EnumChatFormatting.WHITE + "0: "
+                    + EnumChatFormatting.RED
+                    + "10000L Helium"
+                    + EnumChatFormatting.GRAY
+                    + " / "
+                    + EnumChatFormatting.WHITE
+                    + "1: "
+                    + EnumChatFormatting.RED
+                    + "7500L Neon"
+                    + EnumChatFormatting.GRAY
+                    + " / "
+                    + EnumChatFormatting.WHITE
+                    + "2: "
+                    + EnumChatFormatting.RED
+                    + "5000L Krypton"
+                    + EnumChatFormatting.GRAY
+                    + " / "
+                    + EnumChatFormatting.WHITE
+                    + "3: "
+                    + EnumChatFormatting.RED
+                    + "2500L Xenon")
+            .addSeparator()
+            .addInfo(EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "Bit 2: Superconductive Deionization")
+            .addInfo(
+                "If this bit is on, you must insert " + EnumChatFormatting.RED
+                    + "1440L "
+                    + EnumChatFormatting.WHITE
+                    + "Molten Superconductor Base.")
+            .addInfo("Using higher tier superconductor provides bonus output.")
+            .addInfo(
+                "Output multiplier: " + EnumChatFormatting.DARK_GREEN
+                    + "UV"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.WHITE
+                    + "1x"
+                    + EnumChatFormatting.GRAY
+                    + " / "
+                    + EnumChatFormatting.DARK_RED
+                    + "UHV"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.WHITE
+                    + "1.25x"
+                    + EnumChatFormatting.GRAY
+                    + " / "
+                    + EnumChatFormatting.DARK_PURPLE
+                    + "UEV"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.WHITE
+                    + "1.5x"
+                    + EnumChatFormatting.GRAY
+                    + " / "
+                    + EnumChatFormatting.DARK_BLUE
+                    + ""
+                    + EnumChatFormatting.BOLD
+                    + "UIV"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.WHITE
+                    + "1.75x"
+                    + EnumChatFormatting.GRAY
+                    + " / "
+                    + EnumChatFormatting.RED
+                    + ""
+                    + EnumChatFormatting.BOLD
+                    + "UMV"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.WHITE
+                    + "2x")
             .addSeparator()
             .addInfo(AuthorNotAPenguin)
             .toolTipFinisher("GregTech");
@@ -479,7 +587,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
                         insertedStuffThisCycle.merge(
                             fluid.getFluid(),
                             drainedFluid,
-                            (a, b) -> { return new FluidStack(a.getFluid(), a.amount + b.amount); });
+                            (a, b) -> new FluidStack(a.getFluid(), a.amount + b.amount));
                     }
                 }
             }
@@ -578,7 +686,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
     }
 
     private static String generateInfoStringForBit(int i, ControlBitStatus status) {
-        String base = "Bit " + i + " status: ";
+        String base = "Bit " + (i + 1) + " status: ";
         if (status.satisfied) {
             return base + EnumChatFormatting.GREEN + "OK";
         } else {

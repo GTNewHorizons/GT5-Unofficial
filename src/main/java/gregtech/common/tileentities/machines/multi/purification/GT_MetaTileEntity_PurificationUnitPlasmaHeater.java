@@ -287,7 +287,9 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
             .addInfo("Controller block for the Plasma Heater Purification Unit.")
             .addInfo("Must be linked to a Purification Plant to work.")
             .addSeparator()
-            .addInfo("Ensures all organics are destroyed by repeatedly heating and cooling the water using plasma.")
+            .addInfo(
+                EnumChatFormatting.AQUA
+                    + "Ensures all organics are destroyed by repeatedly heating and cooling the water using plasma.")
             .addSeparator()
             .addInfo(
                 "Complete heating cycles by first heating the water to " + EnumChatFormatting.RED

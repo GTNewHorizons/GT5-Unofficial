@@ -210,8 +210,8 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
             .addInfo("Controller block for the Clarifier Purification Unit.")
             .addInfo("Must be linked to a Purification Plant to work.")
             .addSeparator()
-            .addInfo("Filters out large particles in the water such as")
-            .addInfo("dirt, sticks, and perhaps even some treasure!")
+            .addInfo(EnumChatFormatting.AQUA + "Filters out large particles in the water such as")
+            .addInfo(EnumChatFormatting.AQUA + "dirt, sticks, and perhaps even some treasure!")
             .addInfo("Requires a filter made of Activated Carbon to work.")
             .addInfo(
                 "Every cycle, has a " + EnumChatFormatting.RED
