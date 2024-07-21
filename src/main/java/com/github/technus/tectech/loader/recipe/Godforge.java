@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.github.technus.tectech.recipe.TT_recipeAdder;
+import com.github.technus.tectech.thing.CustomItemList;
 
 import goodgenerator.items.MyMaterial;
 import goodgenerator.util.ItemRefer;
@@ -563,31 +564,63 @@ public class Godforge implements Runnable {
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 64),
                     ItemList.SuperconductorComposite.get(32),
                     MyMaterial.metastableOganesson.get(OrePrefixes.gearGt, 16),
-                    getModItem(EternalSingularity.ID, "eternal_singularity", 16L), ItemList.Robot_Arm_UIV.get(64L),
-                    ItemList.Field_Generator_UIV.get(16L) });
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 32L), ItemList.Robot_Arm_UIV.get(64L),
+                    ItemList.Field_Generator_UEV.get(64L) });
 
             godforgeUpgradeMats.put(
                 5,
                 new ItemStack[] { GregtechItemList.Mega_AlloyBlastSmelter.get(16L),
-                    ItemList.Casing_Coil_Hypogen.get(32L), ItemList.Superconducting_Magnet_Solenoid_UIV.get(64L),
-                    getModItem(EternalSingularity.ID, "eternal_singularity", 16L), ItemList.Robot_Arm_UIV.get(64L),
-                    ItemList.Field_Generator_UIV.get(16L) });
+                    ItemList.Casing_Coil_Hypogen.get(64L),
+                    CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(32L),
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 32L),
+                    ItemRefer.Field_Restriction_Coil_T3.get(48), ItemList.Robot_Arm_UIV.get(64L),
+                    ItemList.Field_Generator_UEV.get(64L) });
 
             godforgeUpgradeMats.put(
                 7,
-                new ItemStack[] { ItemRefer.Compact_Fusion_MK5.get(1), ItemRefer.Compact_Fusion_Coil_T4.get(32),
+                new ItemStack[] { CustomItemList.Godforge_StellarEnergySiphonCasing.get(8),
+                    GregtechItemList.FusionComputer_UV3.get(8), GregtechItemList.Casing_Fusion_Internal2.get(64),
                     getModItem(GalaxySpace.ID, "item.DysonSwarmParts", 64, 3), ALLOY.QUANTUM.getPlateDense(48),
-                    ELEMENT.STANDALONE.RHUGNOR.getGear(48),
-                    getModItem(EternalSingularity.ID, "eternal_singularity", 16L), ItemList.Robot_Arm_UIV.get(64L),
-                    ItemList.Field_Generator_UIV.get(32L) });
+                    ELEMENT.STANDALONE.RHUGNOR.getGear(32),
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 64L), ItemList.Robot_Arm_UIV.get(64L),
+                    ItemList.Field_Generator_UEV.get(64L) });
 
-            godforgeUpgradeMats.put(11, new ItemStack[] { ItemList.NandChip.get(56) });
+            godforgeUpgradeMats.put(
+                11,
+                new ItemStack[] { CustomItemList.Godforge_StellarEnergySiphonCasing.get(16),
+                    ItemRefer.Compact_Fusion_MK5.get(2), ItemRefer.Compact_Fusion_Coil_T4.get(64),
+                    CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(16),
+                    ItemList.Machine_Multi_TranscendentPlasmaMixer.get(4), ELEMENT.STANDALONE.RHUGNOR.getGear(64),
+                    GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Ichorium, 64),
+                    getModItem(EternalSingularity.ID, "eternal_singularity", 64L), ItemList.Robot_Arm_UIV.get(64L),
+                    ItemList.Field_Generator_UEV.get(64L) });
 
-            godforgeUpgradeMats.put(26, new ItemStack[] { ItemList.NandChip.get(56) });
+            godforgeUpgradeMats.put(
+                26,
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 64),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUMVBase, 64),
+                    ELEMENT.STANDALONE.HYPOGEN.getFrameBox(64), ELEMENT.STANDALONE.DRAGON_METAL.getFrameBox(64),
+                    CustomItemList.EOH_Reinforced_Spatial_Casing.get(64),
+                    CustomItemList.EOH_Infinite_Energy_Casing.get(8), ItemList.ZPM6.get(4),
+                    ItemList.Field_Generator_UMV.get(32) });
 
-            godforgeUpgradeMats.put(29, new ItemStack[] { ItemList.NandChip.get(56) });
+            godforgeUpgradeMats.put(
+                29,
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.WhiteDwarfMatter, 64),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.BlackDwarfMatter, 64),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Eternity, 16),
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Universium, 4),
+                    CustomItemList.EOH_Infinite_Energy_Casing.get(64),
+                    CustomItemList.StabilisationFieldGeneratorTier5.get(16), ItemList.ZPM6.get(16),
+                    ItemList.Field_Generator_UMV.get(64) });
 
-            godforgeUpgradeMats.put(30, new ItemStack[] { ItemList.NandChip.get(56) });
+            godforgeUpgradeMats.put(
+                30,
+                new ItemStack[] { CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(32),
+                    CustomItemList.Godforge_StellarEnergySiphonCasing.get(64),
+                    CustomItemList.StabilisationFieldGeneratorTier6.get(48),
+                    ItemList.Transdimensional_Alignment_Matrix.get(8), ItemList.ZPM6.get(16),
+                    ItemList.Robot_Arm_UMV.get(64), ItemList.Conveyor_Module_UMV.get(64) });
         }
 
     }
