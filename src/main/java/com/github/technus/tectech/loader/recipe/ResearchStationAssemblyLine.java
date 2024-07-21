@@ -245,7 +245,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     16,
                     new Object[] { getItemContainer("Hull_UMV").get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUMV, 2L),
-                        ItemList.Circuit_Chip_QPIC.get(4L), getItemContainer("PikoCircuit").get(2),
+                        ItemList.Circuit_Chip_QPIC.get(4L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 2),
                         ItemList.UHV_Coil.get(16L), ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -267,7 +267,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     32,
                     new Object[] { getItemContainer("Hull_UXV").get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUMV, 4L),
-                        ItemList.Circuit_Chip_QPIC.get(16L), getItemContainer("QuantumCircuit").get(2),
+                        ItemList.Circuit_Chip_QPIC.get(16L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 2),
                         ItemList.UHV_Coil.get(32L), ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -366,7 +366,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     32,
                     new Object[] { getItemContainer("Hull_UMV").get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorUMVBase, 8L),
-                        ItemList.Circuit_Chip_QPIC.get(4L), getItemContainer("PikoCircuit").get(2),
+                        ItemList.Circuit_Chip_QPIC.get(4L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 2),
                         ItemList.UHV_Coil.get(16L), ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -388,7 +388,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     32,
                     new Object[] { getItemContainer("Hull_UXV").get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorUMVBase, 16L),
-                        ItemList.Circuit_Chip_QPIC.get(16L), getItemContainer("QuantumCircuit").get(2),
+                        ItemList.Circuit_Chip_QPIC.get(16L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 2),
                         ItemList.UHV_Coil.get(32L), ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -560,48 +560,6 @@ public class ResearchStationAssemblyLine implements Runnable {
             300 * 20,
             8_000_000);
 
-        // Piko Circuit
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
-            ItemList.Circuit_OpticalMainframe.get(1L),
-            384000,
-            1024,
-            4000000,
-            64,
-            new Object[] { ItemList.Circuit_Board_Optical.get(1L), getItemContainer("PicoWafer").get(4L),
-                new Object[] { OrePrefixes.circuit.get(Materials.Optical), 2L },
-                ItemList.Circuit_Parts_TransistorXSMD.get(48L), ItemList.Circuit_Parts_ResistorXSMD.get(48L),
-                ItemList.Circuit_Parts_CapacitorXSMD.get(48L), ItemList.Circuit_Parts_DiodeXSMD.get(48L),
-                ItemList.Circuit_Chip_PPIC.get(64L), GT_OreDictUnificator.get("foilRadoxPoly", 16L),
-                GT_OreDictUnificator.get(OrePrefixes.bolt, MaterialsUEVplus.TranscendentMetal, 32),
-                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Neutronium, 16),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Lanthanum, 64) },
-            new FluidStack[] { new FluidStack(solderUEV, 3744), Materials.UUMatter.getFluid(8000L),
-                Materials.Osmium.getMolten(1152L) },
-            getItemContainer("PikoCircuit").get(1L),
-            10000,
-            128_000_000);
-
-        // Quantum Circuit
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
-            getItemContainer("PikoCircuit").get(1L),
-            720000,
-            2048,
-            8000000,
-            128,
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 16),
-                getItemContainer("PikoCircuit").get(2L), ItemList.Circuit_Parts_CapacitorXSMD.get(64L),
-                ItemList.Circuit_Parts_DiodeXSMD.get(64L), ItemList.Circuit_Parts_TransistorXSMD.get(64L),
-                ItemList.Circuit_Parts_ResistorXSMD.get(64L), ItemList.Circuit_Chip_QPIC.get(64L),
-                GT_OreDictUnificator.get("foilShirabon", 64),
-                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Indium, 64),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt01, MaterialsUEVplus.SpaceTime, 8),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Lanthanum, 16) },
-            new FluidStack[] { new FluidStack(solderUEV, 3744), Materials.UUMatter.getFluid(24000L),
-                Materials.Osmium.getMolten(2304L) },
-            getItemContainer("QuantumCircuit").get(1L),
-            20000,
-            (int) TierEU.RECIPE_UMV);
-
         // Transcendent Plasma Mixer - TPM.
         TT_recipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.eM_energyTunnel7_UV.get(1),
@@ -684,7 +642,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GT_OreDictUnificator.get("plateDenseShirabon", 8),
 
                     ItemList.Electric_Motor_UXV.get(64L), ItemList.Electric_Piston_UXV.get(64L),
-                    ItemList.Field_Generator_UXV.get(16L), getItemContainer("QuantumCircuit").get(1L)
+                    ItemList.Field_Generator_UXV.get(16L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 1L)
                         .splitStack(32) },
                 new FluidStack[] { Materials.Neutronium.getMolten(32_768_000L),
                     MaterialsUEVplus.SpaceTime.getMolten(4 * 36864L),
@@ -2514,7 +2472,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         getModItem(AvaritiaAddons.ID, "InfinityChest", absoluteTier + 1),
                         // Cosmic fabric manipulator
                         getModItem(GTPlusPlus.ID, "gtplusplus.blockcasings.5", tier, 8), ME_Singularity,
-                        plateList[absoluteTier], getItemContainer("QuantumCircuit").get(set) },
+                        plateList[absoluteTier], GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, set) },
                     new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier] },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier0.get(1),
@@ -2538,7 +2496,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         getModItem(AvaritiaAddons.ID, "InfinityChest", absoluteTier + 1),
                         // Cosmic fabric manipulator
                         getModItem(GTPlusPlus.ID, "gtplusplus.blockcasings.5", tier, 8), ME_Singularity, ME_Singularity,
-                        plateList[absoluteTier], getItemContainer("QuantumCircuit").get(set) },
+                        plateList[absoluteTier], GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, set) },
                     new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier] },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier1.get(1),
@@ -2562,7 +2520,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         getModItem(AvaritiaAddons.ID, "InfinityChest", absoluteTier + 1),
                         // Cosmic fabric manipulator
                         getModItem(GTPlusPlus.ID, "gtplusplus.blockcasings.5", tier, 8), ME_Singularity, ME_Singularity,
-                        ME_Singularity, plateList[absoluteTier], getItemContainer("QuantumCircuit").get(set) },
+                        ME_Singularity, plateList[absoluteTier], GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, set) },
                     new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier2.get(1),
@@ -2590,7 +2548,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         // Infinity infused manipulator
                         getModItem(GTPlusPlus.ID, "gtplusplus.blockcasings.5", tier, 9), ME_Singularity, ME_Singularity,
                         ME_Singularity, ME_Singularity, plateList[absoluteTier],
-                        getItemContainer("QuantumCircuit").get(set) },
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, set) },
                     new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier3.get(1),
@@ -2615,7 +2573,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         // Infinity infused manipulator
                         getModItem(GTPlusPlus.ID, "gtplusplus.blockcasings.5", tier, 9), ME_Singularity, ME_Singularity,
                         ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
-                        getItemContainer("QuantumCircuit").get(set) },
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, set) },
                     new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier4.get(1),
@@ -2640,7 +2598,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         // Infinity infused manipulator
                         getModItem(GTPlusPlus.ID, "gtplusplus.blockcasings.5", tier, 9), ME_Singularity, ME_Singularity,
                         ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
-                        getItemContainer("QuantumCircuit").get(set) },
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, set) },
                     new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier5.get(1),
@@ -2668,7 +2626,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         // Spacetime continuum ripper
                         getModItem(GTPlusPlus.ID, "gtplusplus.blockcasings.5", tier, 10), ME_Singularity,
                         ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
-                        plateList[absoluteTier], getItemContainer("QuantumCircuit").get(set) },
+                        plateList[absoluteTier], GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, set) },
                     new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier6.get(1),
@@ -2693,7 +2651,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         // Spacetime continuum ripper
                         getModItem(GTPlusPlus.ID, "gtplusplus.blockcasings.5", tier, 10), ME_Singularity,
                         ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
-                        ME_Singularity, plateList[absoluteTier], getItemContainer("QuantumCircuit").get(set) },
+                        ME_Singularity, plateList[absoluteTier], GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, set) },
                     new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier7.get(1),
@@ -2719,7 +2677,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         getModItem(GTPlusPlus.ID, "gtplusplus.blockcasings.5", tier, 10), ME_Singularity,
                         ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
                         ME_Singularity, ME_Singularity, plateList[absoluteTier],
-                        getItemContainer("QuantumCircuit").get(set) },
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, set) },
                     new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier8.get(1),
@@ -2795,7 +2753,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         // UV Solar panel
                         getModItem(SuperSolarPanels.ID, "PhotonicSolarPanel", absoluteTier + 1, 0),
 
-                        getItemContainer("QuantumCircuit").get(absoluteTier + 1),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, absoluteTier + 1),
                         // Red Spectral Component
                         spectralComponents[absoluteTier % spectralComponents.length],
                         // Green Spectral Component
@@ -2900,7 +2858,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                                 getModItem(GraviSuite.ID, "itemSimpleItem", 64, 3),
 
                                 plateList[absoluteTier],
-                                getItemContainer("QuantumCircuit").get(2 * (absoluteTier + 1)),
+                                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 2 * (absoluteTier + 1)),
                                 GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.SpaceTime, absoluteTier + 1),
                                 GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.SpaceTime, absoluteTier + 1)
 
