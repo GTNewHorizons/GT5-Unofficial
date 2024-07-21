@@ -24,6 +24,7 @@ import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
+import static gregtech.api.util.GT_RecipeConstants.PRECISE_ASSEMBLER_CASING_TIER;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
@@ -36,11 +37,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
+import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.items.MyMaterial;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
 import goodgenerator.util.MaterialFix;
-import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -957,14 +958,19 @@ public class RecipeLoader {
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride, 1), 'C',
                 GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 1), 'D', "dyeCyan" });
 
-        MyRecipeAdder.instance.addPreciseAssemblerRecipe(
-            new ItemStack[] { ItemList.Circuit_Board_Coated_Basic.get(1), ItemList.Circuit_Chip_ULPIC.get(1),
-                ItemList.ULV_Coil.get(2), ItemList.Battery_RE_ULV_Tantalum.get(1) },
-            new FluidStack[] { Materials.RedAlloy.getMolten(144), Materials.Aluminium.getMolten(144) },
-            ItemRefer.Micro_Heater.get(1),
-            120,
-            40,
-            1);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Circuit_Board_Coated_Basic.get(1),
+                ItemList.Circuit_Chip_ULPIC.get(1),
+                ItemList.ULV_Coil.get(2),
+                ItemList.Battery_RE_ULV_Tantalum.get(1))
+            .itemOutputs(ItemRefer.Micro_Heater.get(1))
+            .fluidInputs(Materials.RedAlloy.getMolten(144), Materials.Aluminium.getMolten(144))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
+            .noOptimize()
+            .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -989,14 +995,19 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
 
-        MyRecipeAdder.instance.addPreciseAssemblerRecipe(
-            new ItemStack[] { ItemRefer.Quartz_Wafer.get(1), ItemRefer.Special_Ceramics_Plate.get(2),
-                ItemRefer.Micro_Heater.get(1), ItemList.Circuit_Chip_ILC.get(4) },
-            new FluidStack[] { Materials.EnergeticAlloy.getMolten(72), Materials.Silver.getMolten(18) },
-            ItemRefer.Quartz_Crystal_Resonator.get(1),
-            480,
-            40,
-            1);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemRefer.Quartz_Wafer.get(1),
+                ItemRefer.Special_Ceramics_Plate.get(2),
+                ItemRefer.Micro_Heater.get(1),
+                ItemList.Circuit_Chip_ILC.get(4))
+            .itemOutputs(ItemRefer.Quartz_Crystal_Resonator.get(1))
+            .fluidInputs(Materials.EnergeticAlloy.getMolten(72), Materials.Silver.getMolten(18))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
+            .noOptimize()
+            .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
 
         for (Materials tMat : solderingMats) {
             int tMultiplier = tMat.contains(SubTag.SOLDERING_MATERIAL_GOOD) ? 1
@@ -1185,13 +1196,15 @@ public class RecipeLoader {
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Steel, 1), 'U',
                 ItemRefer.High_Density_Uranium.get(1) });
 
-        MyRecipeAdder.instance.addPreciseAssemblerRecipe(
-            new ItemStack[] { ItemRefer.HiC_T2.get(2), ItemList.Emitter_EV.get(2), ItemRefer.Neutron_Source.get(1) },
-            new FluidStack[] { Materials.StainlessSteel.getMolten(576), Materials.TungstenCarbide.getMolten(144) },
-            Loaders.NA.copy(),
-            7680,
-            100,
-            1);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemRefer.HiC_T2.get(2), ItemList.Emitter_EV.get(2), ItemRefer.Neutron_Source.get(1))
+            .itemOutputs(Loaders.NA.copy())
+            .fluidInputs(Materials.StainlessSteel.getMolten(576), Materials.TungstenCarbide.getMolten(144))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
+            .noOptimize()
+            .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
     }
 
     public static void InitLoadRecipe() {

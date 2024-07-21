@@ -112,68 +112,13 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     }
 
     // region add recipe
-
-    @Nullable
-    public GT_Recipe addRecipe(boolean aOptimize, @Nullable ItemStack[] aInputs, @Nullable ItemStack[] aOutputs,
-        @Nullable Object aSpecial, @Nullable int[] aOutputChances, @Nullable FluidStack[] aFluidInputs,
-        @Nullable FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        return addRecipe(
-            new GT_Recipe(
-                aOptimize,
-                aInputs,
-                aOutputs,
-                aSpecial,
-                aOutputChances,
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                aSpecialValue));
-    }
-
-    @Nullable
-    public GT_Recipe addRecipe(@Nullable int[] aOutputChances, @Nullable FluidStack[] aFluidInputs,
-        @Nullable FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        return addRecipe(
-            new GT_Recipe(
-                false,
-                null,
-                null,
-                null,
-                aOutputChances,
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                aSpecialValue),
-            false,
-            false,
-            false);
-    }
-
-    @Nullable
-    public GT_Recipe addRecipe(boolean aOptimize, @Nullable ItemStack[] aInputs, @Nullable ItemStack[] aOutputs,
-        @Nullable Object aSpecial, @Nullable FluidStack[] aFluidInputs, @Nullable FluidStack[] aFluidOutputs,
-        int aDuration, int aEUt, int aSpecialValue) {
-        return addRecipe(
-            new GT_Recipe(
-                aOptimize,
-                aInputs,
-                aOutputs,
-                aSpecial,
-                null,
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                aSpecialValue));
-    }
-
+    @Deprecated
     @Nullable
     public GT_Recipe addRecipe(GT_Recipe aRecipe) {
         return addRecipe(aRecipe, true, false, false);
     }
 
+    @Deprecated
     @Nullable
     public GT_Recipe addRecipe(GT_Recipe aRecipe, boolean aCheckForCollisions, boolean aFakeRecipe, boolean aHidden) {
         aRecipe.mHidden = aHidden;
@@ -188,30 +133,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
      * Only used for fake Recipe Handlers to show something in NEI, do not use this for adding actual Recipes!
      * findRecipe won't find fake Recipes, containsInput WILL find fake Recipes
      */
-    @Nullable
-    public GT_Recipe addFakeRecipe(boolean aCheckForCollisions, @Nullable ItemStack[] aInputs,
-        @Nullable ItemStack[] aOutputs, @Nullable Object aSpecial, @Nullable int[] aOutputChances,
-        @Nullable FluidStack[] aFluidInputs, @Nullable FluidStack[] aFluidOutputs, int aDuration, int aEUt,
-        int aSpecialValue) {
-        return addFakeRecipe(
-            aCheckForCollisions,
-            new GT_Recipe(
-                false,
-                aInputs,
-                aOutputs,
-                aSpecial,
-                aOutputChances,
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                aSpecialValue));
-    }
-
-    /**
-     * Only used for fake Recipe Handlers to show something in NEI, do not use this for adding actual Recipes!
-     * findRecipe won't find fake Recipes, containsInput WILL find fake Recipes
-     */
+    @Deprecated
     @Nullable
     public GT_Recipe addFakeRecipe(boolean aCheckForCollisions, @Nullable ItemStack[] aInputs,
         @Nullable ItemStack[] aOutputs, @Nullable Object aSpecial, @Nullable FluidStack[] aFluidInputs,
@@ -231,26 +153,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
                 aSpecialValue));
     }
 
-    @Nullable
-    public GT_Recipe addFakeRecipe(boolean aCheckForCollisions, @Nullable ItemStack[] aInputs,
-        @Nullable ItemStack[] aOutputs, @Nullable Object aSpecial, @Nullable FluidStack[] aFluidInputs,
-        @Nullable FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue, boolean hidden) {
-        return addFakeRecipe(
-            aCheckForCollisions,
-            new GT_Recipe(
-                false,
-                aInputs,
-                aOutputs,
-                aSpecial,
-                null,
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                aSpecialValue),
-            hidden);
-    }
-
+    @Deprecated
     @Nullable
     public GT_Recipe addFakeRecipe(boolean aCheckForCollisions, @Nullable ItemStack[] aInputs,
         @Nullable ItemStack[] aOutputs, @Nullable Object aSpecial, @Nullable FluidStack[] aFluidInputs,
@@ -277,11 +180,13 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
      * Only used for fake Recipe Handlers to show something in NEI, do not use this for adding actual Recipes!
      * findRecipe won't find fake Recipes, containsInput WILL find fake Recipes
      */
+    @Deprecated
     @Nullable
     public GT_Recipe addFakeRecipe(boolean aCheckForCollisions, GT_Recipe aRecipe) {
         return addRecipe(aRecipe, aCheckForCollisions, true, false);
     }
 
+    @Deprecated
     @Nullable
     public GT_Recipe addFakeRecipe(boolean aCheckForCollisions, GT_Recipe aRecipe, boolean hidden) {
         return addRecipe(aRecipe, aCheckForCollisions, true, hidden);

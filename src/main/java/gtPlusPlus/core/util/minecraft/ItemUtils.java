@@ -4,6 +4,8 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.Minecraft;
+import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -381,7 +383,19 @@ public class ItemUtils {
         final ItemStack smallDust = ItemUtils.getSimpleStack(output[1]);
         final ItemStack tinyDust = ItemUtils.getSimpleStack(output[2]);
 
-        CORE.RA.addpackagerRecipe(ItemList.Schematic_Dust.get(0), smallDust, tinyDust, normalDust);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(4, smallDust), ItemList.Schematic_Dust.get(0))
+            .itemOutputs(normalDust)
+            .duration(5 * SECONDS)
+            .eut(4)
+            .addTo(packagerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(9, tinyDust), ItemList.Schematic_Dust.get(0))
+            .itemOutputs(normalDust)
+            .duration(5 * SECONDS)
+            .eut(4)
+            .addTo(packagerRecipes);
 
         if (ItemUtils.checkForInvalidItems(tinyDust) && ItemUtils.checkForInvalidItems(normalDust)) {
             if (RecipeUtils.addShapedRecipe(
@@ -555,10 +569,6 @@ public class ItemUtils {
             }
         }
         return itemNames;
-    }
-
-    public static ItemStack getGregtechCircuit(final int Meta) {
-        return ItemUtils.getItemStackWithMeta(true, "gregtech:gt.integrated_circuit", "Gregtech Circuit", Meta, 0);
     }
 
     private static final Map<Item, String> mModidCache = new HashMap<>();
@@ -898,7 +908,7 @@ public class ItemUtils {
             Item aItem = aStack.getItem();
             if (aItem == CI.getNumberedBioCircuit(0)
                 .getItem() || aItem
-                    == CI.getNumberedCircuit(0)
+                    == GT_Utility.getIntegratedCircuit(0)
                         .getItem()
                 || aItem == CI.getNumberedAdvancedCircuit(0)
                     .getItem()) {
