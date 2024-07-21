@@ -52,6 +52,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings1;
+import gregtech.common.blocks.GT_Block_Casings10;
 import gregtech.common.blocks.GT_Block_Casings2;
 import gregtech.common.blocks.GT_Block_Casings3;
 import gregtech.common.blocks.GT_Block_Casings4;
@@ -538,6 +539,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockCasings6 = new GT_Block_Casings6();
         GregTech_API.sBlockCasings8 = new GT_Block_Casings8();
         GregTech_API.sBlockCasings9 = new GT_Block_Casings9();
+        GregTech_API.sBlockCasings10 = new GT_Block_Casings10();
         GregTech_API.sBlockGranites = new GT_Block_Granites();
         GregTech_API.sBlockLongDistancePipes = new GT_Block_LongDistancePipe();
         GregTech_API.sBlockConcretes = new GT_Block_Concretes();

@@ -10,6 +10,10 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -197,6 +201,13 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
     @Override
     public ItemStack getStackInSlot(int aIndex) {
         return stacks != null && aIndex < stacks.length ? stacks[aIndex] : null;
+    }
+
+    @Override
+    public List<ItemStack> getInventoryItems(Predicate<ItemStack> filter) {
+        return Arrays.stream(stacks)
+            .filter(stack -> stack != null && filter.test(stack))
+            .collect(Collectors.toList());
     }
 
     @Override

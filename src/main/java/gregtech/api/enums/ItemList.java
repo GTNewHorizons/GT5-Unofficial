@@ -852,6 +852,7 @@ public enum ItemList implements IItemContainer {
     Casing_Grate,
     Casing_Vent,
     Casing_Vent_T2,
+    WoodenCasing,
     Casing_RadiationProof,
     Casing_AdvancedRadiationProof,
     Casing_Firebox_Bronze,
@@ -1459,6 +1460,17 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_LargeChemicalReactor,
 
+    Machine_Multi_IndustrialElectromagneticSeparator,
+    Casing_Electromagnetic_Separator,
+    Hatch_Electromagnet,
+    Electromagnet_Iron,
+    Electromagnet_Steel,
+    Electromagnet_Neodymium,
+    Electromagnet_Samarium,
+    Electromagnet_Tengam,
+
+    Machine_Multi_Canner,
+
     Machine_LV_Miner,
     Machine_MV_Miner,
     Machine_HV_Miner,
@@ -2033,7 +2045,8 @@ public enum ItemList implements IItemContainer {
     BlockPlasmaHeatingCasing,
     BlockNaquadriaReinforcedWaterPlantCasing,
     GlassUVResistant,
-    BlockUltraVioletLaserEmitter;
+    BlockUltraVioletLaserEmitter,
+    Casing_Shielded_Accelerator;
 
     public static final ItemList[] DYE_ONLY_ITEMS = { Color_00, Color_01, Color_02, Color_03, Color_04, Color_05,
         Color_06, Color_07, Color_08, Color_09, Color_10, Color_11, Color_12, Color_13, Color_14, Color_15 },

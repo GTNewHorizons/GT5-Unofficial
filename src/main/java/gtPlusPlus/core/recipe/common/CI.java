@@ -253,10 +253,6 @@ public class CI {
         }
     }
 
-    public static ItemStack getNumberedCircuit(int Meta) {
-        return ItemUtils.getGregtechCircuit(Meta);
-    }
-
     private static Object getMaterialFromTier(int tier) {
         if (tier == 0) {
             return Materials.Wood;
@@ -978,7 +974,7 @@ public class CI {
 
     /**
      * Aluminium + Silver Catalyst
-     * 
+     *
      * @param aAmount - Stacksize
      * @return - A Catalyst stack of given size
      */
@@ -988,7 +984,7 @@ public class CI {
 
     /**
      * Iridium + Ruthenium Catalyst
-     * 
+     *
      * @param aAmount - Stacksize
      * @return - A Catalyst stack of given size
      */
@@ -998,7 +994,7 @@ public class CI {
 
     /**
      * Platinum + Rhodium Catalyst
-     * 
+     *
      * @param aAmount - Stacksize
      * @return - A Catalyst stack of given size
      */

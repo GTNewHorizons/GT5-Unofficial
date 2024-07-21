@@ -37,7 +37,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -171,7 +170,7 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter
             .isServerSide()) {
             // Get Controller Circuit
             if (circuit == null) {
-                circuit = CI.getNumberedCircuit(0)
+                circuit = GT_Utility.getIntegratedCircuit(0)
                     .getItem();
             }
             if (aStack != null && aStack.getItem() == circuit) {

@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.tinkers.util;
 
 import static gregtech.api.enums.Mods.TinkerConstruct;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -9,10 +10,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.TierEU;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class TinkersDryingRecipe {
@@ -41,14 +42,12 @@ public class TinkersDryingRecipe {
         if (!recipes.isEmpty()) {
             Logger.INFO("Adding " + recipes.size() + " drying rack recipes to the dehydrator.");
             for (TinkersDryingRecipe r : recipes) {
-                CORE.RA.addDehydratorRecipe(
-                    new ItemStack[] { CI.getNumberedCircuit(16), r.input },
-                    GT_Values.NF,
-                    GT_Values.NF,
-                    new ItemStack[] { r.result },
-                    new int[] {},
-                    r.time / 10,
-                    30);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(16), r.input)
+                    .itemOutputs(r.result)
+                    .eut(TierEU.RECIPE_LV)
+                    .duration(r.time / 10)
+                    .addTo(chemicalDehydratorRecipes);
             }
         }
     }
