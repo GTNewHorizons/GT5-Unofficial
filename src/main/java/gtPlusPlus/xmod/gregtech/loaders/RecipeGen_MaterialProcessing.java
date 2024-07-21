@@ -4,7 +4,10 @@ import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
@@ -145,6 +148,7 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
                                 + " as input.");
                     } else {
                         Logger.MATERIALS("[Centrifuge] Could not find valid input dust, exiting.");
+                        return;
                     }
                 }
 
@@ -158,28 +162,33 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
                     }
                 }
 
-                try {
-                    GT_Values.RA.stdBuilder()
-                        .itemInputs(mainDust, emptyCell)
-                        .itemOutputs(
-                            mInternalOutputs[0],
-                            mInternalOutputs[1],
-                            mInternalOutputs[2],
-                            mInternalOutputs[3],
-                            mInternalOutputs[4],
-                            mInternalOutputs[5])
-                        .outputChances(mChances)
-                        .eut(tVoltageMultiplier)
-                        .duration((tVoltageMultiplier / 10) * SECONDS)
-                        .addTo(centrifugeRecipes);
-
-                    Logger.MATERIALS(
-                        "[Centrifuge] Generated Centrifuge recipe for " + material.getDust(1)
-                            .getDisplayName());
-
-                } catch (Throwable t) {
-                    t.printStackTrace();
+                // i don't understand the mess above, so let's just strip nulls and assume the chances are in correct
+                // order
+                List<ItemStack> internalOutputs = Arrays.asList(mInternalOutputs);
+                internalOutputs.removeIf(Objects::isNull);
+                int[] chances = new int[internalOutputs.size()];
+                for (int i = 0; i < internalOutputs.size(); i++) {
+                    chances[i] = mChances[i];
                 }
+
+                ItemStack[] inputs;
+                if (emptyCell == null) {
+                    inputs = new ItemStack[] { mainDust };
+                } else {
+                    inputs = new ItemStack[] { mainDust, emptyCell };
+                }
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(inputs)
+                    .itemOutputs(internalOutputs.toArray(new ItemStack[0]))
+                    .outputChances(chances)
+                    .eut(tVoltageMultiplier)
+                    .duration((tVoltageMultiplier / 10) * SECONDS)
+                    .addTo(centrifugeRecipes);
+
+                Logger.MATERIALS(
+                    "[Centrifuge] Generated Centrifuge recipe for " + material.getDust(1)
+                        .getDisplayName());
+
             } else if (componentMap.size() > 6 && componentMap.size() <= 9) {
                 Logger.MATERIALS(
                     "[Issue][Electrolyzer] " + material.getLocalizedName()
@@ -256,6 +265,7 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
                                 + " as input.");
                     } else {
                         Logger.MATERIALS("[Dehydrator] Could not find valid input dust, exiting.");
+                        return;
                     }
                 }
 
@@ -268,23 +278,33 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
                             "[Dehydrator] Set slot " + j + " to " + mInternalOutputs[j].getDisplayName() + ".");
                     }
                 }
-
-                try {
-                    GT_Values.RA.stdBuilder()
-                        .itemInputs(mainDust, emptyCell)
-                        .itemOutputs(mInternalOutputs)
-                        .outputChances(mChances)
-                        .eut(tVoltageMultiplier)
-                        .duration(20 * (tVoltageMultiplier / 10))
-                        .addTo(chemicalDehydratorRecipes);
-
-                    Logger.MATERIALS(
-                        "[Dehydrator] Generated Dehydrator recipe for " + material.getDust(1)
-                            .getDisplayName());
-
-                } catch (Throwable t) {
-                    t.printStackTrace();
+                // i don't understand the mess above, so let's just strip nulls and assume the chances are in correct
+                // order
+                List<ItemStack> internalOutputs = Arrays.asList(mInternalOutputs);
+                internalOutputs.removeIf(Objects::isNull);
+                int[] chances = new int[internalOutputs.size()];
+                for (int i = 0; i < internalOutputs.size(); i++) {
+                    chances[i] = mChances[i];
                 }
+
+                ItemStack[] inputs;
+                if (emptyCell == null) {
+                    inputs = new ItemStack[] { mainDust };
+                } else {
+                    inputs = new ItemStack[] { mainDust, emptyCell };
+                }
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(inputs)
+                    .itemOutputs(internalOutputs.toArray(new ItemStack[0]))
+                    .outputChances(chances)
+                    .eut(tVoltageMultiplier)
+                    .duration(20 * (tVoltageMultiplier / 10))
+                    .addTo(chemicalDehydratorRecipes);
+
+                Logger.MATERIALS(
+                    "[Dehydrator] Generated Dehydrator recipe for " + material.getDust(1)
+                        .getDisplayName());
             }
         }
     }

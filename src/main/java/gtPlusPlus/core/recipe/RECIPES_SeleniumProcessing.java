@@ -1,5 +1,6 @@
 package gtPlusPlus.core.recipe;
 
+import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
@@ -15,7 +16,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 
 public class RECIPES_SeleniumProcessing {
 
@@ -28,24 +28,23 @@ public class RECIPES_SeleniumProcessing {
         processCopperRecipes();
 
         // Liquify the Dried Dioxide
-        AddGregtechRecipe.addCokeAndPyrolyseRecipes(
-            MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1),
-            13,
-            FluidUtils.getSteam(500),
-            null,
-            MISC_MATERIALS.SELENIUM_DIOXIDE.getFluidStack(1000),
-            20,
-            1024);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(13), MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1))
+            .fluidInputs(FluidUtils.getSteam(500))
+            .fluidOutputs(MISC_MATERIALS.SELENIUM_DIOXIDE.getFluidStack(1000))
+            .duration(24 * SECONDS)
+            .eut(1024)
+            .addTo(pyrolyseRecipes);
 
         // Produce Selenious Acid
-        AddGregtechRecipe.addCokeAndPyrolyseRecipes(
-            MISC_MATERIALS.SELENIUM_DIOXIDE.getCell(1),
-            14,
-            FluidUtils.getHotWater(4000),
-            CI.emptyCells(1),
-            MISC_MATERIALS.SELENIOUS_ACID.getFluidStack(1000),
-            20,
-            2048);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(14), MISC_MATERIALS.SELENIUM_DIOXIDE.getCell(1))
+            .itemOutputs(CI.emptyCells(1))
+            .fluidInputs(FluidUtils.getHotWater(4000))
+            .fluidOutputs(MISC_MATERIALS.SELENIOUS_ACID.getFluidStack(1000))
+            .duration(24 * SECONDS)
+            .eut(2048)
+            .addTo(pyrolyseRecipes);
 
         // Make Selenium
         GT_Values.RA.stdBuilder()

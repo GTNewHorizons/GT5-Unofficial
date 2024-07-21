@@ -8,7 +8,10 @@ import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
@@ -231,17 +234,19 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
         input = ItemUtils.cleanItemStackArray(input);
 
         // Add mixer Recipe
+        List<ItemStack> inputs = Arrays.asList(input);
+        inputs.removeIf(Objects::isNull);
 
         if (oxygen == null) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(input[0], input[1], input[2], input[3])
+                .itemInputs(inputs.toArray(new ItemStack[0]))
                 .itemOutputs(outputStacks)
                 .duration((int) Math.max(material.getMass() * 2L * 1, 1))
                 .eut(material.vVoltageMultiplier)
                 .addTo(mixerRecipes);
         } else {
             GT_Values.RA.stdBuilder()
-                .itemInputs(input[0], input[1], input[2], input[3])
+                .itemInputs(inputs.toArray(new ItemStack[0]))
                 .itemOutputs(outputStacks)
                 .fluidInputs(oxygen)
                 .duration((int) Math.max(material.getMass() * 2L * 1, 1))
@@ -421,7 +426,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
             if (aMatInfo.requiresBlastFurnace()) {
                 aOutput = aMatInfo.getHotIngot(1);
                 if (ItemUtils.checkForInvalidItems(aOutput)) {
-                    if (addBlastFurnaceRecipe(aMatInfo, aDust, null, aOutput, null, aMatInfo.getMeltingPointK())) {
+                    if (addBlastFurnaceRecipe(aMatInfo, aDust, aOutput, aMatInfo.getMeltingPointK())) {
                         Logger
                             .MATERIALS("Successfully added a blast furnace recipe for " + aMatInfo.getLocalizedName());
                     } else {
@@ -445,32 +450,26 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
         }
     }
 
-    private boolean addBlastFurnaceRecipe(Material aMatInfo, final ItemStack input1, final ItemStack input2,
-        final ItemStack output1, final ItemStack output2, final int tempRequired) {
+    private boolean addBlastFurnaceRecipe(Material aMatInfo, final ItemStack input1, final ItemStack output1,
+        final int tempRequired) {
 
-        try {
-            int timeTaken = 125 * aMatInfo.vTier * 10;
-
-            if (aMatInfo.vTier <= 4) {
-                timeTaken = 25 * aMatInfo.vTier * 10;
-            }
-            int aSlot = aMatInfo.vTier;
-            if (aSlot < 2) {
-                aSlot = 2;
-            }
-            long aVoltage = aMatInfo.vVoltageMultiplier;
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(input1, input2)
-                .itemOutputs(output1, output2)
-                .duration(timeTaken)
-                .eut(aVoltage)
-                .metadata(COIL_HEAT, tempRequired)
-                .addTo(blastFurnaceRecipes);
-            return true;
-        } catch (Throwable t) {
-            t.printStackTrace();
-            return false;
+        int timeTaken;
+        if (aMatInfo.vTier <= 4) {
+            timeTaken = 25 * aMatInfo.vTier * 10;
+        } else {
+            timeTaken = 125 * aMatInfo.vTier * 10;
         }
+
+        long aVoltage = aMatInfo.vVoltageMultiplier;
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(input1)
+            .itemOutputs(output1)
+            .duration(timeTaken)
+            .eut(aVoltage)
+            .metadata(COIL_HEAT, tempRequired)
+            .addTo(blastFurnaceRecipes);
+        return true;
+
     }
 }
