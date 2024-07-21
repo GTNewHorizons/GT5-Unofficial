@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.purification;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
@@ -63,30 +62,54 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
     extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitDegasifier>
     implements ISurvivalConstructable {
 
-    // TODO
     private static final int CASING_INDEX_MAIN = getTextureIndex(GregTech_API.sBlockCasings9, 11);
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    // Temporary, while testing
     // spotless:off
     private static final String[][] structure = new String[][] {
-        { "           ", "           ", "           ", "     E     ", "           ", "           ", "           ", "           ", "   AAAAA   ", "  AAA~AAA  ", " AAAAAAAAA " },
-        { "           ", "           ", "     E     ", "           ", "           ", "   CCCCC   ", "   CDCDC   ", "   CCCCC   ", "  ACCCCCA  ", " AAAAAAAAA ", "AAAAAAAAAAA" },
-        { "           ", "           ", "     E     ", "           ", "           ", "  CAAAAAC  ", "  C     C  ", "  C     C  ", " AC     CA ", "AAAAAAAAAAA", "AAAAAAAAAAA" },
-        { "           ", "     E     ", "           ", "    CCC    ", "   FCCCF   ", " CAA   AAC ", " C       C ", " C       C ", "AC       CA", "AAAAAAAAAAA", "AAAAAAAAAAA" },
-        { "     E     ", "           ", "    BBB    ", "   C   C   ", "   C   C   ", " CA     AC ", " D       D ", " C       C ", "AC       CA", "AAAAAAAAAAA", "AAAAAAAAAAA" },
-        { "     E     ", "     E     ", "    BEB    ", "   C E C   ", "   C E C   ", " CA  E  AC ", " C   E   C ", " C   E   C ", "AC   E   CA", "AAAAAAAAAAA", "AAAAAAAAAAA" },
-        { "           ", "           ", "    BBB    ", "   C   C   ", "   C   C   ", " CA     AC ", " D       D ", " C       C ", "AC       CA", "AAAAAAAAAAA", "AAAAAAAAAAA" },
-        { "           ", "           ", "           ", "    CCC    ", "   FCCCF   ", " CAA   AAC ", " C       C ", " C       C ", "AC       CA", "AAAAAAAAAAA", "AAAAAAAAAAA" },
-        { "           ", "           ", "           ", "           ", "           ", "  CAAAAAC  ", "  C     C  ", "  C     C  ", " AC     CA ", "AAAAAAAAAAA", "AAAAAAAAAAA" },
-        { "           ", "           ", "           ", "           ", "           ", "   CCCCC   ", "   CDCDC   ", "   CCCCC   ", "  ACCCCCA  ", " AAAAAAAAA ", "AAAAAAAAAAA" },
-        { "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "   AAAAA   ", "  AAAAAAA  ", " AAAAAAAAA " } };
+        { "      AAAAA      ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "      AAAAA      " },
+        { "    AAAAAAAAA    ", "      AAAAA      ", "                 ", "           C     ", "         CC      ", "        C        ", "      CC         ", "     C           ", "                 ", "                 ", "                 ", "           C     ", "         CC      ", "        C        ", "      CC         ", "     C           ", "                 ", "                 ", "                 ", "           C     ", "         CC      ", "        C        ", "      CC         ", "    CCAA~AA      ", "    AAAAAAAAA    " },
+        { "  AAAAAAAAAAAAA  ", "   CAAAAAAAAA    ", "      BBBBB CC   ", "      BBBBB      ", "      BBBBB      ", "       BBB       ", "        B        ", "                 ", "    C            ", "                 ", "            C    ", "                 ", "                 ", "                 ", "                 ", "                 ", "    C            ", "                 ", "        B   C    ", "       BBB       ", "      BBBBB      ", "      BBBBB      ", "      BBBBB      ", "    AAAAAAAAA    ", "  AAAAAAAAAAAAA  " },
+        { "  AAAAAAAAAAAAA  ", "   AAAAAAAAAAAC  ", "  C BBB    BB    ", "    BB     BB    ", "     B     B     ", "     BB   BB     ", "     BBB BBB     ", "      BBBBB      ", "       BBB       ", "   C         C   ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "       BBB       ", "   C  BBBBB  C   ", "     BBB BBB     ", "     BB   BB     ", "     B     B     ", "    BB     BB    ", "    BB     BB    ", "   AAAAAAAAAAA   ", "  AAAAAAAAAAAAA  " },
+        { " AAAAAAAAAAAAAAA ", "  AAAAAAAAAAAAA  ", "  CB         B   ", "   B         B   ", "    B       B    ", "    B       B    ", "    B       B    ", "    BB     BB    ", "     BB   BB  C  ", "      BBBBB      ", "  C    BBB       ", "                 ", "                 ", "                 ", "       BBB       ", "      BBBBB      ", "     BB   BB  C  ", "    BB     BB    ", "  C B       B    ", "    B       B    ", "    B       B    ", "   B         B   ", "   B         B   ", "  AAAAAAAAAAAAAC ", " AAAAAAAAAAAAAAA " },
+        { " AAAAAAAAAAAAAAA ", "  AAAAAAAAAAAAA  ", "   B         B   ", " C B         B   ", "   B         B   ", "   B         B   ", "   B         B   ", "    B       B  C ", "    B       B    ", "     B     B     ", "      B   B      ", " C     BBB       ", "                 ", "       BBB       ", "      B   B      ", "     B     B   C ", "    B       B    ", "    B       B    ", "   B         B   ", " C B         B   ", "   B         B   ", "   B         B   ", "   B         B   ", "  AAAAAAAAAAAAAC ", " AAAAAAAAAAAAAAA " },
+        { "AAAAAAAAAAAAAAAAA", " AAAAAAAAAAAAAAA ", "  B           B  ", "  B           B  ", " CB           B  ", "   B         B   ", "   B         B C ", "   B         B   ", "    B       B    ", "    B       B    ", "     B     B     ", "      BBBBB      ", " C     BBB       ", "      BBBBB      ", "     B     B   C ", "    B       B    ", "    B       B    ", "   B         B   ", "   B         B   ", "   B         B   ", " CB           B  ", "  B           B  ", "  B           BC ", " AAAAAAAAAAAAAAA ", "AAAAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAAAA", " AAAAAAAAAAAAAAA ", "  B           B  ", "  B           B  ", " CB           B  ", "  B           B  ", "   B         B C ", "   B         B   ", "   B         B   ", "    B       B    ", "    B       B    ", "     BB   BB     ", " C    BBBBB      ", "     BB   BB     ", "    B       B  C ", "    B       B    ", "   B         B   ", "   B         B   ", "   B         B   ", "  B           B  ", " CB           B  ", "  B           B  ", "  B           BC ", " AAAAAAAAAAAAAAA ", "AAAAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAAAA", " AAAAAAAAAAAAAAA ", "  B           B  ", "  B           B  ", "  B           B  ", " CB           BC ", "  B           B  ", "   B         B   ", "   B         B   ", "    B       B    ", "    B       B    ", "     BB   BB     ", "      BBBBB      ", " C   BB   BB   C ", "    B       B    ", "    B       B    ", "   B         B   ", "   B         B   ", "  B           B  ", "  B           B  ", "  B           B  ", " CB           BC ", "  B           B  ", " AAAAAAAAAAAAAAA ", "AAAAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAAAA", " AAAAAAAAAAAAAAA ", "  B           B  ", "  B           B  ", "  B           BC ", "  B           B  ", " C B         B   ", "   B         B   ", "   B         B   ", "    B       B    ", "    B       B    ", "     BB   BB     ", "      BBBBB    C ", "     BB   BB     ", " C  B       B    ", "    B       B    ", "   B         B   ", "   B         B   ", "   B         B   ", "  B           B  ", "  B           BC ", "  B           B  ", " CB           B  ", " AAAAAAAAAAAAAAA ", "AAAAAAAAAAAAAAAAA" },
+        { "AAAAAAAAAAAAAAAAA", " AAAAAAAAAAAAAAA ", "  B           B  ", "  B           B  ", "  B           BC ", "   B         B   ", " C B         B   ", "   B         B   ", "    B       B    ", "    B       B    ", "     B     B     ", "      BBBBB      ", "       BBB     C ", "      BBBBB      ", " C   B     B     ", "    B       B    ", "    B       B    ", "   B         B   ", "   B         B   ", "   B         B   ", "  B           BC ", "  B           B  ", " CB           B  ", " AAAAAAAAAAAAAAA ", "AAAAAAAAAAAAAAAAA" },
+        { " AAAAAAAAAAAAAAA ", "  AAAAAAAAAAAAA  ", "   B         B   ", "   B         B C ", "   B         B   ", "   B         B   ", "   B         B   ", " C  B       B    ", "    B       B    ", "     B     B     ", "      B   B      ", "       BBB     C ", "                 ", "       BBB       ", "      B   B      ", " C   B     B     ", "    B       B    ", "    B       B    ", "   B         B   ", "   B         B C ", "   B         B   ", "   B         B   ", "   B         B   ", " CAAAAAAAAAAAAA  ", " AAAAAAAAAAAAAAA " },
+        { " AAAAAAAAAAAAAAA ", "  AAAAAAAAAAAAA  ", "   B         BC  ", "   B         B   ", "    B       B    ", "    B       B    ", "    B       B    ", "    BB     BB    ", "  C  BB   BB     ", "      BBBBB      ", "       BBB    C  ", "                 ", "                 ", "                 ", "       BBB       ", "      BBBBB      ", "  C  BB   BB     ", "    BB     BB    ", "    B       B C  ", "    B       B    ", "    B       B    ", "   B         B   ", "   B         B   ", " CAAAAAAAAAAAAA  ", " AAAAAAAAAAAAAAA " },
+        { "  AAAAAAAAAAAAA  ", "  CAAAAAAAAAAA   ", "    BB     BB C  ", "    BB     BB    ", "     B     B     ", "     BB   BB     ", "     BBB BBB     ", "      BBBBB      ", "       BBB       ", "   C         C   ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "       BBB       ", "   C  BBBBB  C   ", "     BBB BBB     ", "     BB   BB     ", "     B     B     ", "    BB     BB    ", "    BB     BB    ", "   AAAAAAAAAAA   ", "  AAAAAAAAAAAAA  " },
+        { "  AAAAAAAAAAAAA  ", "    AAAAAAAAAC   ", "   CC BBBBB      ", "      BBBBB      ", "      BBBBB      ", "       BBB       ", "        B        ", "                 ", "            C    ", "                 ", "    C            ", "                 ", "                 ", "                 ", "                 ", "                 ", "            C    ", "                 ", "    C   B        ", "       BBB       ", "      BBBBB      ", "      BBBBB      ", "      BBBBB      ", "    AAAAAAAAA    ", "  AAAAAAAAAAAAA  " },
+        { "    AAAAAAAAA    ", "      AAAAA      ", "                 ", "     C           ", "      CC         ", "        C        ", "         CC      ", "           C     ", "                 ", "                 ", "                 ", "     C           ", "      CC         ", "        C        ", "         CC      ", "           C     ", "                 ", "                 ", "                 ", "     C           ", "      CC         ", "        C        ", "         CC      ", "      AAAAACC    ", "    AAAAAAAAA    " },
+        { "      AAAAA      ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "      AAAAA      " } };
     // spotless:on
 
-    private static final int STRUCTURE_X_OFFSET = 5;
-    private static final int STRUCTURE_Y_OFFSET = 9;
-    private static final int STRUCTURE_Z_OFFSET = 0;
+    private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitDegasifier> STRUCTURE_DEFINITION = StructureDefinition
+        .<GT_MetaTileEntity_PurificationUnitDegasifier>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        // PLACEHOLDER ELEMENTS
+        .addElement(
+            'A',
+            ofChain(
+                lazy(
+                    t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitDegasifier>buildHatchAdder()
+                        .atLeastList(Arrays.asList(InputHatch, OutputHatch, SpecialHatchElement.ControlHatch))
+                        .casingIndex(CASING_INDEX_MAIN)
+                        .dot(1)
+                        .cacheHint(() -> "Input Hatch, Output Hatch, Control Hatch")
+                        .build()),
+                ofBlock(GregTech_API.sBlockCasings9, 11)))
+        // TODO: Purple variant
+        .addElement('B', ofBlock(GregTech_API.sBlockGlass1, 1))
+        .addElement('C', ofFrame(Materials.Bedrockium))
+        .build();
+
+    private static final int STRUCTURE_X_OFFSET = 8;
+    private static final int STRUCTURE_Y_OFFSET = 23;
+    private static final int STRUCTURE_Z_OFFSET = 1;
 
     // Supplier because werkstoff loads later than multiblock controllers... fml
     private static final Supplier<FluidStack[]> INERT_GASES = () -> new FluidStack[] { Materials.Helium.getGas(10000L),
@@ -190,28 +213,6 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
     private float outputMultiplier = 1.0f;
 
     private GT_MetaTileEntity_Hatch_DegasifierControlHatch controlHatch = null;
-
-    private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitDegasifier> STRUCTURE_DEFINITION = StructureDefinition
-        .<GT_MetaTileEntity_PurificationUnitDegasifier>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
-        // PLACEHOLDER ELEMENTS
-        .addElement(
-            'A',
-            ofChain(
-                lazy(
-                    t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitDegasifier>buildHatchAdder()
-                        .atLeastList(Arrays.asList(InputHatch, OutputHatch, SpecialHatchElement.ControlHatch))
-                        .casingIndex(1)
-                        .dot(1)
-                        .cacheHint(() -> "Input Hatch, Output Hatch, Control Hatch")
-                        .build()),
-                ofBlock(GregTech_API.sBlockCasings8, 0)))
-        .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 1))
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings8, 7))
-        .addElement('D', ofBlockAnyMeta(GregTech_API.sBlockTintedGlass, 0))
-        .addElement('E', ofFrame(Materials.Longasssuperconductornameforuvwire))
-        .addElement('F', ofFrame(Materials.Carbon))
-        .build();
 
     public GT_MetaTileEntity_PurificationUnitDegasifier(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -442,8 +443,15 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
                     + EnumChatFormatting.GRAY
                     + "all other bits and do not insert anything.")
             .addSeparator()
-            .addInfo(EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "Machine Overload")
-            .addInfo("In rare occasions, the machine may overload and output no control signal at all.")
+            .addInfo(
+                EnumChatFormatting.WHITE + ""
+                    + EnumChatFormatting.BOLD
+                    + "No bits: "
+                    + EnumChatFormatting.BLUE
+                    + ""
+                    + EnumChatFormatting.BOLD
+                    + "Machine Overload")
+            .addInfo("In rare cases, the machine may overload and output no control signal at all.")
             .addInfo(
                 "To prevent machine damage, insert " + EnumChatFormatting.RED
                     + "10000L "

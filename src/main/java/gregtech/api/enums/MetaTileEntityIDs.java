@@ -700,7 +700,6 @@ public enum MetaTileEntityIDs {
     lsc(13106),
     tfftHatch(13109);
 
-
     public final int ID;
 
     private MetaTileEntityIDs(int ID) {
