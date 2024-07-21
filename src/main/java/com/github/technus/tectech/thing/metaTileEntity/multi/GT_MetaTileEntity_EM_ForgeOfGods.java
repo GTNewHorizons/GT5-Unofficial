@@ -47,7 +47,6 @@ import com.github.technus.tectech.thing.block.GodforgeGlassBlock;
 import com.github.technus.tectech.thing.block.TileForgeOfGods;
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.thing.metaTileEntity.multi.godforge_modules.GT_MetaTileEntity_EM_BaseModule;
 import com.github.technus.tectech.thing.metaTileEntity.multi.godforge_modules.GT_MetaTileEntity_EM_ExoticModule;
 import com.github.technus.tectech.thing.metaTileEntity.multi.godforge_modules.GT_MetaTileEntity_EM_MoltenModule;
@@ -100,6 +99,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -254,7 +254,15 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TEXTURE_INDEX + 1),
-                new TT_RenderedExtendedFacingTexture(ScreenON) };
+                TextureFactory.builder()
+                    .addIcon(ScreenON)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(ScreenON)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TEXTURE_INDEX + 1) };
     }
@@ -344,50 +352,52 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 if (upgrades[29]) {
                     maxModuleCount += 4;
                 }
-                if (internalBattery == 0) {
-                    for (ItemStack itemStack : mInputBusses.get(0)
-                        .getRealInventory()) {
-                        if (itemStack != null && itemStack.isItemEqual(STELLAR_FUEL)) {
-                            stellarFuelAmount += itemStack.stackSize;
-                            itemStack.stackSize = 0;
-                        }
-                    }
-                    neededStartupFuel = calculateStartupFuelConsumption(this);
-                    if (stellarFuelAmount >= neededStartupFuel) {
-                        stellarFuelAmount -= neededStartupFuel;
-                        increaseBattery(neededStartupFuel);
-                    }
-                } else {
-                    fuelConsumption = (long) calculateFuelConsumption(this) * 5 * (batteryCharging ? 2 : 1);
-                    if (fluidInHatch != null) {
-                        for (FluidStack fluid : fluidInHatch) {
-                            if (fluid.isFluidEqual(validFuelList.get(selectedFuelType))) {
-                                FluidStack fluidNeeded = new FluidStack(
-                                    validFuelList.get(selectedFuelType),
-                                    (int) fuelConsumption);
-                                FluidStack fluidReal;
-                                if (mInputHatches.get(0) instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
-                                    fluidReal = meHatch.drain(ForgeDirection.UNKNOWN, fluidNeeded, true);
-                                } else {
-                                    fluidReal = mInputHatches.get(0)
-                                        .drain(fluidNeeded.amount, true);
-                                }
-                                if (fluidReal == null || fluidReal.amount < fluidNeeded.amount) {
-                                    reduceBattery(fuelConsumptionFactor);
-                                } else {
-                                    totalFuelConsumed += getFuelFactor();
-                                    if (batteryCharging) {
-                                        increaseBattery(fuelConsumptionFactor);
-                                    }
-                                }
-                                fuelDrained = true;
+                if (mInputBusses != null) {
+                    if (internalBattery == 0) {
+                        for (ItemStack itemStack : mInputBusses.get(0)
+                            .getRealInventory()) {
+                            if (itemStack != null && itemStack.isItemEqual(STELLAR_FUEL)) {
+                                stellarFuelAmount += itemStack.stackSize;
+                                itemStack.stackSize = 0;
                             }
                         }
-                        if (!fuelDrained) {
-                            reduceBattery(fuelConsumptionFactor);
+                        neededStartupFuel = calculateStartupFuelConsumption(this);
+                        if (stellarFuelAmount >= neededStartupFuel) {
+                            stellarFuelAmount -= neededStartupFuel;
+                            increaseBattery(neededStartupFuel);
                         }
                     } else {
-                        reduceBattery(fuelConsumptionFactor);
+                        fuelConsumption = (long) calculateFuelConsumption(this) * 5 * (batteryCharging ? 2 : 1);
+                        if (fluidInHatch != null) {
+                            for (FluidStack fluid : fluidInHatch) {
+                                if (fluid.isFluidEqual(validFuelList.get(selectedFuelType))) {
+                                    FluidStack fluidNeeded = new FluidStack(
+                                        validFuelList.get(selectedFuelType),
+                                        (int) fuelConsumption);
+                                    FluidStack fluidReal;
+                                    if (mInputHatches.get(0) instanceof GT_MetaTileEntity_Hatch_Input_ME meHatch) {
+                                        fluidReal = meHatch.drain(ForgeDirection.UNKNOWN, fluidNeeded, true);
+                                    } else {
+                                        fluidReal = mInputHatches.get(0)
+                                            .drain(fluidNeeded.amount, true);
+                                    }
+                                    if (fluidReal == null || fluidReal.amount < fluidNeeded.amount) {
+                                        reduceBattery(fuelConsumptionFactor);
+                                    } else {
+                                        totalFuelConsumed += getFuelFactor();
+                                        if (batteryCharging) {
+                                            increaseBattery(fuelConsumptionFactor);
+                                        }
+                                    }
+                                    fuelDrained = true;
+                                }
+                            }
+                            if (!fuelDrained) {
+                                reduceBattery(fuelConsumptionFactor);
+                            }
+                        } else {
+                            reduceBattery(fuelConsumptionFactor);
+                        }
                     }
                 }
 
