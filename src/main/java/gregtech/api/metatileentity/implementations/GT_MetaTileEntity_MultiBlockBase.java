@@ -462,22 +462,24 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public void checkMaintenance() {
         if (!shouldCheckMaintenance()) return;
 
-        for (GT_MetaTileEntity_Hatch_Maintenance tHatch : filterValidMTEs(mMaintenanceHatches)) {
-            if (tHatch.mAuto && !(mWrench && mScrewdriver && mSoftHammer && mHardHammer && mSolderingTool && mCrowbar))
-                tHatch.autoMaintainance();
-            if (tHatch.mWrench) mWrench = true;
-            if (tHatch.mScrewdriver) mScrewdriver = true;
-            if (tHatch.mSoftHammer) mSoftHammer = true;
-            if (tHatch.mHardHammer) mHardHammer = true;
-            if (tHatch.mSolderingTool) mSolderingTool = true;
-            if (tHatch.mCrowbar) mCrowbar = true;
+        boolean broken = !(mWrench && mScrewdriver && mSoftHammer && mHardHammer && mSolderingTool && mCrowbar);
+        if (broken) {
+            for (GT_MetaTileEntity_Hatch_Maintenance tHatch : filterValidMTEs(mMaintenanceHatches)) {
+                if (tHatch.mAuto) tHatch.autoMaintainance();
+                if (tHatch.mWrench) mWrench = true;
+                if (tHatch.mScrewdriver) mScrewdriver = true;
+                if (tHatch.mSoftHammer) mSoftHammer = true;
+                if (tHatch.mHardHammer) mHardHammer = true;
+                if (tHatch.mSolderingTool) mSolderingTool = true;
+                if (tHatch.mCrowbar) mCrowbar = true;
 
-            tHatch.mWrench = false;
-            tHatch.mScrewdriver = false;
-            tHatch.mSoftHammer = false;
-            tHatch.mHardHammer = false;
-            tHatch.mSolderingTool = false;
-            tHatch.mCrowbar = false;
+                tHatch.mWrench = false;
+                tHatch.mScrewdriver = false;
+                tHatch.mSoftHammer = false;
+                tHatch.mHardHammer = false;
+                tHatch.mSolderingTool = false;
+                tHatch.mCrowbar = false;
+            }
         }
     }
 
