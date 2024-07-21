@@ -33,6 +33,7 @@ import gregtech.api.interfaces.tileentity.IVoidable;
  * <li>Separated input buses</li>
  * <li>Batch mode</li>
  * <li>Recipe locking</li>
+ * <li>Multiple machine modes</li>
  * </ul>
  */
 public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockable {
@@ -114,6 +115,76 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
         if (!supportsVoidProtection()) {
             button.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
         }
+        return (ButtonWidget) button;
+    }
+
+    /**
+     * @return if the multi has more than 1 mode
+     */
+    default boolean supportsMachineModeSwitch() {
+        return false;
+    }
+
+    /**
+     * @return the current mode number. This is a getter is used for displaying the icon in the GUI
+     */
+    default int getMachineMode() {
+        return 0;
+    }
+
+    /**
+     * @param index Index of machineModeIcons to pull from
+     * @return UITexture associated with that machineMode
+     */
+    default UITexture getMachineModeIcon(int index) {
+        return null;
+    }
+
+    /**
+     * @param index Number to set machineMode to
+     */
+    default void setMachineMode(int index) {}
+
+    /**
+     * @return Returns the next machineMode number in the sequence
+     */
+    default int nextMachineMode() {
+        return 0;
+    }
+
+    /**
+     * @return Returns whether machine supports mode switch by default
+     */
+    default boolean getDefaultModeSwitch() {
+        return supportsMachineModeSwitch();
+    }
+
+    Pos2d getMachineModeSwitchButtonPos();
+
+    default void onMachineModeSwitchClick() {}
+
+    default ButtonWidget createModeSwitchButton(IWidgetBuilder<?> builder) {
+        if (!supportsMachineModeSwitch()) return null;
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (supportsMachineModeSwitch()) {
+                onMachineModeSwitchClick();
+                setMachineMode(nextMachineMode());
+            }
+        })
+            .setPlayClickSound(supportsMachineModeSwitch())
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (supportsMachineModeSwitch()) {
+                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    ret.add(getMachineModeIcon(getMachineMode()));
+                } else return null;
+                return ret.toArray(new IDrawable[0]);
+            })
+            .attachSyncer(new FakeSyncWidget.IntegerSyncer(this::getMachineMode, this::setMachineMode), builder)
+            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.mode_switch"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(getMachineModeSwitchButtonPos())
+            .setSize(16, 16);
         return (ButtonWidget) button;
     }
 

@@ -37,6 +37,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.rwtema.extrautils.ExtraUtils;
+import common.TileEntities;
 
 import fox.spiteful.avaritia.compat.ticon.Tonkers;
 import goodgenerator.items.MyMaterial;
@@ -2958,7 +2959,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 16_384, // comp/s
                 (int) TierEU.RECIPE_MAX, // eu/t
                 32, // amperage
-                new Object[] { getModItem(GregTech.ID, "gt.blockmachines", 1, 13106),
+                new Object[] { TileEntities.lsc.getStackForm(1),
                     // UV Solar panel
                     getModItem(SuperSolarPanels.ID, "PhotonicSolarPanel", 1, 0),
                     // UHV Capacitor block
