@@ -1,8 +1,5 @@
 package com.gtnewhorizons.gtnhintergalactic.render;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
@@ -19,7 +16,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 
-import org.apache.logging.log4j.Level;
 import org.joml.Math;
 import org.joml.Matrix4fStack;
 import org.lwjgl.BufferUtils;
@@ -28,13 +24,13 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizons.gtnhintergalactic.GTNHIntergalactic;
 import com.gtnewhorizons.gtnhintergalactic.block.BlockSpaceElevatorCable;
 import com.gtnewhorizons.gtnhintergalactic.config.Config;
 import com.gtnewhorizons.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Renderer for the elevator cable
@@ -73,7 +69,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
     private static final float[] edgeZ = { SHORT_DISTANCE, -SHORT_DISTANCE, -LONG_DISTANCE, -LONG_DISTANCE,
             -SHORT_DISTANCE, SHORT_DISTANCE, LONG_DISTANCE, LONG_DISTANCE };
 
-    private static int cableProgram;
+    private static ShaderProgram cableProgram;
     private static int uModelProjectionMatrix;
     private static int uBlockTex;
     private static int uSectionHeight;
@@ -92,100 +88,6 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
     private static final float SECTION_HEIGHT = 8 * SIDE;
     private static final int SECTIONS = (int) Math.ceil(CABLE_HEIGHT / SECTION_HEIGHT);
     private static final int VERTEX_COUNT = 48 * 4 * SECTIONS;
-
-    private static String readFileAsString(String filename) throws Exception {
-        StringBuilder source = new StringBuilder();
-        InputStream in = RenderSpaceElevatorCable.class.getResourceAsStream(filename);
-        Exception exception = null;
-        BufferedReader reader;
-
-        if (in == null) return "";
-
-        try {
-            reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-
-            Exception innerExc = null;
-            try {
-                String line;
-                while ((line = reader.readLine()) != null) source.append(line).append('\n');
-            } catch (Exception exc) {
-                exception = exc;
-            } finally {
-                try {
-                    reader.close();
-                } catch (Exception exc) {
-                    if (innerExc == null) innerExc = exc;
-                    else exc.printStackTrace(System.err);
-                }
-            }
-
-            if (innerExc != null) throw innerExc;
-        } catch (Exception exc) {
-            exception = exc;
-        } finally {
-            try {
-                in.close();
-            } catch (Exception exc) {
-                if (exception == null) exception = exc;
-                else exc.printStackTrace(System.err);
-            }
-
-            if (exception != null) throw exception;
-        }
-
-        return source.toString();
-    }
-
-    private static String getLogInfo(int obj) {
-        return GL20.glGetShaderInfoLog(obj, GL20.glGetShaderi(obj, GL20.GL_INFO_LOG_LENGTH));
-    }
-
-    private static int createProgram(String vert, String frag) {
-        int vertId = 0, fragId = 0, program;
-        if (vert != null) vertId = createShader(vert, GL20.GL_VERTEX_SHADER);
-        if (frag != null) fragId = createShader(frag, GL20.GL_FRAGMENT_SHADER);
-
-        program = GL20.glCreateProgram();
-        if (program == 0) return 0;
-
-        if (vert != null) GL20.glAttachShader(program, vertId);
-        if (frag != null) GL20.glAttachShader(program, fragId);
-
-        GL20.glLinkProgram(program);
-        if (GL20.glGetProgrami(program, GL20.GL_LINK_STATUS) == GL11.GL_FALSE) {
-            FMLLog.log(Level.ERROR, getLogInfo(program));
-            return 0;
-        }
-
-        GL20.glValidateProgram(program);
-        if (GL20.glGetProgrami(program, GL20.GL_LINK_STATUS) == GL11.GL_FALSE) {
-            FMLLog.log(Level.ERROR, getLogInfo(program));
-            return 0;
-        }
-
-        return program;
-    }
-
-    private static int createShader(String filename, int shaderType) {
-        int shader = 0;
-        try {
-            shader = GL20.glCreateShader(shaderType);
-
-            if (shader == 0) return 0;
-
-            GL20.glShaderSource(shader, readFileAsString(filename));
-            GL20.glCompileShader(shader);
-
-            if (GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE)
-                throw new RuntimeException("Error creating shader: " + getLogInfo(shader));
-
-            return shader;
-        } catch (Exception e) {
-            GL20.glDeleteProgram(shader);
-            e.printStackTrace(System.err);
-            return -1;
-        }
-    }
 
     /**
      * Create a new render for the space elevator cable
@@ -209,7 +111,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
         if (!Config.isCableRenderingEnabled) return;
         if (!(tile instanceof TileEntitySpaceElevatorCable)) return;
 
-        TileEntitySpaceElevatorCable cableTile = (TileEntitySpaceElevatorCable) tile;
+        final TileEntitySpaceElevatorCable cableTile = (TileEntitySpaceElevatorCable) tile;
 
         if (!cableTile.shouldRender()) return;
 
@@ -273,21 +175,22 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
             final float glowMinV = Math.lerp(minV, maxV, 7f / 16f);
             final float glowMaxV = Math.lerp(minV, maxV, 9f / 16f);
 
-            cableProgram = createProgram(
-                    "/assets/gtnhintergalactic/shaders/spacecable.vert.glsl",
-                    "/assets/gtnhintergalactic/shaders/spacecable.frag.glsl");
-            GL20.glUseProgram(cableProgram);
+            cableProgram = new ShaderProgram(
+                    "gtnhintergalactic",
+                    "shaders/spacecable.vert.glsl",
+                    "shaders/spacecable.frag.glsl");
+            cableProgram.use();
 
-            aVertexID = GL20.glGetAttribLocation(cableProgram, "vertexId");
+            aVertexID = cableProgram.getAttribLocation("vertexId");
 
-            uModelProjectionMatrix = GL20.glGetUniformLocation(cableProgram, "u_ModelProjection");
-            uBlockTex = GL20.glGetUniformLocation(cableProgram, "u_BlockTex");
-            uSectionHeight = GL20.glGetUniformLocation(cableProgram, "u_SectionHeight");
-            uTime = GL20.glGetUniformLocation(cableProgram, "u_Time");
-            uBaseY = GL20.glGetUniformLocation(cableProgram, "u_BaseY");
-            uGlowU = GL20.glGetUniformLocation(cableProgram, "u_GlowU");
-            uGlowV = GL20.glGetUniformLocation(cableProgram, "u_GlowV");
-            uUV = GL20.glGetUniformLocation(cableProgram, "u_UV");
+            uModelProjectionMatrix = cableProgram.getUniformLocation("u_ModelProjection");
+            uBlockTex = cableProgram.getUniformLocation("u_BlockTex");
+            uSectionHeight = cableProgram.getUniformLocation("u_SectionHeight");
+            uTime = cableProgram.getUniformLocation("u_Time");
+            uBaseY = cableProgram.getUniformLocation("u_BaseY");
+            uGlowU = cableProgram.getUniformLocation("u_GlowU");
+            uGlowV = cableProgram.getUniformLocation("u_GlowV");
+            uUV = cableProgram.getUniformLocation("u_UV");
 
             vertexIDBuffer = GL15.glGenBuffers();
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertexIDBuffer);
@@ -312,13 +215,13 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
             GL20.glUniform2f(uGlowV, glowMinV, glowMaxV);
             GL20.glUniform2(uUV, uvBuffer);
 
-            GL20.glUseProgram(0);
+            ShaderProgram.clear();
 
             isInitialized = true;
 
         }
 
-        GL20.glUseProgram(cableProgram);
+        cableProgram.use();
         GL20.glUniform1f(
                 uTime,
                 ((tile.getWorldObj().getWorldInfo().getWorldTotalTime() % 60) + timeSinceLastTick) / 60f);
@@ -342,7 +245,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
         GL20.glDisableVertexAttribArray(aVertexID);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL11.glEnable(GL11.GL_CULL_FACE);
-        GL20.glUseProgram(0);
+        ShaderProgram.clear();
     }
 
     /**

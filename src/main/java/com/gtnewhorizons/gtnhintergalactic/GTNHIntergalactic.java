@@ -26,7 +26,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
         acceptedMinecraftVersions = "[1.7.10]",
         dependencies = "required-after:GalacticraftCore@[3.0.36,);" + "required-after:GalacticraftMars;"
                 + "required-after:gregtech;"
-                + "required-after:gtnhlib@[0.0.8.1,);"
+                + "required-after:gtnhlib@[0.3.3,);"
                 + "required-after:tectech;"
                 + "required-after:structurelib;"
                 + "required-after:GalaxySpace;"
