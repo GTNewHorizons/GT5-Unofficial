@@ -208,12 +208,6 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
             .addInfo("Must be linked to a Purification Plant to work.")
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.AQUA + "Inserts highly reactive "
-                    + EnumChatFormatting.WHITE
-                    + "Ozone Gas"
-                    + EnumChatFormatting.GRAY
-                    + " into the water.")
-            .addInfo(
                 "Will explode if the input hatch contains more than " + EnumChatFormatting.RED
                     + MAX_OZONE_GAS_FOR_EXPLOSION
                     + "L "
@@ -226,8 +220,20 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
                     + " bonus to success chance for every doubling of "
                     + EnumChatFormatting.WHITE
                     + "Ozone Gas.")
-            .addInfo(AuthorNotAPenguin)
             .addSeparator()
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "The second step in water purification is ozonation, which involves injecting large quantities of small")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "bubbles of highly reactive ozone gas into the water. This removes trace element contaminants like")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "sulfur, iron and manganese, creating insoluble oxide compounds which are then filtered out.")
+            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(9, 10, 5, false)
             .addCasingInfoRangeColored(
                 "Ozonation Casing",

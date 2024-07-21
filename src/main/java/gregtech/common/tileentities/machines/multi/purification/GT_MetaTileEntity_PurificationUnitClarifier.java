@@ -210,8 +210,6 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
             .addInfo("Controller block for the Clarifier Purification Unit.")
             .addInfo("Must be linked to a Purification Plant to work.")
             .addSeparator()
-            .addInfo(EnumChatFormatting.AQUA + "Filters out large particles in the water such as")
-            .addInfo(EnumChatFormatting.AQUA + "dirt, sticks, and perhaps even some treasure!")
             .addInfo("Requires a filter made of Activated Carbon to work.")
             .addInfo(
                 "Every cycle, has a " + EnumChatFormatting.RED
@@ -219,6 +217,19 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
                     + "%"
                     + EnumChatFormatting.GRAY
                     + " chance to destroy the filter.")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "The first step to acquiring purified water is to filter out macroscopic contaminants through the")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "use of large physical filters. As more contaminants are captured, the efficacy of the filter")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "decreases so continual replacements must be supplied to maintain full function of the Clarifier.")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(11, 4, 11, false)
             .addSeparator()

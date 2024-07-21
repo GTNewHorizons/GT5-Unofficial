@@ -21,10 +21,11 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Advanced Filter Casing");
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".1.tooltip", "Less than five 0.1μm particles per m^3");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Industrial Strength Concrete");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.tooltip", "An industrial flooring.");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Industrial Water Plant Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Concrete Water Plant Casing");
+        GT_LanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".2.name", "Superplasticizer-Treated High Strength Concrete");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Sterile Water Plant Casing");
+        GT_LanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".4.name", "Reinforced Sterile Water Plant Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Clean Flocculation Casing");
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".6.name", "Naquadah Reinforced Water Plant Casing");

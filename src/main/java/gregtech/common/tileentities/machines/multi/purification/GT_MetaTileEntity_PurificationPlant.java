@@ -203,6 +203,23 @@ public class GT_MetaTileEntity_PurificationPlant
                     + EnumChatFormatting.GRAY
                     + " chance")
             .addInfo("to return water of the same quality as the input or lower.")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "Contaminants and ionized particles in water can cause significant imperfections in delicate")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "processes related to the cutting and engraving of silicon wafers and chips. It is crucial that")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "the water is systematically purified through a series of increasingly precise and complex")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "purification processes, and this multiblock is the heart of the operation.")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(49, 9, 49, false)
             .addCasingInfoExactlyColored(
