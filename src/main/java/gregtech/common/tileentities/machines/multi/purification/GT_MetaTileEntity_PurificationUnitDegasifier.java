@@ -310,7 +310,14 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
             .addInfo("To decode the signal, interpret the signal strength as a 4-bit number from 0-15.")
             .addInfo("Denote the lowest bit as bit 1, and the highest as bit 4.")
             .addSeparator()
-            .addInfo(EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "Bit 1: Sparging by Inert Gas")
+            .addInfo(
+                EnumChatFormatting.WHITE + ""
+                    + EnumChatFormatting.BOLD
+                    + "Bit 1: "
+                    + EnumChatFormatting.BLUE
+                    + ""
+                    + EnumChatFormatting.BOLD
+                    + "Sparging by Inert Gas")
             .addInfo(
                 "If this bit is on, you must insert an " + EnumChatFormatting.WHITE
                     + "inert gas"
@@ -322,29 +329,41 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
                     + EnumChatFormatting.GRAY
                     + " as a 2-bit number.")
             .addInfo(
-                EnumChatFormatting.WHITE + "0: "
+                EnumChatFormatting.GRAY + "0: "
                     + EnumChatFormatting.RED
-                    + "10000L Helium"
+                    + "10000L "
+                    + EnumChatFormatting.WHITE
+                    + "Helium"
                     + EnumChatFormatting.GRAY
                     + " / "
-                    + EnumChatFormatting.WHITE
                     + "1: "
                     + EnumChatFormatting.RED
-                    + "7500L Neon"
+                    + "7500L "
+                    + EnumChatFormatting.WHITE
+                    + "Neon"
                     + EnumChatFormatting.GRAY
                     + " / "
-                    + EnumChatFormatting.WHITE
                     + "2: "
                     + EnumChatFormatting.RED
-                    + "5000L Krypton"
+                    + "5000L "
+                    + EnumChatFormatting.WHITE
+                    + "Krypton"
                     + EnumChatFormatting.GRAY
                     + " / "
-                    + EnumChatFormatting.WHITE
                     + "3: "
                     + EnumChatFormatting.RED
-                    + "2500L Xenon")
+                    + "2500L "
+                    + EnumChatFormatting.WHITE
+                    + "Xenon")
             .addSeparator()
-            .addInfo(EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "Bit 2: Superconductive Deionization")
+            .addInfo(
+                EnumChatFormatting.WHITE + ""
+                    + EnumChatFormatting.BOLD
+                    + "Bit 2: "
+                    + EnumChatFormatting.BLUE
+                    + ""
+                    + EnumChatFormatting.BOLD
+                    + "Superconductive Deionization")
             .addInfo(
                 "If this bit is on, you must insert " + EnumChatFormatting.RED
                     + "1440L "
@@ -394,6 +413,45 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
                     + ": "
                     + EnumChatFormatting.WHITE
                     + "2x")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.WHITE + ""
+                    + EnumChatFormatting.BOLD
+                    + "Bit 3: "
+                    + EnumChatFormatting.BLUE
+                    + ""
+                    + EnumChatFormatting.BOLD
+                    + "Steel-Based Vacuum Extractors")
+            .addInfo(
+                "If this bit is on, you must insert " + EnumChatFormatting.RED
+                    + "14400L "
+                    + EnumChatFormatting.WHITE
+                    + "Molten Steel")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.WHITE + ""
+                    + EnumChatFormatting.BOLD
+                    + "Bit 4: "
+                    + EnumChatFormatting.BLUE
+                    + ""
+                    + EnumChatFormatting.BOLD
+                    + "Seldonian Settlement Process")
+            .addInfo(
+                "If this bit is on," + EnumChatFormatting.RED
+                    + " DISREGARD "
+                    + EnumChatFormatting.GRAY
+                    + "all other bits and do not insert anything.")
+            .addSeparator()
+            .addInfo(EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "Machine Overload")
+            .addInfo("In rare occasions, the machine may overload and output no control signal at all.")
+            .addInfo(
+                "To prevent machine damage, insert " + EnumChatFormatting.RED
+                    + "10000L "
+                    + EnumChatFormatting.WHITE
+                    + "Super Coolant.")
+            .addSeparator()
+            .addInfo("The recipe can only succeed if the entire signal is decoded correctly.")
+            .addInfo("Inserting any fluid not requested by the signal will always void the recipe.")
             .addSeparator()
             .addInfo(AuthorNotAPenguin)
             .toolTipFinisher("GregTech");
