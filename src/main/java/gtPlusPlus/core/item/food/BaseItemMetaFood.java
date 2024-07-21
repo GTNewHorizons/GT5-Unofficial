@@ -20,6 +20,10 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Materials;
+import gregtech.api.objects.ItemData;
+import gregtech.api.objects.MaterialStack;
+import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.ModItems;
@@ -194,6 +198,15 @@ public class BaseItemMetaFood extends ItemFood {
             mSpecialBehaviourMap.put(aMetaID, aSpecialBehaviour);
         }
         mOreDictNames.put(aMetaID, aOreDictNames);
+        if (aOreDictNames.contains("listAllmeatraw")) {
+            GT_OreDictUnificator.addItemData(
+                new ItemStack(ModItems.itemMetaFood, 1, aMetaID),
+                new ItemData(Materials.MeatRaw, 3628800L, new MaterialStack(Materials.Bone, 403200L)));
+        } else if (aOreDictNames.contains("listAllmeatcooked")) {
+            GT_OreDictUnificator.addItemData(
+                new ItemStack(ModItems.itemMetaFood, 1, aMetaID),
+                new ItemData(Materials.MeatCooked, 3628800L, new MaterialStack(Materials.Bone, 403200L)));
+        }
     }
 
     public static void registerFoodsToOreDict() {
@@ -217,7 +230,6 @@ public class BaseItemMetaFood extends ItemFood {
         this.setUnlocalizedName("BasicMetaFood");
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         GameRegistry.registerItem(this, this.getUnlocalizedName());
-        BaseItemMetaFood.registerMetaFoods();
     }
 
     private static int getMetaKey(ItemStack aStack) {
