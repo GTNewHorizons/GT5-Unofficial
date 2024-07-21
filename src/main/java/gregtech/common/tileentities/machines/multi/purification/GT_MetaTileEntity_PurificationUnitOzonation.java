@@ -69,7 +69,7 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
         { "         ", "         ", "      A  ", "      A  ", "     AAA ", "     AAA ", "     AAA ", "     AAA ", "     AAA ", "     AAA " } };
     // spotless:on
 
-    private static final int MAIN_CASING_INDEX = getTextureIndex(GregTech_API.sBlockCasings9, 9);
+    private static final int MAIN_CASING_INDEX = getTextureIndex(GregTech_API.sBlockCasings9, 10);
 
     private static final int OFFSET_X = 6;
     private static final int OFFSET_Y = 9;
@@ -103,7 +103,7 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
                         .build()),
                 ofBlock(GregTech_API.sBlockCasings9, 9)))
         // High Pressure Resistant Casing (possibly placeholder name)
-        .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 8))
+        .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 9))
         // PTFE pipe casing
         .addElement('C', ofBlock(GregTech_API.sBlockCasings8, 1))
         // Any tinted industrial glass

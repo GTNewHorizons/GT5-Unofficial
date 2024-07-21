@@ -109,12 +109,12 @@ public class GT_MetaTileEntity_PurificationPlant
                         .map(s -> s.replaceAll("W", " "))
                         .toArray(String[]::new))
                 .toArray(String[][]::new))
-        // Concrete Water Plant Casing
-        .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 4))
-        // Industrial Water Plant Casing
-        .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 3))
-        // Industrial strength concrete
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 2))
+        // Reinforced Sterile Water Plant Casing
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 5))
+        // Sterile Water Plant Casing
+        .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 4))
+        // Superplasticizer-Treated High Strength Concrete
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 3))
         // Door. Note that this behaves weirdly with creative autoplace, but should be fine in survival.
         .addElement('D', lazy(t -> ofBlock(GameRegistry.findBlock("IC2", "blockDoorAlloy"), 0)))
         // Tinted Industrial Glass
@@ -129,9 +129,9 @@ public class GT_MetaTileEntity_PurificationPlant
                     t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationPlant>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .dot(1)
-                        .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings9, 3))
+                        .casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings9, 4))
                         .build()),
-                ofBlock(GregTech_API.sBlockCasings9, 3)))
+                ofBlock(GregTech_API.sBlockCasings9, 4)))
         .build();
 
     public GT_MetaTileEntity_PurificationPlant(int aID, String aName, String aNameRegional) {
@@ -274,7 +274,7 @@ public class GT_MetaTileEntity_PurificationPlant
         if (side == facing) {
             if (active) return new ITexture[] {
                 Textures.BlockIcons
-                    .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings9, 3)),
+                    .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings9, 4)),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
                     .extFacing()
@@ -286,7 +286,7 @@ public class GT_MetaTileEntity_PurificationPlant
                     .build() };
             return new ITexture[] {
                 Textures.BlockIcons
-                    .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings9, 3)),
+                    .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings9, 4)),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
                     .extFacing()
@@ -298,7 +298,7 @@ public class GT_MetaTileEntity_PurificationPlant
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons
-            .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings9, 3)) };
+            .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings9, 4)) };
     }
 
     @Override

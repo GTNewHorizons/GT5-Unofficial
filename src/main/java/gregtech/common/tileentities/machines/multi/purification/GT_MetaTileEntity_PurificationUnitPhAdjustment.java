@@ -79,8 +79,8 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
         { "E   E     E   E", "EAAAE     EAAAE", "EAGAE     EAHAE", "EAGAE     EAHAE", "EAGAE     EAHAE", "EAAAE     EAAAE" } };
     // spotless:on
 
-    private static final int CASING_INDEX_MIDDLE = getTextureIndex(GregTech_API.sBlockCasings9, 6);
-    private static final int CASING_INDEX_TOWER = getTextureIndex(GregTech_API.sBlockCasings9, 7);
+    private static final int CASING_INDEX_MIDDLE = getTextureIndex(GregTech_API.sBlockCasings9, 7);
+    private static final int CASING_INDEX_TOWER = getTextureIndex(GregTech_API.sBlockCasings9, 8);
 
     /**
      * The current pH value of the water inside the multiblock
@@ -145,9 +145,9 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
         .<GT_MetaTileEntity_PurificationUnitPhAdjustment>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
         // Extreme Corrosion Resistant Casing
-        .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 7))
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 8))
         // Naquadah Reinforced Water Plant Casing
-        .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 6))
+        .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 7))
         .addElement('E', ofFrame(Materials.NaquadahAlloy))
         // pH Resistant Glass
         .addElement('G', ofBlock(GregTech_API.sBlockGlass1, 0))

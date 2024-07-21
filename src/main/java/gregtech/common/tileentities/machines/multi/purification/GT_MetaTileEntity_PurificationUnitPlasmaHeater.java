@@ -63,8 +63,8 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitPlasmaHeater>
     implements ISurvivalConstructable {
 
-    private static final int CASING_INDEX_HEATER = getTextureIndex(GregTech_API.sBlockCasings9, 10);
-    private static final int CASING_INDEX_TOWER = getTextureIndex(GregTech_API.sBlockCasings9, 4);
+    private static final int CASING_INDEX_HEATER = getTextureIndex(GregTech_API.sBlockCasings9, 11);
+    private static final int CASING_INDEX_TOWER = getTextureIndex(GregTech_API.sBlockCasings9, 5);
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int STRUCTURE_X_OFFSET = 2;
@@ -154,9 +154,9 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
                         .dot(1)
                         .casingIndex(CASING_INDEX_HEATER)
                         .build()),
-                ofBlock(GregTech_API.sBlockCasings9, 10)))
-        // Water Plant Concrete Casing
-        .addElement('D', ofBlock(GregTech_API.sBlockCasings9, 4))
+                ofBlock(GregTech_API.sBlockCasings9, 11)))
+        // Reinforced Sterile Water Plant Casing
+        .addElement('D', ofBlock(GregTech_API.sBlockCasings9, 5))
         // Any Tinted Glass
         .addElement('E', ofBlockAnyMeta(GregTech_API.sBlockTintedGlass, 0))
         // Neonite, with fallback to air

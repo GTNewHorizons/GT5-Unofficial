@@ -33,7 +33,6 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".8.name", "Extreme Corrosion Resistant Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "High Pressure Resistant Casing");
-        // todo: ask deleno for non placeholder name
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Ozonation Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Plasma Heating Casing");
         GT_LanguageManager

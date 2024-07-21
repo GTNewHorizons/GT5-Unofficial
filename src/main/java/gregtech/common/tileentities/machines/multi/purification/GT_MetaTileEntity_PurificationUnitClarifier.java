@@ -67,7 +67,7 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
     // Chance that the filter is damaged every cycle.
     public static final float FILTER_DAMAGE_RATE = 20.0f;
 
-    private static final int CASING_TEXTURE_INDEX = getTextureIndex(GregTech_API.sBlockCasings9, 4);
+    private static final int CASING_TEXTURE_INDEX = getTextureIndex(GregTech_API.sBlockCasings9, 5);
 
     private static final String[][] structure =
         // spotless:off
@@ -109,8 +109,8 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
                         .build()),
                 // Water Plant Pipe Casing
                 ofBlock(GregTech_API.sBlockCasings9, 4)))
-        // Concrete Water Plant Casing
-        .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 4))
+        // Reinforced Sterile Water Plant Casing
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 5))
         // PTFE pipe casing
         .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 1))
         .addElement('C', ofFrame(Materials.Iridium))

@@ -59,7 +59,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitUVTreatment>
     implements ISurvivalConstructable {
 
-    private static final int CASING_INDEX_MAIN = getTextureIndex(GregTech_API.sBlockCasings9, 11);
+    private static final int CASING_INDEX_MAIN = getTextureIndex(GregTech_API.sBlockCasings9, 12);
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int STRUCTURE_X_OFFSET = 6;
@@ -108,11 +108,11 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
         .<GT_MetaTileEntity_PurificationUnitUVTreatment>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
         // Naquadria-Reinforced Water Plant Casing
-        .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 11))
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 12))
         // Neutronium-Coated UV-Resistant Glass
         .addElement('B', ofBlock(GregTech_API.sBlockGlass1, 1))
         // UV Backlight sterilizer casing
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 12))
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 13))
         .addElement('D', ofFrame(Materials.StellarAlloy))
         // Lens housing bus
         .addElement(
@@ -146,7 +146,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
                 // Naquadria-reinforced Water Plant Casing
-                ofBlock(GregTech_API.sBlockCasings9, 11)))
+                ofBlock(GregTech_API.sBlockCasings9, 12)))
         .build();
 
     public GT_MetaTileEntity_PurificationUnitUVTreatment(int aID, String aName, String aNameRegional) {
