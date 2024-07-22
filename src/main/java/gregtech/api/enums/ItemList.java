@@ -2017,6 +2017,7 @@ public enum ItemList implements IItemContainer {
     TierdDrone1,
     TierdDrone2,
     Hatch_DroneDownLink,
+    Casing_Shielded_Accelerator,
     Thermal_Superconductor,
     Relativistic_Heat_Capacitor,
     Phononic_Seed_Crystal;

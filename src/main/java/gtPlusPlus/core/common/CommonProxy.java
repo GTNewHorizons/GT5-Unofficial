@@ -39,7 +39,6 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.gregtech.api.util.SpecialBehaviourTooltipHandler;
-import gtPlusPlus.xmod.gregtech.recipes.GregtechRecipeAdder;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
 
 public class CommonProxy {
@@ -51,8 +50,6 @@ public class CommonProxy {
 
     public void preInit(final FMLPreInitializationEvent e) {
         Logger.INFO("Doing some house cleaning.");
-        CORE.RA = new GregtechRecipeAdder();
-        Logger.INFO("Created Gregtech recipe handler.");
         if (!CORE_Preloader.DEBUG_MODE) {
             Logger.WARNING("Development mode not enabled.");
         } else if (CORE_Preloader.DEBUG_MODE) {
