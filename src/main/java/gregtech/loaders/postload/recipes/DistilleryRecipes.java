@@ -645,34 +645,34 @@ public class DistilleryRecipes implements Runnable {
             256);
 
         addUniversalDistillationRecipewithCircuit(
-            Materials.OilLight.getFluid(150),
+            Materials.OilLight.getFluid(100),
             new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
-            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(10), Materials.SulfuricLightFuel.getFluid(20),
-                Materials.SulfuricNaphtha.getFluid(90), Materials.SulfuricGas.getGas(250) },
+            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(5), Materials.SulfuricLightFuel.getFluid(20),
+                Materials.SulfuricNaphtha.getFluid(60), Materials.SulfuricGas.getGas(160) },
             null,
             20,
             96);
         addUniversalDistillationRecipewithCircuit(
-            Materials.OilMedium.getFluid(150),
+            Materials.OilMedium.getFluid(100),
             new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
-            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(15), Materials.SulfuricLightFuel.getFluid(60),
-                Materials.SulfuricNaphtha.getFluid(200), Materials.SulfuricGas.getGas(80) },
+            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(10), Materials.SulfuricLightFuel.getFluid(40),
+                Materials.SulfuricNaphtha.getFluid(135), Materials.SulfuricGas.getGas(50) },
             null,
             30,
             96);
         addUniversalDistillationRecipewithCircuit(
-            Materials.Oil.getFluid(150L),
+            Materials.Oil.getFluid(100L),
             new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
-            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(45), Materials.SulfuricLightFuel.getFluid(150),
-                Materials.SulfuricNaphtha.getFluid(60), Materials.SulfuricGas.getGas(60) },
+            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(30), Materials.SulfuricLightFuel.getFluid(100),
+                Materials.SulfuricNaphtha.getFluid(40), Materials.SulfuricGas.getGas(40) },
             null,
             60,
             96);
         addUniversalDistillationRecipewithCircuit(
-            Materials.OilHeavy.getFluid(150),
+            Materials.OilHeavy.getFluid(100),
             new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
-            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(140), Materials.SulfuricLightFuel.getFluid(90),
-                Materials.SulfuricNaphtha.getFluid(40), Materials.SulfuricGas.getGas(30) },
+            new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(95), Materials.SulfuricLightFuel.getFluid(55),
+                Materials.SulfuricNaphtha.getFluid(30), Materials.SulfuricGas.getGas(20) },
             null,
             30,
             288);
