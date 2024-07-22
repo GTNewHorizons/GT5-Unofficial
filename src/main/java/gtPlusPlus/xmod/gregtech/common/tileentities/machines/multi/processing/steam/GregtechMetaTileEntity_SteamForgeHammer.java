@@ -374,4 +374,16 @@ public class GregtechMetaTileEntity_SteamForgeHammer
         tag.setInteger("parallel", getMaxParallelRecipes());
     }
 
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("tierMachine", tierMachine);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        tierMachine = aNBT.getInteger("tierMachine");
+    }
+
 }
