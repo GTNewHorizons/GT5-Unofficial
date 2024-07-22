@@ -1156,7 +1156,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     protected ModularWindow createUpgradeTreeWindow(final EntityPlayer player) {
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
         final int PARENT_WIDTH = 300;
-        final int PARENT_HEIGHT = 1000;
+        final int PARENT_HEIGHT = 300;
         ModularWindow.Builder builder = ModularWindow.builder(PARENT_WIDTH, PARENT_HEIGHT);
         scrollable
             .widget(
@@ -1566,14 +1566,14 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
 
         builder.widget(
             new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_STAR)
-                .setPos(0, 350)
+                .setPos(0, 0)
                 .setSize(300, 300))
             .widget(
                 scrollable.setSize(292, 292)
-                    .setPos(4, 354))
+                    .setPos(4, 4))
             .widget(
                 ButtonWidget.closeWindowButton(true)
-                    .setPos(282, 354));
+                    .setPos(282, 4));
         if (debugMode) {
             builder.widget(new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
                 upgrades = new boolean[31];
