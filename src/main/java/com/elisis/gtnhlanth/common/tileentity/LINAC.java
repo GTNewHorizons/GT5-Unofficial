@@ -554,7 +554,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
 
     private static float calculateVoltageFactor(long voltage) {
 
-        float factor = (float) Math.pow(1.00009, -(0.1*voltage - 114000));
+        float factor = (float) Math.pow(1.00009, -(0.1 * voltage - 114000));
         return factor;
     }
 
