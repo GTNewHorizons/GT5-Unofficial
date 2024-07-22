@@ -9,9 +9,9 @@ import static gregtech.api.enums.Mods.OpenComputers;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.enums.Mods.UniversalSingularities;
 import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 
 import net.minecraft.item.ItemStack;
 
@@ -50,13 +50,12 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     .itemInputs(
                         ItemList.Circuit_Silicon_Wafer7.get(1L),
                         // Fluxed Electrum Singularity.
-                        getModItem(UniversalSingularities.ID, "universal.general.singularity", 1L, 20) },
-                    new FluidStack[] { GT_Values.NF },
-                    // OUT.
-                    new ItemStack[] { ItemList.Circuit_Chip_Optical.get(16L) },
-                    new FluidStack[] { GT_Values.NF },
-                    5 * 20,
-                    (int) TierEU.RECIPE_UMV);
+                        getModItem(UniversalSingularities.ID, "universal.general.singularity", 1L, 20))
+                    .itemOutputs(ItemList.Circuit_Chip_Optical.get(16L))
+                    .duration(5 * SECONDS)
+                    .eut(TierEU.RECIPE_UMV)
+                    .noOptimize()
+                    .addTo(electricImplosionCompressorRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -80,12 +79,6 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(electricImplosionCompressorRecipes);
             }
-                        getModItem(UniversalSingularities.ID, "universal.general.singularity", 1L, 20))
-                    .itemOutputs(ItemList.Circuit_Chip_Optical.get(16L))
-                    .duration(5 * SECONDS)
-                    .eut(TierEU.RECIPE_UMV)
-                    .noOptimize()
-                    .addTo(electricImplosionCompressorRecipes);
         }
 
         GT_Values.RA.stdBuilder()
