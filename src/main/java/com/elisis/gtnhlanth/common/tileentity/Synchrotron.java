@@ -872,8 +872,8 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
          * \ +\ \frac{l^{1.11t^{\frac{1}{3}}}}{40000000}
          */
 
-        double energy = (Math.pow(inputParticleEnergy, 1.13 * Math.pow(antennaTier, 1.0 / 3.0)) / 40_000_000)
-            * (-Math.pow(Math.pow(0.15, 2.0 / (Math.pow(antennaTier, 3.0 / 2.0))), voltage / 60768.0) + 1); // In
+        double energy = (Math.pow(inputParticleEnergy, 1.13 * Math.pow(antennaTier, 4.0 / 9.0)) / 40_000_000)
+            * (-Math.pow(Math.pow(0.15, 2.0 / (Math.pow(antennaTier, 5.0 / 2.0))), voltage / 60768.0) + 1); // In
                                                                                                             // keV
 
         return energy;
