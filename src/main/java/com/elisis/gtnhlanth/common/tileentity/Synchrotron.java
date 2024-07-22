@@ -18,15 +18,6 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
 import com.elisis.gtnhlanth.common.beamline.BeamInformation;
 import com.elisis.gtnhlanth.common.beamline.BeamLinePacket;
 import com.elisis.gtnhlanth.common.beamline.Particle;
@@ -53,11 +44,18 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchrotron>
     implements ISurvivalConstructable {
@@ -754,9 +752,6 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         voltageFactor = getVoltageFactor(voltage, this.antennaeTier);
         
-        GT_Log.out.print("VF: " + voltageFactor + "\n");
-        GT_Log.out.print("AT: " + this.antennaeTier + "\n");
-
         inputEnergy = this.getInputInformation()
             .getEnergy();
         float mass = inputParticle.getMass();
@@ -768,8 +763,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         inputRate = this.getInputInformation()
             .getRate();
-        
-        GT_Log.out.print("OR: " + inputRate * getOutputRatetio(voltageFactor, this.antennaeTier) + "\n");
+       
         
         outputRate = (int) (inputRate * getOutputRatetio(voltageFactor, this.antennaeTier));
 

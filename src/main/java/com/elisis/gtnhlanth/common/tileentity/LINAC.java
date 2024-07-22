@@ -343,7 +343,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
         outputEnergy = Math.min(
             (1 + inputEnergy / Particle.getParticleFromId(outputParticle)
                 .maxSourceEnergy()) * machineEnergy,
-            100_000); // TODO more complex calculation than just
+            120_000); // TODO more complex calculation than just
         // addition
 
         inputRate = this.getInputInformation()
@@ -554,7 +554,7 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
 
     private static float calculateVoltageFactor(long voltage) {
 
-        float factor = (float) Math.pow(1.00009, -(voltage - 125000));
+        float factor = (float) Math.pow(1.00009, -(0.1*voltage - 114000));
         return factor;
     }
 
