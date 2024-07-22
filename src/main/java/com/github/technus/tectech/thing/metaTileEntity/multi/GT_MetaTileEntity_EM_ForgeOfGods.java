@@ -1613,7 +1613,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                         .setScale(0.57f)
                         .setMaxWidth(36)
                         .setPos(3, 38))
-                .setPos(4, 354));
+                .setPos(4, 4));
 
         }
         return builder.build();
