@@ -131,9 +131,6 @@ public class GregtechMetaTileEntity_IndustrialMacerator
                             {"BBB","B B","BBB"},
                             {"BBB","B B","BBB"},
                             {"B~B","BBB","BBB"} }))
-                //.casingIndex(TAE.GTPP_INDEX(7))
-                //.casingIndex(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 2))
-                //onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 7))))
                 .addElement(
                     'B',
                     ofChain(
@@ -206,18 +203,13 @@ public class GregtechMetaTileEntity_IndustrialMacerator
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        // if (!checkPiece(tier1, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && controllerTier > 1) {
-        // if (!checkPiece(tier2, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        // }
         if (checkPiece(tier1, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) {
-            checkHatch();
             controllerTier = 1;
-            return mCasing >= 26;
+            return mCasing >= 26 && checkHatch();
         }
         if (checkPiece(tier2, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && controllerTier > 1) {
-            checkHatch();
             controllerTier = 2;
-            return mCasing >= 26;
+            return mCasing >= 26 && checkHatch();
         }
         return false;
     }
@@ -228,6 +220,16 @@ public class GregtechMetaTileEntity_IndustrialMacerator
         for (GT_MetaTileEntity_Hatch h : mMaintenanceHatches) h.updateTexture(getCasingTextureId());
         for (GT_MetaTileEntity_Hatch h : mMufflerHatches) h.updateTexture(getCasingTextureId());
         for (GT_MetaTileEntity_Hatch h : mEnergyHatches) h.updateTexture(getCasingTextureId());
+    }
+
+    @Override
+    public boolean checkHatch() {
+        return
+            !mMufflerHatches.isEmpty()
+            && !mMaintenanceHatches.isEmpty()
+            && !mOutputBusses.isEmpty()
+            && !mInputBusses.isEmpty();
+
     }
 
     @Override
