@@ -161,6 +161,23 @@ public class GT_NaniteChain {
             .eut(1_000_000_000)
             .addTo(nanoForgeRecipes);
 
+        // Six-Phased Copper Nanites - Used in Phononic Crystal production for the godforge
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                aUIVTierLens,
+                MaterialsUEVplus.SixPhasedCopper.getBlocks(8),
+                ItemList.Circuit_Chip_SoC2.get(64),
+                ItemList.Circuit_Chip_SoC2.get(64),
+                ItemList.Circuit_Chip_SoC2.get(64))
+            .itemOutputs(MaterialsUEVplus.SixPhasedCopper.getNanite(4))
+            .fluidInputs(
+                Materials.UUMatter.getFluid(500_000),
+                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(50_000))
+            .metadata(NANO_FORGE_TIER, 3)
+            .duration(150 * SECONDS)
+            .eut(2_000_000_000)
+            .addTo(nanoForgeRecipes);
+
         // White Dwarf Matter Nanites. Used to make Magnetohydrodynamically constrained star matter.
         GT_Values.RA.stdBuilder()
             .itemInputs(
