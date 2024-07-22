@@ -224,9 +224,7 @@ public class GregtechMetaTileEntity_IndustrialMacerator
 
     @Override
     public boolean checkHatch() {
-        return
-            !mMufflerHatches.isEmpty()
-            && !mMaintenanceHatches.isEmpty()
+        return !mMufflerHatches.isEmpty() && !mMaintenanceHatches.isEmpty()
             && !mOutputBusses.isEmpty()
             && !mInputBusses.isEmpty();
 
