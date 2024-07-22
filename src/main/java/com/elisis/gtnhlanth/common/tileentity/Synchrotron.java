@@ -53,6 +53,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -752,6 +753,9 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                                                  // machine focus
 
         voltageFactor = getVoltageFactor(voltage, this.antennaeTier);
+        
+        GT_Log.out.print("VF: " + voltageFactor + "\n");
+        GT_Log.out.print("AT: " + this.antennaeTier + "\n");
 
         inputEnergy = this.getInputInformation()
             .getEnergy();
@@ -764,6 +768,9 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         inputRate = this.getInputInformation()
             .getRate();
+        
+        GT_Log.out.print("OR: " + inputRate * getOutputRatetio(voltageFactor, this.antennaeTier) + "\n");
+        
         outputRate = (int) (inputRate * getOutputRatetio(voltageFactor, this.antennaeTier));
 
         if (outputRate == 0) {
@@ -850,7 +857,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
         float factor = (float) -Math.pow(1.1, -mEU / 2000 * Math.pow(antennaTier, 2.0 / 3.0)) + 1; // Strictly improves
                                                                                                    // with higher tier
                                                                                                    // antenna
-        return factor;
+        return (float) Math.max(1.0, factor);
 
     }
 
@@ -886,7 +893,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
     // Punny, right?
     private static float getOutputRatetio(float voltageFactor, int antennaTier) {
-        return (float) (voltageFactor / 10 / Math.pow(2.5, antennaTier)); // Scale ratio with antenna tier, such a high
+        return (float) (voltageFactor / (10 / Math.pow(2.5, antennaTier))); // Scale ratio with antenna tier, such a high
                                                                           // exponential should be fine so long as there
                                                                           // are only few antenna tiers
     }

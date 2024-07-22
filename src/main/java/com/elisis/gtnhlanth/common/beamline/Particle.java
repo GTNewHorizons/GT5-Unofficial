@@ -4,7 +4,7 @@ import net.minecraft.util.StatCollector;
 
 public enum Particle {
 
-    ELECTRON(true, 0, 0.511f, 5000, "electron", "e\u207B", -1, null),
+    ELECTRON(true, 0, 0.511f, 10000, "electron", "e\u207B", -1, null),
     PHOTON(false, 1, 0, 0, "photon", "\u03B3", 0, null),
     NEUTRON(false, 2, 939.57f, 15000, "neutron", "n\u2070", 0, null),
     PROTON(true, 3, 938.27f, 15000, "proton", "p\u207A", 1, null),
