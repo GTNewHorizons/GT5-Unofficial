@@ -403,8 +403,7 @@ public class GT_ModHandler {
         if (GT_Utility.isStringInvalid(aItem) || !GregTech_API.sPreloadStarted) {
             result = null;
         } else {
-            result = GT_Utility
-                .copyAmount(aAmount, GameRegistry.findItemStack(aModID, aItem, (int) aAmount), aReplacement);
+            result = GT_Utility.copyAmount(aAmount, GameRegistry.findItemStack(aModID, aItem, (int) aAmount), aReplacement);
         }
 
         if (result == null) {
@@ -451,6 +450,7 @@ public class GT_ModHandler {
     /**
      * OUT OF ORDER
      */
+    @Deprecated
     public static boolean getModeKeyDown(EntityPlayer aPlayer) {
         return false;
     }
@@ -458,6 +458,7 @@ public class GT_ModHandler {
     /**
      * OUT OF ORDER
      */
+    @Deprecated
     public static boolean getBoostKeyDown(EntityPlayer aPlayer) {
         return false;
     }
@@ -465,6 +466,7 @@ public class GT_ModHandler {
     /**
      * OUT OF ORDER
      */
+    @Deprecated
     public static boolean getJumpKeyDown(EntityPlayer aPlayer) {
         return false;
     }
@@ -625,7 +627,7 @@ public class GT_ModHandler {
                                 .addTo(aGTRecipeMap);
                         }
                     } catch (Exception e) {
-                        System.err.println(e);
+                        e.printStackTrace(GT_Log.err);
                     }
                 }
                 if (aRemoveIC2Recipe) {
