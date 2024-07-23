@@ -2242,12 +2242,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public void onMachineModeSwitchClick() {
-
-        drawTexts(new DynamicPositionedColumn(), null);
-    }
-
-    @Override
     public int getMachineMode() {
         return machineMode;
     }
