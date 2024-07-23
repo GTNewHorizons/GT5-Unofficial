@@ -289,7 +289,7 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 
         // Adds Recipe
         GT_RecipeBuilder builder = GT_Values.RA.stdBuilder();
-        List<ItemStack> inputs = Arrays.asList(components);
+        List<ItemStack> inputs = new ArrayList<>(Arrays.asList(components));
         inputs.removeIf(Objects::isNull);
         components = inputs.toArray(new ItemStack[0]);
 
