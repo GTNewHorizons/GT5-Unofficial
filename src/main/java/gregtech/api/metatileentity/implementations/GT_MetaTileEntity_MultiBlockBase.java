@@ -2451,10 +2451,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return ret.toString();
     }
 
-    private void test(String s) {
-        return;
-    }
-
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         screenElements.setSynced(false)
             .setSpace(0)
