@@ -346,13 +346,14 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     }
 
     @Override
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode." + machineMode);
+    }
+
+    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         setMachineMode(nextMachineMode());
-        if (machineMode == MACHINEMODE_POLARIZER) {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Polarizing Mode.");
-        } else {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Separating Mode.");
-        }
+        PlayerUtils.messagePlayer(aPlayer, "Now running in " + getMachineModeName() + " Mode.");
     }
 
     @Override

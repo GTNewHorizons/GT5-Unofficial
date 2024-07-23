@@ -372,15 +372,14 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
     }
 
     @Override
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_WASH_PLANT.mode." + machineMode);
+    }
+
+    @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         setMachineMode(nextMachineMode());
-        if (machineMode == 0) {
-            PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Ore Washer Mode.");
-        } else if (machineMode == 1) {
-            PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Simple Washer Mode.");
-        } else {
-            PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Chemical Bath Mode.");
-        }
+        PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in " + getMachineModeName() + " Mode.");
         mLastRecipe = null;
     }
 

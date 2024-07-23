@@ -235,13 +235,14 @@ public class GT_MetaTileEntity_MultiCanner
     }
 
     @Override
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.MULTI_CANNER.mode." + machineMode);
+    }
+
+    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         setMachineMode(nextMachineMode());
-        if (machineMode == MACHINEMODE_FLUIDCANNER) {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Fluid Canning Mode.");
-        } else {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Canning Mode.");
-        }
+        PlayerUtils.messagePlayer(aPlayer, "Now running in " + getMachineModeName() + " Mode.");
     }
 
     @Override
