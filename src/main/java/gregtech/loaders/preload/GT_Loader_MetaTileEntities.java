@@ -889,7 +889,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_PurificationUnitPhAdjustment(
                 PURIFICATION_UNIT_PH_ADJUSTMENT.ID,
                 "multimachine.purificationunitphadjustment",
-                "pH Adjustment Purification Unit").getStackForm(1L));
+                "pH Neutralization Purification Unit").getStackForm(1L));
         ItemList.Machine_Multi_PurificationUnitOzonation.set(
             new GT_MetaTileEntity_PurificationUnitOzonation(
                 PURIFICATION_UNIT_OZONATION.ID,

@@ -268,8 +268,6 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
             .addInfo("Must be linked to a Purification Plant to work.")
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.AQUA + "Filters out smaller dusts, algae and microplastics by mixing in chemicals.")
-            .addInfo(
                 "Supply with " + EnumChatFormatting.WHITE
                     + INPUT_CHEMICAL.mLocalizedName
                     + EnumChatFormatting.GRAY
@@ -308,6 +306,19 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
                     + EnumChatFormatting.GRAY
                     + ", a penalty to success is applied using the following formula:")
             .addInfo(EnumChatFormatting.GREEN + "Success = Success * 2^(-10 * Overflow ratio)")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "Step three in purifying water is to remove microscopic contaminants such as dusts, microplastics and other")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "pollutants using a clarifying agent (In this case, polyaluminium chloride) to cause flocculation - the process")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "of aggregating dispersed suspended particles from a solution into larger clumps for further filtration.")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(7, 4, 7, false)
             .addCasingInfoRangeColored(

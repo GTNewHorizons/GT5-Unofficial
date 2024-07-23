@@ -351,10 +351,9 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                     + EnumChatFormatting.WHITE
                     + GT_Utility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the pH Adjustment Purification Unit.")
+            .addInfo("Controller block for the pH Neutralization Purification Unit.")
             .addInfo("Must be linked to a Purification Plant to work.")
             .addSeparator()
-            .addInfo(EnumChatFormatting.AQUA + "Neutralizes the acidity of the water by adding in acids and bases.")
             .addInfo(
                 "Initial pH value every cycle varies from " + EnumChatFormatting.RED
                     + (PH_NEUTRAL_VALUE - INITIAL_PH_DEVIATION)
@@ -419,6 +418,23 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                         .getLocalizedName()
                     + EnumChatFormatting.GRAY
                     + ".")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "The fourth step of water purification is to neutralize the solution and bring its pH to exactly 7, rendering")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "the solution inert with no hydrogen ion activity beyond water’s natural amphiproticity. Acids and bases from soils")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "and geology cause natural alkalinity variations in water which can cause corrosive reactions with sensitive")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "materials. This necessitates the use of the corresponding neutralizing agents to pH balance the water.")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(7, 4, 7, false)
             .addCasingInfoExactlyColored(

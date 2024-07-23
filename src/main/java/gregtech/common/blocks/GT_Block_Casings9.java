@@ -27,13 +27,13 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Sterile Water Plant Casing");
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".5.name", "Reinforced Sterile Water Plant Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Clean Flocculation Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Slick Sterile Flocculation Casing");
         GT_LanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".7.name", "Naquadah Reinforced Water Plant Casing");
+            .addStringLocalization(getUnlocalizedName() + ".7.name", "Stabilized Naquadah Water Plant Casing");
         GT_LanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".8.name", "Extreme Corrosion Resistant Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "High Pressure Resistant Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Ozonation Casing");
+            .addStringLocalization(getUnlocalizedName() + ".8.name", "Inert Neutralization Water Plant Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Reactive Gas Containment Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Inert Filtration Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Plasma Heating Casing");
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".12.name", "Naquadria-Reinforced Water Plant Casing");
