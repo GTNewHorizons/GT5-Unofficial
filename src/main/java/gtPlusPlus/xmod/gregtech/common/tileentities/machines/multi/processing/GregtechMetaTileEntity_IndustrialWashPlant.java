@@ -43,6 +43,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.TAE;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -71,10 +72,13 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class GregtechMetaTileEntity_IndustrialWashPlant
     extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialWashPlant> implements ISurvivalConstructable {
 
-    private int mMode = 0;
     private int mCasing;
 
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialWashPlant> STRUCTURE_DEFINITION = null;
+
+    private static final int MACHINEMODE_OREWASH = 0;
+    private static final int MACHINEMODE_SIMPLEWASH = 1;
+    private static final int MACHINEMODE_CHEMBATH = 2;
 
     public GregtechMetaTileEntity_IndustrialWashPlant(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -190,8 +194,17 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return mMode == 0 ? RecipeMaps.oreWasherRecipes
-            : mMode == 1 ? GTPPRecipeMaps.simpleWasherRecipes : RecipeMaps.chemicalBathRecipes;
+        switch (machineMode) {
+            case MACHINEMODE_OREWASH -> {
+                return RecipeMaps.oreWasherRecipes;
+            }
+            case MACHINEMODE_SIMPLEWASH -> {
+                return GTPPRecipeMaps.simpleWasherRecipes;
+            }
+            default -> {
+                return RecipeMaps.chemicalBathRecipes;
+            }
+        }
     }
 
     @Nonnull
@@ -234,7 +247,8 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        if (mMode == 2) return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
+        if (machineMode == MACHINEMODE_CHEMBATH)
+            return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
     }
 
@@ -341,37 +355,28 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mMode", mMode);
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         if (aNBT.hasKey("mChemicalMode")) {
             boolean aTempMode = aNBT.getBoolean("mChemicalMode");
             if (aTempMode) {
-                mMode = 2;
+                machineMode = 2;
             } else {
-                mMode = 0;
+                machineMode = 0;
             }
             aNBT.removeTag("mChemicalMode");
         }
         if (aNBT.hasKey("mMode")) {
-            mMode = aNBT.getInteger("mMode");
+            machineMode = aNBT.getInteger("mMode");
         }
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        mMode++;
-        if (mMode > 2) {
-            mMode = 0;
-        }
-        if (mMode == 0) {
+        setMachineMode(nextMachineMode());
+        if (machineMode == 0) {
             PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Ore Washer Mode.");
-        } else if (mMode == 1) {
+        } else if (machineMode == 1) {
             PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Simple Washer Mode.");
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Chemical Bath Mode.");
@@ -383,7 +388,7 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", mMode);
+        tag.setInteger("mode", machineMode);
     }
 
     @Override
@@ -396,5 +401,25 @@ public class GregtechMetaTileEntity_IndustrialWashPlant
                 + EnumChatFormatting.WHITE
                 + StatCollector.translateToLocal("GT5U.GTPP_MULTI_WASH_PLANT.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public int nextMachineMode() {
+        if (machineMode == MACHINEMODE_OREWASH) return MACHINEMODE_SIMPLEWASH;
+        else if (machineMode == MACHINEMODE_SIMPLEWASH) return MACHINEMODE_CHEMBATH;
+        else return MACHINEMODE_OREWASH;
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.clear();
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_CHEMBATH);
     }
 }

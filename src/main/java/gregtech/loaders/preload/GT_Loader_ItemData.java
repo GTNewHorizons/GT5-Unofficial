@@ -3,6 +3,7 @@ package gregtech.loaders.preload;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
@@ -360,8 +361,13 @@ public class GT_Loader_ItemData implements Runnable {
         GT_OreDictUnificator.addItemData(
             GT_ModHandler.getModItem(Thaumcraft.ID, "ItemNuggetFish", 1L, 32767),
             new ItemData(Materials.MeatCooked, 403200L));
+
         for (ItemStack tItem : new ItemStack[] { GT_ModHandler.getModItem(TwilightForest.ID, "item.meefRaw", 1L, 0),
-            GT_ModHandler.getModItem(TwilightForest.ID, "item.venisonRaw", 1L, 0), new ItemStack(Items.porkchop),
+            GT_ModHandler.getModItem(TwilightForest.ID, "item.venisonRaw", 1L, 0),
+            GT_ModHandler.getModItem(PamsHarvestCraft.ID, "muttonrawItem", 1L, 0),
+            GT_ModHandler.getModItem(PamsHarvestCraft.ID, "turkeyrawItem", 1L, 0),
+            GT_ModHandler.getModItem(PamsHarvestCraft.ID, "rabbitrawItem", 1L, 0),
+            GT_ModHandler.getModItem(PamsHarvestCraft.ID, "venisonrawItem", 1L, 0), new ItemStack(Items.porkchop),
             new ItemStack(Items.beef), new ItemStack(Items.chicken), new ItemStack(Items.fish) }) {
             if (tItem != null) {
                 GT_OreDictUnificator.addItemData(
@@ -371,6 +377,10 @@ public class GT_Loader_ItemData implements Runnable {
         }
         for (ItemStack tItem : new ItemStack[] { GT_ModHandler.getModItem(TwilightForest.ID, "item.meefSteak", 1L, 0),
             GT_ModHandler.getModItem(TwilightForest.ID, "item.venisonCooked", 1L, 0),
+            GT_ModHandler.getModItem(PamsHarvestCraft.ID, "muttoncookedItem", 1L, 0),
+            GT_ModHandler.getModItem(PamsHarvestCraft.ID, "turkeycookedItem", 1L, 0),
+            GT_ModHandler.getModItem(PamsHarvestCraft.ID, "rabbitcookedItem", 1L, 0),
+            GT_ModHandler.getModItem(PamsHarvestCraft.ID, "venisoncookedItem", 1L, 0),
             new ItemStack(Items.cooked_porkchop), new ItemStack(Items.cooked_beef), new ItemStack(Items.cooked_chicken),
             new ItemStack(Items.cooked_fished) }) {
             if (tItem != null) {

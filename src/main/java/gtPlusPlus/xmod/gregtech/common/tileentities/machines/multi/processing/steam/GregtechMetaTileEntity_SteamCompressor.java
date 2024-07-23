@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.s
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.GregTech_API.sBlockCasings1;
 import static gregtech.api.GregTech_API.sBlockCasings2;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
@@ -57,16 +56,24 @@ public class GregtechMetaTileEntity_SteamCompressor
     extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamCompressor> implements ISurvivalConstructable {
 
     private String mCasingName = "Bronze or Steel Plated Bricks";
-    private static IStructureDefinition<GregtechMetaTileEntity_SteamCompressor> STRUCTURE_DEFINITION = null;
+
+    private int mCountCasing = 0;
+    private IStructureDefinition<GregtechMetaTileEntity_SteamCompressor> STRUCTURE_DEFINITION = null;
 
     private int tierMachine = 1;
 
     private int tierMachineCasing = -1;
 
-    public static int getTierMachineCasing(Block block, int meta) {
-        if (block == sBlockCasings1 && 10 == meta) return 1;
-        if (block == sBlockCasings2 && 0 == meta) return 2;
-        return -1;
+    public int getTierMachineCasing(Block block, int meta) {
+        if (block == sBlockCasings1 && 10 == meta) {
+            mCountCasing++;
+            return 1;
+        }
+        if (block == sBlockCasings2 && 0 == meta) {
+            mCountCasing++;
+            return 2;
+        }
+        return 0;
     }
 
     public GregtechMetaTileEntity_SteamCompressor(String aName) {
@@ -108,7 +115,7 @@ public class GregtechMetaTileEntity_SteamCompressor
             .addSeparator()
             .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
-            .addCasingInfoMin(mCasingName, 28, false)
+            .addCasingInfoMin(mCasingName, 25, false)
             .addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
             .addOtherStructurePart(TT_steamoutputbus, "Any casing", 1)
             .addOtherStructurePart(TT_steamhatch, "Any casing", 1)
@@ -127,23 +134,21 @@ public class GregtechMetaTileEntity_SteamCompressor
                             { "CCC", "CCC", "CCC", "CCC" }, }))
                 .addElement(
                     'C',
-                    withChannel(
-                        "tier",
-                        ofChain(
-                            ofBlocksTiered(
-                                GregtechMetaTileEntity_SteamCompressor::getTierMachineCasing,
-                                ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                                -1,
-                                (t, m) -> t.tierMachineCasing = m,
-                                t -> t.tierMachineCasing),
-                            buildSteamInput(GregtechMetaTileEntity_SteamCompressor.class).casingIndex(10)
-                                .dot(1)
-                                .build(),
-                            buildHatchAdder(GregtechMetaTileEntity_SteamCompressor.class)
-                                .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
-                                .casingIndex(10)
-                                .dot(1)
-                                .buildAndChain())))
+                    ofChain(
+                        buildSteamInput(GregtechMetaTileEntity_SteamCompressor.class).casingIndex(10)
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(GregtechMetaTileEntity_SteamCompressor.class)
+                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
+                            .casingIndex(10)
+                            .dot(1)
+                            .buildAndChain(),
+                        ofBlocksTiered(
+                            this::getTierMachineCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                            -1,
+                            (t, m) -> t.tierMachineCasing = m,
+                            t -> t.tierMachineCasing)))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -161,15 +166,16 @@ public class GregtechMetaTileEntity_SteamCompressor
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mCountCasing = 0;
         tierMachineCasing = -1;
         if (!checkPiece(mName, 1, 1, 0)) return false;
         if (tierMachineCasing < 0) return false;
-        if (tierMachineCasing == 1) {
+        if (tierMachineCasing == 1 && mCountCasing > 25) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
-        if (tierMachineCasing == 2) {
+        if (tierMachineCasing == 2 && mCountCasing > 25) {
             updateHatchTexture();
             tierMachine = 2;
             return true;

@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_Electrolyzer;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -18,7 +20,7 @@ public class GregtechIndustrialElectrolyzer {
         // Industrial Electrolyzer Multiblock
         GregtechItemList.Industrial_Electrolyzer.set(
             new GregtechMetaTileEntity_IndustrialElectrolyzer(
-                796,
+                Industrial_Electrolyzer.ID,
                 "industrialelectrolyzer.controller.tier.single",
                 "Industrial Electrolyzer").getStackForm(1L));
     }
