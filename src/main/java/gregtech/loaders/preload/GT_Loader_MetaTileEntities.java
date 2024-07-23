@@ -899,17 +899,17 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_PurificationUnitPlasmaHeater(
                 PURIFICATION_UNIT_PLASMA_HEATER.ID,
                 "multimachine.purificationunitplasmaheater",
-                "Plasma Heater Purification Unit").getStackForm(1L));
+                "Extreme Temperature Fluctuation Purification Unit").getStackForm(1L));
         ItemList.Machine_Multi_PurificationUnitUVTreatment.set(
             new GT_MetaTileEntity_PurificationUnitUVTreatment(
                 PURIFICATION_UNIT_UV_TREATMENT.ID,
                 "multimachine.purificationunituvtreatment",
-                "Ultraviolet Treatment Purification Unit").getStackForm(1L));
+                "High Energy Laser Purification Unit").getStackForm(1L));
         ItemList.Machine_Multi_PurificationUnitDegasifier.set(
             new GT_MetaTileEntity_PurificationUnitDegasifier(
                 PURIFICATION_UNIT_DEGASIFIER.ID,
                 "multimachine.purificationunitdegasifier",
-                "Degasser Purification Unit").getStackForm(1L));
+                "Residual Decontaminant Degasser Purification Unit").getStackForm(1L));
         ItemList.Hatch_DegasifierControl.set(
             new GT_MetaTileEntity_Hatch_DegasifierControlHatch(
                 HATCH_DEGASIFIER_CONTROL.ID,

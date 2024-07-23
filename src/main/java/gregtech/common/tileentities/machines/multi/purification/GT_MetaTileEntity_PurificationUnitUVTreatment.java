@@ -230,12 +230,8 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
                 + EnumChatFormatting.WHITE
                 + GT_Utility.formatNumbers(getWaterTier())
                 + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the Ultraviolet Treatment Purification Unit.")
+            .addInfo("Controller block for the High Energy Laser Purification Unit.")
             .addInfo("Must be linked to a Purification Plant to work.")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA
-                    + "Removes microscopic impurities by precisely bombarding the water with various lasers.")
             .addSeparator()
             .addInfo(
                 "During operation, swap the lens in the " + EnumChatFormatting.WHITE
@@ -264,6 +260,22 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
             .addInfo("Find the order of lenses in the recipe in NEI,")
             .addInfo("or use a portable scanner to view the currently requested lens.")
             .addSeparator()
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "The sixth step of water purification involves identifying any remaining negatively charged ions within")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "the water which may cause electrical faults in future wafer manufacturing. Bombarding the water with varying")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "wavelengths of photon beams will impart energy into outer-shell electrons, causing them to detach from the")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "themselves and pass through the walls of the tank, ensuring the water is perfectly electrically polar.")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(13, 9, 9, true)
             .addCasingInfoRangeColored(

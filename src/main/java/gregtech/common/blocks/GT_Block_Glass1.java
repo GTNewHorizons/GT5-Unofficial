@@ -31,7 +31,7 @@ public class GT_Block_Glass1 extends GT_Block_Casings_Abstract {
             "Able to resist the most extreme chemical conditions.");
 
         GT_LanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".1.name", "Neutronium-Coated UV-Resistant Glass");
+            .addStringLocalization(getUnlocalizedName() + ".1.name", "Electron-Permeable Neutronium Coated Glass");
 
         ItemList.GlassPHResistant.set(new ItemStack(this, 1, 0));
         ItemList.GlassUVResistant.set(new ItemStack(this, 1, 1));

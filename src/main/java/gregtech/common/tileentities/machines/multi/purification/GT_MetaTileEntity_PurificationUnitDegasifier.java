@@ -138,7 +138,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
         new SuperconductorMaterial(Materials.SuperconductorUIVBase.getMolten(SUPERCON_FLUID_AMOUNT), 1.75f),
         new SuperconductorMaterial(Materials.SuperconductorUMVBase.getMolten(SUPERCON_FLUID_AMOUNT), 2.0f), };
 
-    private static final FluidStack CATALYST_FLUID = Materials.Steel.getMolten(14400L);
+    private static final FluidStack CATALYST_FLUID = Materials.Neutronium.getMolten(4608L);
     private static final FluidStack COOLANT_FLUID = Materials.SuperCoolant.getFluid(10000L);
 
     private static final long CONSUME_INTERVAL = 20;
@@ -295,7 +295,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
                     + EnumChatFormatting.WHITE
                     + GT_Utility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the Degasser Purification Unit.")
+            .addInfo("Controller block for the Residual Decontaminant Degasser Purification Unit.")
             .addInfo("Must be linked to a Purification Plant to work.")
             .addSeparator()
             .addInfo(
@@ -318,7 +318,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
                     + EnumChatFormatting.BLUE
                     + ""
                     + EnumChatFormatting.BOLD
-                    + "Sparging by Inert Gas")
+                    + "Ozone Sparging by Inert Gas")
             .addInfo(
                 "If this bit is on, you must insert an " + EnumChatFormatting.WHITE
                     + "inert gas"
@@ -422,12 +422,12 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
                     + EnumChatFormatting.BLUE
                     + ""
                     + EnumChatFormatting.BOLD
-                    + "Steel-Based Vacuum Extractors")
+                    + "Gravitationally-Generated Differential Vacuum Extraction")
             .addInfo(
                 "If this bit is on, you must insert " + EnumChatFormatting.RED
-                    + "14400L "
+                    + "4608L  "
                     + EnumChatFormatting.WHITE
-                    + "Molten Steel")
+                    + "Molten Neutronium")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.WHITE + ""
@@ -461,6 +461,22 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
             .addInfo("The recipe can only succeed if the entire signal is decoded correctly.")
             .addInfo("Inserting any fluid not requested by the signal will always void the recipe.")
             .addSeparator()
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "The penultimate stage of water purification, step seven, is an irregular series of complex")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "processes designed to remove any residual materials left by the decontaminants from the previous")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "steps such as any energetic ions, acids, clarifiers, or gasses. Depending on what the Degasser")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "detects in the water, it will request various materials to complete the processed listed above.")
             .addInfo(AuthorNotAPenguin)
             .toolTipFinisher("GregTech");
         return tt;
@@ -563,7 +579,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
     private ControlBitStatus isBit2Satisfied() {
         // Check if instructions matching the third bit (bit 2) are satisfied.
         // Instructions:
-        // If bit 2 is on, insert molten steel.
+        // If bit 2 is on, insert molten neutronium.
         if (controlSignal.getBit(2)) {
             // If steel was inserted, return it and report success.
             if (wasFluidInsertedExact(CATALYST_FLUID)) return new ControlBitStatus(CATALYST_FLUID, true);

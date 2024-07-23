@@ -284,12 +284,8 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
                     + EnumChatFormatting.WHITE
                     + GT_Utility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the Plasma Heater Purification Unit.")
+            .addInfo("Controller block for the Extreme Temperature Fluctuation Purification Unit.")
             .addInfo("Must be linked to a Purification Plant to work.")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA
-                    + "Ensures all organics are destroyed by repeatedly heating and cooling the water using plasma.")
             .addSeparator()
             .addInfo(
                 "Complete heating cycles by first heating the water to " + EnumChatFormatting.RED
@@ -349,6 +345,23 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
                     + "K"
                     + EnumChatFormatting.GRAY
                     + " per liter of coolant consumed.")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "Step five of water purification is to evaporate complex organic polymers and extremophile organisms")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "that might be resistant to simple acids, clarifying agents, and filters. Using an ultra high")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "pressure chamber in combination with extreme temperature fluctuations allows the water to remain")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "supercritical while evaporating any remaining contaminants, ready for filtration.")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(23, 15, 15, false)
             .addCasingInfoExactlyColored(
