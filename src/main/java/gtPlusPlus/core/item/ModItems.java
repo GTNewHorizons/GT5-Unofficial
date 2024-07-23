@@ -62,6 +62,7 @@ import gtPlusPlus.core.item.general.books.ItemBaseBook;
 import gtPlusPlus.core.item.general.chassis.ItemBoilerChassis;
 import gtPlusPlus.core.item.general.chassis.ItemDehydratorCoil;
 import gtPlusPlus.core.item.general.chassis.ItemDehydratorCoilWire;
+import gtPlusPlus.core.item.general.matterManipulator.ItemMatterManipulator;
 import gtPlusPlus.core.item.general.spawn.ItemCustomSpawnEgg;
 import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.materials.DustDecayable;
@@ -213,6 +214,8 @@ public final class ModItems {
     public static BaseItemMetaFood itemMetaFood;
 
     public static ItemMagicFeather itemMagicFeather;
+
+    public static Item itemMatterManipulator;
 
     static {
         Logger.INFO("Items!");
@@ -781,6 +784,8 @@ public final class ModItems {
             itemBufferCore = new ItemBufferCore("itemBufferCore", i).setCreativeTab(AddToCreativeTab.tabMachines);
             GameRegistry.registerItem(itemBufferCore, itemBufferCore.getUnlocalizedName());
         }
+
+        itemMatterManipulator = new ItemMatterManipulator();
 
         itemCustomBook = new ItemBaseBook();
         registerCustomTokens();
