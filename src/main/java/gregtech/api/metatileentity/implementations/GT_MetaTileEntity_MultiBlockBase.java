@@ -2242,6 +2242,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     @Override
+    public void onMachineModeSwitchClick() {
+
+        drawTexts(new DynamicPositionedColumn(), null);
+    }
+
+    @Override
     public int getMachineMode() {
         return machineMode;
     }
@@ -2451,11 +2457,21 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return ret.toString();
     }
 
+    private void test(String s) {
+        return;
+    }
+
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         screenElements.setSynced(false)
             .setSpace(0)
             .setPos(10, 7);
-
+        if (supportsMachineModeSwitch()) {
+            screenElements.widget(
+                TextWidget.dynamicString(
+                    () -> EnumChatFormatting.WHITE + GT_Utility.trans("400", "Running mode: ")
+                        + EnumChatFormatting.GOLD
+                        + getMachineModeName()));
+        }
         screenElements
             .widget(
                 new TextWidget(GT_Utility.trans("132", "Pipe is loose.")).setDefaultColor(COLOR_TEXT_WHITE.get())
