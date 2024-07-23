@@ -1,7 +1,9 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import net.minecraftforge.fluids.FluidStack;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_Solar_Tower;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Solar_Tower_Reflector;
 
+import gregtech.api.enums.GT_Values;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.material.MISC_MATERIALS;
@@ -19,11 +21,13 @@ public class GregtechSolarTower {
     private static void run1() {
         // Solar Tower
         GregtechItemList.Industrial_Solar_Tower.set(
-            new GregtechMetaTileEntity_SolarTower(863, "solartower.controller.tier.single", "Solar Tower")
-                .getStackForm(1L));
+            new GregtechMetaTileEntity_SolarTower(
+                Industrial_Solar_Tower.ID,
+                "solartower.controller.tier.single",
+                "Solar Tower").getStackForm(1L));
         GregtechItemList.Solar_Tower_Reflector.set(
             new TileEntitySolarHeater(
-                864,
+                Solar_Tower_Reflector.ID,
                 "solarreflector.simple.single",
                 "Solar Reflector",
                 8,
@@ -31,16 +35,12 @@ public class GregtechSolarTower {
                 0).getStackForm(1L));
 
         // NEI recipe
-        GTPPRecipeMaps.solarTowerRecipes.addRecipe(
-            false,
-            null,
-            null,
-            null,
-            null,
-            new FluidStack[] { MISC_MATERIALS.SOLAR_SALT_COLD.getFluidStack(1000) },
-            new FluidStack[] { MISC_MATERIALS.SOLAR_SALT_HOT.getFluidStack(1000) },
-            0,
-            0,
-            0);
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(MISC_MATERIALS.SOLAR_SALT_COLD.getFluidStack(1000))
+            .fluidOutputs(MISC_MATERIALS.SOLAR_SALT_HOT.getFluidStack(1000))
+            .duration(0)
+            .eut(0)
+            .noOptimize()
+            .addTo(GTPPRecipeMaps.solarTowerRecipes);
     }
 }

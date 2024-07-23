@@ -7,7 +7,10 @@ import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -30,7 +33,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.circuit.GTPP_IntegratedCircuit_Item;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -555,16 +557,16 @@ public class AgriculturalChem extends ItemPackage {
                     Object aItemInstance = aFertField.get(aItemRegInstance);
                     if (aItemInstance instanceof Item aForestryFert) {
                         aFertForestry = ItemUtils.getSimpleStack((Item) aItemInstance);
-                        CORE.RA.addDehydratorRecipe(
-                            new ItemStack[] { CI.getNumberedCircuit(11),
-                                ItemUtils.getSimpleStack(aDustOrganicFert, 4) },
-                            null,
-                            null,
-                            new ItemStack[] { ItemUtils.getSimpleStack(aForestryFert, 3), aManureByprod,
-                                aManureByprod },
-                            new int[] { 10000, 2000, 2000 },
-                            20 * 20,
-                            240);
+
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(
+                                GT_Utility.getIntegratedCircuit(11),
+                                ItemUtils.getSimpleStack(aDustOrganicFert, 4))
+                            .itemOutputs(ItemUtils.getSimpleStack(aForestryFert, 3), aManureByprod, aManureByprod)
+                            .outputChances(100_00, 20_00, 20_00)
+                            .eut(240)
+                            .duration(20 * SECONDS)
+                            .addTo(chemicalDehydratorRecipes);
                     }
                 }
             } catch (IllegalArgumentException | IllegalAccessException e) {
@@ -576,14 +578,13 @@ public class AgriculturalChem extends ItemPackage {
          * IC2 Support
          */
         aFertIC2 = ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 1);
-        CORE.RA.addDehydratorRecipe(
-            new ItemStack[] { CI.getNumberedCircuit(12), ItemUtils.getSimpleStack(aDustOrganicFert, 4) },
-            null,
-            null,
-            new ItemStack[] { ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 3), aManureByprod, aManureByprod },
-            new int[] { 10000, 2000, 2000 },
-            20 * 20,
-            240);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(12), ItemUtils.getSimpleStack(aDustOrganicFert, 4))
+            .itemOutputs(ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 3), aManureByprod, aManureByprod)
+            .outputChances(100_00, 20_00, 20_00)
+            .eut(240)
+            .duration(20 * SECONDS)
+            .addTo(chemicalDehydratorRecipes);
 
         // Dirt Production
         GT_Values.RA.stdBuilder()
@@ -613,9 +614,26 @@ public class AgriculturalChem extends ItemPackage {
             .addTo(centrifugeRecipes);
 
         // Add Fuel Usages
-        CORE.RA.addSemifluidFuel(FluidUtils.getFluidStack(PoopJuice, 1000), 12);
-        CORE.RA.addSemifluidFuel(FluidUtils.getFluidStack(ManureSlurry, 1000), 24);
-        CORE.RA.addSemifluidFuel(FluidUtils.getFluidStack(FertileManureSlurry, 1000), 32);
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(FluidUtils.getFluidStack(PoopJuice, 1000))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 12)
+            .addTo(semiFluidFuels);
+
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(FluidUtils.getFluidStack(ManureSlurry, 1000))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 24)
+            .addTo(semiFluidFuels);
+
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(FluidUtils.getFluidStack(FertileManureSlurry, 1000))
+            .duration(0)
+            .eut(0)
+            .metadata(FUEL_VALUE, 32)
+            .addTo(semiFluidFuels);
 
         // Red Slurry / Tailings Processing
         GT_Values.RA.stdBuilder()
