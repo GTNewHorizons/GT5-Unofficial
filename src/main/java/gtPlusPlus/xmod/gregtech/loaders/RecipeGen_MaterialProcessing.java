@@ -4,6 +4,7 @@ import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -164,8 +165,9 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
 
                 // i don't understand the mess above, so let's just strip nulls and assume the chances are in correct
                 // order
-                List<ItemStack> internalOutputs = Arrays.asList(mInternalOutputs);
+                List<ItemStack> internalOutputs = new ArrayList<>(Arrays.asList(mInternalOutputs));
                 internalOutputs.removeIf(Objects::isNull);
+
                 int[] chances = new int[internalOutputs.size()];
                 for (int i = 0; i < internalOutputs.size(); i++) {
                     chances[i] = mChances[i];
@@ -280,7 +282,7 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
                 }
                 // i don't understand the mess above, so let's just strip nulls and assume the chances are in correct
                 // order
-                List<ItemStack> internalOutputs = Arrays.asList(mInternalOutputs);
+                List<ItemStack> internalOutputs = new ArrayList<>(Arrays.asList(mInternalOutputs));
                 internalOutputs.removeIf(Objects::isNull);
                 int[] chances = new int[internalOutputs.size()];
                 for (int i = 0; i < internalOutputs.size(); i++) {

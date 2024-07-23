@@ -8,6 +8,7 @@ import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -234,7 +235,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
         input = ItemUtils.cleanItemStackArray(input);
 
         // Add mixer Recipe
-        List<ItemStack> inputs = Arrays.asList(input);
+        List<ItemStack> inputs = new ArrayList<>(Arrays.asList(input));
         inputs.removeIf(Objects::isNull);
 
         if (oxygen == null) {
