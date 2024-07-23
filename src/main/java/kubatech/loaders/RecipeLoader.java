@@ -37,6 +37,7 @@ import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static kubatech.api.enums.ItemList.BlackTea;
 import static kubatech.api.enums.ItemList.BlackTeaLeaf;
 import static kubatech.api.enums.ItemList.BruisedTeaLeaf;
@@ -83,7 +84,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.lib.CORE;
 import ic2.core.Ic2Items;
 import kubatech.api.enums.ItemList;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_DEFusionCrafter;
@@ -227,22 +227,20 @@ public class RecipeLoader {
     private static void RegisterTeaLine() {
         // TEA LINE //
         if (PamsHarvestCraft.isModLoaded()) {
-            CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { GameRegistry.findItemStack("harvestcraft", "tealeafItem", 1) },
-                null,
-                null,
-                new ItemStack[] { TeaLeafDehydrated.get(1) },
-                null,
-                100,
-                32);
-            CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { TeaLeafDehydrated.get(1) },
-                null,
-                null,
-                new ItemStack[] { WhiteTeaLeaf.get(1) },
-                null,
-                100,
-                32);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GameRegistry.findItemStack("harvestcraft", "tealeafItem", 1))
+                .itemOutputs(TeaLeafDehydrated.get(1))
+                .eut(32)
+                .duration(5 * SECONDS)
+                .addTo(chemicalDehydratorRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(TeaLeafDehydrated.get(1))
+                .itemOutputs(WhiteTeaLeaf.get(1))
+                .eut(32)
+                .duration(5 * SECONDS)
+                .addTo(chemicalDehydratorRecipes);
+
             GT_Values.RA.stdBuilder()
                 .itemInputs(TeaLeafDehydrated.get(1))
                 .itemOutputs(SteamedTeaLeaf.get(1))
@@ -250,86 +248,89 @@ public class RecipeLoader {
                 .eut(32)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
-            CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { SteamedTeaLeaf.get(1) },
-                null,
-                null,
-                new ItemStack[] { YellowTeaLeaf.get(1) },
-                null,
-                100,
-                32);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(SteamedTeaLeaf.get(1))
+                .itemOutputs(YellowTeaLeaf.get(1))
+                .eut(32)
+                .duration(5 * SECONDS)
+                .addTo(chemicalDehydratorRecipes);
+
             GT_Values.RA.stdBuilder()
                 .itemInputs(TeaLeafDehydrated.get(1), GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(RolledTeaLeaf.get(1))
                 .eut(32)
                 .duration(5 * SECONDS)
                 .addTo(benderRecipes);
-            CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { RolledTeaLeaf.get(1) },
-                null,
-                null,
-                new ItemStack[] { GreenTeaLeaf.get(1) },
-                null,
-                100,
-                32);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(RolledTeaLeaf.get(1))
+                .itemOutputs(GreenTeaLeaf.get(1))
+                .eut(32)
+                .duration(5 * SECONDS)
+                .addTo(chemicalDehydratorRecipes);
+
             GT_Values.RA.stdBuilder()
                 .itemInputs(RolledTeaLeaf.get(1), GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(OxidizedTeaLeaf.get(1))
                 .eut(32)
                 .duration(5 * SECONDS)
                 .addTo(UniversalChemical);
-            CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { OxidizedTeaLeaf.get(1) },
-                null,
-                null,
-                new ItemStack[] { BlackTeaLeaf.get(1) },
-                null,
-                100,
-                32);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(OxidizedTeaLeaf.get(1))
+                .itemOutputs(BlackTeaLeaf.get(1))
+                .eut(32)
+                .duration(5 * SECONDS)
+                .addTo(chemicalDehydratorRecipes);
+
             GT_Values.RA.stdBuilder()
                 .itemInputs(RolledTeaLeaf.get(1), GT_Utility.getIntegratedCircuit(2))
                 .itemOutputs(FermentedTeaLeaf.get(1))
                 .eut(32)
                 .duration(10 * SECONDS)
                 .addTo(UniversalChemical);
-            CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { FermentedTeaLeaf.get(1) },
-                null,
-                null,
-                new ItemStack[] { PuerhTeaLeaf.get(1) },
-                null,
-                100,
-                32);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(FermentedTeaLeaf.get(1))
+                .itemOutputs(PuerhTeaLeaf.get(1))
+                .eut(32)
+                .duration(5 * SECONDS)
+                .addTo(chemicalDehydratorRecipes);
+
             GT_Values.RA.stdBuilder()
                 .itemInputs(TeaLeafDehydrated.get(1))
                 .itemOutputs(BruisedTeaLeaf.get(1))
                 .eut(32)
                 .duration(5 * SECONDS)
                 .addTo(cutterRecipes);
+
             GT_Values.RA.stdBuilder()
                 .itemInputs(BruisedTeaLeaf.get(1), GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(PartiallyOxidizedTeaLeaf.get(1))
                 .eut(32)
                 .duration(2 * SECONDS + 10 * TICKS)
                 .addTo(UniversalChemical);
-            CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { PartiallyOxidizedTeaLeaf.get(1) },
-                null,
-                null,
-                new ItemStack[] { OolongTeaLeaf.get(1) },
-                null,
-                100,
-                32);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(PartiallyOxidizedTeaLeaf.get(1))
+                .itemOutputs(OolongTeaLeaf.get(1))
+                .eut(32)
+                .duration(5 * SECONDS)
+                .addTo(chemicalDehydratorRecipes);
 
             // Tea Assembly
             GameRegistry.addSmelting(BlackTeaLeaf.get(1), BlackTea.get(1), 10);
+
             GT_Values.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1), GameRegistry.findItemStack("harvestcraft", "limejuiceItem", 1))
                 .itemOutputs(EarlGrayTea.get(1))
                 .eut(32)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
+
             GameRegistry.addSmelting(GreenTeaLeaf.get(1), GreenTea.get(1), 10);
+
             GT_Values.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(LemonTea.get(1))
@@ -337,6 +338,7 @@ public class RecipeLoader {
                 .eut(32)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
+
             GT_Values.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(MilkTea.get(1))
@@ -344,7 +346,9 @@ public class RecipeLoader {
                 .eut(32)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
+
             GameRegistry.addSmelting(OolongTeaLeaf.get(1), OolongTea.get(1), 10);
+
             GT_Values.RA.stdBuilder()
                 .itemInputs(GameRegistry.findItemStack("harvestcraft", "peppermintItem", 1))
                 .itemOutputs(PeppermintTea.get(1))
@@ -352,6 +356,7 @@ public class RecipeLoader {
                 .eut(32)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
+
             GameRegistry.addSmelting(PuerhTeaLeaf.get(1), PuerhTea.get(1), 10);
             GameRegistry.addSmelting(WhiteTeaLeaf.get(1), WhiteTea.get(1), 10);
             GameRegistry.addSmelting(YellowTeaLeaf.get(1), YellowTea.get(1), 10);

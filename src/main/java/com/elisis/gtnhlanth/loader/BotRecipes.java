@@ -2,10 +2,17 @@ package com.elisis.gtnhlanth.loader;
 
 import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.*;
 import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
+import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
+import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
 import java.util.HashSet;
@@ -37,101 +44,100 @@ public class BotRecipes {
         ItemStack C24 = GT_Utility.getIntegratedCircuit(24);
 
         // CaCO3 + 2HCl = H2O + CO2 + CaCl2
-        GT_Values.RA.addChemicalRecipe(
-            Materials.Calcite.getDust(5),
-            Materials.Empty.getCells(1),
-            Materials.HydrochloricAcid.getFluid(2000),
-            Materials.Water.getFluid(1000),
-            Materials.CarbonDioxide.getCells(1),
-            WerkstoffLoader.CalciumChloride.get(dust, 3),
-            80,
-            120);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Calcite.getDust(5), Materials.Empty.getCells(1))
+            .itemOutputs(Materials.CarbonDioxide.getCells(1), WerkstoffLoader.CalciumChloride.get(dust, 3))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(2000))
+            .fluidOutputs(Materials.Water.getFluid(1000))
+            .duration(4 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(UniversalChemical);
 
         // tungsten chain
         FluidStack sodiumTungsten = SodiumTungstate.getFluidOrGas(1000);
         ItemStack scheelite = Materials.Scheelite.getDust(6);
 
         // Li2WO4 + 2Na = Na2WO4 + 2Li
-        GT_Values.RA.addAutoclaveRecipe(
-            Materials.Tungstate.getDust(7),
-            Materials.Sodium.getDust(2),
-            Materials.Water.getFluid(4000),
-            sodiumTungsten,
-            Materials.Lithium.getDust(2),
-            10000,
-            100,
-            1920,
-            false);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Tungstate.getDust(7), Materials.Sodium.getDust(2))
+            .itemOutputs(Materials.Lithium.getDust(2))
+            .fluidInputs(Materials.Water.getFluid(4000))
+            .fluidOutputs(sodiumTungsten)
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(autoclaveRecipes);
 
         // MnWO4 + 2Na = Na2WO4 + Mn
-        GT_Values.RA.addAutoclaveRecipe(
-            WerkstoffLoader.Huebnerit.get(dust, 6),
-            Materials.Sodium.getDust(2),
-            Materials.Water.getFluid(4000),
-            sodiumTungsten,
-            Materials.Manganese.getDust(1),
-            10000,
-            100,
-            1920,
-            false);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffLoader.Huebnerit.get(dust, 6), Materials.Sodium.getDust(2))
+            .itemOutputs(Materials.Manganese.getDust(1))
+            .fluidInputs(Materials.Water.getFluid(4000))
+            .fluidOutputs(sodiumTungsten)
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(autoclaveRecipes);
 
         // FeWO4 + 2Na = Na2WO4 + Fe
-        GT_Values.RA.addAutoclaveRecipe(
-            WerkstoffLoader.Ferberite.get(dust, 6),
-            Materials.Sodium.getDust(2),
-            Materials.Water.getFluid(4000),
-            sodiumTungsten,
-            Materials.Iron.getDust(1),
-            10000,
-            100,
-            1920,
-            false);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WerkstoffLoader.Ferberite.get(dust, 6), Materials.Sodium.getDust(2))
+            .itemOutputs(Materials.Iron.getDust(1))
+            .fluidInputs(Materials.Water.getFluid(4000))
+            .fluidOutputs(sodiumTungsten)
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(autoclaveRecipes);
 
         // CaCl2 + Na2WO4 = 2NaCl + CaWO4
         ItemStack Ca2Cl = WerkstoffLoader.CalciumChloride.get(dust, 3);
-        GT_Values.RA
-            .addChemicalRecipe(Ca2Cl, null, sodiumTungsten, null, scheelite, Materials.Salt.getDust(4), 100, 480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Ca2Cl)
+            .itemOutputs(scheelite, Materials.Salt.getDust(4))
+            .fluidInputs(sodiumTungsten)
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
 
         ItemStack H2WO4 = TungsticAcid.get(dust, 7);
         // CaWO4 + 2HCl = H2WO4 + CaCl2
-        GT_Values.RA.addChemicalRecipe(
-            scheelite,
-            null,
-            Materials.HydrochloricAcid.getFluid(2000),
-            null,
-            H2WO4,
-            Ca2Cl,
-            50,
-            1920);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(scheelite)
+            .itemOutputs(H2WO4, Ca2Cl)
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(2000))
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(UniversalChemical);
 
         ItemStack WO3 = TungstenTrioxide.get(dust, 4);
         // H2WO4 = WO3 + H2O
-        GT_Values.RA.addBlastRecipe(H2WO4, null, null, null, WO3, null, 200, 480, 1200);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(H2WO4)
+            .itemOutputs(WO3)
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .metadata(COIL_HEAT, 1200)
+            .addTo(blastFurnaceRecipes);
 
         // WO3 + 6H = W + 3H2O
-        GT_Values.RA.addBlastRecipe(
-            WO3,
-            C2,
-            Materials.Hydrogen.getGas(6000),
-            GT_ModHandler.getSteam(3000),
-            Materials.Tungsten.getDust(1),
-            null,
-            100,
-            1920,
-            1000);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WO3, C2)
+            .itemOutputs(Materials.Tungsten.getDust(1))
+            .fluidInputs(Materials.Hydrogen.getGas(6000))
+            .fluidOutputs(GT_ModHandler.getSteam(3000))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .metadata(COIL_HEAT, 1000)
+            .addTo(blastFurnaceRecipes);
 
         WO3.stackSize = 8;
         // 2WO3 + 3C = 2W + 3CO2
-        GT_Values.RA.addBlastRecipe(
-            WO3,
-            Materials.Carbon.getDust(3),
-            null,
-            Materials.CarbonDioxide.getGas(3000),
-            GT_OreDictUnificator.get(ingotHot, Materials.Tungsten, 2L),
-            null,
-            8000,
-            1920,
-            3000);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(WO3, Materials.Carbon.getDust(3))
+            .itemOutputs(GT_OreDictUnificator.get(ingotHot, Materials.Tungsten, 2L))
+            .fluidOutputs(Materials.CarbonDioxide.getGas(3000))
+            .duration(6 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .metadata(COIL_HEAT, 3000)
+            .addTo(blastFurnaceRecipes);
 
         // rocket fuels
         // LMP103S
@@ -167,75 +173,76 @@ public class BotRecipes {
             .addTo(UniversalChemical);
 
         // H3PO4 = P + H2O
-        GT_Values.RA.addDistilleryRecipe(
-            C2,
-            Materials.PhosphoricAcid.getFluid(1000),
-            Materials.Water.getFluid(500),
-            Materials.Phosphorus.getDust(1),
-            20,
-            480,
-            false);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(C2)
+            .itemOutputs(Materials.Phosphorus.getDust(1))
+            .fluidInputs(Materials.PhosphoricAcid.getFluid(1000))
+            .fluidOutputs(Materials.Water.getFluid(500))
+            .eut(TierEU.RECIPE_HV)
+            .duration(1 * SECONDS)
+            .addTo(distilleryRecipes);
 
         ItemStack cells = Ic2Items.cell.copy();
         cells.stackSize = 1;
         // NH4Cl = HCl + NH3
-        GT_Values.RA.addDistilleryRecipe(
-            cells,
-            WerkstoffLoader.AmmoniumChloride.getFluidOrGas(1000),
-            Materials.HydrochloricAcid.getFluid(1000),
-            Materials.Ammonia.getCells(1),
-            50,
-            120,
-            false);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(cells)
+            .itemOutputs(Materials.Ammonia.getCells(1))
+            .fluidInputs(WerkstoffLoader.AmmoniumChloride.getFluidOrGas(1000))
+            .fluidOutputs(Materials.HydrochloricAcid.getFluid(1000))
+            .eut(TierEU.RECIPE_MV)
+            .duration(2 * SECONDS + 10 * TICKS)
+            .addTo(distilleryRecipes);
 
         // N2H4O3 + NaOH = NaNO3 + NH3 + H2O
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            AmmoniumNitrate.get(dust, 9),
-            Materials.SodiumHydroxide.getDust(3),
-            null,
-            Materials.Ammonia.getGas(1000),
-            WerkstoffLoader.SodiumNitrate.get(dust, 5),
-            null,
-            100,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3))
+            .itemOutputs(WerkstoffLoader.SodiumNitrate.get(dust, 5))
+            .fluidOutputs(Materials.Ammonia.getGas(1000))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(chemicalReactorRecipes);
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3), C2 },
-            null,
-            new FluidStack[] { Materials.Ammonia.getGas(1000), Materials.Water.getFluid(1000) },
-            new ItemStack[] { WerkstoffLoader.SodiumNitrate.get(dust, 5) },
-            100,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3), C2)
+            .itemOutputs(WerkstoffLoader.SodiumNitrate.get(dust, 5))
+            .fluidOutputs(Materials.Ammonia.getGas(1000), Materials.Water.getFluid(1000))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
 
         // N2H4O3 + NaOH + H =H2SO4= NH3 + HNO3 + Na + H2O
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { C24, AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3) },
-            new FluidStack[] { Materials.SulfuricAcid.getFluid(1000), Materials.Hydrogen.getGas(1000) },
-            new FluidStack[] { Materials.Ammonia.getGas(1000), Materials.NitricAcid.getFluid(1000),
-                Materials.DilutedSulfuricAcid.getFluid(1000) },
-            new ItemStack[] { Materials.Sodium.getDust(1) },
-            300,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(C24, AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3))
+            .itemOutputs(Materials.Sodium.getDust(1))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1000), Materials.Hydrogen.getGas(1000))
+            .fluidOutputs(
+                Materials.Ammonia.getGas(1000),
+                Materials.NitricAcid.getFluid(1000),
+                Materials.DilutedSulfuricAcid.getFluid(1000))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
 
         // Monomethylhydrazine
         cells.stackSize = 1;
         // C7H8 + CH4O = C8H10 + H2O
-        GT_Values.RA.addCrackingRecipe(
-            1,
-            Materials.Toluene.getFluid(1000),
-            Materials.Methanol.getFluid(1000),
-            OXylene.getFluidOrGas(1000),
-            600,
-            4096);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
+            .fluidInputs(Materials.Toluene.getFluid(1000), Materials.Methanol.getFluid(1000))
+            .fluidOutputs(OXylene.getFluidOrGas(1000))
+            .duration(30 * SECONDS)
+            .eut(4096)
+            .addTo(crackingRecipes);
 
         // 2HNO3 + C3H8 = 2CH3NO2 + 2H2O + C
-        GT_Values.RA.addCrackingRecipe(
-            2,
-            Materials.Propane.getGas(1000),
-            Materials.NitricAcid.getFluid(2000),
-            Nitromethane.getFluidOrGas(2000),
-            300,
-            1920);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
+            .fluidInputs(Materials.Propane.getGas(1000), Materials.NitricAcid.getFluid(2000))
+            .fluidOutputs(Nitromethane.getFluidOrGas(2000))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(crackingRecipes);
     }
 
     public static void removeRecipes() {

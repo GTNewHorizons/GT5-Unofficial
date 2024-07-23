@@ -1,11 +1,17 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
+
 import java.util.HashSet;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.TierEU;
+import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.core.material.Material;
@@ -42,20 +48,42 @@ public class RecipeGen_Plasma extends RecipeGen_Base {
             if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlasmaCell, aContainerItem })) {
                 switch (material.getUnlocalizedName()) {
                     case "Runite":
-                        GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aPlasmaCell), aContainerItem, 350_000, 4);
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(1L, aPlasmaCell))
+                            .itemOutputs(aContainerItem)
+                            .metadata(FUEL_VALUE, 350_000)
+                            .metadata(FUEL_TYPE, GT_RecipeConstants.FuelType.PlasmaTurbine.ordinal())
+                            .duration(0)
+                            .eut(0)
+                            .addTo(GT_RecipeConstants.Fuel);
                     case "CelestialTungsten":
-                        GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aPlasmaCell), aContainerItem, 720_000, 4);
-                    default:
-                        GT_Values.RA.addFuel(
-                            GT_Utility.copyAmount(1L, aPlasmaCell),
-                            aContainerItem,
-                            (int) Math.max(1024L, 1024L * material.getMass()),
-                            4);
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(1L, aPlasmaCell))
+                            .itemOutputs(aContainerItem)
+                            .metadata(FUEL_VALUE, 720_000)
+                            .metadata(FUEL_TYPE, GT_RecipeConstants.FuelType.PlasmaTurbine.ordinal())
+                            .duration(0)
+                            .eut(0)
+                            .addTo(GT_RecipeConstants.Fuel);
 
+                    default:
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(1L, aPlasmaCell))
+                            .itemOutputs(aContainerItem)
+                            .metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * material.getMass()))
+                            .metadata(FUEL_TYPE, GT_RecipeConstants.FuelType.PlasmaTurbine.ordinal())
+                            .duration(0)
+                            .eut(0)
+                            .addTo(GT_RecipeConstants.Fuel);
                 }
             }
             if (ItemUtils.checkForInvalidItems(new ItemStack[] { aCell, aPlasmaCell })) {
-                GT_Values.RA.addVacuumFreezerRecipe(aPlasmaCell, aCell, (int) Math.max(material.getMass() * 2L, 1L));
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(aPlasmaCell)
+                    .itemOutputs(aCell)
+                    .duration(Math.max(material.getMass() * 2L, 1L))
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(vacuumFreezerRecipes);
             }
         }
     }

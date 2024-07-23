@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.AlgaeFarm_Controller;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Bus_Catalysts;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ChemicalPlant_Controller;
+
 import gregtech.api.GregTech_API;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
@@ -18,33 +22,36 @@ public class GregtechAlgaeContent {
     private static void run1() {
 
         // Algae Pond
-        GregtechItemList.AlgaeFarm_Controller
-            .set(new GregtechMTE_AlgaePondBase(997, "algaefarm.controller.tier.single", "Algae Farm").getStackForm(1L));
+        GregtechItemList.AlgaeFarm_Controller.set(
+            new GregtechMTE_AlgaePondBase(AlgaeFarm_Controller.ID, "algaefarm.controller.tier.single", "Algae Farm")
+                .getStackForm(1L));
 
         // Chemical Plant
         GregtechItemList.ChemicalPlant_Controller.set(
-            new GregtechMTE_ChemicalPlant(998, "chemicalplant.controller.tier.single", "ExxonMobil Chemical Plant")
-                .getStackForm(1L));
+            new GregtechMTE_ChemicalPlant(
+                ChemicalPlant_Controller.ID,
+                "chemicalplant.controller.tier.single",
+                "ExxonMobil Chemical Plant").getStackForm(1L));
 
         GregtechItemList.Bus_Catalysts.set(
-            (new GT_MetaTileEntity_Hatch_Catalysts(31030, "hatch.catalysts", "Catalyst Housing")).getStackForm(1L));
+            (new GT_MetaTileEntity_Hatch_Catalysts(Bus_Catalysts.ID, "hatch.catalysts", "Catalyst Housing"))
+                .getStackForm(1L));
 
-        int aTier = 0;
         // Bronze
-        GregtechMTE_ChemicalPlant.registerMachineCasingForTier(aTier++, ModBlocks.blockCustomMachineCasings, 0, 10);
+        GregtechMTE_ChemicalPlant.registerMachineCasingForTier(0, ModBlocks.blockCustomMachineCasings, 0, 10);
         // Steel
-        GregtechMTE_ChemicalPlant.registerMachineCasingForTier(aTier++, GregTech_API.sBlockCasings2, 0, 16);
+        GregtechMTE_ChemicalPlant.registerMachineCasingForTier(1, GregTech_API.sBlockCasings2, 0, 16);
         // Aluminium
-        GregtechMTE_ChemicalPlant.registerMachineCasingForTier(aTier++, ModBlocks.blockCustomMachineCasings, 1, 17);
+        GregtechMTE_ChemicalPlant.registerMachineCasingForTier(2, ModBlocks.blockCustomMachineCasings, 1, 17);
         // Stainless
-        GregtechMTE_ChemicalPlant.registerMachineCasingForTier(aTier++, GregTech_API.sBlockCasings4, 1, 49);
+        GregtechMTE_ChemicalPlant.registerMachineCasingForTier(3, GregTech_API.sBlockCasings4, 1, 49);
         // Titanium
-        GregtechMTE_ChemicalPlant.registerMachineCasingForTier(aTier++, GregTech_API.sBlockCasings4, 2, 50);
+        GregtechMTE_ChemicalPlant.registerMachineCasingForTier(4, GregTech_API.sBlockCasings4, 2, 50);
         // Tungsten
-        GregtechMTE_ChemicalPlant.registerMachineCasingForTier(aTier++, GregTech_API.sBlockCasings4, 0, 48);
+        GregtechMTE_ChemicalPlant.registerMachineCasingForTier(5, GregTech_API.sBlockCasings4, 0, 48);
         // Laurenium
-        GregtechMTE_ChemicalPlant.registerMachineCasingForTier(aTier++, ModBlocks.blockCustomMachineCasings, 2, 84);
+        GregtechMTE_ChemicalPlant.registerMachineCasingForTier(6, ModBlocks.blockCustomMachineCasings, 2, 84);
         // Botmium
-        GregtechMTE_ChemicalPlant.registerMachineCasingForTier(aTier++, ModBlocks.blockCustomMachineCasings, 3, 11);
+        GregtechMTE_ChemicalPlant.registerMachineCasingForTier(7, ModBlocks.blockCustomMachineCasings, 3, 11);
     }
 }

@@ -435,9 +435,6 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     }
 
     @Override
-    public void blinkCell(int slot) {}
-
-    @Override
     public void saveChanges(IMEInventory cellInventory) {
         // This is handled by host itself.
     }
