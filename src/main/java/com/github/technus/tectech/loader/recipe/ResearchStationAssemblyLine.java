@@ -604,7 +604,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     CustomItemList.StabilisationFieldGeneratorTier8.get(64),
                     GT_OreDictUnificator.get("blockShirabon", 64L), GT_OreDictUnificator.get("blockShirabon", 64L),
                     GT_OreDictUnificator.get(OrePrefixes.block, MaterialsUEVplus.SpaceTime, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Quantum, 16L),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 16L),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 8L),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Universium, 8L),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 8L),
@@ -3213,7 +3213,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Eternity, 32),
                     GT_OreDictUnificator
                         .get(OrePrefixes.plateDense, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 16),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Quantum, 16L),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 16L),
                     ItemList.EnergisedTesseract.get(1) },
                 new FluidStack[] { new FluidStack(solderUEV, 1_296 * 64 * 4),
                     MaterialsUEVplus.ExcitedDTSC.getFluid(500L * 64) },
