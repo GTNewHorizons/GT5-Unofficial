@@ -204,6 +204,10 @@ import static gregtech.common.items.ID_MetaItem_03.NuclearStar;
 import static gregtech.common.items.ID_MetaItem_03.Optical_Cpu_Containment_Housing;
 import static gregtech.common.items.ID_MetaItem_03.Optically_Compatible_Memory;
 import static gregtech.common.items.ID_MetaItem_03.Optically_Perfected_CPU;
+import static gregtech.common.items.ID_MetaItem_03.Particle_Catalyst_Blue;
+import static gregtech.common.items.ID_MetaItem_03.Particle_Catalyst_Green;
+import static gregtech.common.items.ID_MetaItem_03.Particle_Catalyst_Red;
+import static gregtech.common.items.ID_MetaItem_03.Particle_Catalyst_Yellow;
 import static gregtech.common.items.ID_MetaItem_03.Spinneret;
 import static gregtech.common.items.ID_MetaItem_03.Timepiece;
 import static gregtech.common.items.ID_MetaItem_03.Transdimensional_Alignment_Matrix;
@@ -1110,6 +1114,14 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "Activated Carbon Filter Mesh",
                 "The most granular filter you could possibly make.",
                 SubTag.NO_UNIFICATION));
+        ItemList.Particle_Catalyst_Red
+            .set(addItem(Particle_Catalyst_Red.ID, "Particle Extraction Catalyst (Red)", "", SubTag.NO_UNIFICATION));
+        ItemList.Particle_Catalyst_Green.set(
+            addItem(Particle_Catalyst_Green.ID, "Particle Extraction Catalyst (Green)", "", SubTag.NO_UNIFICATION));
+        ItemList.Particle_Catalyst_Blue
+            .set(addItem(Particle_Catalyst_Blue.ID, "Particle Extraction Catalyst (Blue)", "", SubTag.NO_UNIFICATION));
+        ItemList.Particle_Catalyst_Yellow.set(
+            addItem(Particle_Catalyst_Yellow.ID, "Particle Extraction Catalyst (Yellow)", "", SubTag.NO_UNIFICATION));
 
         ItemList.Optical_Cpu_Containment_Housing
             .set(addItem(Optical_Cpu_Containment_Housing.ID, "Optical CPU Containment Housing", "CPU Housing", o));
