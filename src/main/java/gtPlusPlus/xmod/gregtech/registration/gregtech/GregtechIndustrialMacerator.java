@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_MacerationStack;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -18,7 +20,7 @@ public class GregtechIndustrialMacerator {
         // Industrial Maceration Stack Multiblock
         GregtechItemList.Industrial_MacerationStack.set(
             new GregtechMetaTileEntity_IndustrialMacerator(
-                797,
+                Industrial_MacerationStack.ID,
                 "industrialmacerator.controller.tier.single",
                 "Maceration Stack Controller").getStackForm(1L));
     }

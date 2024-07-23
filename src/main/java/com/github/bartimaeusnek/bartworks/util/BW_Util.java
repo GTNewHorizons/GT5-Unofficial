@@ -73,8 +73,11 @@ import gregtech.api.util.GT_Utility;
 
 public class BW_Util {
 
+    @Deprecated
     public static final int STANDART = 0;
+    @Deprecated
     public static final int LOWGRAVITY = -100;
+    @Deprecated
     public static final int CLEANROOM = -200;
 
     public static String translateGTItemStack(ItemStack itemStack) {

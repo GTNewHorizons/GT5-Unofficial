@@ -290,16 +290,12 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MeatCooked, 1L));
                         break;
                     case "Oilsands":
-                        centrifugeRecipes.addRecipe(
-                            true,
-                            new ItemStack[] { GT_Utility.copyAmount(1, aStack) },
-                            null,
-                            null,
-                            null,
-                            new FluidStack[] { Materials.OilHeavy.getFluid(1000) },
-                            660,
-                            8,
-                            0);
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(1, aStack))
+                            .fluidOutputs(Materials.OilHeavy.getFluid(1000))
+                            .duration(33 * SECONDS)
+                            .eut(8)
+                            .addTo(centrifugeRecipes);
                         break;
                     case "HydratedCoal":
                         GT_ModHandler.addSmeltingRecipe(

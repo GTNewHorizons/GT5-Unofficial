@@ -1,16 +1,17 @@
 package gregtech.api.util;
 
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.fishPondRecipes;
+
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomFishable;
 import net.minecraftforge.common.FishingHooks;
-import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GT_Values;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
@@ -49,7 +50,14 @@ public class FishPondFakeRecipe {
                         ItemStack t = (ItemStack) ReflectionUtils
                             .getField(WeightedRandomFishable.class, "field_150711_b")
                             .get(u);
-                        addNewFishPondLoot(mType, new ItemStack[] { t }, new int[] { 10000 });
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.getIntegratedCircuit(mType))
+                            .itemOutputs(t)
+                            .duration(5 * SECONDS)
+                            .eut(0)
+                            .ignoreCollision()
+                            .addTo(fishPondRecipes);
+                        Logger.INFO("Fishing [" + mType + "]: " + ItemUtils.getArrayStackNames(new ItemStack[] { t }));
                     } catch (IllegalArgumentException | IllegalAccessException e1) {
                         Logger.INFO("Error generating Fish Pond Recipes. [2]");
                         e1.printStackTrace();
@@ -60,21 +68,5 @@ public class FishPondFakeRecipe {
         }
 
         return true;
-    }
-
-    public static void addNewFishPondLoot(int circuit, ItemStack[] outputItems, int[] chances) {
-        GT_Recipe x = new GT_Recipe(
-            true,
-            new ItemStack[] { CI.getNumberedCircuit(circuit) },
-            outputItems,
-            null,
-            chances,
-            new FluidStack[] { null },
-            new FluidStack[] { null },
-            100, // 1 Tick
-            0, // No Eu produced
-            0);
-        Logger.INFO("Fishing [" + circuit + "]: " + ItemUtils.getArrayStackNames(outputItems));
-        GTPPRecipeMaps.fishPondRecipes.addRecipe(x, false, false, false);
     }
 }
