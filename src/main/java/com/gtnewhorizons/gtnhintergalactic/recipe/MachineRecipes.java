@@ -378,7 +378,7 @@ public class MachineRecipes implements Runnable {
                 .itemInputs(
                         GT_Utility.copyAmount(4, IGItems.SpaceElevatorModulePumpT2),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.BlackDwarfMatter, 8),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Piko, 16),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 16),
                         ItemList.Electric_Pump_UMV.get(8),
                         GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.BlackDwarfMatter, 8),
                         GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.WhiteDwarfMatter, 64),
