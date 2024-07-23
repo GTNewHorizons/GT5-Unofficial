@@ -52,7 +52,7 @@ public class GregtechGeothermalThermalGenerator {
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
-                ItemList.Electric_Motor_EV, 'C', OrePrefixes.circuit.get(Materials.Ultimate), 'W',
+                ItemList.Electric_Motor_EV, 'C', OrePrefixes.circuit.get(Materials.ZPM), 'W',
                 OrePrefixes.cableGt04.get(Materials.Aluminium), 'G', ALLOY.TANTALLOY_61.getGear(1) });
 
         GT_ModHandler.addCraftingRecipe(
@@ -72,7 +72,7 @@ public class GregtechGeothermalThermalGenerator {
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_LuV, 'P', INGREDIENT_1, 'E', INGREDIENT_2, 'C',
-                OrePrefixes.circuit.get(Materials.Infinite), 'W', OrePrefixes.cableGt04.get(Materials.Tungsten), 'G',
+                OrePrefixes.circuit.get(Materials.UHV), 'W', OrePrefixes.cableGt04.get(Materials.Tungsten), 'G',
                 ALLOY.ZERON_100.getGear(1) });
     }
 }

@@ -101,36 +101,36 @@ public class BW_Meta_Items {
         String aOreDictPrefix = OrePrefixes.circuit.toString();
         switch (aTier) {
             case 0:
-                additionalOreDictData = Materials.Primitive.toString();
-                tooltip = Materials.Primitive.getToolTip();
+                additionalOreDictData = Materials.ULV.toString();
+                tooltip = Materials.ULV.getToolTip();
                 break;
             case 1:
-                additionalOreDictData = Materials.Basic.toString();
-                tooltip = Materials.Basic.getToolTip();
+                additionalOreDictData = Materials.LV.toString();
+                tooltip = Materials.LV.getToolTip();
                 break;
             case 2:
-                additionalOreDictData = Materials.Good.toString();
-                tooltip = Materials.Good.getToolTip();
+                additionalOreDictData = Materials.MV.toString();
+                tooltip = Materials.MV.getToolTip();
                 break;
             case 3:
-                additionalOreDictData = Materials.Advanced.toString();
-                tooltip = Materials.Advanced.getToolTip();
+                additionalOreDictData = Materials.HV.toString();
+                tooltip = Materials.HV.getToolTip();
                 break;
             case 4:
-                additionalOreDictData = Materials.Data.toString();
-                tooltip = Materials.Data.getToolTip();
+                additionalOreDictData = Materials.EV.toString();
+                tooltip = Materials.EV.getToolTip();
                 break;
             case 5:
-                additionalOreDictData = Materials.Elite.toString();
-                tooltip = Materials.Elite.getToolTip();
+                additionalOreDictData = Materials.IV.toString();
+                tooltip = Materials.IV.getToolTip();
                 break;
             case 6:
-                additionalOreDictData = Materials.Master.toString();
-                tooltip = Materials.Master.getToolTip();
+                additionalOreDictData = Materials.LuV.toString();
+                tooltip = Materials.LuV.getToolTip();
                 break;
             case 7:
-                additionalOreDictData = Materials.Ultimate.toString();
-                tooltip = Materials.Ultimate.getToolTip();
+                additionalOreDictData = Materials.ZPM.toString();
+                tooltip = Materials.ZPM.getToolTip();
                 break;
             case 8:
                 additionalOreDictData = Materials.SuperconductorUHV.toString();

@@ -376,7 +376,7 @@ public class CraftingRecipes implements Runnable {
             BioItemList.mBioLabParts[2],
             RecipeLoader.BITSD,
             new Object[] { "SFE", "CPC", "NFN", 'N',
-                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Nichrome, 1L), 'C', "circuit" + Materials.Data,
+                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Nichrome, 1L), 'C', "circuit" + Materials.EV,
                 'F', ItemList.Field_Generator_EV.get(1L), 'E', ItemList.Emitter_EV.get(1L), 'S',
                 ItemList.Sensor_EV.get(1L), 'P',
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L), });
@@ -386,7 +386,7 @@ public class CraftingRecipes implements Runnable {
             RecipeLoader.BITSD,
             new Object[] { "SFE", "CPC", "NFN", 'N',
                 GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 1L), 'C',
-                "circuit" + Materials.Master, 'F', ItemList.Field_Generator_LuV.get(1L), 'E',
+                "circuit" + Materials.LuV, 'F', ItemList.Field_Generator_LuV.get(1L), 'E',
                 ItemList.Emitter_LuV.get(1L), 'S', ItemList.Sensor_LuV.get(1L), 'P',
                 WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 1), });
 
@@ -396,7 +396,7 @@ public class CraftingRecipes implements Runnable {
             RecipeLoader.BITSD,
             new Object[] { "FEF", "CPC", "FSF", 'N',
                 GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 1L), 'C',
-                "circuit" + Materials.Master, 'F', ItemList.Field_Generator_LuV.get(1L), 'E',
+                "circuit" + Materials.LuV, 'F', ItemList.Field_Generator_LuV.get(1L), 'E',
                 ItemList.Emitter_LuV.get(1L), 'S', ItemList.Sensor_LuV.get(1L), 'P',
                 WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 1), });
 
@@ -407,7 +407,7 @@ public class CraftingRecipes implements Runnable {
                 StatCollector.translateToLocal("tile.biovat.name")).getStackForm(1L),
             RecipeLoader.BITSD,
             new Object[] { "GCG", "KHK", "GCG", 'G', new ItemStack(ItemRegistry.bw_glasses[0], 1, 1), 'C',
-                "circuit" + Materials.Data, 'K', GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Silver, 1L),
+                "circuit" + Materials.EV, 'K', GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Silver, 1L),
                 'H', ItemList.MACHINE_HULLS[3].get(1L) });
 
         ItemStack[] Pistons2 = { ItemList.Electric_Piston_HV.get(1L), ItemList.Electric_Piston_EV.get(1L),
@@ -421,8 +421,8 @@ public class CraftingRecipes implements Runnable {
             Materials.Iridium, Materials.Osmium, Materials.Naquadah };
         Materials[] wireMat2 = { Materials.Kanthal, Materials.Nichrome, Materials.TungstenSteel, Materials.Naquadah,
             Materials.NaquadahAlloy, Materials.SuperconductorUHV };
-        Materials[] circuits2 = { Materials.Advanced, Materials.Data, Materials.Elite, Materials.Master,
-            Materials.Ultimate, Materials.SuperconductorUHV };
+        Materials[] circuits2 = { Materials.HV, Materials.EV, Materials.IV, Materials.LuV,
+            Materials.ZPM, Materials.SuperconductorUHV };
 
         for (int i = 3; i < GT_Values.VN.length - 1; i++) {
             // 12625

@@ -26,7 +26,7 @@ public class Crafting implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.VibrantAlloy, 1), });
 
         // SOFC Controller mk1
-        final Object[] mk1_recipe = { "CCC", "PHP", "FBL", 'C', OrePrefixes.circuit.get(Materials.Advanced), 'P',
+        final Object[] mk1_recipe = { "CCC", "PHP", "FBL", 'C', OrePrefixes.circuit.get(Materials.HV), 'P',
             ItemList.Electric_Pump_HV.get(1L), 'H', ItemList.Hull_HV.get(1L), 'F',
             GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.StainlessSteel, 1), 'B',
             GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Gold, 1), 'L',
@@ -34,16 +34,16 @@ public class Crafting implements Runnable {
         GT_ModHandler.addCraftingRecipe(TileEntities.sofc1.getStackForm(1), mk1_recipe);
 
         // SOFC Controller mk2
-        final Object[] mk2_recipe = { "CCC", "PHP", "FBL", 'C', OrePrefixes.circuit.get(Materials.Master), 'P',
+        final Object[] mk2_recipe = { "CCC", "PHP", "FBL", 'C', OrePrefixes.circuit.get(Materials.LuV), 'P',
             ItemList.Electric_Pump_IV.get(1L), 'H', ItemList.Hull_IV.get(1L), 'F',
-            GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Ultimate, 1), 'B',
+            GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.ZPM, 1), 'B',
             Util.getStackofAmountFromOreDict("wireGt04SuperconductorEV", 1), 'L',
-            GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 1) };
+            GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.ZPM, 1) };
         GT_ModHandler.addCraftingRecipe(TileEntities.sofc2.getStackForm(1), mk2_recipe);
 
         // LSC Controller
         final Object[] lsc_recipe = { "LPL", "CBC", "LPL", 'L', ItemList.IC2_LapotronCrystal.getWildcard(1L), 'P',
-            ItemList.Circuit_Chip_PIC.get(1L), 'C', OrePrefixes.circuit.get(Materials.Master), 'B',
+            ItemList.Circuit_Chip_PIC.get(1L), 'C', OrePrefixes.circuit.get(Materials.LuV), 'B',
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 0), };
         GT_ModHandler.addCraftingRecipe(TileEntities.lsc.getStackForm(1), lsc_recipe);
 

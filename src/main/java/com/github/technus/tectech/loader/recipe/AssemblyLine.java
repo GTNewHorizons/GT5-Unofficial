@@ -31,7 +31,7 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_TIME, 16 * MINUTES + 20 * SECONDS)
             .itemInputs(
                 CustomItemList.Machine_Multi_Switch.get(1),
-                new Object[] { OrePrefixes.circuit.get(Materials.Master), 2 },
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1))
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000), Materials.Hydrogen.getGas(1000))

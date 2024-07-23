@@ -428,9 +428,9 @@ public class CI {
         Materials.AnnealedCopper, Materials.Gold, Materials.Titanium, Materials.Nichrome, Materials.Platinum,
         Materials.YttriumBariumCuprate, Materials.Naquadah, Materials.Duranium, Materials.SuperconductorUHV, };
 
-    private static final Materials[] aMaterial_Circuits = new Materials[] { Materials.Primitive, Materials.Basic,
-        Materials.Good, Materials.Advanced, Materials.Data, Materials.Data, Materials.Elite, Materials.Master,
-        Materials.Ultimate, Materials.SuperconductorUHV, Materials.Infinite, };
+    private static final Materials[] aMaterial_Circuits = new Materials[] { Materials.ULV, Materials.LV,
+        Materials.MV, Materials.HV, Materials.EV, Materials.EV, Materials.IV, Materials.LuV,
+        Materials.ZPM, Materials.SuperconductorUHV, Materials.UHV, };
 
     private static final Material[][] aMaster = new Material[][] { aMaterial_Main, aMaterial_Secondary,
         aMaterial_Tertiary };
@@ -587,7 +587,7 @@ public class CI {
             } else if (aTier == 7) {
                 return ItemUtils.getOrePrefixStack(aPrefix, ALLOY.HASTELLOY_X, aAmount);
             } else if (aTier == 8) {
-                return ItemUtils.getOrePrefixStack(aPrefix, Materials.Ultimate, aAmount);
+                return ItemUtils.getOrePrefixStack(aPrefix, Materials.ZPM, aAmount);
             } else if (aTier == 9) {
                 return ItemUtils.getOrePrefixStack(OrePrefixes.pipeMedium, Materials.SuperconductorUHV, aAmount);
             } else if (aTier == 10) {

@@ -75,7 +75,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1),
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium, 6),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 16),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 16),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 2))
@@ -89,7 +89,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 CustomItemList.eM_Power.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 8),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 1),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 2))
             .itemOutputs(CustomItemList.eM_Computer_Casing.get(1))
             .fluidInputs(Materials.Aluminium.getMolten(1296))
@@ -996,7 +996,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Transformer_LuV_IV.get(1),
                 getItemContainer("Display").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.TungstenSteel, 4),
                 getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 2))
@@ -1010,7 +1010,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Transformer_ZPM_LuV.get(1),
                 getItemContainer("Display").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
                 GT_OreDictUnificator
                     .get(OrePrefixes.plate, getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome), 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.NiobiumTitanium, 4),
@@ -1025,7 +1025,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Transformer_UV_ZPM.get(1),
                 getItemContainer("Display").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.TungstenSteel, 4),
                 getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 4))
@@ -1053,7 +1053,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 getItemContainer("Transformer_UEV_UHV").get(1),
                 getItemContainer("Display").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.ElectrumFlux, 4),
                 getModItem(BartWorks.ID, "BW_GlasBlocks", 4L, 5))
@@ -1067,7 +1067,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 getItemContainer("Transformer_UIV_UEV").get(1),
                 getItemContainer("Display").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, getOrDefault("Bedrockium", Materials.Neutronium), 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Bedrockium, 4),
                 getModItem(BartWorks.ID, "BW_GlasBlocks", 8L, 5))
@@ -1081,7 +1081,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 getItemContainer("Transformer_UMV_UIV").get(1),
                 getItemContainer("Display").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Optical, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UIV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, getOrDefault("BlackPlutonium", Materials.Neutronium), 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Draconium, 4),
                 getModItem(BartWorks.ID, "BW_GlasBlocks", 16L, 5))
@@ -2772,7 +2772,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.teslaComponent.getWithDamage(4, 0),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Gold, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
@@ -2784,7 +2784,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.teslaComponent.getWithDamage(4, 0),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Gold, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
@@ -2796,7 +2796,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.teslaComponent.getWithDamage(4, 0),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Gold, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
@@ -2809,7 +2809,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.teslaComponent.getWithDamage(4, 1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tungsten, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
@@ -2821,7 +2821,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.teslaComponent.getWithDamage(4, 1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tungsten, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
@@ -2833,7 +2833,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.teslaComponent.getWithDamage(4, 1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tungsten, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
@@ -3327,7 +3327,7 @@ public class Assembler implements Runnable {
                 GT_ModHandler.getIC2Item("teslaCoil", 1),
                 CustomItemList.tM_TeslaSecondary.get(4),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4),
                 ItemList.Upgrade_Overclocker.get(4))
             .itemOutputs(CustomItemList.Machine_Multi_TeslaCoil.get(1))
             .fluidInputs(Materials.Silver.getMolten(576))
@@ -3339,7 +3339,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Machine_HV_Microwave.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 16),
                 ItemList.Upgrade_Overclocker.get(4))
             .itemOutputs(CustomItemList.Machine_Multi_Microwave.get(1))
@@ -3365,7 +3365,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.Machine_Multi_Transformer.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 64),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 64),
                 CustomItemList.DATApipe.get(4))
@@ -3420,7 +3420,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.eM_Computer_Casing.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 1),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 64),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 64),
                 GT_OreDictUnificator
@@ -3436,7 +3436,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 CustomItemList.eM_Computer_Casing.get(1),
                 ItemList.Hatch_Input_Bus_LuV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1),
                 CustomItemList.DATApipe.get(2))
             .itemOutputs(CustomItemList.dataIn_Hatch.get(1))
             .fluidInputs(Materials.Iridium.getMolten(1296))
@@ -3449,7 +3449,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 CustomItemList.eM_Computer_Casing.get(1),
                 ItemList.Hatch_Output_Bus_LuV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1),
                 CustomItemList.DATApipe.get(2))
             .itemOutputs(CustomItemList.dataOut_Hatch.get(1))
             .fluidInputs(Materials.Iridium.getMolten(1296))
@@ -3462,7 +3462,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 CustomItemList.eM_Computer_Bus.get(1),
                 ItemList.Hatch_Input_Bus_ZPM.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
                 CustomItemList.DATApipe.get(4))
             .itemOutputs(CustomItemList.rack_Hatch.get(1))
             .fluidInputs(Materials.Iridium.getMolten(1296))
@@ -3474,7 +3474,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.eM_Computer_Casing.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 1),
                 CustomItemList.DATApipe.get(16),
                 ItemList.Cover_Screen.get(1),
                 new ItemStack(Blocks.stone_button, 16),
@@ -3489,7 +3489,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.eM_Computer_Casing.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 1),
                 CustomItemList.DATApipe.get(32),
                 ItemList.Cover_Screen.get(1),
                 new ItemStack(Blocks.stone_button, 16),

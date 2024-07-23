@@ -550,7 +550,7 @@ public class RECIPES_GREGTECH {
                 ItemList.UV_Coil.get(16L, new Object() {}),
                 ItemList.Conveyor_Module_UV.get(4L, new Object() {}),
                 new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 8 },
-                new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 16 },
+                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 16 },
                 ItemList.Circuit_Chip_PPIC.get(16, new Object() {}),
                 ALLOY.PIKYONIUM.getPlate(16),
                 ALLOY.CINOBITE.getScrew(32))

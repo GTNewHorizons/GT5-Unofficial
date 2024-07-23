@@ -41,7 +41,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 0),
                 Materials.Lapis.getPlates(9),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2L),
                 GT_Utility.getIntegratedCircuit(17))
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1))
             .fluidInputs(FluidRegistry.getFluidStack("ic2coolant", 1000))
@@ -111,7 +111,7 @@ public class Assembler implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L),
                 Materials.Aluminium.getPlates(1),
                 ItemList.Circuit_Board_Plastic.get(1L),
                 ItemList.Battery_RE_LV_Lithium.get(1L))

@@ -682,7 +682,7 @@ public class MixerRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 4),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.SFMixture.get(4))
-            .fluidInputs(Materials.AdvancedGlue.getFluid(200))
+            .fluidInputs(Materials.HVGlue.getFluid(200))
             .duration(40 * SECONDS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -694,7 +694,7 @@ public class MixerRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 4),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.SFMixture.get(8))
-            .fluidInputs(Materials.AdvancedGlue.getFluid(200))
+            .fluidInputs(Materials.HVGlue.getFluid(200))
             .duration(40 * SECONDS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -706,7 +706,7 @@ public class MixerRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 4),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.SFMixture.get(12))
-            .fluidInputs(Materials.AdvancedGlue.getFluid(200))
+            .fluidInputs(Materials.HVGlue.getFluid(200))
             .duration(40 * SECONDS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -1411,7 +1411,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(Materials.Acetone.getCells(3))
             .itemOutputs(Materials.Empty.getCells(3))
             .fluidInputs(Materials.PolyvinylAcetate.getFluid(2000))
-            .fluidOutputs(Materials.AdvancedGlue.getFluid(5000))
+            .fluidOutputs(Materials.HVGlue.getFluid(5000))
             .duration(5 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -1420,7 +1420,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(Materials.PolyvinylAcetate.getCells(2))
             .itemOutputs(Materials.Empty.getCells(2))
             .fluidInputs(Materials.Acetone.getFluid(3000))
-            .fluidOutputs(Materials.AdvancedGlue.getFluid(5000))
+            .fluidOutputs(Materials.HVGlue.getFluid(5000))
             .duration(5 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -1429,7 +1429,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(Materials.MethylAcetate.getCells(3))
             .itemOutputs(Materials.Empty.getCells(3))
             .fluidInputs(Materials.PolyvinylAcetate.getFluid(2000))
-            .fluidOutputs(Materials.AdvancedGlue.getFluid(5000))
+            .fluidOutputs(Materials.HVGlue.getFluid(5000))
             .duration(5 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -1438,7 +1438,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(Materials.PolyvinylAcetate.getCells(2))
             .itemOutputs(Materials.Empty.getCells(2))
             .fluidInputs(Materials.MethylAcetate.getFluid(3000))
-            .fluidOutputs(Materials.AdvancedGlue.getFluid(5000))
+            .fluidOutputs(Materials.HVGlue.getFluid(5000))
             .duration(5 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
