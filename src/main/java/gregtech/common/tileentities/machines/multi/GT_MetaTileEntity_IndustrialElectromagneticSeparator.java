@@ -240,7 +240,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             .addOtherStructurePart("Any glass", "x12")
             .addOtherStructurePart("Magnetic Neodymium Frame Box", "x40")
             .addOtherStructurePart("Magnetic Samarium Frame Box", "x45")
-            .addOtherStructurePart("Electromagnet Housing", "x1 Only, Any Casing")
+            .addOtherStructurePart("Electromagnet Housing", "1 Block Above/Behind Controller", 2)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
