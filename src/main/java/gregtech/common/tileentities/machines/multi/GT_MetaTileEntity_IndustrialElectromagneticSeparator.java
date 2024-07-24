@@ -16,6 +16,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -336,6 +338,15 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     public boolean supportsMachineModeSwitch() {
         return true;
     }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        setMachineMode(nextMachineMode());
+        PlayerUtils.messagePlayer(
+            aPlayer,
+            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+    }
+
 
     @Override
     public void setMachineModeIcons() {

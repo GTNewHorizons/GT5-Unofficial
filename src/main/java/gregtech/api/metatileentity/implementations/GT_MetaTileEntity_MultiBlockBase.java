@@ -200,12 +200,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (supportsMachineModeSwitch()) {
-            setMachineMode(nextMachineMode());
-            PlayerUtils.messagePlayer(
-                aPlayer,
-                String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
-        } else if (supportsSingleRecipeLocking()) {
+            if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = !mLockedToSingleRecipe;
             if (mLockedToSingleRecipe) {
                 GT_Utility.sendChatToPlayer(

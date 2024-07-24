@@ -16,6 +16,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -45,6 +47,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_IndustrialPlatePress
     extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialPlatePress> implements ISurvivalConstructable {
@@ -210,6 +213,14 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
     @Override
     public boolean supportsMachineModeSwitch() {
         return true;
+    }
+
+    @Override
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        setMachineMode(nextMachineMode());
+        PlayerUtils.messagePlayer(
+            aPlayer,
+            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
     }
 
     @Override
