@@ -9,7 +9,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE_GL
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,8 +16,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Turbine;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.GregtechMetaTileEntity_LargerTurbineBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -147,7 +144,8 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                             ofBlock(GregTech_API.sBlockCasings10, 0)))))
         .addElement('C', ofFrame(Materials.NeodymiumMagnetic))
         .addElement('D', ofFrame(Materials.SamariumMagnetic))
-        .addElement('E',
+        .addElement(
+            'E',
             buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
                 .adder(GT_MetaTileEntity_IndustrialElectromagneticSeparator::addMagHatch)
                 .hatchClass(GT_MetaTileEntity_MagHatch.class)
