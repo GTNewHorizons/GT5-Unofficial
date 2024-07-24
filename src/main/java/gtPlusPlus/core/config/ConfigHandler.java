@@ -191,16 +191,10 @@ public class ConfigHandler {
             GregTech.ID,
             true,
             "Can run recipes for 9 different types of machines.");
-        enableMultiblock_Cyclotron = config.getBoolean(
-            "enableMultiblock_Cyclotron",
-            GregTech.ID,
-            true,
-            "COMET - Scientific Cyclotron.");
-        enableMultiblock_AdvDistillationTower = config.getBoolean(
-            "enableMultiblock_AdvDistillationTower",
-            GregTech.ID,
-            true,
-            "Spews forth the fractions fast.");
+        enableMultiblock_Cyclotron = config
+            .getBoolean("enableMultiblock_Cyclotron", GregTech.ID, true, "COMET - Scientific Cyclotron.");
+        enableMultiblock_AdvDistillationTower = config
+            .getBoolean("enableMultiblock_AdvDistillationTower", GregTech.ID, true, "Spews forth the fractions fast.");
 
         // Features
         enableCustomCapes = config.getBoolean("enableSupporterCape", "features", true, "Enables Custom GT++ Cape.");
