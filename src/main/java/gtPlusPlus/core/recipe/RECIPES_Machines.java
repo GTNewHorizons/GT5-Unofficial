@@ -836,7 +836,7 @@ public class RECIPES_Machines {
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(19),
                 ItemList.Distillation_Tower.get(2),
-                GregtechItemList.GTPP_Casing_IV.get(2),
+                GregtechItemList.GTPP_Casing_IV.get(1),
                 CI.getTieredComponent(OrePrefixes.circuit, 6, 8))
             .itemOutputs(GregtechItemList.Machine_Adv_DistillationTower.get(1))
             .fluidInputs(
