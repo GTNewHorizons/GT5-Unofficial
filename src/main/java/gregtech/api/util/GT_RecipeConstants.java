@@ -179,6 +179,12 @@ public class GT_RecipeConstants {
         .create(Integer.class, "lftr_output_power");
 
     /**
+     * Research Station data.
+     */
+    public static final RecipeMetadataKey<Integer> RESEARCH_STATION_DATA = SimpleRecipeMetadataKey
+        .create(Integer.class, "research_station_data");
+
+    /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
      * Will override the fluid input with oxygen/plasma for the respective recipe maps, so there is no point setting it.
      */
@@ -423,6 +429,7 @@ public class GT_RecipeConstants {
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NKE_RANGE);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(PRECISE_ASSEMBLER_CASING_TIER);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COAL_CASING_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RESEARCH_STATION_DATA);
 
     }
 }
