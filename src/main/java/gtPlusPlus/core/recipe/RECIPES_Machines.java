@@ -156,6 +156,7 @@ public class RECIPES_Machines {
     public static ItemStack IV_MACHINE_AlloySmelter;
     public static ItemStack IV_MACHINE_Mixer;
     public static ItemStack EV_MACHINE_ChemicalBath;
+    public static ItemStack IV_MACHINE_Distillery;
 
     // Plates
     public static String plateBronze = "plateBronze";
@@ -921,6 +922,7 @@ public class RECIPES_Machines {
         IV_MACHINE_AlloySmelter = ItemList.Machine_IV_AlloySmelter.get(1);
         IV_MACHINE_Mixer = ItemList.Machine_IV_Mixer.get(1);
         EV_MACHINE_ChemicalBath = ItemList.Machine_EV_ChemicalBath.get(1);
+        IV_MACHINE_Distillery = ItemList.Machine_IV_Distillery.get(1);
         if (CORE.ConfigSwitches.enableMultiblock_IndustrialCokeOven) {
             if (Railcraft.isModLoaded()) {
                 // Misc
@@ -1393,6 +1395,21 @@ public class RECIPES_Machines {
                 IV_MACHINE_Macerator,
                 "plateTungstenCarbide",
                 GregtechItemList.Maceration_Upgrade_Chip.get(1));
+        }
+
+        if (CORE.ConfigSwitches.enableMultiblock_AdvDistillationTower) {
+            // Distillus Upgrade Chip
+            RecipeUtils.addShapedGregtechRecipe(
+                "plateHSSS",
+                CI.circuitTier7,
+                "plateHSSS",
+                CI.circuitTier7,
+                IV_MACHINE_Distillery,
+                CI.circuitTier7,
+                "plateHSSS",
+                CI.circuitTier7,
+                "plateHSSS",
+                GregtechItemList.Distillus_Upgrade_Chip.get(1));
         }
 
         if (CORE.ConfigSwitches.enableMultiblock_IndustrialWireMill) {

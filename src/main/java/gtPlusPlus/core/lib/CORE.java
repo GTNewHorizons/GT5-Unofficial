@@ -134,6 +134,7 @@ public class CORE {
         public static boolean enableMultiblock_IndustrialExtrudingMachine = true;
         public static boolean enableMultiblock_IndustrialMultiMachine = true;
         public static boolean enableMultiblock_Cyclotron = true;
+        public static boolean enableMultiblock_AdvDistillationTower = true;
 
         // Visuals
         public static boolean useGregtechTextures = true;
