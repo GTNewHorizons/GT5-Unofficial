@@ -142,7 +142,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                     .dot(1)
                     .build(),
                 buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
-                    .atLeast(InputBus, OutputBus, Maintenance, Energy, ExoticEnergy)
+                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
                     .dot(1)
                     .buildAndChain(
@@ -323,6 +323,11 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
         return Arrays.asList(RecipeMaps.polarizerRecipes, RecipeMaps.electroMagneticSeparatorRecipes);
+    }
+
+    @Override
+    public int getRecipeCatalystPriority() {
+        return -10;
     }
 
     @Override
