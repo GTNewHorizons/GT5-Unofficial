@@ -5,6 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
@@ -170,18 +171,15 @@ public class ArtificialMicaLine {
             .addTo(blastFurnaceRecipes);
 
         // 144Fluorophlogopite(l) = Fluorophlogopite
-        RecipeMaps.vacuumFreezerRecipes.addRecipe(
-            new GT_Recipe(
-                false,
-                new ItemStack[] { ItemList.Shape_Mold_Plate.get(0) },
-                new ItemStack[] { WerkstoffLoader.Fluorophlogopite.get(OrePrefixes.plate, 1) },
-                null,
-                null,
-                new FluidStack[] { WerkstoffLoader.HotFluorophlogopite.getFluidOrGas(144) },
-                null,
-                10,
-                120,
-                0));
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Shape_Mold_Plate.get(0))
+            .itemOutputs( WerkstoffLoader.Fluorophlogopite.get(OrePrefixes.plate, 1))
+            .fluidOutputs(WerkstoffLoader.HotFluorophlogopite.getFluidOrGas(144))
+            .duration(10*TICKS)
+            .eut(TierEU.RECIPE_MV)
+            .noOptimize()
+            .addTo(vacuumFreezerRecipes);
+
         // Fluorophlogopite = 4Insulator Foil
         if (NewHorizonsCoreMod.isModLoaded()) {
 

@@ -185,6 +185,15 @@ public class GT_RecipeConstants {
         .create(Integer.class, "research_station_data");
 
     /**
+     * glass tier required for the biovat recipes.
+     */
+    public static final RecipeMetadataKey<Integer> SIEVERTS = SimpleRecipeMetadataKey
+        .create(Integer.class, "sieverts");
+
+    public static final RecipeMetadataKey<Integer> DECAY_TICKS = SimpleRecipeMetadataKey
+        .create(Integer.class, "decay_ticks");
+
+    /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
      * Will override the fluid input with oxygen/plasma for the respective recipe maps, so there is no point setting it.
      */
@@ -430,6 +439,8 @@ public class GT_RecipeConstants {
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(PRECISE_ASSEMBLER_CASING_TIER);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COAL_CASING_TIER);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RESEARCH_STATION_DATA);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(SIEVERTS);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DECAY_TICKS);
 
     }
 }

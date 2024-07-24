@@ -18,6 +18,8 @@ import static com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps.
 import static com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps.radioHatchRecipes;
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.calculateSv;
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.specialToByte;
+import static gregtech.api.util.GT_RecipeConstants.DECAY_TICKS;
+import static gregtech.api.util.GT_RecipeConstants.SIEVERTS;
 
 import javax.annotation.Nonnegative;
 
@@ -28,7 +30,6 @@ import com.github.bartimaeusnek.bartworks.common.loaders.BioItemList;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_Recipe;
 
 @SuppressWarnings("UnusedReturnValue")
 public class BWRecipes {
@@ -44,167 +45,165 @@ public class BWRecipes {
         return ret;
     }
 
-    public boolean addRadHatch(ItemStack item, int radioLevel, int amount, short[] rgba) {
-        return radioHatchRecipes.addRecipe(
-            new GT_Recipe(
-                false,
-                new ItemStack[] { item },
-                null,
-                null,
-                new int[] { rgba[0], rgba[1], rgba[2] },
-                null,
-                null,
-                amount,
-                radioLevel,
-                (int) calcDecayTicks(radioLevel)))
-            != null;
+    public static int computeSieverts(int givenSievert, int specialValue, int glassTier, boolean requiresExactSieverts){
+        int sievertValue = 0;
+        if (givenSievert >= 83 || givenSievert == 61 || givenSievert == 43) sievertValue += givenSievert;
+        sievertValue = sievertValue << 1;
+        sievertValue = sievertValue | (requiresExactSieverts ? 1 : 0);
+        sievertValue = sievertValue << 2;
+        sievertValue = sievertValue | specialToByte(specialValue);
+        sievertValue = sievertValue << 4;
+        sievertValue = sievertValue | glassTier;
+        return sievertValue;
     }
 
-    public boolean addBioLabRecipe(ItemStack[] aInputs, ItemStack aOutput, ItemStack aSpecialItems, int[] aChances,
-        FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        return bioLabRecipes.addRecipe(
-            new GT_Recipe(
-                true,
-                aInputs,
-                new ItemStack[] { aOutput },
-                aSpecialItems,
-                aChances,
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                aSpecialValue))
-            != null;
-    }
-
-    public boolean addBioLabRecipeIncubation(ItemStack aInput, BioCulture aOutput, int[] aChances,
-        FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue) {
-        return bioLabRecipes.addRecipe(
-            new GT_Recipe(
-                true,
-                new ItemStack[] { BioItemList.getPetriDish(null), aInput },
-                new ItemStack[] { BioItemList.getPetriDish(aOutput) },
-                null,
-                aChances,
-                aFluidInputs,
-                new FluidStack[] { GT_Values.NF },
-                aDuration,
-                aEUt,
-                aSpecialValue))
-            != null;
-    }
-
-    public boolean addBioLabRecipeIncubation(ItemStack aInput, BioCulture aOutput, int[] aChances,
-        FluidStack aFluidInputs, int aDuration, int aEUt, int aSpecialValue) {
-        return bioLabRecipes.addRecipe(
-            new GT_Recipe(
-                true,
-                new ItemStack[] { BioItemList.getPetriDish(null), aInput },
-                new ItemStack[] { BioItemList.getPetriDish(aOutput) },
-                null,
-                aChances,
-                new FluidStack[] { aFluidInputs },
-                new FluidStack[] { GT_Values.NF },
-                aDuration,
-                aEUt,
-                aSpecialValue))
-            != null;
-    }
-
-    public boolean addBacterialVatRecipe(ItemStack[] aInputs, BioCulture aCulture, FluidStack[] aFluidInputs,
-        FluidStack[] aFluidOutputs, @Nonnegative int aDuration, @Nonnegative int aEUt, @Nonnegative int aSv,
-        @Nonnegative int glasTier, int aSpecialValue, boolean exactSv) {
+    public static int computeSieverts(Materials material, int aSpecialValue, int glassTier, boolean requiresExactSieverts){
         int aSievert = 0;
-        if (aSv >= 83 || aSv == 61 || aSv == 43) aSievert += aSv;
+        if (material.getProtons() >= 83 || material.getProtons() == 61 || material.getProtons() == 43)
+            aSievert += calculateSv(material);
         aSievert = aSievert << 1;
-        aSievert = aSievert | (exactSv ? 1 : 0);
+        aSievert = aSievert | (requiresExactSieverts ? 1 : 0);
         aSievert = aSievert << 2;
         aSievert = aSievert | specialToByte(aSpecialValue);
         aSievert = aSievert << 4;
-        aSievert = aSievert | glasTier;
-        return bacterialVatRecipes.addRecipe(
-            new GT_Recipe(
-                false,
-                aInputs,
-                null,
-                BioItemList.getPetriDish(aCulture),
-                new int[] {},
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                aSievert))
-            != null;
+        aSievert = aSievert | glassTier;
+        return aSievert;
+    }
+
+    @Deprecated
+    public boolean addRadHatch(ItemStack item, int radioLevel, int amount, short[] rgba) {
+        GT_Values.RA.stdBuilder()
+            .itemInputs(item)
+            .duration(amount)
+            .eut(radioLevel)
+            .metadata(DECAY_TICKS, (int) calcDecayTicks(radioLevel))
+            .noOptimize()
+            .addTo(radioHatchRecipes);
+        return true;
+    }
+    @Deprecated
+    public boolean addBioLabRecipe(ItemStack[] aInputs, ItemStack aOutput, ItemStack aSpecialItems, int[] aChances,
+        FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
+        GT_Values.RA.stdBuilder()
+            .itemInputs(aInputs)
+            .itemOutputs(aOutput)
+            .outputChances(aChances)
+            .special(aSpecialItems)
+            .fluidInputs(aFluidInputs)
+            .fluidOutputs(aFluidOutputs)
+            .duration(aDuration)
+            .eut(aEUt)
+            .specialValue(aSpecialValue)
+            .addTo(bioLabRecipes);
+
+        return true;
+    }
+
+    @Deprecated
+    public boolean addBioLabRecipeIncubation(ItemStack aInput, BioCulture aOutput, int[] aChances,
+        FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue) {
+        GT_Values.RA.stdBuilder()
+            .itemInputs( BioItemList.getPetriDish(null), aInput )
+            .itemOutputs( BioItemList.getPetriDish(aOutput) )
+            .outputChances(aChances)
+            .fluidInputs(aFluidInputs)
+            .duration(aDuration)
+            .eut(aEUt)
+            .specialValue(aSpecialValue)
+            .addTo(bioLabRecipes);
+        return true;
+    }
+
+    @Deprecated
+    public boolean addBioLabRecipeIncubation(ItemStack aInput, BioCulture aOutput, int[] aChances,
+        FluidStack aFluidInputs, int aDuration, int aEUt, int aSpecialValue) {
+        GT_Values.RA.stdBuilder()
+            .itemInputs( BioItemList.getPetriDish(null), aInput)
+            .itemOutputs(BioItemList.getPetriDish(aOutput))
+            .outputChances(aChances)
+            .fluidInputs(aFluidInputs)
+            .duration(aDuration)
+            .eut(aEUt)
+            .specialValue(aSpecialValue)
+            .addTo(bioLabRecipes);
+
+        return true;
+    }
+
+    @Deprecated
+    public boolean addBacterialVatRecipe(ItemStack[] aInputs, BioCulture aCulture, FluidStack[] aFluidInputs,
+        FluidStack[] aFluidOutputs, @Nonnegative int aDuration, @Nonnegative int aEUt, @Nonnegative int aSv,
+        @Nonnegative int glasTier, int aSpecialValue, boolean exactSv) {
+        GT_Values.RA.stdBuilder()
+            .itemInputs(aInputs)
+            .special(BioItemList.getPetriDish(aCulture))
+            .fluidInputs(aFluidInputs)
+            .fluidOutputs(aFluidOutputs)
+            .duration(aDuration)
+            .eut(aEUt)
+            .metadata(SIEVERTS, computeSieverts(aSv, aSpecialValue, glasTier, exactSv))
+            .noOptimize()
+            .addTo(bacterialVatRecipes);
+
+        return true;
     }
 
     @Deprecated
     public boolean addBacterialVatRecipe(ItemStack[] aInputs, BioCulture aCulture, FluidStack[] aFluidInputs,
         FluidStack[] aFluidOutputs, int aDuration, int aEUt, Materials material, @Nonnegative int glasTier,
         int aSpecialValue, boolean exactSv) {
-        byte gTier = (byte) glasTier;
-        int aSievert = 0;
-        if (material.getProtons() >= 83 || material.getProtons() == 61 || material.getProtons() == 43)
-            aSievert += calculateSv(material);
-        aSievert = aSievert << 1;
-        aSievert = aSievert | (exactSv ? 1 : 0);
-        aSievert = aSievert << 2;
-        aSievert = aSievert | specialToByte(aSpecialValue);
-        aSievert = aSievert << 4;
-        aSievert = aSievert | gTier;
-        return bacterialVatRecipes.addRecipe(
-            new GT_Recipe(
-                false,
-                aInputs,
-                null,
-                BioItemList.getPetriDish(aCulture),
-                new int[] {},
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                aSievert))
-            != null;
+        GT_Values.RA.stdBuilder()
+            .itemInputs(aInputs)
+            .special(BioItemList.getPetriDish(aCulture))
+            .fluidInputs(aFluidInputs)
+            .fluidOutputs(aFluidOutputs)
+            .duration(aDuration)
+            .eut(aEUt)
+            .metadata(SIEVERTS, computeSieverts(material, aSpecialValue, glasTier, exactSv))
+            .noOptimize()
+            .addTo(bacterialVatRecipes);
+
+        return true;
     }
 
     /**
      * Adds a Vat recipe without Rad requirements but with Glas requirements
      */
+    @Deprecated
     public boolean addBacterialVatRecipe(ItemStack[] aInputs, BioCulture culture, FluidStack[] aFluidInputs,
         FluidStack[] aFluidOutputs, int aDuration, int aEUt, byte glasTier) {
         int aSievert = 0;
         aSievert = aSievert | glasTier;
-        return bacterialVatRecipes.addRecipe(
-            new GT_Recipe(
-                false,
-                aInputs,
-                null,
-                BioItemList.getPetriDish(culture),
-                new int[] {},
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                aSievert))
-            != null;
+        GT_Values.RA.stdBuilder()
+            .itemInputs(aInputs)
+            .special(BioItemList.getPetriDish(culture))
+            .fluidInputs(aFluidInputs)
+            .fluidOutputs(aFluidOutputs)
+            .duration(aDuration)
+            .eut(aEUt)
+            .metadata(SIEVERTS, aSievert)
+            .noOptimize()
+            .addTo(bacterialVatRecipes);
+
+        return true;
     }
 
     /**
      * Adds a Vat recipe without Rad or Glas requirements
      */
+    @Deprecated
     public boolean addBacterialVatRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, BioCulture culture,
         FluidStack[] aFluidOutputs, int aDuration, int aEUt) {
-        return bacterialVatRecipes.addRecipe(
-            new GT_Recipe(
-                false,
-                aInputs,
-                null,
-                BioItemList.getPetriDish(culture),
-                new int[] {},
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                0))
-            != null;
+        GT_Values.RA.stdBuilder()
+            .itemInputs(aInputs)
+            .special(BioItemList.getPetriDish(culture))
+            .fluidInputs(aFluidInputs)
+            .fluidOutputs(aFluidOutputs)
+            .duration(aDuration)
+            .eut(aEUt)
+            .noOptimize()
+            .addTo(bacterialVatRecipes);
+
+        return true;
     }
 }
