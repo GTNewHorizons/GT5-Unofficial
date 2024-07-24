@@ -461,17 +461,21 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
-        aNBT.setBoolean("mUpgraded", mUpgraded);
         super.setItemNBT(aNBT);
+        aNBT.setByte("mTier", (byte) getTierOfTower());
     }
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         super.addAdditionalTooltipInformation(stack, tooltip);
         NBTTagCompound aNBT = stack.getTagCompound();
-        if (aNBT != null && aNBT.hasKey("mUpgraded")) {
-            tooltip.add(StatCollector.translateToLocal("tooltip.large_distill_tower.upgraded"));
+        int tier;
+        if (aNBT == null || !aNBT.hasKey("mTier")) {
+            tier = 1;
+        } else {
+            tier = aNBT.getInteger("mTier");
         }
+        tooltip.add(StatCollector.translateToLocalFormatted("tooltip.large_distill_tower.tier", tier));
     }
 
     private enum Mode {
@@ -500,6 +504,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("mode", mMode.ordinal());
+        tag.setInteger("tier", getTierOfTower());
     }
 
     @Override
@@ -513,5 +518,11 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
                 + StatCollector
                     .translateToLocal("GT5U.GTPP_MULTI_ADV_DISTILLATION_TOWER.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
+        if (tag.hasKey("tier")) {
+            currentTip.add(
+                "Tier: " + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(tag.getInteger("tier"))
+                    + EnumChatFormatting.RESET);
+        }
     }
 }
