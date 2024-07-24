@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GT_RecipeMapUtil.convertCellToFluid;
 
 import java.util.ArrayList;
@@ -9,6 +10,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.TierEU;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -317,17 +320,19 @@ public class GT_RecipeConstants {
         tPersistentHash = tPersistentHash * 31 + r.mDuration;
         tPersistentHash = tPersistentHash * 31 + r.mEUt;
         Collection<GT_Recipe> ret = new ArrayList<>(3);
-        ret.add(
-            RecipeMaps.scannerFakeRecipes.addFakeRecipe(
-                false,
-                new ItemStack[] { aResearchItem },
-                new ItemStack[] { aOutput },
-                new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Writes Research result") },
-                null,
-                null,
-                aResearchTime,
-                30,
-                -201)); // means it's scanned
+        ret.addAll(
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aResearchItem)
+                .itemOutputs(aOutput)
+                .special(ItemList.Tool_DataStick.getWithName(1L, "Writes Research result"))
+                .duration(aResearchTime)
+                .eut(TierEU.RECIPE_LV)
+                .specialValue(-201) // means it's scanned
+                .noOptimize()
+                .ignoreCollision()
+                .fake()
+                .addTo(scannerFakeRecipes));
+
 
         ret.add(
             RecipeMaps.assemblylineVisualRecipes.addFakeRecipe(

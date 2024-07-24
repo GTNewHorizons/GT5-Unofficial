@@ -9,12 +9,14 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
+import static com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps.htgrFakeRecipes;
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_VIA_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_Values.AuthorKuba;
+import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
@@ -251,7 +253,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
     @Override
     public RecipeMap<?> getRecipeMap() {
         // Only for visual
-        return BartWorksRecipeMaps.htgrFakeRecipes;
+        return htgrFakeRecipes;
     }
 
     @Override
@@ -596,16 +598,15 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             for (@SuppressWarnings("unused")
             Fuel_ fuel : sHTGR_Fuel) {
 
-                BartWorksRecipeMaps.htgrFakeRecipes.addFakeRecipe(
-                    false,
-                    new ItemStack[] { new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4) },
-                    new ItemStack[] { new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 5) },
-                    null,
-                    null,
-                    null,
-                    72000,
-                    powerUsage,
-                    0);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4))
+                    .itemOutputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 5))
+                    .duration(1*HOURS)
+                    .eut(powerUsage)
+                    .ignoreCollision()
+                    .noOptimize()
+                    .fake()
+                    .addTo(htgrFakeRecipes);
 
                 i += MATERIALS_PER_FUEL;
             }
