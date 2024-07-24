@@ -365,7 +365,7 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
-            .duration(120 * SECONDS)
+            .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
@@ -374,7 +374,7 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 4500)
-            .duration(120 * SECONDS)
+            .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
@@ -383,7 +383,7 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 4500)
-            .duration(120 * SECONDS)
+            .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
@@ -392,7 +392,7 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
-            .duration(120 * SECONDS)
+            .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
@@ -401,7 +401,7 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
-            .duration(120 * SECONDS)
+            .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
@@ -410,7 +410,7 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 4500)
-            .duration(120 * SECONDS)
+            .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
@@ -419,7 +419,7 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
-            .duration(120 * SECONDS)
+            .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
@@ -428,7 +428,7 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
-            .duration(120 * SECONDS)
+            .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
@@ -437,7 +437,7 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
-            .duration(120 * SECONDS)
+            .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
@@ -446,7 +446,7 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_EV)
             .metadata(COIL_HEAT, 3500)
-            .duration(120 * SECONDS)
+            .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(aCircuitID++))
@@ -456,7 +456,7 @@ public class MilledOreProcessing extends ItemPackage {
             .eut((int) TierEU.RECIPE_UV)
             .metadata(COIL_HEAT, 7500)
             // 60s UV instead of 120s ZPM to avoid fusion skip
-            .duration(60 * SECONDS)
+            .duration(1 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
 
     }
