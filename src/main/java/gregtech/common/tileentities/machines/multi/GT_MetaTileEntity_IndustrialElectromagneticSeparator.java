@@ -9,6 +9,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE_GL
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,6 +17,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Turbine;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.GregtechMetaTileEntity_LargerTurbineBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -126,7 +129,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                         "     D     ", "     C     ", "           " },
                     { "           ", "    AAA    ", "   A   A   ", " CDA D ADC ", "   A   A   ", "    AAA    ",
                         "     D     ", "     C     ", "           " },
-                    { "           ", "    BBB    ", "   BBBBB   ", " CDBBBBBDC ", "   BBBBB   ", "    BBB    ",
+                    { "           ", "    BEB    ", "   BBBBB   ", " CDBBBBBDC ", "   BBBBB   ", "    BBB    ",
                         "     D     ", "     C     ", "           " },
                     { "    B~B    ", "   BBBBB   ", "  BBBBBBB  ", "CDBBBBBBBDC", "  BBBBBBB  ", "   BBBBB   ",
                         "    BBB    ", "     D     ", "     C     " } })))
@@ -134,13 +137,6 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         .addElement(
             'B',
             ofChain(
-                buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
-                    .adder(GT_MetaTileEntity_IndustrialElectromagneticSeparator::addMagHatch)
-                    .hatchClass(GT_MetaTileEntity_MagHatch.class)
-                    .shouldReject(t -> !(t.mMagHatch == null))
-                    .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
-                    .dot(1)
-                    .build(),
                 buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
                     .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
@@ -151,6 +147,13 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                             ofBlock(GregTech_API.sBlockCasings10, 0)))))
         .addElement('C', ofFrame(Materials.NeodymiumMagnetic))
         .addElement('D', ofFrame(Materials.SamariumMagnetic))
+        .addElement('E',
+            buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
+                .adder(GT_MetaTileEntity_IndustrialElectromagneticSeparator::addMagHatch)
+                .hatchClass(GT_MetaTileEntity_MagHatch.class)
+                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
+                .dot(2)
+                .build())
         .build();
 
     public GT_MetaTileEntity_IndustrialElectromagneticSeparator(final int aID, final String aName,
