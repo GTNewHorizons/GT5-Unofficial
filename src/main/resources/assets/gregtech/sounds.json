@@ -26,6 +26,15 @@
       }
     ]
   },
+  "machines.SteamCentrifugeLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "SteamCentrifugeLoop",
+        "stream": false
+      }
+    ]
+  },
   "machines.SteamWasherLoop": {
     "category": "block",
     "sounds": [

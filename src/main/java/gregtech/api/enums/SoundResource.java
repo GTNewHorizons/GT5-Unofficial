@@ -61,6 +61,7 @@ public enum SoundResource {
     GT_MACHINES_PLASMAFORGE_LOOP(232, GregTech.ID, "machines.PlasmaForgeLoop"),
     GT_MACHINES_STEAM_WASHER_LOOP(233, GregTech.ID, "machines.SteamWasherLoop"),
     GT_MACHINES_WATER_PUMP_LOOP(234, GregTech.ID, "machines.WaterPumpLoop"),
+    GT_MACHINES_STEAM_CENTRIFUGE_LOOP(235, GregTech.ID, "machines.SteamCentrifugeLoop"),
 
     GUI_BUTTON_DOWN(-1, GregTech.ID, "gui.buttonDown"),
     GUI_BUTTON_UP(-1, GregTech.ID, "gui.buttonUp"),
