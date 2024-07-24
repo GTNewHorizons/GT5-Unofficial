@@ -107,8 +107,8 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
                         .casingIndex(CASING_TEXTURE_INDEX)
                         .dot(1)
                         .build()),
-                // Water Plant Pipe Casing
-                ofBlock(GregTech_API.sBlockCasings9, 4)))
+                // Reinforced Sterile Water Plant Casing
+                ofBlock(GregTech_API.sBlockCasings9, 5)))
         // Reinforced Sterile Water Plant Casing
         .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 5))
         // PTFE pipe casing
