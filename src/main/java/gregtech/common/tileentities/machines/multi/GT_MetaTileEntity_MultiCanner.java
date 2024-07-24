@@ -216,6 +216,11 @@ public class GT_MetaTileEntity_MultiCanner extends
     }
 
     @Override
+    public int getRecipeCatalystPriority() {
+        return -10;
+    }
+
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         if (aNBT.hasKey("fluidMode")) {
             machineMode = aNBT.getBoolean("fluidMode") ? MACHINEMODE_FLUIDCANNER : MACHINEMODE_CANNER;
