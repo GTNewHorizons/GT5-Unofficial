@@ -106,7 +106,6 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -200,7 +199,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-            if (supportsSingleRecipeLocking()) {
+        if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = !mLockedToSingleRecipe;
             if (mLockedToSingleRecipe) {
                 GT_Utility.sendChatToPlayer(

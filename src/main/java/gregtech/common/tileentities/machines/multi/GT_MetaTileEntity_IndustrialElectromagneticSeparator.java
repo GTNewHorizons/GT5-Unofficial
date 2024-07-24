@@ -16,7 +16,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -56,6 +55,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings10;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -346,7 +346,6 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             aPlayer,
             String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
     }
-
 
     @Override
     public void setMachineModeIcons() {
