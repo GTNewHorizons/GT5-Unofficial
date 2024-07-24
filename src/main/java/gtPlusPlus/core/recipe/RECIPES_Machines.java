@@ -835,15 +835,15 @@ public class RECIPES_Machines {
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(19),
                 ItemList.Distillation_Tower.get(2),
-                GregtechItemList.GTPP_Casing_IV.get(16),
+                GregtechItemList.GTPP_Casing_IV.get(2),
                 CI.getTieredComponent(OrePrefixes.circuit, 6, 8))
             .itemOutputs(GregtechItemList.Machine_Adv_DistillationTower.get(1))
             .fluidInputs(
                 ALLOY.AQUATIC_STEEL.getFluidStack(144 * 32),
                 ALLOY.BABBIT_ALLOY.getFluidStack(144 * 16),
-                ALLOY.BRONZE.getFluidStack(144 * 64),
-                ALLOY.KANTHAL.getFluidStack(144 * 16))
-            .duration(10 * MINUTES)
+                ALLOY.NITINOL_60.getFluidStack(144 * 64),
+                ALLOY.NICHROME.getFluidStack(144 * 16))
+            .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .metadata(CHEMPLANT_CASING_TIER, 5)
             .addTo(chemicalPlantRecipes);
