@@ -99,11 +99,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
 
 public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_MultiblockBase_EM
@@ -354,11 +356,24 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 }
                 if (mInputBusses != null) {
                     if (internalBattery == 0) {
-                        for (ItemStack itemStack : mInputBusses.get(0)
-                            .getRealInventory()) {
-                            if (itemStack != null && itemStack.isItemEqual(STELLAR_FUEL)) {
-                                stellarFuelAmount += itemStack.stackSize;
-                                itemStack.stackSize = 0;
+                        GT_MetaTileEntity_Hatch_InputBus inputBus = mInputBusses.get(0);
+                        ItemStack[] inputBusInventory = inputBus.getRealInventory();
+                        if (inputBusInventory != null) {
+                            for (int i = 0; i < inputBusInventory.length; i++) {
+                                ItemStack itemStack = inputBusInventory[i];
+                                if (itemStack != null && itemStack.isItemEqual(STELLAR_FUEL)) {
+                                    int stacksize = itemStack.stackSize;
+                                    if (inputBus instanceof GT_MetaTileEntity_Hatch_InputBus_ME meBus) {
+                                        ItemStack realItem = meBus.getRealInventory()[i + 16];
+                                        if (realItem == null) {
+                                            break;
+                                        }
+                                        stacksize = realItem.stackSize;
+                                    }
+                                    inputBus.decrStackSize(i, stacksize);
+                                    stellarFuelAmount += stacksize;
+                                    inputBus.updateSlots();
+                                }
                             }
                         }
                         neededStartupFuel = calculateStartupFuelConsumption(this);
@@ -368,7 +383,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                         }
                     } else {
                         fuelConsumption = (long) calculateFuelConsumption(this) * 5 * (batteryCharging ? 2 : 1);
-                        if (fluidInHatch != null) {
+                        if (fluidInHatch != null && fuelConsumption < Integer.MAX_VALUE) {
                             for (FluidStack fluid : fluidInHatch) {
                                 if (fluid.isFluidEqual(validFuelList.get(selectedFuelType))) {
                                     FluidStack fluidNeeded = new FluidStack(
