@@ -998,6 +998,7 @@ fog.button.milestones.tooltip=Milestone Overview
 fog.button.materialrequirements.tooltip=Upgrade needs additional materials
 fog.button.materialrequirementsmet.tooltip=All materials supplied
 fog.button.materialrequirements.tooltip.clickhere=Click to open material insertion window
+fog.button.ejection.tooltip=Toggle Graviton Shard Ejection
 
 
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
