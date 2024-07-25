@@ -718,7 +718,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
     }
 
     @Override
-    public long getActivePowerUsage() {
+    public long getBasePowerUsage() {
         return TierEU.RECIPE_UHV;
     }
 

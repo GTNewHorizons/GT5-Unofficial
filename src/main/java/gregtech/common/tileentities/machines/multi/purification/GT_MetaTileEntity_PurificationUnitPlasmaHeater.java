@@ -571,7 +571,7 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     }
 
     @Override
-    public long getActivePowerUsage() {
+    public long getBasePowerUsage() {
         return TierEU.RECIPE_UV;
     }
 

@@ -1,5 +1,8 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -17,13 +20,24 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.math.Size;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.VoidingMode;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
@@ -100,6 +114,11 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
      */
     protected float currentRecipeChance = 0.0f;
 
+    /**
+     * Configured parallel amount. Only water I/O and power scale.
+     */
+    protected int parallel = 1;
+
     protected GT_MetaTileEntity_PurificationUnitBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -131,7 +150,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
 
     /**
      * Used to more easily grab a correct texture index from a block + meta.
-     * 
+     *
      * @param block Block to use as base. Must implement GT_Block_Casings_Abstract
      * @param meta  Metadata of the block to pick the actual block/
      * @return The correct index into the global texture atlas.
@@ -167,7 +186,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     /**
      * Equivalent to checkRecipe(), but public because the purification plant needs to access it and checkRecipe()
      * is protected.
-     * 
+     *
      * @return True if successfully found a recipe and/or started processing/
      */
     public boolean doPurificationRecipeCheck() {
@@ -194,7 +213,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
      * This applies water boosts when needed to the base chance. Purification units can override this to perform
      * more complex success chance calculations, that even take into account what happened during the runtime of the
      * recipe.
-     * 
+     *
      * @return The success chance of the recipe, at the point in time the outputs are to be produced.
      */
     public float calculateFinalSuccessChance() {
@@ -267,7 +286,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         // Set this value, so it can be displayed in Waila. Note that the logic for the units is
         // specifically overridden so setting this value does not actually drain power.
         // Instead, power is drained by the main purification plant controller.
-        this.lEUt = -this.getActivePowerUsage();
+        this.lEUt = -this.getBasePowerUsage();
     }
 
     public void addRecipeOutputs() {
@@ -356,7 +375,11 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     /**
      * Get the EU/t usage of this unit while it is running.
      */
-    public abstract long getActivePowerUsage();
+    public abstract long getBasePowerUsage();
+
+    public long getActualPowerUsage() {
+        return getBasePowerUsage() * parallel;
+    }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -385,6 +408,9 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             controllerSet = true;
         }
         currentRecipeChance = aNBT.getFloat("currentRecipeChance");
+        if (aNBT.hasKey("configuredParallel")) {
+            parallel = aNBT.getInteger("configuredParallel");
+        }
     }
 
     public NBTTagCompound saveLinkDataToNBT() {
@@ -403,6 +429,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             aNBT.setTag("controller", controllerNBT);
         }
         aNBT.setFloat("currentRecipeChance", currentRecipeChance);
+        aNBT.setInteger("configuredParallel", parallel);
     }
 
     private LinkResult trySetControllerFromCoord(int x, int y, int z) {
@@ -590,13 +617,70 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
 
     /**
      * Creates all widgets needed to sync this unit's status with the client
-     *
-     * @return
      */
     public Widget makeSyncerWidgets() {
         return new MultiChildWidget()
             .addChild(new FakeSyncWidget.BooleanSyncer(() -> this.mMachine, machine -> this.mMachine = machine))
             .addChild(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, _work -> {}));
+    }
+
+    private static final int PARALLEL_WINDOW_ID = 10;
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        buildContext.addSyncedWindow(PARALLEL_WINDOW_ID, this::createParallelWindow);
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient()) {
+                widget.getContext()
+                    .openSyncedWindow(PARALLEL_WINDOW_ID);
+            }
+        })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(GT_UITextures.BUTTON_STANDARD);
+                ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .addTooltip(translateToLocal("GT5U.tpm.parallelwindow"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(174, 129)
+            .setSize(16, 16));
+        super.addUIWidgets(builder, buildContext);
+    }
+
+    protected ModularWindow createParallelWindow(final EntityPlayer player) {
+        final int WIDTH = 158;
+        final int HEIGHT = 52;
+        final int PARENT_WIDTH = getGUIWidth();
+        final int PARENT_HEIGHT = getGUIHeight();
+        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(true);
+        builder.setPos(
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
+                .add(
+                    Alignment.BottomRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
+                        .add(WIDTH - 3, 0)
+                        .subtract(0, 10)));
+        builder.widget(
+            TextWidget.localised("GTPP.CC.parallel")
+                .setPos(3, 4)
+                .setSize(150, 20))
+            .widget(
+                new NumericWidget().setSetter(val -> parallel = (int) val)
+                    .setGetter(() -> parallel)
+                    .setBounds(1, Integer.MAX_VALUE)
+                    .setDefaultValue(1)
+                    .setScrollValues(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(150, 18)
+                    .setPos(4, 25)
+                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                    .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> parallel, (val) -> parallel = val), builder));
+        return builder.build();
     }
 
     @Override

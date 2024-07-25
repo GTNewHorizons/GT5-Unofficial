@@ -456,7 +456,7 @@ public class GT_MetaTileEntity_PurificationPlant
         for (LinkedPurificationUnit unit : mLinkedUnits) {
             if (unit.isActive()) {
                 euT += unit.metaTileEntity()
-                    .getActivePowerUsage();
+                    .getActualPowerUsage();
             }
         }
         return euT;

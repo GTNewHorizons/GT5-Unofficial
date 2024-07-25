@@ -419,7 +419,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     }
 
     @Override
-    public long getActivePowerUsage() {
+    public long getBasePowerUsage() {
         return TierEU.RECIPE_UV;
     }
 

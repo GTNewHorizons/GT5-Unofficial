@@ -335,7 +335,7 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
     }
 
     @Override
-    public long getActivePowerUsage() {
+    public long getBasePowerUsage() {
         return TierEU.RECIPE_LuV;
     }
 }

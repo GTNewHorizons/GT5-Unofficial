@@ -476,7 +476,7 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
     }
 
     @Override
-    public long getActivePowerUsage() {
+    public long getBasePowerUsage() {
         return TierEU.RECIPE_ZPM;
     }
 

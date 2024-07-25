@@ -134,7 +134,7 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
     }
 
     @Override
-    public long getActivePowerUsage() {
+    public long getBasePowerUsage() {
         return TierEU.RECIPE_LuV;
     }
 
