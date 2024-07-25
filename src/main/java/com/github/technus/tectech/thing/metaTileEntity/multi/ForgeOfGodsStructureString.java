@@ -1107,7 +1107,7 @@ public abstract class ForgeOfGodsStructureString {
             "                                                                                                                               " },
         { "                                                               J                                                               ",
             "                                                            BEEEEEB                                                            ",
-            "                                                         EEEE      EEE                                                         ",
+            "                                                         EEE       EEE                                                         ",
             "                                                        E             E                                                        ",
             "                                                      EE               EE                                                      ",
             "                                                     E                   E                                                     ",
