@@ -6,6 +6,13 @@ import net.minecraft.util.AxisAlignedBB;
 public class TileLaser extends TileEntity {
 
     public boolean shouldRender = false;
+    public byte r = 0;
+    public byte g = 0;
+    public byte b = 0;
+
+    public void setColors(byte red, byte green, byte blue) {
+        r = red; g = green; b = blue;
+    }
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {

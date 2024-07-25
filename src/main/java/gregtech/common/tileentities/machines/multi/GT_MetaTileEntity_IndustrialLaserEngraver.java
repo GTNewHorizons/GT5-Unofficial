@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.github.technus.tectech.util.TT_Utility.getUniqueIdentifier;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
@@ -10,6 +11,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -40,6 +43,13 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings4;
 import gregtech.common.blocks.GT_Block_Laser;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class GT_MetaTileEntity_IndustrialLaserEngraver
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IndustrialLaserEngraver>
@@ -213,6 +223,10 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         return true;
     }
 
+    private static String getUniqueIdentifier(ItemStack is) {
+        return is.getItem().getUnlocalizedName() + is.getItemDamage();
+    }
+
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
@@ -220,7 +234,15 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GT_Recipe recipe) {
-                renderer.laserRender.shouldRender = true;
+                for (int i = 0; i < recipe.mInputs.length; i++) {
+                    String uid = getUniqueIdentifier(recipe.mInputs[i]);
+                    if (lensColors.containsKey(uid)) {
+                        Colors c = lensColors.get(uid);
+                        renderer.laserRender.setColors(c.r, c.g, c.b);
+                        break;
+                    }
+                }
+                if (!stopAllRendering) renderer.laserRender.shouldRender = true;
                 return super.onRecipeStart(recipe);
             }
 
@@ -275,5 +297,30 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
+        //getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.FoolsRuby, 1));
     }
+
+    private enum Colors {
+        White(0,0,0),
+        Red(1,0,0),
+        Green(0,1,0),
+        Blue(0,0,1),
+        Black(1,1,1);
+
+        final byte r, g, b;
+
+        Colors(double r, double g, double b) {
+            this.r = (byte) r;
+            this.g = (byte) g;
+            this.b = (byte) b;
+        }
+    }
+
+    private static final Map<String, Colors> lensColors;
+    static {
+        lensColors = new HashMap<>();
+        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Emerald, 1)), Colors.Green);
+        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Ruby, 1)), Colors.Red);
+    }
+
 }

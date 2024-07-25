@@ -18,7 +18,7 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
     private double xOffset = 0.0F;
 
     private static final IModelCustom lasermodel = AdvancedModelLoader
-        .loadModel(new ResourceLocation("gregtech", "textures/model/laser.obj"));;
+        .loadModel(new ResourceLocation("gregtech", "textures/model/laser.obj"));
 
     public GT_LaserRenderer() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileLaser.class, this);
@@ -42,6 +42,7 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
         if (tickcount >= 80) {
             tickcount = 0;
         }
+        GL11.glColor3b(((TileLaser) tile).r, ((TileLaser) tile).g, ((TileLaser) tile).b);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_BLEND);
         bindTexture(new ResourceLocation("gregtech", "textures/model/laser.png"));
