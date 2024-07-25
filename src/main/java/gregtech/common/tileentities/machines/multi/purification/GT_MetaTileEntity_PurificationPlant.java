@@ -204,6 +204,10 @@ public class GT_MetaTileEntity_PurificationPlant
                     + " chance")
             .addInfo("to return water of the same quality as the input or lower.")
             .addSeparator()
+            .addInfo("Every purification unit has a config window to configure maximum parallel amount.")
+            .addInfo(
+                "This will only scale purified water I/O and power usage. Other catalysts and outputs are unchanged.")
+            .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
