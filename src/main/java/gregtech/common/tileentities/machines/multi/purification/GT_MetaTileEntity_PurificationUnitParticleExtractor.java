@@ -5,19 +5,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Supplier;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
@@ -25,22 +18,19 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gtPlusPlus.core.material.Particle;
 
 public class GT_MetaTileEntity_PurificationUnitParticleExtractor
     extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitParticleExtractor>
     implements ISurvivalConstructable {
 
-    private static class ParticleCombination {
+    private static class CatalystCombination {
 
         public ItemStack firstCatalyst;
         public ItemStack secondCatalyst;
-        public ItemStack particle;
 
-        public ParticleCombination(ItemStack first, ItemStack second, ItemStack part) {
+        public CatalystCombination(ItemStack first, ItemStack second) {
             firstCatalyst = first;
             secondCatalyst = second;
-            particle = part;
         }
 
         public boolean matches(ItemStack a, ItemStack b) {
@@ -48,45 +38,6 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
                 || (b.isItemEqual(firstCatalyst) && a.isItemEqual(secondCatalyst));
         }
     }
-
-    private static <T> Supplier<T> memoize(Supplier<T> delegate) {
-        AtomicReference<T> value = new AtomicReference<>();
-        return () -> {
-            T val = value.get();
-            if (val == null) {
-                val = value.updateAndGet(cur -> cur == null ? Objects.requireNonNull(delegate.get()) : cur);
-            }
-            return val;
-        };
-    }
-
-    private static final Supplier<ArrayList<ParticleCombination>> PARTICLE_COMBINATIONS = memoize(
-        () -> new ArrayList<>(
-            Arrays.asList(
-                new ParticleCombination(
-                    ItemList.Particle_Catalyst_Blue.get(1L),
-                    ItemList.Particle_Catalyst_Red.get(1L),
-                    Particle.getBaseParticle(Particle.ELECTRON)),
-                new ParticleCombination(
-                    ItemList.Particle_Catalyst_Blue.get(1L),
-                    ItemList.Particle_Catalyst_Green.get(1L),
-                    Particle.getBaseParticle(Particle.PROTON)),
-                new ParticleCombination(
-                    ItemList.Particle_Catalyst_Blue.get(1L),
-                    ItemList.Particle_Catalyst_Yellow.get(1L),
-                    Particle.getBaseParticle(Particle.NEUTRON)),
-                new ParticleCombination(
-                    ItemList.Particle_Catalyst_Red.get(1L),
-                    ItemList.Particle_Catalyst_Green.get(1L),
-                    Particle.getBaseParticle(Particle.MUON)),
-                new ParticleCombination(
-                    ItemList.Particle_Catalyst_Red.get(1L),
-                    ItemList.Particle_Catalyst_Yellow.get(1L),
-                    Particle.getBaseParticle(Particle.PHOTON)),
-                new ParticleCombination(
-                    ItemList.Particle_Catalyst_Green.get(1L),
-                    ItemList.Particle_Catalyst_Yellow.get(1L),
-                    Particle.getBaseParticle(Particle.GLUON)))));
 
     public GT_MetaTileEntity_PurificationUnitParticleExtractor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

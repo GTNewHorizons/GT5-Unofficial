@@ -2047,10 +2047,14 @@ public enum ItemList implements IItemContainer {
     BlockNaquadriaReinforcedWaterPlantCasing,
     GlassUVResistant,
     BlockUltraVioletLaserEmitter,
-    Particle_Catalyst_Red,
-    Particle_Catalyst_Blue,
-    Particle_Catalyst_Green,
-    Particle_Catalyst_Yellow,
+    Quark_Catalyst_Housing,
+    Quark_Creation_Catalyst_Up,
+    Quark_Creation_Catalyst_Down,
+    Quark_Creation_Catalyst_Strange,
+    Quark_Creation_Catalyst_Charm,
+    Quark_Creation_Catalyst_Bottom,
+    Quark_Creation_Catalyst_Top,
+    Quark_Creation_Catalyst_Unaligned,
     Casing_Shielded_Accelerator;
 
     public static final ItemList[] DYE_ONLY_ITEMS = { Color_00, Color_01, Color_02, Color_03, Color_04, Color_05,
