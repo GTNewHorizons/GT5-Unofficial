@@ -10,6 +10,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -34,6 +36,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings4;
+import gregtech.common.render.GT_LaserRenderer;
 
 public class GT_MetaTileEntity_IndustrialLaserEngraver
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IndustrialLaserEngraver>
@@ -79,6 +82,24 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     @Override
     public IStructureDefinition<GT_MetaTileEntity_IndustrialLaserEngraver> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
+    }
+
+    private void createRenderBlock() {
+        //if (!useRender) return;
+        int x = getBaseMetaTileEntity().getXCoord();
+        int y = getBaseMetaTileEntity().getYCoord();
+        int z = getBaseMetaTileEntity().getZCoord();
+
+        double xOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        double zOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        double yOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+
+        this.getBaseMetaTileEntity()
+            .getWorld()
+            .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
+        this.getBaseMetaTileEntity()
+            .getWorld()
+            .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), GregTech_API.sLaserRender);
     }
 
     @Override
@@ -128,6 +149,11 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
                 .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 0)) };
         }
         return rTexture;
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        createRenderBlock();
     }
 
     @Override

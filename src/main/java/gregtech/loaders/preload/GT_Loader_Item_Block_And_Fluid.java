@@ -19,6 +19,8 @@ import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
+import gregtech.common.blocks.GT_Block_Laser;
+import gregtech.common.tileentities.render.TileLaser;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -544,6 +546,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockStones = new GT_Block_Stones();
         GregTech_API.sBlockOres1 = new GT_Block_Ores();
         GregTech_API.sDroneRender = new GT_Block_Drone();
+        GregTech_API.sLaserRender = new GT_Block_Laser();
         // meta ID order, DO NOT CHANGE ORDER
 
         GregTech_API.sBlockMetal1 = new GT_Block_Metal(
@@ -669,6 +672,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GT_Log.out.println("GT_Mod: Registering the DroneRender.");
         GameRegistry.registerTileEntity(TileDrone.class, "DroneRender");
+        GT_Log.out.println("GT_Mod: Registering the LaserRender.");
+        GameRegistry.registerTileEntity(TileLaser.class, "LaserRenderer");
 
         GT_Log.out.println("GT_Mod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");

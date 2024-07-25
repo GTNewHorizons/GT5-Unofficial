@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
 
+import gregtech.common.render.GT_LaserRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
@@ -622,6 +623,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
         GT_Renderer_Block.register();
         new GT_MultiTile_Renderer();
         new GT_RenderDrone();
+        new GT_LaserRenderer();
         metaGeneratedItemRenderer = new GT_MetaGenerated_Item_Renderer();
         for (GT_MetaGenerated_Item item : GT_MetaGenerated_Item.sInstances.values()) {
             metaGeneratedItemRenderer.registerItem(item);
