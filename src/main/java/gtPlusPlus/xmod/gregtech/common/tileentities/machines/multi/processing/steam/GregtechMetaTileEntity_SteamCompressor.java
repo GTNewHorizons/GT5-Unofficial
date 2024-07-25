@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -32,7 +33,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -55,10 +59,40 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class GregtechMetaTileEntity_SteamCompressor
     extends GregtechMeta_SteamMultiBase<GregtechMetaTileEntity_SteamCompressor> implements ISurvivalConstructable {
 
-    private String mCasingName = "Bronze or Steel Plated Bricks";
+    public GregtechMetaTileEntity_SteamCompressor(String aName) {
+        super(aName);
+    }
+
+    public GregtechMetaTileEntity_SteamCompressor(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
+        return new GregtechMetaTileEntity_SteamCompressor(this.mName);
+    }
+
+    @Override
+    public String getMachineType() {
+        return "Compressor";
+    }
+
+    private static final String STRUCTUR_PIECE_MAIN = "main";
+
+    private IStructureDefinition<GregtechMetaTileEntity_SteamCompressor> STRUCTURE_DEFINITION = null;
+
+    // spotless:off
+    private final String[][] shape = new String[][] {
+        { "CCC", "CCC", "CCC", "CCC" },
+        { "C~C", "C-C", "C-C", "CCC" },
+        { "CCC", "CCC", "CCC", "CCC" } };
+    //spotless:on
+
+    private static final int HORIZONTAL_OFF_SET = 1;
+    private static final int VERTICAL_OFF_SET = 1;
+    private static final int DEPTH_OFF_SET = 0;
 
     private int mCountCasing = 0;
-    private IStructureDefinition<GregtechMetaTileEntity_SteamCompressor> STRUCTURE_DEFINITION = null;
 
     private int tierMachine = 1;
 
@@ -76,17 +110,25 @@ public class GregtechMetaTileEntity_SteamCompressor
         return 0;
     }
 
-    public GregtechMetaTileEntity_SteamCompressor(String aName) {
-        super(aName);
+    protected void updateHatchTexture() {
+        for (GT_MetaTileEntity_Hatch h : mSteamInputs) h.updateTexture(getCasingTextureID());
+        for (GT_MetaTileEntity_Hatch h : mSteamOutputs) h.updateTexture(getCasingTextureID());
+        for (GT_MetaTileEntity_Hatch h : mSteamInputFluids) h.updateTexture(getCasingTextureID());
     }
 
-    public GregtechMetaTileEntity_SteamCompressor(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+    private int getCasingTextureID() {
+        if (tierMachineCasing == 2) return ((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0);
+        return ((GT_Block_Casings1) GregTech_API.sBlockCasings1).getTextureIndex(10);
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
-        return new GregtechMetaTileEntity_SteamCompressor(this.mName);
+    public void onValueUpdate(byte aValue) {
+        tierMachineCasing = aValue;
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return (byte) tierMachineCasing;
     }
 
     @Override
@@ -100,38 +142,20 @@ public class GregtechMetaTileEntity_SteamCompressor
     }
 
     @Override
-    public String getMachineType() {
-        return "Compressor";
-    }
-
-    @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Steam Compressor")
-            .addInfo("33.3% faster than using a single block Steam Compressor.")
-            .addInfo("Uses only 66.6% of the steam/s compared to a single block Steam Compressor.")
-            .addInfo("Compresses up to 8 x Tier things at a time.")
-            .addSeparator()
-            .beginStructureBlock(3, 3, 4, true)
-            .addController("Front center")
-            .addCasingInfoMin(mCasingName, 25, false)
-            .addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
-            .addOtherStructurePart(TT_steamoutputbus, "Any casing", 1)
-            .addOtherStructurePart(TT_steamhatch, "Any casing", 1)
-            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
-        return tt;
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        if (side == facing) {
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
+                aActive ? getFrontOverlayActive() : getFrontOverlay() };
+        }
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
     }
 
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_SteamCompressor> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_SteamCompressor>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        new String[][] { { "CCC", "CCC", "CCC", "CCC" }, { "C~C", "C-C", "C-C", "CCC" },
-                            { "CCC", "CCC", "CCC", "CCC" }, }))
+                .addShape(STRUCTUR_PIECE_MAIN, transpose(shape))
                 .addElement(
                     'C',
                     ofChain(
@@ -156,53 +180,47 @@ public class GregtechMetaTileEntity_SteamCompressor
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(mName, stackSize, hintsOnly, 1, 1, 0);
+        buildPiece(STRUCTUR_PIECE_MAIN, stackSize, hintsOnly, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(
+            STRUCTUR_PIECE_MAIN,
+            stackSize,
+            HORIZONTAL_OFF_SET,
+            VERTICAL_OFF_SET,
+            DEPTH_OFF_SET,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCountCasing = 0;
         tierMachineCasing = -1;
-        if (!checkPiece(mName, 1, 1, 0)) return false;
+        if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (tierMachineCasing < 0) return false;
-        if (tierMachineCasing == 1 && mCountCasing > 25) {
+        if (tierMachineCasing == 1 && mCountCasing > 25
+            && !mSteamInputFluids.isEmpty()
+            && !mSteamInputs.isEmpty()
+            && !mSteamOutputs.isEmpty()) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
-        if (tierMachineCasing == 2 && mCountCasing > 25) {
+        if (tierMachineCasing == 2 && mCountCasing > 25
+            && !mSteamInputFluids.isEmpty()
+            && !mSteamInputs.isEmpty()
+            && !mSteamOutputs.isEmpty()) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
         }
 
         return false;
-    }
-
-    @Override
-    public void onValueUpdate(byte aValue) {
-        tierMachineCasing = aValue;
-    }
-
-    @Override
-    public byte getUpdateData() {
-        return (byte) tierMachineCasing;
-    }
-
-    protected void updateHatchTexture() {
-        for (GT_MetaTileEntity_Hatch h : mSteamInputs) h.updateTexture(getCasingTextureID());
-        for (GT_MetaTileEntity_Hatch h : mSteamOutputs) h.updateTexture(getCasingTextureID());
-        for (GT_MetaTileEntity_Hatch h : mSteamInputFluids) h.updateTexture(getCasingTextureID());
-    }
-
-    private int getCasingTextureID() {
-        if (tierMachineCasing == 2) return ((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0);
-        return ((GT_Block_Casings1) GregTech_API.sBlockCasings1).getTextureIndex(10);
     }
 
     @Override
@@ -231,13 +249,41 @@ public class GregtechMetaTileEntity_SteamCompressor
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
-        if (side == facing) {
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
-                aActive ? getFrontOverlayActive() : getFrontOverlay() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(getMachineType())
+            .addInfo("Controller Block for the Steam Compressor")
+            .addInfo("33.3% faster than using a single block Steam Compressor.")
+            .addInfo("Uses only 66.6% of the steam/s compared to a single block Steam Compressor.")
+            .addInfo("Compresses up to 8 x Tier things at a time.")
+            .addSeparator()
+            .beginStructureBlock(3, 3, 4, false)
+            .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addStructureInfo(
+                EnumChatFormatting.WHITE + "Steam Input Hatch "
+                    + EnumChatFormatting.GOLD
+                    + "1"
+                    + EnumChatFormatting.GRAY
+                    + " Any casing")
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1)
+            .addStructureInfo(EnumChatFormatting.GOLD + "25-30x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2)
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "25-30x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
+            .addStructureInfo("")
+            .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+        return tt;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        info.add("Machine Tier: " + EnumChatFormatting.YELLOW + tierMachine);
+        info.add("Parallel: " + EnumChatFormatting.YELLOW + getMaxParallelRecipes());
+        return info.toArray(new String[0]);
     }
 
     @Override
@@ -278,11 +324,10 @@ public class GregtechMetaTileEntity_SteamCompressor
         tierMachine = aNBT.getInteger("tierMachine");
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Machine Tier: " + EnumChatFormatting.YELLOW + tierMachine);
-        info.add("Parallel: " + EnumChatFormatting.YELLOW + getMaxParallelRecipes());
-        return info.toArray(new String[0]);
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.IC2_MACHINES_COMPRESSOR_OP.resourceLocation;
     }
+
 }
