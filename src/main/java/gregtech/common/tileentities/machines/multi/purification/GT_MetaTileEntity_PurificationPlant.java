@@ -227,7 +227,7 @@ public class GT_MetaTileEntity_PurificationPlant
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(49, 9, 49, false)
             .addCasingInfoExactlyColored(
-                "Industrial Strength Concrete",
+                "Superplasticizer-Treated High Strength Concrete",
                 EnumChatFormatting.GRAY,
                 2401,
                 EnumChatFormatting.GOLD,
@@ -239,7 +239,7 @@ public class GT_MetaTileEntity_PurificationPlant
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoRangeColored(
-                "Industrial Water Plant Casing",
+                "Reinforced Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
                 71,
                 72,

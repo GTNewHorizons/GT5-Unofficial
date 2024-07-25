@@ -360,13 +360,13 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(23, 15, 15, false)
             .addCasingInfoExactlyColored(
-                "Water Plant Concrete Casing",
+                "Reinforced Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
                 1091,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
-                "Plasma Heater Casing",
+                "Heat-Resistant Trinium Plated Casing",
                 EnumChatFormatting.GRAY,
                 122,
                 EnumChatFormatting.GOLD,

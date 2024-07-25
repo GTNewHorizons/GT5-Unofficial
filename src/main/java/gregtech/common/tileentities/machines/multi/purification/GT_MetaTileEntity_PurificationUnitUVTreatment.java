@@ -283,13 +283,13 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
-                "Neutronium-Coated UV-Resistant Glass",
+                "Electron-Permeable Neutronium Coated Glass",
                 EnumChatFormatting.GRAY,
                 144,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
-                "Ultraviolet Backlight Sterilizer Casing",
+                "High Energy Ultraviolet Emitter Casing",
                 EnumChatFormatting.GRAY,
                 24,
                 EnumChatFormatting.GOLD,

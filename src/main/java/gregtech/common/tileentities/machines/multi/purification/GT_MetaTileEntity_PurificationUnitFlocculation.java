@@ -317,20 +317,20 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(7, 4, 7, false)
             .addCasingInfoRangeColored(
-                "Clean Flocculation Casing",
+                "Slick Sterile Flocculation Casing",
                 EnumChatFormatting.GRAY,
                 60,
                 65,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
-                "Water Plant Pipe Casing",
+                "Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
                 16,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
-                "Industrial Water Plant Casing",
+                "Reinforced Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
                 30,
                 EnumChatFormatting.GOLD,

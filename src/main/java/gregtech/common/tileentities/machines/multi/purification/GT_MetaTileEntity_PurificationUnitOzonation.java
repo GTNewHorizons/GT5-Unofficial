@@ -231,14 +231,14 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(9, 10, 5, false)
             .addCasingInfoRangeColored(
-                "Ozonation Casing",
+                "Inert Filtration Casing",
                 EnumChatFormatting.GRAY,
                 99,
                 102,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
-                "High Pressure Resistant Casing",
+                "Reactive Gas Containment Casing",
                 EnumChatFormatting.GRAY,
                 27,
                 EnumChatFormatting.GOLD,

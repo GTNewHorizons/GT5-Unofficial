@@ -213,7 +213,7 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
             .beginStructureBlock(11, 4, 11, false)
             .addSeparator()
             .addCasingInfoRangeColored(
-                "Concrete Water Plant Casing",
+                "Reinforced Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
                 123,
                 131,

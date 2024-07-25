@@ -409,13 +409,13 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(7, 4, 7, false)
             .addCasingInfoExactlyColored(
-                "Naquadah Reinforced Water Plant Casing",
+                "Stabilized Naquadah Water Plant Casing",
                 EnumChatFormatting.GRAY,
                 15,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
-                "pH Resistant Glass",
+                "Chemical Grade Glass",
                 EnumChatFormatting.GRAY,
                 18,
                 EnumChatFormatting.GOLD,
@@ -427,7 +427,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
-                "Extreme Corrosion Resistant Casing",
+                "Inert Neutralization Water Plant Casing",
                 EnumChatFormatting.GRAY,
                 67 * 2,
                 EnumChatFormatting.GOLD,
