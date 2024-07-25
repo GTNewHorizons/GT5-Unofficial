@@ -10,11 +10,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -32,10 +33,13 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMul
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings4;
+import gregtech.common.blocks.GT_Block_Laser;
 
 public class GT_MetaTileEntity_IndustrialLaserEngraver
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IndustrialLaserEngraver>
@@ -53,7 +57,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
                     {"   "," g ","   "," a ","aaa"},
                     {"   "," g ","   "," a ","aaa"},
                     {"   "," g ","   "," a ","aaa"},
-                    {"a~a","aaa","aaa","aaa","aaa"}
+                    {"a~a","ara","aaa","aaa","aaa"}
                 })))
             //spotless:on
         .addElement(
@@ -68,7 +72,20 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
                         ofBlock(GregTech_API.sBlockCasings4, 0))))
         .addElement('f', ofFrame(Materials.TungstenSteel))
         .addElement('g', Glasses.chainAllGlasses())
+        .addElement(
+            'r',
+            ofBlockAdder(GT_MetaTileEntity_IndustrialLaserEngraver::laserRendererAdder, GregTech_API.sLaserRender, 0))
         .build();
+
+    private static GT_Block_Laser renderer;
+
+    private boolean laserRendererAdder(Block block, int meta) {
+        if (block == GregTech_API.sLaserRender) {
+            renderer = (GT_Block_Laser) block;
+            return true;
+        }
+        return false;
+    }
 
     public GT_MetaTileEntity_IndustrialLaserEngraver(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -81,24 +98,6 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     @Override
     public IStructureDefinition<GT_MetaTileEntity_IndustrialLaserEngraver> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
-    }
-
-    private void createRenderBlock() {
-        // if (!useRender) return;
-        int x = getBaseMetaTileEntity().getXCoord();
-        int y = getBaseMetaTileEntity().getYCoord();
-        int z = getBaseMetaTileEntity().getZCoord();
-
-        double xOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        double zOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-        double yOffset = 2 * getExtendedFacing().getRelativeBackInWorld().offsetY;
-
-        this.getBaseMetaTileEntity()
-            .getWorld()
-            .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
-        this.getBaseMetaTileEntity()
-            .getWorld()
-            .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), GregTech_API.sLaserRender);
     }
 
     @Override
@@ -150,20 +149,24 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         return rTexture;
     }
 
+    private boolean stopAllRendering = false;
+
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        createRenderBlock();
+        stopAllRendering = !stopAllRendering;
+        if (stopAllRendering) {
+            renderer.laserRender.shouldRender = false;
+        }
     }
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Laser Engraver")
-            .addInfo("Controller Block for the TurboCan Pro")
-            .addInfo("Use screwdriver to switch mode")
+            .addInfo("Controller Block for the High Power Laser Emitter")
+            .addInfo("Use screwdriver to disable laser rendering")
             .addInfo("200% the speed of single block machines of the same voltage")
             .addInfo("Gains 8 parallels per voltage tier")
-            .addInfo(EnumChatFormatting.BLUE + "It's uncanny!")
             .addInfo(AuthorFourIsTheNumber)
             .addSeparator()
             .beginStructureBlock(7, 5, 7, true)
@@ -203,7 +206,8 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         mEnergyHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0)) return false;
-        if (mCasingAmount < 85) return false;
+        // TODO FIX
+        if (mCasingAmount < 0) return false;
 
         // All checks passed!
         return true;
@@ -211,7 +215,21 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2F)
+        return new ProcessingLogic() {
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult onRecipeStart(@NotNull GT_Recipe recipe) {
+                renderer.laserRender.shouldRender = true;
+                return super.onRecipeStart(recipe);
+            }
+
+            @Override
+            public ProcessingLogic clear() {
+                renderer.laserRender.shouldRender = false;
+                return super.clear();
+            }
+        }.setSpeedBonus(1F / 2F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 

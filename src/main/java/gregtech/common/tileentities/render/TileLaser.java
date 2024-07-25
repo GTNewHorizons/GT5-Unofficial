@@ -5,6 +5,8 @@ import net.minecraft.util.AxisAlignedBB;
 
 public class TileLaser extends TileEntity {
 
+    public boolean shouldRender = false;
+
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
         return INFINITE_EXTENT_AABB;

@@ -31,6 +31,9 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
+        if (!((TileLaser) tile).shouldRender) {
+            return;
+        }
         GL11.glPushMatrix();
         GL11.glTranslated(x + (tickcount / 20), y + 0.5, z + zoffset);
         maths();

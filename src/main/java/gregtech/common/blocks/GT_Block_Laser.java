@@ -17,12 +17,13 @@ import gregtech.common.tileentities.render.TileLaser;
 
 public class GT_Block_Laser extends Block implements ITileEntityProvider {
 
+    public TileLaser laserRender;
     public static IIcon[] textures;
     private static int renderID;
 
     public GT_Block_Laser() {
         super(Material.iron);
-        setBlockName("gt.laserrender");
+        setBlockName("Heat Resistant Laser Receiver Casing");
         this.setCreativeTab(GregTech_API.TAB_GREGTECH);
         setHarvestLevel("pickaxe", 2);
         GameRegistry.registerBlock(this, getUnlocalizedName());
@@ -72,8 +73,13 @@ public class GT_Block_Laser extends Block implements ITileEntityProvider {
         return false;
     }
 
+    public void toggleRender() {
+        laserRender.shouldRender = !laserRender.shouldRender;
+    }
+
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return new TileLaser();
+        laserRender = new TileLaser();
+        return laserRender;
     }
 }
