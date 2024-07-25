@@ -483,7 +483,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     this.mInventory[index] = itemstack;
                     if (itemstack != null) {
                         justHadNewItems = !itemstack.isItemEqual(previous);
-                    }   
+                    }
                     index++;
                 }
             }
@@ -565,7 +565,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     ItemStack previous = getStackInSlot(aIndex + SLOT_COUNT);
                     setInventorySlotContents(aIndex + SLOT_COUNT, s);
                     if (s != null) {
-                        justHadNewItems = s.isItemEqual(previous);
+                        justHadNewItems = !s.isItemEqual(previous);
                     }
                     return s;
                 } catch (final GridAccessException ignored) {}
