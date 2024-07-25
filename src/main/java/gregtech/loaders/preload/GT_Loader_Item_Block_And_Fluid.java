@@ -19,8 +19,6 @@ import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
-import gregtech.common.blocks.GT_Block_Laser;
-import gregtech.common.tileentities.render.TileLaser;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -65,6 +63,7 @@ import gregtech.common.blocks.GT_Block_Casings9;
 import gregtech.common.blocks.GT_Block_Concretes;
 import gregtech.common.blocks.GT_Block_Drone;
 import gregtech.common.blocks.GT_Block_Granites;
+import gregtech.common.blocks.GT_Block_Laser;
 import gregtech.common.blocks.GT_Block_Machines;
 import gregtech.common.blocks.GT_Block_Metal;
 import gregtech.common.blocks.GT_Block_Ores;
@@ -85,6 +84,7 @@ import gregtech.common.items.GT_NeutronReflector_Item;
 import gregtech.common.items.GT_TierDrone;
 import gregtech.common.items.GT_VolumetricFlask;
 import gregtech.common.tileentities.render.TileDrone;
+import gregtech.common.tileentities.render.TileLaser;
 
 public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 

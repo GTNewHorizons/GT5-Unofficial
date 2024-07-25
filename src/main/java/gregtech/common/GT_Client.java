@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
 
-import gregtech.common.render.GT_LaserRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
@@ -92,6 +91,7 @@ import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.render.GT_CapeRenderer;
 import gregtech.common.render.GT_FlaskRenderer;
 import gregtech.common.render.GT_FluidDisplayStackRenderer;
+import gregtech.common.render.GT_LaserRenderer;
 import gregtech.common.render.GT_MetaGenerated_Tool_Renderer;
 import gregtech.common.render.GT_MultiTile_Renderer;
 import gregtech.common.render.GT_PollutionRenderer;

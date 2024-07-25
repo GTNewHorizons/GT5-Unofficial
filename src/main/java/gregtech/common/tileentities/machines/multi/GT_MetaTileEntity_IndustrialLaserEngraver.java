@@ -36,7 +36,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings4;
-import gregtech.common.render.GT_LaserRenderer;
 
 public class GT_MetaTileEntity_IndustrialLaserEngraver
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IndustrialLaserEngraver>
@@ -85,7 +84,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     }
 
     private void createRenderBlock() {
-        //if (!useRender) return;
+        // if (!useRender) return;
         int x = getBaseMetaTileEntity().getXCoord();
         int y = getBaseMetaTileEntity().getYCoord();
         int z = getBaseMetaTileEntity().getZCoord();
