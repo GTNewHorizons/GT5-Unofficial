@@ -30,8 +30,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -52,11 +50,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
@@ -278,30 +273,6 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.purificationPhAdjustmentRecipes;
-    }
-
-    @NotNull
-    @Override
-    public CheckRecipeResult checkProcessing() {
-        RecipeMap<?> recipeMap = this.getRecipeMap();
-
-        GT_Recipe recipe = recipeMap.findRecipeQuery()
-            .fluids(
-                this.getStoredFluids()
-                    .toArray(new FluidStack[] {}))
-            .find();
-
-        this.endRecipeProcessing();
-        if (recipe == null) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        if (this.protectsExcessFluid() && !this.canOutputAll(recipe.mFluidOutputs)) {
-            return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
-        }
-
-        this.currentRecipe = recipe;
-        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     public boolean addAcidHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

@@ -46,10 +46,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 
@@ -146,31 +144,12 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
-        RecipeMap<?> recipeMap = this.getRecipeMap();
-
-        GT_Recipe recipe = recipeMap.findRecipeQuery()
-            .fluids(
-                this.getStoredFluids()
-                    .toArray(new FluidStack[] {}))
-            .items(
-                this.getStoredInputs()
-                    .toArray(new ItemStack[] {}))
-            .find();
-
-        if (recipe == null) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        if (this.protectsExcessFluid() && !this.canOutputAll(recipe.mFluidOutputs)) {
-            return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
-        }
-
-        if (this.protectsExcessItem() && !this.canOutputAll(recipe.mOutputs)) {
-            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
-        }
-
-        this.currentRecipe = recipe;
-        return CheckRecipeResultRegistry.SUCCESSFUL;
+        // Clarifier needs to check item inputs from recipe as well to find filter item
+        return findRecipeForInputs(
+            this.getStoredFluids()
+                .toArray(new FluidStack[] {}),
+            this.getStoredInputs()
+                .toArray(new ItemStack[] {}));
     }
 
     @Override

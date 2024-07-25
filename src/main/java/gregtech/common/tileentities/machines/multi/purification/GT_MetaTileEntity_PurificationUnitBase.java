@@ -4,10 +4,12 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Stream;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +21,8 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -40,6 +44,9 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
@@ -181,6 +188,47 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             // multiblocks. This way, you still gradually see the efficiency go down when it powers down.
             mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1])));
         }
+    }
+
+    protected CheckRecipeResult findRecipeForInputs(FluidStack[] fluidInputs, ItemStack... itemInputs) {
+        RecipeMap<?> recipeMap = this.getRecipeMap();
+
+        // Grab a stream of recipes and find the one with the highest success chance
+        Stream<GT_Recipe> recipes = recipeMap.findRecipeQuery()
+            .fluids(fluidInputs)
+            .items(itemInputs)
+            .findAll();
+        GT_Recipe recipe = recipes
+            .max(Comparator.comparing(r -> r.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f)))
+            .orElse(null);
+
+        if (recipe == null) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        if (this.protectsExcessFluid() && !this.canOutputAll(recipe.mFluidOutputs)) {
+            return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
+        }
+
+        if (this.protectsExcessItem() && !this.canOutputAll(recipe.mOutputs)) {
+            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
+        }
+
+        this.currentRecipe = recipe;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    /**
+     * By default, only checks fluid input.
+     * 
+     * @return
+     */
+    @NotNull
+    @Override
+    public CheckRecipeResult checkProcessing() {
+        return findRecipeForInputs(
+            this.getStoredFluids()
+                .toArray(new FluidStack[] {}));
     }
 
     /**

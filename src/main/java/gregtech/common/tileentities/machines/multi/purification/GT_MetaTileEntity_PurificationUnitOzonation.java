@@ -16,8 +16,6 @@ import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.stream.Stream;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -45,11 +43,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 
@@ -277,10 +272,8 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
-        RecipeMap<?> recipeMap = this.getRecipeMap();
-
-        ArrayList<FluidStack> storedFluids = this.getStoredFluids();
         // Look for ozone, blow up if more than max allowed
+        ArrayList<FluidStack> storedFluids = this.getStoredFluids();
         for (FluidStack fluid : storedFluids) {
             if (fluid.isFluidEqual(Materials.Ozone.getGas(1L))) {
                 if (fluid.amount > MAX_OZONE_GAS_FOR_EXPLOSION) {
@@ -289,29 +282,8 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
                 }
             }
         }
-
-        // Grab a stream of recipes and find the one with the highest success chance
-        Stream<GT_Recipe> recipes = recipeMap.findRecipeQuery()
-            .fluids(storedFluids.toArray(new FluidStack[] {}))
-            .findAll();
-        GT_Recipe recipe = recipes
-            .max(Comparator.comparing(r -> r.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f)))
-            .orElse(null);
-
-        if (recipe == null) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        if (this.protectsExcessFluid() && !this.canOutputAll(recipe.mFluidOutputs)) {
-            return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
-        }
-
-        if (this.protectsExcessItem() && !this.canOutputAll(recipe.mOutputs)) {
-            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
-        }
-
-        this.currentRecipe = recipe;
-        return CheckRecipeResultRegistry.SUCCESSFUL;
+        // Now do recipe checking logic
+        return super.checkProcessing();
     }
 
     @Override
