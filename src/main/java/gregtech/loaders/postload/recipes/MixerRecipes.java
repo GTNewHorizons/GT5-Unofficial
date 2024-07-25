@@ -1495,7 +1495,6 @@ public class MixerRecipes implements Runnable {
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
 
-
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 Materials.Naphtha.getCells(16),
