@@ -124,7 +124,9 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     /**
      * Configured parallel amount. Only water I/O and power scale.
      */
-    protected int parallel = 1;
+    protected int maxParallel = 1;
+
+    protected int effectiveParallel = 1;
 
     protected GT_MetaTileEntity_PurificationUnitBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -220,7 +222,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
 
     /**
      * By default, only checks fluid input.
-     * 
+     *
      * @return
      */
     @NotNull
@@ -238,7 +240,23 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
      * @return True if successfully found a recipe and/or started processing/
      */
     public boolean doPurificationRecipeCheck() {
-        return this.checkRecipe();
+        effectiveParallel = 1;
+        boolean success = this.checkRecipe();
+        // If recipe check was successful, determine the effective parallel
+        if (success) {
+            FluidStack waterInput = this.currentRecipe.mFluidInputs[0];
+            // Count total available purified water input of the previous step
+            ArrayList<FluidStack> availableFluids = this.getStoredFluids();
+            long amountAvailable = 0;
+            for (FluidStack fluid : availableFluids) {
+                if (fluid.isFluidEqual(waterInput)) {
+                    amountAvailable += fluid.amount;
+                }
+            }
+            // Determine effective parallel
+            effectiveParallel = (int) Math.min(maxParallel, Math.floorDiv(amountAvailable, waterInput.amount));
+        }
+        return success;
     }
 
     /**
@@ -301,7 +319,9 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
      */
     public void depleteRecipeInputs() {
         for (FluidStack input : this.currentRecipe.mFluidInputs) {
-            this.depleteInput(input);
+            FluidStack copyWithParallel = input.copy();
+            copyWithParallel.amount = input.amount * effectiveParallel;
+            this.depleteInput(copyWithParallel);
         }
     }
 
@@ -329,17 +349,23 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         this.mProgresstime = progressTime;
         this.mEfficiency = 10000;
         // These need to be set so the GUI code can display the produced outputs
-        this.mOutputFluids = this.currentRecipe.mFluidOutputs;
+
+        // Make sure to scale purified water output with parallel amount
+        FluidStack[] fluidOutputs = this.currentRecipe.mFluidOutputs;
+        // Make a copy of the first entry, so we don't accidentally modify the recipe
+        fluidOutputs[0] = fluidOutputs[0].copy();
+        fluidOutputs[0].amount *= effectiveParallel;
+        this.mOutputFluids = fluidOutputs;
         this.mOutputItems = this.currentRecipe.mOutputs;
         // Set this value, so it can be displayed in Waila. Note that the logic for the units is
         // specifically overridden so setting this value does not actually drain power.
         // Instead, power is drained by the main purification plant controller.
-        this.lEUt = -this.getBasePowerUsage();
+        this.lEUt = -this.getActualPowerUsage();
     }
 
     public void addRecipeOutputs() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
-        this.addFluidOutputs(this.currentRecipe.mFluidOutputs);
+        this.addFluidOutputs(mOutputFluids);
         // If this recipe has random item outputs, roll on it and add outputs
         if (this.currentRecipe.mChances != null) {
             // Roll on each output individually
@@ -379,6 +405,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         this.currentRecipeChance = 0.0f;
         this.mOutputItems = null;
         this.mOutputFluids = null;
+        this.effectiveParallel = 1;
     }
 
     /**
@@ -406,7 +433,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             roll = random.nextInt(0, 2);
             if (roll == 1) {
                 // Rolled good, stop the loop and output water below current tier
-                int amount = this.currentRecipe.mFluidOutputs[0].amount;
+                int amount = mOutputFluids[0].amount;
                 // For tier 1, this is distilled water, so we cannot use the helper function!
                 if (waterTier == 1) {
                     return GT_ModHandler.getDistilledWater(amount);
@@ -426,7 +453,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     public abstract long getBasePowerUsage();
 
     public long getActualPowerUsage() {
-        return getBasePowerUsage() * parallel;
+        return getBasePowerUsage() * effectiveParallel;
     }
 
     @Override
@@ -457,7 +484,10 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         }
         currentRecipeChance = aNBT.getFloat("currentRecipeChance");
         if (aNBT.hasKey("configuredParallel")) {
-            parallel = aNBT.getInteger("configuredParallel");
+            maxParallel = aNBT.getInteger("configuredParallel");
+        }
+        if (aNBT.hasKey("effectiveParallel")) {
+            effectiveParallel = aNBT.getInteger("effectiveParallel");
         }
     }
 
@@ -477,7 +507,8 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             aNBT.setTag("controller", controllerNBT);
         }
         aNBT.setFloat("currentRecipeChance", currentRecipeChance);
-        aNBT.setInteger("configuredParallel", parallel);
+        aNBT.setInteger("configuredParallel", maxParallel);
+        aNBT.setInteger("effectiveParallel", effectiveParallel);
     }
 
     private LinkResult trySetControllerFromCoord(int x, int y, int z) {
@@ -717,8 +748,8 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
                 .setPos(3, 4)
                 .setSize(150, 20))
             .widget(
-                new NumericWidget().setSetter(val -> parallel = (int) val)
-                    .setGetter(() -> parallel)
+                new NumericWidget().setSetter(val -> maxParallel = (int) val)
+                    .setGetter(() -> maxParallel)
                     .setBounds(1, Integer.MAX_VALUE)
                     .setDefaultValue(1)
                     .setScrollValues(1, 4, 64)
@@ -727,7 +758,9 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
                     .setSize(150, 18)
                     .setPos(4, 25)
                     .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                    .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> parallel, (val) -> parallel = val), builder));
+                    .attachSyncer(
+                        new FakeSyncWidget.IntegerSyncer(() -> maxParallel, (val) -> maxParallel = val),
+                        builder));
         return builder.build();
     }
 
