@@ -44,6 +44,7 @@ import org.lwjgl.input.Keyboard;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -127,6 +128,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public String mNEI;
     public int damageFactorLow = 5;
     public float damageFactorHigh = 0.6f;
+    public int machineMode = 0;
+    public List<UITexture> machineModeIcons = new ArrayList<UITexture>();
 
     public boolean mLockedToSingleRecipe = getDefaultRecipeLockingMode();
     protected boolean inputSeparation = getDefaultInputSeparationMode();
@@ -253,6 +256,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         aNBT.setInteger("mEfficiency", mEfficiency);
         aNBT.setInteger("mPollution", mPollution);
         aNBT.setInteger("mRuntime", mRuntime);
+
+        if (supportsMachineModeSwitch()) {
+            aNBT.setInteger("machineMode", machineMode);
+        }
+
         if (supportsSingleRecipeLocking()) {
             aNBT.setBoolean("mLockedToSingleRecipe", mLockedToSingleRecipe);
             if (mLockedToSingleRecipe && mSingleRecipeCheck != null)
@@ -294,6 +302,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mEfficiency = aNBT.getInteger("mEfficiency");
         mPollution = aNBT.getInteger("mPollution");
         mRuntime = aNBT.getInteger("mRuntime");
+        if (aNBT.hasKey("machineMode")) {
+            machineMode = aNBT.getInteger("machineMode");
+        }
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = aNBT.getBoolean("mLockedToSingleRecipe");
             if (mLockedToSingleRecipe && aNBT.hasKey("mSingleRecipeCheck", Constants.NBT.TAG_COMPOUND)) {
@@ -2125,9 +2136,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
         List<ItemStack> ret = new ArrayList<>();
         for (final GT_MetaTileEntity_Hatch tBus : filterValidMTEs(mOutputBusses)) {
-            final IInventory tBusInv = tBus.getBaseMetaTileEntity();
-            for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
-                ret.add(tBus.getStackInSlot(i));
+            if (!(tBus instanceof GT_MetaTileEntity_Hatch_OutputBus_ME)) {
+                final IInventory tBusInv = tBus.getBaseMetaTileEntity();
+                for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
+                    ret.add(tBus.getStackInSlot(i));
+                }
             }
         }
         return ret;
@@ -2165,7 +2178,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public boolean canDumpItemToME() {
         for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(mOutputBusses)) {
             if (tHatch instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
-                return true;
+                if ((((GT_MetaTileEntity_Hatch_OutputBus_ME) tHatch).canAcceptItem())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -2175,7 +2190,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public boolean canDumpFluidToME() {
         for (IFluidStore tHatch : getFluidOutputSlots(new FluidStack[0])) {
             if (tHatch instanceof GT_MetaTileEntity_Hatch_Output_ME) {
-                return true;
+                if ((((GT_MetaTileEntity_Hatch_Output_ME) tHatch).canAcceptFluid())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -2204,6 +2221,50 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public Pos2d getInputSeparationButtonPos() {
         return new Pos2d(26, 91);
+    }
+
+    /**
+     * Creates the icon list for this machine. Override this and add the overlays to machineModeIcons in order.
+     */
+    public void setMachineModeIcons() {
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
+    }
+
+    /**
+     * Override this if you are a multi-machine and want a GUI button. You will also want to override
+     * setMachineModeIcons().
+     * Override nextMachineMode() if you have more than 2 modes.
+     */
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return false;
+    }
+
+    @Override
+    public int getMachineMode() {
+        return machineMode;
+    }
+
+    @Override
+    public UITexture getMachineModeIcon(int index) {
+        return machineModeIcons.get(index);
+    }
+
+    @Override
+    public void setMachineMode(int index) {
+        machineMode = index;
+    }
+
+    @Override
+    public int nextMachineMode() {
+        if (machineMode == 0) return 1;
+        else return 0;
+    }
+
+    @Override
+    public Pos2d getMachineModeSwitchButtonPos() {
+        return new Pos2d(80, 91);
     }
 
     @Override
@@ -2294,9 +2355,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         drawTexts(screenElements, inventorySlot);
         builder.widget(screenElements);
 
+        setMachineModeIcons();
         builder.widget(createPowerSwitchButton(builder))
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
+            .widget(createModeSwitchButton(builder))
             .widget(createBatchModeButton(builder))
             .widget(createLockToSingleRecipeButton(builder));
     }
@@ -2392,7 +2455,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         screenElements.setSynced(false)
             .setSpace(0)
             .setPos(10, 7);
-
+        if (supportsMachineModeSwitch()) {
+            screenElements.widget(
+                TextWidget.dynamicString(
+                    () -> EnumChatFormatting.WHITE + GT_Utility.trans("400", "Running mode: ")
+                        + EnumChatFormatting.GOLD
+                        + getMachineModeName()));
+        }
         screenElements
             .widget(
                 new TextWidget(GT_Utility.trans("132", "Pipe is loose.")).setDefaultColor(COLOR_TEXT_WHITE.get())

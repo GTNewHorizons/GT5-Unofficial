@@ -25,7 +25,6 @@ import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractTerminal;
 
@@ -77,11 +76,6 @@ public class CORE {
     // BookMap
     public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<>();
 
-    /**
-     * Some Gregtech Material and Recipe Variables
-     */
-    public static IGregtech_RecipeAdder RA;
-
     public static final GT_Materials[] sMU_GeneratedMaterials = new GT_Materials[1000];
 
     public static class ConfigSwitches {
@@ -120,6 +114,7 @@ public class CORE {
         public static boolean enableMultiblock_IndustrialCentrifuge = true;
         public static boolean enableMultiblock_IndustrialCokeOven = true;
         public static boolean enableMultiblock_IndustrialElectrolyzer = true;
+        public static boolean enableMultiblock_WaterPump = true;
         public static boolean enableMultiblock_IndustrialMacerationStack = true;
         public static boolean enableMultiblock_IndustrialPlatePress = true;
         public static boolean enableMultiblock_IndustrialWireMill = true;

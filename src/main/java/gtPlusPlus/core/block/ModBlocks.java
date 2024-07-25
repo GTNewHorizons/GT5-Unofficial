@@ -53,12 +53,6 @@ public final class ModBlocks {
     public static Block blockWitherGuard;
     public static Block blockCompressedObsidian;
 
-    public static Block blockPlayerDoorWooden;
-    public static Block blockPlayerDoorIron;
-    public static Block blockPlayerDoorCustom_Glass;
-    public static Block blockPlayerDoorCustom_Ice;
-    public static Block blockPlayerDoorCustom_Cactus;
-
     public static Block blockCustomJukebox;
 
     public static Block blockPooCollector;

@@ -49,7 +49,6 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -62,7 +61,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
     GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialFishingPond> implements ISurvivalConstructable {
 
     private boolean isUsingControllerCircuit = false;
-    private static final Item circuit = CI.getNumberedCircuit(0)
+    private static final Item circuit = GT_Utility.getIntegratedCircuit(0)
         .getItem();
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialFishingPond> STRUCTURE_DEFINITION = null;
@@ -394,7 +393,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
     private int getCircuit(ItemStack[] t) {
         if (!this.isUsingControllerCircuit) {
             for (ItemStack j : t) {
-                if (j.getItem() == CI.getNumberedCircuit(0)
+                if (j.getItem() == GT_Utility.getIntegratedCircuit(0)
                     .getItem()) {
                     // Fish
                     if (j.getItemDamage() == 14) {

@@ -1,5 +1,13 @@
 package gregtech.api.enums;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.AQUA;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_AQUA;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.OBFUSCATED;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RESET;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.animatedText;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 
@@ -9,6 +17,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -614,9 +623,48 @@ public class GT_Values {
         + EnumChatFormatting.LIGHT_PURPLE
         + "minecraft7771";
 
+    public static final Supplier<String> AuthorCloud = chain(
+        text("Author: " + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD),
+        animatedText(
+            "C",
+            1,
+            500,
+            DARK_AQUA + OBFUSCATED + BOLD + "X" + RESET + AQUA + BOLD,
+            DARK_AQUA + "\u238B" + RESET + AQUA + BOLD,
+            DARK_AQUA + OBFUSCATED + BOLD + "X" + RESET + AQUA + BOLD,
+            DARK_AQUA + "\u0B83" + RESET + AQUA + BOLD,
+            DARK_AQUA + OBFUSCATED + BOLD + "X" + RESET + AQUA + BOLD,
+            DARK_AQUA + BOLD + "\u29BC" + RESET + AQUA + BOLD),
+        text(EnumChatFormatting.AQUA + EnumChatFormatting.BOLD.toString() + "loud" + EnumChatFormatting.RESET),
+        animatedText(
+            " ",
+            1,
+            500,
+            DARK_AQUA + OBFUSCATED + BOLD + "X",
+            DARK_AQUA + "\u238B",
+            DARK_AQUA + OBFUSCATED + BOLD + "X",
+            DARK_AQUA + "\u0B83",
+            DARK_AQUA + OBFUSCATED + BOLD + "X",
+            DARK_AQUA + BOLD + "\u29BC"));
+
     public static final String AuthorQuerns = "Author: " + EnumChatFormatting.RED + "Querns";
     public static final String AuthorSilverMoon = "Author: " + EnumChatFormatting.AQUA + "SilverMoon";
     public static final String AuthorTheEpicGamer274 = "Author: " + "TheEpicGamer274";
+    public static final String AuthorFourIsTheNumber = "Author: " + EnumChatFormatting.LIGHT_PURPLE + "FourIsTheNumber";
+    public static final String authorBaps = "Author: " + EnumChatFormatting.GOLD
+        + "Ba"
+        + EnumChatFormatting.LIGHT_PURPLE
+        + "ps";
+
+    public static final String AuthorEvgenWarGold = "" + EnumChatFormatting.RED
+        + EnumChatFormatting.BOLD
+        + "Evgen"
+        + EnumChatFormatting.BLUE
+        + EnumChatFormatting.BOLD
+        + "War"
+        + EnumChatFormatting.GOLD
+        + EnumChatFormatting.BOLD
+        + "Gold";
 
     // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
     public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {

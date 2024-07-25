@@ -8,14 +8,13 @@ import static gregtech.api.util.GT_Util.getTileEntity;
 import static gregtech.api.util.GT_Util.setTileEntity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -26,7 +25,6 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
@@ -54,15 +52,6 @@ import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_BreakBlock;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_GetBlockHardness;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_GetComparatorInputOverride;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_GetWeakChanges;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_HasMultiBlockMachineRelevantData;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_IsProvidingStrongPower;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_IsProvidingWeakPower;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_OnNeighborBlockChange;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_ShouldCheckWeakPower;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Util;
@@ -73,144 +62,100 @@ import gregtech.common.render.GT_MultiTile_Renderer;
  * MultiTileEntityBlock ported from GT6
  */
 @Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = "ChiselAPI")
-public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITileEntityProvider, IFacade {
+public class MultiTileEntityBlock extends BlockContainer implements IDebugableBlock, ITileEntityProvider, IFacade {
 
-    protected static final Map<String, MultiTileEntityBlock> MULTI_BLOCK_MAP = new HashMap<>();
+    private MultiTileEntityRegistry registry;
+
     private static boolean LOCK = false;
 
-    protected final String mNameInternal, mTool;
-    protected final int mHarvestLevelOffset, mHarvestLevelMinimum, mHarvestLevelMaximum;
-    protected final boolean mOpaque, mNormalCube;
+    private boolean registered = false;
+    private boolean normalCube;
+    protected String internalName, toolName, materialName, modID;
 
-    public static String getName(String aMaterialName, SoundType aSoundType, String aTool, int aHarvestLevelOffset,
-        int aHarvestLevelMinimum, int aHarvestLevelMaximum, boolean aOpaque, boolean aNormalCube) {
-        return "gt.block.multiblock." + aMaterialName
-            + "."
-            + aSoundType.soundName
-            + "."
-            + aTool
-            + "."
-            + aHarvestLevelOffset
-            + "."
-            + aHarvestLevelMinimum
-            + "."
-            + aHarvestLevelMaximum
-            + "."
-            + aOpaque
-            + "."
-            + aNormalCube;
+    public String getName() {
+        return String.join(
+            ".",
+            "gt.block.multiblock",
+            materialName,
+            stepSound.soundName,
+            toolName,
+            Boolean.toString(opaque),
+            Boolean.toString(normalCube));
     }
 
-    /**
-     * @param aMaterialName        the Name of the vanilla Material Field. In case this is not a vanilla Material,
-     *                             insert the Name you want to give your own Material instead.
-     * @param aMaterial            the Material used to determine the Block.
-     * @param aSoundType           the Sound Type of the Block.
-     * @param aTool                the Tool used to harvest this Block.
-     * @param aHarvestLevelOffset  obvious
-     * @param aHarvestLevelMinimum obvious
-     * @param aHarvestLevelMaximum obvious
-     * @param aOpaque              if this Block is Opaque.
-     * @param aNormalCube          if this Block is a normal Cube (for Redstone Stuff).
-     */
-    public static MultiTileEntityBlock getOrCreate(String aModID, String aMaterialName, Material aMaterial,
-        SoundType aSoundType, String aTool, int aHarvestLevelOffset, int aHarvestLevelMinimum, int aHarvestLevelMaximum,
-        boolean aOpaque, boolean aNormalCube) {
-        final MultiTileEntityBlock rBlock = MULTI_BLOCK_MAP.get(
-            aModID + ":"
-                + getName(
-                    aMaterialName,
-                    aSoundType,
-                    aTool = aTool.toLowerCase(),
-                    aHarvestLevelOffset,
-                    aHarvestLevelMinimum,
-                    aHarvestLevelMaximum,
-                    aOpaque,
-                    aNormalCube));
-        return rBlock == null
-            ? new MultiTileEntityBlock(
-                aModID,
-                aMaterialName,
-                aMaterial,
-                aSoundType,
-                aTool,
-                aHarvestLevelOffset,
-                aHarvestLevelMinimum,
-                aHarvestLevelMaximum,
-                aOpaque,
-                aNormalCube)
-            : rBlock;
+    public MultiTileEntityBlock(Material material) {
+        super(material);
+        if (GregTech_API.sPreloadFinished)
+            throw new IllegalStateException("Blocks can only be initialized within preInit!");
     }
 
-    protected MultiTileEntityBlock(String aModID, String aMaterialName, Material aMaterial, SoundType aSoundType,
-        String aTool, int aHarvestLevelOffset, int aHarvestLevelMinimum, int aHarvestLevelMaximum, boolean aOpaque,
-        boolean aNormalCube) {
-        super(aMaterial);
+    public MultiTileEntityBlock tool(String toolName) {
+        this.toolName = toolName.toLowerCase();
+        return this;
+    }
+
+    public MultiTileEntityBlock sound(SoundType soundtype) {
+        setStepSound(soundtype);
+        return this;
+    }
+
+    public MultiTileEntityBlock opaque(Boolean opaque) {
+        this.opaque = opaque;
+        return this;
+    }
+
+    public MultiTileEntityBlock normalCube(Boolean normalCube) {
+        this.normalCube = normalCube;
+        return this;
+    }
+
+    public MultiTileEntityBlock modID(String modID) {
+        this.modID = modID;
+        return this;
+    }
+
+    public MultiTileEntityBlock materialName(String materialName) {
+        this.materialName = materialName;
+        return this;
+    }
+
+    public MultiTileEntityBlock register() {
+        if (registered) throw new IllegalStateException("Block already registered " + internalName);
         if (GregTech_API.sPreloadFinished)
             throw new IllegalStateException("Blocks can only be initialized within preInit!");
 
-        mNameInternal = getName(
-            aMaterialName,
-            aSoundType,
-            aTool,
-            aHarvestLevelOffset,
-            aHarvestLevelMinimum,
-            aHarvestLevelMaximum,
-            aOpaque,
-            aNormalCube);
-        GameRegistry.registerBlock(this, ItemBlock.class, mNameInternal);
-
-        MULTI_BLOCK_MAP.put(aModID + ":" + mNameInternal, this);
-
-        setStepSound(aSoundType);
-        mOpaque = aOpaque;
-        mNormalCube = aNormalCube;
-
-        mTool = aTool.toLowerCase();
-        mHarvestLevelOffset = aHarvestLevelOffset;
-        mHarvestLevelMinimum = Math.max(0, aHarvestLevelMinimum);
-        mHarvestLevelMaximum = Math.max(aHarvestLevelMinimum, aHarvestLevelMaximum);
-
-        opaque = isOpaqueCube();
+        registered = true;
+        internalName = getName();
         lightOpacity = isOpaqueCube() ? 255 : 0;
+
+        GameRegistry.registerBlock(this, MultiTileEntityItem.class, internalName);
+        return this;
     }
 
     @Override
-    public final void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
-        final TileEntity aTileEntity = getTileEntity(aWorld, aX, aY, aZ, true);
-        if (aTileEntity != null) LAST_BROKEN_TILEENTITY.set(aTileEntity);
-        if (aTileEntity == null || !aTileEntity.shouldRefresh(this, aBlock, aMetaData, aMetaData, aWorld, aX, aY, aZ))
-            return;
-        if (aTileEntity instanceof IMTE_BreakBlock && ((IMTE_BreakBlock) aTileEntity).breakBlock()) return;
-        if (aTileEntity instanceof IMTE_HasMultiBlockMachineRelevantData
-            && ((IMTE_HasMultiBlockMachineRelevantData) aTileEntity).hasMultiBlockMachineRelevantData())
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+    public final void breakBlock(World world, int x, int y, int z, Block block, int metadata) {
+        final TileEntity tileEntity = getTileEntity(world, x, y, z, true);
+        if (tileEntity != null) LAST_BROKEN_TILEENTITY.set(tileEntity);
+        if (tileEntity == null || !tileEntity.shouldRefresh(this, block, metadata, metadata, world, x, y, z)) return;
+        if (tileEntity instanceof IMultiTileEntity mute) mute.onBlockBroken();
+        // spotless:off
+        // if (aTileEntity instanceof IMTE_HasMultiBlockMachineRelevantData
+        //     && ((IMTE_HasMultiBlockMachineRelevantData) aTileEntity).hasMultiBlockMachineRelevantData())
+        //     GregTech_API.causeMachineUpdate(world, x, y, z);
+        // spotless:on
 
-        aWorld.removeTileEntity(aX, aY, aZ);
+        world.removeTileEntity(x, y, z);
+        super.breakBlock(world, x, y, z, block, metadata);
+
     }
 
     @Override
-    public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel) {
-        final TileEntity aTileEntity = aPlayer.worldObj.getTileEntity(aX, aY, aZ);
-        if (aTileEntity instanceof IDebugableTileEntity mte) {
+    public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int x, int y, int z, int aLogLevel) {
+        final TileEntity tileEntity = aPlayer.worldObj.getTileEntity(x, y, z);
+        if (tileEntity instanceof IDebugableTileEntity mte) {
             return mte.getDebugInfo(aPlayer, aLogLevel);
         }
         return new ArrayList<>();
-    }
-
-    @Override
-    public final boolean func_149730_j /* isFullBlock */() {
-        return mOpaque;
-    }
-
-    @Override
-    public final boolean isNormalCube() {
-        return mNormalCube;
-    }
-
-    @Override
-    public final boolean renderAsNormalBlock() {
-        return mOpaque || mNormalCube;
     }
 
     @Override
@@ -220,182 +165,181 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
     }
 
     @Override
-    public final float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMTE_GetBlockHardness ? ((IMTE_GetBlockHardness) aTileEntity).getBlockHardness()
-            : 1.0F;
+    public final float getBlockHardness(World world, int x, int y, int z) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        return tileEntity instanceof IMultiTileEntity ? ((IMultiTileEntity) tileEntity).getBlockHardness() : 1.0F;
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public IIcon getIcon(IBlockAccess aIBlockAccess, int aX, int aY, int aZ, int ordinalSide) {
+    public IIcon getIcon(IBlockAccess aIBlockAccess, int x, int y, int z, int ordinalSide) {
         return Textures.BlockIcons.MACHINE_LV_SIDE.getIcon();
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public IIcon getIcon(int ordinalSide, int aMeta) {
+    public IIcon getIcon(int ordinalSide, int meta) {
         return Textures.BlockIcons.MACHINE_LV_SIDE.getIcon();
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public final void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB aAABB,
+    public final void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB aAABB,
         List<AxisAlignedBB> aList, Entity aEntity) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (aTileEntity instanceof IMultiTileEntity)
-            ((IMultiTileEntity) aTileEntity).addCollisionBoxesToList(aAABB, aList, aEntity);
-        else super.addCollisionBoxesToList(aWorld, aX, aY, aZ, aAABB, aList, aEntity);
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        if (tileEntity instanceof IMultiTileEntity)
+            ((IMultiTileEntity) tileEntity).addCollisionBoxesToList(aAABB, aList, aEntity);
+        else super.addCollisionBoxesToList(world, x, y, z, aAABB, aList, aEntity);
     }
 
     @Override
-    public final AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMultiTileEntity mte ? mte.getCollisionBoundingBoxFromPool()
-            : aTileEntity == null ? null : super.getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+    public final AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        return tileEntity instanceof IMultiTileEntity mte ? mte.getCollisionBoundingBoxFromPool()
+            : tileEntity == null ? null : super.getCollisionBoundingBoxFromPool(world, x, y, z);
     }
 
     @Override
-    public final AxisAlignedBB getSelectedBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMultiTileEntity mte ? mte.getSelectedBoundingBoxFromPool()
-            : super.getSelectedBoundingBoxFromPool(aWorld, aX, aY, aZ);
+    public final AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        return tileEntity instanceof IMultiTileEntity mte ? mte.getSelectedBoundingBoxFromPool()
+            : super.getSelectedBoundingBoxFromPool(world, x, y, z);
     }
 
     @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int aX, int aY, int aZ) {
-        final TileEntity aTileEntity = blockAccess.getTileEntity(aX, aY, aZ);
-        if (aTileEntity instanceof IMultiTileEntity mte) {
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z) {
+        final TileEntity tileEntity = blockAccess.getTileEntity(x, y, z);
+        if (tileEntity instanceof IMultiTileEntity mte) {
             mte.setBlockBoundsBasedOnState(this);
             return;
         }
-        super.setBlockBoundsBasedOnState(blockAccess, aX, aY, aZ);
+        super.setBlockBoundsBasedOnState(blockAccess, x, y, z);
     }
 
     @Override
     public final boolean isOpaqueCube() {
-        return mOpaque;
+        return opaque;
     }
 
     @Override
-    public final void onNeighborChange(IBlockAccess aWorld, int aX, int aY, int aZ, int aTileX, int aTileY,
-        int aTileZ) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+    public final void onNeighborChange(IBlockAccess world, int x, int y, int z, int aTileX, int aTileY, int aTileZ) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (!LOCK) {
             LOCK = true;
-            if (aTileEntity instanceof BaseTileEntity)
-                ((BaseTileEntity) aTileEntity).onAdjacentBlockChange(aTileX, aTileY, aTileZ);
+            if (tileEntity instanceof BaseTileEntity)
+                ((BaseTileEntity) tileEntity).onAdjacentBlockChange(aTileX, aTileY, aTileZ);
             LOCK = false;
         }
     }
 
     @Override
-    public void onNeighborBlockChange(World aWorld, int aX, int aY, int aZ, Block aBlock) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (!LOCK) {
             LOCK = true;
-            if (aTileEntity instanceof BaseTileEntity bte) bte.onAdjacentBlockChange(aX, aY, aZ);
+            if (tileEntity instanceof BaseTileEntity bte) bte.onAdjacentBlockChange(x, y, z);
             LOCK = false;
         }
-        if (aTileEntity instanceof IMTE_OnNeighborBlockChange change) change.onNeighborBlockChange(aWorld, aBlock);
-        if (aTileEntity == null) aWorld.setBlockToAir(aX, aY, aZ);
+        if (tileEntity instanceof IMultiTileEntity change) change.onNeighborBlockChange(world, block);
+
+        if (tileEntity == null) world.setBlockToAir(x, y, z);
     }
 
     @Override
-    public final void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (aTileEntity instanceof IMultiTileEntity mte) mte.onBlockAdded();
+    public final void onBlockAdded(World world, int x, int y, int z) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        if (tileEntity instanceof IMultiTileEntity mte) mte.onBlockAdded();
     }
 
     @Override
-    public float getPlayerRelativeBlockHardness(EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMultiTileEntity mte && mte.privateAccess()
-            && !((IMultiTileEntity) aTileEntity).playerOwnsThis(aPlayer, true) ? -1.0F
-                : super.getPlayerRelativeBlockHardness(aPlayer, aWorld, aX, aY, aZ);
+    public float getPlayerRelativeBlockHardness(EntityPlayer aPlayer, World world, int x, int y, int z) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        return tileEntity instanceof IMultiTileEntity mte && mte.privateAccess()
+            && !((IMultiTileEntity) tileEntity).playerOwnsThis(aPlayer, true) ? -1.0F
+                : super.getPlayerRelativeBlockHardness(aPlayer, world, x, y, z);
     }
 
     @Override
-    public final void onBlockClicked(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (aTileEntity instanceof IMultiTileEntity mte) mte.onLeftClick(aPlayer);
-        else super.onBlockClicked(aWorld, aX, aY, aZ, aPlayer);
+    public final void onBlockClicked(World world, int x, int y, int z, EntityPlayer aPlayer) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        if (tileEntity instanceof IMultiTileEntity mte) mte.onLeftClick(aPlayer);
+        else super.onBlockClicked(world, x, y, z, aPlayer);
     }
 
     @Override
-    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int ordinalSide,
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer aPlayer, int ordinalSide,
         float aHitX, float aHitY, float aHitZ) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (aPlayer != null && ItemList.TC_Thaumometer.isStackEqual(aPlayer.getHeldItem(), true, true)) return false;
-        return aTileEntity instanceof IMultiTileEntity mte
+        return tileEntity instanceof IMultiTileEntity mte
             && mte.onBlockActivated(aPlayer, ForgeDirection.getOrientation(ordinalSide), aHitX, aHitY, aHitZ);
     }
 
     @Override
-    public final int isProvidingWeakPower(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMTE_IsProvidingWeakPower power
+    public final int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int ordinalSide) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        return tileEntity instanceof IMultiTileEntity power
             ? power.isProvidingWeakPower(ForgeDirection.getOrientation(ordinalSide))
-            : super.isProvidingWeakPower(aWorld, aX, aY, aZ, ordinalSide);
+            : super.isProvidingWeakPower(world, x, y, z, ordinalSide);
     }
 
     @Override
-    public final int isProvidingStrongPower(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMTE_IsProvidingStrongPower power
+    public final int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int ordinalSide) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        return tileEntity instanceof IMultiTileEntity power
             ? power.isProvidingStrongPower(ForgeDirection.getOrientation(ordinalSide))
-            : super.isProvidingStrongPower(aWorld, aX, aY, aZ, ordinalSide);
+            : super.isProvidingStrongPower(world, x, y, z, ordinalSide);
     }
 
     @Override
-    public final boolean shouldCheckWeakPower(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMTE_ShouldCheckWeakPower power
+    public final boolean shouldCheckWeakPower(IBlockAccess world, int x, int y, int z, int ordinalSide) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        return tileEntity instanceof IMultiTileEntity power
             ? power.shouldCheckWeakPower(ForgeDirection.getOrientation(ordinalSide))
-            : isNormalCube(aWorld, aX, aY, aZ);
+            : isNormalCube(world, x, y, z);
     }
 
     @Override
-    public final boolean getWeakChanges(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMTE_GetWeakChanges changes ? changes.getWeakChanges()
-            : super.getWeakChanges(aWorld, aX, aY, aZ);
+    public final boolean getWeakChanges(IBlockAccess world, int x, int y, int z) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        return tileEntity instanceof IMultiTileEntity changes ? changes.getWeakChanges()
+            : super.getWeakChanges(world, x, y, z);
     }
 
     @Override
-    public final void harvestBlock(World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ, int aMeta) {
+    public final void harvestBlock(World world, EntityPlayer aPlayer, int x, int y, int z, int meta) {
         if (aPlayer == null) aPlayer = harvesters.get();
         aPlayer.addStat(StatList.mineBlockStatArray[getIdFromBlock(this)], 1);
         aPlayer.addExhaustion(0.025F);
         final boolean aSilkTouch = EnchantmentHelper.getSilkTouchModifier(aPlayer);
         final int aFortune = EnchantmentHelper.getFortuneModifier(aPlayer);
         float aChance = 1.0F;
-        final TileEntity aTileEntity = getTileEntity(aWorld, aX, aY, aZ, true);
+        final TileEntity tileEntity = getTileEntity(world, x, y, z, true);
 
-        if (!(aTileEntity instanceof IMultiTileEntity mte)) {
+        if (!(tileEntity instanceof IMultiTileEntity mte)) {
             return;
         }
 
         final ArrayList<ItemStack> tList = mte.getDrops(aFortune, aSilkTouch);
         aChance = ForgeEventFactory
-            .fireBlockHarvesting(tList, aWorld, this, aX, aY, aZ, aMeta, aFortune, aChance, aSilkTouch, aPlayer);
+            .fireBlockHarvesting(tList, world, this, x, y, z, meta, aFortune, aChance, aSilkTouch, aPlayer);
         for (final ItemStack tStack : tList)
-            if (XSTR.XSTR_INSTANCE.nextFloat() <= aChance) dropBlockAsItem(aWorld, aX, aY, aZ, tStack);
+            if (XSTR.XSTR_INSTANCE.nextFloat() <= aChance) dropBlockAsItem(world, x, y, z, tStack);
 
     }
 
     @Override
-    public final boolean shouldSideBeRendered(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
-        final TileEntity aTileEntity = aWorld
-            .getTileEntity(aX - OFFX[ordinalSide], aY - OFFY[ordinalSide], aZ - OFFZ[ordinalSide]);
-        return aTileEntity instanceof IMultiTileEntity mte
+    public final boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int ordinalSide) {
+        final TileEntity tileEntity = world
+            .getTileEntity(x - OFFX[ordinalSide], y - OFFY[ordinalSide], z - OFFZ[ordinalSide]);
+        return tileEntity instanceof IMultiTileEntity mte
             ? mte.shouldSideBeRendered(ForgeDirection.getOrientation(ordinalSide))
-            : super.shouldSideBeRendered(aWorld, aX, aY, aZ, ordinalSide);
+            : super.shouldSideBeRendered(world, x, y, z, ordinalSide);
     }
 
     @Override
-    public Block getFacade(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+    public Block getFacade(IBlockAccess world, int x, int y, int z, int ordinalSide) {
+        final TileEntity tTileEntity = world.getTileEntity(x, y, z);
         if (tTileEntity instanceof CoverableTileEntity tile) {
             final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
             if (ordinalSide != -1) {
@@ -418,8 +362,8 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
     }
 
     @Override
-    public int getFacadeMetadata(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+    public int getFacadeMetadata(IBlockAccess world, int x, int y, int z, int ordinalSide) {
+        final TileEntity tTileEntity = world.getTileEntity(x, y, z);
         if (tTileEntity instanceof CoverableTileEntity tile) {
             final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
             if (ordinalSide != -1) {
@@ -441,30 +385,37 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
         return 0;
     }
 
+    public MultiTileEntityRegistry getRegistry() {
+        return registry;
+    }
+
+    public void setRegistry(MultiTileEntityRegistry registry) {
+        this.registry = registry;
+    }
+
+    public boolean isRegistered() {
+        return registered;
+    }
+
     @Override
     protected boolean canSilkHarvest() {
         return false;
     }
 
     @Override
-    public final boolean canProvidePower() {
-        return !mNormalCube;
-    }
-
-    @Override
     public final String getLocalizedName() {
-        return StatCollector.translateToLocal(mNameInternal + ".name");
+        return StatCollector.translateToLocal(internalName + ".name");
     }
 
     @Override
     public final String getUnlocalizedName() {
-        return mNameInternal;
+        return internalName;
     }
 
     @Override
-    public final boolean onBlockEventReceived(World aWorld, int aX, int aY, int aZ, int aID, int aData) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity == null || aTileEntity.receiveClientEvent(aID, aData);
+    public final boolean onBlockEventReceived(World world, int x, int y, int z, int aID, int aData) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        return tileEntity == null || tileEntity.receiveClientEvent(aID, aData);
     }
 
     @Override
@@ -478,177 +429,164 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
     }
 
     @Override
-    public final int getComparatorInputOverride(World aWorld, int aX, int aY, int aZ, int ordinalSide) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (aTileEntity instanceof IMTE_GetComparatorInputOverride override) {
-            return override.getComparatorInputOverride(ForgeDirection.getOrientation(ordinalSide));
-        }
-
-        if (aTileEntity instanceof IMTE_IsProvidingWeakPower power) {
-            return power.isProvidingWeakPower(
+    public final int getComparatorInputOverride(World world, int x, int y, int z, int ordinalSide) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        if (tileEntity instanceof IMultiTileEntity mute) {
+            if (mute.hasComparatorInputOverride())
+                return mute.getComparatorInputOverride(ForgeDirection.getOrientation(ordinalSide));
+            else return mute.isProvidingWeakPower(
                 ForgeDirection.getOrientation(ordinalSide)
                     .getOpposite());
         }
 
-        return super.getComparatorInputOverride(aWorld, aX, aY, aZ, ordinalSide);
+        return super.getComparatorInputOverride(world, x, y, z, ordinalSide);
     }
 
     @Override
     public final void registerBlockIcons(IIconRegister aIconRegister) {
-        /**/
+        /* Do Nothing */
     }
 
     @Override
-    public final boolean isNormalCube(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return mNormalCube;
+    public final boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        return tileEntity instanceof IMultiTileEntity mute ? mute.isSideSolid(side) : opaque;
     }
 
     @Override
-    public final boolean isSideSolid(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection side) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMultiTileEntity mte ? mte.isSideSolid(side) : mOpaque;
+    public boolean removedByPlayer(World world, EntityPlayer aPlayer, int x, int y, int z, boolean aWillHarvest) {
+        final TileEntity tileEntity = GT_Util.getTileEntity(world, x, y, z, true);
+        if (tileEntity != null) LAST_BROKEN_TILEENTITY.set(tileEntity);
+        return super.removedByPlayer(world, aPlayer, x, y, z, aWillHarvest);
     }
 
     @Override
-    public boolean removedByPlayer(World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ, boolean aWillHarvest) {
-        final TileEntity aTileEntity = GT_Util.getTileEntity(aWorld, aX, aY, aZ, true);
-        if (aTileEntity != null) LAST_BROKEN_TILEENTITY.set(aTileEntity);
-        return super.removedByPlayer(aWorld, aPlayer, aX, aY, aZ, aWillHarvest);
-    }
-
-    @Override
-    public int getFlammability(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection face) {
+    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
         return 0;
     }
 
     @Override
-    public int getFireSpreadSpeed(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection face) {
-        return GregTech_API.sMachineFlammable && (aWorld.getBlockMetadata(aX, aY, aZ) == 0) ? 100 : 0;
+    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+        return GregTech_API.sMachineFlammable && (world.getBlockMetadata(x, y, z) == 0) ? 100 : 0;
     }
 
     @Override
-    public boolean hasTileEntity(int aMeta) {
+    public boolean hasTileEntity(int meta) {
         return true;
     }
 
     @Override
-    public final ArrayList<ItemStack> getDrops(World aWorld, int aX, int aY, int aZ, int aUnusableMetaData,
-        int aFortune) {
-        final TileEntity aTileEntity = getTileEntity(aWorld, aX, aY, aZ, true);
-        if (aTileEntity instanceof IMultiTileEntity mte) return mte.getDrops(aFortune, false);
+    public final ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int aUnusableMetaData, int aFortune) {
+        final TileEntity tileEntity = getTileEntity(world, x, y, z, true);
+        if (tileEntity instanceof IMultiTileEntity mute) return mute.getDrops(aFortune, false);
         return new ArrayList<>();
     }
 
     @Override
-    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess aWorld, int aX, int aY, int aZ) {
+    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
         return false;
     }
 
     @Override
-    public final float getExplosionResistance(Entity aExploder, World aWorld, int aX, int aY, int aZ,
-        double aExplosionX, double aExplosionY, double aExplosionZ) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMultiTileEntity mte
-            ? mte.getExplosionResistance(aExploder, aExplosionX, aExplosionY, aExplosionZ)
+    public final float getExplosionResistance(Entity aExploder, World world, int x, int y, int z, double aExplosionX,
+        double aExplosionY, double aExplosionZ) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        return tileEntity instanceof IMultiTileEntity mute
+            ? mute.getExplosionResistance(aExploder, aExplosionX, aExplosionY, aExplosionZ)
             : 1.0F;
     }
 
     @Override
-    public final void onBlockExploded(World aWorld, int aX, int aY, int aZ, Explosion aExplosion) {
-        if (aWorld.isRemote) return;
-        final TileEntity aTileEntity = getTileEntity(aWorld, aX, aY, aZ, true);
-        if (aTileEntity != null) LAST_BROKEN_TILEENTITY.set(aTileEntity);
-        if (aTileEntity instanceof IMultiTileEntity mte) {
+    public final void onBlockExploded(World world, int x, int y, int z, Explosion aExplosion) {
+        if (world.isRemote) return;
+        final TileEntity tileEntity = getTileEntity(world, x, y, z, true);
+        if (tileEntity != null) LAST_BROKEN_TILEENTITY.set(tileEntity);
+        if (tileEntity instanceof IMultiTileEntity mute) {
             GT_Log.exp.printf(
                 "Explosion at : %d | %d | %d DIMID: %s due to near explosion!%n",
-                aX,
-                aY,
-                aZ,
-                aWorld.provider.dimensionId);
-            mte.onExploded(aExplosion);
-        } else aWorld.setBlockToAir(aX, aY, aZ);
+                x,
+                y,
+                z,
+                world.provider.dimensionId);
+            mute.onExploded(aExplosion);
+        } else world.setBlockToAir(x, y, z);
     }
 
     @Override
-    public final boolean canConnectRedstone(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
+    public final boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int ordinalSide) {
         return true;
     }
 
     @Override
-    public final boolean recolourBlock(World aWorld, int aX, int aY, int aZ, ForgeDirection side, int aColor) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMultiTileEntity mte && mte.recolourBlock(side, (byte) aColor);
+    public final boolean recolourBlock(World world, int x, int y, int z, ForgeDirection side, int color) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        return tileEntity instanceof IMultiTileEntity mute && mute.recolourBlock(side, (byte) color);
     }
 
     @Override
-    public final String getHarvestTool(int aMeta) {
-        return mTool;
+    public final String getHarvestTool(int meta) {
+        return toolName;
     }
 
     @Override
-    public final int getHarvestLevel(int aMeta) {
-        return Math.max(mHarvestLevelMinimum, Math.min(mHarvestLevelMaximum, mHarvestLevelOffset + aMeta));
+    public int getHarvestLevel(int meta) {
+        return meta % 4;
     }
 
     @Override
-    public final boolean isToolEffective(String aType, int aMeta) {
-        return getHarvestTool(aMeta).equals(aType);
+    public final boolean isToolEffective(String toolType, int meta) {
+        return getHarvestTool(meta).equals(toolType);
     }
 
     @Override
-    public final ItemStack getPickBlock(MovingObjectPosition aTarget, World aWorld, int aX, int aY, int aZ,
+    public final ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z,
         EntityPlayer aPlayer) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMultiTileEntity mte ? mte.getPickBlock(aTarget) : null;
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        return tileEntity instanceof IMultiTileEntity mte ? mte.getPickBlock(target) : null;
     }
 
     @Override
-    public final ItemStack getPickBlock(MovingObjectPosition aTarget, World aWorld, int aX, int aY, int aZ) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMultiTileEntity mte ? mte.getPickBlock(aTarget) : null;
+    public final ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        return tileEntity instanceof IMultiTileEntity mte ? mte.getPickBlock(target) : null;
     }
 
     @Nullable
-    public final IMultiTileEntity receiveMultiTileEntityData(@Nonnull IBlockAccess aWorld, int aX, int aY, int aZ,
+    public final IMultiTileEntity receiveMultiTileEntityData(@Nonnull IBlockAccess world, int x, int y, int z,
         int registryId, int aID) {
-        if (!(aWorld instanceof World)) return null;
-        TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (!(world instanceof World)) return null;
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
 
-        if (!(aTileEntity instanceof IMultiTileEntity mte) || mte.getMultiTileEntityRegistryID() != registryId
-            || mte.getMultiTileEntityID() != aID) {
+        if (!(tileEntity instanceof IMultiTileEntity mute) || mute.getMultiTileEntityRegistryID() != registryId
+            || mute.getMultiTileEntityID() != aID) {
             final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(registryId);
             if (tRegistry == null) return null;
 
-            aTileEntity = tRegistry.getNewTileEntity((World) aWorld, aX, aY, aZ, aID);
-            if (!(aTileEntity instanceof IMultiTileEntity)) return null;
+            tileEntity = tRegistry.getNewTileEntity((World) world, x, y, z, aID);
+            if (!(tileEntity instanceof IMultiTileEntity)) return null;
 
-            setTileEntity((World) aWorld, aX, aY, aZ, aTileEntity, false);
+            setTileEntity((World) world, x, y, z, tileEntity, false);
         }
-        return (IMultiTileEntity) aTileEntity;
+        return (IMultiTileEntity) tileEntity;
     }
 
-    public void receiveCoverData(IMultiTileEntity mte, int aCover0, int aCover1, int aCover2, int aCover3, int aCover4,
+    public void receiveCoverData(IMultiTileEntity mute, int aCover0, int aCover1, int aCover2, int aCover3, int aCover4,
         int aCover5) {
         boolean updated;
-        updated = mte.setCoverIDAtSideNoUpdate(ForgeDirection.DOWN, aCover0);
-        updated |= mte.setCoverIDAtSideNoUpdate(ForgeDirection.UP, aCover1);
-        updated |= mte.setCoverIDAtSideNoUpdate(ForgeDirection.NORTH, aCover2);
-        updated |= mte.setCoverIDAtSideNoUpdate(ForgeDirection.SOUTH, aCover3);
-        updated |= mte.setCoverIDAtSideNoUpdate(ForgeDirection.WEST, aCover4);
-        updated |= mte.setCoverIDAtSideNoUpdate(ForgeDirection.EAST, aCover5);
+        updated = mute.setCoverIDAtSideNoUpdate(ForgeDirection.DOWN, aCover0);
+        updated |= mute.setCoverIDAtSideNoUpdate(ForgeDirection.UP, aCover1);
+        updated |= mute.setCoverIDAtSideNoUpdate(ForgeDirection.NORTH, aCover2);
+        updated |= mute.setCoverIDAtSideNoUpdate(ForgeDirection.SOUTH, aCover3);
+        updated |= mute.setCoverIDAtSideNoUpdate(ForgeDirection.WEST, aCover4);
+        updated |= mute.setCoverIDAtSideNoUpdate(ForgeDirection.EAST, aCover5);
 
         if (updated) {
-            mte.issueBlockUpdate();
+            mute.issueBlockUpdate();
         }
     }
 
     @Override
-    public final TileEntity createTileEntity(World aWorld, int aMeta) {
-        return null;
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world, int i) {
-        return null;
+    public TileEntity createNewTileEntity(World world, int meta) {
+        return registry.getNewTileEntity(meta);
     }
 }

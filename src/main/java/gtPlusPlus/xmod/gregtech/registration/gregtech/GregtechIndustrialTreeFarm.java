@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_TreeFarm;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -16,7 +18,9 @@ public class GregtechIndustrialTreeFarm {
 
     private static void run1() {
         GregtechItemList.Industrial_TreeFarm.set(
-            new GregtechMetaTileEntityTreeFarm(836, "treefarm.controller.tier.single", "Tree Growth Simulator")
-                .getStackForm(1L));
+            new GregtechMetaTileEntityTreeFarm(
+                Industrial_TreeFarm.ID,
+                "treefarm.controller.tier.single",
+                "Tree Growth Simulator").getStackForm(1L));
     }
 }

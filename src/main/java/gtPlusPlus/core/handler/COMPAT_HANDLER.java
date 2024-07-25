@@ -99,6 +99,7 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechThaumcraftDevices;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechThreadedBuffers;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTieredFluidTanks;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTreeFarmerTE;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechWaterPump;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechWirelessChargers;
 
 public class COMPAT_HANDLER {
@@ -137,6 +138,7 @@ public class COMPAT_HANDLER {
         GregtechIndustrialMacerator.run();
         GregtechIndustrialWiremill.run();
         GregtechIndustrialMassFabricator.run();
+        GregtechWaterPump.run();
         GregtechIndustrialBlastSmelter.run();
         GregtechQuantumForceTransformer.run();
         GregtechPowerSubStation.run();
