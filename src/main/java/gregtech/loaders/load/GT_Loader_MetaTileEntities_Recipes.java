@@ -4949,13 +4949,13 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addCraftingRecipe(
             ItemList.Hatch_Output_ULV.get(1L),
             bits,
-            new Object[] { "ASA", "AFA", "APA", 'S', getModItem(BuildCraftFactory.ID, "tankBlock", 1), 'F',
+            new Object[] { "ASA", "AFA", "APA", 'S', GT_ModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1), 'F',
                 ItemList.Hull_ULV.get(1), "A", OrePrefixes.plate.get(Materials.Rubber), 'P',
                 OrePrefixes.ring.get(Materials.Rubber) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Hatch_Input_ULV.get(1L),
             bits,
-            new Object[] { "ASA", "AFA", "APA", 'S', getModItem(BuildCraftFactory.ID, "tankBlock", 1), 'F',
+            new Object[] { "ASA", "AFA", "APA", 'S', GT_ModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1), 'F',
                 ItemList.Hull_ULV.get(1), "A", OrePrefixes.plate.get(Materials.Rubber), 'P',
                 OrePrefixes.gear.get(Materials.Rubber) });
         GT_ModHandler.addCraftingRecipe(
