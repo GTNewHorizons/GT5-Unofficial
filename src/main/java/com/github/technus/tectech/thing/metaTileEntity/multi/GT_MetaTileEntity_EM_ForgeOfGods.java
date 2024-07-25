@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -43,6 +44,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.GodforgeGlassBlock;
 import com.github.technus.tectech.thing.block.TileForgeOfGods;
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
@@ -137,6 +139,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     private BigInteger totalPowerConsumed = BigInteger.ZERO;
     private boolean batteryCharging = false;
     private boolean inversion = false;
+    private boolean gravitonShardEjection = false;
     public ArrayList<GT_MetaTileEntity_EM_BaseModule> moduleHatches = new ArrayList<>();
     protected ItemStackHandler inputSlotHandler = new ItemStackHandler(16);
 
@@ -294,27 +297,39 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
 
         moduleHatches.clear();
 
-        // Check structure of multi.
+        // Check structure of multi
         if (!structureCheck_EM(STRUCTURE_PIECE_MAIN, 63, 14, 1)) {
             return false;
         }
 
-        // Check there is 1 input bus.
+        // Check there is 1 input bus
         if (mInputBusses.size() != 1) {
             return false;
         }
 
-        // Make sure there are no energy hatches.
+        // Check there is 1 me output bus
+        {
+            if (mOutputBusses.size() != 1) {
+                return false;
+            }
 
-        if (mEnergyHatches.size() > 0) {
-            return false;
+            if (!(mOutputBusses.get(0) instanceof GT_MetaTileEntity_Hatch_OutputBus_ME)) {
+                return false;
+            }
         }
 
-        if (mExoticEnergyHatches.size() > 0) {
-            return false;
+        // Make sure there are no energy hatches
+        {
+            if (mEnergyHatches.size() > 0) {
+                return false;
+            }
+
+            if (mExoticEnergyHatches.size() > 0) {
+                return false;
+            }
         }
 
-        // Make sure there is 1 input hatch.
+        // Make sure there is 1 input hatch
         if (mInputHatches.size() != 1) {
             return false;
         }
@@ -421,6 +436,9 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 determineMilestoneProgress();
                 if (!debugMode) {
                     determineGravitonShardAmount();
+                }
+                if (upgrades[30] && gravitonShardEjection) {
+                    ejectGravitonShards();
                 }
 
                 // Do module calculations and checks
@@ -612,6 +630,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     .setSize(74, 34))
             .widget(createPowerSwitchButton())
             .widget(createBatteryButton(builder))
+            .widget(createEjectionSwitch(builder))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> getBaseMetaTileEntity().isAllowedToWork(), val -> {
                 if (val) {
                     getBaseMetaTileEntity().enableWorking();
@@ -696,6 +715,40 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
             .setSize(16, 16);
         button.addTooltip("Power Switch")
             .setTooltipShowUpDelay(TOOLTIP_DELAY);
+        return (ButtonWidget) button;
+    }
+
+    protected ButtonWidget createEjectionSwitch(IWidgetBuilder<?> builder) {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (upgrades[30]) {
+                gravitonShardEjection = !gravitonShardEjection;
+            }
+        })
+            .setPlayClickSound(upgrades[30])
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (!upgrades[30]) {
+                    return ret.toArray(new IDrawable[0]);
+                }
+                if (gravitonShardEjection) {
+                    ret.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
+                    ret.add(TecTechUITextures.OVERLAY_EJECTION_ON);
+                } else {
+                    ret.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
+                    ret.add(TecTechUITextures.OVERLAY_EJECTION_LOCKED);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .attachSyncer(
+                new FakeSyncWidget.BooleanSyncer(() -> gravitonShardEjection, val -> gravitonShardEjection = val),
+                builder)
+            .setPos(26, 91)
+            .setSize(16, 16)
+            .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> upgrades[30], val -> upgrades[30] = val), builder);
+        if (upgrades[30]) {
+            button.addTooltip(translateToLocal("fog.button.ejection.tooltip"));
+            button.setTooltipShowUpDelay(TOOLTIP_DELAY);
+        }
         return (ButtonWidget) button;
     }
 
@@ -2447,6 +2500,17 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
             sum += progress * (progress + 1) / 2;
         }
         gravitonShardsAvailable = sum - gravitonShardsSpent;
+    }
+
+    private void ejectGravitonShards() {
+        if (mOutputBusses.size() == 1) {
+            while (gravitonShardsAvailable >= 64) {
+                addOutput(CustomItemList.Machine_Multi_ForgeOfGods.get(64));
+                gravitonShardsAvailable -= 64;
+            }
+            addOutput(CustomItemList.Machine_Multi_ForgeOfGods.get(gravitonShardsAvailable));
+            gravitonShardsAvailable = 0;
+        }
     }
 
     private Text gravitonShardAmountText(int milestoneID) {
