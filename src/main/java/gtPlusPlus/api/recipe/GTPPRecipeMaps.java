@@ -1,5 +1,7 @@
 package gtPlusPlus.api.recipe;
 
+import static gregtech.api.util.GT_RecipeConstants.LFTR_OUTPUT_POWER;
+
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -22,8 +24,6 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntityTreeFarm;
-
-import static gregtech.api.util.GT_RecipeConstants.LFTR_OUTPUT_POWER;
 
 public class GTPPRecipeMaps {
 

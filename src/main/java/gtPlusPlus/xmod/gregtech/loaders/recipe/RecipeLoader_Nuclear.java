@@ -420,10 +420,7 @@ public class RecipeLoader_Nuclear {
         GT_Values.RA.stdBuilder()
             .itemInputs(FLUORIDES.BERYLLIUM_HYDROXIDE.getDust(3), CI.getNumberedAdvancedCircuit(17))
             .fluidInputs(FLUORIDES.AMMONIUM_BIFLUORIDE.getFluidStack(1152))
-            .fluidOutputs(
-                Materials.Water.getFluid(2000L),
-                FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1000)
-            )
+            .fluidOutputs(Materials.Water.getFluid(2000L), FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1000))
             .eut(TierEU.RECIPE_MV)
             .duration(5 * MINUTES)
             .addTo(multiblockChemicalReactorRecipes);
@@ -446,13 +443,11 @@ public class RecipeLoader_Nuclear {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(CI.getNumberedAdvancedCircuit(17))
-            .itemOutputs(
-                FLUORIDES.BERYLLIUM_FLUORIDE.getDust(3))
+            .itemOutputs(FLUORIDES.BERYLLIUM_FLUORIDE.getDust(3))
             .fluidInputs(FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1000))
             .fluidOutputs(
                 MISC_MATERIALS.AMMONIA.getFluidStack(2000),
-                FluidUtils.getFluidStack("hydrofluoricacid", 1000)
-            )
+                FluidUtils.getFluidStack("hydrofluoricacid", 1000))
             .eut(TierEU.RECIPE_MV)
             .duration(5 * MINUTES)
             .addTo(multiblockChemicalReactorRecipes);
