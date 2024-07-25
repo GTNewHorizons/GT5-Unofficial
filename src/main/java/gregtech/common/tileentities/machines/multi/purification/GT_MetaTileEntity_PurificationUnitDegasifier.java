@@ -420,7 +420,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
                     + "Gravitationally-Generated Differential Vacuum Extraction")
             .addInfo(
                 "If this bit is on, you must insert " + EnumChatFormatting.RED
-                    + "4608L  "
+                    + "4608L "
                     + EnumChatFormatting.WHITE
                     + "Molten Neutronium")
             .addSeparator()
@@ -473,7 +473,38 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
                     + EnumChatFormatting.ITALIC
                     + "detects in the water, it will request various materials to complete the processed listed above.")
             .addInfo(AuthorNotAPenguin)
+            .beginStructureBlock(17, 25, 17, false)
+            .addCasingInfoRangeColored(
+                "Heat-Resistant Trinium Plated Casing",
+                EnumChatFormatting.GRAY,
+                780,
+                803,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Omni-Purpose Infinity Fused Glass",
+                EnumChatFormatting.GRAY,
+                622,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Bedrockium Frame Box",
+                EnumChatFormatting.GRAY,
+                126,
+                EnumChatFormatting.GOLD,
+                false)
+            .addController("Front center")
+            .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
+            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
+            .addOtherStructurePart(
+                "Degasser Control Hatch",
+                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + ", Any Trinium Casing",
+                1)
             .toolTipFinisher("GregTech");
+        // structure:
+        // Heat-Resistant Trinium Plated Casing: 780-803
+        // Omni-Purpose Infinity Fused Glass 622
+        // Bedrockium Frame Box: 126
         return tt;
     }
 
