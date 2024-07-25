@@ -2455,7 +2455,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         screenElements.setSynced(false)
             .setSpace(0)
             .setPos(10, 7);
-
+        if (supportsMachineModeSwitch()) {
+            screenElements.widget(
+                TextWidget.dynamicString(
+                    () -> EnumChatFormatting.WHITE + GT_Utility.trans("400", "Running mode: ")
+                        + EnumChatFormatting.GOLD
+                        + getMachineModeName()));
+        }
         screenElements
             .widget(
                 new TextWidget(GT_Utility.trans("132", "Pipe is loose.")).setDefaultColor(COLOR_TEXT_WHITE.get())
