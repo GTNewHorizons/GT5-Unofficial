@@ -227,11 +227,11 @@ public class AdditionalRecipes {
                 for (BioCulture bioCulture : BioCulture.BIO_CULTURE_ARRAY_LIST) {
                     if (bioCulture.isBreedable() && bioCulture.getTier() == 0) {
                         GT_Values.RA.stdBuilder()
-                            .itemInputs( GT_Utility.getIntegratedCircuit(1), new ItemStack(Items.sugar, 64))
+                            .itemInputs(GT_Utility.getIntegratedCircuit(1), new ItemStack(Items.sugar, 64))
                             .special(BioItemList.getPetriDish(bioCulture))
                             .fluidInputs(fluidStack)
                             .fluidOutputs(new FluidStack(bioCulture.getFluid(), 10))
-                            .duration(50*SECONDS)
+                            .duration(50 * SECONDS)
                             .eut(TierEU.RECIPE_MV)
                             .addTo(bacterialVatRecipes);
 

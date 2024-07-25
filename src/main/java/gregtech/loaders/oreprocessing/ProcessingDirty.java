@@ -57,10 +57,15 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
         RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1, aStack))
             .itemOutputs(
-                GT_OreDictUnificator.get(aPrefix == OrePrefixes.crushed ? OrePrefixes.crushedPurified : OrePrefixes.dustPure,aMaterial,1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust,GT_Utility.selectItemInList(0, aMaterial.mMacerateInto, aMaterial.mOreByProducts),1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L)
-            )
+                GT_OreDictUnificator.get(
+                    aPrefix == OrePrefixes.crushed ? OrePrefixes.crushedPurified : OrePrefixes.dustPure,
+                    aMaterial,
+                    1L),
+                GT_OreDictUnificator.get(
+                    OrePrefixes.dust,
+                    GT_Utility.selectItemInList(0, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
+                    1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L))
             .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(GT_ModHandler.getWater(1000))
             .duration(25 * SECONDS)
@@ -70,10 +75,15 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
         RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1, aStack))
             .itemOutputs(
-                GT_OreDictUnificator.get(aPrefix == OrePrefixes.crushed ? OrePrefixes.crushedPurified : OrePrefixes.dustPure,aMaterial,1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust,GT_Utility.selectItemInList(0, aMaterial.mMacerateInto, aMaterial.mOreByProducts),1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L)
-            )
+                GT_OreDictUnificator.get(
+                    aPrefix == OrePrefixes.crushed ? OrePrefixes.crushedPurified : OrePrefixes.dustPure,
+                    aMaterial,
+                    1L),
+                GT_OreDictUnificator.get(
+                    OrePrefixes.dust,
+                    GT_Utility.selectItemInList(0, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
+                    1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L))
             .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(GT_ModHandler.getDistilledWater(200))
             .duration(15 * SECONDS)

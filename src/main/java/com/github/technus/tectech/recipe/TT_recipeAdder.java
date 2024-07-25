@@ -2,7 +2,6 @@ package com.github.technus.tectech.recipe;
 
 import static com.github.technus.tectech.recipe.TecTechRecipeMaps.researchStationFakeRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblylineVisualRecipes;
-import static gregtech.api.util.GT_RecipeConstants.CLEANROOM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_STATION_DATA;
 
 import java.util.ArrayList;

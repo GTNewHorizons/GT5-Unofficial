@@ -10,15 +10,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.TierEU;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
@@ -190,8 +190,7 @@ public class GT_RecipeConstants {
     /**
      * glass tier required for the biovat recipes.
      */
-    public static final RecipeMetadataKey<Integer> SIEVERTS = SimpleRecipeMetadataKey
-        .create(Integer.class, "sieverts");
+    public static final RecipeMetadataKey<Integer> SIEVERTS = SimpleRecipeMetadataKey.create(Integer.class, "sieverts");
 
     public static final RecipeMetadataKey<Integer> DECAY_TICKS = SimpleRecipeMetadataKey
         .create(Integer.class, "decay_ticks");
@@ -332,7 +331,6 @@ public class GT_RecipeConstants {
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes));
-
 
         ret.add(
             RecipeMaps.assemblylineVisualRecipes.addFakeRecipe(

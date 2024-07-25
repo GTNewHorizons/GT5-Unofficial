@@ -46,7 +46,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.item.ItemStack;
 
 public class CrushedLoader implements IWerkstoffRunnable {
 
@@ -99,9 +98,8 @@ public class CrushedLoader implements IWerkstoffRunnable {
             .itemOutputs(
                 werkstoff.get(crushedPurified),
                 werkstoff.getOreByProduct(0, dust),
-                GT_OreDictUnificator.get(dust, Materials.Stone, 1L)
-            )
-            .outputChances(100_00, 11_11, 100_00 )
+                GT_OreDictUnificator.get(dust, Materials.Stone, 1L))
+            .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(GT_ModHandler.getWater(1000))
             .duration(25 * SECONDS)
             .eut(16)
@@ -112,9 +110,8 @@ public class CrushedLoader implements IWerkstoffRunnable {
             .itemOutputs(
                 werkstoff.get(crushedPurified),
                 werkstoff.getOreByProduct(0, dust),
-                GT_OreDictUnificator.get(dust, Materials.Stone, 1L)
-            )
-            .outputChances(100_00, 11_11, 100_00 )
+                GT_OreDictUnificator.get(dust, Materials.Stone, 1L))
+            .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(GT_ModHandler.getDistilledWater(200))
             .duration(15 * SECONDS)
             .eut(16)

@@ -147,7 +147,7 @@ public class GT_PostLoad {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.IC2_Crop_Seeds.getWildcard(1L))
                 .itemOutputs(ItemList.IC2_Crop_Seeds.getWithName(1L, "Scanned Seeds"))
-                .duration(8*SECONDS)
+                .duration(8 * SECONDS)
                 .eut(8)
                 .noOptimize()
                 .ignoreCollision()
@@ -158,7 +158,7 @@ public class GT_PostLoad {
             .itemInputs(new ItemStack(Items.written_book, 1, 32767))
             .itemOutputs(ItemList.Tool_DataStick.getWithName(1L, "Scanned Book Data"))
             .special(ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"))
-            .duration(6*SECONDS+8*TICKS)
+            .duration(6 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .noOptimize()
             .ignoreCollision()
@@ -167,9 +167,9 @@ public class GT_PostLoad {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.filled_map, 1, 32767))
-            .itemOutputs( ItemList.Tool_DataStick.getWithName(1L, "Scanned Map Data"))
+            .itemOutputs(ItemList.Tool_DataStick.getWithName(1L, "Scanned Map Data"))
             .special(ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"))
-            .duration(6*SECONDS+8*TICKS)
+            .duration(6 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .noOptimize()
             .ignoreCollision()
@@ -177,7 +177,7 @@ public class GT_PostLoad {
             .addTo(scannerFakeRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs( ItemList.Tool_DataOrb.getWithName(1L, "Orb to overwrite"))
+            .itemInputs(ItemList.Tool_DataOrb.getWithName(1L, "Orb to overwrite"))
             .itemOutputs(ItemList.Tool_DataOrb.getWithName(1L, "Copy of the Orb"))
             .duration(25 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LV)
@@ -190,7 +190,7 @@ public class GT_PostLoad {
             .itemInputs(ItemList.Tool_DataStick.getWithName(1L, "Stick to overwrite"))
             .itemOutputs(ItemList.Tool_DataStick.getWithName(1L, "Copy of the Stick"))
             .special(ItemList.Tool_DataStick.getWithName(0L, "Stick to copy"))
-            .duration(6*SECONDS+8*TICKS)
+            .duration(6 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .noOptimize()
             .ignoreCollision()
@@ -200,7 +200,7 @@ public class GT_PostLoad {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Tool_DataStick.getWithName(1L, "Raw Prospection Data"))
             .itemOutputs(ItemList.Tool_DataStick.getWithName(1L, "Analyzed Prospection Data"))
-            .duration(50*SECONDS)
+            .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .noOptimize()
             .ignoreCollision()
@@ -209,22 +209,30 @@ public class GT_PostLoad {
 
         if (GalacticraftCore.isModLoaded()) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(Objects.requireNonNull(GT_ModHandler.getModItem(GalacticraftCore.ID, "item.schematic", 1, Short.MAX_VALUE)).setStackDisplayName("Any Schematic"))
+                .itemInputs(
+                    Objects
+                        .requireNonNull(
+                            GT_ModHandler.getModItem(GalacticraftCore.ID, "item.schematic", 1, Short.MAX_VALUE))
+                        .setStackDisplayName("Any Schematic"))
                 .itemOutputs(ItemList.Tool_DataStick.getWithName(1L, "Scanned Schematic"))
                 .special(ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"))
-                .duration(30*MINUTES)
+                .duration(30 * MINUTES)
                 .eut(TierEU.RECIPE_HV)
                 .noOptimize()
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes);
 
-            if (GalacticraftMars.isModLoaded()){
+            if (GalacticraftMars.isModLoaded()) {
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(Objects.requireNonNull(GT_ModHandler.getModItem(GalacticraftMars.ID, "item.schematic", 1, Short.MAX_VALUE)).setStackDisplayName("Any Schematic"))
+                    .itemInputs(
+                        Objects
+                            .requireNonNull(
+                                GT_ModHandler.getModItem(GalacticraftMars.ID, "item.schematic", 1, Short.MAX_VALUE))
+                            .setStackDisplayName("Any Schematic"))
                     .itemOutputs(ItemList.Tool_DataStick.getWithName(1L, "Scanned Schematic"))
-                    .special( ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"))
-                    .duration(30*MINUTES)
+                    .special(ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"))
+                    .duration(30 * MINUTES)
                     .eut(TierEU.RECIPE_MV)
                     .noOptimize()
                     .ignoreCollision()
@@ -234,10 +242,12 @@ public class GT_PostLoad {
             if (GalaxySpace.isModLoaded()) {
                 for (int i = 4; i < 9; i++) {
                     GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_ModHandler.getModItem(GalaxySpace.ID, "item.SchematicTier" + i, 1).setStackDisplayName("Any Schematic"))
+                        .itemInputs(
+                            GT_ModHandler.getModItem(GalaxySpace.ID, "item.SchematicTier" + i, 1)
+                                .setStackDisplayName("Any Schematic"))
                         .itemOutputs(ItemList.Tool_DataStick.getWithName(1L, "Scanned Schematic"))
                         .special(ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"))
-                        .duration(30*MINUTES)
+                        .duration(30 * MINUTES)
                         .eut(TierEU.RECIPE_HV)
                         .noOptimize()
                         .ignoreCollision()
@@ -308,24 +318,29 @@ public class GT_PostLoad {
                 .ignoreCollision()
                 .noOptimize()
                 .fake()
-                .addTo(massFabFakeRecipes).iterator().next();
+                .addTo(massFabFakeRecipes)
+                .iterator()
+                .next();
         }
 
         GT_MetaTileEntity_Massfabricator.uuaRecipe = GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(Materials.UUAmplifier.getFluid(GT_MetaTileEntity_Massfabricator.sUUAperUUM))
             .fluidOutputs(Materials.UUMatter.getFluid(1L))
-            .duration(GT_MetaTileEntity_Massfabricator.sDurationMultiplier / GT_MetaTileEntity_Massfabricator.sUUASpeedBonus)
+            .duration(
+                GT_MetaTileEntity_Massfabricator.sDurationMultiplier / GT_MetaTileEntity_Massfabricator.sUUASpeedBonus)
             .eut(GT_MetaTileEntity_Massfabricator.BASE_EUT)
             .ignoreCollision()
             .noOptimize()
             .fake()
-            .addTo(massFabFakeRecipes).iterator().next();
+            .addTo(massFabFakeRecipes)
+            .iterator()
+            .next();
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Display_ITS_FREE.getWithName(1L, "IT'S FREE! Place Lava on Side"))
-            .itemOutputs(new ItemStack(Blocks.cobblestone, 1) )
-            .duration(16*TICKS)
+            .itemOutputs(new ItemStack(Blocks.cobblestone, 1))
+            .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .ignoreCollision()
             .noOptimize()
@@ -334,8 +349,8 @@ public class GT_PostLoad {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Display_ITS_FREE.getWithName(1L, "IT'S FREE! Place Lava on Side"))
-            .itemOutputs(new ItemStack(Blocks.stone, 1) )
-            .duration(16*TICKS)
+            .itemOutputs(new ItemStack(Blocks.stone, 1))
+            .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .ignoreCollision()
             .noOptimize()
@@ -343,10 +358,11 @@ public class GT_PostLoad {
             .addTo(rockBreakerFakeRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
                 GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Blocks.obsidian, 1) )
-            .duration(6*SECONDS+8*TICKS)
+            .itemOutputs(new ItemStack(Blocks.obsidian, 1))
+            .duration(6 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .ignoreCollision()
             .noOptimize()

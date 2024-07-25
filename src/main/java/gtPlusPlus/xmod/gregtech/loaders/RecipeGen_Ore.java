@@ -259,14 +259,10 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 
         Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate Centrifuged ore to Pure Dust'");
 
-         // Wash
+        // Wash
         RA.stdBuilder()
             .itemInputs(material.getCrushed(1))
-            .itemOutputs(
-                material.getCrushedPurified(1),
-                matDustA,
-                dustStone
-            )
+            .itemOutputs(material.getCrushedPurified(1), matDustA, dustStone)
             .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(GT_ModHandler.getWater(1000))
             .duration(25 * SECONDS)
@@ -275,11 +271,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 
         RA.stdBuilder()
             .itemInputs(material.getCrushed(1))
-            .itemOutputs(
-                material.getCrushedPurified(1),
-                matDustA,
-                dustStone
-            )
+            .itemOutputs(material.getCrushedPurified(1), matDustA, dustStone)
             .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(GT_ModHandler.getDistilledWater(200))
             .duration(15 * SECONDS)
@@ -287,7 +279,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
             .addTo(oreWasherRecipes);
         Logger.MATERIALS("[OreWasher] Added Recipe: 'Wash Crushed ore into Purified Crushed ore'");
 
-         // Thermal Centrifuge
+        // Thermal Centrifuge
 
         Logger.MATERIALS("material.getCrushed(1): " + (material.getCrushed(1) != null));
         Logger.MATERIALS("material.getCrushedPurified(1): " + (material.getCrushedPurified(1) != null));
@@ -304,40 +296,39 @@ public class RecipeGen_Ore extends RecipeGen_Base {
             .addTo(thermalCentrifugeRecipes);
 
         Logger.MATERIALS(
-                "[ThermalCentrifuge] Added Recipe: 'Crushed ore to Centrifuged Ore' | Input: "
-                    + material.getCrushed(1)
-                        .getDisplayName()
-                    + " | Outputs: "
-                    + material.getCrushedCentrifuged(1)
-                        .getDisplayName()
-                    + ", "
-                    + matDustB.getDisplayName()
-                    + ", "
-                    + dustStone.getDisplayName()
-                    + ".");
+            "[ThermalCentrifuge] Added Recipe: 'Crushed ore to Centrifuged Ore' | Input: " + material.getCrushed(1)
+                .getDisplayName()
+                + " | Outputs: "
+                + material.getCrushedCentrifuged(1)
+                    .getDisplayName()
+                + ", "
+                + matDustB.getDisplayName()
+                + ", "
+                + dustStone.getDisplayName()
+                + ".");
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(material.getCrushedPurified(1))
-                .itemOutputs(material.getCrushedCentrifuged(1), matDustA, dustStone)
-                .outputChances(100_00, 11_11, 100_00)
-                .duration(25 * SECONDS)
-                .eut(48)
-                .addTo(thermalCentrifugeRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(material.getCrushedPurified(1))
+            .itemOutputs(material.getCrushedCentrifuged(1), matDustA, dustStone)
+            .outputChances(100_00, 11_11, 100_00)
+            .duration(25 * SECONDS)
+            .eut(48)
+            .addTo(thermalCentrifugeRecipes);
 
-            Logger.MATERIALS(
-                "[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore' | Input: "
-                    + material.getCrushedPurified(1)
-                        .getDisplayName()
-                    + " | Outputs: "
-                    + material.getCrushedCentrifuged(1)
-                        .getDisplayName()
-                    + ", "
-                    + matDustA.getDisplayName()
-                    + ", "
-                    + dustStone.getDisplayName()
-                    + ".");
+        Logger.MATERIALS(
+            "[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore' | Input: "
+                + material.getCrushedPurified(1)
+                    .getDisplayName()
+                + " | Outputs: "
+                + material.getCrushedCentrifuged(1)
+                    .getDisplayName()
+                + ", "
+                + matDustA.getDisplayName()
+                + ", "
+                + dustStone.getDisplayName()
+                + ".");
 
-         // Forge Hammer
+        // Forge Hammer
 
         GT_Values.RA.stdBuilder()
             .itemInputs(material.getCrushedCentrifuged(1))
@@ -364,7 +355,6 @@ public class RecipeGen_Ore extends RecipeGen_Base {
             .addTo(hammerRecipes);
 
         Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Ore to Crushed'");
-
 
         // Centrifuge
 

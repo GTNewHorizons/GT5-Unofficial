@@ -17,7 +17,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 
 public class DieselGenerator extends GT_MetaTileEntity_BasicGenerator {

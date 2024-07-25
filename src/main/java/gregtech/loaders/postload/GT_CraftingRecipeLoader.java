@@ -1593,8 +1593,8 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 GT_ModHandler.getIC2Item("evTransformer", 1L),
                 bits_no_remove_buffered,
                 new Object[] { " C ", "IMB", " C ", 'C', OrePrefixes.cableGt01.get(Materials.Aluminium), 'M',
-                    GT_ModHandler.getIC2Item("hvTransformer", 1L), 'I', OrePrefixes.circuit.get(Materials.HV),
-                    'B', OrePrefixes.battery.get(Materials.LuV) });
+                    GT_ModHandler.getIC2Item("hvTransformer", 1L), 'I', OrePrefixes.circuit.get(Materials.HV), 'B',
+                    OrePrefixes.battery.get(Materials.LuV) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("cesuUnit", 1L),
                 bits_no_remove_buffered,
@@ -1868,8 +1868,8 @@ public class GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(
             GT_ModHandler.getIC2Item("crophavester", 1L),
             bits_no_remove_buffered,
-            new Object[] { "ACA", "PMS", "WOW", 'M', ItemList.Hull_MV, 'C', OrePrefixes.circuit.get(Materials.MV),
-                'A', ItemList.Robot_Arm_LV, 'P', ItemList.Electric_Piston_LV, 'S', ItemList.Sensor_LV, 'W',
+            new Object[] { "ACA", "PMS", "WOW", 'M', ItemList.Hull_MV, 'C', OrePrefixes.circuit.get(Materials.MV), 'A',
+                ItemList.Robot_Arm_LV, 'P', ItemList.Electric_Piston_LV, 'S', ItemList.Sensor_LV, 'W',
                 OrePrefixes.toolHeadSense.get(Materials.Aluminium), 'O', ItemList.Conveyor_Module_LV });
 
         GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("RTGenerator", 1L));

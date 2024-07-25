@@ -385,20 +385,18 @@ public class CraftingRecipes implements Runnable {
             BioItemList.mBioLabParts[3],
             RecipeLoader.BITSD,
             new Object[] { "SFE", "CPC", "NFN", 'N',
-                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 1L), 'C',
-                "circuit" + Materials.LuV, 'F', ItemList.Field_Generator_LuV.get(1L), 'E',
-                ItemList.Emitter_LuV.get(1L), 'S', ItemList.Sensor_LuV.get(1L), 'P',
-                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 1), });
+                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 1L), 'C', "circuit" + Materials.LuV,
+                'F', ItemList.Field_Generator_LuV.get(1L), 'E', ItemList.Emitter_LuV.get(1L), 'S',
+                ItemList.Sensor_LuV.get(1L), 'P', WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 1), });
 
         // ClonalCellularSynthesisModule
         GT_ModHandler.addCraftingRecipe(
             BioItemList.mBioLabParts[4],
             RecipeLoader.BITSD,
             new Object[] { "FEF", "CPC", "FSF", 'N',
-                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 1L), 'C',
-                "circuit" + Materials.LuV, 'F', ItemList.Field_Generator_LuV.get(1L), 'E',
-                ItemList.Emitter_LuV.get(1L), 'S', ItemList.Sensor_LuV.get(1L), 'P',
-                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 1), });
+                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 1L), 'C', "circuit" + Materials.LuV,
+                'F', ItemList.Field_Generator_LuV.get(1L), 'E', ItemList.Emitter_LuV.get(1L), 'S',
+                ItemList.Sensor_LuV.get(1L), 'P', WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 1), });
 
         GT_ModHandler.addCraftingRecipe(
             new GT_TileEntity_BioVat(
@@ -421,8 +419,8 @@ public class CraftingRecipes implements Runnable {
             Materials.Iridium, Materials.Osmium, Materials.Naquadah };
         Materials[] wireMat2 = { Materials.Kanthal, Materials.Nichrome, Materials.TungstenSteel, Materials.Naquadah,
             Materials.NaquadahAlloy, Materials.SuperconductorUHV };
-        Materials[] circuits2 = { Materials.HV, Materials.EV, Materials.IV, Materials.LuV,
-            Materials.ZPM, Materials.SuperconductorUHV };
+        Materials[] circuits2 = { Materials.HV, Materials.EV, Materials.IV, Materials.LuV, Materials.ZPM,
+            Materials.SuperconductorUHV };
 
         for (int i = 3; i < GT_Values.VN.length - 1; i++) {
             // 12625

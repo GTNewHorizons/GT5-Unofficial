@@ -52,8 +52,7 @@ public class GT_Loader_OreDictionary implements Runnable {
 
         GT_OreDictUnificator
             .set(OrePrefixes.plateAlloy, Materials.Iridium, GT_ModHandler.getIC2Item("iridiumPlate", 1L));
-        GT_OreDictUnificator
-            .set(OrePrefixes.plateAlloy, Materials.HV, GT_ModHandler.getIC2Item("advancedAlloy", 1L));
+        GT_OreDictUnificator.set(OrePrefixes.plateAlloy, Materials.HV, GT_ModHandler.getIC2Item("advancedAlloy", 1L));
         GT_OreDictUnificator.set(OrePrefixes.plateAlloy, Materials.Carbon, GT_ModHandler.getIC2Item("carbonPlate", 1L));
 
         GT_OreDictUnificator.set(OrePrefixes.ore, Materials.Coal, new ItemStack(Blocks.coal_ore, 1));
@@ -168,8 +167,7 @@ public class GT_Loader_OreDictionary implements Runnable {
         GT_OreDictUnificator.registerOre("cropLemon", ItemList.FR_Lemon.get(1L));
         GT_OreDictUnificator.registerOre("cropCoffee", ItemList.IC2_CoffeeBeans.get(1L));
         GT_OreDictUnificator.registerOre("cropPotato", ItemList.Food_Raw_Potato.get(1L));
-        GT_OreDictUnificator
-            .registerOre(OrePrefixes.battery, Materials.LV, GT_ModHandler.getIC2Item("reBattery", 1L));
+        GT_OreDictUnificator.registerOre(OrePrefixes.battery, Materials.LV, GT_ModHandler.getIC2Item("reBattery", 1L));
         GT_OreDictUnificator
             .registerOre(OrePrefixes.battery, Materials.LV, GT_ModHandler.getIC2Item("chargedReBattery", 1L, 32767));
         GT_OreDictUnificator

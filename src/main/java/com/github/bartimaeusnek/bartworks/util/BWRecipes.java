@@ -45,7 +45,8 @@ public class BWRecipes {
         return ret;
     }
 
-    public static int computeSieverts(int givenSievert, int specialValue, int glassTier, boolean requiresExactSieverts){
+    public static int computeSieverts(int givenSievert, int specialValue, int glassTier,
+        boolean requiresExactSieverts) {
         int sievertValue = 0;
         if (givenSievert >= 83 || givenSievert == 61 || givenSievert == 43) sievertValue += givenSievert;
         sievertValue = sievertValue << 1;
@@ -57,7 +58,8 @@ public class BWRecipes {
         return sievertValue;
     }
 
-    public static int computeSieverts(Materials material, int aSpecialValue, int glassTier, boolean requiresExactSieverts){
+    public static int computeSieverts(Materials material, int aSpecialValue, int glassTier,
+        boolean requiresExactSieverts) {
         int aSievert = 0;
         if (material.getProtons() >= 83 || material.getProtons() == 61 || material.getProtons() == 43)
             aSievert += calculateSv(material);
@@ -81,6 +83,7 @@ public class BWRecipes {
             .addTo(radioHatchRecipes);
         return true;
     }
+
     @Deprecated
     public boolean addBioLabRecipe(ItemStack[] aInputs, ItemStack aOutput, ItemStack aSpecialItems, int[] aChances,
         FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
@@ -103,8 +106,8 @@ public class BWRecipes {
     public boolean addBioLabRecipeIncubation(ItemStack aInput, BioCulture aOutput, int[] aChances,
         FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue) {
         GT_Values.RA.stdBuilder()
-            .itemInputs( BioItemList.getPetriDish(null), aInput )
-            .itemOutputs( BioItemList.getPetriDish(aOutput) )
+            .itemInputs(BioItemList.getPetriDish(null), aInput)
+            .itemOutputs(BioItemList.getPetriDish(aOutput))
             .outputChances(aChances)
             .fluidInputs(aFluidInputs)
             .duration(aDuration)
@@ -118,7 +121,7 @@ public class BWRecipes {
     public boolean addBioLabRecipeIncubation(ItemStack aInput, BioCulture aOutput, int[] aChances,
         FluidStack aFluidInputs, int aDuration, int aEUt, int aSpecialValue) {
         GT_Values.RA.stdBuilder()
-            .itemInputs( BioItemList.getPetriDish(null), aInput)
+            .itemInputs(BioItemList.getPetriDish(null), aInput)
             .itemOutputs(BioItemList.getPetriDish(aOutput))
             .outputChances(aChances)
             .fluidInputs(aFluidInputs)
