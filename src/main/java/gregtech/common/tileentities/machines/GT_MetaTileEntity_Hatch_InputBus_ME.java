@@ -483,7 +483,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     this.mInventory[index] = itemstack;
                     if (itemstack != null) {
                         justHadNewItems = !itemstack.isItemEqual(previous);
-                    }   
+                    }
                     index++;
                 }
             }
