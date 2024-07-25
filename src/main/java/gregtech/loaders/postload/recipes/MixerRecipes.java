@@ -1489,6 +1489,14 @@ public class MixerRecipes implements Runnable {
             .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Methanol.getCells(1), Materials.Butane.getCells(1))
+            .itemOutputs(Materials.MTBEMixtureAlt.getCells(1), Materials.Empty.getCells(1))
+            .duration(20 * TICKS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(mixerRecipes);
+
+
+        GT_Values.RA.stdBuilder()
             .itemInputs(
                 Materials.Naphtha.getCells(16),
                 Materials.Gas.getCells(2),
