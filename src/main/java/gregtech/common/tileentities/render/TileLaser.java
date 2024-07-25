@@ -6,12 +6,10 @@ import net.minecraft.util.AxisAlignedBB;
 public class TileLaser extends TileEntity {
 
     public boolean shouldRender = false;
-    public byte r = 0;
-    public byte g = 0;
-    public byte b = 0;
+    public float red = 0, green = 0, blue = 0;
 
-    public void setColors(byte red, byte green, byte blue) {
-        r = red; g = green; b = blue;
+    public void setColors(float red, float green, float blue) {
+        this.red = red; this.green = green; this.blue = blue;
     }
 
     @Override

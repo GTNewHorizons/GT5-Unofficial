@@ -42,7 +42,7 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
         if (tickcount >= 80) {
             tickcount = 0;
         }
-        GL11.glColor3b(((TileLaser) tile).r, ((TileLaser) tile).g, ((TileLaser) tile).b);
+        GL11.glColor3f(((TileLaser) tile).red, ((TileLaser) tile).green, ((TileLaser) tile).blue);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_BLEND);
         bindTexture(new ResourceLocation("gregtech", "textures/model/laser.png"));

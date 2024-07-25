@@ -73,10 +73,6 @@ public class GT_Block_Laser extends Block implements ITileEntityProvider {
         return false;
     }
 
-    public void toggleRender() {
-        laserRender.shouldRender = !laserRender.shouldRender;
-    }
-
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         laserRender = new TileLaser();
