@@ -19,7 +19,6 @@ public class GT_Block_Laser extends Block implements ITileEntityProvider {
 
     public TileLaser laserRender;
     public static IIcon[] textures;
-    private static int renderID;
 
     public GT_Block_Laser() {
         super(Material.iron);
@@ -38,19 +37,6 @@ public class GT_Block_Laser extends Block implements ITileEntityProvider {
     @Override
     public IIcon getIcon(int side, int meta) {
         return blockIcon;
-    }
-
-    public static void setRenderID(int id) {
-        renderID = id;
-    }
-
-    public static int getRenderID() {
-        return renderID;
-    }
-
-    @Override
-    public int getRenderType() {
-        return renderID;
     }
 
     @Override
@@ -74,8 +60,13 @@ public class GT_Block_Laser extends Block implements ITileEntityProvider {
     }
 
     @Override
+    public boolean hasTileEntity(int metadata) {
+        return true;
+    }
+
+    @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        laserRender = new TileLaser();
+        if (laserRender == null) laserRender = new TileLaser();
         return laserRender;
     }
 }

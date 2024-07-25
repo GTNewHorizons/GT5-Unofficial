@@ -11,8 +11,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -27,6 +28,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -39,17 +41,11 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings4;
 import gregtech.common.blocks.GT_Block_Laser;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class GT_MetaTileEntity_IndustrialLaserEngraver
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IndustrialLaserEngraver>
@@ -170,6 +166,18 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     }
 
     @Override
+    public void onDisableWorking() {
+        renderer.laserRender.shouldRender = false;
+        super.onDisableWorking();
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        renderer.laserRender.shouldRender = false;
+        super.onBlockDestroyed();
+    }
+
+    @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Laser Engraver")
@@ -224,7 +232,8 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     }
 
     private static String getUniqueIdentifier(ItemStack is) {
-        return is.getItem().getUnlocalizedName() + is.getItemDamage();
+        return is.getItem()
+            .getUnlocalizedName() + is.getItemDamage();
     }
 
     @Override
@@ -297,19 +306,20 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
-        //getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.FoolsRuby, 1));
+        // getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.FoolsRuby, 1));
     }
 
     private enum Colors {
-        White(1,1,1),
-        Red(1,0,0),
-        Green(0,1,0),
-        Blue(0,0,1),
-        Yellow(1,1,0),
-        Purple(1,0,1),
-        Cyan(0,1,1),
-        Orange(1,0.5F,0),
-        Black(0,0,0);
+
+        White(1, 1, 1),
+        Red(1, 0, 0),
+        Green(0, 1, 0),
+        Blue(0, 0, 1),
+        Yellow(1, 1, 0),
+        Purple(1, 0, 1),
+        Cyan(0, 1, 1),
+        Orange(1, 0.5F, 0),
+        Black(0, 0, 0);
 
         final float r, g, b;
 
@@ -324,54 +334,93 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     static {
         lensColors = new HashMap<>();
 
-        //Black lenses
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Forcicium, 1)), Colors.Black);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Forcillium, 1)), Colors.Black);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedEntropy, 1)), Colors.Black);
+        // Black lenses
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Forcicium, 1)), Colors.Black);
+        lensColors.put(
+            getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Forcillium, 1)),
+            Colors.Black);
+        lensColors.put(
+            getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedEntropy, 1)),
+            Colors.Black);
 
-        //White lenses
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.NetherStar, 1)), Colors.White);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 1)), Colors.White);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Glass, 1)), Colors.White);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedOrder, 1)), Colors.White);
+        // White lenses
+        lensColors.put(
+            getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.NetherStar, 1)),
+            Colors.White);
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 1)), Colors.White);
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Glass, 1)), Colors.White);
+        lensColors.put(
+            getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedOrder, 1)),
+            Colors.White);
 
-        //Green lenses
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Emerald, 1)), Colors.Green);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Olivine, 1)), Colors.Green);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.GreenSapphire, 1)), Colors.Green);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedEarth, 1)), Colors.Green);
+        // Green lenses
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Emerald, 1)), Colors.Green);
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Olivine, 1)), Colors.Green);
+        lensColors.put(
+            getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.GreenSapphire, 1)),
+            Colors.Green);
+        lensColors.put(
+            getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedEarth, 1)),
+            Colors.Green);
 
-        //Red lenses
+        // Red lenses
         lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Ruby, 1)), Colors.Red);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Firestone, 1)), Colors.Red);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Jasper, 1)), Colors.Red);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.FoolsRuby, 1)), Colors.Red);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.GarnetRed, 1)), Colors.Red);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedFire, 1)), Colors.Red);
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Firestone, 1)), Colors.Red);
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Jasper, 1)), Colors.Red);
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.FoolsRuby, 1)), Colors.Red);
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.GarnetRed, 1)), Colors.Red);
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedFire, 1)), Colors.Red);
 
-        //Blue lenses
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.BlueTopaz, 1)), Colors.Blue);
+        // Blue lenses
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.BlueTopaz, 1)), Colors.Blue);
         lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Opal, 1)), Colors.Blue);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedWater, 1)), Colors.Blue);
+        lensColors.put(
+            getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedWater, 1)),
+            Colors.Blue);
 
-        //Yellow lenses
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.GarnetYellow, 1)), Colors.Yellow);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Force, 1)), Colors.Yellow);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedAir, 1)), Colors.Yellow);
+        // Yellow lenses
+        lensColors.put(
+            getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.GarnetYellow, 1)),
+            Colors.Yellow);
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Force, 1)), Colors.Yellow);
+        lensColors.put(
+            getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedAir, 1)),
+            Colors.Yellow);
 
-        //Purple lenses
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amethyst, 1)), Colors.Purple);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Tanzanite, 1)), Colors.Purple);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Sapphire, 1)), Colors.Purple);
+        // Purple lenses
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amethyst, 1)), Colors.Purple);
+        lensColors.put(
+            getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Tanzanite, 1)),
+            Colors.Purple);
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Sapphire, 1)), Colors.Purple);
 
-        //Cyan lenses
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderEye, 1)), Colors.Cyan);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderPearl, 1)), Colors.Cyan);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1)), Colors.Cyan);
+        // Cyan lenses
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderEye, 1)), Colors.Cyan);
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderPearl, 1)), Colors.Cyan);
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1)), Colors.Cyan);
 
-        //Orange lenses
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Topaz, 1)), Colors.Orange);
-        lensColors.put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amber, 1)), Colors.Orange);
+        // Orange lenses
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Topaz, 1)), Colors.Orange);
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amber, 1)), Colors.Orange);
     }
 
 }
