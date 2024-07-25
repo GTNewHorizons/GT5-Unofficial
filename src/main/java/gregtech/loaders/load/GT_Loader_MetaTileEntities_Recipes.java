@@ -227,6 +227,7 @@ import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NotEnoughItems;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
@@ -4948,8 +4949,15 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addCraftingRecipe(
             ItemList.Hatch_Output_ULV.get(1L),
             bits,
-            new Object[] { " S ", " F ", " P ", 'S', GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1),
-                'F', ItemList.Hull_ULV.get(1), 'P', ItemList.IC2_Resin.get(1) });
+            new Object[] { "ASA", "AFA", "APA", 'S', getModItem(BuildCraftFactory.ID, "tankBlock", 1), 'F',
+                ItemList.Hull_ULV.get(1), "A", OrePrefixes.plate.get(Materials.Rubber), 'P',
+                OrePrefixes.ring.get(Materials.Rubber) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hatch_Input_ULV.get(1L),
+            bits,
+            new Object[] { "ASA", "AFA", "APA", 'S', getModItem(BuildCraftFactory.ID, "tankBlock", 1), 'F',
+                ItemList.Hull_ULV.get(1), "A", OrePrefixes.plate.get(Materials.Rubber), 'P',
+                OrePrefixes.gear.get(Materials.Rubber) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Casing_Firebox_Steel.get(1L),
             bits,
