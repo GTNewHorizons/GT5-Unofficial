@@ -239,10 +239,9 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
                     String uid = getUniqueIdentifier(recipe.mInputs[i]);
                     if (lensColors.containsKey(uid)) {
                         c = lensColors.get(uid);
-                        renderer.laserRender.setColors(c.r, c.g, c.b);
-                        //break;
                     }
                 }
+                renderer.laserRender.setColors(c.r, c.g, c.b);
                 if (!stopAllRendering) renderer.laserRender.shouldRender = true;
                 return super.onRecipeStart(recipe);
             }
