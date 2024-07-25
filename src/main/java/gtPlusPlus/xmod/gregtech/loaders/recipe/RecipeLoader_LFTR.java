@@ -74,6 +74,7 @@ public class RecipeLoader_LFTR {
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(LFTR_OUTPUT_POWER, 32768 * 4)
+            .noOptimize()
             .addTo(liquidFluorineThoriumReactorRecipes);
 
         // LiFBeF2ZrF4UF4 - T2

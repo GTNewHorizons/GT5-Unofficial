@@ -23,6 +23,8 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntityTreeFarm;
 
+import static gregtech.api.util.GT_RecipeConstants.LFTR_OUTPUT_POWER;
+
 public class GTPPRecipeMaps {
 
     public static final RecipeMap<RecipeMapBackend> cokeOvenRecipes = RecipeMapBuilder.of("gtpp.recipe.cokeoven")
@@ -74,7 +76,7 @@ public class GTPPRecipeMaps {
         .minInputs(0, 2)
         .frontend(FluidOnlyFrontend::new)
         .neiSpecialInfoFormatter(recipeInfo -> {
-            final long eut = recipeInfo.recipe.mSpecialValue;
+            final long eut = recipeInfo.recipe.getMetadataOrDefault(LFTR_OUTPUT_POWER, 0);
             final int duration = recipeInfo.recipe.mDuration;
             return Arrays.asList(
                 StatCollector.translateToLocalFormatted("gtpp.nei.lftr.power", GT_Utility.formatNumbers(eut)),
