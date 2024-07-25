@@ -19,7 +19,6 @@ import static gregtech.common.misc.spaceprojects.enums.JsonVariables.UPGRADE_PRO
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +44,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
@@ -99,21 +97,38 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound aNBT) {
-        try (JsonReader reader = new JsonReader(new FileReader(teamProjectsFile))) {
-            spaceTeamProjects = GSON_SPACE_PROJECT.fromJson(reader, spaceTeamProjects.getClass());
-        } catch (Exception e) {
-            System.out.print("FAILED TO LOAD: " + SPACE_TEAM_PROJECTS_JSON);
-            e.printStackTrace();
+        if (!aNBT.hasKey("spaceTeamProjects")) {
+            // We don't have a key? Try to read from file
+            try (JsonReader reader = new JsonReader(new FileReader(teamProjectsFile))) {
+                spaceTeamProjects = GSON_SPACE_PROJECT.fromJson(reader, spaceTeamProjects.getClass());
+            } catch (Exception e) {
+                spaceTeamProjects = null;
+            }
+        }
+        if (spaceTeamProjects == null) {
+            spaceTeamProjects = new HashMap<>();
+        }
+        if (spaceTeamProjects == null || aNBT.hasKey("spaceTeamProjects")) {
+            spaceTeamProjects = GSON_SPACE_PROJECT
+                .fromJson(aNBT.getString("spaceTeamProjects"), spaceTeamProjects.getClass());
         }
 
-        try (JsonReader reader = new JsonReader(new FileReader(spaceTeamsFile))) {
-            HashMap<UUID, UUID> jsonMap = GSON_TEAMS.fromJson(reader, spaceTeams.getClass());
-            for (UUID member : jsonMap.keySet()) {
-                spaceTeams.put(member, jsonMap.get(member));
+        if (!aNBT.hasKey("spaceTeams")) {
+            // We don't have a key? Try to read from file
+            try (JsonReader reader = new JsonReader(new FileReader(spaceTeamsFile))) {
+                HashMap<UUID, UUID> jsonMap = GSON_TEAMS.fromJson(reader, spaceTeams.getClass());
+                for (UUID member : jsonMap.keySet()) {
+                    spaceTeams.put(member, jsonMap.get(member));
+                }
+            } catch (Exception e) {
+                spaceTeams = null;
             }
-        } catch (Exception e) {
-            System.out.print("FAILED TO LOAD: " + SPACE_TEAMS_JSON);
-            e.printStackTrace();
+        }
+        if (spaceTeams == null) {
+            spaceTeams = new HashMap<>();
+        }
+        if (spaceTeams == null || aNBT.hasKey("spaceTeams")) {
+            spaceTeams = GSON_TEAMS.fromJson(aNBT.getString("spaceTeam"), spaceTeams.getClass());
         }
 
         if (spaceTeamProjects == null) {
@@ -128,21 +143,11 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
     @Override
     public void writeToNBT(NBTTagCompound aNBT) {
         if (spaceTeamProjects != null) {
-            try (JsonWriter writer = new JsonWriter(new FileWriter(teamProjectsFile))) {
-                GSON_SPACE_PROJECT.toJson(spaceTeamProjects, spaceTeamProjects.getClass(), writer);
-            } catch (Exception ex) {
-                System.out.print("FAILED TO SAVE: " + SPACE_TEAM_PROJECTS_JSON);
-                ex.printStackTrace();
-            }
+            aNBT.setString("spaceTeamProjects", GSON_SPACE_PROJECT.toJson(spaceTeamProjects));
         }
 
         if (spaceTeams != null) {
-            try (JsonWriter writer = new JsonWriter(new FileWriter(spaceTeamsFile))) {
-                GSON_TEAMS.toJson(spaceTeams, spaceTeams.getClass(), writer);
-            } catch (Exception ex) {
-                System.out.print("FAILED TO SAVE: " + SPACE_TEAMS_JSON);
-                ex.printStackTrace();
-            }
+            aNBT.setString("spaceTeams", GSON_TEAMS.toJson(spaceTeams));
         }
     }
 
