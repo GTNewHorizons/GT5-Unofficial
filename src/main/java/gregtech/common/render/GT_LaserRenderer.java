@@ -14,7 +14,8 @@ import gregtech.common.tileentities.render.TileLaser;
 public class GT_LaserRenderer extends TileEntitySpecialRenderer {
 
     private float tickcount = 0;
-    private double zoffset = 0.5F;
+    private double zOffset = 0.0F;
+    private double xOffset = 0.0F;
 
     private static final IModelCustom lasermodel = AdvancedModelLoader
         .loadModel(new ResourceLocation("gregtech", "textures/model/laser.obj"));;
@@ -24,9 +25,9 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
     }
 
     private void maths() {
-        float tc = tickcount / 20;
-        zoffset = (0.6 - (Math.cos((4 * Math.PI * tc) - 2 * Math.PI) / 4)
-            - (Math.cos((2 * Math.PI * tc) - Math.PI) / 4));
+        float tc = (0.05F * tickcount);
+        zOffset = 0.5 + 0.45 * Math.sin(2 * Math.PI * tc);
+        xOffset = 0.5 + 0.45 * Math.sin(0.5 * Math.PI * tc);
     }
 
     @Override
@@ -35,10 +36,10 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
             return;
         }
         GL11.glPushMatrix();
-        GL11.glTranslated(x + (tickcount / 20), y + 0.5, z + zoffset);
+        GL11.glTranslated(x + xOffset, y + 0.5, z + zOffset);
         maths();
         tickcount += 0.2F;
-        if (tickcount >= 20) {
+        if (tickcount >= 80) {
             tickcount = 0;
         }
         GL11.glDisable(GL11.GL_LIGHTING);
