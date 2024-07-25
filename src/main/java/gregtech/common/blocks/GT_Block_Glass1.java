@@ -22,7 +22,7 @@ import gregtech.api.util.GT_LanguageManager;
 public class GT_Block_Glass1 extends GT_Block_Casings_Abstract {
 
     public GT_Block_Glass1() {
-        super(GT_Item_Glass1.class, "gt.blockglass1", Material.glass, 2);
+        super(GT_Item_Glass1.class, "gt.blockglass1", Material.glass, 3);
         this.opaque = false;
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Chemical Grade Glass");
@@ -32,9 +32,11 @@ public class GT_Block_Glass1 extends GT_Block_Casings_Abstract {
 
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".1.name", "Electron-Permeable Neutronium Coated Glass");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Omni-Purpose Infinity Fused Glass");
 
         ItemList.GlassPHResistant.set(new ItemStack(this, 1, 0));
         ItemList.GlassUVResistant.set(new ItemStack(this, 1, 1));
+        ItemList.GlassOmniPurposeInfinityFused.set(new ItemStack(this, 1, 2));
     }
 
     @Override
@@ -70,6 +72,7 @@ public class GT_Block_Glass1 extends GT_Block_Casings_Abstract {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.GLASS_PH_RESISTANT.getIcon();
             case 1 -> Textures.BlockIcons.NEUTRONIUM_COATED_UV_RESISTANT_GLASS.getIcon();
+            case 2 -> Textures.BlockIcons.OMNI_PURPOSE_INFINITY_FUSED_GLASS.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

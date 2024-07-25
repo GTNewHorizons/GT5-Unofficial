@@ -97,8 +97,8 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
                         .cacheHint(() -> "Input Hatch, Output Hatch, Control Hatch")
                         .build()),
                 ofBlock(GregTech_API.sBlockCasings9, 11)))
-        // TODO: Purple variant
-        .addElement('B', ofBlock(GregTech_API.sBlockGlass1, 1))
+        // Omni-purpose infinity fused glass
+        .addElement('B', ofBlock(GregTech_API.sBlockGlass1, 2))
         .addElement('C', ofFrame(Materials.Bedrockium))
         .build();
 
