@@ -170,8 +170,8 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                     FluidStack fluidStack = GT_Utility.copyAmount(1, currItem.getFluidStack());
                     FluidStack previous = storedFluids[index];
                     storedFluids[index] = fluidStack;
-                    if (fluidStack != previous) {
-                        justHadNewItems = true;
+                    if (fluidStack != null) {
+                        justHadNewItems = !fluidStack.isFluidEqual(previous);
                     }
                     index++;
                 }
@@ -401,7 +401,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             FluidStack previous = storedInformationFluids[index];
             storedInformationFluids[index] = resultFluid;
             if (resultFluid != null) {
-                justHadNewItems = previous != resultFluid;
+                justHadNewItems = !resultFluid.isFluidEqual(previous);
             }
         } catch (final GridAccessException ignored) {}
     }
