@@ -88,6 +88,7 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:SC2:2.1.1:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.4.0:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:BlockRenderer6343:1.2.8:dev'){transitive=false}
 
     shadowImplementation('com.github.GTNewHorizons:AVRcore:1.0.1')
 
