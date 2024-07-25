@@ -294,14 +294,10 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
             .addInfo("Must be linked to a Purification Plant to work.")
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.AQUA
-                    + "Removes excess oxygen and other gases from the water by using complex methods.")
-            .addSeparator()
-            .addInfo(
                 "At the start of the operation, the " + EnumChatFormatting.WHITE
                     + "Degasser Control Hatch"
                     + EnumChatFormatting.GRAY
-                    + " will output a redstone signal")
+                    + " will output a redstone signal.")
             .addInfo("To succeed the recipe, you will need to successfully decode the instructions in the signal.")
             .addInfo("To decode the signal, interpret the signal strength as a 4-bit number from 0-15.")
             .addInfo("Denote the lowest bit as bit 1, and the highest as bit 4.")
@@ -471,7 +467,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
-                    + "detects in the water, it will request various materials to complete the processed listed above.")
+                    + "detects in the water, it will request various materials to complete the processes listed above.")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(17, 25, 17, false)
             .addCasingInfoRangeColored(

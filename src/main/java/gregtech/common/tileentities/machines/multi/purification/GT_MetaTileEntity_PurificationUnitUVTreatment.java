@@ -272,7 +272,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
-                    + "themselves and pass through the walls of the tank, ensuring the water is perfectly electrically polar.")
+                    + "atoms themselves and pass through the walls of the tank, ensuring the water is perfectly electrically polar.")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(13, 9, 9, true)
             .addCasingInfoRangeColored(
