@@ -1646,7 +1646,7 @@ public class RECIPES_GREGTECH {
                 Particle.getBaseParticle(Particle.BOTTOM))
             .outputChances(50, 50, 50, 50, 50, 50)
             .fluidInputs(FluidUtils.getFluidStack("plasma.hydrogen", 100))
-            .duration(45 * MINUTES)
+            .duration(4 * MINUTES)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(cyclotronRecipes);
         // Lepton Smash

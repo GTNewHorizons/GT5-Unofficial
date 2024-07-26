@@ -8,6 +8,7 @@ import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.plasmaForgeRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationClarifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationDegasifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationFlocculationRecipes;
@@ -16,7 +17,9 @@ import static gregtech.api.recipe.RecipeMaps.purificationParticleExtractionRecip
 import static gregtech.api.recipe.RecipeMaps.purificationPhAdjustmentRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPlasmaHeatingRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationUVTreatmentRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitParticleExtractor.BARYONIC_MATTER_OUTPUT;
 
 import java.util.Arrays;
@@ -29,6 +32,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
@@ -36,6 +40,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationPlant;
+import gtPlusPlus.core.material.Particle;
 
 public class GT_PurifiedWaterRecipes {
 
@@ -225,6 +230,23 @@ public class GT_PurifiedWaterRecipes {
                 // now,
                 // and we can't really add a new one specifically for this (... for now)
                 .addTo(laserEngraverRecipes);
+        }
+
+        // Initial aligned quark catalysts, these are not meant to be done often, and simply exist to get you started
+        ItemStack[] quarks = new ItemStack[] { // make sure these are in the same order as the list above
+            Particle.getBaseParticle(Particle.UP), Particle.getBaseParticle(Particle.DOWN),
+            Particle.getBaseParticle(Particle.BOTTOM), Particle.getBaseParticle(Particle.TOP),
+            Particle.getBaseParticle(Particle.STRANGE), Particle.getBaseParticle(Particle.CHARM) };
+
+        for (int i = 0; i < catalystInputs.length; ++i) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(ItemList.Quark_Catalyst_Housing.get(1), quarks[i])
+                .fluidInputs(MaterialsUEVplus.ExcitedDTRC.getFluid(10000L))
+                .itemOutputs(catalystInputs[i])
+                .metadata(COIL_HEAT, 10800)
+                .eut(TierEU.RECIPE_UMV)
+                .duration(5 * MINUTES)
+                .addTo(plasmaForgeRecipes);
         }
 
         GT_Values.RA.stdBuilder()
