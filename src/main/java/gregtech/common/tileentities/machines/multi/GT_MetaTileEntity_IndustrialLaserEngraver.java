@@ -86,7 +86,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             LaserRenderingUtil.ofBlockAdder(GT_MetaTileEntity_IndustrialLaserEngraver::laserRendererAdder, GregTech_API.sLaserRender, 0))
         .build();
 
-    private TileLaser renderer;
+    protected TileLaser renderer;
 
     private boolean laserRendererAdder(Block block, int meta, World world, int x, int y, int z) {
         if (block != GregTech_API.sLaserRender || world == null) {
@@ -168,19 +168,19 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         stopAllRendering = !stopAllRendering;
         if (stopAllRendering && renderer != null) {
-            renderer.shouldRender = false;
+            renderer.setShouldRender(false);
         }
     }
 
     @Override
     public void onDisableWorking() {
-        if (renderer != null) renderer.shouldRender = false;
+        if (renderer != null) renderer.setShouldRender(false);
         super.onDisableWorking();
     }
 
     @Override
     public void onBlockDestroyed() {
-        if (renderer != null) renderer.shouldRender = false;
+        if (renderer != null) renderer.setShouldRender(false);
         super.onBlockDestroyed();
     }
 
@@ -259,14 +259,14 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
                 }
                 if (!stopAllRendering && renderer != null) {
                     renderer.setColors(c.r, c.g, c.b);
-                    renderer.shouldRender = true;
+                    renderer.setShouldRender(true);
                 }
                 return super.onRecipeStart(recipe);
             }
 
             @Override
             public ProcessingLogic clear() {
-                if (renderer != null) renderer.shouldRender = false;
+                if (renderer != null) renderer.setShouldRender(false);
                 return super.clear();
             }
         }.setSpeedBonus(1F / 2F)

@@ -33,7 +33,7 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
         final TileLaser ltile = (TileLaser) tile;
-        if (ltile.shouldRender) {
+        if (ltile.getShouldRender()) {
             GL11.glPushMatrix();
             GL11.glTranslated(x + xOffset, y + 0.5, z + zOffset);
             maths();
@@ -41,7 +41,7 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
             if (tickcount >= 80) {
                 tickcount = 0;
             }
-            GL11.glColor3f(ltile.red, ltile.green, ltile.blue);
+            GL11.glColor3f(ltile.getRed(), ltile.getGreen(), ltile.getBlue());
             GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glEnable(GL11.GL_BLEND);
             bindTexture(new ResourceLocation("gregtech", "textures/model/laser.png"));

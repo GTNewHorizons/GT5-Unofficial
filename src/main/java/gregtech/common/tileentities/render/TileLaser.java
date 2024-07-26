@@ -1,12 +1,17 @@
 package gregtech.common.tileentities.render;
 
+import cpw.mods.fml.relauncher.Side;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
+import micdoodle8.mods.galacticraft.core.util.Annotations;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
-public class TileLaser extends TileEntity {
+public class TileLaser extends TileEntityAdvanced {
 
+    @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public boolean shouldRender = false;
+    @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public float red = 0, green = 0, blue = 0;
 
     @Override
@@ -33,6 +38,26 @@ public class TileLaser extends TileEntity {
         this.blue = blue;
     }
 
+    public void setShouldRender (boolean shouldRender){
+        this.shouldRender = shouldRender;
+    }
+
+    public Boolean getShouldRender() {
+        return shouldRender;
+    }
+
+    public float getRed() {
+        return red;
+    }
+
+    public float getGreen() {
+        return green;
+    }
+
+    public float getBlue() {
+        return blue;
+    }
+
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
         return INFINITE_EXTENT_AABB;
@@ -41,5 +66,20 @@ public class TileLaser extends TileEntity {
     @Override
     public double getMaxRenderDistanceSquared() {
         return 65536;
+    }
+
+    @Override
+    public double getPacketRange() {
+        return 128;
+    }
+
+    @Override
+    public int getPacketCooldown() {
+        return 20;
+    }
+
+    @Override
+    public boolean isNetworkedTile() {
+        return true;
     }
 }
