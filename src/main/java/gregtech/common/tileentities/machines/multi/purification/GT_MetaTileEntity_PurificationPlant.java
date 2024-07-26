@@ -83,7 +83,7 @@ public class GT_MetaTileEntity_PurificationPlant
      * Maximum distance in each axis between the purification plant main controller and the controller blocks of the
      * purification plant units.
      */
-    public static final int MAX_UNIT_DISTANCE = 27;
+    public static final int MAX_UNIT_DISTANCE = 32;
 
     /**
      * Time in ticks for a full processing cycle to complete.
@@ -113,8 +113,6 @@ public class GT_MetaTileEntity_PurificationPlant
         .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 5))
         // Sterile Water Plant Casing
         .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 4))
-        // Superplasticizer-Treated High Strength Concrete
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 3))
         // Door. Note that this behaves weirdly with creative autoplace, but should be fine in survival.
         .addElement('D', lazy(t -> ofBlock(GameRegistry.findBlock("IC2", "blockDoorAlloy"), 0)))
         // Tinted Industrial Glass
@@ -173,7 +171,11 @@ public class GT_MetaTileEntity_PurificationPlant
                 "Freely place " + EnumChatFormatting.YELLOW
                     + "Purification Units "
                     + EnumChatFormatting.GRAY
-                    + "inside the structure.")
+                    + "within "
+                    + EnumChatFormatting.RED
+                    + MAX_UNIT_DISTANCE
+                    + EnumChatFormatting.GRAY
+                    + " blocks along each axis.")
             .addInfo("Left click this controller with a data stick, then right click a purification unit to link.")
             .addInfo("Supplies power to linked purification units. This multiblock accepts TecTech energy hatches.")
             .addSeparator()
@@ -226,12 +228,6 @@ public class GT_MetaTileEntity_PurificationPlant
                     + "purification processes, and this multiblock is the heart of the operation.")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(49, 9, 49, false)
-            .addCasingInfoExactlyColored(
-                "Superplasticizer-Treated High Strength Concrete",
-                EnumChatFormatting.GRAY,
-                2401,
-                EnumChatFormatting.GOLD,
-                false)
             .addCasingInfoExactlyColored(
                 "Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
