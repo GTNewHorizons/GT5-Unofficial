@@ -61,8 +61,6 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Solidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -244,7 +242,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
 
     private ItemStack getCircuit(ItemStack[] t) {
         for (ItemStack j : t) {
-            if (j.getItem() == CI.getNumberedCircuit(0)
+            if (j.getItem() == GT_Utility.getIntegratedCircuit(0)
                 .getItem()) {
                 if (j.getItemDamage() >= 20 && j.getItemDamage() <= 22) {
                     return j;
@@ -343,15 +341,8 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     }
 
     @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        setMachineMode(nextMachineMode());
-        String mModeString;
-        switch (machineMode) {
-            case MACHINEMODE_METAL -> mModeString = "Metal";
-            case MACHINEMODE_FLUID -> mModeString = "Fluid";
-            default -> mModeString = "Misc";
-        }
-        PlayerUtils.messagePlayer(aPlayer, "Multi-Machine is now in " + mModeString + " mode.");
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_MULTI_MACHINE.mode." + machineMode);
     }
 
     @Override
@@ -417,7 +408,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
                     if (mold != null && fluid != null) {
                         List<ItemStack> inputItems = new ArrayList<>();
                         inputItems.add(mold);
-                        inputItems.add(ItemUtils.getGregtechCircuit(22));
+                        inputItems.add(GT_Utility.getIntegratedCircuit(22));
 
                         processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
                         processingLogic.setInputFluids(fluid);
@@ -522,6 +513,14 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     @Override
     public boolean supportsMachineModeSwitch() {
         return true;
+    }
+
+    @Override
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        setMachineMode(nextMachineMode());
+        PlayerUtils.messagePlayer(
+            aPlayer,
+            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
     }
 
     @Override

@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_FuelRefinery;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -18,7 +20,7 @@ public class GregtechIndustrialFuelRefinery {
         // Industrial Maceration Stack Multiblock
         GregtechItemList.Industrial_FuelRefinery.set(
             new GregtechMetaTileEntity_Refinery(
-                835,
+                Industrial_FuelRefinery.ID,
                 "industrialrefinery.controller.tier.single",
                 "Reactor Fuel Processing Plant").getStackForm(1L));
     }

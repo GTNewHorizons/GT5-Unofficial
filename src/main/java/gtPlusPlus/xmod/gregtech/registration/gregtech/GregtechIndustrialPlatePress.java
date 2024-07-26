@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_PlatePress;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -18,7 +20,7 @@ public class GregtechIndustrialPlatePress {
         // Industrial Presser Multiblock
         GregtechItemList.Industrial_PlatePress.set(
             new GregtechMetaTileEntity_IndustrialPlatePress(
-                792,
+                Industrial_PlatePress.ID,
                 "industrialbender.controller.tier.single",
                 "Industrial Material Press").getStackForm(1L));
     }
