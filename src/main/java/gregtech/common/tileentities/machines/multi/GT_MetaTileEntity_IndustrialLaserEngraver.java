@@ -263,7 +263,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Laser Engraver")
-            .addInfo("Controller Block for the High Power Laser Emitter")
+            .addInfo("Controller Block for the High Energy Laser Emitter")
             .addInfo("Use screwdriver to disable laser rendering")
             .addInfo("300% the speed of single block machines of the same voltage")
             .addInfo("Uses 80% of the EU normally required")
@@ -271,21 +271,22 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             .addInfo("Parallels equal to the cube root of laser source amperage input")
             .addInfo("Glass tier determines maximum laser source tier")
             .addInfo("Only accepts borosilicate glass (no, really)")
+            .addInfo("UMV glass accepts all laser source hatches")
             .addInfo(AuthorFourIsTheNumber)
             .addSeparator()
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front Center")
-            .addCasingInfoMin("Robust Tungstensteel Machine Casing", 45, false)
+            .addCasingInfoMin("Laser Containment Casing", 45, false)
             .addCasingInfoExactly("Tungstensteel Frame Box", 9, false)
             .addOtherStructurePart("Heat Resistant Laser Plate", "x1")
             .addOtherStructurePart("Borosilicate Glass", "x3")
             .addOtherStructurePart("Laser Source Hatch", "x1", 3)
-            .addInputBus("Any Tungstensteel Casing", 1)
-            .addInputHatch("Any Tungstensteel Casing", 1)
-            .addOutputBus("Any Tungstensteel Casing", 1)
-            .addOutputHatch("Any Tungstensteel Casing", 1)
-            .addEnergyHatch("Any Tungstensteel Casing", 1)
-            .addMaintenanceHatch("Any Tungstensteel Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -315,7 +316,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
         if (mCasingAmount < 45) return false;
         if (laserSource == null) return false;
-        if (laserSource.mTier > glassTier) return false;
+        if (glassTier < 12 && laserSource.mTier > glassTier) return false;
 
         // All checks passed!
         return true;
