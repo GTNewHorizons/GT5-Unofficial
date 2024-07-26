@@ -1463,6 +1463,7 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_Canner,
     Machine_Multi_IndustrialLaserEngraver,
+    Casing_Laser,
 
     Machine_LV_Miner,
     Machine_MV_Miner,

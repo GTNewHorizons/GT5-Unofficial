@@ -58,6 +58,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.LaserRenderingUtil;
+import gregtech.common.blocks.GT_Block_Casings10;
 import gregtech.common.blocks.GT_Block_Casings4;
 import gregtech.common.tileentities.render.TileLaser;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -116,7 +117,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
                 .buildAndChain(
                     onElementPass(
                         GT_MetaTileEntity_IndustrialLaserEngraver::onCasingAdded,
-                        ofBlock(GregTech_API.sBlockCasings4, 0))))
+                        ofBlock(GregTech_API.sBlockCasings10, 1))))
         .addElement('f', ofFrame(Materials.TungstenSteel))
         .addElement(
             'g',
@@ -133,7 +134,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             buildHatchAdder(GT_MetaTileEntity_IndustrialLaserEngraver.class)
                 .adder(GT_MetaTileEntity_IndustrialLaserEngraver::addLaserSource)
                 .hatchClass(GT_MetaTileEntity_Hatch_EnergyTunnel.class)
-                .casingIndex(((GT_Block_Casings4) GregTech_API.sBlockCasings4).getTextureIndex(0))
+                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(1))
                 .dot(3)
                 .build())
         .build();
@@ -204,7 +205,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 0)),
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 1)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE)
                         .extFacing()
@@ -217,7 +218,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 0)),
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 1)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_CANNER)
                         .extFacing()
@@ -230,7 +231,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings4, 0)) };
+                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 1)) };
         }
         return rTexture;
     }
