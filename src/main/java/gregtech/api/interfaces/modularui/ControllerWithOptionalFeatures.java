@@ -133,6 +133,13 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
     }
 
     /**
+     * @return name for the current machine mode on this machine. Defaults "Unknown Mode"
+     */
+    default String getMachineModeName() {
+        return "Unknown Mode";
+    }
+
+    /**
      * @param index Index of machineModeIcons to pull from
      * @return UITexture associated with that machineMode
      */
@@ -161,6 +168,9 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
 
     Pos2d getMachineModeSwitchButtonPos();
 
+    /**
+     * Called when the mode switch button is clicked
+     */
     default void onMachineModeSwitchClick() {}
 
     default ButtonWidget createModeSwitchButton(IWidgetBuilder<?> builder) {

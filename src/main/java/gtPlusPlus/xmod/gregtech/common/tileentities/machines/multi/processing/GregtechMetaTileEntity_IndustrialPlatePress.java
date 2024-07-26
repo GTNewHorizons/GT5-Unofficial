@@ -216,6 +216,14 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
     }
 
     @Override
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        setMachineMode(nextMachineMode());
+        PlayerUtils.messagePlayer(
+            aPlayer,
+            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+    }
+
+    @Override
     public void setMachineModeIcons() {
         machineModeIcons.clear();
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_BENDING);
@@ -223,14 +231,8 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
     }
 
     @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        setMachineMode(nextMachineMode());
-        if (machineMode == MACHINEMODE_FORMER) {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Forming Press Mode.");
-        } else {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Bending Mode.");
-        }
-        mLastRecipe = null;
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_PLATE_PRESS.mode." + machineMode);
     }
 
     @Override

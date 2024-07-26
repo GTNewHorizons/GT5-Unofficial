@@ -1578,27 +1578,32 @@ public class RECIPES_Machines {
         }
         GT_ModHandler.addCraftingRecipe(
             GregtechItemList.Generator_SemiFluid_LV.get(1L),
+            CI.bits,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_LV, 'P', ItemList.Electric_Piston_LV, 'E',
                 ItemList.Electric_Motor_LV, 'C', OrePrefixes.circuit.get(Materials.Basic), 'W',
                 OrePrefixes.cableGt01.get(Materials.Tin), 'G', ALLOY.TUMBAGA.getGear(2) });
         GT_ModHandler.addCraftingRecipe(
             GregtechItemList.Generator_SemiFluid_MV.get(1L),
+            CI.bits,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_MV, 'P', ItemList.Electric_Piston_MV, 'E',
                 ItemList.Electric_Motor_MV, 'C', OrePrefixes.circuit.get(Materials.Good), 'W',
                 OrePrefixes.cableGt01.get(Materials.AnyCopper), 'G', ALLOY.EGLIN_STEEL.getGear(2) });
         GT_ModHandler.addCraftingRecipe(
             GregtechItemList.Generator_SemiFluid_HV.get(1L),
+            CI.bits,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_HV, 'P', ItemList.Electric_Piston_HV, 'E',
                 ItemList.Electric_Motor_HV, 'C', OrePrefixes.circuit.get(Materials.Advanced), 'W',
                 OrePrefixes.cableGt01.get(Materials.Gold), 'G',
                 GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Chrome, 1) });
         GT_ModHandler.addCraftingRecipe(
             GregtechItemList.Generator_SemiFluid_EV.get(1L),
+            CI.bits,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Motor_EV, 'C', OrePrefixes.circuit.get(Materials.Data), 'W',
                 OrePrefixes.cableGt01.get(Materials.Aluminium), 'G', ALLOY.INCOLOY_DS.getGear(1) });
         GT_ModHandler.addCraftingRecipe(
             GregtechItemList.Generator_SemiFluid_IV.get(1L),
+            CI.bits,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
                 ItemList.Electric_Motor_IV, 'C', OrePrefixes.circuit.get(Materials.Elite), 'W',
                 OrePrefixes.cableGt01.get(Materials.Tungsten), 'G', ALLOY.NITINOL_60.getGear(1) });

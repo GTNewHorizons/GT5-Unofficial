@@ -414,6 +414,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
         if (mEfficiency < this.getMaxEfficiency(null)) {
             this.mMaxProgresstime = 1;
             this.mEfficiencyIncrease = 2;
+            this.lEUt = 0;
             return SimpleCheckRecipeResult.ofSuccess("warm_up");
         }
         CheckRecipeResult result = super.checkProcessing();

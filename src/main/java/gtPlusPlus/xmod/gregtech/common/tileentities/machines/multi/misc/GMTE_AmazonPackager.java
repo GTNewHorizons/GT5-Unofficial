@@ -210,14 +210,8 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
     }
 
     @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        setMachineMode(nextMachineMode());
-        if (machineMode == MACHINEMODE_PACKAGER) {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Packager Mode.");
-        } else {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Unpackager Mode.");
-        }
-        mLastRecipe = null;
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_PACKAGER.mode." + machineMode);
     }
 
     @Override
@@ -235,6 +229,14 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
     @Override
     public boolean supportsMachineModeSwitch() {
         return true;
+    }
+
+    @Override
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        setMachineMode(nextMachineMode());
+        PlayerUtils.messagePlayer(
+            aPlayer,
+            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
     }
 
     @Override
