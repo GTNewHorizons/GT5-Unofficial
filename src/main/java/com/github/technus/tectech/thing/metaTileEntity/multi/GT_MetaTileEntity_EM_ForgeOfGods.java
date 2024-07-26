@@ -33,7 +33,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -44,7 +43,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.GodforgeGlassBlock;
 import com.github.technus.tectech.thing.block.TileForgeOfGods;
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
@@ -109,6 +107,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.IGT_HatchAdder;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 
 public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_MultiblockBase_EM
     implements IConstructable, ISurvivalConstructable {
@@ -2505,10 +2504,11 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     private void ejectGravitonShards() {
         if (mOutputBusses.size() == 1) {
             while (gravitonShardsAvailable >= 64) {
-                addOutput(CustomItemList.Machine_Multi_ForgeOfGods.get(64));
+                addOutput(GT_OreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 64));
                 gravitonShardsAvailable -= 64;
             }
-            addOutput(CustomItemList.Machine_Multi_ForgeOfGods.get(gravitonShardsAvailable));
+            addOutput(
+                GT_OreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, gravitonShardsAvailable));
             gravitonShardsAvailable = 0;
         }
     }
@@ -2742,6 +2742,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         NBT.setLong("totalRecipesProcessed", totalRecipesProcessed);
         NBT.setLong("totalFuelConsumed", totalFuelConsumed);
         NBT.setInteger("starFuelStored", stellarFuelAmount);
+        NBT.setBoolean("gravitonShardEjection", gravitonShardEjection);
 
         // Store booleanArrays of all upgrades
         NBTTagCompound upgradeBooleanArrayNBTTag = new NBTTagCompound();
@@ -2779,6 +2780,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         NBT.setLong("totalRecipesProcessed", totalRecipesProcessed);
         NBT.setLong("totalFuelConsumed", totalFuelConsumed);
         NBT.setInteger("starFuelStored", stellarFuelAmount);
+        NBT.setBoolean("gravitonShardEjection", gravitonShardEjection);
 
         // Store booleanArray of all upgrades
         NBTTagCompound upgradeBooleanArrayNBTTag = new NBTTagCompound();
@@ -2816,6 +2818,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         totalRecipesProcessed = NBT.getLong("totalRecipesProcessed");
         totalFuelConsumed = NBT.getLong("totalFuelConsumed");
         stellarFuelAmount = NBT.getInteger("starFuelStored");
+        gravitonShardEjection = NBT.getBoolean("gravitonShardEjection");
 
         NBTTagCompound tempBooleanTag = NBT.getCompoundTag("upgrades");
 
