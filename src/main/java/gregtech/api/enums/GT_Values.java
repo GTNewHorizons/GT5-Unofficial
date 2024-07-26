@@ -665,6 +665,7 @@ public class GT_Values {
         + EnumChatFormatting.GOLD
         + EnumChatFormatting.BOLD
         + "Gold";
+    public static final String AuthorVolence = "Author: " + EnumChatFormatting.AQUA + "Volence";
 
     // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
     public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {
