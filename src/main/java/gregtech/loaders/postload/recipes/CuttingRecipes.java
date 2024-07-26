@@ -244,7 +244,7 @@ public class CuttingRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(inputs)
             .itemOutputs(outputs)
-            .fluidInputs(lowTierWater.getFluid(1000L))
+            .fluidInputs(lowTierWater.getFluid(100L))
             .duration(duration)
             .eut(eut)
             .addTo(cutterRecipes);
@@ -252,7 +252,7 @@ public class CuttingRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(inputs)
             .itemOutputs(outputs)
-            .fluidInputs(highTierWater.getFluid(1000L))
+            .fluidInputs(highTierWater.getFluid(100L))
             .duration(boostedDuration)
             .eut(eut)
             .addTo(cutterRecipes);
