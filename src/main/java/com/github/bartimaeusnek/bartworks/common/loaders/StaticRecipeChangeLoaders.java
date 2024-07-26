@@ -123,6 +123,7 @@ public class StaticRecipeChangeLoaders {
     }
 
     public static void unificationRecipeEnforcer() {
+        List<GT_Recipe> toRemove = new ArrayList<>();
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             StaticRecipeChangeLoaders.runMaterialLinker(werkstoff);
             if (werkstoff.getGenerationFeatures().enforceUnification) {
@@ -142,7 +143,7 @@ public class StaticRecipeChangeLoaders {
                             || replacement == null
                             || replacement.getItem() == null) continue;
                         for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
-                            List<GT_Recipe> toRemove = new ArrayList<>();
+                            toRemove.clear();
                             nextRecipe: for (GT_Recipe recipe : map.getAllRecipes()) {
                                 boolean removal = map.equals(RecipeMaps.fluidExtractionRecipes)
                                     || map.equals(RecipeMaps.fluidSolidifierRecipes);
