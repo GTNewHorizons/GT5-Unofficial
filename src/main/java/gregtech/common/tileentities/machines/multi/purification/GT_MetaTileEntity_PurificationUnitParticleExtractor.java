@@ -1,17 +1,27 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
@@ -30,6 +40,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_StructureUtility;
+import gregtech.common.items.GT_MetaGenerated_Item_03;
+import gregtech.common.items.ID_MetaItem_03;
 
 public class GT_MetaTileEntity_PurificationUnitParticleExtractor
     extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitParticleExtractor>
@@ -59,18 +72,30 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
         { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "DDDDDDDDDDDDDDD" } };
         // spotless:on
 
+    // Dimensionally transcendent casing (placeholder)
+    private static final int CASING_INDEX_MAIN = getTextureIndex(GregTech_API.sBlockCasings1, 12);
+
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitParticleExtractor> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitParticleExtractor>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
         .addElement('A', ofFrame(Materials.Bedrockium))
         // Dimensionally transcendent casing (placeholder)
-        .addElement('B', ofBlock(GregTech_API.sBlockCasings1, 12))
+        .addElement(
+            'B',
+            ofChain(
+                lazy(
+                    t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitParticleExtractor>buildHatchAdder()
+                        .atLeastList(Arrays.asList(InputBus, OutputBus, InputHatch, OutputHatch))
+                        .dot(1)
+                        .casingIndex(CASING_INDEX_MAIN)
+                        .build()),
+                ofBlock(GregTech_API.sBlockCasings1, 12)))
         // Dimensional bridge (placeholder)
-        .addElement('C', ofBlock(GregTech_API.sBlockGlass1, 14))
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings1, 14))
         // Naquadah Water Plant Casing (maybe placeholder)
         .addElement('D', ofBlock(GregTech_API.sBlockCasings9, 7))
         // High power casing (placeholder)
-        .addElement('E', ofBlock(TT_Container_Casings.sBlockCasingsTT, 0))
+        .addElement('E', lazy(t -> ofBlock(TT_Container_Casings.sBlockCasingsTT, 0)))
         // Blue glass (placeholder, currently set to vanilla glass)
         .addElement('F', ofBlock(Blocks.stained_glass, 9))
         .build();
@@ -131,6 +156,10 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
 
     private CatalystCombination currentCombination = null;
 
+    private ArrayList<ItemStack> insertedCatalysts = new ArrayList<>();
+
+    private int correctIndexA = -1, correctIndexB = -1;
+
     public GT_MetaTileEntity_PurificationUnitParticleExtractor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -148,26 +177,28 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
         if (side == facing) {
-            if (active) return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
-                .extFacing()
-                .build(),
+            if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
-                .extFacing()
-                .build(),
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48] };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN) };
     }
 
     @Override
@@ -213,10 +244,77 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
     }
 
     @Override
+    public void startCycle(int cycleTime, int progressTime) {
+        super.startCycle(cycleTime, progressTime);
+        this.insertedCatalysts.clear();
+        this.currentCombination = generateNewCombination();
+        correctIndexA = -1;
+        correctIndexB = -1;
+    }
+
+    private boolean isCatalyst(ItemStack stack) {
+        if (stack.getItem() instanceof GT_MetaGenerated_Item_03) {
+            int meta = stack.getItemDamage();
+            return meta >= ID_MetaItem_03.Quark_Creation_Catalyst_Up.ID
+                && meta <= ID_MetaItem_03.Quark_Creation_Catalyst_Top.ID;
+        }
+        return false;
+    }
+
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.runMachine(aBaseMetaTileEntity, aTick);
+        // Every 20 ticks, add all catalysts from the input bus to the internal inventory.
+        if (mMaxProgresstime > 0 && aTick % 20 == 0) {
+            ArrayList<ItemStack> storedInputs = getStoredInputs();
+            // For each stack in the input, check if it is a valid catalyst item and if so consume it
+            for (ItemStack stack : storedInputs) {
+                if (isCatalyst(stack)) {
+                    this.insertedCatalysts.add(stack.copy());
+                    this.depleteInput(stack);
+                }
+            }
+
+            // Only do this check if we didn't find a correct combination yet
+            if (correctIndexA >= 0) return;
+
+            // After draining all catalyst inputs, find the 2 most recently inserted items
+            if (insertedCatalysts.isEmpty()) return;
+            int firstIndex = insertedCatalysts.size() - 1;
+            ItemStack first = insertedCatalysts.get(firstIndex);
+            // Since correct combinations are always different catalysts, we can require that there is a second item in
+            // the history
+            if (first.stackSize == 1 && insertedCatalysts.size() >= 2) {
+                int secondIndex = insertedCatalysts.size() - 2;
+                ItemStack second = insertedCatalysts.get(secondIndex);
+                // Now check if this combination matches the current correct one.
+                if (currentCombination.matches(first, second)) {
+                    // It does, we can save that the indices are correct. This means we need to
+                    // - stop checking if any future insertions are the correct combination (but still consume them)
+                    // - output baryonic matter
+                    correctIndexA = firstIndex;
+                    correctIndexB = secondIndex;
+
+                }
+            }
+        }
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         if (this.currentCombination != null) {
             aNBT.setTag("currentCombination", this.currentCombination.saveToNBT());
         }
+        NBTTagCompound insertedNBT = new NBTTagCompound();
+        for (int i = 0; i < insertedCatalysts.size(); ++i) {
+            ItemStack inserted = insertedCatalysts.get(i);
+            NBTTagCompound itemNBT = new NBTTagCompound();
+            inserted.writeToNBT(itemNBT);
+            insertedNBT.setTag(Integer.toString(i), itemNBT);
+        }
+        aNBT.setTag("insertedItems", insertedNBT);
+        aNBT.setInteger("correctIndexA", correctIndexA);
+        aNBT.setInteger("correctIndexB", correctIndexB);
         super.saveNBTData(aNBT);
     }
 
@@ -225,7 +323,45 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
         if (aNBT.hasKey("currentCombination")) {
             currentCombination = CatalystCombination.readFromNBT(aNBT.getCompoundTag("currentCombination"));
         }
+        if (aNBT.hasKey("insertedItems")) {
+            NBTTagCompound insertedList = aNBT.getCompoundTag("insertedItems");
+            // Initialize empty list with correct size
+            this.insertedCatalysts = new ArrayList<>(
+                Collections.nCopies(
+                    insertedList.func_150296_c()
+                        .size(),
+                    null));
+            for (String key : insertedList.func_150296_c()) {
+                NBTTagCompound itemCompound = insertedList.getCompoundTag(key);
+                int index = Integer.parseInt(key);
+                this.insertedCatalysts.set(index, ItemStack.loadItemStackFromNBT(itemCompound));
+            }
+        }
+        if (aNBT.hasKey("correctIndexA")) {
+            correctIndexA = aNBT.getInteger("correctIndexA");
+        }
+        if (aNBT.hasKey("correctIndexB")) {
+            correctIndexB = aNBT.getInteger("correctIndexB");
+        }
         super.loadNBTData(aNBT);
+    }
+
+    private String getCorrectlyDecodedString() {
+        if (correctIndexA >= 0) {
+            return EnumChatFormatting.GREEN + "Yes";
+        }
+        return EnumChatFormatting.RED + "No";
+    }
+
+    public String[] getInfoData() {
+        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        info.add("Catalyst insertion history for this recipe cycle (least recent first): ");
+        for (int i = 0; i < insertedCatalysts.size(); ++i) {
+            ItemStack stack = insertedCatalysts.get(i);
+            info.add(EnumChatFormatting.YELLOW + "" + i + ": " + stack.getDisplayName());
+        }
+        info.add("Quark Combination correctly identified: " + getCorrectlyDecodedString());
+        return info.toArray(new String[] {});
     }
 
     @Override
