@@ -743,6 +743,8 @@ public enum OrePrefixes {
         dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
 
+        cell.disableComponent(MaterialsUEVplus.GravitonShard);
+
         // ingot.mNotGeneratedItems.add(Materials.Ichorium);
         nugget.mNotGeneratedItems.add(Materials.Gold);
         plate.mNotGeneratedItems.add(Materials.Paper);
@@ -830,6 +832,8 @@ public enum OrePrefixes {
         toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         frame.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         frameGt.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+
+        gem.mGeneratedItems.add(MaterialsUEVplus.GravitonShard);
 
         dust.mGeneratedItems.addAll(dustPure.mGeneratedItems);
         dust.mGeneratedItems.addAll(dustImpure.mGeneratedItems);
@@ -1044,7 +1048,8 @@ public enum OrePrefixes {
             OrePrefixes.gemExquisite,
             OrePrefixes.gearGt,
             OrePrefixes.itemCasing,
-            OrePrefixes.nanite));
+            OrePrefixes.nanite,
+            OrePrefixes.cell));
     /**
      * Yes this Value can be changed to add Bits for the MetaGenerated-Item-Check.
      */
