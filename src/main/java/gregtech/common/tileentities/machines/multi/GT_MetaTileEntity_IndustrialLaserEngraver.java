@@ -60,6 +60,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.LaserRenderingUtil;
 import gregtech.common.blocks.GT_Block_Casings4;
 import gregtech.common.tileentities.render.TileLaser;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -133,7 +134,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
                 .adder(GT_MetaTileEntity_IndustrialLaserEngraver::addLaserSource)
                 .hatchClass(GT_MetaTileEntity_Hatch_EnergyTunnel.class)
                 .casingIndex(((GT_Block_Casings4) GregTech_API.sBlockCasings4).getTextureIndex(0))
-                .dot(1)
+                .dot(3)
                 .build())
         .build();
 
@@ -239,9 +240,10 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         stopAllRendering = !stopAllRendering;
-        if (stopAllRendering && renderer != null) {
-            renderer.setShouldRender(false);
-        }
+        if (stopAllRendering) {
+            PlayerUtils.messagePlayer(aPlayer, "Rendering off");
+            if (renderer != null) renderer.setShouldRender(false);
+        } else PlayerUtils.messagePlayer(aPlayer, "Rendering on");
     }
 
     @Override
@@ -272,13 +274,15 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             .addSeparator()
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front Center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 24, false)
+            .addCasingInfoMin("Robust Tungstensteel Machine Casing", 45, false)
+            .addCasingInfoExactly("Tungstensteel Frame Box", 9, false)
             .addOtherStructurePart("Heat Resistant Laser Plate", "x1")
-            .addInputBus("Any Solid Steel Casing", 1)
-            .addOutputBus("Any Solid Steel Casing", 1)
-            .addEnergyHatch("Any Solid Steel Casing", 1)
-            .addMaintenanceHatch("Any Solid Steel Casing", 1)
+            .addOtherStructurePart("Borosilicate Glass", "x3")
+            .addOtherStructurePart("Laser Source Hatch", "x1", 3)
+            .addInputBus("Any Tungstensteel Casing", 1)
+            .addOutputBus("Any Tungstensteel Casing", 1)
+            .addEnergyHatch("Any Tungstensteel Casing", 1)
+            .addMaintenanceHatch("Any Tungstensteel Casing", 1)
             .toolTipFinisher("GregTech");
         return tt;
     }
