@@ -110,7 +110,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         .addElement(
             'a',
             buildHatchAdder(GT_MetaTileEntity_IndustrialLaserEngraver.class)
-                .atLeast(InputBus, OutputBus, Maintenance, Energy)
+                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
                 .casingIndex(((GT_Block_Casings4) GregTech_API.sBlockCasings4).getTextureIndex(0))
                 .dot(1)
                 .buildAndChain(
@@ -280,7 +280,9 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             .addOtherStructurePart("Borosilicate Glass", "x3")
             .addOtherStructurePart("Laser Source Hatch", "x1", 3)
             .addInputBus("Any Tungstensteel Casing", 1)
+            .addInputHatch("Any Tungstensteel Casing", 1)
             .addOutputBus("Any Tungstensteel Casing", 1)
+            .addOutputHatch("Any Tungstensteel Casing", 1)
             .addEnergyHatch("Any Tungstensteel Casing", 1)
             .addMaintenanceHatch("Any Tungstensteel Casing", 1)
             .toolTipFinisher("GregTech");
@@ -388,6 +390,11 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public int getRecipeCatalystPriority() {
+        return -10;
     }
 
     @Override
