@@ -45,7 +45,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -198,11 +197,10 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                         -1,
                         (t, m) -> t.tierPipeCasing = m,
                         t -> t.tierPipeCasing))
-                .addElement('D', ofChain(ofBlock(Blocks.glass, 0), Glasses.chainAllGlasses()))
+                .addElement('D', ofBlock(Blocks.glass, 0))
                 .addElement(
                     'E',
                     ofChain(
-                        isAir(),
                         ofBlockAnyMeta(Blocks.water),
                         ofBlockAnyMeta(Blocks.flowing_water),
                         ofBlockAnyMeta(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater))))
@@ -431,5 +429,18 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         machineModeIcons.clear();
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT);
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
+    }
+
+    @Override
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_WASH_PLANT.mode." + machineMode);
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (mUpdate < 0) mUpdate = 150;
+        }
     }
 }
