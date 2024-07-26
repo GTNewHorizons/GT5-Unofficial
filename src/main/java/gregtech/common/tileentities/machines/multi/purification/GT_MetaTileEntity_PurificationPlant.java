@@ -315,7 +315,7 @@ public class GT_MetaTileEntity_PurificationPlant
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         // Check self
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 24, 9, 20)) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) {
             return false;
         }
 
