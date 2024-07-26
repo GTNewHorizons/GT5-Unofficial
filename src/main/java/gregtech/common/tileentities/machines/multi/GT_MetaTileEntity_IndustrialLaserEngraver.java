@@ -38,6 +38,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -152,7 +153,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
                 // Cube root the amperage to get the parallels
                 laserAmps = (int) Math.cbrt(laserSource.maxAmperesOut());
                 laserTier = laserSource.getOutputTier();
-                tierName = getTierName((int) laserTier);
+                tierName = GT_Values.VN[(int) laserTier];
                 return true;
             }
         }
@@ -261,7 +262,8 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         tt.addMachineType("Laser Engraver")
             .addInfo("Controller Block for the High Power Laser Emitter")
             .addInfo("Use screwdriver to disable laser rendering")
-            .addInfo("200% the speed of single block machines of the same voltage")
+            .addInfo("300% the speed of single block machines of the same voltage")
+            .addInfo("Uses 80% of the EU normally required")
             .addInfo("Laser source hatch determines maximum power tier and parallels")
             .addInfo("Parallels equal to the cube root of laser source amperage input")
             .addInfo("Glass tier determines maximum laser source tier")
@@ -355,7 +357,8 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
                 if (renderer != null) renderer.setShouldRender(false);
                 return super.clear();
             }
-        }.setSpeedBonus(1F / 2F)
+        }.setSpeedBonus(1F / 3F)
+            .setEuModifier(0.8F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
@@ -426,53 +429,6 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
                 + EnumChatFormatting.WHITE
                 + tag.getString("tierName")
                 + EnumChatFormatting.RESET);
-    }
-
-    private String getTierName(int t) {
-        switch (t) {
-            case 1 -> {
-                return "LV";
-            }
-            case 2 -> {
-                return "MV";
-            }
-            case 3 -> {
-                return "HV";
-            }
-            case 4 -> {
-                return "EV";
-            }
-            case 5 -> {
-                return "IV";
-            }
-            case 6 -> {
-                return "LuV";
-            }
-            case 7 -> {
-                return "ZPM";
-            }
-            case 8 -> {
-                return "UV";
-            }
-            case 9 -> {
-                return "UHV";
-            }
-            case 10 -> {
-                return "UEV";
-            }
-            case 11 -> {
-                return "UIV";
-            }
-            case 12 -> {
-                return "UMV";
-            }
-            case 13 -> {
-                return "UXV";
-            }
-            default -> {
-                return "MAX";
-            }
-        }
     }
 
     private enum Colors {
