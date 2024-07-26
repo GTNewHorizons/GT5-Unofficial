@@ -86,17 +86,17 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
                         .map(s -> s.replaceAll("W", " "))
                         .toArray(String[]::new))
                 .toArray(String[][]::new))
-        // Ozonation Casing (placeholder name)
+        // Inert Filtration Casing
         .addElement(
             'A',
             ofChain(
                 lazy(
                     t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitOzonation>buildHatchAdder()
                         .atLeastList(ImmutableList.of(InputHatch, OutputHatch, OutputBus))
-                        .casingIndex(getTextureIndex(GregTech_API.sBlockCasings9, 9))
+                        .casingIndex(getTextureIndex(GregTech_API.sBlockCasings9, 10))
                         .dot(1)
                         .build()),
-                ofBlock(GregTech_API.sBlockCasings9, 9)))
+                ofBlock(GregTech_API.sBlockCasings9, 10)))
         // High Pressure Resistant Casing (possibly placeholder name)
         .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 9))
         // PTFE pipe casing
@@ -111,7 +111,7 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
             lazy(
                 t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitOzonation>buildHatchAdder()
                     .atLeast(InputHatch)
-                    .casingIndex(getTextureIndex(GregTech_API.sBlockCasings9, 8))
+                    .casingIndex(getTextureIndex(GregTech_API.sBlockCasings9, 9))
                     .dot(2)
                     .build()))
         .build();

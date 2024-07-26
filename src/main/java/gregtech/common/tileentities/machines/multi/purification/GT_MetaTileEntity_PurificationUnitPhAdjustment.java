@@ -158,7 +158,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                         .casingIndex(CASING_INDEX_MIDDLE)
                         .build()),
                 // Naquadah Reinforced Water Plant Casing
-                ofBlock(GregTech_API.sBlockCasings9, 6)))
+                ofBlock(GregTech_API.sBlockCasings9, 7)))
         .addElement(
             'R',
             ofChain(
@@ -170,7 +170,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                         .casingIndex(CASING_INDEX_MIDDLE)
                         .build()),
                 // Naquadah Reinforced Water Plant Casing
-                ofBlock(GregTech_API.sBlockCasings9, 6)))
+                ofBlock(GregTech_API.sBlockCasings9, 7)))
         // Special I/O hatches
         .addElement(
             'X',
