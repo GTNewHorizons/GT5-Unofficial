@@ -213,6 +213,20 @@ public class GT_PurifiedWaterRecipes {
             ItemList.Quark_Creation_Catalyst_Top.get(1L), ItemList.Quark_Creation_Catalyst_Strange.get(1L),
             ItemList.Quark_Creation_Catalyst_Charm.get(1L) };
 
+        // Add re-alignment recipes
+        for (int i = 0; i < catalystInputs.length; ++i) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(1), GT_Utility.getIntegratedCircuit(i + 1))
+                .fluidInputs(Materials.StableBaryonicMatter.getFluid(1000L))
+                .itemOutputs(catalystInputs[i])
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_UHV)
+                // Not sure how I feel about it being in the laser engraver, but I don't see a better multi for it right
+                // now,
+                // and we can't really add a new one specifically for this (... for now)
+                .addTo(laserEngraverRecipes);
+        }
+
         GT_Values.RA.stdBuilder()
             .fluidInputs(Materials.Grade7PurifiedWater.getFluid(1000L))
             .fluidOutputs(

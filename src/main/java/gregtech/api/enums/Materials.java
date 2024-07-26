@@ -953,7 +953,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials StableBaryonicMatter = new MaterialBuilder(569, TextureSet.SET_FLUID, "Stabilised Baryonic Matter")
         .addFluid()
         .addCell()
-        .setRGB(20, 230, 20) // todo,
+        .setRGB(20, 10, 20)
         .setName("StableBaryonicMatter")
         .constructMaterial();
 
