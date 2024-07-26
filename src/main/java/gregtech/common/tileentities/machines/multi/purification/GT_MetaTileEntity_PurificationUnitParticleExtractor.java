@@ -38,6 +38,8 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
@@ -47,6 +49,8 @@ import gregtech.common.items.ID_MetaItem_03;
 public class GT_MetaTileEntity_PurificationUnitParticleExtractor
     extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitParticleExtractor>
     implements ISurvivalConstructable {
+
+    public static long BARYONIC_MATTER_OUTPUT = 2000L;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int STRUCTURE_X_OFFSET = 7;
@@ -145,7 +149,7 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
         // Generate two unique indices into the list
         int firstIndex = random.nextInt(0, CatalystCombination.CATALYST_ITEMS.length);
         int secondIndex = random.nextInt(0, CatalystCombination.CATALYST_ITEMS.length);
-        while (secondIndex != firstIndex) {
+        while (secondIndex == firstIndex) {
             secondIndex = random.nextInt(0, CatalystCombination.CATALYST_ITEMS.length);
         }
 
@@ -232,7 +236,8 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET);
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
+        return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 
     @Override
@@ -241,6 +246,11 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
         tt.addMachineType("Purification Unit");
         tt.toolTipFinisher("GregTech");
         return tt;
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.purificationParticleExtractionRecipes;
     }
 
     @Override
@@ -254,11 +264,30 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
 
     private boolean isCatalyst(ItemStack stack) {
         if (stack.getItem() instanceof GT_MetaGenerated_Item_03) {
-            int meta = stack.getItemDamage();
+            int meta = stack.getItemDamage() - 32000; // why, greg.
             return meta >= ID_MetaItem_03.Quark_Creation_Catalyst_Up.ID
                 && meta <= ID_MetaItem_03.Quark_Creation_Catalyst_Top.ID;
         }
         return false;
+    }
+
+    @Override
+    public void endCycle() {
+        super.endCycle();
+        // Output incorrect indices unchanged, the spent ones will follow if recipe was successful from the actual
+        // recipe outputs
+        for (int i = 0; i < insertedCatalysts.size(); ++i) {
+            if (i == correctIndexA || i == correctIndexB) continue;
+
+            addOutput(insertedCatalysts.get(i));
+        }
+    }
+
+    @Override
+    public float calculateFinalSuccessChance() {
+        // Only succeed if correct combination was inserted
+        if (correctIndexA >= 0) return 100.0f;
+        else return 0.0f;
     }
 
     @Override
@@ -294,7 +323,7 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
                     // - output baryonic matter
                     correctIndexA = firstIndex;
                     correctIndexB = secondIndex;
-
+                    addOutput(Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT));
                 }
             }
         }
@@ -353,12 +382,33 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
         return EnumChatFormatting.RED + "No";
     }
 
+    public EnumChatFormatting getQuarkColor(ItemStack stack) {
+        int meta = stack.getItemDamage() - 32000;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Up.ID) return EnumChatFormatting.RED;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Down.ID) return EnumChatFormatting.YELLOW;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Strange.ID) return EnumChatFormatting.DARK_PURPLE;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Charm.ID) return EnumChatFormatting.LIGHT_PURPLE;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Bottom.ID) return EnumChatFormatting.GREEN;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Top.ID) return EnumChatFormatting.BLUE;
+        return EnumChatFormatting.GRAY;
+    }
+
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Catalyst insertion history for this recipe cycle (least recent first): ");
-        for (int i = 0; i < insertedCatalysts.size(); ++i) {
+        info.add("Catalyst insertion history for this recipe cycle (most recent first): ");
+        for (int i = insertedCatalysts.size() - 1; i >= 0; --i) {
             ItemStack stack = insertedCatalysts.get(i);
-            info.add(EnumChatFormatting.YELLOW + "" + i + ": " + stack.getDisplayName());
+            String name = stack.getDisplayName();
+            String[] split = name.split("-");
+            info.add(
+                EnumChatFormatting.YELLOW + ""
+                    + (i + 1)
+                    + ": "
+                    + getQuarkColor(stack)
+                    + split[0]
+                    + EnumChatFormatting.GRAY
+                    + "-"
+                    + split[1]);
         }
         info.add("Quark Combination correctly identified: " + getCorrectlyDecodedString());
         return info.toArray(new String[] {});

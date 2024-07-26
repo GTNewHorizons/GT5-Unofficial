@@ -12,10 +12,12 @@ import static gregtech.api.recipe.RecipeMaps.purificationClarifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationDegasifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationFlocculationRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationOzonationRecipes;
+import static gregtech.api.recipe.RecipeMaps.purificationParticleExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPhAdjustmentRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPlasmaHeatingRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationUVTreatmentRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitParticleExtractor.BARYONIC_MATTER_OUTPUT;
 
 import java.util.Arrays;
 
@@ -203,5 +205,24 @@ public class GT_PurifiedWaterRecipes {
             .eut(TierEU.RECIPE_UHV)
             .metadata(BASE_CHANCE, 0.0f)
             .addTo(purificationDegasifierRecipes);
+
+        // Grade 8 - Quark Extraction
+
+        ItemStack[] catalystInputs = new ItemStack[] { ItemList.Quark_Creation_Catalyst_Up.get(1L),
+            ItemList.Quark_Creation_Catalyst_Down.get(1L), ItemList.Quark_Creation_Catalyst_Bottom.get(1L),
+            ItemList.Quark_Creation_Catalyst_Top.get(1L), ItemList.Quark_Creation_Catalyst_Strange.get(1L),
+            ItemList.Quark_Creation_Catalyst_Charm.get(1L) };
+
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(Materials.Grade7PurifiedWater.getFluid(1000L))
+            .fluidOutputs(
+                Materials.Grade8PurifiedWater.getFluid(900L),
+                Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT))
+            .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L))
+            .ignoreCollision()
+            .duration(duration)
+            .eut(TierEU.RECIPE_UEV)
+            .metadata(BASE_CHANCE, 0.0f)
+            .addTo(purificationParticleExtractionRecipes);
     }
 }

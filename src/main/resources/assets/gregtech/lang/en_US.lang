@@ -237,6 +237,7 @@ gt.recipe.purificationplantozonation=Ozonation
 gt.recipe.purificationplantplasmaheating=Temperature Fluctuation
 gt.recipe.purificationplantuvtreatment=High Energy Laser Treatment
 gt.recipe.purificationplantdegasifier=Degassing
+gt.recipe.purificationplantquarkextractor=Quark Extraction
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling

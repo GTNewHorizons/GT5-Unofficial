@@ -950,6 +950,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         .setMaterialList(new MaterialStack(Oxygen, 3))
         .constructMaterial();
 
+    public static Materials StableBaryonicMatter = new MaterialBuilder(569, TextureSet.SET_FLUID, "Stabilised Baryonic Matter")
+        .addFluid()
+        .addCell()
+        .setRGB(20, 230, 20) // todo,
+        .setName("StableBaryonicMatter")
+        .constructMaterial();
+
     // spotless:on
 
     static {
