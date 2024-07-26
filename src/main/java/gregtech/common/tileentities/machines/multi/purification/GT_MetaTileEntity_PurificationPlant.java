@@ -106,18 +106,20 @@ public class GT_MetaTileEntity_PurificationPlant
             Arrays.stream(PurificationPlantStructureString.STRUCTURE_STRING)
                 .map(
                     sa -> Arrays.stream(sa)
-                        .map(s -> s.replaceAll("W", " "))
+                        .map(s -> s.replaceAll("F", " "))
                         .toArray(String[]::new))
                 .toArray(String[][]::new))
-        // Reinforced Sterile Water Plant Casing
-        .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 5))
+        // Superplasticizer-treated high strength concrete
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings9, 3))
         // Sterile Water Plant Casing
         .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 4))
-        // Door. Note that this behaves weirdly with creative autoplace, but should be fine in survival.
-        .addElement('D', lazy(t -> ofBlock(GameRegistry.findBlock("IC2", "blockDoorAlloy"), 0)))
+        // Reinforced Sterile Water Plant Casing
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 5))
         // Tinted Industrial Glass
-        .addElement('E', ofBlockAnyMeta(GregTech_API.sBlockTintedGlass, 0))
-        .addElement('W', ofBlock(Blocks.water, 0))
+        .addElement('D', ofBlockAnyMeta(GregTech_API.sBlockTintedGlass, 0))
+        // Door. Note that this behaves weirdly with creative autoplace, but should be fine in survival.
+        .addElement('E', lazy(t -> ofBlock(GameRegistry.findBlock("IC2", "blockDoorAlloy"), 0)))
+        .addElement('F', ofBlock(Blocks.water, 0))
         .addElement('G', ofFrame(Materials.Tungsten))
         // Hatch space
         .addElement(
@@ -142,12 +144,12 @@ public class GT_MetaTileEntity_PurificationPlant
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 24, 9, 20);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 6, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 24, 9, 20, elementBudget, env, true);
+        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 3, 6, 0, elementBudget, env, true);
         if (built == -1) {
             GT_Utility.sendChatToPlayer(
                 env.getActor(),
