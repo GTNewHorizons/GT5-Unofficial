@@ -1,7 +1,5 @@
 package gregtech.common.blocks;
 
-import gregtech.api.items.GT_Generic_Block;
-import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -15,6 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.tileentities.render.TileLaser;
 
 public class GT_Block_Laser extends Block implements ITileEntityProvider {
@@ -33,7 +32,7 @@ public class GT_Block_Laser extends Block implements ITileEntityProvider {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
-        blockIcon = Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+        blockIcon = Textures.BlockIcons.LASER_PLATE.getIcon();
     }
 
     @Override
