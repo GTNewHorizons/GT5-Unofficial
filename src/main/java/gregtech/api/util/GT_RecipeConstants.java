@@ -21,6 +21,8 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
+import gregtech.common.items.GT_MetaGenerated_Item_03;
+import gregtech.common.items.ID_MetaItem_03;
 
 // this class is intended to be import-static-ed on every recipe script
 // so take care to not put unrelated stuff here!
@@ -229,6 +231,77 @@ public class GT_RecipeConstants {
                 // LCR does not need cleanroom.
                 .metadata(CLEANROOM, false)
                 .addTo(RecipeMaps.multiblockChemicalReactorRecipes));
+    });
+
+    /**
+     * Adds an engraver recipe that might use purified water. Still added to the regular recipemap if it ends up not
+     * needing it.
+     */
+    public static final IRecipeMap WaferEngravingRecipes = IRecipeMap.newRecipeMap(builder -> {
+        enum Wafer{Naquadah,Europium,Americium,
+        // No optical, as these only use purified water when cutting
+        }
+        // Find the wafer used
+        Wafer wafer = null;
+        for (ItemStack input : builder.getItemInputsBasic()) {
+            if (input.getItem() instanceof GT_MetaGenerated_Item_03) {
+                int meta = input.getItemDamage() - 32000;
+                // Check if this input item is indicating a wafer recipe we want to modify
+                if (meta == ID_MetaItem_03.Circuit_Silicon_Wafer3.ID) wafer = Wafer.Naquadah;
+                else if (meta == ID_MetaItem_03.Circuit_Silicon_Wafer4.ID) wafer = Wafer.Europium;
+                else if (meta == ID_MetaItem_03.Circuit_Silicon_Wafer5.ID) wafer = Wafer.Americium;
+            }
+        }
+
+        int recipeTime = builder.duration;
+        // Bonus for using purified water of a higher tier than necessary
+        int halfBoostedRecipeTime = (int) (recipeTime * 0.75);
+        int boostedRecipeTime = (int) (recipeTime * 0.5);
+
+        // If this recipe does not use a wafer, exit without modifying it.
+        if (wafer == null) return builder.addTo(RecipeMaps.laserEngraverRecipes);
+        switch (wafer) {
+            case Naquadah -> {
+                // Purified water is not required for naquadah doped wafers, but provides a nice bonus
+                return GT_Utility.concat(
+                    builder.copy()
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade1PurifiedWater.getFluid(1000L))
+                        .duration(halfBoostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade2PurifiedWater.getFluid(1000L))
+                        .duration(boostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes));
+            }
+            case Europium -> {
+                // Require purified water for europium wafers, at least grade 3
+                return GT_Utility.concat(
+                    builder.copy()
+                        .fluidInputs(Materials.Grade3PurifiedWater.getFluid(1000L))
+                        .duration(recipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade4PurifiedWater.getFluid(1000L))
+                        .duration(boostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes));
+            }
+            case Americium -> {
+                // Require purified water for americium wafers, at least grade 5
+                return GT_Utility.concat(
+                    builder.copy()
+                        .fluidInputs(Materials.Grade5PurifiedWater.getFluid(1000L))
+                        .duration(recipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade6PurifiedWater.getFluid(1000L))
+                        .duration(boostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes));
+            }
+        }
+
+        throw new RuntimeException("Unreachable code reached in Laser Engraver Recipe Transformer");
     });
 
     /**
