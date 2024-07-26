@@ -24,7 +24,7 @@ public class GT_Block_Laser extends Block implements ITileEntityProvider {
     public GT_Block_Laser() {
         super(Material.iron);
         setBlockName("HeatResistantLaserPlate");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Heat Resistant Laser Plate");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".name", "Heat Resistant Laser Plate");
         this.setCreativeTab(GregTech_API.TAB_GREGTECH);
         setHarvestLevel("pickaxe", 2);
         GameRegistry.registerBlock(this, getUnlocalizedName());
