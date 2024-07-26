@@ -1,5 +1,7 @@
 package gregtech.common.blocks;
 
+import gregtech.api.items.GT_Generic_Block;
+import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -21,7 +23,8 @@ public class GT_Block_Laser extends Block implements ITileEntityProvider {
 
     public GT_Block_Laser() {
         super(Material.iron);
-        setBlockName("Heat Resistant Laser Receiver Casing");
+        setBlockName("HeatResistantLaserPlate");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Heat Resistant Laser Plate");
         this.setCreativeTab(GregTech_API.TAB_GREGTECH);
         setHarvestLevel("pickaxe", 2);
         GameRegistry.registerBlock(this, getUnlocalizedName());
