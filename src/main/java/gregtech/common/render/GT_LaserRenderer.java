@@ -13,7 +13,6 @@ import gregtech.common.tileentities.render.TileLaser;
 
 public class GT_LaserRenderer extends TileEntitySpecialRenderer {
 
-    private float tickcount = 0;
     private double zOffset = 0.0F;
     private double xOffset = 0.0F;
 
@@ -24,8 +23,8 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
         ClientRegistry.bindTileEntitySpecialRenderer(TileLaser.class, this);
     }
 
-    private void maths() {
-        float tc = (0.05F * tickcount);
+    private void maths(float counter) {
+        float tc = (0.05F * counter);
         zOffset = 0.5 + 0.45 * Math.sin(2 * Math.PI * tc);
         xOffset = 0.5 + 0.45 * Math.sin(0.5 * Math.PI * tc);
     }
@@ -36,10 +35,10 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
         if (ltile.getShouldRender()) {
             GL11.glPushMatrix();
             GL11.glTranslated(x + xOffset, y + 0.5, z + zOffset);
-            maths();
-            tickcount += 0.2F;
-            if (tickcount >= 80) {
-                tickcount = 0;
+            maths(ltile.counter);
+            ltile.counter += 0.2F;
+            if (ltile.counter >= 80) {
+                ltile.counter = 0;
             }
             GL11.glColor3f(ltile.getRed(), ltile.getGreen(), ltile.getBlue());
             GL11.glDisable(GL11.GL_LIGHTING);
