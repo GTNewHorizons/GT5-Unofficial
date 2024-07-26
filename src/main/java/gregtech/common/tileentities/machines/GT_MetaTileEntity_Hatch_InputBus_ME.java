@@ -481,7 +481,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     ItemStack itemstack = GT_Utility.copyAmount(1, currItem.getItemStack());
                     ItemStack previous = this.mInventory[index];
                     this.mInventory[index] = itemstack;
-                    if (itemstack != null) {
+                    if (itemstack != null && previous != null) {
                         justHadNewItems = !itemstack.isItemEqual(previous);
                     }
                     index++;
