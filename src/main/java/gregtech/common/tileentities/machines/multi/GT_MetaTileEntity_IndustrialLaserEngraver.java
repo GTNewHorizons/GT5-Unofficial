@@ -9,23 +9,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
-import gregtech.api.enums.GT_HatchElement;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MagHatch;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.common.blocks.GT_Block_Casings10;
-import gregtech.common.tileentities.render.TileLaser;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -39,6 +29,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -53,10 +46,11 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -64,9 +58,9 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.LaserRenderingUtil;
 import gregtech.common.blocks.GT_Block_Casings4;
-import gregtech.common.blocks.GT_Block_Laser;
-
-import javax.annotation.Nonnull;
+import gregtech.common.tileentities.render.TileLaser;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_IndustrialLaserEngraver
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IndustrialLaserEngraver>
@@ -78,14 +72,38 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
-            (transpose(
-                new String[][]{
-                    {" f ","fsf","faf","faf","aaa"},
-                    {"   "," g ","   "," a ","aaa"},
-                    {"   "," g ","   "," a ","aaa"},
-                    {"   "," g ","   "," a ","aaa"},
-                    {"a~a","ara","aaa","aaa","aaa"}
-                })))
+            (
+                new String[][]{{
+                    "  f  ",
+                    "     ",
+                    "     ",
+                    "     ",
+                    " a~a "
+                },{
+                    " fsf ",
+                    "  g  ",
+                    "  g  ",
+                    "a g a",
+                    "aaraa"
+                },{
+                    "faaaf",
+                    "f   f",
+                    "f   f",
+                    "a   a",
+                    "aaaaa"
+                },{
+                    "aaaaa",
+                    "a a a",
+                    "a a a",
+                    "a a a",
+                    "aaaaa"
+                },{
+                    "aaaaa",
+                    "aaaaa",
+                    "aaaaa",
+                    "aaaaa",
+                    "aaaaa"
+                }}))
             //spotless:on
         .addElement(
             'a',
@@ -98,34 +116,43 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
                         GT_MetaTileEntity_IndustrialLaserEngraver::onCasingAdded,
                         ofBlock(GregTech_API.sBlockCasings4, 0))))
         .addElement('f', ofFrame(Materials.TungstenSteel))
-        .addElement('g', BorosilicateGlass.ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .addElement(
+            'g',
+            BorosilicateGlass
+                .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'r',
-            LaserRenderingUtil.ofBlockAdder(GT_MetaTileEntity_IndustrialLaserEngraver::laserRendererAdder, GregTech_API.sLaserRender, 0))
-        .addElement('s', buildHatchAdder(GT_MetaTileEntity_IndustrialLaserEngraver.class)
-            .adder(GT_MetaTileEntity_IndustrialLaserEngraver::addLaserSource)
-            .hatchClass(GT_MetaTileEntity_Hatch_EnergyTunnel.class)
-            .casingIndex(((GT_Block_Casings4) GregTech_API.sBlockCasings4).getTextureIndex(0))
-            .dot(1)
-            .build())
+            LaserRenderingUtil.ofBlockAdder(
+                GT_MetaTileEntity_IndustrialLaserEngraver::laserRendererAdder,
+                GregTech_API.sLaserRender,
+                0))
+        .addElement(
+            's',
+            buildHatchAdder(GT_MetaTileEntity_IndustrialLaserEngraver.class)
+                .adder(GT_MetaTileEntity_IndustrialLaserEngraver::addLaserSource)
+                .hatchClass(GT_MetaTileEntity_Hatch_EnergyTunnel.class)
+                .casingIndex(((GT_Block_Casings4) GregTech_API.sBlockCasings4).getTextureIndex(0))
+                .dot(1)
+                .build())
         .build();
 
     protected TileLaser renderer;
     private byte glassTier = 0;
+    private GT_MetaTileEntity_Hatch_DynamoTunnel laserSource = null;
     private int laserAmps = 0;
     private long laserTier = 0;
     private String tierName = "LV";
 
     private boolean addLaserSource(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity != null){
+        if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoTunnel) {
-                GT_MetaTileEntity_Hatch_DynamoTunnel laserSource = (GT_MetaTileEntity_Hatch_DynamoTunnel) aMetaTileEntity;
+                laserSource = (GT_MetaTileEntity_Hatch_DynamoTunnel) aMetaTileEntity;
                 laserSource.updateTexture(aBaseCasingIndex);
-                //Cube root the amperage to get the parallels
+                // Cube root the amperage to get the parallels
                 laserAmps = (int) Math.cbrt(laserSource.maxAmperesOut());
                 laserTier = laserSource.getOutputTier();
-                tierName = getTierName((int)laserTier);
+                tierName = getTierName((int) laserTier);
                 return true;
             }
         }
@@ -136,7 +163,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         if (block != GregTech_API.sLaserRender || world == null) {
             return false;
         }
-        TileEntity te = world.getTileEntity(x,y,z);
+        TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileLaser) {
             renderer = (TileLaser) te;
             return true;
@@ -241,7 +268,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             .addInfo("Only accepts borosilicate glass (no, really)")
             .addInfo(AuthorFourIsTheNumber)
             .addSeparator()
-            .beginStructureBlock(7, 5, 7, true)
+            .beginStructureBlock(5, 5, 5, true)
             .addController("Front Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
             .addCasingInfoExactly("Steel Pipe Casing", 24, false)
@@ -256,13 +283,13 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 4, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 4, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 4, 0, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -276,9 +303,10 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         mCasingAmount = 0;
         mEnergyHatches.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0)) return false;
-        // TODO FIX
-        if (mCasingAmount < 0) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
+        if (mCasingAmount < 45) return false;
+        if (laserSource == null) return false;
+        if (laserSource.mTier > glassTier) return false;
 
         // All checks passed!
         return true;
@@ -306,7 +334,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GT_Recipe recipe) {
                 Colors c = Colors.White;
-                //TODO: There has to be a better way to do this
+                // TODO: There has to be a better way to do this
                 for (int i = 0; i < recipe.mInputs.length; i++) {
                     String uid = getUniqueIdentifier(recipe.mInputs[i]);
                     if (lensColors.containsKey(uid)) {
@@ -377,7 +405,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-                                int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("laserAmps", laserAmps);
         tag.setString("tierName", tierName);
@@ -385,7 +413,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-                             IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
@@ -402,20 +430,48 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
 
     private String getTierName(int t) {
         switch (t) {
-            case 1 -> {return "LV";}
-            case 2 -> {return "MV";}
-            case 3 -> {return "HV";}
-            case 4 -> {return "EV";}
-            case 5 -> {return "IV";}
-            case 6 -> {return "LuV";}
-            case 7 -> {return "ZPM";}
-            case 8 -> {return "UV";}
-            case 9 -> {return "UHV";}
-            case 10 -> {return "UEV";}
-            case 11 -> {return "UIV";}
-            case 12 -> {return "UMV";}
-            case 13 -> {return "UXV";}
-            default -> {return "MAX";}
+            case 1 -> {
+                return "LV";
+            }
+            case 2 -> {
+                return "MV";
+            }
+            case 3 -> {
+                return "HV";
+            }
+            case 4 -> {
+                return "EV";
+            }
+            case 5 -> {
+                return "IV";
+            }
+            case 6 -> {
+                return "LuV";
+            }
+            case 7 -> {
+                return "ZPM";
+            }
+            case 8 -> {
+                return "UV";
+            }
+            case 9 -> {
+                return "UHV";
+            }
+            case 10 -> {
+                return "UEV";
+            }
+            case 11 -> {
+                return "UIV";
+            }
+            case 12 -> {
+                return "UMV";
+            }
+            case 13 -> {
+                return "UXV";
+            }
+            default -> {
+                return "MAX";
+            }
         }
     }
 

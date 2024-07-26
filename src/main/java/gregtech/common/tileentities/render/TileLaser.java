@@ -1,11 +1,11 @@
 package gregtech.common.tileentities.render;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
+
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.galacticraft.core.util.Annotations;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 
 public class TileLaser extends TileEntityAdvanced {
 
@@ -40,7 +40,7 @@ public class TileLaser extends TileEntityAdvanced {
         this.blue = blue;
     }
 
-    public void setShouldRender (boolean shouldRender){
+    public void setShouldRender(boolean shouldRender) {
         this.shouldRender = shouldRender;
     }
 

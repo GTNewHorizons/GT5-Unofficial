@@ -1,20 +1,21 @@
 package gregtech.api.util;
 
-import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
-import com.gtnewhorizon.structurelib.structure.ICustomBlockSetting;
+import java.util.function.Consumer;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
-import java.util.function.Consumer;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.structure.ICustomBlockSetting;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 public class LaserRenderingUtil {
-    //This code is shamelessly ripped from GTNH-Intergalactic
+    // This code is shamelessly ripped from GTNH-Intergalactic
 
     public interface IBlockAdder<T> {
 
@@ -33,7 +34,7 @@ public class LaserRenderingUtil {
     }
 
     public static <T> IStructureElement<T> ofBlockAdder(IBlockAdder<T> iBlockAdder, Block defaultBlock,
-                                                        int defaultMeta) {
+        int defaultMeta) {
         if (iBlockAdder == null || defaultBlock == null) {
             throw new IllegalArgumentException();
         }
@@ -60,7 +61,7 @@ public class LaserRenderingUtil {
 
                 @Override
                 public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                      IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                    IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                     if (check(t, world, x, y, z)) return PlaceResult.SKIP;
                     return StructureUtility
                         .survivalPlaceBlock(defaultBlock, defaultMeta, world, x, y, z, s, actor, chatter);
@@ -72,7 +73,8 @@ public class LaserRenderingUtil {
                 @Override
                 public boolean check(T t, World world, int x, int y, int z) {
                     Block worldBlock = world.getBlock(x, y, z);
-                    return iBlockAdder.apply(t, worldBlock, ((Block) worldBlock).getDamageValue(world, x, y, z), world, x, y, z);
+                    return iBlockAdder
+                        .apply(t, worldBlock, ((Block) worldBlock).getDamageValue(world, x, y, z), world, x, y, z);
                 }
 
                 @Override
@@ -89,7 +91,7 @@ public class LaserRenderingUtil {
 
                 @Override
                 public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                      IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                    IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                     if (check(t, world, x, y, z)) return IStructureElement.PlaceResult.SKIP;
                     return StructureUtility
                         .survivalPlaceBlock(defaultBlock, defaultMeta, world, x, y, z, s, actor, chatter);
