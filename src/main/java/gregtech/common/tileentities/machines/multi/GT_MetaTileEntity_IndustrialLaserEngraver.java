@@ -9,15 +9,31 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
+import gregtech.api.enums.GT_HatchElement;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MagHatch;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.common.blocks.GT_Block_Casings10;
 import gregtech.common.tileentities.render.TileLaser;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -50,6 +66,8 @@ import gregtech.api.util.LaserRenderingUtil;
 import gregtech.common.blocks.GT_Block_Casings4;
 import gregtech.common.blocks.GT_Block_Laser;
 
+import javax.annotation.Nonnull;
+
 public class GT_MetaTileEntity_IndustrialLaserEngraver
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IndustrialLaserEngraver>
     implements ISurvivalConstructable {
@@ -62,7 +80,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             // spotless:off
             (transpose(
                 new String[][]{
-                    {" f ","faf","faf","faf","aaa"},
+                    {" f ","fsf","faf","faf","aaa"},
                     {"   "," g ","   "," a ","aaa"},
                     {"   "," g ","   "," a ","aaa"},
                     {"   "," g ","   "," a ","aaa"},
@@ -80,13 +98,39 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
                         GT_MetaTileEntity_IndustrialLaserEngraver::onCasingAdded,
                         ofBlock(GregTech_API.sBlockCasings4, 0))))
         .addElement('f', ofFrame(Materials.TungstenSteel))
-        .addElement('g', Glasses.chainAllGlasses())
+        .addElement('g', BorosilicateGlass.ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'r',
             LaserRenderingUtil.ofBlockAdder(GT_MetaTileEntity_IndustrialLaserEngraver::laserRendererAdder, GregTech_API.sLaserRender, 0))
+        .addElement('s', buildHatchAdder(GT_MetaTileEntity_IndustrialLaserEngraver.class)
+            .adder(GT_MetaTileEntity_IndustrialLaserEngraver::addLaserSource)
+            .hatchClass(GT_MetaTileEntity_Hatch_EnergyTunnel.class)
+            .casingIndex(((GT_Block_Casings4) GregTech_API.sBlockCasings4).getTextureIndex(0))
+            .dot(1)
+            .build())
         .build();
 
     protected TileLaser renderer;
+    private byte glassTier = 0;
+    private int laserAmps = 0;
+    private long laserTier = 0;
+    private String tierName = "LV";
+
+    private boolean addLaserSource(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity != null){
+            final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoTunnel) {
+                GT_MetaTileEntity_Hatch_DynamoTunnel laserSource = (GT_MetaTileEntity_Hatch_DynamoTunnel) aMetaTileEntity;
+                laserSource.updateTexture(aBaseCasingIndex);
+                //Cube root the amperage to get the parallels
+                laserAmps = (int) Math.cbrt(laserSource.maxAmperesOut());
+                laserTier = laserSource.getOutputTier();
+                tierName = getTierName((int)laserTier);
+                return true;
+            }
+        }
+        return false;
+    }
 
     private boolean laserRendererAdder(Block block, int meta, World world, int x, int y, int z) {
         if (block != GregTech_API.sLaserRender || world == null) {
@@ -191,17 +235,19 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             .addInfo("Controller Block for the High Power Laser Emitter")
             .addInfo("Use screwdriver to disable laser rendering")
             .addInfo("200% the speed of single block machines of the same voltage")
-            .addInfo("Gains 8 parallels per voltage tier")
+            .addInfo("Laser source hatch determines maximum power tier and parallels")
+            .addInfo("Parallels equal to the cube root of laser source amperage input")
+            .addInfo("Glass tier determines maximum laser source tier")
+            .addInfo("Only accepts borosilicate glass (no, really)")
             .addInfo(AuthorFourIsTheNumber)
             .addSeparator()
             .beginStructureBlock(7, 5, 7, true)
             .addController("Front Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
             .addCasingInfoExactly("Steel Pipe Casing", 24, false)
+            .addOtherStructurePart("Heat Resistant Laser Plate", "x1")
             .addInputBus("Any Solid Steel Casing", 1)
             .addOutputBus("Any Solid Steel Casing", 1)
-            .addInputHatch("Any Solid Steel Casing", 1)
-            .addOutputHatch("Any Solid Steel Casing", 1)
             .addEnergyHatch("Any Solid Steel Casing", 1)
             .addMaintenanceHatch("Any Solid Steel Casing", 1)
             .toolTipFinisher("GregTech");
@@ -249,17 +295,29 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
 
             @NotNull
             @Override
+            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+                if (recipe.mEUt > Math.pow(2, 4 + (laserTier * 2))) {
+                    return SimpleCheckRecipeResult.ofFailure("laser_insufficient");
+                }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
+
+            @NotNull
+            @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GT_Recipe recipe) {
                 Colors c = Colors.White;
+                //TODO: There has to be a better way to do this
                 for (int i = 0; i < recipe.mInputs.length; i++) {
                     String uid = getUniqueIdentifier(recipe.mInputs[i]);
                     if (lensColors.containsKey(uid)) {
                         c = lensColors.get(uid);
                     }
                 }
-                if (!stopAllRendering && renderer != null) {
+                if (renderer != null) {
                     renderer.setColors(c.r, c.g, c.b);
-                    renderer.setShouldRender(true);
+                    if (!stopAllRendering) {
+                        renderer.setShouldRender(true);
+                    }
                 }
                 return super.onRecipeStart(recipe);
             }
@@ -273,8 +331,8 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
-    public int getMaxParallelRecipes() {
-        return (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
+    private int getMaxParallelRecipes() {
+        return laserAmps;
     }
 
     @Override
@@ -315,7 +373,50 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
-        // getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.FoolsRuby, 1));
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+                                int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("laserAmps", laserAmps);
+        tag.setString("tierName", tierName);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.WHITE
+                + tag.getInteger("laserAmps")
+                + EnumChatFormatting.RESET);
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.maxtier") + ": "
+                + EnumChatFormatting.WHITE
+                + tag.getString("tierName")
+                + EnumChatFormatting.RESET);
+    }
+
+    private String getTierName(int t) {
+        switch (t) {
+            case 1 -> {return "LV";}
+            case 2 -> {return "MV";}
+            case 3 -> {return "HV";}
+            case 4 -> {return "EV";}
+            case 5 -> {return "IV";}
+            case 6 -> {return "LuV";}
+            case 7 -> {return "ZPM";}
+            case 8 -> {return "UV";}
+            case 9 -> {return "UHV";}
+            case 10 -> {return "UEV";}
+            case 11 -> {return "UIV";}
+            case 12 -> {return "UMV";}
+            case 13 -> {return "UXV";}
+            default -> {return "MAX";}
+        }
     }
 
     private enum Colors {
