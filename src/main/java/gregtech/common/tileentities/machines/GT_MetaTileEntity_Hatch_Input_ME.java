@@ -81,7 +81,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_Input
-    implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets, IRecipeProcessingAwareHatch {
+    implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets, IRecipeProcessingAwareHatch, ISmartInputHatch {
 
     private static final int SLOT_COUNT = 16;
 
@@ -106,6 +106,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     protected int minAutoPullAmount = 1;
     private int autoPullRefreshTime = 100;
     protected boolean processingRecipe = false;
+    private boolean justHadNewItems = false;
 
     protected static final int CONFIG_WINDOW_ID = 10;
 
@@ -167,7 +168,11 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 IAEFluidStack currItem = iterator.next();
                 if (currItem.getStackSize() >= minAutoPullAmount) {
                     FluidStack fluidStack = GT_Utility.copyAmount(1, currItem.getFluidStack());
+                    FluidStack previous = storedFluids[index];
                     storedFluids[index] = fluidStack;
+                    if (fluidStack != null) {
+                        justHadNewItems = !fluidStack.isFluidEqual(previous);
+                    }
                     index++;
                 }
             }
@@ -212,6 +217,16 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         }
 
         return shadowStoredFluids;
+    }
+
+    @Override
+    public boolean justUpdated() {
+        if (autoPullFluidList) {
+            boolean ret = justHadNewItems;
+            justHadNewItems = false;
+            return ret;
+        }
+        return false;
     }
 
     @Override
@@ -381,7 +396,13 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             request.setStackSize(Integer.MAX_VALUE);
             IAEFluidStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
             FluidStack resultFluid = (result != null) ? result.getFluidStack() : null;
+            // We want to track if any FluidStack is modified to notify any connected controllers to make a recipe check
+            // early
+            FluidStack previous = storedInformationFluids[index];
             storedInformationFluids[index] = resultFluid;
+            if (resultFluid != null) {
+                justHadNewItems = !resultFluid.isFluidEqual(previous);
+            }
         } catch (final GridAccessException ignored) {}
     }
 

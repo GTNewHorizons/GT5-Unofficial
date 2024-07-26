@@ -41,7 +41,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MagHatch;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
@@ -60,7 +60,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
-    extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IndustrialElectromagneticSeparator>
+    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_IndustrialElectromagneticSeparator>
     implements ISurvivalConstructable {
 
     public enum MagnetTiers {
@@ -126,7 +126,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                         "     D     ", "     C     ", "           " },
                     { "           ", "    AAA    ", "   A   A   ", " CDA D ADC ", "   A   A   ", "    AAA    ",
                         "     D     ", "     C     ", "           " },
-                    { "           ", "    BBB    ", "   BBBBB   ", " CDBBBBBDC ", "   BBBBB   ", "    BBB    ",
+                    { "           ", "    BEB    ", "   BBBBB   ", " CDBBBBBDC ", "   BBBBB   ", "    BBB    ",
                         "     D     ", "     C     ", "           " },
                     { "    B~B    ", "   BBBBB   ", "  BBBBBBB  ", "CDBBBBBBBDC", "  BBBBBBB  ", "   BBBBB   ",
                         "    BBB    ", "     D     ", "     C     " } })))
@@ -135,14 +135,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             'B',
             ofChain(
                 buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
-                    .adder(GT_MetaTileEntity_IndustrialElectromagneticSeparator::addMagHatch)
-                    .hatchClass(GT_MetaTileEntity_MagHatch.class)
-                    .shouldReject(t -> !(t.mMagHatch == null))
-                    .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
-                    .dot(1)
-                    .build(),
-                buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
-                    .atLeast(InputBus, OutputBus, Maintenance, Energy, ExoticEnergy)
+                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
                     .dot(1)
                     .buildAndChain(
@@ -151,6 +144,14 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                             ofBlock(GregTech_API.sBlockCasings10, 0)))))
         .addElement('C', ofFrame(Materials.NeodymiumMagnetic))
         .addElement('D', ofFrame(Materials.SamariumMagnetic))
+        .addElement(
+            'E',
+            buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
+                .adder(GT_MetaTileEntity_IndustrialElectromagneticSeparator::addMagHatch)
+                .hatchClass(GT_MetaTileEntity_MagHatch.class)
+                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
+                .dot(2)
+                .build())
         .build();
 
     public GT_MetaTileEntity_IndustrialElectromagneticSeparator(final int aID, final String aName,
@@ -239,7 +240,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             .addOtherStructurePart("Any glass", "x12")
             .addOtherStructurePart("Magnetic Neodymium Frame Box", "x40")
             .addOtherStructurePart("Magnetic Samarium Frame Box", "x45")
-            .addOtherStructurePart("Electromagnet Housing", "x1 Only, Any Casing")
+            .addOtherStructurePart("Electromagnet Housing", "1 Block Above/Behind Controller", 2)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
@@ -326,6 +327,11 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     }
 
     @Override
+    public int getRecipeCatalystPriority() {
+        return -10;
+    }
+
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         if (aNBT.hasKey("polarizerMode")) {
             machineMode = aNBT.getBoolean("polarizerMode") ? MACHINEMODE_POLARIZER : MACHINEMODE_SEPARATOR;
@@ -340,19 +346,22 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     }
 
     @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        setMachineMode(nextMachineMode());
+        PlayerUtils.messagePlayer(
+            aPlayer,
+            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+    }
+
+    @Override
     public void setMachineModeIcons() {
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_SEPARATOR);
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_POLARIZER);
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        setMachineMode(nextMachineMode());
-        if (machineMode == MACHINEMODE_POLARIZER) {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Polarizing Mode.");
-        } else {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Separating Mode.");
-        }
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode." + machineMode);
     }
 
     @Override

@@ -22,6 +22,7 @@ public class ItemsFoods {
     private static void run() {
 
         ModItems.itemMetaFood = new BaseItemMetaFood();
+        BaseItemMetaFood.registerMetaFoods();
         BaseItemMetaFood.registerFoodsToOreDict();
         addCookingRecipes();
         addFoodDropsToMobs();
