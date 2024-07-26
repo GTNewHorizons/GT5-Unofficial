@@ -234,7 +234,7 @@ gt.recipe.purificationplantclarifier=Clarifier
 gt.recipe.purificationplantflocculation=Flocculation
 gt.recipe.purificationplantphadjustment=pH Neutralization
 gt.recipe.purificationplantozonation=Ozonation
-gt.recipe.purificationplantplasmaheating=Extreme Temperature Fluctuation
+gt.recipe.purificationplantplasmaheating=Temperature Fluctuation
 gt.recipe.purificationplantuvtreatment=High Energy Laser Treatment
 gt.recipe.purificationplantdegasifier=Degassing
 

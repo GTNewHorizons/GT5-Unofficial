@@ -63,6 +63,7 @@ import gregtech.api.recipe.maps.PurificationUnitClarifierFrontend;
 import gregtech.api.recipe.maps.PurificationUnitFlocculatorFrontend;
 import gregtech.api.recipe.maps.PurificationUnitOzonationFrontend;
 import gregtech.api.recipe.maps.PurificationUnitPhAdjustmentFrontend;
+import gregtech.api.recipe.maps.PurificationUnitPlasmaHeaterFrontend;
 import gregtech.api.recipe.maps.RecyclerBackend;
 import gregtech.api.recipe.maps.ReplicatorBackend;
 import gregtech.api.recipe.maps.SpaceProjectFrontend;
@@ -1202,6 +1203,7 @@ public final class RecipeMaps {
         .maxIO(0, 0, 1, 1)
         .minInputs(0, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_BOILER_HEAT)
+        .frontend(PurificationUnitPlasmaHeaterFrontend::new)
         .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationUVTreatmentRecipes = RecipeMapBuilder

@@ -211,6 +211,8 @@ public class GT_UITextures {
     public static final UITexture PROGRESSBAR_PH_NEUTRALIZATION = UITexture
         .fullImage(GregTech.ID, "gui/progressbar/phneutralization");
     public static final UITexture PROGRESSBAR_OZONATION = UITexture.fullImage(GregTech.ID, "gui/progressbar/ozonation");
+    public static final UITexture PROGRESSBAR_PLASMA_HEATER = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/water_plasma_heater");
 
     public static FallbackableUITexture fallbackableProgressbar(String name, UITexture fallback) {
         return new FallbackableUITexture(UITexture.fullImage(GregTech.ID, "gui/progressbar/" + name), fallback);
