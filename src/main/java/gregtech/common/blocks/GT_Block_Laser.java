@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialLaserEngraver;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -17,7 +18,6 @@ import gregtech.common.tileentities.render.TileLaser;
 
 public class GT_Block_Laser extends Block implements ITileEntityProvider {
 
-    public TileLaser laserRender;
     public static IIcon[] textures;
 
     public GT_Block_Laser() {
@@ -66,7 +66,6 @@ public class GT_Block_Laser extends Block implements ITileEntityProvider {
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        if (laserRender == null) laserRender = new TileLaser();
-        return laserRender;
+        return new TileLaser();
     }
 }

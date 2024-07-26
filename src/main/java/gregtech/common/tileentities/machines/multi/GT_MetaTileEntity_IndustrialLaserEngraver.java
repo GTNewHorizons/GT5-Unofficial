@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.github.technus.tectech.util.TT_Utility.getUniqueIdentifier;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
@@ -14,9 +13,12 @@ import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import java.util.HashMap;
 import java.util.Map;
 
+import gregtech.common.tileentities.render.TileLaser;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -44,6 +46,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.LaserRenderingUtil;
 import gregtech.common.blocks.GT_Block_Casings4;
 import gregtech.common.blocks.GT_Block_Laser;
 
@@ -80,14 +83,18 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         .addElement('g', Glasses.chainAllGlasses())
         .addElement(
             'r',
-            ofBlockAdder(GT_MetaTileEntity_IndustrialLaserEngraver::laserRendererAdder, GregTech_API.sLaserRender, 0))
+            LaserRenderingUtil.ofBlockAdder(GT_MetaTileEntity_IndustrialLaserEngraver::laserRendererAdder, GregTech_API.sLaserRender, 0))
         .build();
 
-    private static GT_Block_Laser renderer;
+    private TileLaser renderer;
 
-    private boolean laserRendererAdder(Block block, int meta) {
-        if (block == GregTech_API.sLaserRender) {
-            renderer = (GT_Block_Laser) block;
+    private boolean laserRendererAdder(Block block, int meta, World world, int x, int y, int z) {
+        if (block != GregTech_API.sLaserRender || world == null) {
+            return false;
+        }
+        TileEntity te = world.getTileEntity(x,y,z);
+        if (te instanceof TileLaser) {
+            renderer = (TileLaser) te;
             return true;
         }
         return false;
@@ -160,20 +167,20 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         stopAllRendering = !stopAllRendering;
-        if (stopAllRendering) {
-            renderer.laserRender.shouldRender = false;
+        if (stopAllRendering && renderer != null) {
+            renderer.shouldRender = false;
         }
     }
 
     @Override
     public void onDisableWorking() {
-        renderer.laserRender.shouldRender = false;
+        if (renderer != null) renderer.shouldRender = false;
         super.onDisableWorking();
     }
 
     @Override
     public void onBlockDestroyed() {
-        renderer.laserRender.shouldRender = false;
+        if (renderer != null) renderer.shouldRender = false;
         super.onBlockDestroyed();
     }
 
@@ -250,14 +257,16 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
                         c = lensColors.get(uid);
                     }
                 }
-                renderer.laserRender.setColors(c.r, c.g, c.b);
-                if (!stopAllRendering) renderer.laserRender.shouldRender = true;
+                if (!stopAllRendering && renderer != null) {
+                    renderer.setColors(c.r, c.g, c.b);
+                    renderer.shouldRender = true;
+                }
                 return super.onRecipeStart(recipe);
             }
 
             @Override
             public ProcessingLogic clear() {
-                renderer.laserRender.shouldRender = false;
+                if (renderer != null) renderer.shouldRender = false;
                 return super.clear();
             }
         }.setSpeedBonus(1F / 2F)
@@ -422,5 +431,4 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         lensColors
             .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amber, 1)), Colors.Orange);
     }
-
 }
