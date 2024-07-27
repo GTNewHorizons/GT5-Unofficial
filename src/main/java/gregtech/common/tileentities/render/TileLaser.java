@@ -15,6 +15,8 @@ public class TileLaser extends TileEntityAdvanced {
     public float red = 0, green = 0, blue = 0;
     @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public float counter = 0F;
+    @Annotations.NetworkedField(targetSide = Side.CLIENT)
+    public boolean realism = false;
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {

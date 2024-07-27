@@ -248,6 +248,16 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     }
 
     @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (renderer != null) {
+            renderer.realism = !renderer.realism;
+            PlayerUtils.messagePlayer(aPlayer, "Toggling realism!");
+        }
+        return false;
+    }
+
+    @Override
     public void onDisableWorking() {
         if (renderer != null) renderer.setShouldRender(false);
         super.onDisableWorking();
@@ -264,7 +274,6 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Laser Engraver")
             .addInfo("Controller Block for the High Energy Laser Emitter")
-            .addInfo("Use screwdriver to disable laser rendering")
             .addInfo("300% the speed of single block machines of the same voltage")
             .addInfo("Uses 80% of the EU normally required")
             .addInfo("Laser source hatch determines maximum power tier and parallels")
@@ -272,6 +281,8 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             .addInfo("Glass tier determines maximum laser source tier")
             .addInfo("Only accepts borosilicate glass (no, really)")
             .addInfo("UMV glass accepts all laser source hatches")
+            .addInfo("Use screwdriver to disable laser rendering")
+            .addInfo("Use wire cutter to toggle realism mode if you hate angled lasers")
             .addInfo(AuthorFourIsTheNumber)
             .addSeparator()
             .beginStructureBlock(5, 5, 5, true)
@@ -343,7 +354,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GT_Recipe recipe) {
-                Colors c = Colors.White;
+                Colors c = Colors.Red;
                 // TODO: There has to be a better way to do this
                 for (int i = 0; i < recipe.mInputs.length; i++) {
                     String uid = getUniqueIdentifier(recipe.mInputs[i]);
