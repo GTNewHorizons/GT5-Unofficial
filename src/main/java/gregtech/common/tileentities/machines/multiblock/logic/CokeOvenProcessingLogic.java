@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-
+import gregtech.api.enums.GTValues;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.MuTEProcessingLogic;
@@ -31,14 +31,13 @@ public class CokeOvenProcessingLogic extends MuTEProcessingLogic<CokeOvenProcess
 
     @Nonnull
     @Override
-    protected Object findRecipe(@Nullable RecipeMap<?> map, @Nonnull ItemInventoryLogic itemInput,
+    protected GTRecipe findRecipe(@Nullable RecipeMap<?> map, @Nonnull ItemInventoryLogic itemInput,
         @Nonnull FluidInventoryLogic fluidInput) {
         for (ItemStack item : itemInput.getStoredItems()) {
             ItemStack output = findRecipe(item);
             if (output != null) {
                 ItemStack input = item.copy();
                 input.stackSize = 1;
-                return null;
             }
         }
         return null;

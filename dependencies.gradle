@@ -53,6 +53,7 @@ dependencies {
     implementation('com.github.GTNewHorizons:Baubles:1.0.4:dev') {transitive=false}
     // Required to prevent an older bauble api from Extra Utilities from loading first in the javac classpath
     compileOnly('com.github.GTNewHorizons:Baubles:1.0.4:dev') {transitive=false}
+    api("com.gtnewhorizons.mutecore:MuTECore:0.0.1-alpha2:dev")
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Infernal-Mobs:1.9.1-GTNH:dev")
 
