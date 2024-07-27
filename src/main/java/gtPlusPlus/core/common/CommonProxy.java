@@ -227,15 +227,20 @@ public class CommonProxy {
                 return;
             }
             InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
+            if (baubles == null) {
+                return;
+            }
             final ItemStack bauble1 = baubles.getStackInSlot(1);
-            if (bauble1.getItem() instanceof BaseBauble gtBauble && gtBauble.getDamageNegations()
-                .contains(event.source.damageType)) {
+            if (bauble1 != null && bauble1.getItem() instanceof BaseBauble gtBauble
+                && gtBauble.getDamageNegations()
+                    .contains(event.source.damageType)) {
                 event.setCanceled(true);
                 return;
             }
             final ItemStack bauble2 = baubles.getStackInSlot(2);
-            if (bauble2.getItem() instanceof BaseBauble gtBauble && gtBauble.getDamageNegations()
-                .contains(event.source.damageType)) {
+            if (bauble2 != null && bauble2.getItem() instanceof BaseBauble gtBauble
+                && gtBauble.getDamageNegations()
+                    .contains(event.source.damageType)) {
                 event.setCanceled(true);
             }
         }
