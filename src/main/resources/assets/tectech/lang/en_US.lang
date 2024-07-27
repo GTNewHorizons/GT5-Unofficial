@@ -1,0 +1,1685 @@
+#Creative Tab Name
+itemGroup.TecTech=TecTech Interdimensional
+itemGroup.EM=TecTech Elemental Matter
+
+#Blocks
+tile.quantumStuff.name=Quantum Stuff
+tile.Eye of Harmony Renderer.name=Eye of Harmony Renderer
+
+tile.quantumGlass.name=Quantum Glass
+tile.quantumGlass.desc.0=Dense yet transparent
+tile.quantumGlass.desc.1=Glassy & Classy
+
+tile.spatiallyTranscendentGravitationalLens.name=Spatially Transcendent Gravitational Lens Block
+tile.godforgeGlass.desc.0=Gravitational lensing taken literal
+tile.godforgeGlass.desc.1=GraviLens 9000!
+
+tile.reactorSim.name=Reactor Simulator
+tile.reactorSim.desc.0=Fission Reaction Uncertainty Resolver 9001
+tile.reactorSim.desc.1=Explodes, but not as much...
+
+#Items
+item.em.programmer.name=AVR programmer
+item.em.programmer.desc.0=Current PC
+item.em.programmer.desc.1=Awoken
+item.em.programmer.desc.2=Active
+item.em.programmer.desc.3=Debug
+item.em.programmer.desc.4=Delay
+
+item.em.debugContainer.name=Debug EM Container
+item.em.debugContainer.desc.0=Contains
+item.em.debugContainer.desc.1=Container for elemental matter
+item.em.debugContainer.desc.2=Right click on elemental hatches
+item.em.debugContainer.desc.3=---Unexpected Termination---
+
+item.em.definitionContainer.name=EM Recipe Hint
+item.em.definitionContainer.desc.0=Should Contain
+item.em.definitionContainer.desc.1=Recipe Hint
+item.em.definitionContainer.desc.2=---Unexpected Termination---
+
+item.em.definitionScanStorage.name=EM Scan Storage
+item.em.definitionScanStorage.desc.0=Contains scan result
+item.em.definitionScanStorage.desc.1=Use to read
+item.em.definitionScanStorage.desc.2=Storage for matter scan data
+item.em.definitionScanStorage.desc.3=---Unexpected Termination---
+
+item.em.constructable.name=Multiblock Machine Blueprint
+item.em.constructable.desc.0=Triggers Constructable Interface
+item.em.constructable.desc.1=Shows multiblock construction details,
+item.em.constructable.desc.2=just Use on a multiblock controller.
+item.em.constructable.desc.3=(Sneak Use in creative to build)
+item.em.constructable.desc.4=Quantity affects tier/mode/type
+
+item.em.EuMeterGT.name=GT EU meter
+item.em.EuMeterGT.desc.0=Measures basic EU related stuff
+item.em.EuMeterGT.desc.1=Just right click on blocks.
+
+item.em.frontRotate.name=Front Rotation Scrench
+item.em.frontRotate.desc.0=Triggers Front Rotation Interface
+item.em.frontRotate.desc.1=Rotates only the front panel,
+item.em.frontRotate.desc.2=which allows structure rotation.
+
+item.em.parametrizerMemoryCard.name=Parametrizer Memory Card
+item.em.parametrizerMemoryCard.name.paste=Parametrizer Memory Card (Paste Mode)
+item.em.parametrizerMemoryCard.name.copy=Parametrizer Memory Card (Copy Mode)
+item.em.parametrizerMemoryCard.desc.0=Stores Parameters
+item.em.parametrizerMemoryCard.desc.1=Use on Multiblock Controller to configure it
+item.em.parametrizerMemoryCard.desc.2=Use on Multiblock Controller to store parameters
+item.em.parametrizerMemoryCard.desc.3=Sneak right click to lock/unlock
+
+item.tm.teslaCoilCapacitor.0.name=LV Tesla Capacitor
+item.tm.teslaCoilCapacitor.1.name=MV Tesla Capacitor
+item.tm.teslaCoilCapacitor.2.name=HV Tesla Capacitor
+item.tm.teslaCoilCapacitor.3.name=EV Tesla Capacitor
+item.tm.teslaCoilCapacitor.4.name=IV Tesla Capacitor
+item.tm.teslaCoilCapacitor.5.name=LuV Tesla Capacitor
+item.tm.teslaCoilCapacitor.6.name=ZPM Tesla Capacitor
+item.tm.teslaCoilCapacitor.desc.0=Stores
+item.tm.teslaCoilCapacitor.desc.1=EU in a tesla tower at
+item.tm.teslaCoilCapacitor.desc.2=Yeet this broken item into some spicy water!
+item.tm.teslaCoilCapacitor.desc.3=Insert into a Capacitor hatch of a Tesla Tower
+item.tm.teslaCoilCapacitor.desc.4=Capacitors are the same thing as batteries, right?
+
+item.tm.itemTeslaComponent.0.name=Electrum Tesla Windings
+item.tm.itemTeslaComponent.1.name=Superconductive Tesla Windings
+item.tm.itemTeslaComponent.desc=Tesla bois need these!
+
+item.tm.teslaCover.0.name=Tesla Coil Cover
+item.tm.teslaCover.1.name=Tesla Coil Cover Rich Edition
+item.tm.teslaCover.desc.0=Tesla-Enables Machines!
+item.tm.teslaCover.desc.1=Tesla-Enables Machines! (BUT LOUDER!!)
+item.tm.teslaCover.desc.2=Yeet this broken item into some spicy water!
+item.tm.teslaCover.desc.3=Use on top of a machine to enable Tesla capabilities
+item.tm.teslaCover.desc.4=Who the hell uses cables anyway?
+
+item.tm.teslaStaff.name=Tesla Staff
+item.tm.teslaStaff.desc=Power of the gods, at the whim of a mortal!
+
+item.tm.enderfluidlinkcover.name=Ender Fluid Link Cover
+item.tm.enderfluidlinkcover.desc.0=Ender-Fluid-Enables Machines!
+item.tm.enderfluidlinkcover.desc.1=Use on any side of a fluid tank to link it to the Ender
+item.tm.enderfluidlinkcover.desc.2=Ender Tanks so are laggy -Bot from the Chads of NH
+
+item.tm.powerpassupgradecover.name=Power Pass Upgrade Cover
+item.tm.powerpassupgradecover.desc.0=Add power pass functionality to TecTech Multiblocks
+item.tm.powerpassupgradecover.desc.1=Active transformer in a can??
+item.tm.powerpassupgradecover.desc.2=Chain them up like Christmas lights!
+
+item.tm.itemAstralArrayFabricator.name=Astral Array Fabricator
+item.tm.itemAstralArrayFabricator.desc0=Parallel dimensions?!
+item.tm.itemAstralArrayFabricator.desc1=Device capable of enhancing the Eye of Harmony's spatial compression,
+item.tm.itemAstralArrayFabricator.desc2=reaching into the space beyond.
+item.tm.itemAstralArrayFabricator.desc3=Allows for recipe parallelism.
+
+#Death Messages
+death.attack.microwaving=%1$s was dehydrated by radiation.
+death.attack.microwaving.player=%1$s was dehydrated by radiation while fighting %2$s.
+death.attack.elementalPollution=%1$s was vaping from the wrong hole.
+death.attack.elementalPollution.player=%1$s was vaping from the wrong hole while fighting %2$s.
+death.attack.subspace=%1$s was N-th dimensionally displeased.
+death.attack.subspace.player=%1$s N-th dimensionally displeased while fighting %2$s.
+
+#Machine hulls
+gt.blockmachines.hull.tier.10.name=UEV Machine Hull
+gt.blockmachines.hull.tier.11.name=UIV Machine Hull
+gt.blockmachines.hull.tier.12.name=UMV Machine Hull
+gt.blockmachines.hull.tier.13.name=UXV Machine Hull
+gt.blockmachines.hull.tier.14.name=MAX Machine Hull
+
+#Transformers
+gt.blockmachines.wetransformer.tier.00.name=Ultra Low Voltage Power Transformer
+gt.blockmachines.wetransformer.tier.00.desc=LV -> ULV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.01.name=Low Voltage Power Transformer
+gt.blockmachines.wetransformer.tier.01.desc=MV -> LV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.02.name=Medium Voltage Power Transformer
+gt.blockmachines.wetransformer.tier.02.desc=HV -> MV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.03.name=High Voltage Power Transformer
+gt.blockmachines.wetransformer.tier.03.desc=EV -> HV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.04.name=Extreme Power Transformer
+gt.blockmachines.wetransformer.tier.04.desc=IV -> EV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.05.name=Insane Power Transformer
+gt.blockmachines.wetransformer.tier.05.desc=LuV -> IV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.06.name=Ludicrous Power Transformer
+gt.blockmachines.wetransformer.tier.06.desc=ZPM -> LuV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.07.name=ZPM Voltage Power Transformer
+gt.blockmachines.wetransformer.tier.07.desc=UV -> ZPM (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.08.name=Ultimate Power Transformer
+gt.blockmachines.wetransformer.tier.08.desc=UHV -> UV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.09.name=Highly Ultimate Power Transformer
+gt.blockmachines.wetransformer.tier.09.desc=UEV -> UHV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.10.name=Extremely Ultimate Power Transformer
+gt.blockmachines.wetransformer.tier.10.desc=UIV -> UEV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.11.name=Insanely Ultimate Power Transformer
+gt.blockmachines.wetransformer.tier.11.desc=UMV -> UIV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.12.name=Mega Ultimate Power Transformer
+gt.blockmachines.wetransformer.tier.12.desc=UXV -> UMV (Use Soft Mallet to invert)
+gt.blockmachines.wetransformer.tier.13.name=Extended Mega Ultimate Power Transformer
+gt.blockmachines.wetransformer.tier.13.desc=MAX -> UXV (Use Soft Mallet to invert)
+
+gt.blockmachines.tt.transformer.tier.09.name=Highly Ultimate Transformer
+gt.blockmachines.tt.transformer.tier.09.desc=UEV -> UHV (Use Soft Mallet to invert)
+gt.blockmachines.tt.transformer.tier.10.name=Extremely Ultimate Transformer
+gt.blockmachines.tt.transformer.tier.10.desc=UIV -> UEV (Use Soft Mallet to invert)
+gt.blockmachines.tt.transformer.tier.11.name=Insanely Ultimate Transformer
+gt.blockmachines.tt.transformer.tier.11.desc=UMV -> UIV (Use Soft Mallet to invert)
+gt.blockmachines.tt.transformer.tier.12.name=Mega Ultimate Transformer
+gt.blockmachines.tt.transformer.tier.12.desc=UXV -> UMV (Use Soft Mallet to invert)
+gt.blockmachines.tt.transformer.tier.13.name=Extended Mega Ultimate Transformer
+gt.blockmachines.tt.transformer.tier.13.desc=MAX -> UXV (Use Soft Mallet to invert)
+
+gt.blockmachines.transformer.ha.tier.09.name=Highly Ultimate Hi-Amp Transformer
+gt.blockmachines.transformer.ha.tier.09.desc=UEV -> UHV (Use Soft Mallet to invert
+gt.blockmachines.transformer.ha.tier.10.name=Extremely Ultimate Hi-Amp Transformer
+gt.blockmachines.transformer.ha.tier.10.desc=UIV -> UEV (Use Soft Mallet to invert)
+gt.blockmachines.transformer.ha.tier.11.name=Insanely Ultimate Hi-Amp Transformer
+gt.blockmachines.transformer.ha.tier.11.desc=UMV -> UIV (Use Soft Mallet to invert)
+gt.blockmachines.transformer.ha.tier.12.name=Mega Ultimate Hi-Amp Transformer
+gt.blockmachines.transformer.ha.tier.12.desc=UXV -> UMV (Use Soft Mallet to invert)
+gt.blockmachines.transformer.ha.tier.13.name=Extended Mega Ultimate Hi-Amp Transformer
+gt.blockmachines.transformer.ha.tier.13.desc=MAX -> UXV (Use Soft Mallet to invert)
+
+#Hatches
+tt.base.emhatch.desc.0=Max stacks amount:
+tt.base.emhatch.desc.1=Stack capacity:
+tt.base.emhatch.desc.2=Place Overflow Hatch behind,on top or below
+tt.base.emhatch.desc.3=to provide overflow protection while this block
+tt.base.emhatch.desc.4=is not attached to multi block.
+tt.base.emhatch.desc.5=Transport range can be extended in straight
+tt.base.emhatch.desc.6=line up to 15 blocks with quantum tunnels.
+tt.base.emhatch.desc.7=Must be painted to work
+
+gt.blockmachines.hatch.emmuffler.tier.08.name=UV Overflow Output Hatch
+gt.blockmachines.hatch.emmuffler.tier.09.name=UHV Overflow Output Hatch
+gt.blockmachines.hatch.emmuffler.tier.10.name=UEV Overflow Output Hatch
+gt.blockmachines.hatch.emmuffler.tier.11.name=UIV Overflow Output Hatch
+gt.blockmachines.hatch.emmuffler.tier.12.name=UMV Overflow Output Hatch
+gt.blockmachines.hatch.emmuffler.tier.13.name=UXV Overflow Output Hatch
+gt.blockmachines.hatch.emmuffler.desc.0=Disposes excess elemental Matter
+gt.blockmachines.hatch.emmuffler.desc.1=Mass capacity
+gt.blockmachines.hatch.emmuffler.desc.2=Disposal Speed
+gt.blockmachines.hatch.emmuffler.desc.3=DO NOT OBSTRUCT THE OUTPUT!
+
+gt.blockmachines.hatch.energymulti04.tier.05.name=IV 4A Energy Hatch
+gt.blockmachines.hatch.energymulti16.tier.05.name=IV 16A Energy Hatch
+gt.blockmachines.hatch.energymulti64.tier.05.name=IV 64A Energy Hatch
+gt.blockmachines.hatch.energymulti04.tier.06.name=LuV 4A Energy Hatch
+gt.blockmachines.hatch.energymulti16.tier.06.name=LuV 16A Energy Hatch
+gt.blockmachines.hatch.energymulti64.tier.06.name=LuV 64A Energy Hatch
+gt.blockmachines.hatch.energymulti04.tier.07.name=ZPM 4A Energy Hatch
+gt.blockmachines.hatch.energymulti16.tier.07.name=ZPM 16A Energy Hatch
+gt.blockmachines.hatch.energymulti64.tier.07.name=ZPM 64A Energy Hatch
+gt.blockmachines.hatch.energymulti04.tier.08.name=UV 4A Energy Hatch
+gt.blockmachines.hatch.energymulti16.tier.08.name=UV 16A Energy Hatch
+gt.blockmachines.hatch.energymulti64.tier.08.name=UV 64A Energy Hatch
+gt.blockmachines.hatch.energymulti04.tier.09.name=UHV 4A Energy Hatch
+gt.blockmachines.hatch.energymulti16.tier.09.name=UHV 16A Energy Hatch
+gt.blockmachines.hatch.energymulti64.tier.09.name=UHV 64A Energy Hatch
+gt.blockmachines.hatch.energymulti04.tier.10.name=UEV 4A Energy Hatch
+gt.blockmachines.hatch.energymulti16.tier.10.name=UEV 16A Energy Hatch
+gt.blockmachines.hatch.energymulti64.tier.10.name=UEV 64A Energy Hatch
+gt.blockmachines.hatch.energymulti04.tier.11.name=UIV 4A Energy Hatch
+gt.blockmachines.hatch.energymulti16.tier.11.name=UIV 16A Energy Hatch
+gt.blockmachines.hatch.energymulti64.tier.11.name=UIV 64A Energy Hatch
+gt.blockmachines.hatch.energymulti04.tier.12.name=UMV 4A Energy Hatch
+gt.blockmachines.hatch.energymulti16.tier.12.name=UMV 16A Energy Hatch
+gt.blockmachines.hatch.energymulti64.tier.12.name=UMV 64A Energy Hatch
+gt.blockmachines.hatch.energymulti04.tier.13.name=UXV 4A Energy Hatch
+gt.blockmachines.hatch.energymulti16.tier.13.name=UXV 16A Energy Hatch
+gt.blockmachines.hatch.energymulti64.tier.13.name=UXV 64A Energy Hatch
+gt.blockmachines.hatch.energymulti.desc.0=Multiple Ampere Energy Injector for Multiblocks
+gt.blockmachines.hatch.energymulti.desc.1=Amperes In
+gt.blockmachines.hatch.energymulti.desc.2=Accepts up to %d Amps from energy network
+gt.blockmachines.hatch.energymulti.desc.3=Provides up to %d Amps to the multiblock
+
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.04=EV 4A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.04=EV 16A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.04=EV 64A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.05=IV 4A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.05=IV 16A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.05=IV 64A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.06=LuV 4A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.06=LuV 16A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.06=LuV 64A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.07=ZPM 4A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.07=ZPM 16A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.07=ZPM 64A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.08=UV 4A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.08=UV 16A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.08=UV 64A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.09=UHV 4A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.09=UHV 16A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.09=UHV 64A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.10=UEV 4A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.10=UEV 16A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.10=UEV 64A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.11=UIV 4A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.11=UIV 16A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.11=UIV 64A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.12=UMV 4A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.12=UMV 16A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.12=UMV 64A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.13=UXV 4A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.13=UXV 16A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.13=UXV 64A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.14=MAX 4A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.14=MAX 16A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.14=MAX 64A Wireless Energy Hatch
+
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.04.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.04.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.04.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.05.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.05.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.05.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.06.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.06.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.06.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.07.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.07.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.07.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.08.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.08.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.08.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.09.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.09.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.09.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.10.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.10.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.10.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.11.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.11.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.11.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.12.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.12.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.12.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.13.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.13.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.13.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.14.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.14.desc=Multi Amp Wireless Energy!
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.14.desc=Multi Amp Wireless Energy!
+
+gt.blockmachines.hatch.energywirelesstunnel1.tier.13.name=UXV 256A Wireless Energy Hatch
+gt.blockmachines.hatch.energywirelesstunnel2.tier.13.name=UXV 1,024A Wireless Energy Hatch
+gt.blockmachines.hatch.energywirelesstunnel3.tier.13.name=UXV 4,096A Wireless Energy Hatch
+gt.blockmachines.hatch.energywirelesstunnel4.tier.13.name=UXV 16,384A Wireless Energy Hatch
+gt.blockmachines.hatch.energywirelesstunnel5.tier.13.name=UXV 65,536A Wireless Energy Hatch
+gt.blockmachines.hatch.energywirelesstunnel6.tier.13.name=UXV 262,144A Wireless Energy Hatch
+gt.blockmachines.hatch.energywirelesstunnel7.tier.13.name=UXV 1,048,576A Wireless Energy Hatch
+
+achievement.gt.blockmachines.hatch.energywirelesstunnel1.tier.13.desc=High Amp Wireless Energy at last!
+achievement.gt.blockmachines.hatch.energywirelesstunnel2.tier.13.desc=High Amp Wireless Energy at last!
+achievement.gt.blockmachines.hatch.energywirelesstunnel3.tier.13.desc=High Amp Wireless Energy at last!
+achievement.gt.blockmachines.hatch.energywirelesstunnel4.tier.13.desc=High Amp Wireless Energy at last!
+achievement.gt.blockmachines.hatch.energywirelesstunnel5.tier.13.desc=High Amp Wireless Energy at last!
+achievement.gt.blockmachines.hatch.energywirelesstunnel6.tier.13.desc=High Amp Wireless Energy at last!
+achievement.gt.blockmachines.hatch.energywirelesstunnel7.tier.13.desc=High Amp Wireless Energy at last!
+
+gt.blockmachines.hatch.energytunnel1.tier.05.name=IV 256A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel2.tier.05.name=IV 1,024A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel3.tier.05.name=IV 4,096A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel4.tier.05.name=IV 16,384A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel5.tier.05.name=IV 65,536A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel6.tier.05.name=IV 262,144A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel7.tier.05.name=IV 1,048,576A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel1.tier.06.name=LuV 256A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel2.tier.06.name=LuV 1,024A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel3.tier.06.name=LuV 4,096A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel4.tier.06.name=LuV 16,384A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel5.tier.06.name=LuV 65,536A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel6.tier.06.name=LuV 262,144A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel7.tier.06.name=LuV 1,048,576A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel1.tier.07.name=ZPM 256A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel2.tier.07.name=ZPM 1,024A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel3.tier.07.name=ZPM 4,096A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel4.tier.07.name=ZPM 16,384A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel5.tier.07.name=ZPM 65,536A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel6.tier.07.name=ZPM 262,144A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel7.tier.07.name=ZPM 1,048,576A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel1.tier.08.name=UV 256A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel2.tier.08.name=UV 1,024A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel3.tier.08.name=UV 4,096A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel4.tier.08.name=UV 16,384A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel5.tier.08.name=UV 65,536A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel6.tier.08.name=UV 262,144A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel7.tier.08.name=UV 1,048,576A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel1.tier.09.name=UHV 256A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel2.tier.09.name=UHV 1,024A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel3.tier.09.name=UHV 4,096A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel4.tier.09.name=UHV 16,384A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel5.tier.09.name=UHV 65,536A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel6.tier.09.name=UHV 262,144A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel7.tier.09.name=UHV 1,048,576A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel1.tier.10.name=UEV 256A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel2.tier.10.name=UEV 1,024A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel3.tier.10.name=UEV 4,096A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel4.tier.10.name=UEV 16,384A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel5.tier.10.name=UEV 65,536A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel6.tier.10.name=UEV 262,144A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel7.tier.10.name=UEV 1,048,576A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel1.tier.11.name=UIV 256A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel2.tier.11.name=UIV 1,024A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel3.tier.11.name=UIV 4,096A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel4.tier.11.name=UIV 16,384A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel5.tier.11.name=UIV 65,536A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel6.tier.11.name=UIV 262,144A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel7.tier.11.name=UIV 1,048,576A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel1.tier.12.name=UMV 256A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel2.tier.12.name=UMV 1,024A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel3.tier.12.name=UMV 4,096A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel4.tier.12.name=UMV 16,384A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel5.tier.12.name=UMV 65,536A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel6.tier.12.name=UMV 262,144A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel7.tier.12.name=UMV 1,048,576A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel1.tier.13.name=UXV 256A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel2.tier.13.name=UXV 1,024A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel3.tier.13.name=UXV 4,096A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel4.tier.13.name=UXV 16,384A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel5.tier.13.name=UXV 65,536A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel6.tier.13.name=UXV 262,144A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel7.tier.13.name=UXV 1,048,576A/t Laser Target Hatch
+gt.blockmachines.hatch.energytunnel.tier.14.name=Legendary Laser Target Hatch
+gt.blockmachines.hatch.energytunnel.desc.0=Energy injecting terminal for Multiblocks
+gt.blockmachines.hatch.energytunnel.desc.1=Throughput
+
+gt.blockmachines.hatch.dynamomulti04.tier.05.name=IV 4A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti16.tier.05.name=IV 16A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti64.tier.05.name=IV 64A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti04.tier.06.name=LuV 4A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti16.tier.06.name=LuV 16A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti64.tier.06.name=LuV 64A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti04.tier.07.name=ZPM 4A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti16.tier.07.name=ZPM 16A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti64.tier.07.name=ZPM 64A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti04.tier.08.name=UV 4A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti16.tier.08.name=UV 16A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti64.tier.08.name=UV 64A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti04.tier.09.name=UHV 4A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti16.tier.09.name=UHV 16A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti64.tier.09.name=UHV 64A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti04.tier.10.name=UEV 4A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti16.tier.10.name=UEV 16A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti64.tier.10.name=UEV 64A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti04.tier.11.name=UIV 4A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti16.tier.11.name=UIV 16A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti64.tier.11.name=UIV 64A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti04.tier.12.name=UMV 4A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti16.tier.12.name=UMV 16A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti64.tier.12.name=UMV 64A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti04.tier.13.name=UXV 4A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti16.tier.13.name=UXV 16A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti64.tier.13.name=UXV 64A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti.desc.0=Multiple Ampere Energy Extractor for Multiblocks
+gt.blockmachines.hatch.dynamomulti.desc.1=Amperes Out
+
+gt.blockmachines.hatch.dynamotunnel1.tier.05.name=IV 256A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel2.tier.05.name=IV 1,024A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel3.tier.05.name=IV 4,096A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel4.tier.05.name=IV 16,384A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel5.tier.05.name=IV 65,536A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel6.tier.05.name=IV 262,144A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel7.tier.05.name=IV 1,048,576A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel1.tier.06.name=LuV 256A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel2.tier.06.name=LuV 1,024A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel3.tier.06.name=LuV 4,096A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel4.tier.06.name=LuV 16,384A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel5.tier.06.name=LuV 65,536A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel6.tier.06.name=LuV 262,144A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel7.tier.06.name=LuV 1,048,576A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel1.tier.07.name=ZPM 256A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel2.tier.07.name=ZPM 1,024A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel3.tier.07.name=ZPM 4,096A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel4.tier.07.name=ZPM 16,384A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel5.tier.07.name=ZPM 65,536A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel6.tier.07.name=ZPM 262,144A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel7.tier.07.name=ZPM 1,048,576A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel1.tier.08.name=UV 256A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel2.tier.08.name=UV 1,024A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel3.tier.08.name=UV 4,096A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel4.tier.08.name=UV 16,384A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel5.tier.08.name=UV 65,536A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel6.tier.08.name=UV 262,144A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel7.tier.08.name=UV 1,048,576A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel1.tier.09.name=UHV 256A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel2.tier.09.name=UHV 1,024A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel3.tier.09.name=UHV 4,096A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel4.tier.09.name=UHV 16,384A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel5.tier.09.name=UHV 65,536A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel6.tier.09.name=UHV 262,144A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel7.tier.09.name=UHV 1,048,576A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel1.tier.10.name=UEV 256A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel2.tier.10.name=UEV 1,024A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel3.tier.10.name=UEV 4,096A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel4.tier.10.name=UEV 16,384A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel5.tier.10.name=UEV 65,536A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel6.tier.10.name=UEV 262,144A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel7.tier.10.name=UEV 1,048,576A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel1.tier.11.name=UIV 256A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel2.tier.11.name=UIV 1,024A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel3.tier.11.name=UIV 4,096A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel4.tier.11.name=UIV 16,384A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel5.tier.11.name=UIV 65,536A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel6.tier.11.name=UIV 262,144A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel7.tier.11.name=UIV 1,048,576A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel1.tier.12.name=UMV 256A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel2.tier.12.name=UMV 1,024A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel3.tier.12.name=UMV 4,096A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel4.tier.12.name=UMV 16,384A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel5.tier.12.name=UMV 65,536A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel6.tier.12.name=UMV 262,144A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel7.tier.12.name=UMV 1,048,576A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel1.tier.13.name=UXV 256A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel2.tier.13.name=UXV 1,024A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel3.tier.13.name=UXV 4,096A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel4.tier.13.name=UXV 16,384A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel5.tier.13.name=UXV 65,536A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel6.tier.13.name=UXV 262,144A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel7.tier.13.name=UXV 1,048,576A/t Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel.tier.14.name=Legendary Laser Source Hatch
+gt.blockmachines.hatch.dynamotunnel.desc.0=Energy extracting terminal for Multiblocks
+gt.blockmachines.hatch.dynamotunnel.desc.1=Throughput
+
+gt.blockmachines.emin.tier.08.name=UV Elemental Input Hatch
+gt.blockmachines.emin.tier.09.name=UHV Elemental Input Hatch
+gt.blockmachines.emin.tier.10.name=UEV Elemental Input Hatch
+gt.blockmachines.emin.tier.11.name=UIV Elemental Input Hatch
+gt.blockmachines.emin.tier.12.name=UMV Elemental Input Hatch
+gt.blockmachines.emin.tier.13.name=UXV Elemental Input Hatch
+gt.blockmachines.emin.desc=Elemental Input for Multiblocks
+
+gt.blockmachines.emout.tier.08.name=UV Elemental Output Hatch
+gt.blockmachines.emout.tier.09.name=UHV Elemental Output Hatch
+gt.blockmachines.emout.tier.10.name=UEV Elemental Output Hatch
+gt.blockmachines.emout.tier.11.name=UIV Elemental Output Hatch
+gt.blockmachines.emout.tier.12.name=UMV Elemental Output Hatch
+gt.blockmachines.emout.tier.13.name=UXV Elemental Output Hatch
+gt.blockmachines.emout.desc=Elemental Output for Multiblocks
+
+#TODO change tier.05 to tier.04
+gt.blockmachines.hatch.param.tier.05.name=Parametrizer
+gt.blockmachines.hatch.param.tier.07.name=Parametrizer X
+gt.blockmachines.hatch.param.tier.10.name=Parametrizer tXt
+gt.blockmachines.hatch.param.desc.0=For parametrization of Multiblocks
+gt.blockmachines.hatch.param.desc.1=E=mine*craft
+
+gt.blockmachines.hatch.certain.tier.07.name=Uncertainty Resolver
+gt.blockmachines.hatch.certain.tier.10.name=Uncertainty Resolver X
+gt.blockmachines.hatch.certain.desc.0=Feeling certain, or not?
+gt.blockmachines.hatch.certain.desc.1=Schrödinger equation in a box
+
+gt.blockmachines.hatch.datain.tier.07.name=Optical Slave Connector
+gt.blockmachines.hatch.datain.desc.0=Quantum Data Input for Multiblocks
+gt.blockmachines.hatch.datain.desc.1=High speed fibre optics connector.
+gt.blockmachines.hatch.datain.desc.2=Must be painted to work
+
+gt.blockmachines.hatch.dataout.tier.07.name=Optical Master Connector
+gt.blockmachines.hatch.dataout.desc.0=Quantum Data Output for Multiblocks
+gt.blockmachines.hatch.dataout.desc.1=High speed fibre optics connector.
+gt.blockmachines.hatch.dataout.desc.2=Must be painted to work
+
+gt.blockmachines.hatch.datainass.tier.07.name=Assembly line Slave Connector
+gt.blockmachines.hatch.datainass.desc.0=ItemStack Data Input for Multiblocks
+gt.blockmachines.hatch.datainass.desc.1=High speed fibre optics connector.
+gt.blockmachines.hatch.datainass.desc.2=Must be painted to work
+
+gt.blockmachines.hatch.datainasswireless.desc.0=Wireless ItemStack Data Input for Multiblocks
+gt.blockmachines.hatch.datainasswireless.desc.1=High speed internet connection
+
+gt.blockmachines.hatch.dataoutass.tier.07.name=Data Bank Master Connector
+gt.blockmachines.hatch.dataoutass.desc.0=ItemStack Data Output for Multiblocks
+gt.blockmachines.hatch.dataoutass.desc.1=High speed fibre optics connector.
+gt.blockmachines.hatch.dataoutass.desc.2=Must be painted to work
+
+gt.blockmachines.hatch.wirelessdataoutass.desc.0=Wireless ItemStack Data Output for Multiblocks
+gt.blockmachines.hatch.wirelessdataoutass.desc.1=High speed internet connection
+
+gt.blockmachines.hatch.rack.tier.08.name=Computer Rack
+gt.blockmachines.hatch.rack.desc.0=4 Slot Rack
+gt.blockmachines.hatch.rack.desc.1=Holds Computer Components
+gt.blockmachines.hatch.holder.tier.09.name=Object Holder
+gt.blockmachines.hatch.holder.desc.0=For Research Station
+gt.blockmachines.hatch.holder.desc.1=Advanced Holding Mechanism!
+gt.blockmachines.hatch.capacitor.tier.03.name=Capacitor Hatch
+gt.blockmachines.hatch.capacitor.desc.0=For Tesla Tower
+gt.blockmachines.hatch.capacitor.desc.1=Stores 'nergy! (for a while)
+
+#Casings
+gt.blockcasingsNH.10.name=UEV Machine Casing
+gt.blockcasingsNH.11.name=UIV Machine Casing
+gt.blockcasingsNH.12.name=UMV Machine Casing
+gt.blockcasingsNH.13.name=UXV Machine Casing
+gt.blockcasingsNH.14.name=MAX Machine Casing
+
+gt.blockhintTT.desc.0=Helps while building
+gt.blockhintTT.0.name=Hint 1 dot
+gt.blockhintTT.1.name=Hint 2 dot
+gt.blockhintTT.2.name=Hint 3 dot
+gt.blockhintTT.3.name=Hint 4 dot
+gt.blockhintTT.4.name=Hint 5 dot
+gt.blockhintTT.5.name=Hint 6 dot
+gt.blockhintTT.6.name=Hint 7 dot
+gt.blockhintTT.7.name=Hint 8 dot
+gt.blockhintTT.8.name=Hint 9 dot
+gt.blockhintTT.9.name=Hint 10 dot
+gt.blockhintTT.10.name=Hint 11 dot
+gt.blockhintTT.11.name=Hint 12 dot
+gt.blockhintTT.desc.1=Placeholder for a certain group.
+gt.blockhintTT.12.name=Hint general
+gt.blockhintTT.desc.2=General placeholder.
+gt.blockhintTT.13.name=Hint air
+gt.blockhintTT.desc.3=Make sure it contains Air material.
+gt.blockhintTT.14.name=Hint no air
+gt.blockhintTT.desc.4=Make sure it does not contain Air material.
+gt.blockhintTT.15.name=Hint error
+gt.blockhintTT.desc.5=ERROR, what did u expect?
+
+gt.blockcasingsTT.0.name=High Power Casing
+gt.blockcasingsTT.0.desc.0=Well suited for high power applications.
+gt.blockcasingsTT.0.desc.1=The power levels are rising!
+gt.blockcasingsTT.1.name=Computer Casing
+gt.blockcasingsTT.1.desc.0=Nice and clean casing.
+gt.blockcasingsTT.1.desc.1=Dust can break it!?
+gt.3blockcasingsTT.2.name=Computer Heat Vent
+gt.blockcasingsTT.2.desc.0=Air vent with a filter.
+gt.blockcasingsTT.2.desc.1=Perfectly muffled sound!
+gt.blockcasingsTT.3.name=Advanced Computer Casing
+gt.blockcasingsTT.3.desc.0=Contains high bandwidth bus
+gt.blockcasingsTT.3.desc.1=couple thousand qubits wide.
+gt.blockcasingsTT.4.name=Molecular Casing
+gt.blockcasingsTT.4.desc.0=Stops elemental things.
+gt.blockcasingsTT.4.desc.1=Radiation and emotions too...
+gt.blockcasingsTT.5.name=Advanced Molecular Casing
+gt.blockcasingsTT.5.desc.0=Cooling and stabilization.
+gt.blockcasingsTT.5.desc.1=A comfortable machine bed.
+gt.blockcasingsTT.6.name=Containment Field Generator
+gt.blockcasingsTT.6.desc.0=Creates a field that...
+gt.blockcasingsTT.6.desc.1=can stop even force carriers.
+gt.blockcasingsTT.7.name=Molecular Coil
+gt.blockcasingsTT.7.desc.0=Well it does things too...
+gt.blockcasingsTT.7.desc.1=[Use this coil!]
+gt.blockcasingsTT.8.name=Hollow Casing
+gt.blockcasingsTT.8.desc.0=Reinforced accelerator tunnel.
+gt.blockcasingsTT.8.desc.1=Most advanced pipe ever.
+gt.blockcasingsTT.9.name=Spacetime Altering Casing
+gt.blockcasingsTT.9.desc.0=c is no longer the limit.
+gt.blockcasingsTT.9.desc.1=Wibbly wobbly timey wimey stuff.
+gt.blockcasingsTT.10.name=Teleportation Casing
+gt.blockcasingsTT.10.desc.0=Remote connection.
+gt.blockcasingsTT.10.desc.1=Better touch with a stick.
+gt.blockcasingsTT.11.name=Dimensional Bridge Generator
+gt.blockcasingsTT.11.desc.0=Interdimensional Operations.
+gt.blockcasingsTT.11.desc.1=Around the universe and other places too.
+gt.blockcasingsTT.12.name=Ultimate Molecular Casing
+gt.blockcasingsTT.12.desc.0=Ultimate in every way.
+gt.blockcasingsTT.12.desc.1=I don't know what it can't do.
+gt.blockcasingsTT.13.name=Ultimate Advanced Molecular Casing
+gt.blockcasingsTT.13.desc.0=More Ultimate in every way.
+gt.blockcasingsTT.13.desc.1=I don't know what I am doing!
+gt.blockcasingsTT.14.name=Ultimate Containment Field Generator
+gt.blockcasingsTT.14.desc.0=Black Hole...
+gt.blockcasingsTT.14.desc.1=Meh...
+gt.blockcasingsTT.15.name=Debug Sides
+gt.blockcasingsTT.15.desc.0=Lazy man way of determining sides.
+gt.blockcasingsTT.15.desc.1=0, 1, 2, 3, 4, 5, 6?!
+
+gt.blockcasingsBA0.0.name=Redstone Alloy Primary Tesla Windings
+gt.blockcasingsBA0.1.name=MV Superconductor Primary Tesla Windings
+gt.blockcasingsBA0.2.name=HV Superconductor Primary Tesla Windings
+gt.blockcasingsBA0.3.name=EV Superconductor Primary Tesla Windings
+gt.blockcasingsBA0.4.name=IV Superconductor Primary Tesla Windings
+gt.blockcasingsBA0.5.name=LuV Superconductor Primary Tesla Windings
+gt.blockcasingsBA0.9.name=ZPM Superconductor Primary Tesla Windings
+gt.blockcasingsBA0.0.desc.0=Handles up to
+gt.blockcasingsBA0.0.desc.1=What one man calls God, another calls the laws of physics.
+gt.blockcasingsBA0.6.name=Tesla Base Casing
+gt.blockcasingsBA0.6.desc.0=The base of a wondrous contraption
+gt.blockcasingsBA0.6.desc.1=it's alive, IT'S ALIVE!
+gt.blockcasingsBA0.7.name=Tesla Toroid Casing
+gt.blockcasingsBA0.7.desc.0=Made out of the finest tin foil!
+gt.blockcasingsBA0.7.desc.1=Faraday suits might come later
+gt.blockcasingsBA0.8.name=Tesla Secondary Windings
+gt.blockcasingsBA0.8.desc.0=Picks up power from a primary coil
+gt.blockcasingsBA0.8.desc.1=Who wouldn't want a 32k epoxy multi?
+
+#Multiblocks
+gt.blockmachines.multimachine.em.transformer.name=Active Transformer
+gt.blockmachines.multimachine.em.transformer.hint=1 - Energy IO Hatches or High Power Casing
+gt.blockmachines.multimachine.em.transformer.desc.0=Controller block of the Active Transformer
+gt.blockmachines.multimachine.em.transformer.desc.1=Can transform to and from any voltage
+gt.blockmachines.multimachine.em.transformer.desc.2=Only 0.004% power loss, HAYO!
+gt.blockmachines.multimachine.em.transformer.desc.3=Will explode if broken while running
+
+gt.blockmachines.multimachine.tm.microwave.name=Microwave Grinder
+gt.blockmachines.multimachine.tm.microwave.hint.0=1 - Classic Hatches or Clean Stainless Steel Casing
+gt.blockmachines.multimachine.tm.microwave.hint.1=Also acts like a hopper so give it an Output Bus
+gt.blockmachines.multimachine.tm.microwave.desc.0=Controller block of the Microwave Grinder
+gt.blockmachines.multimachine.tm.microwave.desc.1=Starts a timer when enabled
+gt.blockmachines.multimachine.tm.microwave.desc.2=While the timer is running anything inside the machine will take damage
+gt.blockmachines.multimachine.tm.microwave.desc.3=The machine will also collect any items inside of it
+gt.blockmachines.multimachine.tm.microwave.desc.4=Can be configured with a Parametrizer
+gt.blockmachines.multimachine.tm.microwave.desc.5=(Do not insert a Wither)
+gt.blockmachines.multimachine.tm.microwave.cfgi.0=Power setting
+gt.blockmachines.multimachine.tm.microwave.cfgi.1=Timer setting
+gt.blockmachines.multimachine.tm.microwave.cfgo.0=Timer value
+gt.blockmachines.multimachine.tm.microwave.cfgo.1=Timer remaining
+
+gt.blockmachines.multimachine.tm.teslaCoil.name=Tesla Tower
+gt.blockmachines.multimachine.tm.teslaCoil.hint.0=1 - Classic Hatches, Capacitor Hatches or Tesla Base Casing
+gt.blockmachines.multimachine.tm.teslaCoil.hint.1=2 - Titanium Frames
+gt.blockmachines.multimachine.tm.teslaCoil.desc.0=Controller block of the Tesla Tower
+gt.blockmachines.multimachine.tm.teslaCoil.desc.1=Used to transmit power to Tesla Coil Covers and Tesla Transceivers
+gt.blockmachines.multimachine.tm.teslaCoil.desc.2=Can be fed with Helium/Nitrogen/Radon Plasma to increase the range
+gt.blockmachines.multimachine.tm.teslaCoil.desc.3=Transmitted voltage depends on the used Tesla Capacitor tier
+gt.blockmachines.multimachine.tm.teslaCoil.desc.4=Primary Tesla Windings need to be at least the same tier as the Tesla Capacitor
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0=Hysteresis low setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1=Hysteresis high setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2=Tesla Towers transfer radius setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.3=Tesla Transceiver transfer radius setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.4=Tesla Ultimate Cover transfer radius setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.5=Output voltage setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.6=Output current setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.7=Scan time Min setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.8=Overdrive setting
+gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9=Unused
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.0=Tesla Towers transfer radius display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.1=Tesla Transceiver transfer radius display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.2=Tesla Ultimate Cover transfer radius display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.3=Output voltage display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.4=Output current display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.5=Energy Capacity display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.6=Energy Stored display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7=Energy Fraction display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=Scan time display
+gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9=Output max display
+
+gt.blockmachines.multimachine.em.switch.name=Network Switch With QoS
+gt.blockmachines.multimachine.em.switch.hint=1 - Classic/Data Hatches or Computer casing
+gt.blockmachines.multimachine.em.switch.desc.0=Controller block of the Network Switch With QoS
+gt.blockmachines.multimachine.em.switch.desc.1=Used to route and distribute computation
+gt.blockmachines.multimachine.em.switch.desc.2=Needs a Parametrizer to be configured
+
+
+gt.blockmachines.multimachine.em.computer.name=Quantum Computer
+gt.blockmachines.multimachine.em.computer.hint.0=1 - Classic/Data Hatches or Computer casing
+gt.blockmachines.multimachine.em.computer.hint.1=2 - Rack Hatches or Advanced computer casing
+gt.blockmachines.multimachine.em.computer.desc=You need it to process the number above
+gt.blockmachines.multimachine.em.computer.cfgi.0=Overclock ratio
+gt.blockmachines.multimachine.em.computer.cfgi.1=Overvoltage ratio
+gt.blockmachines.multimachine.em.computer.cfgo.0=Current max. heat
+gt.blockmachines.multimachine.em.computer.cfgo.1=Produced computation
+gt.blockmachines.multimachine.em.computer.desc.0=Controller block of the Quantum Computer
+gt.blockmachines.multimachine.em.computer.desc.1=Used to generate computation (and heat)
+gt.blockmachines.multimachine.em.computer.desc.2=Use screwdriver to toggle wireless mode
+
+gt.blockmachines.multimachine.em.databank.name=Data Bank
+gt.blockmachines.multimachine.em.databank.hint.0=1 - Classic Hatches or high power casing
+gt.blockmachines.multimachine.em.databank.hint.1=2 - Data Access/Data Bank Master Hatches or computer casing
+gt.blockmachines.multimachine.em.databank.desc.0=Controller block of the Data Bank
+gt.blockmachines.multimachine.em.databank.desc.1=Used to supply Assembling Lines with more Data Sticks
+gt.blockmachines.multimachine.em.databank.desc.2=and give multiple Assembling Lines access to the same Data Stick
+gt.blockmachines.multimachine.em.databank.desc.3=Use screwdriver to toggle wireless mode
+
+gt.blockmachines.multimachine.em.junction.name=Matter Junction
+gt.blockmachines.multimachine.em.junction.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.junction.hint.1=2 - Elemental Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.junction.desc.0=Controller block of the Matter Junction
+gt.blockmachines.multimachine.em.junction.desc.1=Used to route and distribute elemental matter
+gt.blockmachines.multimachine.em.junction.desc.2=Needs a Parametrizer to be configured
+
+gt.blockmachines.multimachine.em.mattertoem.name=Matter Quantizer
+gt.blockmachines.multimachine.em.mattertoem.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.mattertoem.hint.1=2 - Elemental Output Hatch
+gt.blockmachines.multimachine.em.mattertoem.hint.2=3 - Elemental Overflow Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.mattertoem.desc.0=Controller block of the Matter Quantizer
+gt.blockmachines.multimachine.em.mattertoem.desc.1=Transforms items into their elemental form
+
+gt.blockmachines.multimachine.em.emtomatter.name=Matter Dequantizer
+gt.blockmachines.multimachine.em.emtomatter.hint.0=1 - Classic Hatches or High Power Casing"
+gt.blockmachines.multimachine.em.emtomatter.hint.1=2 - Elemental Input Hatch
+gt.blockmachines.multimachine.em.emtomatter.hint.2=3 - Elemental Overflow Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.emtomatter.desc.0=Controller block of the Matter Dequantizer
+gt.blockmachines.multimachine.em.emtomatter.desc.1=Transforms elemental matter back into items
+
+gt.blockmachines.multimachine.em.emtoessentia.name=Essentia Dequantizer
+gt.blockmachines.multimachine.em.emtoessentia.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.emtoessentia.hint.1=2 - Elemental Input Hatch
+gt.blockmachines.multimachine.em.emtoessentia.hint.2=3 - Elemental Overflow Hatches or Elemental Casing
+gt.blockmachines.multimachine.em.emtoessentia.hint.3=General - Some sort of Essentia Storage
+gt.blockmachines.multimachine.em.emtoessentia.desc.0=Controller block of the Essentia Dequantizer
+gt.blockmachines.multimachine.em.emtoessentia.desc.1=Transforms elemental matter back into essentia
+
+gt.blockmachines.multimachine.em.essentiatoem.name=Essentia Quantizer
+gt.blockmachines.multimachine.em.essentiatoem.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.essentiatoem.hint.1=2 - Elemental Output Hatch
+gt.blockmachines.multimachine.em.essentiatoem.hint.2=3 - Elemental Overflow Hatches or Elemental Casing
+gt.blockmachines.multimachine.em.essentiatoem.hint.3=General - Some sort of Essentia Storage
+gt.blockmachines.multimachine.em.essentiatoem.desc.0=Controller block of the Essentia Quantizer
+gt.blockmachines.multimachine.em.essentiatoem.desc.1=Transforms essentia into their elemental form
+
+gt.blockmachines.multimachine.em.scanner.name=Elemental Scanner
+gt.blockmachines.multimachine.em.scanner.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.scanner.hint.1=2 - Elemental Input Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.scanner.hint.2=3 - Elemental Output Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.scanner.hint.3=4 - Elemental Overflow Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.scanner.desc.0=Controller block of the Elemental Scanner
+
+gt.blockmachines.multimachine.em.research.name=Research Station
+gt.blockmachines.multimachine.em.research.hint.0=1 - Classic/Data Hatches or Computer casing
+gt.blockmachines.multimachine.em.research.hint.1=2 - Holder Hatch
+gt.blockmachines.multimachine.em.research.desc.0=Controller block of the Research Station
+gt.blockmachines.multimachine.em.research.desc.1=Used to scan Data Sticks for Assembling Line Recipes
+gt.blockmachines.multimachine.em.research.desc.2=Needs to be fed with computation to work
+gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until the Data Stick is written
+gt.blockmachines.multimachine.em.research.mode.Assembly_line=Mode: Research Station
+gt.blockmachines.multimachine.em.research.mode.Scanner=Mode: Scanner
+
+gt.blockmachines.multimachine.em.collider.name=Matter Collider
+gt.blockmachines.multimachine.em.collider.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.collider.hint.1=2 - Elemental Input Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.collider.hint.2=3 - Elemental Output Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.collider.hint.3=4 - Elemental Overflow Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.collider.hint.4=General - Another Controller facing opposite direction
+gt.blockmachines.multimachine.em.collider.desc.0=Controller block of the Matter Collider
+gt.blockmachines.multimachine.em.collider.desc.1=This machine needs a mirrored copy of it to work
+gt.blockmachines.multimachine.em.collider.desc.2=One needs to be set to 'Fuse Mode' and the other to 'Collide Mode'
+gt.blockmachines.multimachine.em.collider.desc.3=Fuses two elemental matter to create another (and power)
+gt.blockmachines.multimachine.em.collider.mode.0=Mode: Fuse
+gt.blockmachines.multimachine.em.collider.mode.1=Mode: Collide
+gt.blockmachines.multimachine.em.collider.mode.2=Mode: Undefined
+gt.blockmachines.multimachine.em.collider.mode.3=Currently Slaves...
+gt.blockmachines.multimachine.em.collider.Structure.AdditionalCollider=Needs another Matter Collider that is mirrored to this one
+
+gt.blockmachines.multimachine.em.infuser.name=Energy Infuser
+gt.blockmachines.multimachine.em.infuser.hint=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.infuser.desc.0=Controller block of the Energy Infuser
+gt.blockmachines.multimachine.em.infuser.desc.1=Can be used to charge items (lossless)
+gt.blockmachines.multimachine.em.infuser.desc.2=Can be fed with UU-Matter to repair items
+gt.blockmachines.multimachine.em.infuser.desc.3=Stocking Bus is not supported
+gt.blockmachines.multimachine.em.infuser.Structure.HighPowerCasing=Layer 1 and 5
+gt.blockmachines.multimachine.em.infuser.Structure.MolecularCoil=Layer 2 and 4
+gt.blockmachines.multimachine.em.infuser.Structure.MolecularCasing=Layer 3
+
+
+gt.blockmachines.multimachine.em.processing.name=Quantum Processing Machine
+gt.blockmachines.multimachine.em.processing.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.processing.hint.1=2 - Elemental Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.processing.desc.0=Controller block of the Quantum Processing machine
+
+gt.blockmachines.multimachine.em.crafter.name=Matter Assembler
+gt.blockmachines.multimachine.em.crafter.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.crafter.hint.1=2 - Elemental Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.crafter.desc.0=Controller block of the Matter Assembler
+
+gt.blockmachines.multimachine.em.stabilizer.name=Elemental Stabilizer
+gt.blockmachines.multimachine.em.stabilizer.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.stabilizer.hint.1=2 - Elemental Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.stabilizer.desc.0=Controller block of the Elemental Stabilizer
+
+gt.blockmachines.multimachine.em.wormhole.name=Wormhole
+gt.blockmachines.multimachine.em.wormhole.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.wormhole.hint.1=2 - Elemental Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.wormhole.desc.0=Controller block of the Wormhole
+
+gt.blockmachines.multimachine.em.decay.name=Decay Generator
+gt.blockmachines.multimachine.em.decay.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.decay.hint.1=2 - Elemental Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.decay.desc.0=Controller block of the Decay Generator
+gt.blockmachines.multimachine.em.decay.desc.1=Decays elemental matter to generate power
+
+gt.blockmachines.multimachine.em.decay.conf=Ampere divider
+
+gt.blockmachines.multimachine.em.annihilation.name=Annihilation Generator
+gt.blockmachines.multimachine.em.annihilation.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.annihilation.hint.1=2 - Elemental Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.annihilation.desc.0=Controller block of the Annihilation Generator
+
+gt.blockmachines.multimachine.em.blackholegenerator.name=Black Hole Generator
+gt.blockmachines.multimachine.em.blackholegenerator.hint.0=1 - Classic Hatches or High Power Casing
+gt.blockmachines.multimachine.em.blackholegenerator.hint.1=2 - Elemental Hatches or Molecular Casing
+gt.blockmachines.multimachine.em.blackholegenerator.desc.0=Controller block of the Black Hole Generator
+gt.blockmachines.multimachine.em.blackholegenerator.desc.1=Uses a black hole to generate power
+
+# Eye of Harmony
+achievement.gt.blockmachines.multimachine.em.eye_of_harmony=Eye of Harmony Controller
+achievement.gt.blockcasingsBA0.12=Infinite Spacetime Energy Boundary Casing
+gt.blockcasingsBA0.12.desc.0=Provides a stable bridge between spacetime regions.
+achievement.gt.blockcasingsBA0.11=Reinforced Spatial Structure Casing
+gt.blockcasingsBA0.11.desc.0=Designed to resist spatial shearing from internal volume expansion.
+gt.blockcasingsBA0.11.desc.1=Can survive at least one big bang, maybe two...
+achievement.gt.blockcasingsBA0.10=Reinforced Temporal Structure Casing
+gt.blockcasingsBA0.10.desc.0=Resistant to temporal shearing from time dilation differences.
+gt.blockcasingsBA0.10.desc.1=This block can last an eternity without any decay.
+
+
+achievement.gt.spacetime_compression_field_generator.0=Crude Spacetime Compression Field Generator
+achievement.gt.spacetime_compression_field_generator.1=Primitive Spacetime Compression Field Generator
+achievement.gt.spacetime_compression_field_generator.2=Stable Spacetime Compression Field Generator
+achievement.gt.spacetime_compression_field_generator.3=Advanced Spacetime Compression Field Generator
+achievement.gt.spacetime_compression_field_generator.4=Superb Spacetime Compression Field Generator
+achievement.gt.spacetime_compression_field_generator.5=Exotic Spacetime Compression Field Generator
+achievement.gt.spacetime_compression_field_generator.6=Perfect Spacetime Compression Field Generator
+achievement.gt.spacetime_compression_field_generator.7=Tipler Spacetime Compression Field Generator
+achievement.gt.spacetime_compression_field_generator.8=Gallifreyan Spacetime Compression Field Generator
+
+achievement.gt.time_acceleration_field_generator.0=Crude Time Dilation Field Generator
+achievement.gt.time_acceleration_field_generator.1=Primitive Time Dilation Field Generator
+achievement.gt.time_acceleration_field_generator.2=Stable Time Dilation Field Generator
+achievement.gt.time_acceleration_field_generator.3=Advanced Time Dilation Field Generator
+achievement.gt.time_acceleration_field_generator.4=Superb Time Dilation Field Generator
+achievement.gt.time_acceleration_field_generator.5=Exotic Time Dilation Field Generator
+achievement.gt.time_acceleration_field_generator.6=Perfect Time Dilation Field Generator
+achievement.gt.time_acceleration_field_generator.7=Tipler Time Dilation Field Generator
+achievement.gt.time_acceleration_field_generator.8=Gallifreyan Time Dilation Field Generator
+
+achievement.gt.stabilisation_field_generator.0=Crude Stabilisation Field Generator
+achievement.gt.stabilisation_field_generator.1=Primitive Stabilisation Field Generator
+achievement.gt.stabilisation_field_generator.2=Stable Stabilisation Field Generator
+achievement.gt.stabilisation_field_generator.3=Advanced Stabilisation Field Generator
+achievement.gt.stabilisation_field_generator.4=Superb Stabilisation Field Generator
+achievement.gt.stabilisation_field_generator.5=Exotic Stabilisation Field Generator
+achievement.gt.stabilisation_field_generator.6=Perfect Stabilisation Field Generator
+achievement.gt.stabilisation_field_generator.7=Tipler Stabilisation Field Generator
+achievement.gt.stabilisation_field_generator.8=Gallifreyan Stabilisation Field Generator
+
+# Forge of the Gods / Godforge
+fog.upgrade.confirm=Construct
+
+fog.upgrade.tt.0=upgrade start
+fog.upgrade.tt.1=upgrade 11
+fog.upgrade.tt.2=upgrade 21
+fog.upgrade.tt.3=upgrade 22
+fog.upgrade.tt.4=upgrade 31
+fog.upgrade.tt.5=upgrade 32
+fog.upgrade.tt.6=upgrade 33
+fog.upgrade.tt.7=upgrade 41
+fog.upgrade.tt.8=upgrade 51
+fog.upgrade.tt.9=upgrade 52
+fog.upgrade.tt.10=upgrade 53
+fog.upgrade.tt.11=upgrade 61
+fog.upgrade.tt.12=upgrade 71
+fog.upgrade.tt.13=upgrade 72
+fog.upgrade.tt.14=upgrade 73
+fog.upgrade.tt.15=upgrade 74
+fog.upgrade.tt.16=upgrade 80
+fog.upgrade.tt.17=upgrade 81
+fog.upgrade.tt.18=upgrade 82
+fog.upgrade.tt.19=upgrade 83
+fog.upgrade.tt.20=upgrade 91
+fog.upgrade.tt.21=upgrade 92
+fog.upgrade.tt.22=upgrade 93
+fog.upgrade.tt.23=upgrade 101
+fog.upgrade.tt.24=upgrade 111
+fog.upgrade.tt.25=upgrade 121
+fog.upgrade.tt.26=upgrade 131
+fog.upgrade.tt.27=upgrade 141
+fog.upgrade.tt.28=upgrade 151
+fog.upgrade.tt.29=upgrade 161
+fog.upgrade.tt.30=upgrade end
+
+fog.upgrade.lore.0=The Forge of the Gods is an immensely powerful structure constructed around a stabilized neutron star – it is so advanced that its full capabilities are not yet understood. However, through continued use one can slowly upgrade and expand the range of abilities of the Forge, and learn the power hidden in the most extreme parts of the universe: graviton shards. This esoteric material can only be found where conventional matter and degenerate neutronium crust matter on the surface of a neutron star meet. At this point in space, gravitons are far more common and irradiate this material mixture to create highly unstable graviton shards, which can be used to internally upgrade the Forge. While these shards cannot yet exist outside the extreme conditions of the Forge, with continued research and utilization it may be possible to eventually isolate and extract them outside the Forge – but for what purpose?
+fog.upgrade.lore.1=The first major upgrade of the Forge of the Gods has allowed for greater processing speeds as the heat increases, thanks to the space warping effects of graviton shards. This is the first of many applications of the shards, which will be discovered through continuous use of the Forge.
+fog.upgrade.lore.2=Graviton shards warp the surface area of fuels used in the Forge, increasing efficiency as more material can be processed per unit of fuel. Graviton shards will prove crucial for further efficiency increases to offset the ever-increasing demands of the Forge.
+fog.upgrade.lore.3=Through use of graviton shards, the space within the Forge’s fuel chambers can be increased, allowing for greater quantities of fuel to be burned, thus reaching higher temperatures. Don’t forget to reserve fuel to keep the star at the centre of the Forge alive.
+fog.upgrade.lore.4=Graviton shards not only affect matter, but also energy: depending on the fuel burn rate, the Forge may now accept more energy input, allowing for greater processing capacity. What other properties do these Graviton shards hold?
+fog.upgrade.lore.5=As usage of the Forge continues, more data on graviton shards is gathered. It has been found that they can stabilize the outputs of the Forge, allowing for the direct extraction of molten material while it is still close to the heart of the star.
+fog.upgrade.lore.6=As stellar fuel consumption continues to increase the size and energy of the star, the amount of material that can be processed at once also increases. Graviton shards facilitate the manipulation of increased quantities of materials near the star in the core of the Forge.
+fog.upgrade.lore.7=As understanding of graviton shards continues to improve, better control over the materials they manipulate can be achieved. Graviton shards provide an alternative to electromagnetic containment of plasma using spacetime manipulation instead, allowing the Forge to directly output processed materials as plasma.
+fog.upgrade.lore.8=Adding graviton shards to the Forge’s internal energy storage allows for greater quantities of energy stored in a smaller area. By increasing energy density to relativistic levels, the Forge can be run more efficiently and store essentially infinite energy.
+fog.upgrade.lore.9=Simply adding more graviton shards to the fuel chamber continues to amplify the ability for the Forge to consume increased quantities of stellar fuel. It even benefits from graviton shards invested in different parts of the Forge entirely – it seems shards exhibit quantum entanglement-like properties.
+fog.upgrade.lore.10=Increasing the concentration of graviton shards near the material processing regions of the Forge warps spacetime so significantly that it doubles the material input and processing possible. As the Forge’s capabilities increase, the amount of graviton shard data collected increases too, allowing for further expansion.
+fog.upgrade.lore.11=Using large quantities of graviton shards creates regions of space so extreme that exotic forms of matter can exist with far greater stability than usual. Unfortunately, this region is so extreme that it is essentially spatially disconnected from the rest of the Forge, unable to utilize existing upgrades to the structure and its other modules.
+fog.upgrade.lore.12=Graviton shards can further compress stellar fuel, increasing its ability to fuel the star at the centre of the Forge through higher energy fusion reactions than usually possible in a natural star. As a result, greater heat is produced, increasing processing efficiency of the Forge.
+fog.upgrade.lore.13=Increasing the concentration of graviton shards in the fuel chamber allows for a further increase in material processing capacity, so long as the Forge receives enough stellar fuel to maintain the unnaturally powerful state of the star.
+fog.upgrade.lore.14=Utilising the unique energy-manipulating properties of graviton shards, electricity can be more efficiently utilised within the Forge. This sort of improvement is not possible with conventional matter, but also would not be possible outside the extreme environments near the star in the Forge.
+fog.upgrade.lore.15=Similar to the Quantum Force Transformer, the quantum-mechanical properties of graviton shards facilitate the ability for the Forge to complete a complex series of nuclear fusion processes in a single event by directly manipulating the subatomic particles of the materials themselves.
+fog.upgrade.lore.16=Another instance of the entanglement-like effects of graviton shards, the simple Power Forge module now also exhibits the improvements made to the Melting Core module of the Forge. This allows for greater efficiency in both processing and allocation of the precious few graviton shards that can be obtained.
+fog.upgrade.lore.17=Typical smelting techniques become too inefficient at extreme temperatures. Graviton shards allow for new methods of processing that can better take advantage of the abundant heat available within the Forge, such as manipulating spacetime to better transfer heat to the processed materials than regular matter ever could.
+fog.upgrade.lore.18=As the heat available within the Forge continues to increase, it becomes possible for more material to be processed as it requires less proximity to the star’s surface. Graviton shards facilitate the manipulation of increased material quantities across larger regions of space within the Forge.
+fog.upgrade.lore.19=Continual improvements to energy storage density using graviton shards improves both the efficiency of the Forge and improvements to heat utilisation for processing. Reaching this threshold of energy density allows the extreme spacetime bending to transfer the heat of the star more directly to the processed materials, increasing the effectiveness of heat in the smelting process.
+fog.upgrade.lore.20=Normally increasing heat indefinitely has extreme diminishing returns when processing materials, but graviton shards allow for heat to more acutely affect input materials by manipulating them ever closer to the star at the centre of the Forge. At such levels of heat, the bonds between atoms are broken, allowing for the most quick and pure processing possible.
+fog.upgrade.lore.21=Using the entanglement-like properties of graviton shards, it is possible to utilize the increasingly extreme differences in spacetime between regions of the Forge to improve the processing capacity of the molten module. As space becomes more warped, more material can be moved closer to the star, increasing production capacity.
+fog.upgrade.lore.22=Returning to the first upgrade of the Forge with the myriad discoveries about the graviton shards allows it to run much faster than previously possible. As a result of excessive spacetime manipulation, greater heat and larger quantities of material paradoxically result in faster processing times as larger surface areas of the processed material are available to the Forge.
+fog.upgrade.lore.23=The stress of maintaining such a large structure around such a gravitationally dense object as a neutron star is alleviated through graviton shards. A larger Forge allows for more machinery and better electricity utilisation, effectively increasing processing capabilities.
+fog.upgrade.lore.24=Improvements in understanding of the gravitational containment effects of graviton shards allow the Forge to process and handle more exotic and unstable plasma. With this, a new age of fusion processing and power is possible.
+fog.upgrade.lore.25=Further utilisation of the quantum entanglement-like properties of graviton shards allows the effects of other module upgrades to also apply to the exotic module. However, because of the extreme nature of spacetime within this module and the materials it handles, these benefits are reduced as per the inverse square law.
+fog.upgrade.lore.26=As additional rings are placed closer to the star at the centre of the Forge, the gravitational stress drastically increases on the structure. Graviton shards alleviate these stresses and also allow for upgrades made in other similar modules to apply to the new ring’s modules through the use of localized spacetime bridges.
+fog.upgrade.lore.27=A huge development in the capabilities of the Forge has been achieved with the use of large quantities of graviton shards – the ability to indefinitely feed the star with stellar fuel. Obviously, this has diminishing returns but the processing potential is immense thanks to extreme gravitational distortion containing the star regardless of its energy level.
+fog.upgrade.lore.28=The usage of graviton shards in electrical systems to create localised miniature energy wormholes has allowed for such efficient power transfer that effectively unlimited electricity may be utilized by the Forge. More power means faster processing, quicker material movement, and better utilization of graviton shard related upgrades.
+fog.upgrade.lore.29=The final structural upgrade to the Forge required the most advanced understanding of graviton shards and their applications in extreme environments. With this, the last 4 module slots of the Forge of the Gods are available to construct, completing the single greatest structure in human history. The power of the sun in the palm of your hand.
+fog.upgrade.lore.30=*insert lore here* upgrade end
+
+fog.upgrade.text.0=Unlocks the base functionality of the Forge of the Gods, meaning 8 module slots, 1 ring and the Helioflare Power Forge module.
+fog.upgrade.text.1=Unlocks a recipe time reduction multiplier based on the current heat the multi is running at. This bonus is calculated via following formula: Multiplier = 1 / (Heat^0.01)
+fog.upgrade.text.2=Increases fuel efficiency by multiplying the actual fuel consumption by 0.8
+fog.upgrade.text.3=Multiplies the maximum fuel consumption by 1.2
+fog.upgrade.text.4=Increases the base processing voltage of the multi by: Stellar Fuel Units/sec * 10^8 EU/t
+fog.upgrade.text.5=Unlocks the Helioflux Melting Core module.
+fog.upgrade.text.6=Unlocks a multiplier to maximum parallel based on fuel consumption rate. This bonus is calculated via this formula: Multiplier = 1 + (Stellar Fuel Units/sec) / 15
+fog.upgrade.text.7=Unlocks the Heliothermal Plasma Fabricator module and basic element -> plasma processing (1 step plasmas, T3 fusion maximum).
+fog.upgrade.text.8=Unlocks a configuration window for maximum battery size and increases the limit to max int. Furthermore, an energy discount multiplier is unlocked that scales with battery size (capped to 0.05, or 5%). The discount is calculated as follows: Discount = (1 - 1.05^(-0.05 * Max Battery Capacity)) / 20
+fog.upgrade.text.9=Increases maximum fuel consumption by 1 Stellar Fuel Unit/sec for every purchased upgrade.
+fog.upgrade.text.10=Adds a x2 multiplier to maximum parallel.
+fog.upgrade.text.11=Unlocks the Heliofusion Exoticizer module and quark gluon plasma creation. At this point this module is not affected by any other multipliers or bonuses from other upgrades.
+fog.upgrade.text.12=Improves the fuel consumption -> heat conversion formula. Improved formula: Heat = log1.2(Stellar Fuel Units/sec) * 1000 + 12601
+fog.upgrade.text.13=Improves the formula of N33 to: Multiplier = 1 + (Stellar Fuel Units/sec) / 5
+fog.upgrade.text.14=Improves the OC formula from 4/2 OCs to 4/2.3 OCs.
+fog.upgrade.text.15=Allows the Heliothermal Plasma Fabricator to process multi step plasmas. Tier restriction still applies.
+fog.upgrade.text.16=Allows the Helioflare Power Forge to receive the full benefits of the Helioflux Melting Core upgrade path.
+fog.upgrade.text.17=Increases the cap of EBF heat bonuses to 30,000K.
+fog.upgrade.text.18=Unlocks a multiplier to maximum parallel based on current heat. This bonus is calculated via this formula: Multiplier = 1 + Heat / 15000
+fog.upgrade.text.19=Improves the EBF energy reduction heat bonus from 5% to 8% and adds an energy discount based on the fill level of the internal battery. This bonus is calculated via this formula: Discount = (Current fill level / Max Capacity - 0.5)^2 * (-0,6) + 0,15
+fog.upgrade.text.20=EBF heat bonuses are granted above 30,000K, but the heat value used in heat bonus calculations is determined by this formula: Actual Heat = 30000 + (Current Heat - 30000)^0.85
+fog.upgrade.text.21=Unlocks a multiplier to maximum parallel based on total amount of purchased upgrades. This bonus is calculated via this formula: Multiplier = 1 + Upgrade Amount / 5
+fog.upgrade.text.22=Improves N11 based on current maximum parallel. Improved Formula: Multiplier = (1 / Heat^0.01) / (Parallel^0.02)
+fog.upgrade.text.23=Increases maximum processing voltage by 1 per active ring.
+fog.upgrade.text.24=Allows the Heliothermal Plasma Fabricator to process up to T5 plasmas.
+fog.upgrade.text.25=Allows the Heliofusion Exoticizer to be affected by other upgrade benefits, but those benefits are square rooted first. The overclock bonus is adjusted via the following formula: OC Factor = 2 + (Base OC Factor - 2)^2
+fog.upgrade.text.26=Allows construction of the second ring and adds 4 module slots.
+fog.upgrade.text.27=Uncaps maximum fuel consumption, but fuel consumption used in bonus calculations scales according to this formula: Actual FC = Current Max FC + (Current FC - Current Max FC)^0.75, where FC refers to fuel consumption and max FC refers to the max fuel consumption without this upgrade.
+fog.upgrade.text.28=Uncaps maximum processing voltage. Voltage can be set in each module's GUI.
+fog.upgrade.text.29=Allows construction of the third ring and adds 4 module slots.
+fog.upgrade.text.30=*insert text here* upgrade end
+
+fog.debug.resetbutton.text=Reset
+fog.debug.resetbutton.tooltip=Resets all upgrades to zero
+fog.debug.unlockall.text=Unlock all upgrades
+fog.debug.gravitonshardsetter.tooltip=Set the amount of availabe graviton shards
+
+fog.button.fuelconfig.tooltip=Fuel Configuration Menu
+fog.button.furnacemode.tooltip=Toggle Furnace Mode
+fog.button.magmattermode.tooltip.01=Toggle Magmatter Mode
+fog.button.magmattermode.tooltip.02=Magmatter Mode locked, missing upgrade
+fog.button.battery.tooltip.01=Toggle Battery Charging
+fog.button.battery.tooltip.02=Right click to open configuration menu (if unlocked)
+fog.button.voltageconfig.tooltip.01=Open voltage config
+fog.button.voltageconfig.tooltip.02=Voltage config locked, missing upgrade
+fog.button.structurecheck.tooltip=Refresh module connection status
+fog.button.milestones.tooltip=Milestone Overview
+
+
+achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
+achievement.gt.godforgecasing.0=Singularity Reinforced Stellar Shielding Casing
+achievement.gt.godforgecasing.1=Celestial Matter Guidance Casing
+achievement.gt.godforgecasing.2=Boundless Gravitationally Severed Structure Casing
+achievement.gt.godforgecasing.3=Transcendentally Amplified Magnetic Confinement Casing
+achievement.gt.godforgecasing.4=Stellar Energy Siphon Casing
+achievement.gt.godforgecasing.5=Remote Graviton Flow Modulator
+achievement.gt.godforgecasing.6=Medial Graviton Flow Modulator
+achievement.gt.godforgecasing.7=Central Graviton Flow Modulator
+
+gt.blockmachines.multimachine.FOG.parallel=Parallel
+gt.blockmachines.multimachine.FOG.batch=Batch Size
+gt.blockmachines.multimachine.FOG.fuelconsumption=Stellar Fuel Consumption Factor
+gt.blockmachines.multimachine.FOG.fuelinfo.0=The Stellar Fuel Consumption Factor is the main determining factor in calculating the total stellar fuel consumption per second. Each fuel type has different scaling, which is as follows:
+gt.blockmachines.multimachine.FOG.fuelinfo.1=Dimensionally Transcendent Residue: factor*300*1.15^factor
+gt.blockmachines.multimachine.FOG.fuelinfo.2=Condensed Raw Stellar Plasma Mixture: factor*2*1.08^factor
+gt.blockmachines.multimachine.FOG.fuelinfo.3=Magnetohydrodynamically Constrained Star Matter: factor/25
+gt.blockmachines.multimachine.FOG.fuelinfo.4=Upgrades can influence these formulas, the changes are listed in the respective upgrades' descriptions.
+gt.blockmachines.multimachine.FOG.fueltype=Click to Select Fuel Type
+gt.blockmachines.multimachine.FOG.fuelusage=Fuel Usage
+gt.blockmachines.multimachine.FOG.plasmamultistep=Multi-Step plasma
+gt.blockmachines.multimachine.FOG.plasmarecipetier=Fusion Tier
+gt.blockmachines.multimachine.FOG.storedfuel=Stored fuel amount:
+gt.blockmachines.multimachine.FOG.storedstartupfuel=Star Fuel amount:
+gt.blockmachines.multimachine.FOG.batteryinfo=Set battery size
+gt.blockmachines.multimachine.FOG.shardcost=Graviton Shard cost:
+gt.blockmachines.multimachine.FOG.availableshards=Available Graviton Shards:
+gt.blockmachines.multimachine.FOG.modulestatus=Status:
+gt.blockmachines.multimachine.FOG.modulestatus.true=Connected
+gt.blockmachines.multimachine.FOG.modulestatus.false=Disconnected
+gt.blockmachines.multimachine.FOG.voltageinfo=Set processing voltage
+gt.blockmachines.multimachine.FOG.totalprogress=Total Progress
+gt.blockmachines.multimachine.FOG.milestoneprogress=Current Milestone Level
+gt.blockmachines.multimachine.FOG.progress=Next Milestone at
+gt.blockmachines.multimachine.FOG.milestonecomplete=Milestone Complete
+gt.blockmachines.multimachine.FOG.milestoneinfo=View Milestone Progress
+gt.blockmachines.multimachine.FOG.inversion=Inversion Active
+gt.blockmachines.multimachine.FOG.powermilestone=Charge
+gt.blockmachines.multimachine.FOG.recipemilestone=Conversion
+gt.blockmachines.multimachine.FOG.fuelmilestone=Catalyst
+gt.blockmachines.multimachine.FOG.purchasablemilestone=Composition
+gt.blockmachines.multimachine.FOG.power=EU Consumed
+gt.blockmachines.multimachine.FOG.recipes=Recipes Processed
+gt.blockmachines.multimachine.FOG.fuel=Fuel Units Consumed
+gt.blockmachines.multimachine.FOG.extensions=Extensions Built
+gt.blockmachines.multimachine.FOG.shardgain=Graviton Shards gained
+
+# Optical Circuits
+achievement.gt.metaitem.03.32155=Optical Assembly
+achievement.gt.metaitem.03.32156=Optical Computer
+achievement.gt.metaitem.03.32157=Optical Mainframe
+
+# Parts
+achievement.gt.metaitem.01.32017=Electric Motor UIV
+achievement.gt.metaitem.01.32021=Electric Piston UIV
+achievement.gt.metaitem.01.32025=Electric Pump UIV
+achievement.gt.metaitem.01.32029=Conveyor Module UIV
+achievement.gt.metaitem.01.32033=Robot Arm UIV
+achievement.gt.metaitem.01.32037=Emitter UIV
+achievement.gt.metaitem.01.32041=Sensor UIV
+achievement.gt.metaitem.01.32045=Field Generator UIV
+
+achievement.gt.metaitem.01.32018=Electric Motor UMV
+achievement.gt.metaitem.01.32022=Electric Piston UMV
+achievement.gt.metaitem.01.32026=Electric Pump UMV
+achievement.gt.metaitem.01.32030=Conveyor Module UMV
+achievement.gt.metaitem.01.32034=Robot Arm UMV
+achievement.gt.metaitem.01.32038=Emitter UMV
+achievement.gt.metaitem.01.32042=Sensor UMV
+achievement.gt.metaitem.01.32046=Field Generator UMV
+
+#Pipes
+gt.blockmachines.pipe.elementalmatter.name=Quantum "Tunnel"
+gt.blockmachines.pipe.elementalmatter.desc.0=Quantum tunneling device.
+gt.blockmachines.pipe.elementalmatter.desc.1=Not a portal!!!
+gt.blockmachines.pipe.elementalmatter.desc.2=Must be painted to work
+gt.blockmachines.pipe.elementalmatter.desc.3=Do not cross, split or turn
+
+gt.blockmachines.pipe.energystream.name=Laser Vacuum Pipe
+gt.blockmachines.pipe.energystream.desc.0=Laser tunneling device.
+gt.blockmachines.pipe.energystream.desc.1=Bright Vacuum!!!
+gt.blockmachines.pipe.energystream.desc.2=Must be painted to work
+gt.blockmachines.pipe.energystream.desc.3=Do not split or turn
+
+gt.blockmachines.pipe.datastream.name=Optical Fiber Cable
+gt.blockmachines.pipe.datastream.desc.0=Advanced data transmission
+gt.blockmachines.pipe.datastream.desc.1=Don't stare at the beam!
+gt.blockmachines.pipe.datastream.desc.2=Must be painted to work
+gt.blockmachines.pipe.datastream.desc.3=Do not cross or split
+
+gt.blockmachines.pipe.desc.4=Explosion proof
+
+#Single blocks
+gt.blockmachines.machine.tt.ownerdetector.name=Owner detector
+gt.blockmachines.machine.tt.ownerdetector.desc.0=Screwdrive to change mode
+gt.blockmachines.machine.tt.ownerdetector.desc.1=Looks for his pa
+gt.blockmachines.machine.tt.ownerdetector.desc.2=Emits signal when happy
+
+gt.blockmachines.machine.tt.datareader.name=Data Reader
+gt.blockmachines.machine.tt.datareader.desc.0=Reads Data Sticks and Orbs
+gt.blockmachines.machine.tt.datareader.desc.1=Power it up and
+gt.blockmachines.machine.tt.datareader.desc.2=Put the data storage in
+
+gt.blockmachines.machine.tt.buck.05.name=Insane Buck Converter
+gt.blockmachines.machine.tt.buck.06.name=Ludicrous Buck Converter
+gt.blockmachines.machine.tt.buck.07.name=ZPM Voltage Buck Converter
+gt.blockmachines.machine.tt.buck.08.name=Ultimate Power Buck Converter
+gt.blockmachines.machine.tt.buck.09.name=Highly Ultimate Buck Converter
+gt.blockmachines.machine.tt.buck.10.name=Extremely Ultimate Buck Converter
+gt.blockmachines.machine.tt.buck.11.name=Insanely Ultimate Buck Converter
+gt.blockmachines.machine.tt.buck.12.name=Mega Ultimate Buck Converter
+gt.blockmachines.machine.tt.buck.13.name=Extended Mega Ultimate Buck Converter
+gt.blockmachines.machine.tt.buck.desc.0=Electronic voltage regulator
+gt.blockmachines.machine.tt.buck.desc.1=Adjustable step down transformer
+gt.blockmachines.machine.tt.buck.desc.2=Switching power supply...
+
+gt.blockmachines.machine.tt.tesla.01.name=Basic Tesla Transceiver
+gt.blockmachines.machine.tt.tesla.02.name=Advanced Tesla Transceiver
+gt.blockmachines.machine.tt.tesla.03.name=Epyc Tesla Transceiver
+gt.blockmachines.machine.tt.tesla.04.name=Ultimate Power Tesla Transceiver
+gt.blockmachines.machine.tt.tesla.05.name=Insane Tesla Transceiver
+gt.blockmachines.machine.tt.tesla.desc.0=Your Tesla I/O machine of choice
+gt.blockmachines.machine.tt.tesla.desc.1=Lightning stoves for the rich
+
+#Debug blocks
+gt.blockmachines.debug.tt.pollutor.name=Debug Pollution Generator
+gt.blockmachines.debug.tt.pollutor.desc.0=Shit genny broke!
+gt.blockmachines.debug.tt.pollutor.desc.1=Infinite Producer/Consumer
+gt.blockmachines.debug.tt.pollutor.desc.2=Since i wanted one?
+gt.blockmachines.debug.tt.data.name=Debug Data Hatch
+gt.blockmachines.debug.tt.data.desc.0=Quantum Data Output
+gt.blockmachines.debug.tt.data.desc.1=High speed fibre optics connector.
+gt.blockmachines.debug.tt.data.desc.2=Must be painted to work
+gt.blockmachines.debug.tt.maintenance.name=Auto-Taping Maintenance Hatch
+gt.blockmachines.debug.tt.maintenance.desc.0=For automatically maintaining Multiblocks
+gt.blockmachines.debug.tt.maintenance.desc.1=Does fix everything but itself.
+gt.blockmachines.debug.tt.maintenance.desc.2=Fixing is for plebs!
+gt.blockmachines.debug.tt.genny.name=Debug Power Generator
+gt.blockmachines.debug.tt.genny.desc.0=Power from nothing
+gt.blockmachines.debug.tt.genny.desc.1=Infinite Producer/Consumer
+gt.blockmachines.debug.tt.genny.desc.2=Since i wanted one...
+gt.blockmachines.debug.tt.genny.desc.3=Change it to Laser mode with a screwdriver.
+gt.blockmachines.debug.tt.writer.name=Debug Structure Writer
+gt.blockmachines.debug.tt.writer.desc.0=Scans Blocks Around
+gt.blockmachines.debug.tt.writer.desc.1=Prints Multiblock NonTE structure check code
+gt.blockmachines.debug.tt.writer.desc.2=ABC axises aligned to machine front
+gt.blockmachines.debug.tt.certain.desc.0=Feeling certain, for sure
+gt.blockmachines.debug.tt.certain.desc.1=Schrödinger's cat escaped the box
+
+GT5U.gui.text.computing=§aComputing
+GT5U.gui.text.providing_data=§aProviding Data
+GT5U.gui.text.routing=§aRouting
+GT5U.gui.text.researching=§aResearching
+GT5U.gui.text.wrongRequirements=§7Incorrect scanning item
+GT5U.gui.text.scanning=§aScanning
+GT5U.gui.text.charging=§aCharging
+GT5U.gui.text.microwaving=§aMicrowaving
+GT5U.gui.text.no_routing=§7Can't route
+GT5U.gui.text.invalid_timer=§7Invalid timer
+GT5U.gui.text.no_research_item=§7No valid item to research
+GT5U.gui.text.no_chargeable_item=§7No chargeable item
+GT5U.gui.text.no_computing=§7Can't compute
+GT5U.gui.text.no_data=§7Can't output data
+GT5U.gui.text.no_planet_block=§7Missing planet block
+GT5U.gui.text.no_helium=§7Not enough Helium
+GT5U.gui.text.no_hydrogen=§7Not enough Hydrogen
+GT5U.gui.text.no_stellar_plasma=§7Not enough Stellar Plasma
+GT5U.gui.text.invalid_hysteresis=§7Invalid hysteresis settings
+GT5U.gui.text.invalid_transfer_radius=§7Invalid transfer radius settings
+GT5U.gui.text.invalid_voltage_setting=§7Invalid voltage setting
+GT5U.gui.text.invalid_current_setting=§7Invalid current setting
+GT5U.gui.text.invalid_time_setting=§7Invalid time setting
+GT5U.gui.text.invalid_overdrive_setting=§7Invalid overdrive setting
+GT5U.gui.text.insufficient_power_no_val=§7Insufficient power
+GT5U.gui.text.missing_upgrades=§7Missing upgrades
+GT5U.gui.text.waiting_for_inputs=§7Waiting for inputs
+GT5U.gui.text.computation_loss=§4Shut down due to computation loss.
+
+# RecipeMaps
+gt.recipe.eyeofharmony=Eye of Harmony
+gt.recipe.researchStation=Research Station
+gt.recipe.fog_plasma=Heliothermal Plasma Fabricator
+gt.recipe.fog_exotic=Heliofusion Exoticizer
+
+
+# NEI
+tt.nei.eoh.total_items=Total Items: %s
+tt.nei.eoh.solid_mass=Percentage of Solid Mass: %s%%
+tt.nei.eoh.item_count=Item Count: %s
+tt.nei.research.max_eu=Max EU: %s EU
+tt.nei.research.computation=Computation: %s
+tt.nei.research.min_computation=Min Computation: %s /s
+
+#Keywords and phrases
+#Example: ID:3
+tt.keyword.ID=ID
+#Example: 32EU at 1A
+tt.keyword.at=at
+# Structure is too complex
+tt.keyword.Structure.StructureTooComplex=The structure is too complex!
+# Any X
+tt.keyword.Structure.AnyComputerCasing=Any Computer Casing
+tt.keyword.Structure.AnyHighPowerCasing=Any High Power Casing
+tt.keyword.Structure.AnyHighPowerCasing1D=Any High Power Casing with 1 dot
+tt.keyword.Structure.AnyHighPowerCasing2D=Any High Power Casing with 2 dots
+tt.keyword.Structure.AnyHighPowerCasingFront=Any High Power Casing on the front side
+tt.keyword.Structure.AnyTeslaBaseCasingOuter=Any outer Tesla Base Casing
+tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice=Any Computer Casing on the first or last slice
+tt.keyword.Structure.AnyComputerCasingBackMain=Any Computer Casing on the backside of the main body
+tt.keyword.Structure.AnyAdvComputerCasingExceptOuter=Any Advanced Computer Casing, except the outer ones
+tt.keyword.Structure.AnyMolecularCasing=Any Molecular Casing
+tt.keyword.Structure.AnyMolecularCasing2D=Any Molecular Casing with 2 dots
+tt.keyword.Structure.AnyMolecularCasing3D=Any Molecular Casing with 3 dots
+tt.keyword.Structure.AnyMolecularCasing4D=Any Molecular Casing with 4 dots
+tt.keyword.Structure.AnyOuterMolecularCasing3rd=Any outer Molecular Casing on the 3rd slice
+tt.keyword.Structure.AnyOuterMolecularCasing4th=Any outer Molecular Casing on the 4th slice
+tt.keyword.Structure.AnyOuterMolecularCasing3rd4th=Any outer Molecular Casing on the 3rd or 4th slice
+tt.keyword.Structure.AnyOuterCasingOnBottom=Any outer casing on the bottom layer
+# Optional
+tt.keyword.Structure.Optional=(optional)
+# Placement specification
+tt.keyword.Structure.FrontCenter=Front center
+tt.keyword.Structure.BackCenter=Back center
+tt.keyword.Structure.SideCenter=Side center
+tt.keyword.Structure.FrontCenter3rd=Front 3rd layer center
+tt.keyword.Structure.CenterPillar=Center of the front pillar
+tt.keyword.Structure.Center=Center
+# Additional structure components
+tt.keyword.Structure.DataAccessHatch=Data Access Hatch
+tt.keyword.Structure.ElementalOutput=Elemental Output Hatch
+tt.keyword.Structure.Elemental=Elemental Hatch
+tt.keyword.Structure.ElementalOverflow=Elemental Overflow Hatch
+tt.keyword.Structure.ElementalInput=Elemental Input Hatch
+tt.keyword.Structure.EssentiaStorage=Essentia Storage
+tt.keyword.Structure.DataConnector=Data Connector
+tt.keyword.Structure.SuperconductingCoilBlock=Superconducting Coil Block
+tt.keyword.Structure.StainlessSteelCasing=Stainless Steel Casing
+tt.wirelessInputData.config.text=Configure how much computation to pull from wireless network
+
+
+tt.keyphrase.Hint_Details=Hint Details
+
+#debug boom
+tt.keyword.BOOM=BOOM!
+tt.keyword.Destination=Destination
+tt.keyword.Weight=Weight
+tt.keyword.Source=Source
+tt.keyword.Progress=Progress
+tt.keyword.Computation=Computation
+#Problemns as in maintanance issues
+tt.keyword.Problems=Problems
+tt.keyword.Efficiency=Efficiency
+#Button that allows to pass power to other machines
+tt.keyword.PowerPass=PowerPass
+#Button that vents EM
+tt.keyword.SafeVoid=SafeVoid
+tt.keyword.Parametrizer=Parametrizer
+tt.keyword.Value=Value
+tt.keyword.Input=Input
+tt.keyword.input=input
+tt.keyword.output=output
+tt.keyword.Status=Status
+tt.keyword.Content=Content
+tt.keyword.PacketHistory=PacketHistory
+
+#Used when 0 Elemental Matter Stacks
+tt.keyphrase.No_Stacks=No Stacks
+tt.keyphrase.Contains_EM=Contains EM
+tt.keyphrase.Contained_mass=Contained mass
+tt.keyphrase.Mass_Disposal_speed=Mass Disposal speed
+tt.keyphrase.Muffler_BOOM=Muffler BOOM!
+tt.keyphrase.Energy_Hatches=Energy Hatches
+tt.keyphrase.Probably_uses=Probably uses
+tt.keyphrase.Probably_makes=Probably makes
+tt.keyphrase.Tier_Rating=Tier Rating
+tt.keyphrase.Amp_Rating=Amp Rating
+tt.keyphrase.Computation_Available=Computation Available
+tt.keyphrase.Computation_Remaining=Computation Remaining
+tt.keyphrase.Content_Stack_Count=Content: Stack Count
+tt.keyphrase.Base_computation=Base computation
+tt.keyphrase.After_overclocking=After overclocking
+tt.keyphrase.Heat_Accumulated=Heat Accumulated
+tt.keyphrase.Running_interdimensional_scan=Running interdimensional scan
+tt.keyphrase.Running_local_dimension_scan=Running local dimension scan
+tt.keyphrase.Overdrive_disengaged=Overdrive disengaged
+tt.keyphrase.Overdrive_engaged=Overdrive engaged
+tt.keyphrase.Hysteresis_high_set_to=Hysteresis high set to
+tt.keyphrase.Hysteresis_low_set_to=Hysteresis low set to
+tt.keyphrase.Tesla_radius_set_to=Tesla radius set to
+tt.keyphrase.Sending_power=Sending power
+tt.keyphrase.Receiving_power=Receiving power
+tt.keyphrase.Stored_energy=Stored energy
+tt.keyphrase.Stored_EU=Stored EU
+tt.keyphrase.Average_IO=Average I/O
+tt.keyphrase.Average_IO_(max)=Voltage I/O (max)
+tt.keyphrase.Average_IO_max=Voltage I/O max
+tt.keyphrase.Amperage_IO_(max)=Amperage I/O (max)
+tt.keyphrase.Side_capabilities=Side capabilities
+tt.keyphrase.Ass_line_recipe=Assembly Line Recipe
+
+#OpenTurrets compatibility
+tile.turretHeadEM.name=Elemental Matter Turret
+tile.turretBaseEM.name=Elemental Turret Base
+
+#EM scan result
+tt.keyword.scan.depth=Depth
+tt.keyword.scan.class=Class
+tt.keyword.scan.name=Name
+tt.keyword.scan.symbol=Symbol
+
+tt.keyword.scan.mass=Mass
+tt.keyword.scan.count=Count
+tt.keyword.scan.amount=Amount
+tt.keyword.scan.energy=Energy
+tt.keyword.scan.energyLevel=Energy Level
+tt.keyword.scan.charge=Charge
+tt.keyword.scan.life_mult=Life multiplier
+tt.keyword.scan.half_life=Half life
+tt.keyword.scan.life_time=Life time
+tt.keyword.scan.age=Age
+tt.keyphrase.scan.at_current_energy_level=At current energy level
+tt.keyword.scan.color=Colorless
+tt.keyword.scan.colorless=Colorless
+tt.keyword.scan.colored=Colored
+
+tt.keyword.short.mass=M
+tt.keyword.short.count=Qty
+tt.keyword.short.amount=Qty
+tt.keyword.short.energy=E
+tt.keyword.short.energyLevel=EL
+tt.keyword.short.charge=C
+tt.keyword.short.time=T
+
+tt.keyword.unit.mass=eV/c²
+tt.keyword.unit.massFlux=eV/c²s
+tt.keyword.unit.count=
+tt.keyword.unit.mol=mol
+tt.keyword.unit.itemMols=item(s)
+tt.keyword.unit.mbMols=mb
+tt.keyword.unit.energy=eV
+tt.keyword.unit.charge=e
+tt.keyword.unit.time=s
+tt.keyword.unit.tick=t
+#that the thing wont decay
+tt.keyword.stable=STABLE
+
+#EM types
+tt.keyword.Primitive=Primitive
+tt.keyword.Element=Element
+tt.keyword.Atom=Atom
+tt.keyword.Isotope=Isotope
+tt.keyword.Boson=Boson
+tt.keyword.Fermion=Fermion
+tt.keyword.GaugeBoson=Gauge boson
+tt.keyword.Meson=Meson
+tt.keyword.Baryon=Baryon
+tt.keyword.Tetraquark=Tetraquark
+tt.keyword.Pentaquark=Pentaquark
+tt.keyword.Hexaquark=Hexaquark
+tt.keyword.Hadron=Hadron
+tt.keyword.Neutrino=Neutrino
+tt.keyword.Quark=Quark
+tt.keyword.ScalarBoson=Scalar boson
+#em definitions
+tt.keyword.PrimitiveNBTERROR=NBT ERROR
+tt.keyword.PrimitiveNULLPOINTER=NULL POINTER
+tt.keyword.PrimitiveSpace=Space
+tt.keyword.PrimitivePresence=Presence
+tt.keyword.PrimitiveMass=Mass
+tt.keyword.PrimitiveDarkMass=DarkMass
+tt.keyword.PrimitiveEnergy=Energy
+tt.keyword.PrimitiveDarkEnergy=DarkEnergy
+tt.keyword.PrimitiveMagic=Magic
+tt.keyword.PrimitiveAntimagic=Antimagic
+tt.keyword.Gluon=Gluon
+tt.keyword.Photon=Photon
+tt.keyword.Weak0=Weak
+tt.keyword.WeakPlus=Weak+
+tt.keyword.WeakMinus=Weak-
+tt.keyword.Proton=Proton
+tt.keyword.AntiProton=Antiproton
+tt.keyword.Neutron=Neutron
+tt.keyword.AntiNeutron=Antineutron
+tt.keyword.Lepton=Lepton
+tt.keyword.Electron=Electron
+tt.keyword.Muon=Muon
+tt.keyword.Tauon=Tauon
+tt.keyword.Positron=Positron
+tt.keyword.Antimuon=Antimuon
+tt.keyword.Antitauon=Antitauon
+tt.keyword.ElectronNeutrino=Electron neutrino
+tt.keyword.MuonNeutrino=Muon neutrino
+tt.keyword.TauonNeutrino=Tauon neutrino
+tt.keyword.PositronNeutrino=Positron neutrino
+tt.keyword.AntimuonNeutrino=Antimuon neutrino
+tt.keyword.AntitauonNeutrino=Antitauon neutrino
+tt.keyword.QuarkUp=Up
+tt.keyword.QuarkCharm=Charm
+tt.keyword.QuarkTop=Top
+tt.keyword.QuarkDown=Down
+tt.keyword.QuarkStrange=Strange
+tt.keyword.QuarkBottom=Bottom
+tt.keyword.QuarkAntiUp=Antiup
+tt.keyword.QuarkAntiCharm=Anticharm
+tt.keyword.QuarkAntiTop=Antitop
+tt.keyword.QuarkAntiDown=Antidown
+tt.keyword.QuarkAntiStrange=Antistrange
+tt.keyword.QuarkAntiBottom=Antibottom
+tt.keyword.Higgs=Higgs
+#These are Thaumcraft aspects
+tt.keyword.Air=Air
+tt.keyword.Earth=Earth
+tt.keyword.Fire=Fire
+tt.keyword.Water=Water
+tt.keyword.Order=Order
+tt.keyword.Entropy=Entropy
+tt.keyword.Chaos=Chaos
+
+tt.keyword.Primal=Primal
+tt.keyword.Aspect=Aspect
+
+tt.element.Neutronium=Neutronium
+tt.element.Hydrogen=Hydrogen
+tt.element.Helium=Helium
+tt.element.Lithium=Lithium
+tt.element.Beryllium=Beryllium
+tt.element.Boron=Boron
+tt.element.Carbon=Carbon
+tt.element.Nitrogen=Nitrogen
+tt.element.Oxygen=Oxygen
+tt.element.Fluorine=Fluorine
+tt.element.Neon=Neon
+tt.element.Sodium=Sodium
+tt.element.Magnesium=Magnesium
+tt.element.Aluminium=Aluminium
+tt.element.Silicon=Silicon
+tt.element.Phosphorus=Phosphorus
+tt.element.Sulfur=Sulfur
+tt.element.Chlorine=Chlorine
+tt.element.Argon=Argon
+tt.element.Potassium=Potassium
+tt.element.Calcium=Calcium
+tt.element.Scandium=Scandium
+tt.element.Titanium=Titanium
+tt.element.Vanadium=Vanadium
+tt.element.Chromium=Chromium
+tt.element.Manganese=Manganese
+tt.element.Iron=Iron
+tt.element.Cobalt=Cobalt
+tt.element.Nickel=Nickel
+tt.element.Copper=Copper
+tt.element.Zinc=Zinc
+tt.element.Gallium=Gallium
+tt.element.Germanium=Germanium
+tt.element.Arsenic=Arsenic
+tt.element.Selenium=Selenium
+tt.element.Bromine=Bromine
+tt.element.Krypton=Krypton
+tt.element.Rubidium=Rubidium
+tt.element.Strontium=Strontium
+tt.element.Yttrium=Yttrium
+tt.element.Zirconium=Zirconium
+tt.element.Niobium=Niobium
+tt.element.Molybdenum=Molybdenum
+tt.element.Technetium=Technetium
+tt.element.Ruthenium=Ruthenium
+tt.element.Rhodium=Rhodium
+tt.element.Palladium=Palladium
+tt.element.Silver=Silver
+tt.element.Cadmium=Cadmium
+tt.element.Indium=Indium
+tt.element.Tin=Tin
+tt.element.Antimony=Antimony
+tt.element.Tellurium=Tellurium
+tt.element.Iodine=Iodine
+tt.element.Xenon=Xenon
+tt.element.Caesium=Caesium
+tt.element.Barium=Barium
+tt.element.Lanthanum=Lanthanum
+tt.element.Cerium=Cerium
+tt.element.Praseodymium=Praseodymium
+tt.element.Neodymium=Neodymium
+tt.element.Promethium=Promethium
+tt.element.Samarium=Samarium
+tt.element.Europium=Europium
+tt.element.Gadolinium=Gadolinium
+tt.element.Terbium=Terbium
+tt.element.Dysprosium=Dysprosium
+tt.element.Holmium=Holmium
+tt.element.Erbium=Erbium
+tt.element.Thulium=Thulium
+tt.element.Ytterbium=Ytterbium
+tt.element.Lutetium=Lutetium
+tt.element.Hafnium=Hafnium
+tt.element.Tantalum=Tantalum
+tt.element.Tungsten=Tungsten
+tt.element.Rhenium=Rhenium
+tt.element.Osmium=Osmium
+tt.element.Iridium=Iridium
+tt.element.Platinum=Platinum
+tt.element.Gold=Gold
+tt.element.Mercury=Mercury
+tt.element.Thallium=Thallium
+tt.element.Lead=Lead
+tt.element.Bismuth=Bismuth
+tt.element.Polonium=Polonium
+tt.element.Astatine=Astatine
+tt.element.Radon=Radon
+tt.element.Francium=Francium
+tt.element.Radium=Radium
+tt.element.Actinium=Actinium
+tt.element.Thorium=Thorium
+tt.element.Protactinium=Protactinium
+tt.element.Uranium=Uranium
+tt.element.Neptunium=Neptunium
+tt.element.Plutonium=Plutonium
+tt.element.Americium=Americium
+tt.element.Curium=Curium
+tt.element.Berkelium=Berkelium
+tt.element.Californium=Californium
+tt.element.Einsteinium=Einsteinium
+tt.element.Fermium=Fermium
+tt.element.Mendelevium=Mendelevium
+tt.element.Nobelium=Nobelium
+tt.element.Lawrencium=Lawrencium
+tt.element.Rutherfordium=Rutherfordium
+tt.element.Dubnium=Dubnium
+tt.element.Seaborgium=Seaborgium
+tt.element.Bohrium=Bohrium
+tt.element.Hassium=Hassium
+tt.element.Meitnerium=Meitnerium
+tt.element.Darmstadtium=Darmstadtium
+tt.element.Roentgenium=Roentgenium
+tt.element.Copernicium=Copernicium
+tt.element.Nihonium=Nihonium
+tt.element.Flerovium=Flerovium
+tt.element.Moscovium=Moscovium
+tt.element.Livermorium=Livermorium
+tt.element.Tennessine=Tennessine
+tt.element.Oganesson=Oganesson
+
+tt.element.AntiNeutronium=Antineutronium
+tt.element.AntiHydrogen=Antihydrogen
+tt.element.AntiHelium=Antihelium
+tt.element.AntiLithium=Antilithium
+tt.element.AntiBeryllium=Antiberyllium
+tt.element.AntiBoron=Antiboron
+tt.element.AntiCarbon=Anticarbon
+tt.element.AntiNitrogen=Antinitrogen
+tt.element.AntiOxygen=Antioxygen
+tt.element.AntiFluorine=Antifluorine
+tt.element.AntiNeon=Antineon
+tt.element.AntiSodium=Antisodium
+tt.element.AntiMagnesium=Antimagnesium
+tt.element.AntiAluminium=Antialuminium
+tt.element.AntiSilicon=Antisilicon
+tt.element.AntiPhosphorus=Antiphosphorus
+tt.element.AntiSulfur=Antisulfur
+tt.element.AntiChlorine=Antichlorine
+tt.element.AntiArgon=Antiargon
+tt.element.AntiPotassium=Antipotassium
+tt.element.AntiCalcium=Anticalcium
+tt.element.AntiScandium=Antiscandium
+tt.element.AntiTitanium=Antititanium
+tt.element.AntiVanadium=Antivanadium
+tt.element.AntiChromium=Antichromium
+tt.element.AntiManganese=Antimanganese
+tt.element.AntiIron=Antiiron
+tt.element.AntiCobalt=Anticobalt
+tt.element.AntiNickel=Antinickel
+tt.element.AntiCopper=Anticopper
+tt.element.AntiZinc=Antizinc
+tt.element.AntiGallium=Antigallium
+tt.element.AntiGermanium=Antigermanium
+tt.element.AntiArsenic=Antiarsenic
+tt.element.AntiSelenium=Antiselenium
+tt.element.AntiBromine=Antibromine
+tt.element.AntiKrypton=Antikrypton
+tt.element.AntiRubidium=Antirubidium
+tt.element.AntiStrontium=Antistrontium
+tt.element.AntiYttrium=Antiyttrium
+tt.element.AntiZirconium=Antizirconium
+tt.element.AntiNiobium=Antiniobium
+tt.element.AntiMolybdenum=Antimolybdenum
+tt.element.AntiTechnetium=Antitechnetium
+tt.element.AntiRuthenium=Antiruthenium
+tt.element.AntiRhodium=Antirhodium
+tt.element.AntiPalladium=Antipalladium
+tt.element.AntiSilver=Antisilver
+tt.element.AntiCadmium=Anticadmium
+tt.element.AntiIndium=Antiindium
+tt.element.AntiTin=Antitin
+tt.element.AntiAntimony=Antiantimony
+tt.element.AntiTellurium=Antitellurium
+tt.element.AntiIodine=Antiiodine
+tt.element.AntiXenon=Antixenon
+tt.element.AntiCaesium=Anticaesium
+tt.element.AntiBarium=Antibarium
+tt.element.AntiLanthanum=Antilanthanum
+tt.element.AntiCerium=Anticerium
+tt.element.AntiPraseodymium=Antipraseodymium
+tt.element.AntiNeodymium=Antineodymium
+tt.element.AntiPromethium=Antipromethium
+tt.element.AntiSamarium=Antisamarium
+tt.element.AntiEuropium=Antieuropium
+tt.element.AntiGadolinium=Antigadolinium
+tt.element.AntiTerbium=Antiterbium
+tt.element.AntiDysprosium=Antidysprosium
+tt.element.AntiHolmium=Antiholmium
+tt.element.AntiErbium=Antierbium
+tt.element.AntiThulium=Antithulium
+tt.element.AntiYtterbium=Antiytterbium
+tt.element.AntiLutetium=Antilutetium
+tt.element.AntiHafnium=Antihafnium
+tt.element.AntiTantalum=Antitantalum
+tt.element.AntiTungsten=Antitungsten
+tt.element.AntiRhenium=Antirhenium
+tt.element.AntiOsmium=Antiosmium
+tt.element.AntiIridium=Antiiridium
+tt.element.AntiPlatinum=Antiplatinum
+tt.element.AntiGold=Antigold
+tt.element.AntiMercury=Antimercury
+tt.element.AntiThallium=Antithallium
+tt.element.AntiLead=Antilead
+tt.element.AntiBismuth=Antibismuth
+tt.element.AntiPolonium=Antipolonium
+tt.element.AntiAstatine=Antiastatine
+tt.element.AntiRadon=Antiradon
+tt.element.AntiFrancium=Antifrancium
+tt.element.AntiRadium=Antiradium
+tt.element.AntiActinium=Antiactinium
+tt.element.AntiThorium=Antithorium
+tt.element.AntiProtactinium=Antiprotactinium
+tt.element.AntiUranium=Antiuranium
+tt.element.AntiNeptunium=Antineptunium
+tt.element.AntiPlutonium=Antiplutonium
+tt.element.AntiAmericium=Antiamericium
+tt.element.AntiCurium=Anticurium
+tt.element.AntiBerkelium=Antiberkelium
+tt.element.AntiCalifornium=Antibalifornium
+tt.element.AntiEinsteinium=Antieinsteinium
+tt.element.AntiFermium=Antifermium
+tt.element.AntiMendelevium=Antimendelevium
+tt.element.AntiNobelium=Antinobelium
+tt.element.AntiLawrencium=Antilawrencium
+tt.element.AntiRutherfordium=Antirutherfordium
+tt.element.AntiDubnium=Antidubnium
+tt.element.AntiSeaborgium=Antiseaborgium
+tt.element.AntiBohrium=Antibohrium
+tt.element.AntiHassium=Antihassium
+tt.element.AntiMeitnerium=Antimeitnerium
+tt.element.AntiDarmstadtium=Antidarmstadtium
+tt.element.AntiRoentgenium=Antiroentgenium
+tt.element.AntiCopernicium=Anticopernicium
+tt.element.AntiNihonium=Antinihonium
+tt.element.AntiFlerovium=Antiflerovium
+tt.element.AntiMoscovium=Antimoscovium
+tt.element.AntiLivermorium=Antilivermorium
+tt.element.AntiTennessine=Antitennessine
+tt.element.AntiOganesson=Antioganesson
+
+tt.IUPAC.n=nil
+tt.IUPAC.u=un
+tt.IUPAC.b=bi
+tt.IUPAC.t=tri
+tt.IUPAC.q=quad
+tt.IUPAC.p=pent
+tt.IUPAC.h=hex
+tt.IUPAC.s=sept
+tt.IUPAC.o=oct
+tt.IUPAC.e=enn
+tt.IUPAC.N=Nil
+tt.IUPAC.U=Un
+tt.IUPAC.B=Bi
+tt.IUPAC.T=Tri
+tt.IUPAC.Q=Quad
+tt.IUPAC.P=Pent
+tt.IUPAC.H=Hex
+tt.IUPAC.S=Sept
+tt.IUPAC.O=Oct
+tt.IUPAC.E=Enn
+tt.IUPAC.ium=ium
+tt.IUPAC.Anti=Anti
+tt.keyword.Weird=*
+
+tt.chat.debug.generator=Laser mode: %s

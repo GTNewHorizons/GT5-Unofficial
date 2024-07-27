@@ -1934,7 +1934,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         IBeeMutationCustom tMutation = dis.registerMutation(MARS, DESH, 15);
         if (NewHorizonsCoreMod.isModLoaded())
             tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "tile.Ledox"), 0);
-        tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(30, "Asteriods")); // Asteriods Dim
+        tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(30, "Asteroids")); // Asteroid Dim
     }),
     IO(GT_BranchDefinition.PLANET, "IO", true, new Color(0x734B2E), new Color(0xe5701b), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.JUPITER), 0.25f);

@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IRecipeMap;
@@ -98,6 +97,88 @@ public class GT_RecipeConstants {
     public static final RecipeMetadataKey<Boolean> ON_FIRE = SimpleRecipeMetadataKey.create(Boolean.class, "on_fire");
 
     /**
+     * Nano Forge Tier.
+     */
+    public static final RecipeMetadataKey<Integer> NANO_FORGE_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "nano_forge_tier");
+
+    /**
+     * FOG Exotic recipe tier.
+     */
+    public static final RecipeMetadataKey<Integer> FOG_EXOTIC_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "fog_exotic_tier");
+
+    /**
+     * FOG Plasma recipe tier.
+     */
+    public static final RecipeMetadataKey<Integer> FOG_PLASMA_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "fog_plasma_tier");
+
+    /**
+     * DEFC Casing tier.
+     */
+    public static final RecipeMetadataKey<Integer> DEFC_CASING_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "defc_casing_tier");
+
+    /**
+     * Chemplant Casing tier. Beware, codewise index starts at 0, but it is tier 1.
+     */
+    public static final RecipeMetadataKey<Integer> CHEMPLANT_CASING_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "chemplant_casing_tier");
+
+    /**
+     * QFT Focus tier.
+     */
+    public static final RecipeMetadataKey<Integer> QFT_FOCUS_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "qft_focus_tier");
+
+    /**
+     * Dissolution Tank Ratio.
+     */
+    public static final RecipeMetadataKey<Integer> DISSOLUTION_TANK_RATIO = SimpleRecipeMetadataKey
+        .create(Integer.class, "dissolution_tank_ratio");
+
+    /**
+     * Duration in days for the RTG.
+     */
+    public static final RecipeMetadataKey<Integer> RTG_DURATION_IN_DAYS = SimpleRecipeMetadataKey
+        .create(Integer.class, "rtg_duration_in_days");
+
+    /**
+     * Basic output for the Large Naquadah Generator.
+     */
+    public static final RecipeMetadataKey<Integer> LNG_BASIC_OUTPUT = SimpleRecipeMetadataKey
+        .create(Integer.class, "lng_basic_output");
+
+    /**
+     * Coil tier for the Naquadah Fuel Refinery.
+     */
+    public static final RecipeMetadataKey<Integer> NFR_COIL_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "nfr_coil_tier");
+
+    /**
+     * NKE range for the neutron activator.
+     */
+    public static final RecipeMetadataKey<Integer> NKE_RANGE = SimpleRecipeMetadataKey
+        .create(Integer.class, "nke_range");
+    /**
+     * Precise Assembler casing tier.
+     */
+    public static final RecipeMetadataKey<Integer> PRECISE_ASSEMBLER_CASING_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "precise_assembler_casing_tier");
+    /**
+     * CoAL casing tier.
+     */
+    public static final RecipeMetadataKey<Integer> COAL_CASING_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "coal_casing_tier");
+
+    /**
+     * LFTR output power.
+     */
+    public static final RecipeMetadataKey<Integer> LFTR_OUTPUT_POWER = SimpleRecipeMetadataKey
+        .create(Integer.class, "lftr_output_power");
+
+    /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
      * Will override the fluid input with oxygen/plasma for the respective recipe maps, so there is no point setting it.
      */
@@ -105,7 +186,7 @@ public class GT_RecipeConstants {
         if (!GT_Utility.isArrayOfLength(builder.getItemInputsBasic(), 1)
             || GT_Utility.isArrayEmptyOrNull(builder.getItemOutputs())) return Collections.emptyList();
         int aDuration = builder.getDuration();
-        if ((aDuration = GregTech_API.sRecipeFile.get("arcfurnace", builder.getItemInputBasic(0), aDuration)) <= 0) {
+        if (aDuration <= 0) {
             return Collections.emptyList();
         }
         builder.duration(aDuration);
@@ -291,10 +372,7 @@ public class GT_RecipeConstants {
         if (!builder.isValid()) return Collections.emptyList();
         Integer fuelType = builder.getMetadata(FUEL_TYPE);
         if (fuelType == null) return Collections.emptyList();
-        builder.metadata(
-            FUEL_VALUE,
-            GregTech_API.sRecipeFile
-                .get("fuel_" + fuelType, builder.getItemInputBasic(0), builder.getMetadataOrDefault(FUEL_VALUE, 0)));
+        builder.metadata(FUEL_VALUE, builder.getMetadataOrDefault(FUEL_VALUE, 0));
         return FuelType.get(fuelType)
             .getTarget()
             .doAdd(builder);
@@ -332,5 +410,19 @@ public class GT_RecipeConstants {
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COIL_HEAT);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUSION_THRESHOLD);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUEL_VALUE);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NANO_FORGE_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_EXOTIC_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_PLASMA_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DEFC_CASING_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(CHEMPLANT_CASING_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(QFT_FOCUS_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DISSOLUTION_TANK_RATIO);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RTG_DURATION_IN_DAYS);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(LNG_BASIC_OUTPUT);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NFR_COIL_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NKE_RANGE);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(PRECISE_ASSEMBLER_CASING_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COAL_CASING_TIER);
+
     }
 }

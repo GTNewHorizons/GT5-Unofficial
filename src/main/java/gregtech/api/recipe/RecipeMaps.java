@@ -648,18 +648,16 @@ public final class RecipeMaps {
                     .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount / 2))
                     .setDuration(aDuration * 2 / 3);
             }
-            if (GTPlusPlus.isModLoaded()) {
-                ItemStack cactusCoke = GT_ModHandler.getModItem(GTPlusPlus.ID, "itemCactusCoke", aCoalAmount * 2L);
-                ItemStack sugarCoke = GT_ModHandler.getModItem(GTPlusPlus.ID, "itemSugarCoke", aCoalAmount * 2L);
-                coll.derive()
-                    .setInputs(aInput1, aInput2, cactusCoke)
-                    .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2))
-                    .setDuration(aDuration * 2 / 3);
-                coll.derive()
-                    .setInputs(aInput1, aInput2, sugarCoke)
-                    .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2))
-                    .setDuration(aDuration * 2 / 3);
-            }
+            ItemStack cactusCoke = GT_ModHandler.getModItem(GTPlusPlus.ID, "itemCactusCoke", aCoalAmount * 2L);
+            ItemStack sugarCoke = GT_ModHandler.getModItem(GTPlusPlus.ID, "itemSugarCoke", aCoalAmount * 2L);
+            coll.derive()
+                .setInputs(aInput1, aInput2, cactusCoke)
+                .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2))
+                .setDuration(aDuration * 2 / 3);
+            coll.derive()
+                .setInputs(aInput1, aInput2, sugarCoke)
+                .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2))
+                .setDuration(aDuration * 2 / 3);
             if ((aInput1 == null || aInput1.stackSize <= 6) && (aInput2 == null || aInput2.stackSize <= 6)
                 && (aOutput1 == null || aOutput1.stackSize <= 6)
                 && (aOutput2 == null || aOutput2.stackSize <= 6)) {
@@ -1102,11 +1100,6 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<FuelBackend> ultraHugeNaquadahReactorFuels = RecipeMapBuilder
         .of("gt.recipe.extrahugenaquadahreactor", FuelBackend::new)
-        .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
-        .build();
-    public static final RecipeMap<FuelBackend> fluidNaquadahReactorFuels = RecipeMapBuilder
-        .of("gt.recipe.fluidfuelnaquadahreactor", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
         .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
         .build();

@@ -711,6 +711,8 @@ public class MixerRecipes implements Runnable {
             .eut(16)
             .addTo(mixerRecipes);
 
+        // McGuffium239 is non-renewable and only obtainable though world gen.
+        // It's a meme, don't think too deep about it.
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
@@ -1520,6 +1522,30 @@ public class MixerRecipes implements Runnable {
                 .fluidInputs(Materials.NitroFuel.getFluid(300))
                 .duration(5 * SECONDS)
                 .eut(250)
+                .addTo(mixerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    EnumCube.COKE_BLOCK.getItem(4),
+                    ItemList.SFMixture.get(8),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1),
+                    GT_Utility.getIntegratedCircuit(1))
+                .itemOutputs(ItemList.Block_SSFUEL.get(4))
+                .fluidInputs(Materials.GasolinePremium.getFluid(480))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(mixerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    EnumCube.COKE_BLOCK.getItem(4),
+                    ItemList.SFMixture.get(8),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1),
+                    GT_Utility.getIntegratedCircuit(1))
+                .itemOutputs(ItemList.Block_SSFUEL.get(4))
+                .fluidInputs(Materials.NitroFuel.getFluid(1200))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
                 .addTo(mixerRecipes);
 
             GT_Values.RA.stdBuilder()

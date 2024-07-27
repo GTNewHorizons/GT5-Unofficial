@@ -463,13 +463,6 @@ public class Pulverizer implements Runnable {
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(maceratorRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(getModItem(Railcraft.ID, "cube.crushed.obsidian", 1L))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 1L))
-                .duration(20 * SECONDS)
-                .eut(2)
-                .addTo(maceratorRecipes);
         }
 
         if (AppliedEnergistics2.isModLoaded()) {
@@ -541,27 +534,6 @@ public class Pulverizer implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.brick_stairs, 1, 0))
             .itemOutputs(Materials.Brick.getDustSmall(6))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.CompressedFireclay.get(1))
-            .itemOutputs(Materials.Fireclay.getDustSmall(1))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.Firebrick.get(1))
-            .itemOutputs(Materials.Brick.getDust(1))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.Casing_Firebricks.get(1))
-            .itemOutputs(Materials.Brick.getDust(4))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);

@@ -77,8 +77,9 @@ import gregtech.common.gui.modularui.widget.AESlotWidget;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch_InputBus implements
-    IConfigurationCircuitSupport, IRecipeProcessingAwareHatch, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState {
+public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch_InputBus
+    implements IConfigurationCircuitSupport, IRecipeProcessingAwareHatch, IAddGregtechLogo, IAddUIWidgets,
+    IPowerChannelState, ISmartInputHatch {
 
     private static final int SLOT_COUNT = 16;
     private BaseActionSource requestSource = null;
@@ -92,6 +93,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     private int autoPullRefreshTime = 100;
     private static final int CONFIG_WINDOW_ID = 10;
     private boolean additionalConnection = false;
+    private boolean justHadNewItems = false;
 
     public GT_MetaTileEntity_Hatch_InputBus_ME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
         super(
@@ -319,7 +321,11 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         if (autoPullAvailable) {
             setAutoPullItemList(nbt.getBoolean("autoPull"));
             minAutoPullStackSize = nbt.getInteger("minStackSize");
-            autoPullRefreshTime = nbt.getInteger("refreshTime");
+            // Data sticks created before refreshTime was implemented should not cause stocking buses to
+            // spam divide by zero errors
+            if (nbt.hasKey("refreshTime")) {
+                autoPullRefreshTime = nbt.getInteger("refreshTime");
+            }
         }
 
         additionalConnection = nbt.getBoolean("additionalConnection");
@@ -385,6 +391,24 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public boolean setStackToZeroInsteadOfNull(int aIndex) {
         return aIndex != getManualSlot();
+    }
+
+    @Override
+    public boolean justUpdated() {
+        if (autoPullItemList) {
+            boolean ret = justHadNewItems;
+            justHadNewItems = false;
+            return ret;
+        }
+        return false;
+    }
+
+    @Override
+    public void setInventorySlotContents(int aIndex, ItemStack aStack) {
+        if (aStack != null) {
+            justHadNewItems = true;
+        }
+        super.setInventorySlotContents(aIndex, aStack);
     }
 
     @Override
@@ -455,7 +479,11 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 IAEItemStack currItem = iterator.next();
                 if (currItem.getStackSize() >= minAutoPullStackSize) {
                     ItemStack itemstack = GT_Utility.copyAmount(1, currItem.getItemStack());
+                    ItemStack previous = this.mInventory[index];
                     this.mInventory[index] = itemstack;
+                    if (itemstack != null && previous != null) {
+                        justHadNewItems = !itemstack.isItemEqual(previous);
+                    }
                     index++;
                 }
             }
@@ -512,6 +540,9 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         return checkRecipeResult;
     }
 
+    /**
+     * Update the right side of the GUI, which shows the amounts of items set on the left side
+     */
     public ItemStack updateInformationSlot(int aIndex, ItemStack aStack) {
         if (aIndex >= 0 && aIndex < SLOT_COUNT) {
             if (aStack == null) {
@@ -529,7 +560,13 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     request.setStackSize(Integer.MAX_VALUE);
                     IAEItemStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
                     ItemStack s = (result != null) ? result.getItemStack() : null;
+                    // We want to track changes in any ItemStack to notify any connected controllers to make a recipe
+                    // check early
+                    ItemStack previous = getStackInSlot(aIndex + SLOT_COUNT);
                     setInventorySlotContents(aIndex + SLOT_COUNT, s);
+                    if (s != null && previous != null) {
+                        justHadNewItems = !s.isItemEqual(previous);
+                    }
                     return s;
                 } catch (final GridAccessException ignored) {}
             }

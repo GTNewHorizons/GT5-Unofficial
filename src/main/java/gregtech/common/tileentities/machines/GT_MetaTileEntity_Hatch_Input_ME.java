@@ -81,13 +81,16 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_Input
-    implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets, IRecipeProcessingAwareHatch {
+    implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets, IRecipeProcessingAwareHatch, ISmartInputHatch {
 
     private static final int SLOT_COUNT = 16;
 
     protected final FluidStack[] storedFluids = new FluidStack[SLOT_COUNT];
     protected final FluidStack[] storedInformationFluids = new FluidStack[SLOT_COUNT];
 
+    // these two fields should ALWAYS be mutated simultaneously
+    // in most cases, you should call setSavedFluid() instead of trying to write to the array directly
+    // a desync of these two fields can lead to catastrophe
     protected final FluidStack[] shadowStoredFluids = new FluidStack[SLOT_COUNT];
     private final int[] savedStackSizes = new int[SLOT_COUNT];
 
@@ -103,6 +106,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     protected int minAutoPullAmount = 1;
     private int autoPullRefreshTime = 100;
     protected boolean processingRecipe = false;
+    private boolean justHadNewItems = false;
 
     protected static final int CONFIG_WINDOW_ID = 10;
 
@@ -164,7 +168,11 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 IAEFluidStack currItem = iterator.next();
                 if (currItem.getStackSize() >= minAutoPullAmount) {
                     FluidStack fluidStack = GT_Utility.copyAmount(1, currItem.getFluidStack());
+                    FluidStack previous = storedFluids[index];
                     storedFluids[index] = fluidStack;
+                    if (fluidStack != null) {
+                        justHadNewItems = !fluidStack.isFluidEqual(previous);
+                    }
                     index++;
                 }
             }
@@ -178,6 +186,11 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
     @Override
     public boolean displaysStackSize() {
         return true;
+    }
+
+    protected void setSavedFluid(int i, FluidStack stack) {
+        shadowStoredFluids[i] = stack;
+        savedStackSizes[i] = stack == null ? 0 : stack.amount;
     }
 
     public FluidStack[] getStoredFluids() {
@@ -194,19 +207,26 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
 
         for (int i = 0; i < SLOT_COUNT; i++) {
             if (storedFluids[i] == null) {
-                shadowStoredFluids[i] = null;
+                setSavedFluid(i, null);
                 continue;
             }
 
             FluidStack fluidStackWithAmount = storedInformationFluids[i];
-            // Nothing in stock, no need to save anything
-            if (fluidStackWithAmount == null) continue;
 
-            shadowStoredFluids[i] = fluidStackWithAmount;
-            savedStackSizes[i] = fluidStackWithAmount.amount;
+            setSavedFluid(i, fluidStackWithAmount);
         }
 
         return shadowStoredFluids;
+    }
+
+    @Override
+    public boolean justUpdated() {
+        if (autoPullFluidList) {
+            boolean ret = justHadNewItems;
+            justHadNewItems = false;
+            return ret;
+        }
+        return false;
     }
 
     @Override
@@ -259,8 +279,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 checkRecipeResult = SimpleCheckRecipeResult
                     .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
             }
-            shadowStoredFluids[i] = null;
-            savedStackSizes[i] = 0;
+            setSavedFluid(i, null);
             if (storedInformationFluids[i] != null && storedInformationFluids[i].amount <= 0) {
                 storedInformationFluids[i] = null;
             }
@@ -377,7 +396,13 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             request.setStackSize(Integer.MAX_VALUE);
             IAEFluidStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
             FluidStack resultFluid = (result != null) ? result.getFluidStack() : null;
+            // We want to track if any FluidStack is modified to notify any connected controllers to make a recipe check
+            // early
+            FluidStack previous = storedInformationFluids[index];
             storedInformationFluids[index] = resultFluid;
+            if (resultFluid != null) {
+                justHadNewItems = !resultFluid.isFluidEqual(previous);
+            }
         } catch (final GridAccessException ignored) {}
     }
 
@@ -402,12 +427,11 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             if (GT_Utility.areFluidsEqual(fluidStack, storedFluids[i], false)) {
                 updateInformationSlot(i);
                 if (storedInformationFluids[i] != null) {
-                    shadowStoredFluids[i] = storedInformationFluids[i];
-                    savedStackSizes[i] = storedInformationFluids[i].amount;
+                    setSavedFluid(i, storedInformationFluids[i]);
                     return shadowStoredFluids[i];
                 }
 
-                shadowStoredFluids[i] = null;
+                setSavedFluid(i, null);
                 return null;
             }
         }
