@@ -233,6 +233,16 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.TranscendentMetal, 1L),
+                ItemList.EnergisedTesseract.get(8))
+            .itemOutputs(ItemList.Phononic_Seed_Crystal.get(8L))
+            .fluidInputs(Materials.Grade8PurifiedWater.getFluid(32_000L))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_UMV)
+            .addTo(autoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.round, MaterialsUEVplus.MagMatter, 1))
             .itemOutputs(ItemList.Phononic_Seed_Crystal.get(5))
             .fluidInputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(250))

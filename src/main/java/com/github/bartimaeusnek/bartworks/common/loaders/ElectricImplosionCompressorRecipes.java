@@ -82,16 +82,6 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         }
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.TranscendentMetal, 1L),
-                ItemList.EnergisedTesseract.get(8))
-            .itemOutputs(ItemList.Phononic_Seed_Crystal.get(8L))
-            .fluidInputs(MaterialsUEVplus.Mellion.getMolten(128 * 144L))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_UMV)
-            .addTo(electricImplosionCompressorRecipes);
-
-        GT_Values.RA.stdBuilder()
             .itemInputs(getModItem(GoodGenerator.ID, "highDensityPlutoniumNugget", 5L))
             .itemOutputs(getModItem(GoodGenerator.ID, "highDensityPlutonium", 1L))
             .fluidInputs(Materials.Neutronium.getMolten(72L))

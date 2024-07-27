@@ -656,7 +656,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialsUEVplus.SixPhasedCopper.getNanite(1),
                 Materials.Dilithium.getDust(16),
                 GT_Utility.getIntegratedCircuit(2))
-            .fluidInputs(MaterialsUEVplus.Mellion.getMolten(16 * 144L))
+            .fluidInputs(MaterialsUEVplus.Mellion.getMolten(128 * 144L))
             .fluidOutputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(1000))
             .duration(300 * SECONDS)
             .eut((int) TierEU.RECIPE_UIV)
