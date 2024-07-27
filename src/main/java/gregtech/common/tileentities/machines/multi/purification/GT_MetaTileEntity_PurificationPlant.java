@@ -229,7 +229,13 @@ public class GT_MetaTileEntity_PurificationPlant
                     + EnumChatFormatting.ITALIC
                     + "purification processes, and this multiblock is the heart of the operation.")
             .addInfo(AuthorNotAPenguin)
-            .beginStructureBlock(49, 9, 49, false)
+            .beginStructureBlock(7, 9, 8, false)
+            .addCasingInfoExactlyColored(
+                "Superplasticizer-Treated High Strength Concrete",
+                EnumChatFormatting.GRAY,
+                56,
+                EnumChatFormatting.GOLD,
+                false)
             .addCasingInfoExactlyColored(
                 "Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,

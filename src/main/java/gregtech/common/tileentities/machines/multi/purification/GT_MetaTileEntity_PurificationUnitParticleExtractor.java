@@ -18,13 +18,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -77,13 +75,13 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
         // spotless:on
 
     // Dimensionally transcendent casing (placeholder)
-    private static final int CASING_INDEX_MAIN = getTextureIndex(GregTech_API.sBlockCasings1, 12);
+    private static final int CASING_INDEX_MAIN = getTextureIndex(GregTech_API.sBlockCasings10, 2);
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitParticleExtractor> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitParticleExtractor>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
         .addElement('A', ofFrame(Materials.Bedrockium))
-        // Dimensionally transcendent casing (placeholder)
+        // quark containment casing (placeholder name)
         .addElement(
             'B',
             ofChain(
@@ -93,15 +91,15 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
                         .dot(1)
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
-                ofBlock(GregTech_API.sBlockCasings1, 12)))
-        // Dimensional bridge (placeholder)
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings1, 14))
+                ofBlock(GregTech_API.sBlockCasings10, 2)))
+        // Quark pipe block (placeholder name)
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 14))
         // Naquadah Water Plant Casing (maybe placeholder)
         .addElement('D', ofBlock(GregTech_API.sBlockCasings9, 7))
-        // High power casing (placeholder)
-        .addElement('E', lazy(t -> ofBlock(TT_Container_Casings.sBlockCasingsTT, 0)))
-        // Blue glass (placeholder, currently set to vanilla glass)
-        .addElement('F', ofBlock(Blocks.stained_glass, 9))
+        // Quark release chamber (placeholder name)
+        .addElement('E', ofBlock(GregTech_API.sBlockCasings9, 15))
+        // Quark Containment Glass
+        .addElement('F', ofBlock(GregTech_API.sBlockGlass1, 3))
         .build();
 
     private static class CatalystCombination {
