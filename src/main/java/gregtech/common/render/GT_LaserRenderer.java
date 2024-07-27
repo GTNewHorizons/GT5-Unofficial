@@ -1,19 +1,14 @@
 package gregtech.common.render;
 
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import gregtech.common.tileentities.render.TileLaser;
-
-// TODO purge the line model
 
 public class GT_LaserRenderer extends TileEntitySpecialRenderer {
 
@@ -25,9 +20,6 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
 
     // Originally was 0.6F
     private float lineOpacity = 1.0F;
-
-    private static final IModelCustom lasermodel = AdvancedModelLoader
-        .loadModel(new ResourceLocation("gregtech", "textures/model/laser.obj"));
 
     public GT_LaserRenderer() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileLaser.class, this);
@@ -43,15 +35,15 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.setColorRGBA_F(laser.getRed(), laser.getGreen(), laser.getBlue(), lineOpacity);
-        tessellator.addVertex(x1 - lineRadius,  y1,  z1);
-        tessellator.addVertex(x1 + lineRadius,  y1,  z1);
-        tessellator.addVertex(x2 + lineRadius,  y2,  z2);
-        tessellator.addVertex(x2 - lineRadius,  y2,  z2);
+        tessellator.addVertex(x1 - lineRadius, y1, z1);
+        tessellator.addVertex(x1 + lineRadius, y1, z1);
+        tessellator.addVertex(x2 + lineRadius, y2, z2);
+        tessellator.addVertex(x2 - lineRadius, y2, z2);
 
-        tessellator.addVertex(x1,  y1,  z1 - lineRadius);
-        tessellator.addVertex(x1,  y1,  z1 + lineRadius);
-        tessellator.addVertex(x2,  y2,  z2 + lineRadius);
-        tessellator.addVertex(x2,  y2,  z2 - lineRadius);
+        tessellator.addVertex(x1, y1, z1 - lineRadius);
+        tessellator.addVertex(x1, y1, z1 + lineRadius);
+        tessellator.addVertex(x2, y2, z2 + lineRadius);
+        tessellator.addVertex(x2, y2, z2 - lineRadius);
         tessellator.draw();
     }
 
