@@ -112,7 +112,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             'a',
             buildHatchAdder(GT_MetaTileEntity_IndustrialLaserEngraver.class)
                 .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
-                .casingIndex(((GT_Block_Casings4) GregTech_API.sBlockCasings4).getTextureIndex(0))
+                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(1))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(
