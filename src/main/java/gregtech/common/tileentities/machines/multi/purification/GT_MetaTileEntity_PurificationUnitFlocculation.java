@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
@@ -111,6 +112,9 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
 
     private static final int MAIN_CASING_INDEX = getTextureIndex(GregTech_API.sBlockCasings9, 6);
 
+    private int casingCount = 0;
+    private static final int MIN_CASING = 56;
+
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitFlocculation> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitFlocculation>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
@@ -134,7 +138,7 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
                         .dot(1)
                         .build()),
                 // Clean Flocculation Casing
-                ofBlock(GregTech_API.sBlockCasings9, 6)))
+                onElementPass(t -> t.casingCount++, ofBlock(GregTech_API.sBlockCasings9, 6))))
         // Reinforced Sterile Water Plant Casing
         .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 5))
         // Sterile Water Plant Casing
@@ -233,6 +237,7 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        casingCount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
 
         // At most two input hatches allowed
@@ -244,6 +249,8 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
         if (mOutputHatches.size() > 2) {
             return false;
         }
+
+        if (casingCount < MIN_CASING) return false;
 
         return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
@@ -319,7 +326,7 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
             .addCasingInfoRangeColored(
                 "Slick Sterile Flocculation Casing",
                 EnumChatFormatting.GRAY,
-                60,
+                MIN_CASING,
                 65,
                 EnumChatFormatting.GOLD,
                 false)

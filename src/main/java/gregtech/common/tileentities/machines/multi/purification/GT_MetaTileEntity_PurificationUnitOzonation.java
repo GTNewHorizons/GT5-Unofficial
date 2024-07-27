@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
@@ -75,6 +76,9 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
      */
     public static final int MAX_OZONE_GAS_FOR_EXPLOSION = 1000 * (int) Math.pow(2, 10);
 
+    private int casingCount = 0;
+    private static final int MIN_CASING = 96;
+
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitOzonation> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitOzonation>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
@@ -96,7 +100,7 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
                         .casingIndex(getTextureIndex(GregTech_API.sBlockCasings9, 10))
                         .dot(1)
                         .build()),
-                ofBlock(GregTech_API.sBlockCasings9, 10)))
+                onElementPass(t -> t.casingCount++, ofBlock(GregTech_API.sBlockCasings9, 10))))
         // High Pressure Resistant Casing (possibly placeholder name)
         .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 9))
         // PTFE pipe casing
@@ -233,7 +237,7 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
             .addCasingInfoRangeColored(
                 "Inert Filtration Casing",
                 EnumChatFormatting.GRAY,
-                99,
+                MIN_CASING,
                 102,
                 EnumChatFormatting.GOLD,
                 false)
@@ -302,7 +306,9 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        casingCount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z)) return false;
+        if (casingCount < MIN_CASING) return false;
         return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 

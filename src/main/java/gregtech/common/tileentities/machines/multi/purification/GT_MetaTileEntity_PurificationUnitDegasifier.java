@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi.purification;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorNotAPenguin;
@@ -82,10 +83,12 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
         { "      AAAAA      ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "      AAAAA      " } };
     // spotless:on
 
+    private int casingCount = 0;
+    private static final int MIN_CASING = 780;
+
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitDegasifier> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitDegasifier>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        // PLACEHOLDER ELEMENTS
         .addElement(
             'A',
             ofChain(
@@ -96,7 +99,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
                         .dot(1)
                         .cacheHint(() -> "Input Hatch, Output Hatch, Control Hatch")
                         .build()),
-                ofBlock(GregTech_API.sBlockCasings9, 11)))
+                onElementPass(t -> t.casingCount++, ofBlock(GregTech_API.sBlockCasings9, 11))))
         // Omni-purpose infinity fused glass
         .addElement('B', ofBlock(GregTech_API.sBlockGlass1, 2))
         .addElement('C', ofFrame(Materials.Bedrockium))
@@ -473,7 +476,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
             .addCasingInfoRangeColored(
                 "Heat-Resistant Trinium Plated Casing",
                 EnumChatFormatting.GRAY,
-                780,
+                MIN_CASING,
                 803,
                 EnumChatFormatting.GOLD,
                 false)
@@ -732,8 +735,10 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        this.casingCount = 0;
         this.controlHatch = null;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
+        if (casingCount < MIN_CASING) return false;
         return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 
