@@ -7,6 +7,7 @@ import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.GT_Values.AuthorNotAPenguin;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
@@ -41,6 +42,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
 import gregtech.common.items.ID_MetaItem_03;
 
@@ -241,8 +243,44 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Purification Unit");
-        tt.toolTipFinisher("GregTech");
+        tt.addMachineType("Purification Unit")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.BOLD
+                    + "Water Tier: "
+                    + EnumChatFormatting.WHITE
+                    + GT_Utility.formatNumbers(getWaterTier())
+                    + EnumChatFormatting.RESET)
+            .addInfo("Controller block for the Quark Extractor Purification Unit.")
+            .addInfo("Must be linked to a Purification Plant to work.")
+            .addSeparator()
+            .addInfo(
+                "Insert " + EnumChatFormatting.WHITE
+                    + "Quark Releasing Catalysts "
+                    + EnumChatFormatting.GRAY
+                    + "into the input bus while running.")
+            .addInfo(
+                "Every recipe cycle, a different combination of " + EnumChatFormatting.RED
+                    + "2"
+                    + EnumChatFormatting.GRAY
+                    + " different "
+                    + EnumChatFormatting.WHITE
+                    + "Quark Releasing Catalysts")
+            .addInfo("will correctly identify the lone quark and succeed the recipe.")
+            .addSeparator()
+            .addInfo(
+                "Every " + EnumChatFormatting.RED
+                    + "20"
+                    + EnumChatFormatting.GRAY
+                    + " ticks, consumes ALL catalysts in the input bus.")
+            .addInfo(
+                "If the two most recently inserted catalysts were the correct combination, immediately outputs "
+                    + EnumChatFormatting.WHITE
+                    + "Stabilised Baryonic Matter")
+            .addInfo("At the end of the recipe, all incorrectly inserted catalysts are returned in the output bus.")
+            .addSeparator()
+            .addInfo(AuthorNotAPenguin)
+            .toolTipFinisher("GregTech");
         return tt;
     }
 
