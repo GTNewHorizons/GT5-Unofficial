@@ -64,6 +64,14 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+// TODO:
+// GIVE LASER PLATE A BLOCK ITEM
+// SUPPORT MORE LENSES
+// SPECIAL RENDER FOR SPECIAL LENSES?
+// FIX DESYNC/PAUSE ON RENDERER
+// FORK THE COREMOD FOR RECIPES
+// FIX OR BAN ROTATION
+
 public class GT_MetaTileEntity_IndustrialLaserEngraver
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_IndustrialLaserEngraver>
     implements ISurvivalConstructable {
@@ -73,40 +81,9 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         .<GT_MetaTileEntity_IndustrialLaserEngraver>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            // spotless:off
-            (
-                new String[][]{{
-                    "  f  ",
-                    "     ",
-                    "     ",
-                    "     ",
-                    " a~a "
-                },{
-                    " fsf ",
-                    "  g  ",
-                    "  g  ",
-                    "a g a",
-                    "aaraa"
-                },{
-                    "faaaf",
-                    "f   f",
-                    "f   f",
-                    "a   a",
-                    "aaaaa"
-                },{
-                    "aaaaa",
-                    "a a a",
-                    "a a a",
-                    "a a a",
-                    "aaaaa"
-                },{
-                    "aaaaa",
-                    "aaaaa",
-                    "aaaaa",
-                    "aaaaa",
-                    "aaaaa"
-                }}))
-            //spotless:on
+            (new String[][] { { "  f  ", "     ", "     ", "     ", " a~a " },
+                { " fsf ", "  g  ", "  g  ", "a g a", "aaraa" }, { "faaaf", "f   f", "f   f", "a   a", "aaaaa" },
+                { "aaaaa", "a a a", "a a a", "a a a", "aaaaa" }, { "aaaaa", "aaaaa", "aaaaa", "aaaaa", "aaaaa" } }))
         .addElement(
             'a',
             buildHatchAdder(GT_MetaTileEntity_IndustrialLaserEngraver.class)
@@ -354,7 +331,6 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GT_Recipe recipe) {
                 Colors c = Colors.Red;
-                // TODO: There has to be a better way to do this
                 for (int i = 0; i < recipe.mInputs.length; i++) {
                     String uid = getUniqueIdentifier(recipe.mInputs[i]);
                     if (lensColors.containsKey(uid)) {

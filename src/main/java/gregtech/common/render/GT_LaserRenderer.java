@@ -16,10 +16,10 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
     private double xOffset = 0.0;
 
     // Relative to block size
-    private double lineRadius = 0.03;
+    final private double lineRadius = 0.03;
 
     // Originally was 0.6F
-    private float lineOpacity = 0.7F;
+    final private float lineOpacity = 0.7F;
 
     public GT_LaserRenderer() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileLaser.class, this);
