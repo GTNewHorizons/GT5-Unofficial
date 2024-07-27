@@ -59,7 +59,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.LaserRenderingUtil;
 import gregtech.common.blocks.GT_Block_Casings10;
-import gregtech.common.blocks.GT_Block_Casings4;
 import gregtech.common.tileentities.render.TileLaser;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;

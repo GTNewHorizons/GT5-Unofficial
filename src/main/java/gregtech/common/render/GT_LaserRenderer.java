@@ -44,7 +44,7 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glColor4f(ltile.getRed(), ltile.getGreen(), ltile.getBlue(), 0.6F); // change this for your colour
-            GL11.glLineWidth(5F);
+            GL11.glLineWidth(3F);
             GL11.glDepthMask(false);
 
             Tessellator tessellator = Tessellator.instance;
