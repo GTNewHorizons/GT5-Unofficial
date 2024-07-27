@@ -368,7 +368,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 if (upgrades[29]) {
                     maxModuleCount += 4;
                 }
-                if (mInputBusses != null) {
+                if (mInputBusses.size() != 0) {
                     if (internalBattery == 0) {
                         GT_MetaTileEntity_Hatch_InputBus inputBus = mInputBusses.get(0);
                         ItemStack[] inputBusInventory = inputBus.getRealInventory();
