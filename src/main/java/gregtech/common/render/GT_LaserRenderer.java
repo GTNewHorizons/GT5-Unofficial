@@ -3,6 +3,7 @@ package gregtech.common.render;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
@@ -16,10 +17,10 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
     private double xOffset = 0.0;
 
     // Relative to block size
-    private double lineRadius = 0.02;
+    private double lineRadius = 0.03;
 
     // Originally was 0.6F
-    private float lineOpacity = 1.0F;
+    private float lineOpacity = 0.7F;
 
     public GT_LaserRenderer() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileLaser.class, this);
@@ -52,7 +53,6 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
         final TileLaser ltile = (TileLaser) tile;
 
         if (ltile.getShouldRender()) {
-
             // Push GL state
             GL11.glPushMatrix();
             GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
