@@ -101,7 +101,7 @@ public class GT_PurifiedWaterRecipes {
                 .noOptimize()
                 .fluidInputs(Materials.Air.getGas(10000L))
                 .fluidOutputs(Materials.Ozone.getGas(2000L))
-                .duration(10 * SECONDS)
+                .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(laserEngraverRecipes);
         }
