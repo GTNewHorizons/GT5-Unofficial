@@ -513,7 +513,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials.SulfuricNaphtha.getFluid(600),
                 MaterialsKevlar.NaphthenicAcid.getFluid(15),
                 Materials.SulfuricGas.getGas(1600))
-            .duration(1 * SECONDS + 12 * TICKS)
+            .duration(1 * SECONDS + 1 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(distillationTowerRecipes);
 
@@ -539,7 +539,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials.SulfuricNaphtha.getFluid(400),
                 MaterialsKevlar.NaphthenicAcid.getFluid(50),
                 Materials.SulfuricGas.getGas(400))
-            .duration(1 * SECONDS + 12 * TICKS)
+            .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(distillationTowerRecipes);
 
@@ -650,7 +650,7 @@ public class DistilleryRecipes implements Runnable {
             new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(5), Materials.SulfuricLightFuel.getFluid(20),
                 Materials.SulfuricNaphtha.getFluid(60), Materials.SulfuricGas.getGas(160) },
             null,
-            20,
+            10,
             96);
         addUniversalDistillationRecipewithCircuit(
             Materials.OilMedium.getFluid(100),
@@ -658,7 +658,7 @@ public class DistilleryRecipes implements Runnable {
             new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(10), Materials.SulfuricLightFuel.getFluid(40),
                 Materials.SulfuricNaphtha.getFluid(135), Materials.SulfuricGas.getGas(50) },
             null,
-            30,
+            20,
             96);
         addUniversalDistillationRecipewithCircuit(
             Materials.Oil.getFluid(100L),
@@ -666,7 +666,7 @@ public class DistilleryRecipes implements Runnable {
             new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(30), Materials.SulfuricLightFuel.getFluid(100),
                 Materials.SulfuricNaphtha.getFluid(40), Materials.SulfuricGas.getGas(40) },
             null,
-            60,
+            30,
             96);
         addUniversalDistillationRecipewithCircuit(
             Materials.OilHeavy.getFluid(100),
@@ -674,7 +674,7 @@ public class DistilleryRecipes implements Runnable {
             new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(95), Materials.SulfuricLightFuel.getFluid(55),
                 Materials.SulfuricNaphtha.getFluid(30), Materials.SulfuricGas.getGas(20) },
             null,
-            30,
+            40,
             288);
 
         // 2 0.5HCl(Diluted) = HCl + H2O
