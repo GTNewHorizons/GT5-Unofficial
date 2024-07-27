@@ -6,9 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
-
-public class WeakTargetRef<T extends IMultiTileEntity> {
+public class WeakTargetRef<T extends TileEntity> {
 
     protected final ChunkCoordinates position = new ChunkCoordinates(0, -1, 0);
     protected final Class<?> targetClass;
@@ -30,8 +28,8 @@ public class WeakTargetRef<T extends IMultiTileEntity> {
         if (!targetClass.isInstance(newTarget)) {
             throw new IllegalArgumentException("Target is not of the correct type");
         }
-        position.set(newTarget.getXCoord(), newTarget.getYCoord(), newTarget.getZCoord());
-        world = newTarget.getWorld();
+        position.set(newTarget.xCoord, newTarget.yCoord, newTarget.zCoord);
+        world = newTarget.getWorldObj();
     }
 
     public void setWorld(World world) {
@@ -55,7 +53,7 @@ public class WeakTargetRef<T extends IMultiTileEntity> {
             return resolveTarget();
         }
         T result = target.get();
-        if (result == null || result.isDead()) {
+        if (result == null) {
             result = resolveTarget();
             if (result != null) {
                 target = new WeakReference<>(result);

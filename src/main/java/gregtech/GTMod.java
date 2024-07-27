@@ -173,7 +173,8 @@ import ic2.api.recipe.RecipeOutput;
         + " after:UndergroundBiomes;"
         + " after:TConstruct;"
         + " after:Translocator;"
-        + " after:gendustry;")
+        + " after:gendustry;"
+        + " after:mutecore;")
 public class GTMod implements IGTMod {
 
     static {

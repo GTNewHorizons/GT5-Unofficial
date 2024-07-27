@@ -73,10 +73,16 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
+<<<<<<< HEAD:src/main/java/gregtech/common/GTClient.java
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 import gregtech.api.net.GTPacketClientPreference;
 import gregtech.api.objects.GTItemStack;
+=======
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.net.GT_Packet_ClientPreference;
+import gregtech.api.objects.GT_ItemStack;
+>>>>>>> 295704b8ca (remove old mutes):src/main/java/gregtech/common/GT_Client.java
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
@@ -90,6 +96,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.GTMouseEventHandler;
 import gregtech.client.SeekingOggCodec;
+<<<<<<< HEAD:src/main/java/gregtech/common/GTClient.java
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.pollution.Pollution;
@@ -108,6 +115,21 @@ import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
 import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
+=======
+import gregtech.common.blocks.GT_Block_FrameBox;
+import gregtech.common.blocks.GT_Item_Machines;
+import gregtech.common.render.GT_CapeRenderer;
+import gregtech.common.render.GT_FlaskRenderer;
+import gregtech.common.render.GT_FluidDisplayStackRenderer;
+import gregtech.common.render.GT_LaserRenderer;
+import gregtech.common.render.GT_MetaGenerated_Tool_Renderer;
+import gregtech.common.render.GT_PollutionRenderer;
+import gregtech.common.render.GT_RenderDrone;
+import gregtech.common.render.GT_Renderer_Block;
+import gregtech.common.render.GT_WormholeRenderer;
+import gregtech.common.render.items.GT_MetaGenerated_Item_Renderer;
+import gregtech.common.tileentities.debug.GT_MetaTileEntity_AdvDebugStructureWriter;
+>>>>>>> 295704b8ca (remove old mutes):src/main/java/gregtech/common/GT_Client.java
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.misc.GTBees;
 import gregtech.loaders.preload.GTPreLoad;
@@ -631,12 +653,19 @@ public class GTClient extends GTProxy implements Runnable {
     @Override
     public void onLoad() {
         super.onLoad();
+<<<<<<< HEAD:src/main/java/gregtech/common/GTClient.java
         GTRendererBlock.register();
         new MultiTileRenderer();
         new DroneRender();
         new LaserRenderer();
         new WormholeRenderer();
         new BlackholeRenderer();
+=======
+        GT_Renderer_Block.register();
+        new GT_RenderDrone();
+        new GT_LaserRenderer();
+        new GT_WormholeRenderer();
+>>>>>>> 295704b8ca (remove old mutes):src/main/java/gregtech/common/GT_Client.java
 
         metaGeneratedItemRenderer = new MetaGeneratedItemRenderer();
         for (MetaGeneratedItem item : MetaGeneratedItem.sInstances.values()) {
@@ -826,10 +855,17 @@ public class GTClient extends GTProxy implements Runnable {
             }
         }
 
+<<<<<<< HEAD:src/main/java/gregtech/common/GTClient.java
         if (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sWireCutterList)
             || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sSolderingToolList)
             || (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sSoftHammerList)
                 && aTileEntity instanceof MultiBlockPart) && aEvent.player.isSneaking()) {
+=======
+        if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWireCutterList)
+            || GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sSolderingToolList)
+            || (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sSoftHammerList))
+                && aEvent.player.isSneaking()) {
+>>>>>>> 295704b8ca (remove old mutes):src/main/java/gregtech/common/GT_Client.java
             if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
                 drawGrid(aEvent, false, false, aEvent.player.isSneaking());
             return;

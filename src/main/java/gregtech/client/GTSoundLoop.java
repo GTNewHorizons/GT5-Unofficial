@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 
 @SideOnly(Side.CLIENT)
 public class GTSoundLoop extends MovingSound {
@@ -33,6 +32,7 @@ public class GTSoundLoop extends MovingSound {
         volume = VOLUME_RAMP;
     }
 
+<<<<<<< HEAD:src/main/java/gregtech/client/GTSoundLoop.java
     public GTSoundLoop(ResourceLocation sound, MultiTileBasicMachine base, boolean stopWhenActive,
         boolean stopWhenInactive) {
         super(sound);
@@ -46,6 +46,8 @@ public class GTSoundLoop extends MovingSound {
         volume = VOLUME_RAMP;
     }
 
+=======
+>>>>>>> 295704b8ca (remove old mutes):src/main/java/gregtech/client/GT_SoundLoop.java
     @Override
     public void update() {
         if (donePlaying) {
@@ -67,11 +69,6 @@ public class GTSoundLoop extends MovingSound {
         TileEntity tile = world.getTileEntity((int) xPosF, (int) yPosF, (int) zPosF);
         if ((tile instanceof IGregTechTileEntity)) {
             fadeMe |= ((IGregTechTileEntity) tile).isActive() ? whileActive : whileInactive;
-            return;
-        }
-
-        if ((tile instanceof MultiTileBasicMachine)) {
-            fadeMe |= ((MultiTileBasicMachine) tile).isActive() ? whileActive : whileInactive;
             return;
         }
 

@@ -1,10 +1,14 @@
 package gregtech.api.multitileentity.enums;
 
+<<<<<<< HEAD
 import static gregtech.api.util.GT_StructureUtilityMuTE.createMuTEStructureCasing;
 import static gregtech.loaders.preload.GT_Loader_MultiTileEntities.CASING_REGISTRY_NAME;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.util.GT_StructureUtilityMuTE;
+=======
+import gregtech.api.enums.GT_Values;
+>>>>>>> 295704b8ca (remove old mutes)
 
 public enum GT_MultiTileCasing {
 
@@ -22,22 +26,12 @@ public enum GT_MultiTileCasing {
     NONE(GTValues.W);
 
     private final int meta;
-    private final GT_StructureUtilityMuTE.MuTEStructureCasing casing;
 
     GT_MultiTileCasing(int meta) {
         this.meta = meta;
-        casing = createMuTEStructureCasing(CASING_REGISTRY_NAME, meta);
     }
 
     public int getId() {
         return meta;
-    }
-
-    public short getRegistryId() {
-        return (short) casing.getRegistryId();
-    }
-
-    public GT_StructureUtilityMuTE.MuTEStructureCasing getCasing() {
-        return casing;
     }
 }

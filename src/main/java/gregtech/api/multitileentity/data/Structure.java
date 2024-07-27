@@ -5,7 +5,6 @@ import com.gtnewhorizons.mutecore.shadow.dev.dominion.ecs.api.Entity;
 
 public class Structure {
 
-
     private IStructureDefinition<Entity> definition;
 
     public Structure(IStructureDefinition<Entity> definition) {

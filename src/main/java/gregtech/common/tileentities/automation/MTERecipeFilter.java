@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
@@ -34,6 +33,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
+<<<<<<< HEAD:src/main/java/gregtech/common/tileentities/automation/MTERecipeFilter.java
 import gregtech.api.metatileentity.implementations.MTESpecialFilter;
 import gregtech.api.multitileentity.MultiTileEntityItem;
 import gregtech.api.recipe.RecipeMap;
@@ -41,6 +41,13 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
+=======
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SpecialFilter;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.GT_Item_Machines;
+>>>>>>> 295704b8ca (remove old mutes):src/main/java/gregtech/common/tileentities/automation/GT_MetaTileEntity_RecipeFilter.java
 
 public class MTERecipeFilter extends MTESpecialFilter {
 
@@ -74,8 +81,6 @@ public class MTERecipeFilter extends MTESpecialFilter {
             IMetaTileEntity metaTileEntity = ItemMachines.getMetaTileEntity(stack);
             if (metaTileEntity != null) {
                 return getMetaTileEntityRecipeMap(metaTileEntity);
-            } else if (stack.getItem() instanceof MultiTileEntityItem) {
-                return getMuTeRecipeMap(stack);
             }
         }
         return null;
@@ -89,10 +94,6 @@ public class MTERecipeFilter extends MTESpecialFilter {
     }
 
     private static RecipeMap<?> getMuTeRecipeMap(@NotNull ItemStack stack) {
-        final TileEntity tileEntity = GT_Loader_MultiTileEntities.MACHINE_REGISTRY.getReferenceTileEntity(stack);
-        if (tileEntity instanceof RecipeMapWorkable recipeMapWorkable) {
-            return recipeMapWorkable.getRecipeMap();
-        }
         return null;
     }
 

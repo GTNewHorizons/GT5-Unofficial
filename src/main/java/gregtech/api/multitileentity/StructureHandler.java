@@ -1,5 +1,7 @@
 package gregtech.api.multitileentity;
 
+import net.minecraft.item.ItemStack;
+
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -7,13 +9,11 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizons.mutecore.api.data.Coordinates;
-import com.gtnewhorizons.mutecore.api.data.WorldContainer;
 import com.gtnewhorizons.mutecore.shadow.dev.dominion.ecs.api.Entity;
 
 import gregtech.api.multitileentity.data.Structure;
-import net.minecraft.item.ItemStack;
 
-public class StructureHandler implements IAlignment, ISurvivalConstructable {
+public abstract class StructureHandler implements IAlignment, ISurvivalConstructable {
 
     Entity entity;
 
@@ -21,15 +21,19 @@ public class StructureHandler implements IAlignment, ISurvivalConstructable {
         this.entity = entity;
     }
 
-    @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
+    protected void construct(ItemStack stackSize, int offsetX, int offsetY, int offsetZ, boolean hintsOnly) {
         Coordinates coords = entity.get(Coordinates.class);
-        getStructureDefinition().buildOrHints(entity, stackSize, entity.get(WorldContainer.class).getWorld(), getExtendedFacing(), coords.getX(), coords.getY(), coords.getZ(), hintsOnly);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return ISurvivalConstructable.super.survivalConstruct(stackSize, elementBudget, env);
+        return 0;
+    }
+
+    protected int survivalConstruct(ItemStack stackSize, int offsetX, int offsetY, int offsetZ, int elementBudget,
+        ISurvivalBuildEnvironment env) {
+        Coordinates coords = entity.get(Coordinates.class);
+        return 0;
     }
 
     @Override
@@ -55,6 +59,7 @@ public class StructureHandler implements IAlignment, ISurvivalConstructable {
 
     @Override
     public IStructureDefinition<Entity> getStructureDefinition() {
-        return entity.get(Structure.class).getDefinition();
+        return entity.get(Structure.class)
+            .getDefinition();
     }
 }
