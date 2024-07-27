@@ -78,6 +78,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_RecipeMapUtil;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.machines.multi.purification.PurifiedWaterHelpers;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
@@ -303,6 +304,22 @@ public final class RecipeMaps {
         .slotOverlays(
             (index, isFluid, isOutput,
                 isSpecial) -> !isFluid && !isOutput && index != 0 ? GT_UITextures.OVERLAY_SLOT_LENS : null)
+        // Add a simple ordering so lower tier purified water is displayed first, otherwise it gets really confusing
+        .neiRecipeComparator((a, b) -> {
+            // Find lens, if no lens was present we can use the default comparator
+            if (a.mInputs.length > 1 && b.mInputs.length > 1) {
+                ItemStack firstLens = a.mInputs[a.mInputs.length - 1];
+                ItemStack secondLens = b.mInputs[b.mInputs.length - 1];
+                // Find purified water/any fluid, if none was present simply use the lens to compare
+                if (ItemStack.areItemStacksEqual(firstLens, secondLens) && a.mFluidInputs.length > 0
+                    && b.mFluidInputs.length > 0) {
+                    return Comparator
+                        .<GT_Recipe, Integer>comparing(r -> PurifiedWaterHelpers.getWaterTier(r.mFluidInputs[0]))
+                        .compare(a, b);
+                }
+            }
+            return a.compareTo(b);
+        })
         .recipeConfigFile("laserengraving", FIRST_ITEM_OUTPUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> mixerRecipes = RecipeMapBuilder.of("gt.recipe.mixer")
