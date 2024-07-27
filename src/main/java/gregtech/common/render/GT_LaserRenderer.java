@@ -36,15 +36,16 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
         final TileLaser ltile = (TileLaser) tile;
         if (ltile.getShouldRender()) {
-            GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+
+            GL11.glPushMatrix();
             GL11.glDisable(GL11.GL_CULL_FACE);
             GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glDisable(GL11.GL_TEXTURE_2D);
 
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GL11.glColor4f(ltile.getRed(), ltile.getGreen(), ltile.getBlue(), 0.6F); // change this for your colour
-            GL11.glLineWidth(3F);
+            GL11.glColor4f(ltile.getRed(), ltile.getGreen(), ltile.getBlue(), 0.6F);
+            GL11.glLineWidth(10F);
             GL11.glDepthMask(false);
 
             Tessellator tessellator = Tessellator.instance;
@@ -61,7 +62,7 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
             tessellator.draw();
 
             GL11.glDepthMask(true);
-            GL11.glPopAttrib();
+            GL11.glPopMatrix();
         }
         if (ltile.getShouldRender()) {
             /*
