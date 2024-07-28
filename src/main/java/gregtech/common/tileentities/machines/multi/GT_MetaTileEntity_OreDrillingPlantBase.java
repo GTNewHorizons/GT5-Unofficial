@@ -7,7 +7,6 @@ import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_Values.TIER_COLORS;
 import static gregtech.api.enums.GT_Values.VN;
-import static gregtech.api.enums.Mods.VisualProspecting;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
@@ -41,10 +40,6 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.sinthoras.visualprospecting.ServerTranslations;
-import com.sinthoras.visualprospecting.database.OreVeinPosition;
-import com.sinthoras.visualprospecting.database.ServerCache;
-import com.sinthoras.visualprospecting.database.veintypes.VeinType;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -64,6 +59,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.crossmod.visualprospecting.GT_VisualProspecting_Database;
 
 public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTileEntity_DrillerBase
     implements IMetricsExporter {
@@ -462,25 +458,13 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     }
 
     private void updateVeinNameFromVP() {
-        if (mCurrentChunk == null) {
-            veinName = null;
-        } else {
-            updateVeinNameFromVP(mCurrentChunk);
-        }
+        updateVeinNameFromVP(mCurrentChunk);
     }
 
     private void updateVeinNameFromVP(@NotNull ChunkCoordIntPair coords) {
-        if (VisualProspecting.isModLoaded()) {
-            OreVeinPosition oreVein = ServerCache.instance.getOreVein(
-                getBaseMetaTileEntity().getWorld().provider.dimensionId,
-                coords.chunkXPos,
-                coords.chunkZPos);
-            if (oreVein != null && oreVein.veinType != VeinType.NO_VEIN) {
-                veinName = ServerTranslations.getEnglishLocalization(oreVein.veinType);
-            } else {
-                veinName = null;
-            }
-        }
+        veinName = GT_VisualProspecting_Database
+            .getVeinName(getBaseMetaTileEntity().getWorld().provider.dimensionId, coords)
+            .orElse(null);
     }
 
     @Override
