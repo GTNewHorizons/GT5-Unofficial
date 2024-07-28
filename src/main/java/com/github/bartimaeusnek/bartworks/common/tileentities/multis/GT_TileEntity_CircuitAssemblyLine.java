@@ -308,6 +308,12 @@ public class GT_TileEntity_CircuitAssemblyLine extends
                 if (GT_TileEntity_CircuitAssemblyLine.this.mode == 1
                     && recipe.mEUt > GT_TileEntity_CircuitAssemblyLine.this.getMaxInputVoltage() / 4) {
                     return CheckRecipeResultRegistry.NO_RECIPE;
+                } else if (GT_TileEntity_CircuitAssemblyLine.this.mode == 0) {
+                    // Limit CAL mode recipes to hatch tier, otherwise it will run low EU recipes
+                    // with a tier-1 hatch and pull 2A to supply the power
+                    if (recipe.mEUt > GT_TileEntity_CircuitAssemblyLine.this.getMaxInputVoltage()) {
+                        return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                    }
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
