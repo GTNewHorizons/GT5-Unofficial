@@ -492,7 +492,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 
                 // i don't understand the mess above, so let's just strip nulls and assume the chances are in correct
                 // order
-                List<ItemStack> internalOutputs = Arrays.asList(mInternalOutputs);
+                List<ItemStack> internalOutputs = new ArrayList<>(Arrays.asList(mInternalOutputs));
                 internalOutputs.removeIf(Objects::isNull);
                 int[] chances = new int[internalOutputs.size()];
                 for (int i = 0; i < internalOutputs.size(); i++) {
@@ -608,7 +608,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 
                 // i don't understand the mess above, so let's just strip nulls and assume the chances are in correct
                 // order
-                List<ItemStack> internalOutputs = Arrays.asList(mInternalOutputs);
+                List<ItemStack> internalOutputs = new ArrayList<>(Arrays.asList(mInternalOutputs));
                 internalOutputs.removeIf(Objects::isNull);
                 int[] chances = new int[internalOutputs.size()];
                 for (int i = 0; i < internalOutputs.size(); i++) {

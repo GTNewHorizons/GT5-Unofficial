@@ -37,7 +37,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -48,8 +48,8 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class GT_MetaTileEntity_MultiCanner
-    extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_MultiCanner> implements ISurvivalConstructable {
+public class GT_MetaTileEntity_MultiCanner extends
+    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_MultiCanner> implements ISurvivalConstructable {
 
     private static final int MACHINEMODE_CANNER = 0;
     private static final int MACHINEMODE_FLUIDCANNER = 1;
@@ -216,6 +216,11 @@ public class GT_MetaTileEntity_MultiCanner
     }
 
     @Override
+    public int getRecipeCatalystPriority() {
+        return -10;
+    }
+
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         if (aNBT.hasKey("fluidMode")) {
             machineMode = aNBT.getBoolean("fluidMode") ? MACHINEMODE_FLUIDCANNER : MACHINEMODE_CANNER;
@@ -229,19 +234,22 @@ public class GT_MetaTileEntity_MultiCanner
     }
 
     @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        setMachineMode(nextMachineMode());
+        PlayerUtils.messagePlayer(
+            aPlayer,
+            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+    }
+
+    @Override
     public void setMachineModeIcons() {
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_PACKAGER);
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        setMachineMode(nextMachineMode());
-        if (machineMode == MACHINEMODE_FLUIDCANNER) {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Fluid Canning Mode.");
-        } else {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Canning Mode.");
-        }
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.MULTI_CANNER.mode." + machineMode);
     }
 
     @Override
