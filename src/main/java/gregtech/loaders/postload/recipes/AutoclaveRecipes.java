@@ -235,7 +235,7 @@ public class AutoclaveRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.TranscendentMetal, 1L),
-                ItemList.EnergisedTesseract.get(8))
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.Mellion, 32L))
             .itemOutputs(ItemList.Phononic_Seed_Crystal.get(8L))
             .fluidInputs(Materials.Grade8PurifiedWater.getFluid(32_000L))
             .duration(15 * SECONDS)
