@@ -53,28 +53,30 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
     public static long BARYONIC_MATTER_OUTPUT = 2000L;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final int STRUCTURE_X_OFFSET = 7;
-    private static final int STRUCTURE_Y_OFFSET = 6;
-    private static final int STRUCTURE_Z_OFFSET = 1;
+    private static final int STRUCTURE_X_OFFSET = 8;
+    private static final int STRUCTURE_Y_OFFSET = 8;
+    private static final int STRUCTURE_Z_OFFSET = 0;
 
     static final String[][] structure = new String[][] {
         // spotless:off
-        { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "DDDDDDDDDDDDDDD" },
-        { "               ", "               ", "               ", "               ", "               ", "      BBB      ", "      B~B      ", "      BBB      ", "DDDDDDDDDDDDDDD" },
-        { "AAAAAAAAAAAAAAA", "A     BBB     A", "A     EEE     A", "A             A", "A             A", "ABE   FFF   EBA", "ABE   FCF   EBA", "BBE   BBB   EBB", "DDDDDDDDDDDDDDD" },
-        { "               ", "      BBB      ", "      EEE      ", "       C       ", "       C       ", " BE   FCF   EB ", " BECCCCCCCCCEB ", "BBE   BBB   EBB", "DDDDDDDDDDDDDDD" },
-        { "AAAAAAAAAAAAAAA", "A     BBB     A", "A     EEE     A", "A             A", "A             A", "ABE   FFF   EBA", "ABE   FCF   EBA", "BBE   BBB   EBB", "DDDDDDDDDDDDDDD" },
-        { "               ", "      BBB      ", "      EEE      ", "               ", "               ", "      FFF      ", "      FCF      ", "      BBB      ", "DDDDDDDDDDDDDDD" },
-        { "AAAAAAAAAAAAAAA", "A     BBB     A", "A     EEE     A", "A             A", "A             A", "ABE   FFF   EBA", "ABE   FCF   EBA", "BBE   BBB   EBB", "DDDDDDDDDDDDDDD" },
-        { "               ", "      BBB      ", "      EEE      ", "       C       ", "       C       ", " BE   FCF   EB ", " BECCCCCCCCCEB ", "BBE   BBB   EBB", "DDDDDDDDDDDDDDD" },
-        { "AAAAAAAAAAAAAAA", "A     BBB     A", "A     EEE     A", "A             A", "A             A", "ABE   FFF   EBA", "ABE   FCF   EBA", "BBE   BBB   EBB", "DDDDDDDDDDDDDDD" },
-        { "               ", "      BBB      ", "      EEE      ", "               ", "               ", "      FFF      ", "      FCF      ", "      BBB      ", "DDDDDDDDDDDDDDD" },
-        { "AAAAAAAAAAAAAAA", "A     BBB     A", "A     EEE     A", "A             A", "A             A", "ABE   FFF   EBA", "ABE   FCF   EBA", "BBE   BBB   EBB", "DDDDDDDDDDDDDDD" },
-        { "               ", "      BBB      ", "      EEE      ", "       C       ", "       C       ", " BE   FCF   EB ", " BECCCCCCCCCEB ", "BBE   BBB   EBB", "DDDDDDDDDDDDDDD" },
-        { "AAAAAAAAAAAAAAA", "A     BBB     A", "A     EEE     A", "A             A", "A             A", "ABE   FFF   EBA", "ABE   FCF   EBA", "BBE   BBB   EBB", "DDDDDDDDDDDDDDD" },
-        { "               ", "      BBB      ", "      EEE      ", "               ", "               ", "      BBB      ", "      BBB      ", "      BBB      ", "DDDDDDDDDDDDDDD" },
-        { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "DDDDDDDDDDDDDDD" } };
-        // spotless:on
+        { "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "      AAAAA      ", "      AAAAA      ", "      AA~AA      ", "      AAAAA      ", "      AAAAA      ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 " },
+        { "                 ", "        E        ", "        E        ", "        E        ", "        E        ", "        E        ", "      AAAAA      ", "      AAAAA      ", " EEEEEAAAAAEEEEE ", "      AAAAA      ", "      AAAAA      ", "        E        ", "        E        ", "        E        ", "        E        ", "        E        ", "                 " },
+        { "                 ", "        E        ", "                 ", "                 ", "                 ", "                 ", "      CCCCC      ", "      CDDDC      ", " E    CDBDC    E ", "      CDDDC      ", "      CCCCC      ", "                 ", "                 ", "                 ", "                 ", "        E        ", "                 " },
+        { "                 ", "        E        ", "                 ", "                 ", "                 ", "                 ", "                 ", "       DDD       ", " E     DBD     E ", "       DDD       ", "                 ", "                 ", "                 ", "                 ", "                 ", "        E        ", "                 " },
+        { "                 ", "        E        ", "                 ", "                 ", "                 ", "                 ", "                 ", "       DDD       ", " E     DBD     E ", "       DDD       ", "                 ", "                 ", "                 ", "                 ", "                 ","        E        ", "                 " },
+        { "                 ", "        E        ", "                 ", "                 ", "                 ", "                 ", "                 ", "       DDD       ", " E     DBD     E ", "       DDD       ", "                 ", "                 ", "                 ", "                 ", "                 ", "        E        ", "                 " },
+        { "      AAAAA      ", "      AAAAA      ", "      CCCCC      ", "                 ", "                 ", "                 ", "AAC   AAAAA   CAA", "AAC   ADDDA   CAA", "AAC   ADBDA   CAA", "AAC   ADDDA   CAA", "AAC   AAAAA   CAA", "                 ", "                 ", "                 ", "      CCCCC      ", "      AAAAA      ", "      AAAAA      " },
+        { "      AAAAA      ", "      AAAAA      ", "      CDDDC      ", "       DDD       ", "       DDD       ", "       DDD       ", "AAC   ADDDA   CAA", "AADDDDD   DDDDDAA", "AADDDDD B DDDDDAA", "AADDDDD   DDDDDAA", "AAC   ADDDA   CAA", "       DDD       ", "       DDD       ", "       DDD       ", "      CDDDC      ", "      AAAAA      ", "      AAAAA      " },
+        { "      AAAAA      ", " EEEEEAAAAAEEEEE ", " E    CDBDC    E ", " E     DBD     E ", " E     DBD     E ", " E     DBD     E ", "AAC   ADBDA   CAA", "AADDDDD B DDDDDAA", "AABBBBBBBBBBBBBAA", "AADDDDD B DDDDDAA", "AAC   ADBDA   CAA", " E     DBD     E ", " E     DBD     E ", " E     DBD     E ", " E    CDBDC    E ", " EEEEEAAAAAEEEEE ", "      AAAAA      " },
+        { "      AAAAA      ", "      AAAAA      ", "      CDDDC      ", "       DDD       ", "       DDD       ", "       DDD       ", "AAC   ADDDA   CAA", "AADDDDD   DDDDDAA", "AADDDDD B DDDDDAA", "AADDDDD   DDDDDAA", "AAC   ADDDA   CAA", "       DDD       ", "       DDD       ", "       DDD       ", "      CDDDC      ", "      AAAAA      ", "      AAAAA      " },
+        { "      AAAAA      ", "      AAAAA      ", "      CCCCC      ", "                 ", "                 ", "                 ", "AAC   AAAAA   CAA", "AAC   ADDDA   CAA", "AAC   ADBDA   CAA", "AAC   ADDDA   CAA", "AAC   AAAAA   CAA", "                 ", "                 ", "                 ", "      CCCCC      ", "      AAAAA      ", "      AAAAA      " },
+        { "                 ", "        E        ", "                 ", "                 ", "                 ", "                 ", "                 ", "       DDD       ", " E     DBD     E ", "       DDD       ", "                 ", "                 ", "                 ", "                 ", "                 ", "        E        ", "                 " },
+        { "                 ", "        E        ", "                 ", "                 ", "                 ", "                 ", "                 ", "       DDD       ", " E     DBD     E ", "       DDD       ", "                 ", "                 ", "                 ", "                 ", "                 ", "        E        ", "                 " },
+        { "                 ", "        E        ", "                 ", "                 ", "                 ", "                 ", "                 ", "       DDD       ", " E     DBD     E ", "       DDD       ", "                 ", "                 ", "                 ", "                 ", "                 ", "        E        ", "                 " },
+        { "                 ", "        E        ", "                 ", "                 ", "                 ", "                 ", "      CCCCC      ", "      CDDDC      ", " E    CDBDC    E ", "      CDDDC      ", "      CCCCC      ", "                 ", "                 ", "                 ", "                 ", "        E        ", "                 " },
+        { "                 ", "        E        ", "        E        ", "        E        ", "        E        ", "        E        ", "      AAAAA      ", "      AAAAA      ", " EEEEEAAAAAEEEEE ", "      AAAAA      ", "      AAAAA      ", "        E        ", "        E        ", "        E        ", "        E        ", "        E        ", "                 " },
+        { "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "      AAAAA      ", "      AAAAA      ", "      AAAAA      ", "      AAAAA      ", "      AAAAA      ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 " } };
+    // spotless:on
 
     // Dimensionally transcendent casing (placeholder)
     private static final int CASING_INDEX_MAIN = getTextureIndex(GregTech_API.sBlockCasings10, 2);
@@ -82,10 +84,9 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitParticleExtractor> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitParticleExtractor>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addElement('A', ofFrame(Materials.Bedrockium))
         // quark containment casing (placeholder name)
         .addElement(
-            'B',
+            'A',
             ofChain(
                 lazy(
                     t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitParticleExtractor>buildHatchAdder()
@@ -95,13 +96,12 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
                         .build()),
                 ofBlock(GregTech_API.sBlockCasings10, 2)))
         // Quark pipe block (placeholder name)
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 14))
-        // Naquadah Water Plant Casing (maybe placeholder)
-        .addElement('D', ofBlock(GregTech_API.sBlockCasings9, 7))
+        .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 14))
         // Quark release chamber (placeholder name)
-        .addElement('E', ofBlock(GregTech_API.sBlockCasings9, 15))
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 15))
         // Quark Containment Glass
-        .addElement('F', ofBlock(GregTech_API.sBlockGlass1, 3))
+        .addElement('D', ofBlock(GregTech_API.sBlockGlass1, 3))
+        .addElement('E', ofFrame(Materials.Bedrockium))
         .build();
 
     private static class CatalystCombination {
@@ -280,6 +280,7 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
             .addInfo("At the end of the recipe, all incorrectly inserted catalysts are returned in the output bus.")
             .addSeparator()
             .addInfo(AuthorNotAPenguin)
+            .beginStructureBlock(17, 17, 17, false)
             .toolTipFinisher("GregTech");
         return tt;
     }
