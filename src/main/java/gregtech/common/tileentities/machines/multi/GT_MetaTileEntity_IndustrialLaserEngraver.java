@@ -70,7 +70,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 // SPECIAL RENDER FOR SPECIAL LENSES?
 // FIX DESYNC/PAUSE ON RENDERER
 // FORK THE COREMOD FOR RECIPES
-// FIX OR BAN ROTATION
 
 public class GT_MetaTileEntity_IndustrialLaserEngraver
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_IndustrialLaserEngraver>
@@ -354,6 +353,11 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         }.setSpeedBonus(1F / 3F)
             .setEuModifier(0.8F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
+    }
+
+    @Override
+    public boolean isRotationChangeAllowed() {
+        return false;
     }
 
     private int getMaxParallelRecipes() {
