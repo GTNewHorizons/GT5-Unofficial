@@ -172,28 +172,30 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            BigInteger recipeEU;
+
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
-                long availableEU = getUserEU(ownerUUID).min(BigInteger.valueOf(Long.MAX_VALUE))
-                    .longValue();
-                long recipeEU = 10L * recipe.mEUt * recipe.mDuration;
-                if (availableEU < recipeEU) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipeEU);
+                BigInteger availableEU = getUserEU(ownerUUID);
+                recipeEU = BigInteger.valueOf(10L * recipe.mEUt * recipe.mDuration);
+                if (availableEU.compareTo(recipeEU) < 0) {
+                    return CheckRecipeResultRegistry.insufficientStartupPower(recipeEU);
                 }
-                maxParallel = (int) Math.min(availableEU / recipeEU, maxParallel);
+                maxParallel = availableEU.divide(recipeEU)
+                    .min(BigInteger.valueOf(maxParallel))
+                    .intValue();
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
-                long recipeEU = 10L * recipe.mEUt * recipe.mDuration;
-                long finalConsumption = -recipeEU * calculatedParallels;
+                BigInteger finalConsumption = recipeEU.multiply(BigInteger.valueOf(-calculatedParallels));
                 // This will void the inputs if wireless energy has dropped
                 // below the required amount between validateRecipe and here.
                 if (!addEUToGlobalEnergyMap(ownerUUID, finalConsumption)) {
-                    return CheckRecipeResultRegistry.insufficientPower(finalConsumption);
+                    return CheckRecipeResultRegistry.insufficientStartupPower(finalConsumption);
                 }
                 // Energy consumed all at once from wireless net.
                 setCalculatedEut(0);
