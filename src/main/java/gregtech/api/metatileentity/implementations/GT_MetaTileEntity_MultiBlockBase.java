@@ -1192,7 +1192,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(aEUt)
             .setEUt(V[tier] * mAmperage)
             .setDuration(aDuration)
-            .setDurationDecreasePerOC(perfectOC ? 2 : 1)
+            .setDurationDecreasePerOC(perfectOC ? 4.0 : 2.0)
             .calculate();
         mEUt = (int) calculator.getConsumption();
         mMaxProgresstime = calculator.getDuration();
