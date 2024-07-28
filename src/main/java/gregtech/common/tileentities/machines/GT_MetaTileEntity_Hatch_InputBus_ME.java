@@ -35,6 +35,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
@@ -57,6 +58,7 @@ import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEItemStack;
+import goodgenerator.client.GUI.GG_UITextures;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
@@ -94,6 +96,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     private static final int CONFIG_WINDOW_ID = 10;
     private boolean additionalConnection = false;
     private boolean justHadNewItems = false;
+    private boolean expediteRecipeCheck = false;
 
     public GT_MetaTileEntity_Hatch_InputBus_ME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
         super(
@@ -215,6 +218,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         aNBT.setBoolean("autoStock", autoPullItemList);
         aNBT.setInteger("minAutoPullStackSize", minAutoPullStackSize);
         aNBT.setBoolean("additionalConnection", additionalConnection);
+        aNBT.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         aNBT.setInteger("refreshTime", autoPullRefreshTime);
         getProxy().writeToNBT(aNBT);
     }
@@ -253,6 +257,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         autoPullItemList = aNBT.getBoolean("autoStock");
         minAutoPullStackSize = aNBT.getInteger("minAutoPullStackSize");
         additionalConnection = aNBT.getBoolean("additionalConnection");
+        expediteRecipeCheck = aNBT.getBoolean("expediteRecipeCheck");
         if (aNBT.hasKey("refreshTime")) {
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
@@ -395,7 +400,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     @Override
     public boolean justUpdated() {
-        if (autoPullItemList) {
+        if (expediteRecipeCheck) {
             boolean ret = justHadNewItems;
             justHadNewItems = false;
             return ret;
@@ -403,9 +408,13 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         return false;
     }
 
+    public void setRecipeCheck(boolean value) {
+        expediteRecipeCheck = value;
+    }
+
     @Override
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
-        if (aStack != null) {
+        if (expediteRecipeCheck && aStack != null) {
             justHadNewItems = true;
         }
         super.setInventorySlotContents(aIndex, aStack);
@@ -479,11 +488,13 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 IAEItemStack currItem = iterator.next();
                 if (currItem.getStackSize() >= minAutoPullStackSize) {
                     ItemStack itemstack = GT_Utility.copyAmount(1, currItem.getItemStack());
-                    ItemStack previous = this.mInventory[index];
-                    this.mInventory[index] = itemstack;
-                    if (itemstack != null && previous != null) {
-                        justHadNewItems = !itemstack.isItemEqual(previous);
+                    if (expediteRecipeCheck) {
+                        ItemStack previous = this.mInventory[index];
+                        if (itemstack != null && previous != null) {
+                            justHadNewItems = !itemstack.isItemEqual(previous);
+                        }
                     }
+                    this.mInventory[index] = itemstack;
                     index++;
                 }
             }
@@ -562,11 +573,13 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     ItemStack s = (result != null) ? result.getItemStack() : null;
                     // We want to track changes in any ItemStack to notify any connected controllers to make a recipe
                     // check early
-                    ItemStack previous = getStackInSlot(aIndex + SLOT_COUNT);
-                    setInventorySlotContents(aIndex + SLOT_COUNT, s);
-                    if (s != null && previous != null) {
-                        justHadNewItems = !s.isItemEqual(previous);
+                    if (expediteRecipeCheck) {
+                        ItemStack previous = getStackInSlot(aIndex + SLOT_COUNT);
+                        if (s != null && previous != null) {
+                            justHadNewItems = !s.isItemEqual(previous);
+                        }
                     }
+                    setInventorySlotContents(aIndex + SLOT_COUNT, s);
                     return s;
                 } catch (final GridAccessException ignored) {}
             }
@@ -733,7 +746,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
         final int WIDTH = 78;
-        final int HEIGHT = 80;
+        final int HEIGHT = 115;
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
@@ -773,6 +786,18 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     .setSize(70, 18)
                     .setPos(3, 58)
                     .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD));
+        builder.widget(
+            TextWidget.localised("GT5U.machines.stocking_bus.force_check")
+                .setPos(3, 88)
+                .setSize(50, 14))
+            .widget(
+            new CycleButtonWidget().setToggle(() -> expediteRecipeCheck, val -> setRecipeCheck(val))
+                .setTextureGetter(
+                    state -> expediteRecipeCheck ? GT_UITextures.OVERLAY_BUTTON_CHECKMARK
+                        : GT_UITextures.OVERLAY_BUTTON_CROSS)
+                .setBackground(GT_UITextures.BUTTON_STANDARD)
+                .setPos(53, 87)
+                .setSize(16, 16));
         return builder.build();
     }
 
@@ -831,7 +856,9 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 "Auto-Pull from ME mode will automatically stock the first 16 items in the ME system, updated every 5 seconds.");
             strings.add("Toggle by right-clicking with screwdriver, or use the GUI.");
             strings
-                .add("Use the GUI to limit the minimum stack size for Auto-Pulling and adjust the slot refresh timer.");
+                .add("Use the GUI to limit the minimum stack size for Auto-Pulling, adjust the slot refresh timer and enable fast recipe checks.");
+            strings
+                .add("WARNING: Fast recipe checks can be laggy. Use with caution.");
         }
 
         strings.add("Change ME connection behavior by right-clicking with wire cutter.");
