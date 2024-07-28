@@ -175,21 +175,25 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
-                mWirelessEUt = 10L * (long) recipe.mEUt * (long) multiplier;
-                if (getUserEU(ownerUUID).compareTo(BigInteger.valueOf(mWirelessEUt * recipe.mDuration)) < 0) {
-                    return CheckRecipeResultRegistry.insufficientPower(mWirelessEUt * recipe.mDuration);
+                long availableEU = getUserEU(ownerUUID).min(BigInteger.valueOf(Long.MAX_VALUE))
+                    .longValue();
+                long recipeEU = 10L * recipe.mEUt * recipe.mDuration;
+                if (availableEU < recipeEU) {
+                    return CheckRecipeResultRegistry.insufficientPower(recipeEU);
                 }
+                maxParallel = (int) Math.min(availableEU / recipeEU, maxParallel);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
-                mWirelessEUt = 10L * (long) recipe.mEUt * (long) multiplier;
+                long recipeEU = 10L * recipe.mEUt * recipe.mDuration;
+                long finalConsumption = -recipeEU * calculatedParallels;
                 // This will void the inputs if wireless energy has dropped
                 // below the required amount between validateRecipe and here.
-                if (!addEUToGlobalEnergyMap(ownerUUID, -mWirelessEUt * recipe.mDuration)) {
-                    return CheckRecipeResultRegistry.insufficientPower(mWirelessEUt * recipe.mDuration);
+                if (!addEUToGlobalEnergyMap(ownerUUID, finalConsumption)) {
+                    return CheckRecipeResultRegistry.insufficientPower(finalConsumption);
                 }
                 // Energy consumed all at once from wireless net.
                 setCalculatedEut(0);
