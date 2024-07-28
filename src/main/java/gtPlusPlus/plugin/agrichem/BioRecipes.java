@@ -2,15 +2,7 @@ package gtPlusPlus.plugin.agrichem;
 
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
-import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
-import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
-import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.recipe.RecipeMaps.latheRecipes;
-import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -794,7 +786,15 @@ public class BioRecipes {
             .duration(7 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV / 4 * 3)
             .addTo(latheRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ALLOY.TUMBAGA.getBlock(1))
+            .itemOutputs(GregtechItemList.Pellet_Mold.get(1))
+            .duration(7 * MINUTES + 30 * SECONDS)
+            .eut(TierEU.RECIPE_MV / 4 * 3)
+            .addTo(precisionLatheRecipes);
     }
+
 
     private static void recipeAluminiumPellet() {
 

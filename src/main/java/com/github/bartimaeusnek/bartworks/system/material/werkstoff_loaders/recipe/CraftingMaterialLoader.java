@@ -32,6 +32,7 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
+import static gregtech.api.recipe.RecipeMaps.precisionLatheRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -101,6 +102,17 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                         1L))
                 .eut(4)
                 .addTo(latheRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(werkstoff.get(bolt))
+                .itemOutputs(werkstoff.get(screw))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() / 8L,
+                        1L))
+                .eut(4)
+                .addTo(precisionLatheRecipes);
 
             GT_ModHandler.addCraftingRecipe(
                 werkstoff.get(screw),

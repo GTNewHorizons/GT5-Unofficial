@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.recipe.RecipeMaps.precisionLatheRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -32,6 +33,15 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
                     .duration(((int) Math.max(aMaterial.getMass() / 4L, 1L)) * TICKS)
                     .eut(8)
                     .addTo(latheRecipes);
+            }
+
+            if (GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 1L) != null) {
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 1L))
+                    .itemOutputs(GT_Utility.copyAmount(1, aStack))
+                    .duration(((int) Math.max(aMaterial.getMass() / 4L, 1L)) * TICKS)
+                    .eut(8)
+                    .addTo(precisionLatheRecipes);
             }
 
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {

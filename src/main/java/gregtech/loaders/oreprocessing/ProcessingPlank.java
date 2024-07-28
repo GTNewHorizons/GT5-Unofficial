@@ -1,8 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
-import static gregtech.api.recipe.RecipeMaps.latheRecipes;
+import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -33,6 +31,12 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .duration(10 * TICKS)
                 .eut(8)
                 .addTo(latheRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.copyAmount(1, aStack))
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L))
+                .duration(10 * TICKS)
+                .eut(8)
+                .addTo(precisionLatheRecipes);
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     GT_Utility.copyAmount(1, aStack),

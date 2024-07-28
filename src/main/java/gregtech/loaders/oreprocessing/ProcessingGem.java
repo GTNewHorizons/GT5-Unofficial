@@ -1,11 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMaps.benderRecipes;
-import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
-import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
-import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
-import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
-import static gregtech.api.recipe.RecipeMaps.latheRecipes;
+import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -187,6 +182,18 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .addTo(latheRecipes);
                         }
                     }
+                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+                        // Lathe recipes
+                        if (GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(GT_Utility.copyAmount(1, aStack))
+                                .itemOutputs(
+                                    GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L))
+                                .duration(((int) Math.max(aMaterialMass, 1L)) * TICKS)
+                                .eut(calculateRecipeEU(aMaterial, 16))
+                                .addTo(precisionLatheRecipes);
+                        }
+                    }
                 } else {
                     if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
                         // Implosion compressor recipes
@@ -295,6 +302,15 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             .duration(((int) Math.max(aMaterialMass, 1L)) * TICKS)
                             .eut(8)
                             .addTo(latheRecipes);
+                    }
+
+                    if (GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null) {
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(1, aStack))
+                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 2L))
+                            .duration(((int) Math.max(aMaterialMass, 1L)) * TICKS)
+                            .eut(8)
+                            .addTo(precisionLatheRecipes);
                     }
 
                     if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
@@ -425,6 +441,15 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             .addTo(latheRecipes);
                     }
 
+                    if (GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null)  {
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(1, aStack))
+                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 4L))
+                            .duration(((int) Math.max(aMaterialMass, 1L)) * TICKS)
+                            .eut(12)
+                            .addTo(precisionLatheRecipes);
+                    }
+
                     if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
                         // Implosion compressor recipes
                         {
@@ -528,6 +553,15 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             .duration(((int) Math.max(aMaterialMass * 5L, 1L)) * TICKS)
                             .eut(16)
                             .addTo(latheRecipes);
+                    }
+
+                    if (GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L) != null) {
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(1, aStack))
+                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 2L))
+                            .duration(((int) Math.max(aMaterialMass * 5L, 1L)) * TICKS)
+                            .eut(16)
+                            .addTo(precisionLatheRecipes);
                     }
 
                     if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
