@@ -71,8 +71,8 @@ public class TileLaser extends TileEntityAdvanced {
         switch (direction) {
             case UP -> rotAxisY = -1;
             case DOWN -> rotAxisY = 1;
-            case WEST -> rotAxisX = -1;
-            case EAST -> rotAxisX = 1;
+            case WEST -> rotAxisX = 1;
+            case EAST -> rotAxisX = -1;
             case NORTH -> rotAxisZ = 1;
             case SOUTH -> rotAxisZ = -1;
         }
