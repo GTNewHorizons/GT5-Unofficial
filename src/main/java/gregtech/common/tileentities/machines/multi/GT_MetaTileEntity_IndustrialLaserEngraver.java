@@ -141,6 +141,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileLaser) {
             renderer = (TileLaser) te;
+            renderer.setRotationFields(getDirection(), getRotation(), getFlip());
             return true;
         }
         return false;
@@ -355,7 +356,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
 
     @Override
     public boolean isRotationChangeAllowed() {
-        return false;
+        return true;
     }
 
     private int getMaxParallelRecipes() {

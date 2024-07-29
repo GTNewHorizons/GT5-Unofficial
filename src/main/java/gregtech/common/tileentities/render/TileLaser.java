@@ -2,6 +2,10 @@ package gregtech.common.tileentities.render;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 
 import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
@@ -17,6 +21,8 @@ public class TileLaser extends TileEntityAdvanced {
     public float counter = 0F;
     @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public boolean realism = false;
+    @Annotations.NetworkedField(targetSide = Side.CLIENT)
+    public double rotAxisX = 0, rotAxisY = 0, rotAxisZ = 0, rotationAngle = 0;
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
@@ -25,6 +31,10 @@ public class TileLaser extends TileEntityAdvanced {
         compound.setFloat("rgb_green", green);
         compound.setFloat("rgb_blue", blue);
         compound.setBoolean("shouldRender", shouldRender);
+        compound.setDouble("rotAxisX", rotAxisX);
+        compound.setDouble("rotAxisY", rotAxisY);
+        compound.setDouble("rotAxisZ", rotAxisZ);
+        compound.setDouble("rotationAngle", rotationAngle);
     }
 
     @Override
@@ -40,6 +50,32 @@ public class TileLaser extends TileEntityAdvanced {
         this.red = red;
         this.green = green;
         this.blue = blue;
+    }
+
+    public void setRotationFields(ForgeDirection direction, Rotation rotation, Flip flip) {
+        setRotationAngle(rotation, flip);
+        setRotationAxis(direction);
+    }
+
+    private void setRotationAngle(Rotation rotation, Flip flip) {
+        int invert = (flip == Flip.HORIZONTAL || flip == Flip.VERTICAL) ? 1 : -1;
+        switch (rotation) {
+            case NORMAL -> rotationAngle = 0;
+            case CLOCKWISE -> rotationAngle = 90 * invert;
+            case COUNTER_CLOCKWISE -> rotationAngle = -90 * invert;
+            case UPSIDE_DOWN -> rotationAngle = 180;
+        }
+    }
+
+    public void setRotationAxis(ForgeDirection direction) {
+        switch (direction) {
+            case UP -> rotAxisY = -1;
+            case DOWN -> rotAxisY = 1;
+            case WEST -> rotAxisX = -1;
+            case EAST -> rotAxisX = 1;
+            case NORTH -> rotAxisZ = -1;
+            case SOUTH -> rotAxisZ = 1;
+        }
     }
 
     public void setShouldRender(boolean shouldRender) {
