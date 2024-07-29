@@ -160,6 +160,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected GT_SoundLoop activitySoundLoop;
 
     private long mLastWorkingTick = 0;
+    private static final int CHECK_INTERVAL = 100; // How often should we check for a new recipe on an idle machine?
+    private final int randomTickOffset = (int) (Math.random() * CHECK_INTERVAL + 1);
 
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
     protected static final byte PROCESS_START_SOUND_INDEX = 1;
@@ -526,7 +528,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         // Perform more frequent recipe change after the machine just shuts down.
         long timeElapsed = aTick - mLastWorkingTick;
 
-        if (timeElapsed >= 100) return aTick % 100 == 0;
+        if (timeElapsed >= CHECK_INTERVAL) return (aTick + randomTickOffset) % CHECK_INTERVAL == 0;
         // Batch mode should be a lot less aggressive at recipe checking
         if (!isBatchModeEnabled()) {
             return timeElapsed == 5 || timeElapsed == 12
@@ -1192,7 +1194,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(aEUt)
             .setEUt(V[tier] * mAmperage)
             .setDuration(aDuration)
-            .setDurationDecreasePerOC(perfectOC ? 2 : 1)
+            .setDurationDecreasePerOC(perfectOC ? 4.0 : 2.0)
             .calculate();
         mEUt = (int) calculator.getConsumption();
         mMaxProgresstime = calculator.getDuration();
@@ -1603,7 +1605,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
-            mSmartInputHatches.add(hatch);
+            // Only add them to be iterated if enabled for performance reasons
+            if (hatch.doFastRecipeCheck()) {
+                mSmartInputHatches.add(hatch);
+            }
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
             setHatchRecipeMap((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
