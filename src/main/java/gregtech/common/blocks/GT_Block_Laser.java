@@ -1,7 +1,5 @@
 package gregtech.common.blocks;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -15,7 +13,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.tileentities.render.TileLaser;
 
 public class GT_Block_Laser extends Block implements ITileEntityProvider {

@@ -249,7 +249,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Laser Engraver")
             .addInfo("Controller Block for the High Energy Laser Emitter")
-            .addInfo("300% the speed of single block machines of the same voltage")
+            .addInfo("200% faster than single block machines of the same voltage")
             .addInfo("Uses 80% of the EU normally required")
             .addInfo("Laser source hatch determines maximum power tier and parallels")
             .addInfo("Parallels equal to the cube root of laser source amperage input")
