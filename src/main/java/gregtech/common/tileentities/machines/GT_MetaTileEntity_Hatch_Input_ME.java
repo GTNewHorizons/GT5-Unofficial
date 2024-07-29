@@ -7,7 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATC
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
@@ -64,7 +63,6 @@ import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEFluidStack;
-import goodgenerator.client.GUI.GG_UITextures;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -376,6 +374,10 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
         updateAllInformationSlots();
     }
 
+    public boolean doFastRecipeCheck() {
+        return expediteRecipeCheck;
+    }
+
     private void updateAllInformationSlots() {
         for (int index = 0; index < SLOT_COUNT; index++) {
             updateInformationSlot(index);
@@ -410,7 +412,7 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             // early
             if (expediteRecipeCheck) {
                 FluidStack previous = storedInformationFluids[index];
-                if (resultFluid != null && previous != null) {
+                if (resultFluid != null) {
                     justHadNewFluids = !resultFluid.isFluidEqual(previous);
                 }
             }
@@ -854,13 +856,14 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
                 .setPos(3, 88)
                 .setSize(50, 14))
             .widget(
-            new CycleButtonWidget().setToggle(() -> expediteRecipeCheck, val -> setRecipeCheck(val))
-                .setTextureGetter(
-                    state -> expediteRecipeCheck ? GT_UITextures.OVERLAY_BUTTON_CHECKMARK
-                        : GT_UITextures.OVERLAY_BUTTON_CROSS)
-                .setBackground(GT_UITextures.BUTTON_STANDARD)
-                .setPos(53, 87)
-                .setSize(16, 16));
+                new CycleButtonWidget().setToggle(() -> expediteRecipeCheck, val -> setRecipeCheck(val))
+                    .setTextureGetter(
+                        state -> expediteRecipeCheck ? GT_UITextures.OVERLAY_BUTTON_CHECKMARK
+                            : GT_UITextures.OVERLAY_BUTTON_CROSS)
+                    .setBackground(GT_UITextures.BUTTON_STANDARD)
+                    .setPos(53, 87)
+                    .setSize(16, 16)
+                    .addTooltip(StatCollector.translateToLocal("GT5U.machines.stocking_bus.hatch_warning")));
         return builder.build();
     }
 
@@ -918,10 +921,9 @@ public class GT_MetaTileEntity_Hatch_Input_ME extends GT_MetaTileEntity_Hatch_In
             strings.add(
                 "Auto-Pull from ME mode will automatically stock the first 16 fluid in the ME system, updated every 5 seconds.");
             strings.add("Toggle by right-clicking with screwdriver, or use the GUI.");
-            strings
-                .add("Use the GUI to limit the minimum stack size for Auto-Pulling, adjust the slot refresh timer and enable fast recipe checks.");
-            strings
-                .add("WARNING: Fast recipe checks can be laggy. Use with caution.");
+            strings.add(
+                "Use the GUI to limit the minimum stack size for Auto-Pulling, adjust the slot refresh timer and enable fast recipe checks.");
+            strings.add("WARNING: Fast recipe checks can be laggy. Use with caution.");
         }
 
         strings.add("Change ME connection behavior by right-clicking with wire cutter.");

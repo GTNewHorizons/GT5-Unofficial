@@ -418,6 +418,7 @@ GT5U.machines.stocking_bus.auto_pull.tooltip.2=Right-Click to edit additional pa
 GT5U.machines.stocking_bus.min_stack_size=Min Stack Size
 GT5U.machines.stocking_bus.refresh_time=Slot Refresh Time (Ticks)
 GT5U.machines.stocking_bus.force_check=Recipe Check on change
+GT5U.machines.stocking_bus.hatch_warning=Requires a fresh structure check to apply (Reboot/Replace controller)
 GT5U.machines.stocking_bus.auto_pull_toggle.enabled=Automatic Item Pull Enabled
 GT5U.machines.stocking_bus.auto_pull_toggle.disabled=Automatic Item Pull Disabled
 GT5U.machines.stocking_hatch.auto_pull.tooltip.1=Click to toggle automatic fluid pulling from ME.

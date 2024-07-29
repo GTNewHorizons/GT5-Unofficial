@@ -1603,7 +1603,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
-            mSmartInputHatches.add(hatch);
+            // Only add them to be iterated if enabled for performance reasons
+            if (hatch.doFastRecipeCheck()) {
+                mSmartInputHatches.add(hatch);
+            }
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
             setHatchRecipeMap((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
