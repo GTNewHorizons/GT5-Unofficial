@@ -1,6 +1,10 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
-import static gregtech.api.recipe.RecipeMaps.*;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.recipe.RecipeMaps.latheRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import java.util.HashSet;
@@ -59,17 +63,6 @@ public class RecipeGen_MetalRecipe extends RecipeGen_Base {
             Logger.WARNING("Lathe Rod Recipe: " + material.getLocalizedName() + " - Success");
         }
 
-        if (ItemUtils.checkForInvalidItems(material.getIngot(1))) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(material.getIngot(1))
-                .itemOutputs(material.getRod(2))
-                .duration(Math.max(material.getMass() / 8L, 1L))
-                .eut(material.vVoltageMultiplier)
-                .addTo(precisionLatheRecipes);
-
-            Logger.WARNING("Lathe Rod Recipe: " + material.getLocalizedName() + " - Success");
-        }
-
         if (ItemUtils.checkForInvalidItems(material.getRod(1)) && ItemUtils.checkForInvalidItems(material.getBolt(1))) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(material.getRod(1))
@@ -121,18 +114,6 @@ public class RecipeGen_MetalRecipe extends RecipeGen_Base {
                 .duration(Math.max(material.getMass() / 8L, 1L))
                 .eut(4)
                 .addTo(latheRecipes);
-
-            Logger.WARNING("Lathe Screw Recipe: " + material.getLocalizedName() + " - Success");
-        }
-
-        if (ItemUtils.checkForInvalidItems(material.getBolt(1))
-            && ItemUtils.checkForInvalidItems(material.getScrew(1))) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(material.getBolt(1))
-                .itemOutputs(material.getScrew(1))
-                .duration(Math.max(material.getMass() / 8L, 1L))
-                .eut(4)
-                .addTo(precisionLatheRecipes);
 
             Logger.WARNING("Lathe Screw Recipe: " + material.getLocalizedName() + " - Success");
         }

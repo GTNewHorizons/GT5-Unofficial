@@ -233,13 +233,6 @@ public class GemLoader implements IWerkstoffRunnable {
                     .eut(TierEU.RECIPE_MV)
                     .addTo(latheRecipes);
 
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(plate))
-                    .itemOutputs(werkstoff.get(lens), werkstoff.get(dustSmall))
-                    .duration(60 * SECONDS)
-                    .eut(TierEU.RECIPE_MV)
-                    .addTo(precisionLatheRecipes);
-
             }
 
             GT_Values.RA.stdBuilder()
@@ -248,13 +241,6 @@ public class GemLoader implements IWerkstoffRunnable {
                 .duration(2 * MINUTES)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(latheRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(werkstoff.get(gemExquisite))
-                .itemOutputs(werkstoff.get(lens), werkstoff.get(dust, 2))
-                .duration(2 * MINUTES)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(precisionLatheRecipes);
 
             final ITexture texture = TextureFactory.of(
                 Textures.BlockIcons.MACHINE_CASINGS[2][0],

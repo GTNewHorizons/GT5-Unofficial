@@ -1,7 +1,14 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.recipe.RecipeMaps.*;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
+import static gregtech.api.recipe.RecipeMaps.latheRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -88,13 +95,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .duration(8 * SECONDS)
             .eut(7)
             .addTo(latheRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(1, aStack))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 8L))
-            .duration(8 * SECONDS)
-            .eut(7)
-            .addTo(precisionLatheRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1, aStack), GT_Utility.getIntegratedCircuit(2))

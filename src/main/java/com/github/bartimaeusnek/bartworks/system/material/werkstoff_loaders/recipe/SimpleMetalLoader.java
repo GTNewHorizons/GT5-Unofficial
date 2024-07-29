@@ -22,7 +22,11 @@ import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.plate;
 import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
-import static gregtech.api.recipe.RecipeMaps.*;
+import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.recipe.RecipeMaps.latheRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
@@ -60,17 +64,6 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                             1L))
                     .eut(16)
                     .addTo(latheRecipes);
-
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(gem))
-                    .itemOutputs(werkstoff.get(stick, 2))
-                    .duration(
-                        (int) Math.max(
-                            werkstoff.getStats()
-                                .getMass() * 5L,
-                            1L))
-                    .eut(16)
-                    .addTo(precisionLatheRecipes);
 
                 GT_ModHandler.addCraftingRecipe(
                     werkstoff.get(stick, 2),
@@ -168,17 +161,6 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         1L))
                 .eut(16)
                 .addTo(latheRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot))
-                .itemOutputs(werkstoff.get(stick, 2))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() * 5L,
-                        1L))
-                .eut(16)
-                .addTo(precisionLatheRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(werkstoff.get(plate), GT_Utility.getIntegratedCircuit(1))

@@ -103,17 +103,6 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .eut(4)
                 .addTo(latheRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(werkstoff.get(bolt))
-                .itemOutputs(werkstoff.get(screw))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() / 8L,
-                        1L))
-                .eut(4)
-                .addTo(precisionLatheRecipes);
-
             GT_ModHandler.addCraftingRecipe(
                 werkstoff.get(screw),
                 GT_Proxy.tBits,
