@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -146,7 +147,15 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
                                 GregTech_API.sBlockCasings1,
                                 GregtechMTE_AlgaePondBase::setMeta,
                                 GregtechMTE_AlgaePondBase::getMeta,
-                                10))))
+                                10)),
+                        onElementPass(
+                            x -> ++x.mCasing,
+                            addTieredBlock(
+                                TT_Container_Casings.sBlockCasingsNH,
+                                GregtechMTE_AlgaePondBase::setMeta,
+                                GregtechMTE_AlgaePondBase::getMeta,
+                                10,
+                                15))))
                 .addElement('X', ofBlock(ModBlocks.blockCasings2Misc, 15))
                 .build();
         }
@@ -363,7 +372,8 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
             int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ;
             aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(xDir, -1, zDir);
             aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir, -1, zDir);
-            if (aInitStructureCheck == GregTech_API.sBlockCasings1) {
+            if (aInitStructureCheck == GregTech_API.sBlockCasings1
+                || aInitStructureCheck == TT_Container_Casings.sBlockCasingsNH) {
                 return aInitStructureCheckMeta;
             }
             return 0;
