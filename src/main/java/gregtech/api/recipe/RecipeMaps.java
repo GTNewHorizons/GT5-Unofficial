@@ -934,9 +934,10 @@ public final class RecipeMaps {
         .recipeConfigFile("lathe", FIRST_ITEM_INPUT)
         .build();
     // Register a new RecipeMap definition with a unique name
-    public static final RecipeMap<RecipeMapBackend> precisionLatheRecipes = RecipeMapBuilder.of("gt.recipe.precision_lathe")
+    public static final RecipeMap<RecipeMapBackend> precisionLatheRecipes = RecipeMapBuilder
+        .of("gt.recipe.precision_lathe")
         .maxIO(1, 1, 0, 0) // Maximum inputs and outputs: 1 input, 2 outputs
-        .minInputs(1, 0)   // Minimum inputs: 1 input, 0 fluid
+        .minInputs(1, 0) // Minimum inputs: 1 input, 0 fluid
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isOutput) {
                 return GT_UITextures.OVERLAY_SLOT_ROD_2; // Both output slots will use the rod overlay
@@ -945,7 +946,10 @@ public final class RecipeMaps {
         })
         .progressBar(GT_UITextures.PROGRESSBAR_LATHE)
         .addSpecialTexture(98, 24, 5, 18, GT_UITextures.PROGRESSBAR_LATHE_BASE)
-        .recipeConfigFile("lathe", FIRST_ITEM_INPUT)
+        .recipeConfigFile("precision_lathe", FIRST_ITEM_INPUT)
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(ItemList.Machine_Multi_Lathe.get(1))
+                .setMaxRecipesPerPage(1))
         .build();
     public static final RecipeMap<RecipeMapBackend> cutterRecipes = RecipeMapBuilder.of("gt.recipe.cuttingsaw")
         .maxIO(2, 4, 1, 0)

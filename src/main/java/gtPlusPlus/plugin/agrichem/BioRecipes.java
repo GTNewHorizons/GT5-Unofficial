@@ -795,7 +795,6 @@ public class BioRecipes {
             .addTo(precisionLatheRecipes);
     }
 
-
     private static void recipeAluminiumPellet() {
 
         // Ore Names, no prefix

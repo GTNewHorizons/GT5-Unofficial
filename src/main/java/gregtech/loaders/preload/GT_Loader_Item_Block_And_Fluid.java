@@ -19,7 +19,6 @@ import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
-import gregtech.common.blocks.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -52,6 +51,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.*;
 import gregtech.common.items.GT_DepletetCell_Item;
 import gregtech.common.items.GT_FluidDisplayItem;
 import gregtech.common.items.GT_IntegratedCircuit_Item;

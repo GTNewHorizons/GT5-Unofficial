@@ -8,10 +8,6 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
-import gregtech.api.metatileentity.GregTechTileClientEvents;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -24,6 +20,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -35,6 +32,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
@@ -43,6 +41,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings2;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_MultiLathe extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_MultiLathe>
     implements ISurvivalConstructable {
@@ -62,7 +62,8 @@ public class GT_MetaTileEntity_MultiLathe extends GT_MetaTileEntity_EnhancedMult
     protected int pipeTier = 0;
 
     public enum PipeTiers {
-        Platinum(4,  1F),
+
+        Platinum(4, 1F),
         Osmium(8, 1.25F),
         Quantium(12, 1.5F),
         FluxedElectrum(16, 2F),
@@ -107,38 +108,22 @@ public class GT_MetaTileEntity_MultiLathe extends GT_MetaTileEntity_EnhancedMult
         .<GT_MetaTileEntity_MultiLathe>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            transpose(
-                new String[][] {
-                    { "       " },
-                    { "       " },
-                    { "       " },
-                    { "       " },
-                    { "AAA~AAA" }
-                }))
+            transpose(new String[][] { { "       " }, { "       " }, { "       " }, { "       " }, { "AAA~AAA" } }))
         .addShape(
             STRUCTURE_PIECE_BODY,
             (transpose(
-                new String[][] {
-                    { "       ", "AAAAAAA", "       ", "       " },
-                    { "DBCCCCD", "DBCCCCD", "DBCCCCD", "       " },
-                    { "DBCCCCD", "DBFFFFD", "DBCCCCD", "       " },
-                    { "DBCCCCD", "DBCCCCD", "DBCCCCD", "       " },
-                    { "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA" }
-                })))
+                new String[][] { { "       ", "AAAAAAA", "       ", "       " },
+                    { "DBCCCCD", "DBCCCCD", "DBCCCCD", "       " }, { "DBCCCCD", "DBFFFFD", "DBCCCCD", "       " },
+                    { "DBCCCCD", "DBCCCCD", "DBCCCCD", "       " }, { "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA" } })))
         .addShape(
             STRUCTURE_PIECE_BODY_ALT,
             (transpose(
-                new String[][] {
-                    { "       ", "AAAAAAA", "       ", "       " },
-                    { "DCCCCBD", "DCCCCBD", "DCCCCBD", "       " },
-                    { "DCCCCBD", "DFFFFBD", "DCCCCBD", "       " },
-                    { "DCCCCBD", "DCCCCBD", "DCCCCBD", "       " },
-                    { "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA" }
-                })))
+                new String[][] { { "       ", "AAAAAAA", "       ", "       " },
+                    { "DCCCCBD", "DCCCCBD", "DCCCCBD", "       " }, { "DCCCCBD", "DFFFFBD", "DCCCCBD", "       " },
+                    { "DCCCCBD", "DCCCCBD", "DCCCCBD", "       " }, { "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA" } })))
         .addElement(
             'A',
-            buildHatchAdder(GT_MetaTileEntity_MultiLathe.class)
-                .atLeast(Maintenance, Muffler, Energy)
+            buildHatchAdder(GT_MetaTileEntity_MultiLathe.class).atLeast(Maintenance, Muffler, Energy)
                 .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
                 .dot(1)
                 .buildAndChain(
@@ -147,15 +132,16 @@ public class GT_MetaTileEntity_MultiLathe extends GT_MetaTileEntity_EnhancedMult
                         ofBlock(GregTech_API.sBlockCasings2, 0))))
         .addElement('B', ofBlock(GregTech_API.sBlockCasings3, 10)) // Steel Casings
         .addElement('C', Glasses.chainAllGlasses()) // Glass
-        .addElement('D',
+        .addElement(
+            'D',
             buildHatchAdder(GT_MetaTileEntity_MultiLathe.class)
-            .atLeast(InputBus, OutputBus, Maintenance, Muffler, Energy)
-            .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
-            .dot(1)
-            .buildAndChain(
-                onElementPass(
-                    GT_MetaTileEntity_MultiLathe::onCasingAdded,
-                    ofBlock(GregTech_API.sBlockCasings2, 0))))
+                .atLeast(InputBus, OutputBus, Maintenance, Muffler, Energy)
+                .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                .dot(1)
+                .buildAndChain(
+                    onElementPass(
+                        GT_MetaTileEntity_MultiLathe::onCasingAdded,
+                        ofBlock(GregTech_API.sBlockCasings2, 0))))
         .addElement(
             'F',
             ofBlocksTiered(
@@ -165,8 +151,7 @@ public class GT_MetaTileEntity_MultiLathe extends GT_MetaTileEntity_EnhancedMult
                     Pair.of(GregTech_API.sBlockCasings11, 4),
                     Pair.of(GregTech_API.sBlockCasings11, 5),
                     Pair.of(GregTech_API.sBlockCasings11, 6),
-                    Pair.of(GregTech_API.sBlockCasings11, 7)
-                ),
+                    Pair.of(GregTech_API.sBlockCasings11, 7)),
                 -2,
                 GT_MetaTileEntity_MultiLathe::setPipeTier,
                 GT_MetaTileEntity_MultiLathe::getPipeTier))
@@ -231,21 +216,22 @@ public class GT_MetaTileEntity_MultiLathe extends GT_MetaTileEntity_EnhancedMult
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Lathe")
             .addInfo("Controller Block for the Industrial Precision Lathe")
-            .addInfo("Gains 2 parallels per voltage tier, and 4 parallels per pipe casing tier (16 for Black Plutonium)")
+            .addInfo("Gains 2 parallels per voltage tier,")
+            .addInfo("and 4 parallels per pipe casing tier (16 for Black Plutonium)")
             .addInfo("Better pipe casings increase speed")
-            .addInfo("Item Pipe Casings osmium and above give 2 rods instead of 1 and dusts")
+            .addInfo("Item Pipe Casings Osmium and above give 2 rods instead of 1 and dusts")
             .addInfo(AuthorVolence)
             .addSeparator()
-            .beginStructureBlock(5, 5, 7, true)
+            .beginStructureBlock(7, 5, 5, true)
             .addController("Front Center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 24, false)
-            .addInputBus("Any Solid Steel Casing", 1)
-            .addOutputBus("Back Center Casing", 1)
+            .addCasingInfoMin("Solid Steel Machine Casing", 36, false)
+            .addCasingInfoExactly("Steel Pipe Casing", 8, false)
+            .addInputBus("Any of the 9 Solid Steel Casing at Each End", 1)
+            .addOutputBus("Any of the 9 Solid Steel Casing at Each End", 1)
             .addEnergyHatch("Any Solid Steel Casing", 1)
             .addMaintenanceHatch("Any Solid Steel Casing", 1)
-            .addMufflerHatch("Any Solid Steel Casing")
-            .addOtherStructurePart("Item Pipe Casing", "Center of the glass", 4)
+            .addMufflerHatch("Any Solid Steel Casing", 1)
+            .addOtherStructurePart("4 Item Pipe Casings", "Center of the glass", 4)
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -278,13 +264,12 @@ public class GT_MetaTileEntity_MultiLathe extends GT_MetaTileEntity_EnhancedMult
         mCasingAmount = 0;
         pipeTier = -2;
         mEnergyHatches.clear();
-        if(!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) return false;
-        //        if (mCasingAmount < 8) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) return false;
+        // if (mCasingAmount < 8) return false;
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-        if (!checkPiece(STRUCTURE_PIECE_BODY, 3, 4, -1)
-            && !checkPiece(STRUCTURE_PIECE_BODY_ALT, 3, 4, -1)) return false;
-        return this.mMaintenanceHatches.size() == 1
-            && pipeTier >= -1
+        if (!checkPiece(STRUCTURE_PIECE_BODY, 3, 4, -1) && !checkPiece(STRUCTURE_PIECE_BODY_ALT, 3, 4, -1))
+            return false;
+        return this.mMaintenanceHatches.size() == 1 && pipeTier >= -1
             && mEnergyHatches.size() >= 1
             && mInputBusses.size() >= 1
             && mMufflerHatches.size() == 1;
@@ -304,7 +289,7 @@ public class GT_MetaTileEntity_MultiLathe extends GT_MetaTileEntity_EnhancedMult
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        if(this.getPipeTier() > 1) {
+        if (this.getPipeTier() > 1) {
             return RecipeMaps.precisionLatheRecipes;
         }
         return RecipeMaps.latheRecipes;
@@ -317,21 +302,20 @@ public class GT_MetaTileEntity_MultiLathe extends GT_MetaTileEntity_EnhancedMult
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-                                int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("mode", getPipeTier() > 1 ? 1 : 0);
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-                             IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
             StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + StatCollector
-                .translateToLocal("GT5U.MULTI_LATHE.mode." + tag.getInteger("mode"))
+                + StatCollector.translateToLocal("GT5U.MULTI_LATHE.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
     }
 

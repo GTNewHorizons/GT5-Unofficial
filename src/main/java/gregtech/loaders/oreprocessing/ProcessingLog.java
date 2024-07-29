@@ -91,8 +91,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1, aStack))
-            .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 8L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 8L))
             .duration(8 * SECONDS)
             .eut(7)
             .addTo(precisionLatheRecipes);

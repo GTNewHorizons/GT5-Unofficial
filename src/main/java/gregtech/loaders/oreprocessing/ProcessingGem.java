@@ -187,8 +187,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         if (GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L) != null) {
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(1, aStack))
-                                .itemOutputs(
-                                    GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L))
                                 .duration(((int) Math.max(aMaterialMass, 1L)) * TICKS)
                                 .eut(calculateRecipeEU(aMaterial, 16))
                                 .addTo(precisionLatheRecipes);
@@ -441,7 +440,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             .addTo(latheRecipes);
                     }
 
-                    if (GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null)  {
+                    if (GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null) {
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(1, aStack))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 4L))
