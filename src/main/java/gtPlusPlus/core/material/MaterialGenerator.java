@@ -1,5 +1,7 @@
 package gtPlusPlus.core.material;
 
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -7,6 +9,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -36,10 +40,8 @@ import gtPlusPlus.core.item.base.rods.BaseItemRod;
 import gtPlusPlus.core.item.base.rods.BaseItemRodLong;
 import gtPlusPlus.core.item.base.rotors.BaseItemRotor;
 import gtPlusPlus.core.item.base.screws.BaseItemScrew;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -245,14 +247,13 @@ public class MaterialGenerator {
     public static void generateNuclearDusts(final Material matInfo, boolean generateDehydratorRecipe) {
         generateNuclearMaterial(matInfo, false, true, false, false, true);
         if (generateDehydratorRecipe && matInfo.getFluid() != null && matInfo.getDust(0) != null) {
-            CORE.RA.addDehydratorRecipe(
-                new ItemStack[] { CI.getNumberedCircuit(20) },
-                matInfo.getFluidStack(144),
-                null,
-                new ItemStack[] { matInfo.getDust(1), },
-                new int[] { 10000 },
-                10 * (matInfo.vVoltageMultiplier / 5), // Time in ticks
-                matInfo.vVoltageMultiplier); // EU
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.getIntegratedCircuit(20))
+                .itemOutputs(matInfo.getDust(1))
+                .fluidInputs(matInfo.getFluidStack(144))
+                .eut(matInfo.vVoltageMultiplier)
+                .duration(10 * (matInfo.vVoltageMultiplier / 5))
+                .addTo(chemicalDehydratorRecipes);
         } else {
             Logger.INFO(
                 "Nuclear Dehydrator: Did not generate recipe for " + matInfo.getLocalizedName()

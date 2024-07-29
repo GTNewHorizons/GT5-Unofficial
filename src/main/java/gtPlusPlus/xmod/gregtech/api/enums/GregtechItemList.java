@@ -453,6 +453,8 @@ public enum GregtechItemList implements GregtechItemContainer {
     Controller_SteamWasherMulti,
     // Big Steam Centrifuge
     Controller_SteamCentrifugeMulti,
+    // Bit Steam Forge Hammer
+    Controller_SteamForgeHammerMulti,
     // Big Steam Compressor
     Controller_SteamCompressorMulti,
 

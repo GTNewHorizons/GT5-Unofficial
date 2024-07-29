@@ -682,7 +682,12 @@ public enum MetaTileEntityIDs {
     RECIPE_FILTER_UHV(9339),
     INDUSTRIAL_APIARY(9399),
     Drone_Centre(9400),
-    DroneDownLink(9401);
+    DroneDownLink(9401),
+    sofc1(13101),
+    sofc2(13102),
+    tfft(13104),
+    lsc(13106),
+    tfftHatch(13109);
 
     public final int ID;
 

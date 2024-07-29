@@ -221,6 +221,14 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
     }
 
     @Override
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        setMachineMode(nextMachineMode());
+        PlayerUtils.messagePlayer(
+            aPlayer,
+            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+    }
+
+    @Override
     public void setMachineModeIcons() {
         machineModeIcons.clear();
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_CUTTING);
@@ -228,11 +236,8 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
     }
 
     @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        setMachineMode(nextMachineMode());
-        String aMode = machineMode == MACHINEMODE_CUTTER ? "Cutting" : "Slicing";
-        PlayerUtils.messagePlayer(aPlayer, "Mode: " + aMode);
-        mLastRecipe = null;
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_CUTTING_MACHINE.mode." + machineMode);
     }
 
     @Override
