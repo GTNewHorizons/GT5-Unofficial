@@ -31,6 +31,7 @@ public class TecTechRecipeMaps {
         .logoPos(10, 10)
         .neiHandlerInfo(
             builder -> builder.setDisplayStack(CustomItemList.Machine_Multi_EyeOfHarmony.get(1))
+                .setHeight(314)
                 .setMaxRecipesPerPage(1))
         .frontend(EyeOfHarmonyFrontend::new)
         .build();
