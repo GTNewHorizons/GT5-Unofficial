@@ -52,7 +52,7 @@ public class CuttingRecipes implements Runnable {
             // Naq wafer also gets recipes using purified water
             recipeWithPurifiedWater(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot3.get(1) },
-                new ItemStack[] { ItemList.Circuit_Silicon_Wafer3.get(64),
+                new ItemStack[] { ItemList.Circuit_Silicon_Wafer3.get(128),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 16) },
                 Materials.Grade1PurifiedWater,
                 Materials.Grade2PurifiedWater,
