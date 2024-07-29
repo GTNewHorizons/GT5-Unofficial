@@ -160,6 +160,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected GT_SoundLoop activitySoundLoop;
 
     private long mLastWorkingTick = 0;
+    private int randomTickOffset = (int) (Math.random() * 19 + 1);
 
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
     protected static final byte PROCESS_START_SOUND_INDEX = 1;
@@ -526,7 +527,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         // Perform more frequent recipe change after the machine just shuts down.
         long timeElapsed = aTick - mLastWorkingTick;
 
-        if (timeElapsed >= 100) return aTick % 100 == 0;
+        if (timeElapsed >= 100) return (aTick + randomTickOffset) % 100 == 0;
         // Batch mode should be a lot less aggressive at recipe checking
         if (!isBatchModeEnabled()) {
             return timeElapsed == 5 || timeElapsed == 12
