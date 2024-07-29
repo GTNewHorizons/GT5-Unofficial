@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.s
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.GregTech_API.*;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.GT_Values.AuthorEvgenWarGold;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -29,7 +32,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -71,129 +77,70 @@ public class GregtechMetaTileEntity_SteamCentrifuge
 
     private static final String STRUCTUR_PIECE_MAIN = "main";
 
-    private static IStructureDefinition<GregtechMetaTileEntity_SteamCentrifuge> STRUCTURE_DEFINITION = null;
-    private final String[][] shape = new String[][] { { " AAA ", "AAAAA", "AAAAA", "AAAAA", " AAA " },
-        { "     ", " ABA ", " BDB ", " ABA ", "     " }, { "  A  ", " ACA ", "ACDCA", " ACA ", "  A  " },
-        { " A~A ", "AABAA", "ABDBA", "AABAA", " AAA " }, { " AAA ", "AAAAA", "AAAAA", "AAAAA", " AAA " } };
+    private IStructureDefinition<GregtechMetaTileEntity_SteamCentrifuge> STRUCTURE_DEFINITION = null;
+    // spotless:off
+    private final String[][] shape = new String[][] {
+        { " AAA ", "AAAAA", "AAAAA", "AAAAA", " AAA " },
+        { "     ", " ABA ", " BDB ", " ABA ", "     " },
+        { "  A  ", " ACA ", "ACDCA", " ACA ", "  A  " },
+        { " A~A ", "AABAA", "ABDBA", "AABAA", " AAA " },
+        { " AAA ", "AAAAA", "AAAAA", "AAAAA", " AAA " } };
+    //spotless:on
 
-    private static final int horizontalOffSet = 2;
-    private static final int verticalOffSet = 3;
-    private static final int depthOffSet = 0;
+    private static final int HORIZONTAL_OFF_SET = 2;
+    private static final int VERTICAL_OFF_SET = 3;
+    private static final int DEPTH_OFF_SET = 0;
 
     private int tierGearBoxCasing = -1;
     private int tierPipeCasing = -1;
     private int tierFireBoxCasing = -1;
     private int tierMachineCasing = -1;
 
+    private int tCountCasing = 0;
+
     private int tierMachine = 1;
 
-    private String tMachineCasing = "Solid Bronze or Steel Machine Casing";
-
-    public static int getTierMachineCasing(Block block, int meta) {
-        if (block == sBlockCasings1 && 10 == meta) return 1;
-        if (block == sBlockCasings2 && 0 == meta) return 2;
-        return -1;
+    public int getTierMachineCasing(Block block, int meta) {
+        if (block == sBlockCasings1 && 10 == meta) {
+            tCountCasing++;
+            return 1;
+        }
+        if (block == sBlockCasings2 && 0 == meta) {
+            tCountCasing++;
+            return 2;
+        }
+        return 0;
     }
-
-    private String tFireBoxCasing = "Bronze or Steel Firebox Casing";
 
     public static int getTierFireBoxCasing(Block block, int meta) {
         if (block == sBlockCasings3 && 13 == meta) return 1;
         if (block == sBlockCasings3 && 14 == meta) return 2;
-        return -1;
+        return 0;
     }
-
-    private String tGearBoxCasing = "Bronze or Steel Gear Box Casing";
 
     public static int getTierGearBoxCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 2 == meta) return 1;
         if (block == sBlockCasings2 && 3 == meta) return 2;
-        return -1;
+        return 0;
     }
-
-    private String tPipeCasing = "Bronze or Steel Pipe Casing";
 
     public static int getTierPipeCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 12 == meta) return 1;
         if (block == sBlockCasings2 && 13 == meta) return 2;
-        return -1;
+        return 0;
     }
 
     protected void updateHatchTexture() {
         for (GT_MetaTileEntity_Hatch h : mSteamInputs) h.updateTexture(getCasingTextureID());
         for (GT_MetaTileEntity_Hatch h : mSteamOutputs) h.updateTexture(getCasingTextureID());
         for (GT_MetaTileEntity_Hatch h : mSteamInputFluids) h.updateTexture(getCasingTextureID());
+        for (GT_MetaTileEntity_Hatch h : mOutputHatches) h.updateTexture(getCasingTextureID());
     }
 
-    protected static String getNickname() {
-        return "EvgenWarGold";
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setInteger("tierMachine", tierMachine);
-    }
-
-    @Override
-    public void loadNBTData(final NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        tierMachine = aNBT.getInteger("tierMachine");
-    }
-
-    @Override
-    public String[] getInfoData() {
-        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Machine Tier: " + EnumChatFormatting.YELLOW + tierMachine);
-        info.add("Parallel: " + EnumChatFormatting.YELLOW + getMaxParallelRecipes());
-        return info.toArray(new String[0]);
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
-
-        currenttip.add(
-            StatCollector.translateToLocal("GTPP.machines.tier") + ": "
-                + EnumChatFormatting.YELLOW
-                + tag.getInteger("tierMachine")
-                + EnumChatFormatting.RESET);
-        currenttip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "
-                + EnumChatFormatting.BLUE
-                + tag.getInteger("parallel")
-                + EnumChatFormatting.RESET);
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("tierMachine", tierMachine);
-        tag.setInteger("parallel", getMaxParallelRecipes());
-    }
-
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierGearBoxCasing = -1;
-        tierPipeCasing = -1;
-        tierFireBoxCasing = -1;
-        tierMachineCasing = -1;
-        if (!checkPiece(STRUCTUR_PIECE_MAIN, horizontalOffSet, verticalOffSet, depthOffSet)) return false;
-        if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierFireBoxCasing < 0 && tierMachineCasing < 0) return false;
-        if (tierGearBoxCasing == 1 && tierPipeCasing == 1 && tierFireBoxCasing == 1 && tierMachineCasing == 1) {
-            updateHatchTexture();
-            tierMachine = 1;
-            return true;
-        }
-        if (tierGearBoxCasing == 2 && tierPipeCasing == 2 && tierFireBoxCasing == 2 && tierMachineCasing == 2) {
-            updateHatchTexture();
-            tierMachine = 2;
-            return true;
-        }
-        return false;
+    private int getCasingTextureID() {
+        if (tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierFireBoxCasing == 2 || tierMachineCasing == 2)
+            return ((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0);
+        return ((GT_Block_Casings1) GregTech_API.sBlockCasings1).getTextureIndex(10);
     }
 
     @Override
@@ -204,90 +151,6 @@ public class GregtechMetaTileEntity_SteamCentrifuge
     @Override
     public byte getUpdateData() {
         return (byte) tierMachineCasing;
-    }
-
-    @Override
-    public IStructureDefinition<GregtechMetaTileEntity_SteamCentrifuge> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_SteamCentrifuge>builder()
-
-                .addShape(STRUCTUR_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'B',
-                    withChannel(
-                        "tier",
-                        ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamCentrifuge::getTierGearBoxCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
-                            -1,
-                            (t, m) -> t.tierGearBoxCasing = m,
-                            t -> t.tierGearBoxCasing)))
-                .addElement(
-                    'C',
-                    withChannel(
-                        "tier",
-                        ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamCentrifuge::getTierPipeCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
-                            -1,
-                            (t, m) -> t.tierPipeCasing = m,
-                            t -> t.tierPipeCasing)))
-                .addElement(
-                    'D',
-                    withChannel(
-                        "tier",
-                        ofBlocksTiered(
-                            GregtechMetaTileEntity_SteamCentrifuge::getTierFireBoxCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
-                            -1,
-                            (t, m) -> t.tierFireBoxCasing = m,
-                            t -> t.tierFireBoxCasing)))
-                .addElement(
-                    'A',
-                    withChannel(
-                        "tier",
-                        ofChain(
-                            ofBlocksTiered(
-                                GregtechMetaTileEntity_SteamCentrifuge::getTierMachineCasing,
-                                ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                                -1,
-                                (t, m) -> t.tierMachineCasing = m,
-                                t -> t.tierMachineCasing),
-                            buildSteamInput(GregtechMetaTileEntity_SteamCentrifuge.class).casingIndex(10)
-                                .dot(1)
-                                .build(),
-                            buildHatchAdder(GregtechMetaTileEntity_SteamCentrifuge.class)
-                                .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
-                                .casingIndex(10)
-                                .dot(1)
-                                .buildAndChain()
-
-                        )))
-                .build();
-
-        }
-        return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
-        this.buildPiece(STRUCTUR_PIECE_MAIN, stackSize, hintsOnly, horizontalOffSet, verticalOffSet, depthOffSet);
-    }
-
-    @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (this.mMachine) return -1;
-        return this.survivialBuildPiece(
-            STRUCTUR_PIECE_MAIN,
-            stackSize,
-            horizontalOffSet,
-            verticalOffSet,
-            depthOffSet,
-            elementBudget,
-            env,
-            false,
-            true);
     }
 
     @Override
@@ -310,10 +173,114 @@ public class GregtechMetaTileEntity_SteamCentrifuge
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
     }
 
-    private int getCasingTextureID() {
-        if (tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierFireBoxCasing == 2 || tierMachineCasing == 2)
-            return ((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0);
-        return ((GT_Block_Casings1) GregTech_API.sBlockCasings1).getTextureIndex(10);
+    @Override
+    public IStructureDefinition<GregtechMetaTileEntity_SteamCentrifuge> getStructureDefinition() {
+        if (STRUCTURE_DEFINITION == null) {
+
+            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_SteamCentrifuge>builder()
+
+                .addShape(STRUCTUR_PIECE_MAIN, transpose(shape))
+                .addElement(
+                    'B',
+                    ofBlocksTiered(
+                        GregtechMetaTileEntity_SteamCentrifuge::getTierGearBoxCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
+                        -1,
+                        (t, m) -> t.tierGearBoxCasing = m,
+                        t -> t.tierGearBoxCasing))
+                .addElement(
+                    'C',
+                    ofBlocksTiered(
+                        GregtechMetaTileEntity_SteamCentrifuge::getTierPipeCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
+                        -1,
+                        (t, m) -> t.tierPipeCasing = m,
+                        t -> t.tierPipeCasing))
+                .addElement(
+                    'D',
+                    ofBlocksTiered(
+                        GregtechMetaTileEntity_SteamCentrifuge::getTierFireBoxCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
+                        -1,
+                        (t, m) -> t.tierFireBoxCasing = m,
+                        t -> t.tierFireBoxCasing))
+                .addElement(
+                    'A',
+                    ofChain(
+                        buildSteamInput(GregtechMetaTileEntity_SteamCentrifuge.class).casingIndex(10)
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(GregtechMetaTileEntity_SteamCentrifuge.class)
+                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam, OutputHatch)
+                            .casingIndex(10)
+                            .dot(1)
+                            .buildAndChain(),
+                        ofBlocksTiered(
+                            this::getTierMachineCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                            -1,
+                            (t, m) -> t.tierMachineCasing = m,
+                            t -> t.tierMachineCasing)))
+                .build();
+
+        }
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        this.buildPiece(STRUCTUR_PIECE_MAIN, stackSize, hintsOnly, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (this.mMachine) return -1;
+        return this.survivialBuildPiece(
+            STRUCTUR_PIECE_MAIN,
+            stackSize,
+            HORIZONTAL_OFF_SET,
+            VERTICAL_OFF_SET,
+            DEPTH_OFF_SET,
+            elementBudget,
+            env,
+            false,
+            true);
+    }
+
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        tierGearBoxCasing = -1;
+        tierPipeCasing = -1;
+        tierFireBoxCasing = -1;
+        tierMachineCasing = -1;
+        tCountCasing = 0;
+        if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierFireBoxCasing < 0 && tierMachineCasing < 0) return false;
+        if (tierGearBoxCasing == 1 && tierPipeCasing == 1
+            && tierFireBoxCasing == 1
+            && tierMachineCasing == 1
+            && tCountCasing > 60
+            && !mSteamInputFluids.isEmpty()
+            && !mSteamInputs.isEmpty()
+            && !mSteamOutputs.isEmpty()
+            && !mOutputHatches.isEmpty()) {
+            updateHatchTexture();
+            tierMachine = 1;
+            return true;
+        }
+        if (tierGearBoxCasing == 2 && tierPipeCasing == 2
+            && tierFireBoxCasing == 2
+            && tierMachineCasing == 2
+            && tCountCasing > 60
+            && !mSteamInputFluids.isEmpty()
+            && !mSteamInputs.isEmpty()
+            && !mSteamOutputs.isEmpty()
+            && !mOutputHatches.isEmpty()) {
+            updateHatchTexture();
+            tierMachine = 2;
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -352,15 +319,83 @@ public class GregtechMetaTileEntity_SteamCentrifuge
             .addInfo("Centrifuges up to 8 x Tier things at a time.")
             .addSeparator()
             .beginStructureBlock(5, 5, 5, false)
-            .addCasingInfoMin(tMachineCasing, 60, false)
-            .addCasingInfo(tFireBoxCasing, 3)
-            .addCasingInfo(tGearBoxCasing, 8)
-            .addCasingInfo(tPipeCasing, 4)
-            .addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
-            .addOtherStructurePart(TT_steamoutputbus, "Any casing", 1)
-            .addOtherStructurePart(TT_steamhatch, "Any casing", 1)
-            .toolTipFinisher(getNickname());
+            .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addStructureInfo(
+                EnumChatFormatting.WHITE + "Steam Input Hatch "
+                    + EnumChatFormatting.GOLD
+                    + "1"
+                    + EnumChatFormatting.GRAY
+                    + " Any casing")
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1)
+            .addStructureInfo(EnumChatFormatting.GOLD + "60-65x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
+            .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Bronze Gear Box Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "3x" + EnumChatFormatting.GRAY + " Bronze Firebox Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2)
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "60-65x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Steel Gear Box Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "3x" + EnumChatFormatting.GRAY + " Steel Firebox Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
+            .addStructureInfo("")
+            .toolTipFinisher(AuthorEvgenWarGold);
         return tt;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        info.add("Machine Tier: " + EnumChatFormatting.YELLOW + tierMachine);
+        info.add("Parallel: " + EnumChatFormatting.YELLOW + getMaxParallelRecipes());
+        return info.toArray(new String[0]);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+
+        currenttip.add(
+            StatCollector.translateToLocal("GTPP.machines.tier") + ": "
+                + EnumChatFormatting.YELLOW
+                + tag.getInteger("tierMachine")
+                + EnumChatFormatting.RESET);
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "
+                + EnumChatFormatting.BLUE
+                + tag.getInteger("parallel")
+                + EnumChatFormatting.RESET);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("tierMachine", tierMachine);
+        tag.setInteger("parallel", getMaxParallelRecipes());
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("tierMachine", tierMachine);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        tierMachine = aNBT.getInteger("tierMachine");
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_STEAM_CENTRIFUGE_LOOP.resourceLocation;
     }
 
 }

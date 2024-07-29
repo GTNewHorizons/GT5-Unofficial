@@ -67,7 +67,6 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     long lastOutputTick = 0;
     long lastInputTick = 0;
     long tickCounter = 0;
-    boolean lastOutputFailed = false;
     boolean additionalConnection = false;
 
     public GT_MetaTileEntity_Hatch_Output_ME(int aID, String aName, String aNameRegional) {
@@ -117,7 +116,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         if (doFill) {
             return tryFillAE(aFluid);
         } else {
-            if (lastOutputFailed || aFluid == null) return 0;
+            if (aFluid == null) return 0;
             return aFluid.amount;
         }
     }
@@ -160,7 +159,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
      * @return amount of fluid filled
      */
     public int tryFillAE(final FluidStack aFluid) {
-        if (lastOutputFailed || aFluid == null) return 0;
+        if (aFluid == null) return 0;
         // Always allow insertion on the same tick so we can output the entire recipe
         if (canAcceptFluid() || (lastInputTick == tickCounter)) {
             fluidCache.add(
@@ -250,10 +249,8 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
 
     private void flushCachedStack() {
         if (fluidCache.isEmpty()) return;
-        lastOutputFailed = true;
         AENetworkProxy proxy = getProxy();
         if (proxy == null) {
-            lastOutputFailed = true;
             return;
         }
         try {
@@ -266,12 +263,9 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
                     s.setStackSize(rest.getStackSize());
                     continue;
                 }
-                lastOutputFailed = false;
                 s.setStackSize(0);
             }
-        } catch (final GridAccessException ignored) {
-            lastOutputFailed = true;
-        }
+        } catch (final GridAccessException ignored) {}
         lastOutputTick = tickCounter;
     }
 
@@ -361,10 +355,6 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             baseCapacity = Long.MAX_VALUE;
         }
         getProxy().readFromNBT(aNBT);
-    }
-
-    public boolean isLastOutputFailed() {
-        return lastOutputFailed;
     }
 
     @Override

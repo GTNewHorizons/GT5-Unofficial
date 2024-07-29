@@ -858,6 +858,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
         clearRecipeMapForAllInputHatches();
         onModeChangeByScrewdriver(side, aPlayer, aX, aY, aZ);
+        mLastRecipe = null;
         resetRecipeMapForAllInputHatches();
     }
 

@@ -1,7 +1,12 @@
 package gregtech.common.tileentities.machines.multiblock;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.Mods.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ENERGY_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_OUT;

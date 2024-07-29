@@ -56,6 +56,8 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
+import blockrenderer6343.client.world.ClientFakePlayer;
+import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -313,6 +315,17 @@ public class GT_MetaTileEntity_PCBFactory extends
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int built = 0;
+        if (Loader.isModLoaded("blockrenderer6343") && env.getActor() instanceof ClientFakePlayer) {
+            if (stackSize.stackSize < 3) {
+                built += survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, false);
+                if (stackSize.stackSize == 2) {
+                    built += survivialBuildPiece(tier2, stackSize, 7, 6, 2, elementBudget, env, false, false);
+                }
+            } else {
+                built += survivialBuildPiece(tier3, stackSize, 3, 21, 0, elementBudget, env, false, false);
+            }
+            return built;
+        }
         if (mSetTier < 3) {
             built += survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, true);
             if (mSetTier == 2) {

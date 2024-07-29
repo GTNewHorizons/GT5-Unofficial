@@ -111,6 +111,20 @@ public class GT_Multiblock_Tooltip_Builder {
     }
 
     /**
+     * Add a number of basic lines of information about this structure
+     *
+     * @param infoStrings The lines to be added.
+     * @return Instance this method was called on.
+     */
+
+    public GT_Multiblock_Tooltip_Builder addInfoAll(String... infoStrings) {
+        for (String str : infoStrings) {
+            iLines.add(str);
+        }
+        return this;
+    }
+
+    /**
      * Add a separator line like this:<br>
      * -----------------------------------------
      *

@@ -242,6 +242,9 @@ public enum GregtechItemList implements GregtechItemContainer {
     Industrial_Electrolyzer,
     Casing_Electrolyzer,
 
+    // Industrial Electromagnetic Separator
+    Industrial_Electromagnetic_Separator,
+
     // Industrial Maceration Stack
     Industrial_MacerationStack,
     Casing_MacerationStack,
@@ -405,6 +408,9 @@ public enum GregtechItemList implements GregtechItemContainer {
     Casing_Vacuum_Furnace,
     Controller_Vacuum_Furnace,
 
+    // Water pump
+    WaterPump,
+
     // Large Rocket Engine
     Casing_RocketEngine,
     Controller_RocketEngine,
@@ -447,6 +453,8 @@ public enum GregtechItemList implements GregtechItemContainer {
     Controller_SteamWasherMulti,
     // Big Steam Centrifuge
     Controller_SteamCentrifugeMulti,
+    // Bit Steam Forge Hammer
+    Controller_SteamForgeHammerMulti,
     // Big Steam Compressor
     Controller_SteamCompressorMulti,
 

@@ -11,6 +11,7 @@ import common.tileentities.TE_ThaumiumReinforcedJar;
 import common.tileentities.TE_ThaumiumReinforcedVoidJar;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.MetaTileEntityIDs;
 
 public class TileEntities {
 
@@ -32,12 +33,21 @@ public class TileEntities {
 
     public static void init() {
         // Multiblock controllers
-        sofc1 = new GTMTE_SOFuelCellMK1(13101, "multimachine.fuelcellmk1", "Solid-Oxide Fuel Cell Mk I");
-        sofc2 = new GTMTE_SOFuelCellMK2(13102, "multimachine.fuelcellmk2", "Solid-Oxide Fuel Cell Mk II");
-        tfft = new GTMTE_TFFT(13104, "multimachine.tfft", "T.F.F.T");
-        lsc = new GTMTE_LapotronicSuperCapacitor(13106, "multimachine.supercapacitor", "Lapotronic Supercapacitor");
+        sofc1 = new GTMTE_SOFuelCellMK1(
+            MetaTileEntityIDs.sofc1.ID,
+            "multimachine.fuelcellmk1",
+            "Solid-Oxide Fuel Cell Mk I");
+        sofc2 = new GTMTE_SOFuelCellMK2(
+            MetaTileEntityIDs.sofc2.ID,
+            "multimachine.fuelcellmk2",
+            "Solid-Oxide Fuel Cell Mk II");
+        tfft = new GTMTE_TFFT(MetaTileEntityIDs.tfft.ID, "multimachine.tfft", "T.F.F.T");
+        lsc = new GTMTE_LapotronicSuperCapacitor(
+            MetaTileEntityIDs.lsc.ID,
+            "multimachine.supercapacitor",
+            "Lapotronic Supercapacitor");
 
         // Singleblocks
-        tfftHatch = new GTMTE_TFFTHatch(13109, "machine.tffthatch", "T.F.F.T Multi I/O Hatch");
+        tfftHatch = new GTMTE_TFFTHatch(MetaTileEntityIDs.tfftHatch.ID, "machine.tffthatch", "T.F.F.T Multi I/O Hatch");
     }
 }

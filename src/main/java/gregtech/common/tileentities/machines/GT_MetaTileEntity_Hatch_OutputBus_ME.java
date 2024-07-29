@@ -61,7 +61,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     long lastOutputTick = 0;
     long lastInputTick = 0;
     long tickCounter = 0;
-    boolean lastOutputFailed = false;
     boolean additionalConnection = false;
 
     public GT_MetaTileEntity_Hatch_OutputBus_ME(int aID, String aName, String aNameRegional) {
@@ -141,7 +140,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
      * @return amount of items left over
      */
     public int store(final ItemStack stack) {
-        if (lastOutputFailed) return stack.stackSize;
         // Always allow insertion on the same tick so we can output the entire recipe
         if (canAcceptItem() || (lastInputTick == tickCounter)) {
             itemCache.add(
@@ -219,10 +217,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     }
 
     private void flushCachedStack() {
-        lastOutputFailed = false;
         AENetworkProxy proxy = getProxy();
         if (proxy == null) {
-            lastOutputFailed = true;
             return;
         }
         try {
@@ -232,14 +228,13 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                 if (s.getStackSize() == 0) continue;
                 IAEItemStack rest = Platform.poweredInsert(proxy.getEnergy(), sg, s, getRequest());
                 if (rest != null && rest.getStackSize() > 0) {
-                    lastOutputFailed = true;
                     s.setStackSize(rest.getStackSize());
                     break;
                 }
                 s.setStackSize(0);
             }
         } catch (final GridAccessException ignored) {
-            lastOutputFailed = true;
+
         }
         lastOutputTick = tickCounter;
     }
@@ -340,10 +335,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             baseCapacity = Long.MAX_VALUE;
         }
         getProxy().readFromNBT(aNBT);
-    }
-
-    public boolean isLastOutputFailed() {
-        return lastOutputFailed;
     }
 
     @Override

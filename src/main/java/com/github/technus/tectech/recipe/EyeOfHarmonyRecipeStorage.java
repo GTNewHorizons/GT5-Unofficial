@@ -18,6 +18,7 @@ import com.github.technus.tectech.util.FluidStackLong;
 import com.github.technus.tectech.util.ItemStackLong;
 import com.google.common.math.LongMath;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
@@ -110,18 +111,19 @@ public class EyeOfHarmonyRecipeStorage {
                 .copy();
             planetItem.stackSize = 0;
 
-            eyeOfHarmonyRecipes.addRecipe(
-                false,
-                new ItemStack[] { planetItem },
-                outputItems.toArray(new ItemStack[0]),
-                recipe,
-                null,
-                new FluidStack[] { Materials.Hydrogen.getGas(0), Materials.Helium.getGas(0),
-                    MaterialsUEVplus.RawStarMatter.getFluid(0) },
-                outputFluids.toArray(new FluidStack[0]),
-                (int) recipe.getRecipeTimeInTicks(),
-                0,
-                0);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(planetItem)
+                .itemOutputs(outputItems.toArray(new ItemStack[0]))
+                .fluidInputs(
+                    Materials.Hydrogen.getGas(0),
+                    Materials.Helium.getGas(0),
+                    MaterialsUEVplus.RawStarMatter.getFluid(0))
+                .fluidOutputs(outputFluids.toArray(new FluidStack[0]))
+                .duration(recipe.getRecipeTimeInTicks())
+                .eut(0)
+                .special(recipe)
+                .noOptimize()
+                .addTo(eyeOfHarmonyRecipes);
         }
     }
 

@@ -264,6 +264,9 @@ public class Textures {
         MACHINE_CASING_FUSION,
         MACHINE_CASING_FUSION_GLASS,
         MACHINE_CASING_FUSION_GLASS_YELLOW,
+        TEXTURE_METAL_PANEL_E,
+        TEXTURE_METAL_PANEL_E_A,
+
         MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW,
         MACHINE_CASING_FUSION_2,
 
@@ -312,6 +315,17 @@ public class Textures {
         MACHINE_CASING_GRATE,
         MACHINE_CASING_VENT,
         MACHINE_CASING_VENT_T2,
+
+        OVERLAY_FRONT_EMS,
+        OVERLAY_FRONT_EMS_ACTIVE,
+        OVERLAY_FRONT_EMS_ACTIVE_GLOW,
+        OVERLAY_FRONT_EMS_GLOW,
+        MACHINE_CASING_EMS,
+
+        OVERLAY_FRONT_MULTI_CANNER,
+        OVERLAY_FRONT_MULTI_CANNER_ACTIVE,
+        OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW,
+        OVERLAY_FRONT_MULTI_CANNER_GLOW,
 
         MACHINE_CASING_RADIATIONPROOF,
         MACHINE_CASING_ADVANCEDRADIATIONPROOF,
@@ -494,6 +508,9 @@ public class Textures {
         ITEM_OUT_SIGN,
         OVERLAY_MUFFLER,
 
+        OVERLAY_EMS_HOUSING,
+        OVERLAY_EMS_HOUSING_GLOW,
+
         OVERLAY_CONTROLLER,
         OVERLAY_ACTIVITYDETECTOR,
         OVERLAY_ACTIVITYDETECTOR_GLOW,
@@ -639,8 +656,12 @@ public class Textures {
         OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE_GLOW,
         OVERLAY_FRONT_STEAM_WASHER,
         OVERLAY_FRONT_STEAM_WASHER_ACTIVE,
+        OVERLAY_FRONT_WATER_PUMP,
+        OVERLAY_FRONT_WATER_PUMP_ACTIVE,
         OVERLAY_FRONT_STEAM_CENTRIFUGE,
         OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE,
+        OVERLAY_FRONT_STEAM_FORGE_HAMMER,
+        OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE,
         OVERLAY_FRONT_STEAM_COMPRESSOR,
         OVERLAY_FRONT_STEAM_COMPRESSOR_GLOW,
         OVERLAY_FRONT_STEAM_EXTRACTOR,
@@ -1335,6 +1356,8 @@ public class Textures {
         MACHINE_CASING_PCB_TIER_3,
         INFINITY_COOLED_CASING,
 
+        MACHINE_CASING_SHIELDED_ACCELERATOR,
+
         LARGETURBINE_NEW1,
         LARGETURBINE_NEW2,
         LARGETURBINE_NEW3,
@@ -1667,11 +1690,17 @@ public class Textures {
         public static final ITexture[] CASING_BLOCKS = new ITexture[128]; // original variable still limited to 128
 
         public static ITexture[][] MACHINE_CASINGS = new ITexture[15][17];
+        // spotless:off
         /**
-         * by Default pages are null page 0: 0-63 GT casing 1-4, 64-127 GT++ page 1: 0-15 GT casing 5, 22-26 GS dyson
-         * swarm, 48-57 GT casing 8, 63 EMT, 80-95 GT reinforced blocks, 96 casing 2 meta 6, 97 error casing page 8:
-         * 0-111 TecTech, 112-127 GT casing 6 page 12: 0-127 GlodBlock page 42: 0-126 glee8e, 127 KekzTech LSC base
+         * by Default pages are null
+         * page 0: 0-63 GT casing 1-4, 64-127 GT++
+         * page 1: 0-15 GT casing 5, 22-26 GS dyson swarm, 48-57 GT casing 8, 63 EMT, 80-95 GT reinforced blocks, 96 casing 2 meta 6, 97 error casing
+         * page 8: 0-111 TecTech, 112-127 GT casing 6
+         * page 12: 0-127 GlodBlock
+         * page 16: 0-15 GT glass 1, 16-31 GT casing 9, 32-47 GT glass 2, 48-63 GT casing 10
+         * page 42: 0-126 glee8e, 127 KekzTech LSC base
          */
+        // spotless:on
         public static ITexture[][] casingTexturePages = new ITexture[128][]; // page holder so we don't make an short
                                                                              // long array
 
@@ -1689,6 +1718,7 @@ public class Textures {
             // adds some known pages, modders also can do it...
             GT_Utility.addTexturePage((byte) 1);
             GT_Utility.addTexturePage((byte) 8);
+            GT_Utility.addTexturePage((byte) 16);
             setCasingTextureForId(ERROR_TEXTURE_INDEX, ERROR_RENDERING[0]);
         }
 

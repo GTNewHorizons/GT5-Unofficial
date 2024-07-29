@@ -4941,6 +4941,23 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { "PSP", "SFS", "PSP", 'P', OrePrefixes.plate.get(Materials.Bronze), 'F',
                 OrePrefixes.frameGt.get(Materials.Bronze), 'S', OrePrefixes.stick.get(Materials.Bronze) });
         GT_ModHandler.addCraftingRecipe(
+            ItemList.WoodenCasing.get(1L),
+            bits,
+            new Object[] { "PSP", "PFP", "PSP", 'F', OrePrefixes.gear.get(Materials.Wood), 'P',
+                OrePrefixes.frameGt.get(Materials.Wood), 'S', OrePrefixes.screw.get(Materials.Wood) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hatch_Output_ULV.get(1L),
+            bits,
+            new Object[] { "ASA", "AFA", "APA", 'S', GT_ModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1L, 0),
+                'F', ItemList.Hull_ULV.get(1L), 'A', OrePrefixes.plate.get(Materials.Rubber), 'P',
+                OrePrefixes.ring.get(Materials.Rubber) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hatch_Input_ULV.get(1L),
+            bits,
+            new Object[] { "ASA", "AFA", "APA", 'S', GT_ModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1L, 0),
+                'F', ItemList.Hull_ULV.get(1L), 'A', OrePrefixes.plate.get(Materials.Rubber), 'P',
+                OrePrefixes.gear.get(Materials.Rubber) });
+        GT_ModHandler.addCraftingRecipe(
             ItemList.Casing_Firebox_Steel.get(1L),
             bits,
             new Object[] { "PSP", "SFS", "PSP", 'P', OrePrefixes.plate.get(Materials.Steel), 'F',

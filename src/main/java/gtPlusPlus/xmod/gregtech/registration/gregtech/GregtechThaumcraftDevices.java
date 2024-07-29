@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Thaumcraft_Researcher;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -19,7 +20,7 @@ public class GregtechThaumcraftDevices {
         // 956-960
         GregtechItemList.Thaumcraft_Researcher.set(
             new GregtechMetaPollutionCreator(
-                956,
+                Thaumcraft_Researcher.ID,
                 "thaumcraft.gtpp.machine.01",
                 "Arcane Researcher",
                 5,

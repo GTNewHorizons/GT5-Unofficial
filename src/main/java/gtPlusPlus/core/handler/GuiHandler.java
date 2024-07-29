@@ -11,7 +11,6 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.machine.Machine_SuperJukebox.TileEntitySuperJukebox;
 import gtPlusPlus.core.container.Container_CircuitProgrammer;
-import gtPlusPlus.core.container.Container_DecayablesChest;
 import gtPlusPlus.core.container.Container_FishTrap;
 import gtPlusPlus.core.container.Container_PestKiller;
 import gtPlusPlus.core.container.Container_ProjectTable;
@@ -20,7 +19,6 @@ import gtPlusPlus.core.container.Container_VolumetricFlaskSetter;
 import gtPlusPlus.core.gui.beta.Gui_ID_Registry;
 import gtPlusPlus.core.gui.beta.MU_GuiId;
 import gtPlusPlus.core.gui.machine.GUI_CircuitProgrammer;
-import gtPlusPlus.core.gui.machine.GUI_DecayablesChest;
 import gtPlusPlus.core.gui.machine.GUI_FishTrap;
 import gtPlusPlus.core.gui.machine.GUI_PestKiller;
 import gtPlusPlus.core.gui.machine.GUI_ProjectTable;
@@ -28,7 +26,6 @@ import gtPlusPlus.core.gui.machine.GUI_SuperJukebox;
 import gtPlusPlus.core.gui.machine.GUI_VolumetricFlaskSetter;
 import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
-import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
 import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
@@ -48,7 +45,6 @@ public class GuiHandler implements IGuiHandler {
     public static final int GUI10 = 9; // None
     public static final int GUI11 = 10; // None
     public static final int GUI12 = 11; // None
-    public static final int GUI13 = 12; // Decayables Chest
     public static final int GUI14 = 13; // Super Jukebox
     public static final int GUI15 = 14; // Pest Killer
     public static final int GUI16 = 15; // None
@@ -79,8 +75,6 @@ public class GuiHandler implements IGuiHandler {
                 return new Container_FishTrap(player.inventory, (TileEntityFishTrap) te);
             } else if (ID == GUI8) {
                 return new Container_CircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
-            } else if (ID == GUI13) {
-                return new Container_DecayablesChest(player.inventory, (TileEntityDecayablesChest) te);
             } else if (ID == GUI14) {
                 return new Container_SuperJukebox(player.inventory, (TileEntitySuperJukebox) te);
             } else if (ID == GUI15) {
@@ -119,8 +113,6 @@ public class GuiHandler implements IGuiHandler {
                 return new GUI_FishTrap(player.inventory, (TileEntityFishTrap) te);
             } else if (ID == GUI8) {
                 return new GUI_CircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
-            } else if (ID == GUI13) {
-                return new GUI_DecayablesChest(player.inventory, (TileEntityDecayablesChest) te);
             } else if (ID == GUI14) {
                 return new GUI_SuperJukebox(player.inventory, (TileEntitySuperJukebox) te);
             } else if (ID == GUI15) {
