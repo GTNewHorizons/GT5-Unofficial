@@ -378,4 +378,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         getBaseMetaTileEntity().add1by1Slot(builder);
     }
 
+    @Override
+    public boolean acceptsItemLock() {
+        return false;
+    }
 }

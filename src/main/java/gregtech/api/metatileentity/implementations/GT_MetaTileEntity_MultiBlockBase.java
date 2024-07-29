@@ -66,6 +66,7 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.fluid.IFluidStore;
+import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
@@ -1283,11 +1284,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public boolean addOutput(ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack)) return false;
         aStack = GT_Utility.copyOrNull(aStack);
-        for (GT_MetaTileEntity_Hatch_OutputBus tHatch : filterValidMTEs(mOutputBusses)) {
-            if (tHatch.storeAll(aStack)) {
-                return true;
-            }
+        if (dumpItem(mOutputBusses, aStack, true) || dumpItem(mOutputBusses, aStack, false)) {
+            return true;
         }
+
         boolean outputSuccess = true;
         while (outputSuccess && aStack.stackSize > 0) {
             outputSuccess = false;
@@ -1300,6 +1300,21 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }
         return outputSuccess;
+    }
+
+    private boolean dumpItem(List<GT_MetaTileEntity_Hatch_OutputBus> outputBuses, ItemStack itemStack,
+        boolean restrictiveBusesOnly) {
+        for (GT_MetaTileEntity_Hatch_OutputBus outputBus : filterValidMTEs(outputBuses)) {
+            if (restrictiveBusesOnly && !outputBus.isLocked()) {
+                continue;
+            }
+
+            if (outputBus.storeAll(itemStack)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public boolean depleteInput(ItemStack aStack) {
@@ -2161,7 +2176,20 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             if (!(tBus instanceof GT_MetaTileEntity_Hatch_OutputBus_ME)) {
                 final IInventory tBusInv = tBus.getBaseMetaTileEntity();
                 for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
-                    ret.add(tBus.getStackInSlot(i));
+                    final ItemStack stackInSlot = tBus.getStackInSlot(i);
+
+                    if (stackInSlot == null && tBus instanceof IItemLockable lockable && lockable.isLocked()) {
+                        // getItemOutputSlots is only used to calculate free room for the purposes of parallels and
+                        // void protection. We can use a fake item stack here without creating weirdness in the output
+                        // bus' actual inventory.
+                        assert lockable.getLockedItem() != null;
+                        ItemStack fakeItemStack = lockable.getLockedItem()
+                            .copy();
+                        fakeItemStack.stackSize = 0;
+                        ret.add(fakeItemStack);
+                    } else {
+                        ret.add(stackInSlot);
+                    }
                 }
             }
         }

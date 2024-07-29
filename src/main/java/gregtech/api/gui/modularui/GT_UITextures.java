@@ -89,6 +89,7 @@ public class GT_UITextures {
         .fullImage(GregTech.ID, "gui/overlay_slot/explosive");
     public static final UITexture OVERLAY_SLOT_EXTRUDER_SHAPE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_slot/extruder_shape");
+    public static final UITexture OVERLAY_SLOT_FILTER = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/filter");
     public static final UITexture OVERLAY_SLOT_FURNACE = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/furnace");
     public static final SteamTexture OVERLAY_SLOT_FURNACE_STEAM = SteamTexture
         .fullImage(GregTech.ID, "gui/overlay_slot/furnace_%s");

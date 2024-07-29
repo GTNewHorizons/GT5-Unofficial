@@ -440,6 +440,9 @@ GT5U.machines.stocking_hatch.auto_pull_toggle.enabled=Automatic Fluid Pull Enabl
 GT5U.machines.stocking_hatch.auto_pull_toggle.disabled=Automatic Fluid Pull Disabled
 GT5U.machines.stocking_bus.saved=Saved Config to Data Stick
 GT5U.machines.stocking_bus.loaded=Loaded Config From Data Stick
+GT5U.machines.output_bus.saved=Saved Config to Data Stick
+GT5U.machines.output_bus.loaded=Loaded Config From Data Stick
+GT5U.machines.output_bus.invalid=Invalid Data Stick config
 GT5U.machines.dronecentre.shutdown=You cannot control machine when drone centre shut down!
 GT5U.machines.dronecentre.turnon=Successfully turn on all machines!
 GT5U.machines.dronecentre.turnoff=Successfully turn off all machines!
@@ -586,6 +589,9 @@ GT5U.hatch.infiniteCacheFluid.true=ME Output hatch will infinitely cache fluid, 
 GT5U.hatch.infiniteCacheFluid.false=ME Output hatch will stop accepting fluid when offline for more than 2 seconds
 GT5U.hatch.additionalConnection.true=ME channels connect to any side
 GT5U.hatch.additionalConnection.false=ME channels connect to front side only
+
+GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
+GT5U.bus.filterTooltip.full=§aClick to clear output filter
 
 GT5U.multiblock.pollution=Pollution reduced to
 GT5U.multiblock.energy=Stored Energy
