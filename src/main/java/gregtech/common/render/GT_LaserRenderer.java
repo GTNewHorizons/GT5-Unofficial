@@ -65,6 +65,10 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
             // Full brightness on this thing (Emits glow with shaders)
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.f, 240.f);
 
+            GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
+            GL11.glRotated(ltile.rotationAngle, ltile.rotAxisX, ltile.rotAxisY, ltile.rotAxisZ);
+            GL11.glTranslated(-x - 0.5, -y - 0.5, -z - 0.5);
+
             if (ltile.realism) {
                 renderFakeLine(ltile, x + xOffset, y + 4.0, z + zOffset, x + xOffset, y + 0.5, z + zOffset);
             } else {
