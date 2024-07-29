@@ -1284,11 +1284,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public boolean addOutput(ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack)) return false;
         aStack = GT_Utility.copyOrNull(aStack);
-        if (dumpItem(mOutputBusses, aStack, true) || dumpItem(mOutputBusses, aStack, false)) {
+
+        final List<GT_MetaTileEntity_Hatch_OutputBus> filteredBuses = filterValidMTEs(mOutputBusses);
+        if (dumpItem(filteredBuses, aStack, true) || dumpItem(filteredBuses, aStack, false)) {
             return true;
         }
 
         boolean outputSuccess = true;
+        //noinspection DataFlowIssue
         while (outputSuccess && aStack.stackSize > 0) {
             outputSuccess = false;
             ItemStack single = aStack.splitStack(1);
@@ -1304,7 +1307,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     private boolean dumpItem(List<GT_MetaTileEntity_Hatch_OutputBus> outputBuses, ItemStack itemStack,
         boolean restrictiveBusesOnly) {
-        for (GT_MetaTileEntity_Hatch_OutputBus outputBus : filterValidMTEs(outputBuses)) {
+        for (GT_MetaTileEntity_Hatch_OutputBus outputBus : outputBuses) {
             if (restrictiveBusesOnly && !outputBus.isLocked()) {
                 continue;
             }
