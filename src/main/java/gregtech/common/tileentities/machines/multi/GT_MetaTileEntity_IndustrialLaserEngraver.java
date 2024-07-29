@@ -317,7 +317,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
-                if (recipe.mEUt > Math.pow(2, 4 + (laserTier * 2))) {
+                if (laserTier < 13 && recipe.mEUt > Math.pow(2, 4 + (laserTier * 2))) {
                     return SimpleCheckRecipeResult.ofFailure("laser_insufficient");
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
