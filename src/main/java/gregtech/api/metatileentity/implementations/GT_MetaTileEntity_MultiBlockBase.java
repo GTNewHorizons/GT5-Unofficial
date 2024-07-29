@@ -160,7 +160,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected GT_SoundLoop activitySoundLoop;
 
     private long mLastWorkingTick = 0;
-    private static final int CHECK_INTERVAL = 100; //How often should we check for a new recipe on an idle machine?
+    private static final int CHECK_INTERVAL = 100; // How often should we check for a new recipe on an idle machine?
     private int randomTickOffset = (int) (Math.random() * CHECK_INTERVAL + 1);
 
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
