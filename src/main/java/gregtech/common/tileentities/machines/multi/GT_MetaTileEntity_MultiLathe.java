@@ -289,9 +289,6 @@ public class GT_MetaTileEntity_MultiLathe extends GT_MetaTileEntity_EnhancedMult
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        if (this.getPipeTier() > 1) {
-            return RecipeMaps.precisionLatheRecipes;
-        }
         return RecipeMaps.latheRecipes;
     }
 
