@@ -1136,12 +1136,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "multimachine.engraver",
                 "High Energy Laser Emitter").getStackForm(1));
 
-ItemList.Machine_Multi_Lathe.set(
+        ItemList.Machine_Multi_Lathe.set(
             new GT_MetaTileEntity_MultiLathe(
                 MULTI_LATHE_CONTROLLER.ID,
                 "multimachine.lathe",
                 "Industrial Precision Lathe").getStackForm(1));
-    
+
     }
 
     private static void registerSteamMachines() {
