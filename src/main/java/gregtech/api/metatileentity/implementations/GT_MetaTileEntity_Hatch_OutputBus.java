@@ -5,9 +5,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
@@ -17,6 +19,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.GT_Mod;
+import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.widgets.GT_PhantomItemButton;
 import gregtech.api.interfaces.ITexture;
@@ -29,6 +32,9 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
 
 public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch implements IAddUIWidgets, IItemLockable {
+
+    private static final String DATA_STICK_DATA_TYPE = "outputBusFilter";
+    private static final String LOCKED_ITEM_NBT_KEY = "lockedItem";
 
     protected ItemStack lockedItem = null;
 
@@ -45,7 +51,9 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
             slots,
             ArrayExt.of(
                 "Item Output for Multiblocks",
-                "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : "")));
+                "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : ""),
+                "Left click with data stick to save filter config",
+                "Right click with data stick to load filter config"));
     }
 
     public GT_MetaTileEntity_Hatch_OutputBus(int aID, String aName, String aNameRegional, int aTier,
@@ -115,8 +123,52 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        if (!acceptsItemLock() || !(aPlayer instanceof EntityPlayerMP)) {
+            GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            return super.onRightclick(aBaseMetaTileEntity, aPlayer);
+        }
+
+        final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            return super.onRightclick(aBaseMetaTileEntity, aPlayer);
+        }
+
+        if (!dataStick.hasTagCompound() || !DATA_STICK_DATA_TYPE.equals(dataStick.stackTagCompound.getString("type"))) {
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.output_bus.invalid"));
+            return false;
+        }
+
+        final NBTTagCompound nbt = dataStick.stackTagCompound;
+        if (nbt.hasKey(LOCKED_ITEM_NBT_KEY)) {
+            lockedItem = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag(LOCKED_ITEM_NBT_KEY));
+        } else {
+            lockedItem = null;
+        }
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.output_bus.loaded"));
         return true;
+
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!acceptsItemLock() || !(aPlayer instanceof EntityPlayerMP)) {
+            return;
+        }
+        final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            return;
+        }
+
+        final NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setString("type", DATA_STICK_DATA_TYPE);
+        if (lockedItem != null) {
+            nbt.setTag(LOCKED_ITEM_NBT_KEY, lockedItem.writeToNBT(new NBTTagCompound()));
+        }
+
+        dataStick.stackTagCompound = nbt;
+        dataStick.setStackDisplayName("Output Bus Configuration");
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.output_bus.saved"));
     }
 
     /**
@@ -202,15 +254,15 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         if (lockedItem != null) {
-            aNBT.setTag("lockedItem", lockedItem.writeToNBT(new NBTTagCompound()));
+            aNBT.setTag(LOCKED_ITEM_NBT_KEY, lockedItem.writeToNBT(new NBTTagCompound()));
         }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (aNBT.hasKey("lockedItem")) {
-            lockedItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("lockedItem"));
+        if (aNBT.hasKey(LOCKED_ITEM_NBT_KEY)) {
+            lockedItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(LOCKED_ITEM_NBT_KEY));
         }
     }
 
