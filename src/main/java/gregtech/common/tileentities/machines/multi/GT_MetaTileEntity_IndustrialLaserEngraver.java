@@ -409,6 +409,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setBoolean("stopAllRendering", stopAllRendering);
+        super.saveNBTData(aNBT);
     }
 
     @Override
