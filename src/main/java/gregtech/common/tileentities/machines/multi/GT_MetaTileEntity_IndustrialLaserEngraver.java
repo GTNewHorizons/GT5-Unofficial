@@ -65,7 +65,6 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 // TODO:
-// GIVE LASER PLATE A BLOCK ITEM
 // SUPPORT MORE LENSES
 // SPECIAL RENDER FOR SPECIAL LENSES?
 // FIX DESYNC/PAUSE ON RENDERER
@@ -444,7 +443,8 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         Purple(1, 0, 1),
         Cyan(0, 1, 1),
         Orange(1, 0.5F, 0),
-        Black(0, 0, 0);
+        Black(0, 0, 0),
+        Brown(0.647F, 0.164F, 0.164F);
 
         final float r, g, b;
 
@@ -477,6 +477,8 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 1)), Colors.White);
         lensColors
             .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Glass, 1)), Colors.White);
+        lensColors
+            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1)), Colors.Cyan);
         lensColors.put(
             getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedOrder, 1)),
             Colors.White);
@@ -538,13 +540,38 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderEye, 1)), Colors.Cyan);
         lensColors
             .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderPearl, 1)), Colors.Cyan);
-        lensColors
-            .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1)), Colors.Cyan);
 
         // Orange lenses
         lensColors
             .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Topaz, 1)), Colors.Orange);
         lensColors
             .put(getUniqueIdentifier(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amber, 1)), Colors.Orange);
+
+        // Time to manually define a bunch of lenses based on id
+        lensColors.put("gt.bwMetaGeneratedlens1", Colors.Yellow);
+        lensColors.put("gt.bwMetaGeneratedlens4", Colors.White);
+        lensColors.put("gt.bwMetaGeneratedlens5", Colors.Black);
+        lensColors.put("gt.bwMetaGeneratedlens7", Colors.Green);
+        lensColors.put("gt.bwMetaGeneratedlens8", Colors.Green);
+        lensColors.put("gt.bwMetaGeneratedlens9", Colors.White);
+        lensColors.put("gt.bwMetaGeneratedlens19", Colors.Red);
+        lensColors.put("gt.bwMetaGeneratedlens20", Colors.White);
+        lensColors.put("gt.bwMetaGeneratedlens21", Colors.Brown);
+        lensColors.put("gt.bwMetaGeneratedlens22", Colors.Orange);
+        lensColors.put("gt.bwMetaGeneratedlens23", Colors.Black);
+        lensColors.put("gt.bwMetaGeneratedlens24", Colors.White);
+        lensColors.put("gt.bwMetaGeneratedlens25", Colors.Green);
+        lensColors.put("gt.bwMetaGeneratedlens35", Colors.Yellow);
+        lensColors.put("gt.bwMetaGeneratedlens36", Colors.Purple);
+        lensColors.put("gt.bwMetaGeneratedlens43", Colors.Green);
+        lensColors.put("gt.bwMetaGeneratedlens89", Colors.Green);
+        lensColors.put("gt.bwMetaGeneratedlens91", Colors.Purple);
+        lensColors.put("gt.bwMetaGeneratedlens10023", Colors.Red);
+        lensColors.put("gt.bwMetaGeneratedlens11499", Colors.Green);
+        lensColors.put("gt.bwMetaGeneratedlens11358", Colors.Red);
+        lensColors.put("MU-metaitem.0132140", Colors.Purple);
+        lensColors.put("MU-metaitem.0132140", Colors.Purple);
+
+        //
     }
 }
