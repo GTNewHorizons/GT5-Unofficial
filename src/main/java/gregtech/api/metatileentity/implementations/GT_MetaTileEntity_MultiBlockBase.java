@@ -1291,7 +1291,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
 
         boolean outputSuccess = true;
-        //noinspection DataFlowIssue
+        // noinspection DataFlowIssue
         while (outputSuccess && aStack.stackSize > 0) {
             outputSuccess = false;
             ItemStack single = aStack.splitStack(1);
