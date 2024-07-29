@@ -31,10 +31,6 @@ public class TileLaser extends TileEntityAdvanced {
         compound.setFloat("rgb_green", green);
         compound.setFloat("rgb_blue", blue);
         compound.setBoolean("shouldRender", shouldRender);
-        compound.setDouble("rotAxisX", rotAxisX);
-        compound.setDouble("rotAxisY", rotAxisY);
-        compound.setDouble("rotAxisZ", rotAxisZ);
-        compound.setDouble("rotationAngle", rotationAngle);
     }
 
     @Override
@@ -68,14 +64,9 @@ public class TileLaser extends TileEntityAdvanced {
     }
 
     public void setRotationAxis(ForgeDirection direction) {
-        switch (direction) {
-            case UP -> rotAxisY = -1;
-            case DOWN -> rotAxisY = 1;
-            case WEST -> rotAxisX = -1;
-            case EAST -> rotAxisX = 1;
-            case NORTH -> rotAxisZ = -1;
-            case SOUTH -> rotAxisZ = 1;
-        }
+        rotAxisX = direction.offsetX;
+        rotAxisY = direction.offsetY;
+        rotAxisZ = direction.offsetZ;
     }
 
     public void setShouldRender(boolean shouldRender) {
