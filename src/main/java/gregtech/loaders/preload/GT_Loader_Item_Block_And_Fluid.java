@@ -53,6 +53,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings1;
 import gregtech.common.blocks.GT_Block_Casings10;
+import gregtech.common.blocks.GT_Block_Casings11;
 import gregtech.common.blocks.GT_Block_Casings2;
 import gregtech.common.blocks.GT_Block_Casings3;
 import gregtech.common.blocks.GT_Block_Casings4;
