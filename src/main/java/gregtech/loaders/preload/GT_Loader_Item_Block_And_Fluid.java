@@ -549,9 +549,9 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockOres1 = new GT_Block_Ores();
         GregTech_API.sDroneRender = new GT_Block_Drone();
         GregTech_API.sLaserRender = new GT_Block_Laser();
-GregTech_API.sBlockGlass1 = new GT_Block_Glass1();
+        GregTech_API.sBlockGlass1 = new GT_Block_Glass1();
         GregTech_API.sBlockTintedGlass = new GT_Block_TintedIndustrialGlass();
-        
+
         // meta ID order, DO NOT CHANGE ORDER
 
         GregTech_API.sBlockMetal1 = new GT_Block_Metal(

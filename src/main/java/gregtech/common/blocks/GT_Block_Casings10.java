@@ -23,7 +23,7 @@ public class GT_Block_Casings10 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Quark Containment Casing"); // placeholder
 
         ItemList.Casing_Electromagnetic_Separator.set(new ItemStack(this, 1, 0));
-	ItemList.Casing_Laser.set(new ItemStack(this, 1, 1));
+        ItemList.Casing_Laser.set(new ItemStack(this, 1, 1));
         ItemList.BlockQuarkContainmentCasing.set(new ItemStack(this, 1, 2));
     }
 
@@ -37,7 +37,7 @@ public class GT_Block_Casings10 extends GT_Block_Casings_Abstract {
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.MACHINE_CASING_EMS.getIcon();
-case 1 -> Textures.BlockIcons.MACHINE_CASING_LASER.getIcon();
+            case 1 -> Textures.BlockIcons.MACHINE_CASING_LASER.getIcon();
             case 2 -> Textures.BlockIcons.BLOCK_QUARK_CONTAINMENT_CASING.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
