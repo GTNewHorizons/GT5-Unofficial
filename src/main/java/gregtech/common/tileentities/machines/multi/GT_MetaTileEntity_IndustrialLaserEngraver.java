@@ -121,9 +121,18 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoTunnel) {
                 laserSource = (GT_MetaTileEntity_Hatch_DynamoTunnel) aMetaTileEntity;
                 laserSource.updateTexture(aBaseCasingIndex);
-                // Snap the laser source down. Player can rotate it if they want after but this will look nicer
-                laserSource.getBaseMetaTileEntity()
-                    .setFrontFacing(ForgeDirection.DOWN);
+                // Snap the laser source toward the plate. Player can rotate it if they want after but this will look
+                // nicer
+                switch (getRotation()) {
+                    case NORMAL -> laserSource.getBaseMetaTileEntity()
+                        .setFrontFacing(ForgeDirection.DOWN);
+                    case UPSIDE_DOWN -> laserSource.getBaseMetaTileEntity()
+                        .setFrontFacing(ForgeDirection.UP);
+                    case CLOCKWISE -> laserSource.getBaseMetaTileEntity()
+                        .setFrontFacing(getDirection().getRotation(ForgeDirection.UP));
+                    default -> laserSource.getBaseMetaTileEntity()
+                        .setFrontFacing(getDirection().getRotation(ForgeDirection.DOWN));
+                }
                 // Cube root the amperage to get the parallels
                 laserAmps = (int) Math.cbrt(laserSource.maxAmperesOut());
                 laserTier = (int) laserSource.getOutputTier();
