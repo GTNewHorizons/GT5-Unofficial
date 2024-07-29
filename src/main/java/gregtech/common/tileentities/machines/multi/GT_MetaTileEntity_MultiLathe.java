@@ -229,7 +229,6 @@ public class GT_MetaTileEntity_MultiLathe extends GT_MetaTileEntity_EnhancedMult
             .addInfo("Gains 2 parallels per voltage tier,")
             .addInfo("and 4 parallels per pipe casing tier (16 for Black Plutonium)")
             .addInfo("Better pipe casings increase speed")
-            .addInfo("Item Pipe Casings Osmium and above give 2 rods instead of 1 and dusts")
             .addInfo(AuthorVolence)
             .addSeparator()
             .beginStructureBlock(7, 5, 5, true)
