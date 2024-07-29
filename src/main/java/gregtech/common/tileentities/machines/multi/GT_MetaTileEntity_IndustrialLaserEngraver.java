@@ -301,8 +301,6 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         if (renderer == null) return false;
         if (glassTier < 12 && laserSource.mTier > glassTier) return false;
 
-        IGregTechTileEntity TE = laserSource.getBaseMetaTileEntity();
-
         // All checks passed!
         return true;
     }
