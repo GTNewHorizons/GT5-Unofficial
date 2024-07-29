@@ -574,7 +574,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                 return super.createOverclockCalculator(recipe).setNoOverclock(isNoOC())
                     .setEUtDiscount((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
                     .setSpeedBoost(getDurationMultiplierFromRoughness())
-                    .setDurationDecreasePerOC(mOCTier2 ? 2 : 1);
+                    .setDurationDecreasePerOC(mOCTier2 ? 4.0 : 2.0);
             }
 
             @Nonnull
