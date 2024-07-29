@@ -16,6 +16,7 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.GTVoltageIndex;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -299,7 +300,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         if (mCasingAmount < 45) return false;
         if (laserSource == null) return false;
         if (renderer == null) return false;
-        if (glassTier < 12 && laserSource.mTier > glassTier) return false;
+        if (glassTier < GTVoltageIndex.UMV && laserSource.mTier > glassTier) return false;
 
         // All checks passed!
         return true;
@@ -317,7 +318,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
-                if (laserTier < 13 && recipe.mEUt > Math.pow(2, 4 + (laserTier * 2))) {
+                if (laserTier < GTVoltageIndex.UXV && recipe.mEUt > Math.pow(2, 4 + (laserTier * 2))) {
                     return SimpleCheckRecipeResult.ofFailure("laser_insufficient");
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
