@@ -48,6 +48,7 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -95,11 +96,12 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         @Override
         protected IStructureDefinition<AntimatterForge> computeValue(Class<?> type) {
             return StructureDefinition.<AntimatterForge>builder()
-                .addShape(MAIN_NAME, transpose(new String[][] { L0, L1, L2, L3, L2, L1, L0 }))
-                .addElement('H', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
-                .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(), x.getCasingMeta())))
+                .addShape(MAIN_NAME, transpose(ForgeStructure))
+                .addElement('B', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
+                .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(1), x.getCoilMeta())))
+                .addElement('D', lazy(x -> ofBlock(x.getCasingBlock(2), x.getCasingMeta())))
                 .addElement(
-                    'I',
+                    'F',
                     lazy(
                         x -> GT_HatchElementBuilder.<AntimatterForge>builder()
                             .atLeast(
@@ -108,29 +110,40 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
                             .casingIndex(x.textureIndex())
                             .dot(1)
                             .hatchItemFilterAnd(x2 -> filterByMTETier(x2.hatchTier(), Integer.MAX_VALUE))
-                            .buildAndChain(x.getFrameBlock(), x.getFrameMeta())))
+                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta())))
                 .addElement(
-                    'J',
+                    'E',
+                    lazy(
+                        x -> GT_HatchElementBuilder.<AntimatterForge>builder()
+                            .atLeast(
+                                GT_HatchElement.InputHatch)
+                            .adder(AntimatterForge::addFluidIO)
+                            .casingIndex(x.textureIndex())
+                            .dot(2)
+                            .hatchItemFilterAnd(x2 -> filterByMTETier(x2.hatchTier(), Integer.MAX_VALUE))
+                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta())))
+                .addElement(
+                    'G',
                     lazy(
                         x -> GT_HatchElementBuilder.<AntimatterForge>builder()
                             .atLeast(
                                 GT_HatchElement.OutputHatch)
                             .adder(AntimatterForge::addFluidIO)
                             .casingIndex(x.textureIndex())
-                            .dot(2)
+                            .dot(3)
                             .hatchItemFilterAnd(x2 -> filterByMTETier(x2.hatchTier(), Integer.MAX_VALUE))
                             .build()))
                 .addElement(
-                    'E',
+                    'H',
                     lazy(
                         x -> GT_HatchElementBuilder.<AntimatterForge>builder()
                             .anyOf(GT_HatchElement.Energy)
                             .adder(AntimatterForge::addEnergyInjector)
                             .casingIndex(x.textureIndex())
                             .hatchItemFilterAnd(x2 -> filterByMTETier(x2.hatchTier(), Integer.MAX_VALUE))
-                            .dot(3)
+                            .dot(4)
                             .build()))
-                .addElement('F', lazy(x -> ofBlock(x.getFrameBlock(), x.getFrameMeta())))
+                .addElement('A', lazy(x -> ofBlock(x.getFrameBlock(), x.getFrameMeta())))
                 .build();
         }
     };
@@ -185,8 +198,15 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         return 100_000_000;
     }
 
-    public Block getCasingBlock() {
-        return Loaders.antimatterContainmentCasing;
+    public Block getCasingBlock(int type) {
+        switch(type) {
+            case 1:
+                return Loaders.antimatterContainmentCasing;
+            case 2:
+                return ItemList.Casing_AdvancedRadiationProof.getBlock();
+            default:
+                return Loaders.antimatterContainmentCasing;
+        }
     }
 
     public int getCasingMeta() {
@@ -255,19 +275,19 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(MAIN_NAME, 23, 3, 40);
+        return checkPiece(MAIN_NAME, 26, 26, 4);
     }
 
     @Override
     public void construct(ItemStack itemStack, boolean b) {
-        buildPiece(MAIN_NAME, itemStack, b, 23, 3, 40);
+        buildPiece(MAIN_NAME, itemStack, b, 26, 26, 4);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(MAIN_NAME, stackSize, 23, 3, 40, realBudget, env, false, true);
+        return survivialBuildPiece(MAIN_NAME, stackSize, 26, 26, 4, realBudget, env, false, true);
     }
 
     public boolean turnCasingActive(boolean status) {
@@ -757,7 +777,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "                FFFCC     CCFFF                ",
             "                   FFFEEEFFF                   "
         };
-        private static String[][] NewStructure = {{
+        private static String[][] ForgeStructure = {{
             "                                                     ",
             "                                                     ",
             "                                                     ",
@@ -1000,7 +1020,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "                                                     ",
             "                        D   D                        ",
             "       DD               D   D               DD       ",
-            "        A               DDEDD               A        ",
+            "        A               DD~DD               A        ",
             "       DD               D   D               DD       ",
             "                        D   D                        ",
             "                                                     ",
@@ -1786,7 +1806,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         },{
             "                                                     ",
             "                         D D                         ",
-            "                         AEA                         ",
+            "                         AFA                         ",
             "                         DAD                         ",
             "                                                     ",
             "                                                     ",
@@ -1810,7 +1830,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "                                                     ",
             "                                                     ",
             " DAD       DCACD                     DCACD       DAD ",
-            "  EAAAAAAAAACBC                       CBCAAAAAAAAAE  ",
+            "  HAAAAAAAAACBC                       CBCAAAAAAAAAH  ",
             " DAD       DCACD                     DCACD       DAD ",
             "               D                     D               ",
             "                                                     ",
@@ -1834,13 +1854,13 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "                                                     ",
             "                                                     ",
             "                         DAD                         ",
-            "                         AEA                         ",
+            "                         AGA                         ",
             "                         D D                         ",
             "                                                     "
         },{
             "                                                     ",
             "                         D D                         ",
-            "                         AEA                         ",
+            "                         AFA                         ",
             "                         DAD                         ",
             "                                                     ",
             "                                                     ",
@@ -1864,7 +1884,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "                                                     ",
             "                                                     ",
             " DAAAAAAAAAAAACD                     DCAAAAAAAAAAAAD ",
-            "  EBBBBBBBBBBBC                       CBBBBBBBBBBBE  ",
+            "  HBBBBBBBBBBBC                       CBBBBBBBBBBBH  ",
             " DAAAAAAAAAAAACD                     DCAAAAAAAAAAAAD ",
             "               D                     D               ",
             "                                                     ",
@@ -1888,13 +1908,13 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "                                                     ",
             "                                                     ",
             "                         DAD                         ",
-            "                         AEA                         ",
+            "                         AGA                         ",
             "                         D D                         ",
             "                                                     "
         },{
             "                                                     ",
             "                         D D                         ",
-            "                         AEA                         ",
+            "                         AFA                         ",
             "                         DAD                         ",
             "                                                     ",
             "                                                     ",
@@ -1918,7 +1938,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "                                                     ",
             "                                                     ",
             " DAD       DCACD                     DCACD       DAD ",
-            "  EAAAAAAAAACBC                       CBCAAAAAAAAAE  ",
+            "  HAAAAAAAAACBC                       CBCAAAAAAAAAH  ",
             " DAD       DCACD                     DCACD       DAD ",
             "               D                     D               ",
             "                                                     ",
@@ -1942,7 +1962,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "                                                     ",
             "                                                     ",
             "                         DAD                         ",
-            "                         AEA                         ",
+            "                         AGA                         ",
             "                         D D                         ",
             "                                                     "
         },{
@@ -3160,7 +3180,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "                        DDCDD                        ",
             "                     DDDDDCDDDDD                     ",
             "                  DDDDDDDDCDDDDDDDD                  ",
-            "                     CCCCEEECCCC                     ",
+            "                     CCCCHHHCCCC                     ",
             "                  DDDDDDDDCDDDDDDDD                  ",
             "                     DDDDDCDDDDD                     ",
             "                        DDCDD                        ",
