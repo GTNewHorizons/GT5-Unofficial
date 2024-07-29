@@ -315,6 +315,9 @@ public enum MetaTileEntityIDs {
     WIREMILL_IV(355),
     PCB_FACTORY_CONTROLLER(356),
     NANO_FORGE_CONTROLLER(357),
+    INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR_CONTROLLER(358),
+    MAG_HATCH(359),
+    MULTI_CANNER_CONTROLLER(360),
     CENTRIFUGE_LV(361),
     CENTRIFUGE_MV(362),
     CENTRIFUGE_HV(363),
@@ -678,7 +681,12 @@ public enum MetaTileEntityIDs {
     RECIPE_FILTER_UHV(9339),
     INDUSTRIAL_APIARY(9399),
     Drone_Centre(9400),
-    DroneDownLink(9401);
+    DroneDownLink(9401),
+    sofc1(13101),
+    sofc2(13102),
+    tfft(13104),
+    lsc(13106),
+    tfftHatch(13109);
 
     public final int ID;
 

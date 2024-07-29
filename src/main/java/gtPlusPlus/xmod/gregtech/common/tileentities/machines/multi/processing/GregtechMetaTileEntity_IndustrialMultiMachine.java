@@ -39,6 +39,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.TAE;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -60,8 +61,6 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Solidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -72,7 +71,10 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMultiMachine> implements ISurvivalConstructable {
 
-    protected int mInternalMode = 0;
+    private final static int MACHINEMODE_METAL = 0;
+    private final static int MACHINEMODE_FLUID = 1;
+    private final static int MACHINEMODE_MISC = 2;
+
     private static final int MODE_COMPRESSOR = 0;
     private static final int MODE_LATHE = 1;
     private static final int MODE_MAGNETIC = 2;
@@ -216,12 +218,16 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        if (mInternalMode == 0) {
-            return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
-        } else if (mInternalMode == 1) {
-            return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
-        } else { // config 2
-            return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
+        switch (machineMode) {
+            case MACHINEMODE_METAL -> {
+                return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
+            }
+            case MACHINEMODE_FLUID -> {
+                return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
+            }
+            default -> {
+                return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
+            }
         }
     }
 
@@ -236,7 +242,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
 
     private ItemStack getCircuit(ItemStack[] t) {
         for (ItemStack j : t) {
-            if (j.getItem() == CI.getNumberedCircuit(0)
+            if (j.getItem() == GT_Utility.getIntegratedCircuit(0)
                 .getItem()) {
                 if (j.getItemDamage() >= 20 && j.getItemDamage() <= 22) {
                     return j;
@@ -249,7 +255,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     private int getCircuitID(ItemStack circuit) {
         int H = circuit.getItemDamage();
         int T = (H == 20 ? 0 : (H == 21 ? 1 : (H == 22 ? 2 : -1)));
-        return MODE_MAP[this.mInternalMode][T];
+        return MODE_MAP[machineMode][T];
     }
 
     @Override
@@ -306,6 +312,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
         return new ProcessingLogic() {
 
             private ItemStack lastCircuit = null;
+            private int lastMode = -1;
 
             @Nonnull
             @Override
@@ -317,6 +324,10 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
                 if (!GT_Utility.areStacksEqual(circuit, lastCircuit)) {
                     lastRecipe = null;
                     lastCircuit = circuit;
+                }
+                if (machineMode != lastMode) {
+                    lastRecipe = null;
+                    lastMode = machineMode;
                 }
                 RecipeMap<?> foundMap = getRecipeMap(getCircuitID(circuit));
                 if (foundMap == null) {
@@ -330,16 +341,8 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     }
 
     @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (mInternalMode < 2) {
-            mInternalMode++;
-        } else {
-            mInternalMode = 0;
-        }
-        String mModeString = (mInternalMode == 0 ? "Metal"
-            : mInternalMode == 1 ? "Fluid" : mInternalMode == 2 ? "Misc." : "null");
-        PlayerUtils.messagePlayer(aPlayer, "Multi-Machine is now in " + mModeString + " mode.");
-        mLastRecipe = null;
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_MULTI_MACHINE.mode." + machineMode);
     }
 
     @Override
@@ -347,26 +350,20 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
         String[] data = super.getInfoData();
         ArrayList<String> mInfo = new ArrayList<>(Arrays.asList(data));
         String mode;
-        if (mInternalMode == 0) {
-            mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.metal");
-        } else if (mInternalMode == 1) {
-            mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.fluid");
-        } else {
-            mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.misc");
+        switch (machineMode) {
+            case MACHINEMODE_METAL -> mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.metal");
+            case MACHINEMODE_FLUID -> mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.fluid");
+            default -> mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.misc");
         }
         mInfo.add(mode);
         return mInfo.toArray(new String[0]);
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mInternalMode", mInternalMode);
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        this.mInternalMode = aNBT.getInteger("mInternalMode");
+        if (aNBT.hasKey("mInternalMode")) {
+            machineMode = aNBT.getInteger("mInternalMode");
+        }
         super.loadNBTData(aNBT);
     }
 
@@ -378,7 +375,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     @Override
     protected CheckRecipeResult doCheckRecipe() {
 
-        if (mInternalMode != 2 || !isInputSeparationEnabled()) {
+        if (machineMode != MACHINEMODE_MISC || !isInputSeparationEnabled()) {
             return super.doCheckRecipe();
         } else {
             CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
@@ -411,7 +408,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
                     if (mold != null && fluid != null) {
                         List<ItemStack> inputItems = new ArrayList<>();
                         inputItems.add(mold);
-                        inputItems.add(ItemUtils.getGregtechCircuit(22));
+                        inputItems.add(GT_Utility.getIntegratedCircuit(22));
 
                         processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
                         processingLogic.setInputFluids(fluid);
@@ -495,7 +492,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", mInternalMode);
+        tag.setInteger("mode", machineMode);
     }
 
     @Override
@@ -511,5 +508,34 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
                         .translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_MULTI_MACHINE.mode." + tag.getInteger("mode"))
                     + EnumChatFormatting.RESET);
         }
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        setMachineMode(nextMachineMode());
+        PlayerUtils.messagePlayer(
+            aPlayer,
+            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+    }
+
+    @Override
+    public int nextMachineMode() {
+        mLastRecipe = null;
+        if (machineMode == MACHINEMODE_METAL) return MACHINEMODE_FLUID;
+        else if (machineMode == MACHINEMODE_FLUID) return MACHINEMODE_MISC;
+        else return MACHINEMODE_METAL;
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.clear();
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
     }
 }

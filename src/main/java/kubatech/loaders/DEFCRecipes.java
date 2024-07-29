@@ -3,6 +3,7 @@ package kubatech.loaders;
 import static gregtech.api.enums.Mods.ElectroMagicTools;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.util.GT_RecipeConstants.DEFC_CASING_TIER;
 
 import java.util.Arrays;
 
@@ -172,7 +173,7 @@ public class DEFCRecipes {
             .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 1, 0))
             .eut(500_000)
             .duration(400)
-            .specialValue(1)
+            .metadata(DEFC_CASING_TIER, 1)
             .addTo(fusionCraftingRecipes)
             .forEach(DEFCRecipes::addOldHiddenRecipe);
 
@@ -187,7 +188,7 @@ public class DEFCRecipes {
             .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "wyvernCore", 1, 0))
             .eut(2_000_000)
             .duration(800)
-            .specialValue(2)
+            .metadata(DEFC_CASING_TIER, 2)
             .addTo(fusionCraftingRecipes)
             .forEach(DEFCRecipes::addOldHiddenRecipe);
 
@@ -203,7 +204,7 @@ public class DEFCRecipes {
                 .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "awakenedCore", 1, 0))
                 .eut(8_000_000)
                 .duration(1600)
-                .specialValue(3)
+                .metadata(DEFC_CASING_TIER, 3)
                 .addTo(fusionCraftingRecipes)
                 .forEach(DEFCRecipes::addOldHiddenRecipe);
         } else {
@@ -218,7 +219,7 @@ public class DEFCRecipes {
                 .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "awakenedCore", 1, 0))
                 .eut(8_000_000)
                 .duration(1600)
-                .specialValue(3)
+                .metadata(DEFC_CASING_TIER, 3)
                 .addTo(fusionCraftingRecipes)
                 .forEach(DEFCRecipes::addOldHiddenRecipe);
         }
@@ -234,7 +235,7 @@ public class DEFCRecipes {
             .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "chaoticCore", 1, 0))
             .eut(24_000_000)
             .duration(3200)
-            .specialValue(4)
+            .metadata(DEFC_CASING_TIER, 4)
             .addTo(fusionCraftingRecipes)
             .forEach(DEFCRecipes::addOldHiddenRecipe);
 
@@ -250,7 +251,7 @@ public class DEFCRecipes {
             .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "draconiumEnergyCore", 1, 0))
             .eut(500_000)
             .duration(1000)
-            .specialValue(2)
+            .metadata(DEFC_CASING_TIER, 2)
             .addTo(fusionCraftingRecipes)
             .forEach(DEFCRecipes::addOldHiddenRecipe);
 
@@ -264,7 +265,7 @@ public class DEFCRecipes {
             .itemOutputs(GT_ModHandler.getModItem("DraconicEvolution", "draconiumEnergyCore", 1, 1))
             .eut(2_000_000)
             .duration(2000)
-            .specialValue(3)
+            .metadata(DEFC_CASING_TIER, 3)
             .addTo(fusionCraftingRecipes)
             .forEach(DEFCRecipes::addOldHiddenRecipe);
 
@@ -278,7 +279,7 @@ public class DEFCRecipes {
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 288))
             .eut(1_966_080)
             .duration(4200)
-            .specialValue(3)
+            .metadata(DEFC_CASING_TIER, 3)
             .noOptimize()
             .addTo(fusionCraftingRecipes);
 
@@ -291,7 +292,7 @@ public class DEFCRecipes {
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
             .eut(1_966_080)
             .duration(3600)
-            .specialValue(3)
+            .metadata(DEFC_CASING_TIER, 3)
             .noOptimize()
             .addTo(fusionCraftingRecipes);
 
@@ -304,7 +305,7 @@ public class DEFCRecipes {
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
             .eut(1_966_080)
             .duration(2800)
-            .specialValue(3)
+            .metadata(DEFC_CASING_TIER, 3)
             .noOptimize()
             .addTo(fusionCraftingRecipes);
 
@@ -317,7 +318,7 @@ public class DEFCRecipes {
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 648))
             .eut(1_966_080)
             .duration(2400)
-            .specialValue(3)
+            .metadata(DEFC_CASING_TIER, 3)
             .noOptimize()
             .addTo(fusionCraftingRecipes);
     }

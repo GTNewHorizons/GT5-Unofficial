@@ -534,6 +534,8 @@ public class GT_Utility {
         byte tier = getTier(voltage);
         if (tier < 0) {
             return "";
+        } else if (tier == 0) {
+            return " (" + GT_Values.VN[1] + ")";
         } else if (tier >= GT_Values.VN.length - 1) {
             return " (MAX+)";
         }

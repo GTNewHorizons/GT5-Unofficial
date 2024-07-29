@@ -1,5 +1,7 @@
 package gtPlusPlus.api.recipe;
 
+import static gregtech.api.util.GT_RecipeConstants.LFTR_OUTPUT_POWER;
+
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -74,7 +76,7 @@ public class GTPPRecipeMaps {
         .minInputs(0, 2)
         .frontend(FluidOnlyFrontend::new)
         .neiSpecialInfoFormatter(recipeInfo -> {
-            final long eut = recipeInfo.recipe.mSpecialValue;
+            final long eut = recipeInfo.recipe.getMetadataOrDefault(LFTR_OUTPUT_POWER, 0);
             final int duration = recipeInfo.recipe.mDuration;
             return Arrays.asList(
                 StatCollector.translateToLocalFormatted("gtpp.nei.lftr.power", GT_Utility.formatNumbers(eut)),

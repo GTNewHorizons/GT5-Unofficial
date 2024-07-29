@@ -1103,11 +1103,6 @@ public final class RecipeMaps {
         .maxIO(1, 1, 0, 0)
         .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
         .build();
-    public static final RecipeMap<FuelBackend> fluidNaquadahReactorFuels = RecipeMapBuilder
-        .of("gt.recipe.fluidfuelnaquadahreactor", FuelBackend::new)
-        .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
-        .build();
     public static final RecipeMap<RecipeMapBackend> electrolyzerNonCellRecipes = RecipeMapBuilder
         .of("gt.recipe.largeelectrolyzer")
         .maxIO(1, 6, 1, 6)

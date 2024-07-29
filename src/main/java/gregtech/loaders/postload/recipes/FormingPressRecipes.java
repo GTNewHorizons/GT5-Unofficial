@@ -55,7 +55,7 @@ public class FormingPressRecipes implements Runnable {
                     getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 3))
                 .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
+                .eut(TierEU.RECIPE_MV)
                 .addTo(formingPressRecipes);
 
             GT_Values.RA.stdBuilder()

@@ -31,8 +31,8 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
     protected int duration;
     protected long availableVoltage;
     protected long availableAmperage;
-    protected int overClockTimeReduction = 2;
-    protected int overClockPowerIncrease = 2;
+    protected double overClockTimeReduction = 4.0;
+    protected double overClockPowerIncrease = 4.0;
     protected boolean protectItems;
     protected boolean protectFluids;
     protected int maxParallel = 1;
@@ -173,7 +173,7 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
      * Sets overclock ratio to 4/4.
      */
     public P enablePerfectOverclock() {
-        return this.setOverclock(2, 2);
+        return this.setOverclock(4.0, 4.0);
     }
 
     /**

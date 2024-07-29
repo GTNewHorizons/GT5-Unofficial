@@ -13,11 +13,11 @@ import org.apache.commons.lang3.ArrayUtils;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ItemStackData;
 import gtPlusPlus.api.recipe.GTPPRecipeCategories;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -201,7 +201,7 @@ public class RecipeGen_BlastSmelterGT_GTNH {
                     // If no circuit was found, add a circuit here
                     if (!circuitFound) {
                         l = 1;
-                        newInput[0] = CI.getNumberedCircuit(inputs.length);
+                        newInput[0] = GT_Utility.getIntegratedCircuit(inputs.length);
                     }
 
                     for (ItemStack y : inputs) {

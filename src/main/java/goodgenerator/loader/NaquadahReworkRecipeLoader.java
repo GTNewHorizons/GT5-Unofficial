@@ -1,5 +1,6 @@
 package goodgenerator.loader;
 
+import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.neutronActivatorRecipes;
 import static goodgenerator.items.MyMaterial.P507;
 import static goodgenerator.items.MyMaterial.adamantine;
 import static goodgenerator.items.MyMaterial.concentratedEnrichedNaquadahSludge;
@@ -34,6 +35,7 @@ import static goodgenerator.items.MyMaterial.towEthyl1Hexanol;
 import static goodgenerator.items.MyMaterial.triniumSulphate;
 import static goodgenerator.items.MyMaterial.wasteLiquid;
 import static goodgenerator.main.GG_Config_Loader.EnableNaquadahRework;
+import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
@@ -47,28 +49,20 @@ import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GT_RecipeConstants.NKE_RANGE;
+import static gregtech.api.util.GT_RecipeConstants.QFT_FOCUS_TIER;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gregtech.common.items.GT_MetaGenerated_Item_01.registerCauldronCleaningFor;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipes;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.HashSet;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.PlatinumSludgeOverHaul;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
@@ -76,12 +70,12 @@ import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import goodgenerator.main.GoodGenerator;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
-import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.interfaces.IRecipeMutableAccess;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -91,7 +85,6 @@ import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GT_Bees;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.chemistry.GenericChem;
-import gtPlusPlus.core.lib.CORE;
 
 public class NaquadahReworkRecipeLoader {
 
@@ -101,68 +94,97 @@ public class NaquadahReworkRecipeLoader {
 
         try {
             // Naquadah (UEV)
-            CORE.RA.addQuantumTransformerRecipe(
-                new ItemStack[] { naquadahEarth.get(OrePrefixes.dust, 32), Materials.Sodium.getDust(64),
-                    Materials.Carbon.getDust(1), GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst) },
-                new FluidStack[] { Materials.Hydrogen.getGas(64000L), Materials.Fluorine.getGas(64000L),
-                    Materials.Oxygen.getGas(100L) },
-                new FluidStack[] {},
-                new ItemStack[] { inertNaquadah.get(OrePrefixes.dust, 1), Materials.Titanium.getDust(64),
-                    Materials.Adamantium.getDust(64), Materials.Gallium.getDust(64) },
-                new int[] { 2500, 2500, 2500, 2500 },
-                10 * 20,
-                (int) GT_Values.VP[10],
-                2);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    naquadahEarth.get(OrePrefixes.dust, 32),
+                    Materials.Sodium.getDust(64),
+                    Materials.Carbon.getDust(1),
+                    GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst))
+                .itemOutputs(
+                    inertNaquadah.get(OrePrefixes.dust, 1),
+                    Materials.Titanium.getDust(64),
+                    Materials.Adamantium.getDust(64),
+                    Materials.Gallium.getDust(64))
+                .outputChances(2500, 2500, 2500, 2500)
+                .fluidInputs(
+                    Materials.Hydrogen.getGas(64000L),
+                    Materials.Fluorine.getGas(64000L),
+                    Materials.Oxygen.getGas(100L))
+                .duration(10 * SECONDS)
+                .eut(GT_Values.VP[10])
+                .metadata(QFT_FOCUS_TIER, 2)
+                .addTo(quantumForceTransformerRecipes);
             // Enriched Naquadah (UIV)
-            CORE.RA.addQuantumTransformerRecipe(
-                new ItemStack[] { enrichedNaquadahEarth.get(OrePrefixes.dust, 32), Materials.Zinc.getDust(64),
-                    Materials.Carbon.getDust(1), GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst) },
-                new FluidStack[] { Materials.SulfuricAcid.getFluid(16000), Materials.Oxygen.getGas(100L) },
-                new FluidStack[] { wasteLiquid.getFluidOrGas(32000) },
-                new ItemStack[] { inertEnrichedNaquadah.get(OrePrefixes.dust, 1), Materials.Trinium.getDust(64), },
-                new int[] { 3300, 3300, 3300 },
-                10 * 20,
-                (int) GT_Values.VP[11],
-                2);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    enrichedNaquadahEarth.get(OrePrefixes.dust, 32),
+                    Materials.Zinc.getDust(64),
+                    Materials.Carbon.getDust(1),
+                    GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst))
+                .itemOutputs(inertEnrichedNaquadah.get(OrePrefixes.dust, 1), Materials.Trinium.getDust(64))
+                .outputChances(3300, 3300, 3300)
+                .fluidInputs(Materials.SulfuricAcid.getFluid(16000), Materials.Oxygen.getGas(100L))
+                .fluidOutputs(wasteLiquid.getFluidOrGas(32000))
+                .duration(10 * SECONDS)
+                .eut(GT_Values.VP[11])
+                .metadata(QFT_FOCUS_TIER, 2)
+                .addTo(quantumForceTransformerRecipes);
             // Naquadria (UMV)
-            CORE.RA.addQuantumTransformerRecipe(
-                new ItemStack[] { naquadriaEarth.get(OrePrefixes.dust, 32), Materials.Magnesium.getDust(64),
-                    GT_Utility.copyAmount(0, GenericChem.mAdvancedNaquadahCatalyst) },
-                new FluidStack[] { Materials.PhosphoricAcid.getFluid(16000), Materials.SulfuricAcid.getFluid(16000),
-                    Materials.Oxygen.getGas(100L) },
-                new FluidStack[] {},
-                new ItemStack[] { inertNaquadria.get(OrePrefixes.dust, 1), Materials.Barium.getDust(64),
-                    Materials.Indium.getDust(64), ItemList.NaquadriaSupersolid.get(1) },
-                new int[] { 2500, 2500, 2500, 2500 },
-                5 * 20,
-                (int) GT_Values.VP[12],
-                3);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    naquadriaEarth.get(OrePrefixes.dust, 32),
+                    Materials.Magnesium.getDust(64),
+                    GT_Utility.copyAmount(0, GenericChem.mAdvancedNaquadahCatalyst))
+                .itemOutputs(
+                    inertNaquadria.get(OrePrefixes.dust, 1),
+                    Materials.Barium.getDust(64),
+                    Materials.Indium.getDust(64),
+                    ItemList.NaquadriaSupersolid.get(1))
+                .outputChances(2500, 2500, 2500, 2500)
+                .fluidInputs(
+                    Materials.PhosphoricAcid.getFluid(16000),
+                    Materials.SulfuricAcid.getFluid(16000),
+                    Materials.Oxygen.getGas(100L))
+                .duration(5 * SECONDS)
+                .eut(GT_Values.VP[12])
+                .metadata(QFT_FOCUS_TIER, 3)
+                .addTo(quantumForceTransformerRecipes);
+
             // Activate Them
-            MyRecipeAdder.instance.addNeutronActivatorRecipe(
-                new FluidStack[] { Materials.Nickel.getPlasma(144 * 16) },
-                new ItemStack[] { inertNaquadah.get(OrePrefixes.dust, 64), inertNaquadah.get(OrePrefixes.dust, 32) },
-                new FluidStack[] { Materials.Naquadah.getMolten(144 * 9216) },
-                new ItemStack[] { Materials.Nickel.getDust(16) },
-                2000,
-                600,
-                500);
-            MyRecipeAdder.instance.addNeutronActivatorRecipe(
-                new FluidStack[] { Materials.Titanium.getPlasma(16 * 144) },
-                new ItemStack[] { inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
-                    inertEnrichedNaquadah.get(OrePrefixes.dust, 32) },
-                new FluidStack[] { Materials.NaquadahEnriched.getMolten(144 * 9216) },
-                new ItemStack[] { Materials.Titanium.getDust(16) },
-                2000,
-                900,
-                850);
-            MyRecipeAdder.instance.addNeutronActivatorRecipe(
-                new FluidStack[] { Materials.Americium.getPlasma(144 * 16) },
-                new ItemStack[] { inertNaquadria.get(OrePrefixes.dust, 64), inertNaquadria.get(OrePrefixes.dust, 32) },
-                new FluidStack[] { Materials.Naquadria.getMolten(144 * 9216) },
-                new ItemStack[] { Materials.Americium.getDust(16) },
-                2000,
-                1100,
-                1080);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(inertNaquadah.get(OrePrefixes.dust, 64), inertNaquadah.get(OrePrefixes.dust, 32))
+                .itemOutputs(Materials.Nickel.getDust(16))
+                .fluidInputs(Materials.Nickel.getPlasma(144 * 16))
+                .fluidOutputs(Materials.Naquadah.getMolten(144 * 9216))
+                .duration(1 * MINUTES + 40 * SECONDS)
+                .eut(0)
+                .metadata(NKE_RANGE, computeRangeNKE(600, 500))
+                .noOptimize()
+                .addTo(neutronActivatorRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
+                    inertEnrichedNaquadah.get(OrePrefixes.dust, 32))
+                .itemOutputs(Materials.Titanium.getDust(16))
+                .fluidInputs(Materials.Titanium.getPlasma(16 * 144))
+                .fluidOutputs(Materials.NaquadahEnriched.getMolten(144 * 9216))
+                .duration(1 * MINUTES + 40 * SECONDS)
+                .eut(0)
+                .metadata(NKE_RANGE, computeRangeNKE(900, 850))
+                .noOptimize()
+                .addTo(neutronActivatorRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(inertNaquadria.get(OrePrefixes.dust, 64), inertNaquadria.get(OrePrefixes.dust, 32))
+                .itemOutputs(Materials.Americium.getDust(16))
+                .fluidInputs(Materials.Americium.getPlasma(144 * 16))
+                .fluidOutputs(Materials.Naquadria.getMolten(144 * 9216))
+                .duration(1 * MINUTES + 40 * SECONDS)
+                .eut(0)
+                .metadata(NKE_RANGE, computeRangeNKE(1100, 1080))
+                .noOptimize()
+                .addTo(neutronActivatorRecipes);
+
         } catch (Throwable t) {
             // Cry about it
         }
@@ -252,15 +274,18 @@ public class NaquadahReworkRecipeLoader {
             15 * SECONDS,
             TierEU.RECIPE_HV);
 
-        MyRecipeAdder.instance.addNeutronActivatorRecipe(
-            new FluidStack[] { naquadahAdamantiumSolution.getFluidOrGas(3000) },
-            null,
-            new FluidStack[] { naquadahRichSolution.getFluidOrGas(2000) },
-            new ItemStack[] { adamantine.get(OrePrefixes.dust, 4), naquadahEarth.get(OrePrefixes.dust, 2),
-                concentratedEnrichedNaquadahSludge.get(OrePrefixes.dust, 1) },
-            100,
-            230,
-            200);
+        GT_Values.RA.stdBuilder()
+            .itemOutputs(
+                adamantine.get(OrePrefixes.dust, 4),
+                naquadahEarth.get(OrePrefixes.dust, 2),
+                concentratedEnrichedNaquadahSludge.get(OrePrefixes.dust, 1))
+            .fluidInputs(naquadahAdamantiumSolution.getFluidOrGas(3000))
+            .fluidOutputs(naquadahRichSolution.getFluidOrGas(2000))
+            .duration(5 * SECONDS)
+            .eut(0)
+            .metadata(NKE_RANGE, computeRangeNKE(230, 200))
+            .noOptimize()
+            .addTo(neutronActivatorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 27))
@@ -326,19 +351,21 @@ public class NaquadahReworkRecipeLoader {
             .eut(TierEU.RECIPE_HV)
             .addTo(autoclaveRecipes);
 
-        MyRecipeAdder.instance.addNeutronActivatorRecipe(
-            null,
-            new ItemStack[] { concentratedEnrichedNaquadahSludge.get(OrePrefixes.dust, 16), },
-            null,
-            new ItemStack[] { enrichedNaquadahSulphate.get(OrePrefixes.dust, 64),
-                enrichedNaquadahSulphate.get(OrePrefixes.dust, 64), enrichedNaquadahSulphate.get(OrePrefixes.dust, 37),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(concentratedEnrichedNaquadahSludge.get(OrePrefixes.dust, 16))
+            .itemOutputs(
+                enrichedNaquadahSulphate.get(OrePrefixes.dust, 64),
+                enrichedNaquadahSulphate.get(OrePrefixes.dust, 64),
+                enrichedNaquadahSulphate.get(OrePrefixes.dust, 37),
                 WerkstoffLoader.Sodiumsulfate.get(OrePrefixes.dust, 64),
                 WerkstoffLoader.Sodiumsulfate.get(OrePrefixes.dust, 64),
                 WerkstoffLoader.Sodiumsulfate.get(OrePrefixes.dust, 12),
-                lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 2), },
-            120,
-            480,
-            460);
+                lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 2))
+            .duration(6 * SECONDS)
+            .eut(0)
+            .metadata(NKE_RANGE, computeRangeNKE(480, 460))
+            .noOptimize()
+            .addTo(neutronActivatorRecipes);
 
         // Nq+(SO4)2 + 2Zn = Nq+ + 2ZnSO4
         GT_Values.RA.stdBuilder()
@@ -406,15 +433,16 @@ public class NaquadahReworkRecipeLoader {
             .eut(TierEU.RECIPE_IV)
             .addTo(UniversalChemical);
 
-        MyRecipeAdder.instance.addNeutronActivatorRecipe(
-            new FluidStack[] { naquadriaRichSolution.getFluidOrGas(9000) },
-            null,
-            null,
-            new ItemStack[] { naquadriaSulphate.get(OrePrefixes.dust, 44),
-                lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 6) },
-            100,
-            1100,
-            1050);
+        GT_Values.RA.stdBuilder()
+            .itemOutputs(
+                naquadriaSulphate.get(OrePrefixes.dust, 44),
+                lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 6))
+            .fluidInputs(naquadriaRichSolution.getFluidOrGas(9000))
+            .duration(5 * SECONDS)
+            .eut(0)
+            .metadata(NKE_RANGE, computeRangeNKE(1100, 1050))
+            .noOptimize()
+            .addTo(neutronActivatorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 3), Materials.Water.getCells(3))
@@ -1222,146 +1250,30 @@ public class NaquadahReworkRecipeLoader {
         GT_Log.out.print("Crafting Table done!\n");
     }
 
-    // I don't understand. . .
-    // I use and copy some private methods in Bartworks because his system runs well.
-    // Bartworks is under MIT License
-    /*
-     * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a
-     * copy of this software and associated documentation files (the "Software"), to deal in the Software without
-     * restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
-     * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-     * subject to the following conditions: The above copyright notice and this permission notice shall be included in
-     * all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
-     * KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-     * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-     * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
-     * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-     */
     public static void replaceInCraftTable(Object obj) {
-
-        Constructor<?> cs = null;
-        PlatinumSludgeOverHaul BartObj = null;
-        try {
-            cs = PlatinumSludgeOverHaul.class.getDeclaredConstructor();
-            cs.setAccessible(true);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-
-        if (cs == null) return;
-
-        try {
-            BartObj = (PlatinumSludgeOverHaul) cs.newInstance();
-        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-
-        Method recipeCheck = null;
-
-        try {
-            recipeCheck = PlatinumSludgeOverHaul.class.getDeclaredMethod("checkRecipe", Object.class, Materials.class);
-            recipeCheck.setAccessible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        String inputName = "output";
-        String inputItemName = "input";
-        if (!(obj instanceof ShapedOreRecipe || obj instanceof ShapelessOreRecipe)) {
-            if (obj instanceof ShapedRecipes || (obj instanceof ShapelessRecipes)) {
-                inputName = "recipeOutput";
-                inputItemName = "recipeItems";
-            }
-        }
         IRecipe recipe = (IRecipe) obj;
         ItemStack result = recipe.getRecipeOutput();
-
-        Field out = FieldUtils.getDeclaredField(recipe.getClass(), inputName, true);
-        if (out == null) out = FieldUtils.getField(recipe.getClass(), inputName, true);
-
-        Field in = FieldUtils.getDeclaredField(recipe.getClass(), inputItemName, true);
-        if (in == null) in = FieldUtils.getField(recipe.getClass(), inputItemName, true);
-        if (in == null) return;
-
-        // this part here is NOT MIT LICENSED BUT LICSENSED UNDER THE Apache License, Version 2.0!
-        try {
-            if (Modifier.isFinal(in.getModifiers())) {
-                // Do all JREs implement Field with a private ivar called "modifiers"?
-                Field modifiersField = Field.class.getDeclaredField("modifiers");
-                boolean doForceAccess = !modifiersField.isAccessible();
-                if (doForceAccess) {
-                    modifiersField.setAccessible(true);
-                }
-                try {
-                    modifiersField.setInt(in, in.getModifiers() & ~Modifier.FINAL);
-                } finally {
-                    if (doForceAccess) {
-                        modifiersField.setAccessible(false);
-                    }
-                }
-            }
-        } catch (NoSuchFieldException ignored) {
-            // The field class contains always a modifiers field
-        } catch (IllegalAccessException ignored) {
-            // The modifiers field is made accessible
-        }
-        // END OF APACHE COMMONS COLLECTION COPY
-
-        Object input;
-        try {
-            input = in.get(obj);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        if (!(recipe instanceof IRecipeMutableAccess mutableRecipe)) {
             return;
         }
 
-        if (out == null || recipeCheck == null) return;
+        Object input = mutableRecipe.gt5u$getRecipeInputs();
 
         if (GT_Utility.areStacksEqual(result, Materials.Naquadah.getDust(1), true)) {
-
-            recipeCheck.setAccessible(true);
-            boolean isOk = true;
-
-            try {
-                isOk = (boolean) recipeCheck.invoke(BartObj, input, Materials.Naquadah);
-            } catch (InvocationTargetException | IllegalAccessException ignored) {}
-
-            if (isOk) return;
-            try {
-                out.set(recipe, naquadahEarth.get(OrePrefixes.dust, 2));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Naquadah)) {
+                return;
             }
+            mutableRecipe.gt5u$setRecipeOutputItem(naquadahEarth.get(OrePrefixes.dust, 2));
         } else if (GT_Utility.areStacksEqual(result, Materials.NaquadahEnriched.getDust(1), true)) {
-
-            recipeCheck.setAccessible(true);
-            boolean isOk = true;
-
-            try {
-                isOk = (boolean) recipeCheck.invoke(BartObj, input, Materials.NaquadahEnriched);
-            } catch (InvocationTargetException | IllegalAccessException ignored) {}
-
-            if (isOk) return;
-            try {
-                out.set(recipe, enrichedNaquadahEarth.get(OrePrefixes.dust, 2));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.NaquadahEnriched)) {
+                return;
             }
+            mutableRecipe.gt5u$setRecipeOutputItem(enrichedNaquadahEarth.get(OrePrefixes.dust, 2));
         } else if (GT_Utility.areStacksEqual(result, Materials.Naquadria.getDust(1), true)) {
-
-            recipeCheck.setAccessible(true);
-            boolean isOk = true;
-
-            try {
-                isOk = (boolean) recipeCheck.invoke(BartObj, input, Materials.Naquadria);
-            } catch (InvocationTargetException | IllegalAccessException ignored) {}
-
-            if (isOk) return;
-            try {
-                out.set(recipe, naquadriaEarth.get(OrePrefixes.dust, 2));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Naquadria)) {
+                return;
             }
+            mutableRecipe.gt5u$setRecipeOutputItem(naquadriaEarth.get(OrePrefixes.dust, 2));
         }
     }
 }

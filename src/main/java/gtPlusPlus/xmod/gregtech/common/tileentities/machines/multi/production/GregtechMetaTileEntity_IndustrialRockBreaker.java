@@ -46,7 +46,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -190,7 +189,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
     private static void generateRecipes() {
         sRecipe_Cobblestone = new GT_Recipe(
             false,
-            new ItemStack[] { CI.getNumberedCircuit(1) },
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
             new ItemStack[] { ItemUtils.getSimpleStack(Blocks.cobblestone) },
             null,
             new int[] { 10000 },
@@ -201,7 +200,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
             0);
         sRecipe_SmoothStone = new GT_Recipe(
             false,
-            new ItemStack[] { CI.getNumberedCircuit(2) },
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(2) },
             new ItemStack[] { ItemUtils.getSimpleStack(Blocks.stone) },
             null,
             new int[] { 10000 },
@@ -212,7 +211,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
             0);
         sRecipe_Redstone = new GT_Recipe(
             false,
-            new ItemStack[] { CI.getNumberedCircuit(3),
+            new ItemStack[] { GT_Utility.getIntegratedCircuit(3),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L) },
             new ItemStack[] { ItemUtils.getSimpleStack(Blocks.obsidian) },
             null,

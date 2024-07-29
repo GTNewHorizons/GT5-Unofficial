@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_Sifter;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -17,7 +19,7 @@ public class GregtechIndustrialSifter {
     private static void run1() {
         GregtechItemList.Industrial_Sifter.set(
             new GregtechMetaTileEntity_IndustrialSifter(
-                840,
+                Industrial_Sifter.ID,
                 "industrialsifter.controller.tier.single",
                 "Large Sifter Control Block").getStackForm(1L));
     }
