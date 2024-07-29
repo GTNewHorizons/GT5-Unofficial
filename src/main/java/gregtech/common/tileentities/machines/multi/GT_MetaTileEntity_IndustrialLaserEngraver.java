@@ -112,7 +112,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     private byte glassTier = 0;
     private GT_MetaTileEntity_Hatch_DynamoTunnel laserSource = null;
     private int laserAmps = 0;
-    private long laserTier = 0;
+    private int laserTier = 0;
     private String tierName = "LV";
 
     private boolean addLaserSource(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -126,8 +126,8 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
                     .setFrontFacing(ForgeDirection.DOWN);
                 // Cube root the amperage to get the parallels
                 laserAmps = (int) Math.cbrt(laserSource.maxAmperesOut());
-                laserTier = laserSource.getOutputTier();
-                tierName = GT_Values.VN[(int) laserTier];
+                laserTier = (int) laserSource.getOutputTier();
+                tierName = GT_Values.VN[laserTier];
                 return true;
             }
         }
@@ -318,7 +318,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
-                if (laserTier < GTVoltageIndex.UXV && recipe.mEUt > Math.pow(2, 4 + (laserTier * 2))) {
+                if (laserTier < GTVoltageIndex.UXV && recipe.mEUt > GT_Values.V[laserTier]) {
                     return SimpleCheckRecipeResult.ofFailure("laser_insufficient");
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
