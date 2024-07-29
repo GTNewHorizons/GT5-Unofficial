@@ -308,8 +308,8 @@ public final class RecipeMaps {
         .neiRecipeComparator((a, b) -> {
             // Find lens, if no lens was present we can use the default comparator
             if (a.mInputs.length > 1 && b.mInputs.length > 1) {
-                ItemStack firstLens = a.mInputs[a.mInputs.length - 1];
-                ItemStack secondLens = b.mInputs[b.mInputs.length - 1];
+                ItemStack firstLens = a.mInputs[1];
+                ItemStack secondLens = b.mInputs[1];
                 // Find purified water/any fluid, if none was present simply use the lens to compare
                 if (ItemStack.areItemStacksEqual(firstLens, secondLens) && a.mFluidInputs.length > 0
                     && b.mFluidInputs.length > 0) {

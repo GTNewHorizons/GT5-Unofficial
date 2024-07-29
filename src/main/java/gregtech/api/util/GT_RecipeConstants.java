@@ -268,8 +268,7 @@ public class GT_RecipeConstants {
             }
 
             // Now look for beamline masks
-            if (input.getItem() instanceof PhotolithographicMask) {
-                PhotolithographicMask mask = (PhotolithographicMask) input.getItem();
+            if (input.getItem() instanceof PhotolithographicMask mask) {
                 String spectrum = mask.getDescSpectrum();
                 if (spectrum.equals(t1Item.getDescSpectrum())) wafer = Wafer.MaskT1;
                 else if (spectrum.equals(t2Item.getDescSpectrum())) wafer = Wafer.MaskT2;
@@ -289,13 +288,25 @@ public class GT_RecipeConstants {
         if (wafer == null) return builder.addTo(RecipeMaps.laserEngraverRecipes);
         switch (wafer) {
             case Naquadah -> {
-                // Naquadah wafers need at least grade 1 purified water
+                ArrayList<ItemStack> items = new ArrayList<>(Arrays.asList(builder.getItemInputsBasic()));
+                items.add(GT_Utility.getIntegratedCircuit(1));
+                ItemStack[] inputItemsWithC1 = items.toArray(new ItemStack[] {});
+
+                ArrayList<ItemStack> items2 = new ArrayList<>(Arrays.asList(builder.getItemInputsBasic()));
+                items2.add(GT_Utility.getIntegratedCircuit(2));
+                ItemStack[] itemsWithC2 = items2.toArray(new ItemStack[] {});
+                // Naquadah wafers can use grade 1-2 purified water for a bonus
                 return GT_Utility.concat(
                     builder.copy()
-                        .fluidInputs(Materials.Grade1PurifiedWater.getFluid(100L))
-                        .duration(recipeTime)
+                        .itemInputs(inputItemsWithC1)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
+                        .itemInputs(itemsWithC2)
+                        .fluidInputs(Materials.Grade1PurifiedWater.getFluid(100L))
+                        .duration(halfBoostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .itemInputs(itemsWithC2)
                         .fluidInputs(Materials.Grade2PurifiedWater.getFluid(100L))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
