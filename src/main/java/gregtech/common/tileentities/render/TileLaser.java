@@ -31,6 +31,10 @@ public class TileLaser extends TileEntityAdvanced {
         compound.setFloat("rgb_green", green);
         compound.setFloat("rgb_blue", blue);
         compound.setBoolean("shouldRender", shouldRender);
+        compound.setDouble("rotAxisX", rotAxisX);
+        compound.setDouble("rotAxisY", rotAxisY);
+        compound.setDouble("rotAxisZ", rotAxisZ);
+        compound.setDouble("rotationAngle", rotationAngle);
     }
 
     @Override
@@ -40,6 +44,10 @@ public class TileLaser extends TileEntityAdvanced {
         blue = compound.getFloat("rgb_blue");
         green = compound.getFloat("rgb_green");
         shouldRender = compound.getBoolean("shouldRender");
+        rotAxisX = compound.getDouble("rotAxisX");
+        rotAxisY = compound.getDouble("rotAxisY");
+        rotAxisZ = compound.getDouble("rotAxisZ");
+        rotationAngle = compound.getDouble("rotationAngle");
     }
 
     public void setColors(float red, float green, float blue) {
