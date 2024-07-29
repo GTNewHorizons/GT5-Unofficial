@@ -542,6 +542,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockCasings8 = new GT_Block_Casings8();
         GregTech_API.sBlockCasings9 = new GT_Block_Casings9();
         GregTech_API.sBlockCasings10 = new GT_Block_Casings10();
+        GregTech_API.sBlockCasings11 = new GT_Block_Casings11();
         GregTech_API.sBlockGranites = new GT_Block_Granites();
         GregTech_API.sBlockLongDistancePipes = new GT_Block_LongDistancePipe();
         GregTech_API.sBlockConcretes = new GT_Block_Concretes();

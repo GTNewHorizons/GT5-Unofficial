@@ -1475,6 +1475,8 @@ public enum ItemList implements IItemContainer {
     Laser_Plate,
     Casing_Laser,
 
+    Machine_Multi_Lathe,
+
     Machine_LV_Miner,
     Machine_MV_Miner,
     Machine_HV_Miner,
@@ -1680,6 +1682,15 @@ public enum ItemList implements IItemContainer {
     Casing_Tank_14,
     Casing_Tank_15,
     Casing_Tank_0,
+
+    Casing_Item_Pipe_Tin,
+    Casing_Item_Pipe_Brass,
+    Casing_Item_Pipe_Electrum,
+    Casing_Item_Pipe_Platinum,
+    Casing_Item_Pipe_Osmium,
+    Casing_Item_Pipe_Quantium,
+    Casing_Item_Pipe_Fluxed_Electrum,
+    Casing_Item_Pipe_Black_Plutonium,
 
     MobRep_LV,
     MobRep_MV,

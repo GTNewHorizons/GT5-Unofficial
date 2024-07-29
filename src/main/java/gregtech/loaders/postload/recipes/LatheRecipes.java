@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
+import static gregtech.api.recipe.RecipeMaps.precisionLatheRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -36,5 +37,19 @@ public class LatheRecipes implements Runnable {
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(8)
             .addTo(latheRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.wooden_slab, 1, GT_Values.W))
+            .itemOutputs(new ItemStack(Items.bowl, 2))
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(8)
+            .addTo(precisionLatheRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(getModItem(Forestry.ID, "slabs", 1L, GT_Values.W))
+            .itemOutputs(new ItemStack(Items.bowl, 2))
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(8)
+            .addTo(precisionLatheRecipes);
     }
 }

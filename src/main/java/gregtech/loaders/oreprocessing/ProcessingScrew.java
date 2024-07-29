@@ -1,6 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
+import static gregtech.api.recipe.RecipeMaps.precisionLatheRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
@@ -33,6 +34,14 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
                     .duration(((int) Math.max(aMaterial.getMass() / 8L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
                     .addTo(latheRecipes);
+            }
+            if (GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null) {
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L))
+                    .itemOutputs(GT_Utility.copyAmount(1, aStack))
+                    .duration(((int) Math.max(aMaterial.getMass() / 8L, 1L)) * TICKS)
+                    .eut(calculateRecipeEU(aMaterial, 4))
+                    .addTo(precisionLatheRecipes);
             }
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial))
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {

@@ -676,6 +676,7 @@ public class GT_Values {
         + EnumChatFormatting.GOLD
         + EnumChatFormatting.BOLD
         + "Gold";
+    public static final String AuthorVolence = "Author: " + EnumChatFormatting.AQUA + "Volence";
 
     public static final String AuthorNotAPenguin = "Author: " + EnumChatFormatting.WHITE
         + EnumChatFormatting.BOLD
