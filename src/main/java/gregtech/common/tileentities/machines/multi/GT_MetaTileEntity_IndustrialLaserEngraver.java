@@ -264,7 +264,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             .addController("Front Center")
             .addCasingInfoMin("Laser Containment Casing", 45, false)
             .addCasingInfoExactly("Tungstensteel Frame Box", 9, false)
-            .addOtherStructurePart("Heat Resistant Laser Plate", "x1")
+            .addOtherStructurePart("Laser Resistant Plate", "x1")
             .addOtherStructurePart("Borosilicate Glass", "x3")
             .addOtherStructurePart("Laser Source Hatch", "x1", 3)
             .addInputBus("Any Casing", 1)

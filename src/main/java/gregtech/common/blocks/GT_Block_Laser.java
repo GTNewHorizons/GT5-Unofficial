@@ -1,9 +1,12 @@
 package gregtech.common.blocks;
 
+import gregtech.api.enums.ItemList;
+import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -13,7 +16,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.tileentities.render.TileLaser;
 
 public class GT_Block_Laser extends Block implements ITileEntityProvider {
@@ -22,11 +24,41 @@ public class GT_Block_Laser extends Block implements ITileEntityProvider {
 
     public GT_Block_Laser() {
         super(Material.iron);
-        setBlockName("HeatResistantLaserPlate");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".name", "Heat Resistant Laser Plate");
+        setBlockName("LaserPlate");
         this.setCreativeTab(GregTech_API.TAB_GREGTECH);
-        setHarvestLevel("pickaxe", 2);
-        GameRegistry.registerBlock(this, getUnlocalizedName());
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".name", "Laser Resistant Plate");
+        GregTech_API.registerMachineBlock(this, -1);
+        GameRegistry.registerBlock(this, GT_Item_Block_Laser.class, getUnlocalizedName());
+        ItemList.Laser_Plate.set(new ItemStack(this, 1));
+    }
+
+    @Override
+    public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
+        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
+            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        }
+    }
+
+    @Override
+    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
+        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
+            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        }
+    }
+
+    @Override
+    public String getHarvestTool(int aMeta) {
+        return "wrench";
+    }
+
+    @Override
+    public int getHarvestLevel(int aMeta) {
+        return 2;
+    }
+
+    @Override
+    public String getUnlocalizedName() {
+        return "gt.laserplate";
     }
 
     @Override

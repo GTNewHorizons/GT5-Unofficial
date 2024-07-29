@@ -1056,7 +1056,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_IndustrialLaserEngraver(
                 INDUSTRIAL_LASER_ENGRAVER_CONTROLLER.ID,
                 "multimachine.engraver",
-                "High Energy Beam Emitter").getStackForm(1));
+                "High Energy Laser Emitter").getStackForm(1));
 
     }
 
