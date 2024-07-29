@@ -18,8 +18,9 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
     // Relative to block size
     final private double lineRadius = 0.03;
 
-    // Originally was 0.6F
     final private float lineOpacity = 0.7F;
+
+    final private float laserSpeed = 0.8F;
 
     public GT_LaserRenderer() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileLaser.class, this);
@@ -76,7 +77,7 @@ public class GT_LaserRenderer extends TileEntitySpecialRenderer {
 
             // Movement calculations
             maths(ltile.counter);
-            ltile.counter += 0.6F;
+            ltile.counter += laserSpeed;
             if (ltile.counter >= 80) {
                 ltile.counter = 0;
             }

@@ -64,12 +64,6 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-// TODO:
-// SUPPORT MORE LENSES
-// SPECIAL RENDER FOR SPECIAL LENSES?
-// FIX DESYNC/PAUSE ON RENDERER
-// FORK THE COREMOD FOR RECIPES
-
 public class GT_MetaTileEntity_IndustrialLaserEngraver
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_IndustrialLaserEngraver>
     implements ISurvivalConstructable {
@@ -126,6 +120,9 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoTunnel) {
                 laserSource = (GT_MetaTileEntity_Hatch_DynamoTunnel) aMetaTileEntity;
                 laserSource.updateTexture(aBaseCasingIndex);
+                // Snap the laser source down. Player can rotate it if they want after but this will look nicer
+                laserSource.getBaseMetaTileEntity()
+                    .setFrontFacing(ForgeDirection.DOWN);
                 // Cube root the amperage to get the parallels
                 laserAmps = (int) Math.cbrt(laserSource.maxAmperesOut());
                 laserTier = laserSource.getOutputTier();
@@ -301,7 +298,10 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
         if (mCasingAmount < 45) return false;
         if (laserSource == null) return false;
+        if (renderer == null) return false;
         if (glassTier < 12 && laserSource.mTier > glassTier) return false;
+
+        IGregTechTileEntity TE = laserSource.getBaseMetaTileEntity();
 
         // All checks passed!
         return true;
@@ -406,6 +406,19 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setBoolean("stopAllRendering", stopAllRendering);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        if (aNBT.hasKey("stopAllRendering")) {
+            stopAllRendering = aNBT.getBoolean("stopAllRendering");
+        }
+        super.loadNBTData(aNBT);
     }
 
     @Override
