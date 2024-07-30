@@ -4,14 +4,16 @@ import static gregtech.api.enums.GT_Values.W;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -21,11 +23,22 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_Renderer_Block;
 
-public class GT_Block_FrameBox extends Block {
+// TODO:
+// - Render covers
+// - Access check
+// - Mining level/block breaking with wrench
+// - Drop correct frame on breaking instead of generic .0.name
+// - Crafting using new frames instead of old frames
+// - Colen's postea thing to replace old frames with new ones
+
+public class GT_Block_FrameBox extends BlockContainer {
 
     protected final String mUnlocalizedName;
 
@@ -72,12 +85,45 @@ public class GT_Block_FrameBox extends Block {
         return aMaterial.getDefaultLocalizedNameForItem(getLocalizedNameFormat(aMaterial));
     }
 
+    private boolean isCover(ItemStack item) {
+        return GT_Utility.isStackInList(item, GregTech_API.sCovers.keySet());
+    }
+
+    private BaseMetaPipeEntity spawnFrameEntity(World worldIn, int x, int y, int z) {
+        // Obtain metadata to grab proper material identifier
+        int meta = worldIn.getBlockMetadata(x, y, z);
+        Materials material = GregTech_API.sGeneratedMaterials[meta];
+        // Spawn a TE frame box at this location and destroy the old block, then apply the cover
+        BaseMetaPipeEntity newTileEntity = new BaseMetaPipeEntity();
+        GT_MetaPipeEntity_Frame frame = new GT_MetaPipeEntity_Frame(getLocalizedName(material), material);
+        newTileEntity.setMetaTileEntity(frame);
+        frame.setBaseMetaTileEntity(newTileEntity);
+        worldIn.setTileEntity(x, y, z, newTileEntity);
+        return newTileEntity;
+    }
+
     @Override
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {
-        // TODO: Check if held item is a cover, and if so convert this into a TileEntity framebox and add the cover.
-        // GT_Utility.sendChatToPlayer(player, "Activating frame box: " + mMaterial.mLocalizedName);
-        return super.onBlockActivated(worldIn, x, y, z, player, side, subX, subY, subZ);
+        // Get ForgeDirection from side identifier
+        ForgeDirection direction = ForgeDirection.getOrientation(side);
+        // If this block already holds a TE, just forward the call
+        TileEntity te = worldIn.getTileEntity(x, y, z);
+        if (te != null) {
+            BaseMetaPipeEntity baseTileEntity = (BaseMetaPipeEntity) te;
+            return baseTileEntity.onRightclick(player, direction, x, y, z);
+        }
+
+        // If there was no TileEntity yet, we need to check if the player was holding a cover item and if so
+        // spawn a new frame box to apply the cover to
+        ItemStack item = player.getHeldItem();
+        if (isCover(item)) {
+            BaseMetaPipeEntity newTileEntity = spawnFrameEntity(worldIn, x, y, z);
+            newTileEntity.setCoverItemAtSide(direction, item);
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -85,7 +131,7 @@ public class GT_Block_FrameBox extends Block {
         if (GT_Renderer_Block.INSTANCE == null) {
             return super.getRenderType();
         }
-        return GT_Renderer_Block.INSTANCE.mRenderID;
+        return GT_Renderer_Block.mRenderID;
     }
 
     @Override
@@ -122,5 +168,10 @@ public class GT_Block_FrameBox extends Block {
         return new ITexture[] { TextureFactory.of(
             material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
             Dyes.getModulation(-1, material.mRGBa)) };
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
+        return null;
     }
 }
