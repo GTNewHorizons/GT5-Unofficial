@@ -3332,16 +3332,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                         + " Frame Box (TileEntity)",
                     GregTech_API.sGeneratedMaterials[meta]);
 
-                // Generate recipes for frame box -> Note that this isn't working for some reason
-                /*
-                 * A broken ore dictionary registration with name frameGtOrichalcum has occurred.
-                 * It adds an item (type: class gregtech.common.blocks.GT_Item_Frames) which is currently unknown to the
-                 * game registry.
-                 * This dictionary item can only support a single value when registered with ores like this, and NO I am
-                 * not going to turn this spam off.
-                 * Just register your ore dictionary entries after the GameRegistry.
-                 * TO USERS: YES this is a BUG in the mod GregTech report it to them!
-                 */
+                // Generate recipes for frame box
                 GT_Block_FrameBox block = (GT_Block_FrameBox) GregTech_API.sBlockFrames;
                 GT_OreDictUnificator.registerOre(OrePrefixes.frameGt, material, block.getStackForm(1, meta));
                 if (material.getProcessingMaterialTierEU() < TierEU.IV) {
