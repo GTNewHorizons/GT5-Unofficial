@@ -17,9 +17,13 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.common.render.GT_Renderer_Block;
 
 public class GT_Block_FrameBox extends Block {
 
@@ -78,7 +82,10 @@ public class GT_Block_FrameBox extends Block {
 
     @Override
     public int getRenderType() {
-        return 1;
+        if (GT_Renderer_Block.INSTANCE == null) {
+            return super.getRenderType();
+        }
+        return GT_Renderer_Block.INSTANCE.mRenderID;
     }
 
     @Override
@@ -95,8 +102,15 @@ public class GT_Block_FrameBox extends Block {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        // TODO: Properly apply color of the frame?
+        // TODO: Properly apply color of the frame here as well
         Materials material = GregTech_API.sGeneratedMaterials[meta];
         return material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon();
+    }
+
+    public ITexture[] getTexture(int meta) {
+        Materials material = GregTech_API.sGeneratedMaterials[meta];
+        return new ITexture[] { TextureFactory.of(
+            material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
+            Dyes.getModulation(-1, material.mRGBa)) };
     }
 }
