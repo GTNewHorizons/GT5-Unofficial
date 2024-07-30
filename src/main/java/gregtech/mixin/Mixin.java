@@ -41,6 +41,16 @@ public enum Mixin {
             .setApplyIf(() -> ConfigHandler.enabledPatches[3])
             .setPhase(Phase.EARLY)
             .setSide(Side.BOTH)),
+    CraftingRecipeAccessorMixin(new Builder("Add accessors to crafting recipe types")
+        .addMixinClasses(
+            "minecraft.VanillaShapedRecipeMixin",
+            "minecraft.VanillaShapelessRecipeMixin",
+            "minecraft.ForgeShapedRecipeMixin",
+            "minecraft.ForgeShapelessRecipeMixin")
+        .addTargetedMod(VANILLA)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.EARLY)
+        .setSide(Side.BOTH)),
     BlockStemMixin(new Builder("Stem Crop Block Accessor").addMixinClasses("minecraft.BlockStemMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
