@@ -2,7 +2,6 @@ package gregtech.loaders.postload.chains;
 
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
-import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
@@ -17,7 +16,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsOreAlum;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
@@ -49,21 +47,13 @@ public class GT_BauxiteRefineChain {
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
 
-        //TODO: Remove from Oil Cracker?
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
-            .fluidInputs(MaterialsOreAlum.BauxiteSlurry.getFluid(32000), GT_ModHandler.getSteam(2000))
-            .fluidOutputs(MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(32000))
-            .duration(8 * SECONDS)
-            .eut(400)
-            .addTo(crackingRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(1))
-            .fluidInputs(MaterialsOreAlum.BauxiteSlurry.getFluid(16000))
-            .fluidOutputs(MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(16000))
-            .duration(16 * SECONDS)
+            .fluidInputs(MaterialsOreAlum.BauxiteSlurry.getFluid(2000))
+            .fluidOutputs(MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(2000))
+            .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_HV)
+            .noOptimize()
             .addTo(fluidHeaterRecipes);
 
         GT_Values.RA.stdBuilder()
