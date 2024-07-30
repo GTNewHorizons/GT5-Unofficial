@@ -492,7 +492,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Wireless_Ha
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.blocks.GT_Block_FrameBox;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_ChestBuffer;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_Filter;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_ItemDistributor;
@@ -3324,8 +3323,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                     GregTech_API.sGeneratedMaterials[i]);
             }
         }
-        // Register dumb frame boxes
-        new GT_Block_FrameBox("gt.blockframes");
         boolean bEC = !GT_Mod.gregtechproxy.mHardcoreCables;
 
         makeWires(Materials.RedAlloy, 2000, 0L, 1L, 1L, gregtech.api.enums.GT_Values.V[0], true, false);

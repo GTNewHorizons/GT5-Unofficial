@@ -10,6 +10,7 @@ import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.StringUtils;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 
 public class GT_Item_Frames extends ItemBlock {
@@ -18,6 +19,7 @@ public class GT_Item_Frames extends ItemBlock {
         super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
+        setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
     }
 
     private Block block() {
@@ -48,5 +50,10 @@ public class GT_Item_Frames extends ItemBlock {
                 + getDamage(aStack)
                 + ".tooltip");
         if (!StringUtils.isBlank(formula)) aList.add(formula);
+    }
+
+    @Override
+    public int getMetadata(int meta) {
+        return meta;
     }
 }

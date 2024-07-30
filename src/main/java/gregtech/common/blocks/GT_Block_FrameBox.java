@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -30,12 +29,14 @@ public class GT_Block_FrameBox extends Block {
     private static final String DOT_NAME = ".name";
     private static final String DOT_TOOLTIP = ".tooltip";
 
-    public GT_Block_FrameBox(String aName) {
+    public GT_Block_FrameBox() {
         super(Material.rock);
+
         this.isBlockContainer = true;
-        setBlockName(mUnlocalizedName = aName);
-        GameRegistry.registerBlock(this, GT_Item_Frames.class, getUnlocalizedName());
+        this.mUnlocalizedName = "gt.blockframes";
+        setBlockName(this.mUnlocalizedName);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Any Sub Block of this one");
+        GameRegistry.registerBlock(this, GT_Item_Frames.class, getUnlocalizedName());
 
         for (int i = 1; i < GregTech_API.sGeneratedMaterials.length; i++) {
             if (GregTech_API.sGeneratedMaterials[i] != null) {
@@ -99,12 +100,9 @@ public class GT_Block_FrameBox extends Block {
     }
 
     @Override
-    public IIcon getIcon(IBlockAccess worldIn, int x, int y, int z, int side) {
-        // TODO: I think this doesn't actually apply the color of the frame box material.
-        // Not sure how we can get around this without statically generating all the textures.
-        // Maybe need to bite the bullet and also spawn a TE in the same location that can render the proper
-        // texture. I don't know.
-        // return mMaterial.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon();
-        return super.getIcon(worldIn, x, y, z, side);
+    public IIcon getIcon(int side, int meta) {
+        // TODO: Properly apply color of the frame?
+        Materials material = GregTech_API.sGeneratedMaterials[meta];
+        return material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon();
     }
 }
