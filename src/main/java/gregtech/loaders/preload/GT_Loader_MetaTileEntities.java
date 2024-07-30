@@ -3329,7 +3329,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                         : GregTech_API.sGeneratedMaterials[meta] != null
                             ? GregTech_API.sGeneratedMaterials[meta].mDefaultLocalName
                             : "")
-                        + " Frame Box",
+                        + " Frame Box (TileEntity)",
                     GregTech_API.sGeneratedMaterials[meta]);
 
                 // Generate recipes for frame box -> Note that this isn't working for some reason

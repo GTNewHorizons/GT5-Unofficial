@@ -3,6 +3,8 @@ package gregtech.common.blocks;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.Mods.GregTech;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.BlockContainer;
@@ -13,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -24,7 +27,9 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
@@ -35,7 +40,6 @@ import gregtech.common.render.GT_Renderer_Block;
 // - Proper name in WAILA
 // - Mining level/block breaking with wrench
 // - Drop correct frame on breaking instead of generic .0.name
-// - Crafting using new frames instead of old frames
 // - Colen's postea thing to replace old frames with new ones
 // - Save TE/cover data on world reload!
 
@@ -167,6 +171,77 @@ public class GT_Block_FrameBox extends BlockContainer {
                 aList.add(new ItemStack(aItem, 1, i));
             }
         }
+    }
+
+    @Override
+    public String getHarvestTool(int aMeta) {
+        return "wrench";
+    }
+
+    @Override
+    public int getHarvestLevel(int aMeta) {
+        return aMeta % 4;
+    }
+
+    @Override
+    public boolean canConnectRedstone(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
+        ForgeDirection forgeSide = switch (ordinalSide) {
+            case (-2) -> ForgeDirection.DOWN;
+            case (-1) -> ForgeDirection.UP;
+            case (0) -> ForgeDirection.NORTH;
+            case (2) -> ForgeDirection.SOUTH;
+            case (3) -> ForgeDirection.WEST;
+            case (1) -> ForgeDirection.EAST;
+            default -> ForgeDirection.UNKNOWN;
+        };
+        final TileEntity frameEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (frameEntity == null) return false;
+        return frameEntity instanceof CoverableTileEntity cte && cte.getCoverInfoAtSide(forgeSide)
+            .getCoverID() != 0;
+    }
+
+    @Override
+    public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
+        return aWorld.getBlockMetadata(aX, aY, aZ);
+    }
+
+    @Override
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+        // If there is a valid GT TileEntity here, return its drops.
+        // Otherwise, return the regular frame block as drop
+        final TileEntity te = world.getTileEntity(x, y, z);
+        if (te instanceof IGregTechTileEntity gtTE) {
+            return gtTE.getDrops();
+        }
+        return new ArrayList<>(Collections.singletonList(getStackForm(1, metadata)));
+    }
+
+    @Override
+    public int isProvidingWeakPower(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
+        if (ordinalSide < 0 || ordinalSide > 5) {
+            return 0;
+        }
+        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity gtTE) {
+            return gtTE.getOutputRedstoneSignal(
+                ForgeDirection.getOrientation(ordinalSide)
+                    .getOpposite());
+        }
+        return 0;
+    }
+
+    @Override
+    public int isProvidingStrongPower(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
+        if (ordinalSide < 0 || ordinalSide > 5) {
+            return 0;
+        }
+        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity gtTE) {
+            return gtTE.getStrongOutputRedstoneSignal(
+                ForgeDirection.getOrientation(ordinalSide)
+                    .getOpposite());
+        }
+        return 0;
     }
 
     @Override
