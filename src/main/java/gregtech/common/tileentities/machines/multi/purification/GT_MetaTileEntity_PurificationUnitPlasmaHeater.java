@@ -179,7 +179,7 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
                     .adder(GT_MetaTileEntity_PurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
                     .cacheHint(() -> "Input Hatch (Coolant)")
                     .casingIndex(CASING_INDEX_TOWER)
-                    .build()))
+                    .buildAndChain(ofBlock(GregTech_API.sBlockCasings9, 5))))
         // Plasma input hatch
         .addElement(
             'P',
@@ -190,7 +190,7 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
                     .adder(GT_MetaTileEntity_PurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
                     .cacheHint(() -> "Input Hatch (Plasma)")
                     .casingIndex(CASING_INDEX_HEATER)
-                    .build()))
+                    .buildAndChain(ofBlock(GregTech_API.sBlockCasings9, 11))))
         .build();
 
     private List<IHatchElement<? super GT_MetaTileEntity_PurificationUnitPlasmaHeater>> getAllowedHatches() {

@@ -16,9 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -59,9 +57,9 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
     private static final String[][] structure = new String[][] {
         // spotless:off
         { "         ", "         ", "      A  ", "      A  ", "     AAA ", "     AAA ", "     A A ", "     A A ", "     A A ", "     A~A " },
-        { "      A  ", "      A  ", "     A A ", "     A A ", "BBBBA   A", "BDDBA   A", "BBBBA D A", "E   AWDWA", "E   AWDWA", "E   AAAAA" },
-        { "     AAA ", "     A A ", "    A   A", "    A   A", "BDDBA   A", "O  BA   A", "BBBBA   A", "  C AWWWA", "  CCAWWWA", "    AAAAA" },
-        { "      A  ", "      A  ", "     A A ", "     A A ", "BBBBA   A", "BDDBA   A", "BBBBA   A", "E   AWWWA", "E   AWWWA", "E   AAAAA" },
+        { "      A  ", "      A  ", "     A A ", "     A A ", "BBBBA   A", "BDDBA   A", "BBBBA D A", "E   A D A", "E   A D A", "E   AAAAA" },
+        { "     AAA ", "     A A ", "    A   A", "    A   A", "BDDBA   A", "O  BA   A", "BBBBA   A", "  C A   A", "  CCA   A", "    AAAAA" },
+        { "      A  ", "      A  ", "     A A ", "     A A ", "BBBBA   A", "BDDBA   A", "BBBBA   A", "E   A   A", "E   A   A", "E   AAAAA" },
         { "         ", "         ", "      A  ", "      A  ", "     AAA ", "     AAA ", "     AAA ", "     AAA ", "     AAA ", "     AAA " } };
     // spotless:on
 
@@ -82,14 +80,6 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitOzonation> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitOzonation>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addShape(
-            STRUCTURE_PIECE_MAIN_SURVIVAL,
-            Arrays.stream(structure)
-                .map(
-                    sa -> Arrays.stream(sa)
-                        .map(s -> s.replaceAll("W", " "))
-                        .toArray(String[]::new))
-                .toArray(String[][]::new))
         // Inert Filtration Casing
         .addElement(
             'A',
@@ -108,7 +98,6 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
         // Any tinted industrial glass
         .addElement('D', ofBlockAnyMeta(GregTech_API.sBlockTintedGlass))
         .addElement('E', ofFrame(Materials.TungstenSteel))
-        .addElement('W', ofBlock(Blocks.water, 0))
         // Ozone input hatch
         .addElement(
             'O',
@@ -117,7 +106,7 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
                     .atLeast(InputHatch)
                     .casingIndex(getTextureIndex(GregTech_API.sBlockCasings9, 9))
                     .dot(2)
-                    .build()))
+                    .buildAndChain(ofBlock(GregTech_API.sBlockCasings9, 9))))
         .build();
 
     public GT_MetaTileEntity_PurificationUnitOzonation(int aID, String aName, String aNameRegional) {
@@ -168,7 +157,7 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        int built = survivialBuildPiece(
+        return survivialBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             OFFSET_X,
@@ -177,14 +166,6 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
             elementBudget,
             env,
             true);
-
-        if (built == -1) {
-            GT_Utility.sendChatToPlayer(
-                env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
-            return 0;
-        }
-        return built;
     }
 
     @Override
