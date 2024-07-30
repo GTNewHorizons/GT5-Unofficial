@@ -31,10 +31,11 @@ public class GT_Block_FrameBox extends Block {
     private static final String DOT_TOOLTIP = ".tooltip";
 
     public GT_Block_FrameBox(String aName) {
-        super(Material.glass);
-        // We will probably need this later.
-        // this.isBlockContainer = true;
+        super(Material.rock);
+        this.isBlockContainer = true;
         setBlockName(mUnlocalizedName = aName);
+        GameRegistry.registerBlock(this, GT_Item_Frames.class, getUnlocalizedName());
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Any Sub Block of this one");
 
         for (int i = 1; i < GregTech_API.sGeneratedMaterials.length; i++) {
             if (GregTech_API.sGeneratedMaterials[i] != null) {
@@ -50,8 +51,6 @@ public class GT_Block_FrameBox extends Block {
 
         // TODO: Register oredict for this frame item here, since we don't want to use the TE version for crafting
 
-        GameRegistry.registerBlock(this, GT_Item_Frames.class, getUnlocalizedName());
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Any Sub Block of this one");
     }
 
     public String getLocalizedNameFormat(Materials aMaterial) {
@@ -60,6 +59,11 @@ public class GT_Block_FrameBox extends Block {
             case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
             default -> "%material" + OrePrefixes.ore.mLocalizedMaterialPost;
         };
+    }
+
+    @Override
+    public String getUnlocalizedName() {
+        return mUnlocalizedName;
     }
 
     public String getLocalizedName(Materials aMaterial) {

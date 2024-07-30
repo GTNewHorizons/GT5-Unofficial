@@ -35,7 +35,7 @@ public class GT_Item_Frames extends ItemBlock {
     public String getItemStackDisplayName(ItemStack aStack) {
         String aName = super.getItemStackDisplayName(aStack);
         if (this.block() instanceof GT_Block_FrameBox) {
-            aName = Materials.getLocalizedNameForItem(aName, aStack.getItemDamage() % 1000);
+            aName = Materials.getLocalizedNameForItem(aName, aStack.getItemDamage());
         }
         return aName;
     }
