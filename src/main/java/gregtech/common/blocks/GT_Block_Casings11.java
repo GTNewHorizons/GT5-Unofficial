@@ -38,7 +38,7 @@ public class GT_Block_Casings11 extends GT_Block_Casings_Abstract {
 
     @Override
     public int getTextureIndex(int aMeta) {
-        return (16 << 7) | (aMeta + 48);
+        return (16 << 7) | (aMeta + 64);
     }
 
     @Override
