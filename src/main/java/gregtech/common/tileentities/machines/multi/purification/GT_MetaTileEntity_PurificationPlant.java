@@ -52,7 +52,6 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -117,8 +116,6 @@ public class GT_MetaTileEntity_PurificationPlant
         .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 5))
         // Tinted Industrial Glass
         .addElement('D', ofBlockAnyMeta(GregTech_API.sBlockTintedGlass, 0))
-        // Door. Note that this behaves weirdly with creative autoplace, but should be fine in survival.
-        .addElement('E', lazy(t -> ofBlock(GameRegistry.findBlock("IC2", "blockDoorAlloy"), 0)))
         .addElement('F', ofBlock(Blocks.water, 0))
         .addElement('G', ofFrame(Materials.Tungsten))
         // Hatch space

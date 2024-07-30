@@ -9,7 +9,7 @@ public class PurificationPlantStructureString {
         { " G   G ", " G   G ", " G   G ", " GGBGG ", "BCCCCCB", "C     C", "C     C", "C     C", "AAAAAAA" },
         { "  BBB  ", "  BBB  ", "  BBB  ", "  BBB  ", "BCCCCCB", "C     C", "D     C", "C     C", "AAAAAAA" },
         { "  BFB  ", "  BFB  ", "  BFB  ", "  BFB  ", "BCCCCCB", "C     C", "D     C", "C     C", "AAAAAAA" },
-        { "  BBB  ", "  BBB  ", "  BBB  ", "  BBB  ", "BCCCCCB", "C     C", "D     E", "C     E", "AAAAAAA" },
+        { "  BBB  ", "  BBB  ", "  BBB  ", "  BBB  ", "BCCCCCB", "C     C", "D      ", "C      ", "AAAAAAA" },
         { " G   G ", " G   G ", " G   G ", " G   G ", "BCCCCCB", "C     C", "C     C", "C     C", "AAAAAAA" },
         { "       ", "       ", "       ", "       ", "BBBBBBB", "BCCCCCB", "BCDDDCB", "BCCCCCB", "AAAAAAA" } };
 }
