@@ -33,7 +33,7 @@ public class GT_Block_FrameBox extends Block {
     private static final String DOT_TOOLTIP = ".tooltip";
 
     public GT_Block_FrameBox() {
-        super(Material.rock);
+        super(Material.glass);
         this.mUnlocalizedName = "gt.blockframes";
         setBlockName(this.mUnlocalizedName);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Any Sub Block of this one");
@@ -86,6 +86,16 @@ public class GT_Block_FrameBox extends Block {
             return super.getRenderType();
         }
         return GT_Renderer_Block.INSTANCE.mRenderID;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
+    public int getRenderBlockPass() {
+        return 1;
     }
 
     @Override

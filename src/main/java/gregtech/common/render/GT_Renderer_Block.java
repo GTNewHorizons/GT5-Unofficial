@@ -576,13 +576,13 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 aBlock.setBlockBoundsForItemRender();
                 aRenderer.setRenderBoundsFromBlock(aBlock);
                 // spotless:off
-            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-            // spotless:on
+                renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+                renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+                renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+                renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+                renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+                renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+                // spotless:on
             }
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
 
@@ -726,6 +726,19 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         RenderBlocks aRenderer) {
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
         aRenderer.useInventoryTint = false;
+
+        if (aBlock instanceof GT_Block_FrameBox) {
+            int meta = aWorld.getBlockMetadata(aX, aY, aZ);
+            ITexture[] texture = ((GT_Block_FrameBox) aBlock).getTexture(meta);
+            textureArray[0] = texture;
+            textureArray[1] = texture;
+            textureArray[2] = texture;
+            textureArray[3] = texture;
+            textureArray[4] = texture;
+            textureArray[5] = texture;
+            renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
+            return true;
+        }
 
         final TileEntity tileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tileEntity == null) return false;
