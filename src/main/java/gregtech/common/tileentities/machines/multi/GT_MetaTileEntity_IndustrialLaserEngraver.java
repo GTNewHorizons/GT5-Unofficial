@@ -31,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -102,7 +101,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             's',
             buildHatchAdder(GT_MetaTileEntity_IndustrialLaserEngraver.class)
                 .adder(GT_MetaTileEntity_IndustrialLaserEngraver::addLaserSource)
-                .hatchClass(GT_MetaTileEntity_Hatch_EnergyTunnel.class)
+                .hatchClass(GT_MetaTileEntity_Hatch_DynamoTunnel.class)
                 .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(1))
                 .dot(3)
                 .build())
@@ -267,7 +266,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             .addInfo("Use wire cutter to toggle realism mode if you hate angled lasers")
             .addInfo(AuthorFourIsTheNumber)
             .addSeparator()
-            .beginStructureBlock(5, 5, 5, true)
+            .beginStructureBlock(5, 5, 5, false)
             .addController("Front Center")
             .addCasingInfoMin("Laser Containment Casing", 45, false)
             .addCasingInfoExactly("Tungstensteel Frame Box", 9, false)
