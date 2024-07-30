@@ -82,8 +82,8 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType())
             .addInfo("Factory Grade Advanced Vacuum Freezer")
-            .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 4")
-            .addInfo("Consumes 20L of " + mCryoFuelName + "/s during operation")
+            .addInfo("Speed: +120% | EU Usage: 90% | Parallel: 8")
+            .addInfo("Consumes 10L of " + mCryoFuelName + "/s during operation")
             .addInfo("Constructed exactly the same as a normal Vacuum Freezer")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
@@ -201,13 +201,14 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2F)
+        return new ProcessingLogic().setSpeedBonus(1F / 2.2F)
+            .setEuModifier(0.9F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return 4;
+        return 8;
     }
 
     @Override
@@ -250,7 +251,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
                             this.causeMaintenanceIssue();
                             this.stopMachine(
                                 ShutDownReasonRegistry
-                                    .outOfFluid(Objects.requireNonNull(FluidUtils.getFluidStack("cryotheum", 20))));
+                                    .outOfFluid(Objects.requireNonNull(FluidUtils.getFluidStack("cryotheum", 10))));
                             mGraceTimer = 2;
                         }
                     }
