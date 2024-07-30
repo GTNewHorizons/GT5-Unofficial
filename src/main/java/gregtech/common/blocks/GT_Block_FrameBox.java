@@ -20,7 +20,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.render.GT_Renderer_Block;
 
 public class GT_Block_FrameBox extends Block {
 
@@ -31,8 +30,6 @@ public class GT_Block_FrameBox extends Block {
 
     public GT_Block_FrameBox() {
         super(Material.rock);
-
-        this.isBlockContainer = true;
         this.mUnlocalizedName = "gt.blockframes";
         setBlockName(this.mUnlocalizedName);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Any Sub Block of this one");
@@ -58,7 +55,7 @@ public class GT_Block_FrameBox extends Block {
         return switch (aMaterial.mName) {
             case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
             case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
-            default -> "%material" + OrePrefixes.ore.mLocalizedMaterialPost;
+            default -> "%material" + " Frame Box";
         };
     }
 
@@ -81,10 +78,7 @@ public class GT_Block_FrameBox extends Block {
 
     @Override
     public int getRenderType() {
-        if (GT_Renderer_Block.INSTANCE == null) {
-            return super.getRenderType();
-        }
-        return GT_Renderer_Block.INSTANCE.mRenderID;
+        return 1;
     }
 
     @Override
