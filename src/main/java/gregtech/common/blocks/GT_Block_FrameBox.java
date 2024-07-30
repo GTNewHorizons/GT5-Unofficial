@@ -120,7 +120,7 @@ public class GT_Block_FrameBox extends BlockContainer {
             if (baseTileEntity.getMetaTileEntity() == null) {
                 createFrame(worldIn, x, y, z, baseTileEntity);
             }
-            return baseTileEntity.onRightclick(player, direction, x, y, z);
+            return baseTileEntity.onRightclick(player, direction, subX, subY, subZ);
         }
 
         // If there was no TileEntity yet, we need to check if the player was holding a cover item and if so
@@ -128,7 +128,7 @@ public class GT_Block_FrameBox extends BlockContainer {
         ItemStack item = player.getHeldItem();
         if (isCover(item)) {
             BaseMetaPipeEntity newTileEntity = spawnFrameEntity(worldIn, x, y, z);
-            newTileEntity.setCoverItemAtSide(ForgeDirection.UP, item);
+            newTileEntity.setCoverItemAtSide(direction, item);
             return true;
         }
 
