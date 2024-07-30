@@ -98,7 +98,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
             .addInfo("Provide compost to boost production by one tier")
             .addInfo("Does not require power or maintenance")
             .addInfo("All Machine Casings must be the same tier, this dictates machine speed.")
-            .addInfo("All Buses/Hatches must, at least, match the tier of the Casings")
+            .addInfo("Requires one Input Hatch that matches the tier of the Casings")
             .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock.")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
