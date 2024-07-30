@@ -146,6 +146,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.HULL_WROUGHT_IRON;
 import static gregtech.api.enums.MetaTileEntityIDs.HULL_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.IMPLOSION_COMPRESSOR_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_APIARY;
+import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_COMPRESSOR_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_HV;
@@ -459,6 +460,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialCompressor;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.GT_Mod;
@@ -1045,9 +1047,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR_CONTROLLER.ID,
                 "multimachine.electromagneticseparator",
                 "Magnetic Flux Exhibitor").getStackForm(1));
-
         ItemList.Machine_Multi_Canner.set(
             new GT_MetaTileEntity_MultiCanner(MULTI_CANNER_CONTROLLER.ID, "multimachine.canner", "TurboCan Pro")
+                .getStackForm(1));
+        ItemList.Machine_Multi_IndustrialCompressor.set(
+            new GT_MetaTileEntity_IndustrialCompressor(INDUSTRIAL_COMPRESSOR_CONTROLLER.ID, "multimachine.compressor", "Big Compressor")
                 .getStackForm(1));
     }
 

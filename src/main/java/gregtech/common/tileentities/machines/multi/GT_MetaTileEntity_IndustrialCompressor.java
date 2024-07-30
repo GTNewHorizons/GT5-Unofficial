@@ -9,7 +9,15 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -31,6 +39,8 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings2;
 
+import java.util.List;
+
 public class GT_MetaTileEntity_IndustrialCompressor
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IndustrialCompressor> implements ISurvivalConstructable {
 
@@ -41,7 +51,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
         .<GT_MetaTileEntity_IndustrialCompressor>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            (transpose(
+            (
                 new String[][]{{
                     "AAA",
                     "A~A",
@@ -54,27 +64,27 @@ public class GT_MetaTileEntity_IndustrialCompressor
                     "AAA",
                     "AAA",
                     "AAA"
-                }})))
+                }}))
         .addShape(
             STRUCTURE_PIECE_HIP,
-            (transpose(
+            (
                 new String[][]{{
                     " AA",
                     "  A",
                     " AA",
                     "AA ",
                     " AA"
-                }})))
+                }}))
         .addShape(
             STRUCTURE_PIECE_BLACKHOLE,
-            (transpose(
+            (
                 new String[][]{{
                     "AA ",
                     " A ",
                     " A ",
                     " A ",
                     "AAA"
-                }})))
+                }}))
         .addElement(
             'A',
             buildHatchAdder(GT_MetaTileEntity_IndustrialCompressor.class)
@@ -173,13 +183,21 @@ public class GT_MetaTileEntity_IndustrialCompressor
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 2, 2);
+        switch (tier) {
+            case 1 -> buildPiece(STRUCTURE_PIECE_HIP, stackSize, hintsOnly, 4, 3, -1);
+            case 2 -> buildPiece(STRUCTURE_PIECE_BLACKHOLE, stackSize, hintsOnly, -4, 3, -1);
+            default -> buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 1, 0);
+        }
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 2, 2, elementBudget, env, false, true);
+        switch (tier) {
+            case 1 -> {return survivialBuildPiece(STRUCTURE_PIECE_HIP, stackSize, 4, 3, -1, elementBudget, env, false, true);}
+            case 2 -> {return survivialBuildPiece(STRUCTURE_PIECE_BLACKHOLE, stackSize, -4,3, -1, elementBudget, env, false, true);}
+            default -> {return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);}
+        }
     }
 
     private int mCasingAmount;
@@ -193,14 +211,29 @@ public class GT_MetaTileEntity_IndustrialCompressor
         mCasingAmount = 0;
         mEnergyHatches.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 2, 2)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0)) return false;
         tier = 1;
-        if (checkPiece (STRUCTURE_PIECE_HIP, 4, 5, -1)) tier = 2;
-        if (checkPiece (STRUCTURE_PIECE_HIP, 4, 5, -1)) tier = 3;
+        if (checkPiece (STRUCTURE_PIECE_HIP, 4, 3, -1)) tier = 2;
+        if (checkPiece (STRUCTURE_PIECE_BLACKHOLE, -4, 3, -1)) tier = 3;
         if (mCasingAmount < 0) return false;
 
         // All checks passed!
         return true;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+                                int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("tier", tier);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add("Tier: " + tag.getInteger("tier"));
     }
 
     @Override
