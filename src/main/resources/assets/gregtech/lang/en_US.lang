@@ -545,6 +545,7 @@ GT5U.gui.text.pollution_fail=§cFailed to output the pollution.
 GT5U.gui.text.structure_incomplete=§7Shut down due to incomplete structure.
 GT5U.gui.text.no_repair=§7Shut down due to machine damage.
 GT5U.gui.text.no_machine_part=§7No correct machine part in controller slot.
+GT5U.gui.text.missing_item=§7Missing required item: §b%s§f
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 

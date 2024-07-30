@@ -686,7 +686,8 @@ public enum MetaTileEntityIDs {
     sofc2(13102),
     tfft(13104),
     lsc(13106),
-    tfftHatch(13109);
+    tfftHatch(13109),
+    WORMHOLE_GENERATOR_CONTROLLER(13115);
 
     public final int ID;
 
