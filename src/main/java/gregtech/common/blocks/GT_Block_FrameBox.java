@@ -4,9 +4,9 @@ import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -37,9 +37,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_Renderer_Block;
 
 // TODO:
-// - Proper name in WAILA
 // - Mining level/block breaking with wrench
-// - Drop correct frame on breaking instead of generic .0.name
 // - Colen's postea thing to replace old frames with new ones
 // - Save TE/cover data on world reload!
 
@@ -49,6 +47,10 @@ public class GT_Block_FrameBox extends BlockContainer {
 
     private static final String DOT_NAME = ".name";
     private static final String DOT_TOOLTIP = ".tooltip";
+
+    // We need to keep around a temporary TE to preserve this TE after breaking the block, so we can
+    // properly call getDrops() on it
+    private static final ThreadLocal<IGregTechTileEntity> mTemporaryTileEntity = new ThreadLocal<>();
 
     public GT_Block_FrameBox() {
         super(Material.glass);
@@ -135,6 +137,7 @@ public class GT_Block_FrameBox extends BlockContainer {
         // spawn a new frame box to apply the cover to
         ItemStack item = player.getHeldItem();
         if (isCover(item)) {
+            // TODO: consume item
             BaseMetaPipeEntity newTileEntity = spawnFrameEntity(worldIn, x, y, z);
             newTileEntity.setCoverItemAtSide(direction, item);
             return true;
@@ -206,14 +209,39 @@ public class GT_Block_FrameBox extends BlockContainer {
     }
 
     @Override
+    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetadata) {
+        GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity gtTE) {
+            gtTE.onBlockDestroyed();
+            mTemporaryTileEntity.set(gtTE);
+        }
+        super.breakBlock(aWorld, aX, aY, aZ, aBlock, aMetadata);
+        aWorld.removeTileEntity(aX, aY, aZ);
+    }
+
+    @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         // If there is a valid GT TileEntity here, return its drops.
         // Otherwise, return the regular frame block as drop
-        final TileEntity te = world.getTileEntity(x, y, z);
-        if (te instanceof IGregTechTileEntity gtTE) {
+        final TileEntity tTileEntity = world.getTileEntity(x, y, z);
+        if (tTileEntity instanceof IGregTechTileEntity gtTE) {
             return gtTE.getDrops();
         }
-        return new ArrayList<>(Collections.singletonList(getStackForm(1, metadata)));
+        // Otherwise find if temporarily stored TE, if there was one
+        final IGregTechTileEntity tempTe = mTemporaryTileEntity.get();
+        ArrayList<ItemStack> drops = new ArrayList<>();
+        drops.add(getStackForm(1, metadata));
+        // If there is one, grab all attached covers and drop them
+        if (tempTe != null) {
+            for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+                ItemStack cover = tempTe.getCoverItemAtSide(direction);
+                if (cover != null) drops.add(cover);
+            }
+        }
+        // Make sure to clear the temporary TE
+        mTemporaryTileEntity.remove();
+        return drops;
     }
 
     @Override
