@@ -13,7 +13,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.world.BlockEvent;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -27,11 +29,12 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_Renderer_Block;
 
 // TODO:
-// - Render covers
+// - Proper name in WAILA
 // - Access check
 // - Mining level/block breaking with wrench
 // - Drop correct frame on breaking instead of generic .0.name
@@ -109,6 +112,40 @@ public class GT_Block_FrameBox extends BlockContainer {
     @Override
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {
+
+        if (worldIn.isRemote || player == null) return false;
+        // Do permission check
+        if (!worldIn.canMineBlock(player, x, y, z)) {
+            GT_Log.ore.printf(
+                "Player %s tried to apply cover to frame box @%d,%d,%d (dim %d), denied - spawn protection.",
+                player,
+                x,
+                y,
+                z,
+                worldIn.provider.dimensionId);
+            return false;
+        }
+
+        // Send a fake block break event to test permissions further
+        BlockEvent.BreakEvent fakeBreakEvent = new BlockEvent.BreakEvent(
+            x,
+            y,
+            z,
+            worldIn,
+            this,
+            worldIn.getBlockMetadata(x, y, z),
+            player);
+        if (MinecraftForge.EVENT_BUS.post(fakeBreakEvent)) {
+            GT_Log.ore.printf(
+                "Player %s tried to apply cover to frame box @%d,%d,%d (dim %d), denied - spawn protection.",
+                player,
+                x,
+                y,
+                z,
+                worldIn.provider.dimensionId);
+            return false;
+        }
+
         // Get ForgeDirection from side identifier.
         ForgeDirection direction = ForgeDirection.getOrientation(side);
         // If this block already holds a TE, just forward the call
@@ -167,7 +204,8 @@ public class GT_Block_FrameBox extends BlockContainer {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        // TODO: Properly apply color of the frame here as well
+        // This doesn't apply the frame color so AE2 facades look bad, but it renders fine in inventory and in world.
+        // It's probably fine, who makes facades out of frame boxes anyway.
         Materials material = GregTech_API.sGeneratedMaterials[meta];
         return material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon();
     }
