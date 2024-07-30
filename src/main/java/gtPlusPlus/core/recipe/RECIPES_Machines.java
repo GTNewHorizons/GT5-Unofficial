@@ -2678,9 +2678,9 @@ public class RECIPES_Machines {
 
         if (true) {
             // Advanced Vacuum Freezer
-            ItemStack plate = ALLOY.HG1223.getPlateDouble(1);
+            ItemStack plate = ALLOY.LEAGRISIUM.getPlateDouble(1);
             ItemStack gear = ALLOY.INCOLOY_MA956.getGear(1);
-            ItemStack frame = ALLOY.LAFIUM.getFrameBox(1);
+            ItemStack frame = ALLOY.NITINOL_60.getFrameBox(1);
             ItemStack cell1 = ItemList.Reactor_Coolant_He_6.get(1);
             ItemStack cell2 = ItemList.Reactor_Coolant_NaK_6.get(1);
 
