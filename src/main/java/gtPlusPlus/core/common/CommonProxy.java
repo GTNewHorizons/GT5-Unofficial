@@ -6,14 +6,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
+import baubles.common.container.InventoryBaubles;
+import baubles.common.lib.PlayerHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Mods;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
@@ -30,6 +35,7 @@ import gtPlusPlus.core.handler.events.EntityDeathHandler;
 import gtPlusPlus.core.handler.events.GeneralTooltipEventHandler;
 import gtPlusPlus.core.handler.events.PlayerSleepEventHandler;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.item.bauble.BaseBauble;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.tileentities.ModTileEntities;
@@ -203,5 +209,40 @@ public class CommonProxy {
      */
     public EntityPlayer getPlayerEntity(MessageContext ctx) {
         return ctx.getServerHandler().playerEntity;
+    }
+
+    @SuppressWarnings("unused") // used by the event bus
+    @SubscribeEvent
+    public void onPlayerAttacked(LivingAttackEvent event) {
+        if (Mods.Baubles.isModLoaded()) {
+            BaubleAttackHandler.run(event);
+        }
+    }
+
+    // Prevent class loading errors if Baubles are missing
+    private static final class BaubleAttackHandler {
+
+        public static void run(LivingAttackEvent event) {
+            if (!(event.entityLiving instanceof EntityPlayer player)) {
+                return;
+            }
+            InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
+            if (baubles == null) {
+                return;
+            }
+            final ItemStack bauble1 = baubles.getStackInSlot(1);
+            if (bauble1 != null && bauble1.getItem() instanceof BaseBauble gtBauble
+                && gtBauble.getDamageNegations()
+                    .contains(event.source.damageType)) {
+                event.setCanceled(true);
+                return;
+            }
+            final ItemStack bauble2 = baubles.getStackInSlot(2);
+            if (bauble2 != null && bauble2.getItem() instanceof BaseBauble gtBauble
+                && gtBauble.getDamageNegations()
+                    .contains(event.source.damageType)) {
+                event.setCanceled(true);
+            }
+        }
     }
 }
