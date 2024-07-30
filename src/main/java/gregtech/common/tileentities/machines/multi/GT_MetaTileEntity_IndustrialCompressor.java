@@ -9,20 +9,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -32,7 +19,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -44,24 +30,51 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings2;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_IndustrialCompressor
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IndustrialCompressor> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_HIP = "hip";
+    private static final String STRUCTURE_PIECE_BLACKHOLE = "blackhole";
     private static final IStructureDefinition<GT_MetaTileEntity_IndustrialCompressor> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_IndustrialCompressor>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             (transpose(
-                new String[][] { { "  AAA  ", " AAAAA ", "AAAAAAA", "AAAAAAA", "AAAAAAA", " AAAAA ", "  AAA  " },
-                    { "       ", "  B B  ", " BAAAB ", "  A A  ", " BAAAB ", "  B B  ", "       " },
-                    { "       ", "  B B  ", " BA~AB ", "  A A  ", " BAAAB ", "  B B  ", "       " },
-                    { "       ", "  B B  ", " BAAAB ", "  A A  ", " BAAAB ", "  B B  ", "       " },
-                    { "  AAA  ", " AAAAA ", "AAAAAAA", "AAAAAAA", "AAAAAAA", " AAAAA ", "  AAA  " } })))
+                new String[][]{{
+                    "AAA",
+                    "A~A",
+                    "AAA"
+                },{
+                    "AAA",
+                    "A A",
+                    "AAA"
+                },{
+                    "AAA",
+                    "AAA",
+                    "AAA"
+                }})))
+        .addShape(
+            STRUCTURE_PIECE_HIP,
+            (transpose(
+                new String[][]{{
+                    " AA",
+                    "  A",
+                    " AA",
+                    "AA ",
+                    " AA"
+                }})))
+        .addShape(
+            STRUCTURE_PIECE_BLACKHOLE,
+            (transpose(
+                new String[][]{{
+                    "AA ",
+                    " A ",
+                    " A ",
+                    " A ",
+                    "AAA"
+                }})))
         .addElement(
             'A',
             buildHatchAdder(GT_MetaTileEntity_IndustrialCompressor.class)
@@ -72,8 +85,9 @@ public class GT_MetaTileEntity_IndustrialCompressor
                     onElementPass(
                         GT_MetaTileEntity_IndustrialCompressor::onCasingAdded,
                         ofBlock(GregTech_API.sBlockCasings2, 0))))
-        .addElement('B', ofBlock(GregTech_API.sBlockCasings2, 13))
         .build();
+
+    private int tier = 0;
 
     public GT_MetaTileEntity_IndustrialCompressor(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -140,18 +154,13 @@ public class GT_MetaTileEntity_IndustrialCompressor
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Canner/Fluid Canner")
-            .addInfo("Controller Block for the TurboCan Pro")
-            .addInfo("Use screwdriver to switch mode")
-            .addInfo("200% the speed of single block machines of the same voltage")
-            .addInfo("Gains 8 parallels per voltage tier")
-            .addInfo(EnumChatFormatting.BLUE + "It's uncanny!")
+        tt.addMachineType("Compressor")
+            .addInfo("Controller Block for the Big Ol Compressor Fella")
             .addInfo(AuthorFourIsTheNumber)
             .addSeparator()
             .beginStructureBlock(7, 5, 7, true)
             .addController("Front Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 24, false)
             .addInputBus("Any Solid Steel Casing", 1)
             .addOutputBus("Any Solid Steel Casing", 1)
             .addInputHatch("Any Solid Steel Casing", 1)
@@ -185,7 +194,10 @@ public class GT_MetaTileEntity_IndustrialCompressor
         mEnergyHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 2, 2)) return false;
-        if (mCasingAmount < 85) return false;
+        tier = 1;
+        if (checkPiece (STRUCTURE_PIECE_HIP, 4, 5, -1)) tier = 2;
+        if (checkPiece (STRUCTURE_PIECE_HIP, 4, 5, -1)) tier = 3;
+        if (mCasingAmount < 0) return false;
 
         // All checks passed!
         return true;
