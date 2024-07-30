@@ -49,17 +49,17 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         }
     }
 
-    private static void enablePseudoTransparentColorInversion() {
+    public static void enablePseudoTransparentColorInversion() {
         GL11.glEnable(GL11.GL_COLOR_LOGIC_OP);
         GL11.glLogicOp(GL11.GL_OR_INVERTED);
     }
 
-    private static void enableOpaqueColorInversion() {
+    public static void enableOpaqueColorInversion() {
         GL11.glEnable(GL11.GL_COLOR_LOGIC_OP);
         GL11.glLogicOp(GL11.GL_COPY_INVERTED);
     }
 
-    private static void disableOpaqueColorInversion() {
+    public static void disableOpaqueColorInversion() {
         GL11.glDisable(GL11.GL_COLOR_LOGIC_OP);
     }
 }
