@@ -93,8 +93,8 @@ public class GT_ModHandler {
     public static final List<IRecipe> sSingleNonBlockDamagableRecipeList = new ArrayList<>(1000);
     private static final Map<String, ItemStack> sIC2ItemMap = new HashMap<>();
 
-    private static final List<IRecipe> sAllRecipeList = new ArrayList<>(5000),
-        sBufferRecipeList = new ArrayList<>(1000);
+    // public for bartworks
+    public static final List<IRecipe> sAllRecipeList = new ArrayList<>(5000), sBufferRecipeList = new ArrayList<>(1000);
     private static final List<ItemStack> delayedRemovalByOutput = new ArrayList<>();
     private static final List<InventoryCrafting> delayedRemovalByRecipe = new ArrayList<>();
 

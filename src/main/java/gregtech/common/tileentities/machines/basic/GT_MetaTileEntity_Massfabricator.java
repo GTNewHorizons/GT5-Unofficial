@@ -206,7 +206,7 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
         @Override
         public GT_OverclockCalculator createCalculator(GT_OverclockCalculator template, GT_Recipe recipe) {
             return super.createCalculator(template, recipe).setEUt(Ints.saturatedCast(V[tier] * amperage))
-                .setEUtIncreasePerOC(1)
+                .setEUtIncreasePerOC(2.0)
                 .limitOverclockCount(tier - 1)
                 .setOneTickDiscount(false);
         }

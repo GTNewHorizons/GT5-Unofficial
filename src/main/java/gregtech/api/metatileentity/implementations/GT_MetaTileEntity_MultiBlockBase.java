@@ -66,6 +66,7 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.fluid.IFluidStore;
+import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
@@ -160,6 +161,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected GT_SoundLoop activitySoundLoop;
 
     private long mLastWorkingTick = 0;
+    private static final int CHECK_INTERVAL = 100; // How often should we check for a new recipe on an idle machine?
+    private final int randomTickOffset = (int) (Math.random() * CHECK_INTERVAL + 1);
 
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
     protected static final byte PROCESS_START_SOUND_INDEX = 1;
@@ -526,7 +529,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         // Perform more frequent recipe change after the machine just shuts down.
         long timeElapsed = aTick - mLastWorkingTick;
 
-        if (timeElapsed >= 100) return aTick % 100 == 0;
+        if (timeElapsed >= CHECK_INTERVAL) return (aTick + randomTickOffset) % CHECK_INTERVAL == 0;
         // Batch mode should be a lot less aggressive at recipe checking
         if (!isBatchModeEnabled()) {
             return timeElapsed == 5 || timeElapsed == 12
@@ -1192,7 +1195,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(aEUt)
             .setEUt(V[tier] * mAmperage)
             .setDuration(aDuration)
-            .setDurationDecreasePerOC(perfectOC ? 2 : 1)
+            .setDurationDecreasePerOC(perfectOC ? 4.0 : 2.0)
             .calculate();
         mEUt = (int) calculator.getConsumption();
         mMaxProgresstime = calculator.getDuration();
@@ -1283,12 +1286,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public boolean addOutput(ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack)) return false;
         aStack = GT_Utility.copyOrNull(aStack);
-        for (GT_MetaTileEntity_Hatch_OutputBus tHatch : filterValidMTEs(mOutputBusses)) {
-            if (tHatch.storeAll(aStack)) {
-                return true;
-            }
+
+        final List<GT_MetaTileEntity_Hatch_OutputBus> filteredBuses = filterValidMTEs(mOutputBusses);
+        if (dumpItem(filteredBuses, aStack, true) || dumpItem(filteredBuses, aStack, false)) {
+            return true;
         }
+
         boolean outputSuccess = true;
+        // noinspection DataFlowIssue
         while (outputSuccess && aStack.stackSize > 0) {
             outputSuccess = false;
             ItemStack single = aStack.splitStack(1);
@@ -1300,6 +1305,21 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }
         return outputSuccess;
+    }
+
+    private boolean dumpItem(List<GT_MetaTileEntity_Hatch_OutputBus> outputBuses, ItemStack itemStack,
+        boolean restrictiveBusesOnly) {
+        for (GT_MetaTileEntity_Hatch_OutputBus outputBus : outputBuses) {
+            if (restrictiveBusesOnly && !outputBus.isLocked()) {
+                continue;
+            }
+
+            if (outputBus.storeAll(itemStack)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public boolean depleteInput(ItemStack aStack) {
@@ -1603,7 +1623,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
-            mSmartInputHatches.add(hatch);
+            // Only add them to be iterated if enabled for performance reasons
+            if (hatch.doFastRecipeCheck()) {
+                mSmartInputHatches.add(hatch);
+            }
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
             setHatchRecipeMap((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
@@ -2158,7 +2181,20 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             if (!(tBus instanceof GT_MetaTileEntity_Hatch_OutputBus_ME)) {
                 final IInventory tBusInv = tBus.getBaseMetaTileEntity();
                 for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
-                    ret.add(tBus.getStackInSlot(i));
+                    final ItemStack stackInSlot = tBus.getStackInSlot(i);
+
+                    if (stackInSlot == null && tBus instanceof IItemLockable lockable && lockable.isLocked()) {
+                        // getItemOutputSlots is only used to calculate free room for the purposes of parallels and
+                        // void protection. We can use a fake item stack here without creating weirdness in the output
+                        // bus' actual inventory.
+                        assert lockable.getLockedItem() != null;
+                        ItemStack fakeItemStack = lockable.getLockedItem()
+                            .copy();
+                        fakeItemStack.stackSize = 0;
+                        ret.add(fakeItemStack);
+                    } else {
+                        ret.add(stackInSlot);
+                    }
                 }
             }
         }
