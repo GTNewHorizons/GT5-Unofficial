@@ -727,9 +727,13 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
         aRenderer.useInventoryTint = false;
 
-        if (aBlock instanceof GT_Block_FrameBox) {
+        final TileEntity tileEntity = aWorld.getTileEntity(aX, aY, aZ);
+
+        // If this block does not have a TE, render it as a normal block.
+        // Otherwise, render the TE instead.
+        if (tileEntity == null && aBlock instanceof GT_Block_FrameBox frameBlock) {
             int meta = aWorld.getBlockMetadata(aX, aY, aZ);
-            ITexture[] texture = ((GT_Block_FrameBox) aBlock).getTexture(meta);
+            ITexture[] texture = frameBlock.getTexture(meta);
             textureArray[0] = texture;
             textureArray[1] = texture;
             textureArray[2] = texture;
@@ -740,8 +744,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             return true;
         }
 
-        final TileEntity tileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tileEntity == null) return false;
+
         if (tileEntity instanceof IGregTechTileEntity) {
             final IMetaTileEntity metaTileEntity;
             if ((metaTileEntity = ((IGregTechTileEntity) tileEntity).getMetaTileEntity()) != null

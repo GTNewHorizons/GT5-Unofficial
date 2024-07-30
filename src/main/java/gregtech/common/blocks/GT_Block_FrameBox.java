@@ -89,15 +89,19 @@ public class GT_Block_FrameBox extends BlockContainer {
         return GT_Utility.isStackInList(item, GregTech_API.sCovers.keySet());
     }
 
-    private BaseMetaPipeEntity spawnFrameEntity(World worldIn, int x, int y, int z) {
+    private void createFrame(World worldIn, int x, int y, int z, BaseMetaPipeEntity baseMte) {
         // Obtain metadata to grab proper material identifier
         int meta = worldIn.getBlockMetadata(x, y, z);
         Materials material = GregTech_API.sGeneratedMaterials[meta];
-        // Spawn a TE frame box at this location and destroy the old block, then apply the cover
-        BaseMetaPipeEntity newTileEntity = new BaseMetaPipeEntity();
         GT_MetaPipeEntity_Frame frame = new GT_MetaPipeEntity_Frame(getLocalizedName(material), material);
-        newTileEntity.setMetaTileEntity(frame);
-        frame.setBaseMetaTileEntity(newTileEntity);
+        baseMte.setMetaTileEntity(frame);
+        frame.setBaseMetaTileEntity(baseMte);
+    }
+
+    private BaseMetaPipeEntity spawnFrameEntity(World worldIn, int x, int y, int z) {
+        // Spawn a TE frame box at this location, then apply the cover
+        BaseMetaPipeEntity newTileEntity = new BaseMetaPipeEntity();
+        createFrame(worldIn, x, y, z, newTileEntity);
         worldIn.setTileEntity(x, y, z, newTileEntity);
         return newTileEntity;
     }
@@ -105,12 +109,17 @@ public class GT_Block_FrameBox extends BlockContainer {
     @Override
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {
-        // Get ForgeDirection from side identifier
+        // Get ForgeDirection from side identifier.
         ForgeDirection direction = ForgeDirection.getOrientation(side);
         // If this block already holds a TE, just forward the call
         TileEntity te = worldIn.getTileEntity(x, y, z);
         if (te != null) {
             BaseMetaPipeEntity baseTileEntity = (BaseMetaPipeEntity) te;
+            // If this baseTileEntity has no MetaTileEntity associated with it, we need to create it
+            // This happens on world load for some reason
+            if (baseTileEntity.getMetaTileEntity() == null) {
+                createFrame(worldIn, x, y, z, baseTileEntity);
+            }
             return baseTileEntity.onRightclick(player, direction, x, y, z);
         }
 
@@ -119,7 +128,7 @@ public class GT_Block_FrameBox extends BlockContainer {
         ItemStack item = player.getHeldItem();
         if (isCover(item)) {
             BaseMetaPipeEntity newTileEntity = spawnFrameEntity(worldIn, x, y, z);
-            newTileEntity.setCoverItemAtSide(direction, item);
+            newTileEntity.setCoverItemAtSide(ForgeDirection.UP, item);
             return true;
         }
 
