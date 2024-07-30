@@ -537,17 +537,20 @@ public class PlatinumSludgeOverHaul {
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(RutheniumTetroxideSollution.getFluidOrGas(800))
-            .fluidOutputs(HotRutheniumTetroxideSollution.getFluidOrGas(800))
+            .fluidOutputs(HotRutheniumTetroxideSollution.getFluidOrGas(1600))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
+            .noOptimize()
             .addTo(fluidHeaterRecipes);
 
+        //TODO: Remove from Oil Cracker?
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(17))
             .fluidInputs(RutheniumTetroxideSollution.getFluidOrGas(1000), GT_ModHandler.getSteam(1000))
             .fluidOutputs(HotRutheniumTetroxideSollution.getFluidOrGas(2000))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
+            .noOptimize()
             .addTo(crackingRecipes);
 
         GT_Values.RA.stdBuilder()
