@@ -1,6 +1,7 @@
 package gregtech.common.blocks;
 
 import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.List;
 
@@ -13,9 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.world.BlockEvent;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -29,17 +28,16 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_Renderer_Block;
 
 // TODO:
 // - Proper name in WAILA
-// - Access check
 // - Mining level/block breaking with wrench
 // - Drop correct frame on breaking instead of generic .0.name
 // - Crafting using new frames instead of old frames
 // - Colen's postea thing to replace old frames with new ones
+// - Save TE/cover data on world reload!
 
 public class GT_Block_FrameBox extends BlockContainer {
 
@@ -55,20 +53,23 @@ public class GT_Block_FrameBox extends BlockContainer {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Any Sub Block of this one");
         GameRegistry.registerBlock(this, GT_Item_Frames.class, getUnlocalizedName());
 
-        for (int i = 1; i < GregTech_API.sGeneratedMaterials.length; i++) {
-            if (GregTech_API.sGeneratedMaterials[i] != null) {
+        for (int meta = 1; meta < GregTech_API.sGeneratedMaterials.length; meta++) {
+            Materials material = GregTech_API.sGeneratedMaterials[meta];
+            if (material != null && (material.mTypes & 0x02) != 0) {
                 GT_LanguageManager.addStringLocalization(
-                    getUnlocalizedName() + "." + i + DOT_NAME,
-                    GT_LanguageManager.i18nPlaceholder ? getLocalizedNameFormat(GregTech_API.sGeneratedMaterials[i])
-                        : getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
+                    getUnlocalizedName() + "." + meta + DOT_NAME,
+                    GT_LanguageManager.i18nPlaceholder ? getLocalizedNameFormat(material)
+                        : getLocalizedName(GregTech_API.sGeneratedMaterials[meta]));
                 GT_LanguageManager.addStringLocalization(
-                    getUnlocalizedName() + "." + i + DOT_TOOLTIP,
-                    GregTech_API.sGeneratedMaterials[i].getToolTip());
+                    getUnlocalizedName() + "." + meta + DOT_TOOLTIP,
+                    GregTech_API.sGeneratedMaterials[meta].getToolTip());
             }
         }
+    }
 
-        // TODO: Register oredict for this frame item here, since we don't want to use the TE version for crafting
-
+    public ItemStack getStackForm(int amount, int meta) {
+        Item item = GameRegistry.findItem(GregTech.ID, getUnlocalizedName());
+        return new ItemStack(item, amount, meta);
     }
 
     public String getLocalizedNameFormat(Materials aMaterial) {
@@ -96,7 +97,7 @@ public class GT_Block_FrameBox extends BlockContainer {
         // Obtain metadata to grab proper material identifier
         int meta = worldIn.getBlockMetadata(x, y, z);
         Materials material = GregTech_API.sGeneratedMaterials[meta];
-        GT_MetaPipeEntity_Frame frame = new GT_MetaPipeEntity_Frame(getLocalizedName(material), material);
+        GT_MetaPipeEntity_Frame frame = new GT_MetaPipeEntity_Frame("GT_Frame_" + material, material);
         baseMte.setMetaTileEntity(frame);
         frame.setBaseMetaTileEntity(baseMte);
     }
@@ -112,40 +113,6 @@ public class GT_Block_FrameBox extends BlockContainer {
     @Override
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {
-
-        if (worldIn.isRemote || player == null) return false;
-        // Do permission check
-        if (!worldIn.canMineBlock(player, x, y, z)) {
-            GT_Log.ore.printf(
-                "Player %s tried to apply cover to frame box @%d,%d,%d (dim %d), denied - spawn protection.",
-                player,
-                x,
-                y,
-                z,
-                worldIn.provider.dimensionId);
-            return false;
-        }
-
-        // Send a fake block break event to test permissions further
-        BlockEvent.BreakEvent fakeBreakEvent = new BlockEvent.BreakEvent(
-            x,
-            y,
-            z,
-            worldIn,
-            this,
-            worldIn.getBlockMetadata(x, y, z),
-            player);
-        if (MinecraftForge.EVENT_BUS.post(fakeBreakEvent)) {
-            GT_Log.ore.printf(
-                "Player %s tried to apply cover to frame box @%d,%d,%d (dim %d), denied - spawn protection.",
-                player,
-                x,
-                y,
-                z,
-                worldIn.provider.dimensionId);
-            return false;
-        }
-
         // Get ForgeDirection from side identifier.
         ForgeDirection direction = ForgeDirection.getOrientation(side);
         // If this block already holds a TE, just forward the call
