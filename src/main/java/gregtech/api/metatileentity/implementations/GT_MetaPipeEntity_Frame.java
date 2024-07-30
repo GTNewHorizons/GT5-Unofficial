@@ -23,6 +23,8 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
     public GT_MetaPipeEntity_Frame(int aID, String aName, String aNameRegional, Materials aMaterial) {
         super(aID, aName, aNameRegional, 0);
         mMaterial = aMaterial;
+        // Hide TileEntity frame in NEI, since we have the block version now that should always be used
+        codechicken.nei.api.API.hideItem(this.getStackForm(1));
     }
 
     public GT_MetaPipeEntity_Frame(String aName, Materials aMaterial) {

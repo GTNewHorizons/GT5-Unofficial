@@ -29,17 +29,13 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_Renderer_Block;
-
-// TODO:
-// - Mining level/block breaking with wrench
-// - Colen's postea thing to replace old frames with new ones
-// - Save TE/cover data on world reload!
 
 public class GT_Block_FrameBox extends BlockContainer {
 
@@ -137,9 +133,8 @@ public class GT_Block_FrameBox extends BlockContainer {
         // spawn a new frame box to apply the cover to
         ItemStack item = player.getHeldItem();
         if (isCover(item)) {
-            // TODO: consume item
             BaseMetaPipeEntity newTileEntity = spawnFrameEntity(worldIn, x, y, z);
-            newTileEntity.setCoverItemAtSide(direction, item);
+            newTileEntity.onRightclick(player, direction, subX, subY, subZ);
             return true;
         }
 
@@ -210,25 +205,41 @@ public class GT_Block_FrameBox extends BlockContainer {
 
     @Override
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetadata) {
-        GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity gtTE) {
             gtTE.onBlockDestroyed();
             mTemporaryTileEntity.set(gtTE);
         }
         super.breakBlock(aWorld, aX, aY, aZ, aBlock, aMetadata);
-        aWorld.removeTileEntity(aX, aY, aZ);
+    }
+
+    @Override
+    public void onNeighborChange(IBlockAccess aWorld, int aX, int aY, int aZ, int aTileX, int aTileY, int aTileZ) {
+        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if ((tTileEntity instanceof BaseTileEntity)) {
+            ((BaseTileEntity) tTileEntity).onAdjacentBlockChange(aTileX, aTileY, aTileZ);
+        }
+    }
+
+    @Override
+    public void onNeighborBlockChange(World aWorld, int aX, int aY, int aZ, Block aBlock) {
+        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if ((tTileEntity instanceof BaseMetaPipeEntity)) {
+            ((BaseMetaPipeEntity) tTileEntity).onNeighborBlockChange(aX, aY, aZ);
+        }
+    }
+
+    @Override
+    public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
+        super.onBlockAdded(aWorld, aX, aY, aZ);
+        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
+            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        }
     }
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        // If there is a valid GT TileEntity here, return its drops.
-        // Otherwise, return the regular frame block as drop
-        final TileEntity tTileEntity = world.getTileEntity(x, y, z);
-        if (tTileEntity instanceof IGregTechTileEntity gtTE) {
-            return gtTE.getDrops();
-        }
-        // Otherwise find if temporarily stored TE, if there was one
+        // Find temporary TE if there was one
         final IGregTechTileEntity tempTe = mTemporaryTileEntity.get();
         ArrayList<ItemStack> drops = new ArrayList<>();
         drops.add(getStackForm(1, metadata));
@@ -242,6 +253,11 @@ public class GT_Block_FrameBox extends BlockContainer {
         // Make sure to clear the temporary TE
         mTemporaryTileEntity.remove();
         return drops;
+    }
+
+    @Override
+    public boolean canProvidePower() {
+        return true;
     }
 
     @Override
@@ -277,6 +293,7 @@ public class GT_Block_FrameBox extends BlockContainer {
         // This doesn't apply the frame color so AE2 facades look bad, but it renders fine in inventory and in world.
         // It's probably fine, who makes facades out of frame boxes anyway.
         Materials material = GregTech_API.sGeneratedMaterials[meta];
+        if (material == null) return null;
         return material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon();
     }
 
