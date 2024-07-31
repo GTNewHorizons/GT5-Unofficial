@@ -74,7 +74,6 @@ public class RecipeLoader_LFTR {
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(LFTR_OUTPUT_POWER, 32768 * 4)
-            .noOptimize()
             .addTo(liquidFluorineThoriumReactorRecipes);
 
         // LiFBeF2ZrF4UF4 - T2
@@ -88,7 +87,6 @@ public class RecipeLoader_LFTR {
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(LFTR_OUTPUT_POWER, 8192 * 4)
-            .noOptimize()
             .addTo(liquidFluorineThoriumReactorRecipes);
 
         // LiFBeF2ZrF4U235 - T1
@@ -102,7 +100,6 @@ public class RecipeLoader_LFTR {
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(LFTR_OUTPUT_POWER, 8192)
-            .noOptimize()
             .addTo(liquidFluorineThoriumReactorRecipes);
 
         // Sparging NEI Recipes

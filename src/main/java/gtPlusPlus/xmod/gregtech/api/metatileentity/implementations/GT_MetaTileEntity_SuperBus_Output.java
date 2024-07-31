@@ -7,6 +7,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import gregtech.api.gui.widgets.GT_PhantomItemButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -83,6 +84,7 @@ public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_O
     @Override
     public String[] getDescription() {
         String[] aDesc = new String[] { "Item Output for Multiblocks", "" + getSlots(this.mTier) + " Slots",
+            "Left click with data stick to save filter config", "Right click with data stick to load filter config",
             CORE.GT_Tooltip.get() };
         return aDesc;
     }
@@ -101,5 +103,11 @@ public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_O
         builder.widget(
             scrollable.setSize(18 * 4 + 4, 18 * 4)
                 .setPos(52, 7));
+
+        if (acceptsItemLock()) {
+            builder.widget(
+                new GT_PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
+                    .setBackground(GT_PhantomItemButton.FILTER_BACKGROUND));
+        }
     }
 }

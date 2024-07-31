@@ -9,21 +9,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
-import baubles.common.container.InventoryBaubles;
-import baubles.common.lib.PlayerHandler;
 import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 
 @Optional.InterfaceList(
@@ -41,9 +36,12 @@ public class BaseBauble extends Item implements IBauble {
 
     public BaseBauble(BaubleType type) {
         this.mThisBauble = type;
-        Utils.registerEvent(this);
         this.setMaxStackSize(1);
         this.setCreativeTab(AddToCreativeTab.tabMisc);
+    }
+
+    public List<String> getDamageNegations() {
+        return damageNegations;
     }
 
     @Override
@@ -53,14 +51,6 @@ public class BaseBauble extends Item implements IBauble {
             return super.getItemStackDisplayName(tItem).replaceAll(".name", "");
         }
         return GT_LanguageManager.getTranslation(key);
-    }
-
-    @SubscribeEvent
-    public void onPlayerAttacked(LivingAttackEvent event) {
-        if (event.entityLiving instanceof EntityPlayer player) {
-            if (getCorrectBauble(player) != null && damageNegations.contains(event.source.damageType))
-                event.setCanceled(true);
-        }
     }
 
     @Override
@@ -105,17 +95,6 @@ public class BaseBauble extends Item implements IBauble {
         attributes.clear();
         player.getAttributeMap()
             .removeAttributeModifiers(attributes);
-    }
-
-    public ItemStack getCorrectBauble(EntityPlayer player) {
-        InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
-        ItemStack stack1 = baubles.getStackInSlot(1);
-        ItemStack stack2 = baubles.getStackInSlot(2);
-        return isCorrectBauble(stack1) ? stack1 : isCorrectBauble(stack2) ? stack2 : null;
-    }
-
-    private boolean isCorrectBauble(ItemStack stack) {
-        return stack != null && (stack.getItem() == this);
     }
 
     @Override

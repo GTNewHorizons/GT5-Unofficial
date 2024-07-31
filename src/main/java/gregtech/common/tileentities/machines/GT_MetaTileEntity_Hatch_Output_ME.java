@@ -20,6 +20,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.glodblock.github.common.item.FCBaseItemCell;
+import com.glodblock.github.common.storage.IStorageFluidCell;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
@@ -136,8 +137,8 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
 
     private long getCacheCapacity() {
         ItemStack upgradeItemStack = mInventory[0];
-        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof FCBaseItemCell) {
-            return ((FCBaseItemCell) upgradeItemStack.getItem()).getBytes(upgradeItemStack) * 8;
+        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof IStorageFluidCell) {
+            return ((FCBaseItemCell) upgradeItemStack.getItem()).getBytes(upgradeItemStack) * 2048;
         }
         return baseCapacity;
     }
