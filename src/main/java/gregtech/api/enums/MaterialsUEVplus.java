@@ -614,6 +614,30 @@ public class MaterialsUEVplus {
         1,
         Dyes._NULL);
 
+        public static Materials Protomatter = new Materials(
+            146,
+            TextureSet.SET_FLUID,
+            1.0F,
+            0,
+            2,
+            16,
+            255,
+            255,
+            255,
+            0,
+            "Protomatter",
+            "Protomatter",
+            -1,
+            -1,
+            0,
+            1,
+            false,
+            true,
+            1,
+            1,
+            1,
+            Dyes._NULL);
+
     /**
      * called by Materials. Can be safely called multiple times. exists to allow Materials ensure this class is
      * initialized
