@@ -130,6 +130,16 @@ public final class RecipeMaps {
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Compressor.get(1)))
         .recipeConfigFile("compressor", FIRST_ITEM_INPUT)
         .build();
+    public static final RecipeMap<RecipeMapBackend> neutroniumCompressorRecipes = RecipeMapBuilder.of("gt.recipe.neutroniumcompressor")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .slotOverlays(
+            (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GT_UITextures.OVERLAY_SLOT_COMPRESSOR
+                : null)
+        .progressBar(GT_UITextures.PROGRESSBAR_COMPRESS)
+        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Compressor.get(1)))
+        .disableOptimize()
+        .build();
     public static final RecipeMap<RecipeMapBackend> extractorRecipes = RecipeMapBuilder.of("gt.recipe.extractor")
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
@@ -851,14 +861,6 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> benderRecipes = RecipeMapBuilder.of("gt.recipe.metalbender")
         .maxIO(2, 1, 0, 0)
         .minInputs(2, 0)
-        .slotOverlays(
-            (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GT_UITextures.OVERLAY_SLOT_BENDER : null)
-        .progressBar(GT_UITextures.PROGRESSBAR_BENDING)
-        .recipeConfigFile("bender", FIRST_ITEM_INPUT)
-        .build();
-    public static final RecipeMap<RecipeMapBackend> neutroniumCompressorRecipes = RecipeMapBuilder.of("gt.recipe.neutroniumcompressor")
-        .maxIO(1, 1, 0, 0)
-        .minInputs(1, 0)
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GT_UITextures.OVERLAY_SLOT_BENDER : null)
         .progressBar(GT_UITextures.PROGRESSBAR_BENDING)

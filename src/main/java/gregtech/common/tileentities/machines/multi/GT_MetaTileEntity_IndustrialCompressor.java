@@ -429,7 +429,7 @@ public class GT_MetaTileEntity_IndustrialCompressor extends
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.compressorRecipes;
+        return RecipeMaps.neutroniumCompressorRecipes;
     }
 
     @Override
