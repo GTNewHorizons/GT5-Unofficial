@@ -64,6 +64,7 @@ import gregtech.common.blocks.GT_Block_Casings9;
 import gregtech.common.blocks.GT_Block_Concretes;
 import gregtech.common.blocks.GT_Block_Drone;
 import gregtech.common.blocks.GT_Block_Granites;
+import gregtech.common.blocks.GT_Block_Laser;
 import gregtech.common.blocks.GT_Block_Machines;
 import gregtech.common.blocks.GT_Block_Metal;
 import gregtech.common.blocks.GT_Block_Ores;
@@ -84,6 +85,7 @@ import gregtech.common.items.GT_NeutronReflector_Item;
 import gregtech.common.items.GT_TierDrone;
 import gregtech.common.items.GT_VolumetricFlask;
 import gregtech.common.tileentities.render.TileDrone;
+import gregtech.common.tileentities.render.TileLaser;
 
 public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
@@ -546,6 +548,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockStones = new GT_Block_Stones();
         GregTech_API.sBlockOres1 = new GT_Block_Ores();
         GregTech_API.sDroneRender = new GT_Block_Drone();
+        GregTech_API.sLaserRender = new GT_Block_Laser();
         // meta ID order, DO NOT CHANGE ORDER
 
         GregTech_API.sBlockMetal1 = new GT_Block_Metal(
@@ -671,6 +674,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GT_Log.out.println("GT_Mod: Registering the DroneRender.");
         GameRegistry.registerTileEntity(TileDrone.class, "DroneRender");
+        GT_Log.out.println("GT_Mod: Registering the LaserRender.");
+        GameRegistry.registerTileEntity(TileLaser.class, "LaserRenderer");
 
         GT_Log.out.println("GT_Mod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");

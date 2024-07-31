@@ -147,6 +147,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.HULL_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.IMPLOSION_COMPRESSOR_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_APIARY;
 import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_LASER_ENGRAVER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_IV;
@@ -556,6 +557,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionCompu
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_HeatExchanger;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialElectromagneticSeparator;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialLaserEngraver;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IntegratedOreFactory;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Bronze;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Steel;
@@ -1051,6 +1053,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Machine_Multi_Canner.set(
             new GT_MetaTileEntity_MultiCanner(MULTI_CANNER_CONTROLLER.ID, "multimachine.canner", "TurboCan Pro")
                 .getStackForm(1));
+
+        ItemList.Machine_Multi_IndustrialLaserEngraver.set(
+            new GT_MetaTileEntity_IndustrialLaserEngraver(
+                INDUSTRIAL_LASER_ENGRAVER_CONTROLLER.ID,
+                "multimachine.engraver",
+                "High Energy Laser Emitter").getStackForm(1));
 
         ItemList.Machine_Multi_Lathe.set(
             new GT_MetaTileEntity_MultiLathe(
