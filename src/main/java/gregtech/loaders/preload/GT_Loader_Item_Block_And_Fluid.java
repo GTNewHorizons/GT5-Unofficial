@@ -1262,6 +1262,15 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Antimatter, 1L),
             ItemList.Cell_Empty.get(1L));
 
+        GT_FluidFactory.builder("Protomatter")
+        .withLocalizedName(MaterialsUEVplus.Protomatter.mLocalizedName)
+        .withStateAndTemperature(LIQUID, 0)
+        .buildAndRegister()
+        .configureMaterials(MaterialsUEVplus.Protomatter)
+        .registerBContainers(
+            GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Protomatter, 1L),
+            ItemList.Cell_Empty.get(1L));
+
         GT_FluidFactory.builder("fieryblood")
             .withLocalizedName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)

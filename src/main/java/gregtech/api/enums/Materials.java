@@ -420,6 +420,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      * Not possible to determine exact Components
      */
     public static Materials Antimatter;
+    public static Materials Protomatter;
     public static Materials AdvancedGlue;
     public static Materials BioFuel;
     public static Materials Biomass;

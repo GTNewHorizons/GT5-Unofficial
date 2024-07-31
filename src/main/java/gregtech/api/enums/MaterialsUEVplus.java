@@ -666,6 +666,7 @@ public class MaterialsUEVplus {
         Dyes._NULL);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public static Materials SixPhasedCopper = new Materials(
         147,
         TextureSet.SET_SHINY,
@@ -870,6 +871,32 @@ public class MaterialsUEVplus {
 
 =======
 >>>>>>> ef58e42a27 (Add antimatter)
+=======
+        public static Materials Protomatter = new Materials(
+            146,
+            TextureSet.SET_FLUID,
+            1.0F,
+            0,
+            2,
+            16,
+            255,
+            255,
+            255,
+            0,
+            "Protomatter",
+            "Protomatter",
+            -1,
+            -1,
+            0,
+            1,
+            false,
+            true,
+            1,
+            1,
+            1,
+            Dyes._NULL);
+
+>>>>>>> 6afb7f13f6 (Add protomatter, implement new structure and make it work)
     /**
      * called by Materials. Can be safely called multiple times. exists to allow Materials ensure this class is
      * initialized
