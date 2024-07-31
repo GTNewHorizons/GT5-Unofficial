@@ -1266,7 +1266,7 @@ public class AntimatterGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(mName, 3, 7, 0) && mMaintenanceHatches.size() == 1
+        return structureCheck_EM(mName, 17, 15, 3) && mMaintenanceHatches.size() == 1
             && mDynamoHatches.size() + eDynamoMulti.size() == 1;
     }
 
@@ -1303,8 +1303,9 @@ public class AntimatterGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase
             .addInfo("The structure is too complex!")
             .addInfo(BLUE_PRINT_INFO)
             .addSeparator()
-            .beginStructureBlock(7, 8, 7, true)
+            .beginStructureBlock(35, 31, 35, false)
             .addController("Front bottom")
+            .addInfo("No crashy please :3")
             .toolTipFinisher("Good Generator");
         return tt;
     }
@@ -1329,12 +1330,12 @@ public class AntimatterGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 3, 7, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(mName, stackSize, 17, 15, 3, elementBudget, env, false, true);
     }
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        structureBuild_EM(mName, 3, 7, 0, itemStack, hintsOnly);
+        structureBuild_EM(mName, 17, 15, 3, itemStack, hintsOnly);
     }
 
     public Block getCoilBlock() {
