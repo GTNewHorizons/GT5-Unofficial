@@ -916,7 +916,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_PurificationUnitParticleExtractor(
                 PURIFICATION_UNIT_PARTICLE_EXTRACTOR.ID,
                 "multimachine.purificationunitextractor",
-                "Nanoparticle Extraction Purification Unit").getStackForm(1L));
+                "Absolute Baryonic Perfection Purification Unit").getStackForm(1L));
         ItemList.Hatch_DegasifierControl.set(
             new GT_MetaTileEntity_Hatch_DegasifierControlHatch(
                 HATCH_DEGASIFIER_CONTROL.ID,

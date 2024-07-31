@@ -33,7 +33,8 @@ public class GT_Block_Glass1 extends GT_Block_Casings_Abstract {
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".1.name", "Electron-Permeable Neutronium Coated Glass");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Omni-Purpose Infinity Fused Glass");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Quark Containment Glass");
+        GT_LanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".3.name", "Non-Photonic Matter Exclusion Glass");
 
         ItemList.GlassPHResistant.set(new ItemStack(this, 1, 0));
         ItemList.GlassUVResistant.set(new ItemStack(this, 1, 1));

@@ -161,7 +161,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
      * Used to more easily grab a correct texture index from a block + meta.
      *
      * @param block Block to use as base. Must implement GT_Block_Casings_Abstract
-     * @param meta  Metadata of the block to pick the actual block/
+     * @param meta  Metadata of the block to pick the actual block
      * @return The correct index into the global texture atlas.
      */
     protected static int getTextureIndex(Block block, int meta) {

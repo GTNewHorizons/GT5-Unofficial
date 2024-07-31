@@ -41,8 +41,10 @@ public class GT_Block_Casings9 extends GT_Block_Casings_Abstract {
         GT_LanguageManager
             .addStringLocalization(getUnlocalizedName() + ".13.name", "High Energy Ultraviolet Emitter Casing");
         // placeholder name
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Quark Containment Pipe");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Quark Release Chamber");
+        GT_LanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".14.name", "Particle Beam Guidance Pipe Casing");
+        GT_LanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".15.name", "Femtometer-Calibrated Particle Beam Casing");
 
         ItemList.Casing_Pipe_Polybenzimidazole.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Vent_T2.set(new ItemStack(this, 1, 1));

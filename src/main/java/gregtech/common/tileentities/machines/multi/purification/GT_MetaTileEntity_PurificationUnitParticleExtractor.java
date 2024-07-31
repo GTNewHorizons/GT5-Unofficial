@@ -84,7 +84,7 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitParticleExtractor> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitParticleExtractor>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        // quark containment casing (placeholder name)
+        // Quark Exclusion Casing
         .addElement(
             'A',
             ofChain(
@@ -95,11 +95,11 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
                 ofBlock(GregTech_API.sBlockCasings10, 2)))
-        // Quark pipe block (placeholder name)
+        // Particle Beam Guidance Pipe Casing
         .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 14))
-        // Quark release chamber (placeholder name)
+        // Femtometer-Calibrated Particle Beam Casing
         .addElement('C', ofBlock(GregTech_API.sBlockCasings9, 15))
-        // Quark Containment Glass
+        // Non-Photonic Matter Exclusion Glass
         .addElement('D', ofBlock(GregTech_API.sBlockGlass1, 3))
         .addElement('E', ofFrame(Materials.Bedrockium))
         .build();
@@ -251,7 +251,7 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
                     + EnumChatFormatting.WHITE
                     + GT_Utility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the Quark Extractor Purification Unit.")
+            .addInfo("Controller block for the Absolute Baryonic Perfection Purification Unit.")
             .addInfo("Must be linked to a Purification Plant to work.")
             .addSeparator()
             .addInfo(
@@ -279,6 +279,22 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
                     + "Stabilised Baryonic Matter")
             .addInfo("At the end of the recipe, all incorrectly inserted catalysts are returned in the output bus.")
             .addSeparator()
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "The final stage of water purification goes beyond subatomic particles and identifies the smallest")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "possible imperfections within the baryons themselves. By correctly identifying which pairs of quark")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "flavors are required, the unit will activate the catalysts, stabilizing the errant particles.")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "This ultimately creates both Stabilised Baryonic Matter and, most importantly, absolutely perfectly purified water.")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(17, 17, 17, false)
             .toolTipFinisher("GregTech");
