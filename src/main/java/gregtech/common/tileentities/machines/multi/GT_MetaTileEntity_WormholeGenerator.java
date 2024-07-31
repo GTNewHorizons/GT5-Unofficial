@@ -703,6 +703,7 @@ public class GT_MetaTileEntity_WormholeGenerator extends
 
             if (mMaster == null && mSlave != null) {
                 mMaster = mSlave;
+                mSlave = null;
             }
         }
 
