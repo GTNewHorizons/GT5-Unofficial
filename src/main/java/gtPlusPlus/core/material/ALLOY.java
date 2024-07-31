@@ -90,7 +90,7 @@ public final class ALLOY {
         "Tumbaga", // Material Name
         MaterialState.SOLID, // State
         new short[] { 255, 178, 15, 0 }, // Material Colour
-        -1,
+        1300,
         -1,
         -1,
         -1,
@@ -103,7 +103,7 @@ public final class ALLOY {
         "Potin", // Material Name
         MaterialState.SOLID, // State
         new short[] { 201, 151, 129, 0 }, // Material Colour
-        -1,
+        1300,
         -1,
         -1,
         -1,

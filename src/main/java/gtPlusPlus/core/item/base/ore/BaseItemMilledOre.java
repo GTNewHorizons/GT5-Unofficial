@@ -35,28 +35,24 @@ public class BaseItemMilledOre extends BaseOreComponent {
             .itemOutputs(milledStackOres1)
             .duration(2 * MINUTES)
             .eut(materialEU)
-            .noOptimize()
             .addTo(millingRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(11), oreStack, millingBall_Soapstone)
             .itemOutputs(milledStackOres2)
             .duration(2 * MINUTES + 30 * SECONDS)
             .eut(materialEU)
-            .noOptimize()
             .addTo(millingRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(10), crushedStack, millingBall_Alumina)
             .itemOutputs(milledStackCrushed1)
             .duration(1 * MINUTES)
             .eut(materialEU)
-            .noOptimize()
             .addTo(millingRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(11), crushedStack, millingBall_Soapstone)
             .itemOutputs(milledStackCrushed2)
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(materialEU)
-            .noOptimize()
             .addTo(millingRecipes);
     }
 

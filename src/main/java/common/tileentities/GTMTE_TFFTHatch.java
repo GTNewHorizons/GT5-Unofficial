@@ -154,7 +154,7 @@ public class GTMTE_TFFTHatch extends GT_MetaTileEntity_Hatch implements IMEMonit
 
     @Override
     @Optional.Method(modid = "appliedenergistics2")
-    public IItemList<IAEFluidStack> getAvailableItems(IItemList out) {
+    public IItemList<IAEFluidStack> getAvailableItems(IItemList out, int iteration) {
         if (controller != null) {
             for (int i = 0; i < GTMTE_TFFT.MAX_DISTINCT_FLUIDS; i++) {
                 if (!controller.STORE[i].isEmpty()) {

@@ -74,7 +74,7 @@ public class CokeAndPyrolyseOven {
     private static void convertPyroToCokeOven() {
         int aCount = 0;
         for (GT_Recipe g : RecipeMaps.pyrolyseRecipes.getAllRecipes()) {
-            if (AddGregtechRecipe.importPyroRecipe(g)) {
+            if (AddGregtechRecipe.importPyroRecipe(g.copy())) {
                 aCount++;
             }
         }
