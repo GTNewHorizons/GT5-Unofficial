@@ -856,6 +856,14 @@ public final class RecipeMaps {
         .progressBar(GT_UITextures.PROGRESSBAR_BENDING)
         .recipeConfigFile("bender", FIRST_ITEM_INPUT)
         .build();
+    public static final RecipeMap<RecipeMapBackend> neutroniumCompressorRecipes = RecipeMapBuilder.of("gt.recipe.neutroniumcompressor")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .slotOverlays(
+            (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GT_UITextures.OVERLAY_SLOT_BENDER : null)
+        .progressBar(GT_UITextures.PROGRESSBAR_BENDING)
+        .recipeConfigFile("bender", FIRST_ITEM_INPUT)
+        .build();
     public static final RecipeMap<RecipeMapBackend> alloySmelterRecipes = RecipeMapBuilder.of("gt.recipe.alloysmelter")
         .maxIO(2, 1, 0, 0)
         .minInputs(2, 0)
