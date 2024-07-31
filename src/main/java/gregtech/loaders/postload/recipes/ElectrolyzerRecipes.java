@@ -297,5 +297,17 @@ public class ElectrolyzerRecipes implements Runnable {
             .eut(30)
             .addTo(electrolyzerRecipes);
 
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.PhosphoricAcid, 1L),
+                ItemList.Cell_Empty.get(6L))
+            .itemOutputs(
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 3L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 4L))
+            .duration(27 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(electrolyzerRecipes);
+
     }
 }
