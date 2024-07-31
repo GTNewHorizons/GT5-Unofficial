@@ -85,7 +85,7 @@ public class GregtechMetaTileEntity_SteamWaterPump
     private static final int BASE_WATER_PER_SECOND = 1_500;
     private static final int PROGRESSION_TIME_TICKS = 20;
 
-    private static final int BASE_STEAM_PER_SECOND = 400;
+    private static final int BASE_STEAM_PER_SECOND = 1_500;
 
     private int mSetTier = 1;
 
@@ -236,17 +236,17 @@ public class GregtechMetaTileEntity_SteamWaterPump
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Water Pump")
-            .addInfo("Generates water based on biome humidity")
+            .addInfo("Pumps Water based on humidity")
             .addInfo("Has 2 tiers: Bronze and Steel")
-            .addInfo("Steel tier extracts 2x water")
+            .addInfo("Steel tier extracts 2x Water")
             .addInfo(
                 EnumChatFormatting.AQUA + "Generates: "
                     + EnumChatFormatting.WHITE
-                    + " humidity * Tier * "
+                    + " humidity * tier * "
                     + BASE_WATER_PER_SECOND
                     + " L/s"
                     + EnumChatFormatting.AQUA
-                    + " of water."
+                    + " of Water."
                     + EnumChatFormatting.RESET)
             .addInfo(
                 EnumChatFormatting.RED + "Consumes: "
@@ -254,7 +254,7 @@ public class GregtechMetaTileEntity_SteamWaterPump
                     + BASE_STEAM_PER_SECOND
                     + " L/s"
                     + EnumChatFormatting.RED
-                    + " of steam."
+                    + " of Steam."
                     + EnumChatFormatting.RESET)
             .addSeparator()
             .beginStructureBlock(3, 3, 5, false)

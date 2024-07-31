@@ -153,7 +153,7 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     }
 
     @Override
-    public IItemList<IAEFluidStack> getAvailableItems(IItemList<IAEFluidStack> out) {
+    public IItemList<IAEFluidStack> getAvailableItems(IItemList<IAEFluidStack> out, int iteration) {
         if (host == null || host.getBaseMetaTileEntity() == null
             || !host.getBaseMetaTileEntity()
                 .isActive())
