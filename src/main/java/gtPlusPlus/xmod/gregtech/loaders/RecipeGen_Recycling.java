@@ -140,11 +140,11 @@ public class RecipeGen_Recycling implements Runnable {
             if (ItemUtils.checkForInvalidItems(tempStack)) {
                 int aFluidAmount = (int) ((144 * validPrefix.getKey().mMaterialAmount) / (M * tempStack.stackSize));
                 int aDuration = (int) Math.max(1, (24 * validPrefix.getKey().mMaterialAmount) / M);
-                FluidStack fluidInput = material.getFluidStack(aFluidAmount);
-                if (fluidInput != null) {
+                FluidStack fluidOutput = material.getFluidStack(aFluidAmount);
+                if (fluidOutput != null) {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(tempStack)
-                        .fluidOutputs()
+                        .fluidOutputs(fluidOutput)
                         .duration(aDuration)
                         .eut(material.vVoltageMultiplier)
                         .addTo(fluidExtractionRecipes);

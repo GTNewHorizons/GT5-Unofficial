@@ -341,15 +341,8 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     }
 
     @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        setMachineMode(nextMachineMode());
-        String mModeString;
-        switch (machineMode) {
-            case MACHINEMODE_METAL -> mModeString = "Metal";
-            case MACHINEMODE_FLUID -> mModeString = "Fluid";
-            default -> mModeString = "Misc";
-        }
-        PlayerUtils.messagePlayer(aPlayer, "Multi-Machine is now in " + mModeString + " mode.");
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_MULTI_MACHINE.mode." + machineMode);
     }
 
     @Override
@@ -520,6 +513,14 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     @Override
     public boolean supportsMachineModeSwitch() {
         return true;
+    }
+
+    @Override
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        setMachineMode(nextMachineMode());
+        PlayerUtils.messagePlayer(
+            aPlayer,
+            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
     }
 
     @Override

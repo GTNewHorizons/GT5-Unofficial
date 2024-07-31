@@ -1,5 +1,6 @@
 package gregtech.api.recipe.check;
 
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -142,11 +143,17 @@ public final class CheckRecipeResultRegistry {
         return new ResultInsufficientStartupPower(required);
     }
 
+    @Nonnull
+    public static CheckRecipeResult insufficientStartupPower(BigInteger required) {
+        return new ResultInsufficientStartupPowerBigInt(required);
+    }
+
     static {
         register(new SimpleCheckRecipeResult(false, "", false));
         register(new ResultInsufficientPower(0));
         register(new ResultInsufficientHeat(0));
         register(new ResultInsufficientMachineTier(0));
         register(new ResultInsufficientStartupPower(0));
+        register(new ResultInsufficientStartupPowerBigInt(BigInteger.ZERO));
     }
 }

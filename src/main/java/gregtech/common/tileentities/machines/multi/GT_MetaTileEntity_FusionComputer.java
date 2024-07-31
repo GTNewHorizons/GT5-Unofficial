@@ -21,6 +21,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -42,6 +43,8 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.SoundResource;
@@ -460,6 +463,8 @@ public abstract class GT_MetaTileEntity_FusionComputer
             aBaseMetaTileEntity
                 .setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
+        } else {
+            doActivitySound(getActivitySoundLoop());
         }
     }
 
@@ -541,9 +546,10 @@ public abstract class GT_MetaTileEntity_FusionComputer
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 1, 12, elementBudget, env, false, true);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
-        return SoundResource.GT_MACHINES_FUSION_LOOP;
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_FUSION_LOOP.resourceLocation;
     }
 
     @Override
