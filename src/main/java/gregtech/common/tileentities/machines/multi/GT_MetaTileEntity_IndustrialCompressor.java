@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
+import static gregtech.api.enums.GT_Values.Ollie;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE_GLOW;
@@ -239,7 +240,7 @@ public class GT_MetaTileEntity_IndustrialCompressor extends
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Compressor")
             .addInfo("Controller Block for the Big Ol Compressor Fella")
-            .addInfo(AuthorFourIsTheNumber)
+            .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
             .addSeparator()
             .beginStructureBlock(7, 5, 7, true)
             .addController("Front Center")
