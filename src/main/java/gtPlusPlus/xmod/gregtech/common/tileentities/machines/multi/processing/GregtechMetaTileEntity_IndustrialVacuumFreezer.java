@@ -246,7 +246,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
                 .hasWorkJustBeenEnabled()) {
                 if (aTick % 10 == 0 || this.getBaseMetaTileEntity()
                     .hasWorkJustBeenEnabled()) {
-                    if (!this.depleteInputFromRestrictedHatches(this.mCryotheumHatches, 10)) {
+                    if (!this.depleteInputFromRestrictedHatches(this.mCryotheumHatches, 5)) {
                         if (mGraceTimer-- == 0) {
                             this.causeMaintenanceIssue();
                             this.stopMachine(
