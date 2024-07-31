@@ -1260,8 +1260,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         long parallelExponent = 1;
 
         if (astralArrayAmount != 0) {
-            parallelExponent = (long) Math
-                .floor(Math.log(PARALLEL_PER_ASTRAL_ARRAY * Math.min(astralArrayAmount, ASTRAL_ARRAY_LIMIT)) / LOG_CONSTANT);
+            parallelExponent = (long) Math.floor(
+                Math.log(PARALLEL_PER_ASTRAL_ARRAY * Math.min(astralArrayAmount, ASTRAL_ARRAY_LIMIT)) / LOG_CONSTANT);
             parallelAmount = (long) pow(2, parallelExponent);
         } else {
             parallelAmount = 1;
