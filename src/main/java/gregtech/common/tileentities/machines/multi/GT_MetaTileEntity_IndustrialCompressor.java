@@ -8,6 +8,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_COOLING;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_COOLING_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
@@ -139,6 +145,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
 
     private boolean hipEnabled = false;
     private HeatingCoilLevel heatLevel;
+    private int coolingCounter = 0;
 
     private boolean blackholeEnabled = false;
     private boolean blackholeOn = false;
@@ -192,16 +199,30 @@ public class GT_MetaTileEntity_IndustrialCompressor
                                  int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
-            if (aActive) {
+            if (cooling) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
                         .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_COOLING)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_COOLING_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            }
+            else if (aActive) {
+                rTexture = new ITexture[] {
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -210,11 +231,11 @@ public class GT_MetaTileEntity_IndustrialCompressor
                     Textures.BlockIcons
                         .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER)
+                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_GLOW)
+                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -355,12 +376,17 @@ public class GT_MetaTileEntity_IndustrialCompressor
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (hipEnabled && cooling) {
-            heat -= 1;
-            if (heat <= 0) {
-                heat = 0;
-                cooling = false;
+
+        if (hipEnabled) {
+            if (coolingCounter >= 4) {
+                coolingCounter = 0;
+                heat -= 1;
+                if (heat <= 0) {
+                    heat = 0;
+                    cooling = false;
+                }
             }
+            else coolingCounter += 1;
         }
         if (blackholeOn) {
             if (blackHoleHatch != null) {
