@@ -117,9 +117,12 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private static final double TIME_ACCEL_DECREASE_CHANCE_PER_TIER = 0.0925;
     // % Increase in recipe chance and % decrease in yield per tier.
     private static final double STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER = 0.05;
-    private static final double LOG_CONSTANT = Math.log(1.7);
+    private static final double PARALLEL_PER_ASTRAL_ARRAY = 8;
+    private static final double CONSTANT_FOR_LOG = 1.7;
+    private static final double LOG_CONSTANT = Math.log(CONSTANT_FOR_LOG);
     private static final double PARALLEL_MULTIPLIER_CONSTANT = 1.63;
     private static final long POWER_DIVISION_CONSTANT = 20;
+    private static final double POWER_INCREASE_CONSTANT = 2.3;
     private static final int TOTAL_CASING_TIERS_WITH_POWER_PENALTY = 8;
     private static final long PRECISION_MULTIPLIER = 1_000_000;
     private static final long ASTRAL_ARRAY_LIMIT = 10_000;
@@ -1069,12 +1072,26 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 "This multiblock can perform parallel processing by placing Astral Array Fabricators into the input bus.")
             .addInfo(
                 "They are stored internally and can be retrieved via right-clicking the controller with a wire cutter.")
-            .addInfo("The amount of parallel is calculated via these formulas:")
-            .addInfo(GREEN + "Parallel exponent = floor(log(8 * Astral Array amount) / log(1.7))")
+            .addInfo(
+                "The maximum amount of Astral Array is " + formatNumbers(ASTRAL_ARRAY_LIMIT)
+                    + ". The amount of parallel is calculated via these formulas:")
+            .addInfo(
+                GREEN + "Parallel exponent = floor(log("
+                    + formatNumbers(PARALLEL_PER_ASTRAL_ARRAY)
+                    + " * Astral Array amount) / log("
+                    + formatNumbers(CONSTANT_FOR_LOG)
+                    + "))")
             .addInfo(GREEN + "Parallel = 2^(Parallel exponent)")
             .addInfo("If the EOH is running parallel recipes, the power calculation changes.")
             .addInfo("The power needed for parallel processing is calculated as follows:")
-            .addInfo(GREEN + "total EU = ((EU output - EU input * 1.6) / 20) * 2.3^(Parallel exponent)")
+            .addInfo(
+                GREEN + "total EU = ((EU output - EU input * "
+                    + formatNumbers(PARALLEL_MULTIPLIER_CONSTANT)
+                    + ") / "
+                    + formatNumbers(POWER_DIVISION_CONSTANT)
+                    + ") * "
+                    + formatNumbers(POWER_INCREASE_CONSTANT)
+                    + "^(Parallel exponent)")
             .addInfo(
                 "Furthermore, if parallel recipes are run, the recipes consume "
                     + MaterialsUEVplus.RawStarMatter.getLocalizedNameForItem("%material"))
@@ -1244,7 +1261,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         if (astralArrayAmount != 0) {
             parallelExponent = (long) Math
-                .floor(Math.log(8 * Math.min(astralArrayAmount, ASTRAL_ARRAY_LIMIT)) / LOG_CONSTANT);
+                .floor(Math.log(PARALLEL_PER_ASTRAL_ARRAY * Math.min(astralArrayAmount, ASTRAL_ARRAY_LIMIT)) / LOG_CONSTANT);
             parallelAmount = (long) pow(2, parallelExponent);
         } else {
             parallelAmount = 1;
@@ -1282,7 +1299,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         }
 
         // Calculate multipliers used in power calculations
-        double powerMultiplier = Math.max(1, Math.pow(2.3, parallelExponent));
+        double powerMultiplier = Math.max(1, Math.pow(POWER_INCREASE_CONSTANT, parallelExponent));
 
         // Determine EU recipe input
         startEU = recipeObject.getEUStartCost();
