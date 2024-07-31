@@ -195,6 +195,18 @@ public class GT_MetaTileEntity_IndustrialCompressor
     }
 
     @Override
+    public void onValueUpdate(byte aValue) {
+        boolean oCooling = cooling;
+        cooling = (aValue & 1) == 1;
+        if (oCooling != cooling) getBaseMetaTileEntity().issueTextureUpdate();
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return (byte) (cooling ? 1 : 0);
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
                                  int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
