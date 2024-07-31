@@ -181,6 +181,19 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Antimatter Forge")
             .addInfo("Dimensions not included!");
+            .addSeparator()
+            .addCasingInfo("Placeholder", 1664)
+            .addCasingInfo("Placeholder", 560)
+            .addCasingInfo("Placeholder", 128)
+            .addCasingInfo("Placeholder", 63)
+            .addEnergyHatch("1-32, Hint block with dot 2", 2)
+            .addInputHatch("1-16, Hint block with dot 1", 1)
+            .addOutputHatch("1-16, Hint block with dot 1", 1)
+            .addStructureInfo(
+                "ALL Hatches must be " + GT_Utility.getColoredTierNameFromTier((byte) hatchTier())
+                    + EnumChatFormatting.GRAY
+                    + " or better")
+            .toolTipFinisher("Good Generator");
         return tt;
     }
 
