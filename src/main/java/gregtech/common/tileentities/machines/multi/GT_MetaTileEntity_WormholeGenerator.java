@@ -87,7 +87,6 @@ public class GT_MetaTileEntity_WormholeGenerator extends
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final byte GLASS_TIER_UNSET = -2;
 
-    private static final int CASING_INDEX = 48;
     private static final int TT_CASING_INDEX = GT_Block_CasingsTT.textureOffset;
 
     private static final int TOP_HATCH = 0, BOTTOM_HATCH = 1, LEFT_HATCH = 2, RIGHT_HATCH = 3, BACK_HATCH = 4,
@@ -97,6 +96,7 @@ public class GT_MetaTileEntity_WormholeGenerator extends
         BACK_HATCH, };
 
     private static final String[] HATCH_NAMES = { "Top", "Bottom", "Left", "Right", "Back", "Front" };
+    private static final boolean[] HATCH_MASK = { true, true, true, true, false, false };
 
     private byte mGlassTier = -2;
     private boolean mStructureBadGlassTier = false;
@@ -142,18 +142,18 @@ public class GT_MetaTileEntity_WormholeGenerator extends
         int colorIndex, boolean active, boolean redstoneLevel) {
         if (side == facing) {
             if (active) {
-                return new ITexture[] { getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
+                return new ITexture[] { getCasingTextureForId(TT_CASING_INDEX), TextureFactory.builder()
                     .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
                     .extFacing()
                     .build() };
             } else {
-                return new ITexture[] { getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
+                return new ITexture[] { getCasingTextureForId(TT_CASING_INDEX), TextureFactory.builder()
                     .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced)
                     .extFacing()
                     .build() };
             }
         }
-        return new ITexture[] { getCasingTextureForId(CASING_INDEX) };
+        return new ITexture[] { getCasingTextureForId(TT_CASING_INDEX) };
     }
 
     // #region Structure
@@ -164,53 +164,53 @@ public class GT_MetaTileEntity_WormholeGenerator extends
         .addShape(
             STRUCTURE_PIECE_MAIN,
             transpose(
-                new String[][] {
-                    { "  ttt  ", " teeet ", "teeeeet", "teeeeet", "teeeeet", " teeet ", "  ttt  " },
-                    { "  gtg  ", " g---g ", "g-fff-g", "t-f-f-t", "g-fff-g", " g---g ", "  gtg  " },
-                    { "  hhh  ", " g---g ", "h-----h", "h-----h", "h-----h", " g---g ", "  hhh  " },
-                    { "  hFh  ", " g---g ", "h-----h", "L-----R", "h-----h", " g---g ", "  hBh  " },
-                    { "  hhh  ", " g---g ", "h-----h", "h-----h", "h-----h", " g---g ", "  hhh  " },
-                    { "  gtg  ", " g---g ", "g-fff-g", "t-f-f-t", "g-fff-g", " g---g ", "  gtg  " },
-                    { "  t~t  ", " teeet ", "teeeeet", "teeeeet", "teeeeet", " teeet ", "  ttt  " },
+                new String[][]{
+                    {"       ","   F   ","  EEE  "," FEtEF ","  EEE  ","   F   ","       "},
+                    {"   F   "," AADAA "," A B A ","FDBBBDF"," A B A "," AADAA ","   F   "},
+                    {"  EEE  "," A B A ","E     E","EB   BE","E     E"," A B A ","  EEE  "},
+                    {" FE~EF ","FA B AF","E     E","lB   Br","E     E","FA B AF"," FEEEF "},
+                    {"  EEE  "," A B A ","E     E","EB   BE","E     E"," A B A ","  EEE  "},
+                    {"   F   "," AADAA "," A B A ","FDBBBDF"," A B A "," AADAA ","   F   "},
+                    {"       ","   F   ","  EEE  "," FEbEF ","  EEE  ","   F   ","       "}
                 }))
-        .addElement('t',
+        .addElement('E',
             buildHatchAdder(GT_MetaTileEntity_WormholeGenerator.class)
                 .atLeast(Maintenance, InputBus)
-                .casingIndex(CASING_INDEX) // Robust Tungstensteel Machine Casing
+                .casingIndex(TT_CASING_INDEX) // High Power Casing
                 .dot(1)
-                .buildAndChain(ofBlock(GregTech_API.sBlockCasings4, 0))
+                .buildAndChain(lazy(() -> ofBlock(TT_Container_Casings.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement(
-            'g',
+            'A',
             withChannel(
                 "glass",
                 BorosilicateGlass.ofBoroGlass(GLASS_TIER_UNSET, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
         )
-        .addElement('e', ofBlock(GregTech_API.sBlockCasings8, 5)) // Europium Reinforced Radiation Proof Machine Casing
-        .addElement('f', ofBlock(GregTech_API.sBlockCasings4, 7)) // Fusion Coil Block
-        .addElement('h', lazy(() -> ofBlock(TT_Container_Casings.sBlockCasingsTT, 0))) // High Power Casing
-        .addElement('F',
+        .addElement('D', ofBlock(GregTech_API.sBlockCasings8, 5)) // Europium Reinforced Radiation Proof Machine Casing
+        .addElement('B', ofBlock(GregTech_API.sBlockCasings4, 7)) // Fusion Coil Block
+        .addElement('F', lazy(() -> ofBlock(TT_Container_Casings.sBlockCasingsTT, 4))) // Molecular Casing
+        .addElement('t',
             buildHatchAdder(GT_MetaTileEntity_WormholeGenerator.class)
-                .anyOf(new TransferHatch(FRONT_HATCH))
+                .anyOf(new TransferHatch(TOP_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
                 .dot(2)
                 .buildAndChain(lazy(() -> ofBlock(TT_Container_Casings.sBlockCasingsTT, 0))) // High Power Casing
         )
-        .addElement('B',
+        .addElement('b',
             buildHatchAdder(GT_MetaTileEntity_WormholeGenerator.class)
-                .anyOf(new TransferHatch(BACK_HATCH))
+                .anyOf(new TransferHatch(BOTTOM_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
                 .dot(2)
                 .buildAndChain(lazy(() -> ofBlock(TT_Container_Casings.sBlockCasingsTT, 0))) // High Power Casing
         )
-        .addElement('L',
+        .addElement('l',
             buildHatchAdder(GT_MetaTileEntity_WormholeGenerator.class)
                 .anyOf(new TransferHatch(LEFT_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
                 .dot(2)
                 .buildAndChain(lazy(() -> ofBlock(TT_Container_Casings.sBlockCasingsTT, 0))) // High Power Casing
         )
-        .addElement('R',
+        .addElement('r',
             buildHatchAdder(GT_MetaTileEntity_WormholeGenerator.class)
                 .anyOf(new TransferHatch(RIGHT_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
@@ -286,7 +286,7 @@ public class GT_MetaTileEntity_WormholeGenerator extends
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0)) return false;
 
         mStructureBadGlassTier = false;
 
@@ -313,13 +313,13 @@ public class GT_MetaTileEntity_WormholeGenerator extends
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 6, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 3, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -387,6 +387,8 @@ public class GT_MetaTileEntity_WormholeGenerator extends
 
         if (mLink.isActive()) {
             for (int i = 0; i < MAX_HATCHES; i++) {
+                if (!HATCH_MASK[i]) continue;
+
                 long optimal = mLink.mWormholeEnergy > Long.MAX_VALUE ? Long.MAX_VALUE : ((long) mLink.mWormholeEnergy);
 
                 if (getTransferable(i) > 0) {
@@ -774,15 +776,16 @@ public class GT_MetaTileEntity_WormholeGenerator extends
             .addInfo(BLUE_PRINT_INFO)
             .beginStructureBlock(7, 9, 7, false)
             .addSeparator()
-            .addCasingInfoRange("Robust Tungstensteel Machine Casing", 0, 39, false)
-            .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 42, false)
-            .addCasingInfoExactly("Fusion Coil Block", 16, false)
-            .addCasingInfoRange("High Power Casing", 32, 36, false)
+            .addCasingInfoExactly("Molecular Casing", 2 * 12, false)
+            .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 4, false)
+            .addCasingInfoExactly("Fusion Coil Block", 3 * 4 + 5 * 2, false)
+            .addCasingInfoRange("High Power Casing", 8 * 6 + 1, 8 * 6 + 1 + 4, false)
             .addCasingInfoExactly("Borosilicate Glass (any)", 9 * 4, true)
-            .addMaintenanceHatch("§61 (dot 1)")
-            .addInputBus("§61 (dot 1)")
+            .addMaintenanceHatch("§61§r (dot 1)")
+            .addInputBus("§61§r (dot 1)")
             .addDynamoHatch("§60§r - §64§r (laser only, dot 2)")
             .addEnergyHatch("§60§r - §64§r (laser only, dot 2)")
+            .addStructureInfo("§rThe glass tier limits the hatch tier.")
             .addSubChannelUsage("glass", "Borosilicate Glass Tier")
             .toolTipFinisher("Gregtech");
         // spotless:on
@@ -823,6 +826,8 @@ public class GT_MetaTileEntity_WormholeGenerator extends
                     boolean anyTransferable = false;
 
                     for (int i = 0; i < MAX_HATCHES; i++) {
+                        if (!HATCH_MASK[i]) continue;
+
                         if (getTransferable(i) > 0) {
                             anyTransferable = true;
                             break;
@@ -844,6 +849,8 @@ public class GT_MetaTileEntity_WormholeGenerator extends
         }
 
         for (int i = 0; i < MAX_HATCHES; i++) {
+            if (!HATCH_MASK[i]) continue;
+
             var inputHatch = mSendHatches[i];
             var outputHatch = mReceiveHatches[i];
 
