@@ -2,6 +2,7 @@ package goodgenerator.loader;
 
 import static goodgenerator.util.DescTextLocalization.addText;
 
+import goodgenerator.blocks.tileEntity.AntimatterGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -230,7 +231,7 @@ public class Loaders {
         new String[] { GoodGenerator.MOD_ID + ":magneticFluxCasing" });
     public static final Block protomatterActivationCoil = new Casing(
         "protomatterActivationCoil",
-        new String[] { GoodGenerator.MOD_ID + ":protomatterActivationCoil" }); 
+        new String[] { GoodGenerator.MOD_ID + ":protomatterActivationCoil" });
     public static final Block essentiaFilterCasing = new Casing(
         "essentiaFilterCasing",
         new String[] { GoodGenerator.MOD_ID + ":essentiaFilterCasing" });
@@ -274,6 +275,7 @@ public class Loaders {
 
     public static ItemStack CompAssline;
     public static ItemStack AMForge;
+    public static ItemStack AMGenerator;
     // public static Item Isotope = new NuclearMetaItemGenerator();
 
     public static void GTMetaTileRegister() {
@@ -359,7 +361,9 @@ public class Loaders {
         CrackRecipeAdder.registerWire(IDs_GoodGenerator.WireSignalium.ID, MyMaterial.signalium, 12, 131072, 16, true);
         CrackRecipeAdder.registerWire(IDs_GoodGenerator.WireLumiium.ID, MyMaterial.lumiium, 8, 524288, 64, true);
         Loaders.AMForge = new AntimatterForge(IDs_GoodGenerator.AntimatterForge.ID, "AntimatterForge", "Semi-Stable Antimatter Stabilization Sequencer")
-        .getStackForm(1L);
+            .getStackForm(1L);
+        Loaders.AMGenerator = new AntimatterGenerator(IDs_GoodGenerator.AntimatterGenerator.ID, "AntimatterGenerator", "Shielded Lagrangian Annihilation Matrix")
+            .getStackForm(1L);
     }
 
     public static void Register() {

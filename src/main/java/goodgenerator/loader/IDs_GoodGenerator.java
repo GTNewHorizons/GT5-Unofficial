@@ -34,6 +34,7 @@ public enum IDs_GoodGenerator {
     CoolantTower(32025),
     ComponentAssemblyLine(32026),
     AntimatterForge(32027),
+    AntimatterGenerator(32028),
     WireSignalium(32749),
     WireLumiium(32737),
 
