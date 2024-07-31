@@ -3,12 +3,34 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
+import static gregtech.api.enums.OrePrefixes.material;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofCoil;
 
+import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.shutdown.SimpleShutDownReason;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -38,7 +60,12 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings2;
+import net.minecraftforge.fluids.FluidStack;
+import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GT_MetaTileEntity_IndustrialCompressor
@@ -70,9 +97,9 @@ public class GT_MetaTileEntity_IndustrialCompressor
             (
                 new String[][]{{
                     " AA",
-                    "  A",
-                    " AA",
-                    "AA ",
+                    "  C",
+                    " CC",
+                    " C ",
                     " AA"
                 }}))
         .addShape(
@@ -81,7 +108,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
                 new String[][]{{
                     "AA ",
                     " A ",
-                    " A ",
+                    " b ",
                     " A ",
                     "AAA"
                 }}))
@@ -95,9 +122,47 @@ public class GT_MetaTileEntity_IndustrialCompressor
                     onElementPass(
                         GT_MetaTileEntity_IndustrialCompressor::onCasingAdded,
                         ofBlock(GregTech_API.sBlockCasings2, 0))))
+        .addElement(
+            'b',
+            buildHatchAdder(GT_MetaTileEntity_IndustrialCompressor.class)
+                .adder(GT_MetaTileEntity_IndustrialCompressor::addBlackHoleHatch)
+                .hatchClass(GT_MetaTileEntity_Hatch_Input.class)
+                .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                .dot(1)
+                .build())
+        .addElement(
+            'C',
+            ofCoil(
+                GT_MetaTileEntity_IndustrialCompressor::setCoilLevel,
+                GT_MetaTileEntity_IndustrialCompressor::getCoilLevel))
         .build();
 
+    private boolean hipEnabled = false;
+    private HeatingCoilLevel heatLevel;
+
+    private boolean blackholeEnabled = false;
+    private boolean blackholeOn = false;
+    private GT_MetaTileEntity_Hatch_Input blackHoleHatch;
+
     private int tier = 0;
+    private int heat = 0;
+    private boolean cooling = false;
+
+    private final FluidStack blackholeMaintainCost = new FluidStack((MaterialsUEVplus.SpaceTime).getMolten(1), 1);
+    private final FluidStack blackholeCost = new FluidStack((MaterialsUEVplus.SpaceTime).getMolten(1), 16000);
+
+    private boolean addBlackHoleHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity != null) {
+            final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+                blackHoleHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+                blackHoleHatch.updateTexture(aBaseCasingIndex);
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public GT_MetaTileEntity_IndustrialCompressor(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -184,8 +249,8 @@ public class GT_MetaTileEntity_IndustrialCompressor
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         switch (tier) {
-            case 1 -> buildPiece(STRUCTURE_PIECE_HIP, stackSize, hintsOnly, 4, 3, -1);
-            case 2 -> buildPiece(STRUCTURE_PIECE_BLACKHOLE, stackSize, hintsOnly, -4, 3, -1);
+            case 1 -> buildPiece(STRUCTURE_PIECE_HIP, stackSize, hintsOnly, -3, 3, -1);
+            case 2 -> buildPiece(STRUCTURE_PIECE_BLACKHOLE, stackSize, hintsOnly, 5, 3, -1);
             default -> buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 1, 0);
         }
     }
@@ -194,8 +259,8 @@ public class GT_MetaTileEntity_IndustrialCompressor
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         switch (tier) {
-            case 1 -> {return survivialBuildPiece(STRUCTURE_PIECE_HIP, stackSize, 4, 3, -1, elementBudget, env, false, true);}
-            case 2 -> {return survivialBuildPiece(STRUCTURE_PIECE_BLACKHOLE, stackSize, -4,3, -1, elementBudget, env, false, true);}
+            case 1 -> {return survivialBuildPiece(STRUCTURE_PIECE_HIP, stackSize, -3, 3, -1, elementBudget, env, false, true);}
+            case 2 -> {return survivialBuildPiece(STRUCTURE_PIECE_BLACKHOLE, stackSize, 5,3, -1, elementBudget, env, false, true);}
             default -> {return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);}
         }
     }
@@ -208,13 +273,23 @@ public class GT_MetaTileEntity_IndustrialCompressor
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        setCoilLevel(HeatingCoilLevel.None);
         mCasingAmount = 0;
         mEnergyHatches.clear();
+        tier = 0;
+        hipEnabled = false;
+        blackholeEnabled = false;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0)) return false;
         tier = 1;
-        if (checkPiece (STRUCTURE_PIECE_HIP, 4, 3, -1)) tier = 2;
-        if (checkPiece (STRUCTURE_PIECE_BLACKHOLE, -4, 3, -1)) tier = 3;
+        if (checkPiece (STRUCTURE_PIECE_HIP, -3, 3, -1)) {
+            tier = 2;
+            hipEnabled = true;
+            if (checkPiece(STRUCTURE_PIECE_BLACKHOLE, 5, 3, -1)) {
+                tier = 3;
+                blackholeEnabled = true;
+            }
+        }
         if (mCasingAmount < 0) return false;
 
         // All checks passed!
@@ -226,6 +301,11 @@ public class GT_MetaTileEntity_IndustrialCompressor
                                 int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tier", tier);
+        tag.setInteger("heat", heat);
+        tag.setBoolean("cooling", cooling);
+        tag.setBoolean("hipEnabled", hipEnabled);
+        tag.setBoolean("blackholeEnabled", blackholeEnabled);
+        tag.setBoolean("blackholeOn", blackholeOn);
     }
 
     @Override
@@ -233,13 +313,94 @@ public class GT_MetaTileEntity_IndustrialCompressor
                              IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add("Tier: " + tag.getInteger("tier"));
+        if (tag.getBoolean("hipEnabled")) {
+            if (tag.getBoolean("cooling"))
+                currentTip.add("HIP Heat: " + EnumChatFormatting.RED + EnumChatFormatting.BOLD + tag.getInteger("heat") + "%" + EnumChatFormatting.RESET);
+            else
+                currentTip.add("HIP Heat: " + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD + tag.getInteger("heat") + "%" + EnumChatFormatting.RESET);
+        }
+        if (tag.getBoolean("blackholeEnabled")) {
+            if (tag.getBoolean("blackholeOn")) currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Stabilized");
+
+            else currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Offline");
+        }
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic(){
+            @Nonnull
+            protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
+                return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
+        }.setSpeedBonus(1F / 2F);
+            //.setMaxParallelSupplier(this::getMaxParallelRecipes);
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if (cooling) {
+            stopMachine(SimpleShutDownReason.ofCritical("overheated"));
+        }
+        else {
+            heat = heat + 1;
+            if (heat >= 100) {
+                heat = 100;
+                cooling = true;
+            }
+        }
+        return super.onRunningTick(aStack);
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (hipEnabled && cooling) {
+            heat -= 1;
+            if (heat <= 0) {
+                heat = 0;
+                cooling = false;
+            }
+        }
+        if (blackholeOn) {
+            if (blackHoleHatch != null) {
+                if (drain(blackHoleHatch, blackholeMaintainCost, false)) {
+                    drain(blackHoleHatch, blackholeMaintainCost, true);
+                    return;
+                }
+            }
+            explodeMultiblock();
+        }
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        builder.widget(
+            new ButtonWidget().setOnClick((clickData, widget) -> toggleBlackHole())
+                .setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    ret.add(GT_UITextures.BUTTON_STANDARD);
+                    if (!blackholeOn) ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_NONE);
+                    else ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_ALL);
+                    return ret.toArray(new IDrawable[0]);})
+                .setPos(80, 91)
+                .setSize(16, 16));
+    }
+
+    private void toggleBlackHole() {
+        if (blackholeEnabled) {
+            if (blackholeOn) {
+                blackholeOn = false;
+            } else {
+                if (blackHoleHatch != null) {
+                    if (drain(blackHoleHatch, blackholeCost, false)) {
+                        drain(blackHoleHatch, blackholeCost, true);
+                        blackholeOn = true;
+                    }
+                }
+            }
+        }
     }
 
     public int getMaxParallelRecipes() {
@@ -284,5 +445,13 @@ public class GT_MetaTileEntity_IndustrialCompressor
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
+    }
+
+    public HeatingCoilLevel getCoilLevel() {
+        return heatLevel;
+    }
+
+    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
+        heatLevel = aCoilLevel;
     }
 }
