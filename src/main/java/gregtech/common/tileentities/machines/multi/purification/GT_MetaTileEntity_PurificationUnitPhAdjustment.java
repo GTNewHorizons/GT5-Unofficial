@@ -242,6 +242,12 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     }
 
     @Override
+    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {
+        // Do nothing, we don't want to lock hatches to recipe maps since this can cause
+        // them to reject our catalyst fluids
+    }
+
+    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(
             STRUCTURE_PIECE_MAIN,
