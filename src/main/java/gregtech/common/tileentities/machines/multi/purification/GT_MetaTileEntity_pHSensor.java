@@ -100,7 +100,7 @@ public class GT_MetaTileEntity_pHSensor extends GT_MetaTileEntity_Hatch {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Can be installed in the pH Adjustment Purification Unit.",
+        return new String[] { "Can be installed in the pH Neutralization Purification Unit.",
             "Outputs Redstone Signal according to the current pH value.",
             "Right click to open the GUI and change settings." };
     }
@@ -123,7 +123,7 @@ public class GT_MetaTileEntity_pHSensor extends GT_MetaTileEntity_Hatch {
      * Updates redstone output strength based on the pH of the multiblock.
      */
     public void updateRedstoneOutput(float pH) {
-        isOn = (pH >= threshold) ^ inverted;
+        isOn = (pH > threshold) ^ inverted;
     }
 
     @Override
