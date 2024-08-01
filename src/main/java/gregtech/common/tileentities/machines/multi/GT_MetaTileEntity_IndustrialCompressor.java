@@ -17,7 +17,12 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -72,7 +77,7 @@ public class GT_MetaTileEntity_IndustrialCompressor extends
         .addShape(
             STRUCTURE_PIECE_MAIN,
             (new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A A", "AAA" }, { "AAA", "AAA", "AAA" } }))
-        .addShape(STRUCTURE_PIECE_HIP, (new String[][] { { " AA", "  C", " CC", " C ", " AA" } }))
+        .addShape(STRUCTURE_PIECE_HIP, (new String[][] { { " AA", "  C", " CC", " C ", " on" } }))
         .addShape(STRUCTURE_PIECE_BLACKHOLE, (new String[][] { { "AA ", " A ", " b ", " A ", "AAA" } }))
         .addElement(
             'A',
@@ -97,6 +102,22 @@ public class GT_MetaTileEntity_IndustrialCompressor extends
             ofCoil(
                 GT_MetaTileEntity_IndustrialCompressor::setCoilLevel,
                 GT_MetaTileEntity_IndustrialCompressor::getCoilLevel))
+        .addElement(
+            'n',
+            buildHatchAdder(GT_MetaTileEntity_IndustrialCompressor.class)
+                .adder(GT_MetaTileEntity_IndustrialCompressor::addNeutroniumHatch)
+                .hatchClass(GT_MetaTileEntity_Hatch_InputBus.class)
+                .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                .dot(1)
+                .build())
+        .addElement(
+            'o',
+            buildHatchAdder(GT_MetaTileEntity_IndustrialCompressor.class)
+                .adder(GT_MetaTileEntity_IndustrialCompressor::addNeutroniumOutput)
+                .hatchClass(GT_MetaTileEntity_Hatch_OutputBus.class)
+                .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                .dot(1)
+                .build())
         .build();
 
     private boolean hipEnabled = false;
@@ -372,6 +393,7 @@ public class GT_MetaTileEntity_IndustrialCompressor extends
         }
 
         if (hipEnabled) {
+            checkNeutroniumHatch();
             if (coolingCounter >= 4) {
                 coolingCounter = 0;
                 heat -= 1;
@@ -473,5 +495,58 @@ public class GT_MetaTileEntity_IndustrialCompressor extends
 
     public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
         heatLevel = aCoilLevel;
+    }
+
+    /*
+     * NEUTRONIUM COMPRESSOR LOGIC BELOW
+     */
+
+    GT_MetaTileEntity_Hatch_InputBus neutroniumHatch;
+    GT_MetaTileEntity_Hatch_OutputBus neutroniumOutput;
+    int ironBlocks = 0;
+
+    private boolean addNeutroniumHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity != null) {
+            final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+                neutroniumHatch = (GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity;
+                neutroniumHatch.updateTexture(aBaseCasingIndex);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean addNeutroniumOutput(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity != null) {
+            final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+                neutroniumOutput = (GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity;
+                neutroniumOutput.updateTexture(aBaseCasingIndex);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void checkNeutroniumHatch() {
+        if (neutroniumHatch != null) {
+            if (neutroniumHatch.getBaseMetaTileEntity().hasInventoryBeenModified()) {
+                for (int i = 0; i < neutroniumHatch.mInventory.length; i++) {
+                    if (neutroniumHatch.mInventory[i] != null) {
+                        if (neutroniumHatch.mInventory[i].getUnlocalizedName() == "tile.blockiron") ;
+                        {
+                            ironBlocks += neutroniumHatch.mInventory[i].stackSize;
+                            neutroniumHatch.mInventory[i] = null;
+
+                            if (ironBlocks >= 300) {
+                                ironBlocks -= 300;
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
