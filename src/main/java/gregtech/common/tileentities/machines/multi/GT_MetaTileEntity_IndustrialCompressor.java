@@ -13,7 +13,10 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
@@ -65,6 +68,8 @@ import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.GT_Block_Casings2;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class GT_MetaTileEntity_IndustrialCompressor extends
     GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_IndustrialCompressor> implements ISurvivalConstructable {
@@ -361,6 +366,23 @@ public class GT_MetaTileEntity_IndustrialCompressor extends
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            @NotNull
+            @Override
+            protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+                Stream <GT_Recipe> compressorRecipes = RecipeMaps.compressorRecipes.findRecipeQuery()
+                    .items(inputItems)
+                    .cachedRecipe(lastRecipe)
+                    .findAll();
+                if (hipEnabled) {
+                    Stream<GT_Recipe> neutroniumRecipes = RecipeMaps.neutroniumCompressorRecipes.findRecipeQuery()
+                        .items(inputItems)
+                        .cachedRecipe(lastRecipe)
+                        .findAll();
+                    compressorRecipes = Stream.concat(compressorRecipes, neutroniumRecipes);
+                }
+                return compressorRecipes;
+            }
+
             @Nonnull
             protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -393,7 +415,6 @@ public class GT_MetaTileEntity_IndustrialCompressor extends
         }
 
         if (hipEnabled) {
-            checkNeutroniumHatch();
             if (coolingCounter >= 4) {
                 coolingCounter = 0;
                 heat -= 1;
@@ -454,6 +475,12 @@ public class GT_MetaTileEntity_IndustrialCompressor extends
         return RecipeMaps.neutroniumCompressorRecipes;
     }
 
+    @Nonnull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(RecipeMaps.compressorRecipes, RecipeMaps.neutroniumCompressorRecipes);
+    }
+
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
@@ -503,7 +530,6 @@ public class GT_MetaTileEntity_IndustrialCompressor extends
 
     GT_MetaTileEntity_Hatch_InputBus neutroniumHatch;
     GT_MetaTileEntity_Hatch_OutputBus neutroniumOutput;
-    int ironBlocks = 0;
 
     private boolean addNeutroniumHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity != null) {
@@ -527,26 +553,5 @@ public class GT_MetaTileEntity_IndustrialCompressor extends
             }
         }
         return false;
-    }
-
-    private void checkNeutroniumHatch() {
-        if (neutroniumHatch != null) {
-            if (neutroniumHatch.getBaseMetaTileEntity().hasInventoryBeenModified()) {
-                for (int i = 0; i < neutroniumHatch.mInventory.length; i++) {
-                    if (neutroniumHatch.mInventory[i] != null) {
-                        if (neutroniumHatch.mInventory[i].getUnlocalizedName() == "tile.blockiron") ;
-                        {
-                            ironBlocks += neutroniumHatch.mInventory[i].stackSize;
-                            neutroniumHatch.mInventory[i] = null;
-
-                            if (ironBlocks >= 300) {
-                                ironBlocks -= 300;
-
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 }
