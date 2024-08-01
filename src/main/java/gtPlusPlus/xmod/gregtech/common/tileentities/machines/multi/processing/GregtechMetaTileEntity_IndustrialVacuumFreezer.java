@@ -230,8 +230,6 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
         return false;
     }
 
-    private int mGraceTimer = 2;
-
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         /*
@@ -243,16 +241,13 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
         if (this.mStartUpCheck < 0) {
             if (this.mMaxProgresstime > 0 && this.mProgresstime != 0 || this.getBaseMetaTileEntity()
                 .hasWorkJustBeenEnabled()) {
-                if (aTick % 10 == 0 || this.getBaseMetaTileEntity()
+                if (aTick % 20 == 0 || this.getBaseMetaTileEntity()
                     .hasWorkJustBeenEnabled()) {
-                    if (!this.depleteInputFromRestrictedHatches(this.mCryotheumHatches, 5)) {
-                        if (mGraceTimer-- == 0) {
-                            this.causeMaintenanceIssue();
-                            this.stopMachine(
-                                ShutDownReasonRegistry
-                                    .outOfFluid(Objects.requireNonNull(FluidUtils.getFluidStack("cryotheum", 10))));
-                            mGraceTimer = 2;
-                        }
+                    if (!this.depleteInputFromRestrictedHatches(this.mCryotheumHatches, 10)) {
+                        this.causeMaintenanceIssue();
+                        this.stopMachine(
+                            ShutDownReasonRegistry
+                                .outOfFluid(Objects.requireNonNull(FluidUtils.getFluidStack("cryotheum", 10))));
                     }
                 }
             }
