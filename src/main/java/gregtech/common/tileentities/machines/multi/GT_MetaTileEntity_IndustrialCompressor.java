@@ -11,6 +11,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRES
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
+import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,12 +21,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
-import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,6 +29,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -47,6 +45,7 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -54,8 +53,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -68,15 +70,15 @@ import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.GT_Block_Casings2;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public class GT_MetaTileEntity_IndustrialCompressor extends
-    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_IndustrialCompressor> implements ISurvivalConstructable {
+public class GT_MetaTileEntity_IndustrialCompressor
+    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_IndustrialCompressor>
+    implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_HIP = "hip";
     private static final String STRUCTURE_PIECE_BLACKHOLE = "blackhole";
+    private static final String STRUCTURE_PIECE_NEUTRONIUM = "neutronium";
     private static final IStructureDefinition<GT_MetaTileEntity_IndustrialCompressor> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_IndustrialCompressor>builder()
         .addShape(
@@ -84,6 +86,10 @@ public class GT_MetaTileEntity_IndustrialCompressor extends
             (new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A A", "AAA" }, { "AAA", "AAA", "AAA" } }))
         .addShape(STRUCTURE_PIECE_HIP, (new String[][] { { " AA", "  C", " CC", " C ", " on" } }))
         .addShape(STRUCTURE_PIECE_BLACKHOLE, (new String[][] { { "AA ", " A ", " b ", " A ", "AAA" } }))
+        .addShape(
+            STRUCTURE_PIECE_NEUTRONIUM,
+            (new String[][] { { "NNNNN", "ggggg", "LLLLL", "f   f" }, { "NNNNN", "g---g", "LNNNL", "     " },
+                { "NNNNN", "ggggg", "LLLLL", "f   f" } }))
         .addElement(
             'A',
             buildHatchAdder(GT_MetaTileEntity_IndustrialCompressor.class)
@@ -123,6 +129,10 @@ public class GT_MetaTileEntity_IndustrialCompressor extends
                 .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
                 .dot(1)
                 .build())
+        .addElement('L', ofBlock(GregTech_API.sBlockCasings8, 13))
+        .addElement('N', ofBlock(GregTech_API.sBlockCasings8, 10))
+        .addElement('g', Glasses.chainAllGlasses())
+        .addElement('f', ofFrame(Materials.Naquadah))
         .build();
 
     private boolean hipEnabled = false;
@@ -132,6 +142,8 @@ public class GT_MetaTileEntity_IndustrialCompressor extends
     private boolean blackholeEnabled = false;
     private boolean blackholeOn = false;
     private GT_MetaTileEntity_Hatch_Input blackHoleHatch;
+
+    private boolean neutroniumEnabled = false;
 
     private int tier = 0;
     private int heat = 0;
@@ -261,36 +273,42 @@ public class GT_MetaTileEntity_IndustrialCompressor extends
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        switch (tier) {
-            case 1 -> buildPiece(STRUCTURE_PIECE_HIP, stackSize, hintsOnly, -3, 3, -1);
-            case 2 -> buildPiece(STRUCTURE_PIECE_BLACKHOLE, stackSize, hintsOnly, 5, 3, -1);
-            default -> buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 1, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 1, 0);
+        if (stackSize.stackSize > 1) {
+            buildPiece(STRUCTURE_PIECE_HIP, stackSize, hintsOnly, -3, 3, -1);
+        }
+        if (stackSize.stackSize > 2) {
+            buildPiece(STRUCTURE_PIECE_BLACKHOLE, stackSize, hintsOnly, 5, 3, -1);
+        }
+        if (stackSize.stackSize > 3) {
+            buildPiece(STRUCTURE_PIECE_NEUTRONIUM, stackSize, hintsOnly, -8, 2, 0);
         }
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        switch (tier) {
-            case 1 -> {
-                return survivialBuildPiece(STRUCTURE_PIECE_HIP, stackSize, -3, 3, -1, elementBudget, env, false, true);
-            }
-            case 2 -> {
-                return survivialBuildPiece(
-                    STRUCTURE_PIECE_BLACKHOLE,
-                    stackSize,
-                    5,
-                    3,
-                    -1,
-                    elementBudget,
-                    env,
-                    false,
-                    true);
-            }
-            default -> {
-                return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
-            }
+        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        if (built >= 0) return built;
+        if (stackSize.stackSize > 1) {
+            built += survivialBuildPiece(STRUCTURE_PIECE_HIP, stackSize, -3, 3, -1, elementBudget, env, false, true);
         }
+        if (stackSize.stackSize > 2) {
+            built += survivialBuildPiece(
+                STRUCTURE_PIECE_BLACKHOLE,
+                stackSize,
+                5,
+                3,
+                -1,
+                elementBudget,
+                env,
+                false,
+                true);
+        }
+        if (stackSize.stackSize > 3) {
+            built += survivialBuildPiece(STRUCTURE_PIECE_NEUTRONIUM, stackSize, -8, 2, 0, elementBudget, env, false, true);
+        }
+        return built;
     }
 
     private int mCasingAmount;
@@ -307,9 +325,11 @@ public class GT_MetaTileEntity_IndustrialCompressor extends
         tier = 0;
         hipEnabled = false;
         blackholeEnabled = false;
+        neutroniumEnabled = false;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0)) return false;
         tier = 1;
+        if (checkPiece(STRUCTURE_PIECE_NEUTRONIUM, -8, 2, 0)) neutroniumEnabled = true;
         if (checkPiece(STRUCTURE_PIECE_HIP, -3, 3, -1)) {
             tier = 2;
             hipEnabled = true;
@@ -369,11 +389,11 @@ public class GT_MetaTileEntity_IndustrialCompressor extends
             @NotNull
             @Override
             protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                Stream <GT_Recipe> compressorRecipes = RecipeMaps.compressorRecipes.findRecipeQuery()
+                Stream<GT_Recipe> compressorRecipes = RecipeMaps.compressorRecipes.findRecipeQuery()
                     .items(inputItems)
                     .cachedRecipe(lastRecipe)
                     .findAll();
-                if (hipEnabled) {
+                if (neutroniumEnabled) {
                     Stream<GT_Recipe> neutroniumRecipes = RecipeMaps.neutroniumCompressorRecipes.findRecipeQuery()
                         .items(inputItems)
                         .cachedRecipe(lastRecipe)
