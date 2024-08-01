@@ -1,5 +1,6 @@
 package gtPlusPlus.core.recipe.common;
 
+import gregtech.api.util.ExternalMaterials;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -180,7 +181,7 @@ public class CI {
     public static ItemStack explosiveITNT;
 
     public static Materials[] tieredMaterials = new Materials[] { Materials.Iron, Materials.Steel, Materials.Aluminium,
-        Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel, Materials.Chrome, Materials.Iridium,
+        Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel, ExternalMaterials.getRhodiumPlatedPalladium(), Materials.Iridium,
         Materials.Osmium, Materials.Neutronium };
 
     public static void preInit() {
