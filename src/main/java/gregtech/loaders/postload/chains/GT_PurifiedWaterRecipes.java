@@ -108,7 +108,7 @@ public class GT_PurifiedWaterRecipes {
 
         // Recipes for ozonation, uses 128kL, 256kL, 512kL, 1m kL at each tier
         // 20% boost per tier
-        // Gets you up to 80%, need to water boost for 100%
+        // Gets you up to 80%, need to water boost for 95%
         for (int tier = 1; tier <= 4; ++tier) {
             GT_Values.RA.stdBuilder()
                 .noOptimize()
@@ -129,7 +129,6 @@ public class GT_PurifiedWaterRecipes {
         GT_Values.RA.stdBuilder()
             .fluidInputs(Materials.Grade2PurifiedWater.getFluid(1000L))
             .fluidOutputs(Materials.Grade3PurifiedWater.getFluid(900L))
-            .ignoreCollision()
             .itemOutputs(
                 new ItemStack(Items.clay_ball, 1),
                 Materials.QuartzSand.getDust(1),
