@@ -65,7 +65,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     public enum MagnetTiers {
 
-        Iron(8, 0.8F, 1F, false),
+        Iron(8, 0.8F, 1.1F, false),
         Steel(24, 0.75F, 1.25F, false),
         Neodymium(48, 0.7F, 1.5F, false),
         Samarium(96, 0.6F, 2F, false),
@@ -142,8 +142,8 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                         onElementPass(
                             GT_MetaTileEntity_IndustrialElectromagneticSeparator::onCasingAdded,
                             ofBlock(GregTech_API.sBlockCasings10, 0)))))
-        .addElement('C', ofFrame(Materials.NeodymiumMagnetic))
-        .addElement('D', ofFrame(Materials.SamariumMagnetic))
+        .addElement('C', ofFrame(Materials.SteelMagnetic))
+        .addElement('D', ofFrame(Materials.IronMagnetic))
         .addElement(
             'E',
             buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
@@ -238,8 +238,8 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             .addController("Front Center")
             .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
             .addOtherStructurePart("Any glass", "x12")
-            .addOtherStructurePart("Magnetic Neodymium Frame Box", "x40")
-            .addOtherStructurePart("Magnetic Samarium Frame Box", "x45")
+            .addOtherStructurePart("Magnetic Steel Frame Box", "x40")
+            .addOtherStructurePart("Magnetic Iron Frame Box", "x45")
             .addOtherStructurePart("Electromagnet Housing", "1 Block Above/Behind Controller", 2)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
