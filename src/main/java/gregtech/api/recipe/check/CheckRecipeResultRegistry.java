@@ -109,6 +109,11 @@ public final class CheckRecipeResultRegistry {
     public static final CheckRecipeResult BACKFILLER_NO_CONCRETE = SimpleCheckRecipeResult
         .ofFailure("backfiller_no_concrete");
 
+    /**
+     * Black Hole Compressor did not have stabilized black hole
+     */
+    public static final CheckRecipeResult NO_BLACK_HOLE = SimpleCheckRecipeResult.ofFailure("no_blackhole");
+
     public static final CheckRecipeResult NO_SEE_SKY = SimpleCheckRecipeResult.ofFailure("no_see_sky");
 
     /**
