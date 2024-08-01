@@ -19,8 +19,10 @@ public class GT_Block_Casings10 extends GT_Block_Casings_Abstract {
         super(GT_Item_Casings10.class, "gt.blockcasings10", GT_Material_Casings.INSTANCE, 16);
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "MagTech Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Solidifier Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Solidifier Radiator");
         ItemList.Casing_Electromagnetic_Separator.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Fluid_Solidifier.set(new ItemStack(this, 1, 3));
+        ItemList.Radiator_Fluid_Solidifier.set(new ItemStack(this, 1, 4));
     }
 
     @Override
@@ -34,6 +36,7 @@ public class GT_Block_Casings10 extends GT_Block_Casings_Abstract {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.MACHINE_CASING_EMS.getIcon();
             case 3 -> Textures.BlockIcons.MACHINE_CASING_MS160.getIcon();
+            case 4 -> Textures.BlockIcons.RADIATOR_MS160.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

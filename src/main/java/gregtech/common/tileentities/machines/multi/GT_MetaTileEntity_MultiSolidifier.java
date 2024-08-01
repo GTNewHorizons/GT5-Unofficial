@@ -101,17 +101,17 @@ public class GT_MetaTileEntity_MultiSolidifier extends
                     onElementPass(
                         GT_MetaTileEntity_MultiSolidifier::onCasingAdded,
                         ofBlock(GregTech_API.sBlockCasings10, 3))))
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings2, 13))
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings10, 4))
         .addElement('D', ofBlock(GregTech_API.sBlockCasings2, 13))
         .addElement(
             'E',
             buildHatchAdder(GT_MetaTileEntity_MultiSolidifier.class).atLeast(InputHatch)
-                .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(3))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(
                         GT_MetaTileEntity_MultiSolidifier::onCasingAdded,
-                        ofBlock(GregTech_API.sBlockCasings2, 0))))
+                        ofBlock(GregTech_API.sBlockCasings10, 3))))
         .addElement('F', ofBlock(GregTech_API.sBlockCasings2, 13))
         .build();
 
@@ -286,10 +286,13 @@ public class GT_MetaTileEntity_MultiSolidifier extends
 
         // check each layer
         while (mHeight < 30) {
-            if (!checkPiece(MS_MID, 2 * mHeight, 4, 0)) {
-                if(!checkPiece(MS_RIGHT, 2 * mHeight - 3, 4, 0))
-                return false;
-                else break;
+            if (!checkPiece(MS_MID, 2 * (mHeight + 1), 4, 0)) {
+                if(!checkPiece(MS_MID, -2 * (mHeight + 1), 4, 0)) {
+                    if (!checkPiece(MS_RIGHT, 2 * (mHeight + 1) - 3, 4, 0)) {
+                        mTopLayerFound = true;
+                    }
+                        return false;
+                }
             }
             if (mTopLayerFound) {
                 break;
@@ -297,11 +300,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
             // not top
             mHeight++;
         }
-
-        // validate final invariants... (actual height is mHeight+1)
-        return mCasing >= 7 * (mHeight + 1) - 5 && mHeight + 1 >= 0
-            && mTopLayerFound
-            && mMaintenanceHatches.size() == 1;
+    return true;
     }
 
     @Override
