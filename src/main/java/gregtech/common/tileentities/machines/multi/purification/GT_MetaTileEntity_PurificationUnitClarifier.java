@@ -143,11 +143,10 @@ public class GT_MetaTileEntity_PurificationUnitClarifier
 
     @NotNull
     @Override
-    public CheckRecipeResult checkProcessing() {
+    public CheckRecipeResult overrideRecipeCheck() {
         // Clarifier needs to check item inputs from recipe as well to find filter item
         return findRecipeForInputs(
-            this.getStoredFluids()
-                .toArray(new FluidStack[] {}),
+            this.storedFluids.toArray(new FluidStack[] {}),
             this.getStoredInputs()
                 .toArray(new ItemStack[] {}));
     }

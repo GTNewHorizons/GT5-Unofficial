@@ -15,8 +15,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -257,9 +255,11 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
+        // First do recipe checking logic
+        CheckRecipeResult result = super.checkProcessing();
+        if (!result.wasSuccessful()) return result;
         // Look for ozone, blow up if more than max allowed
-        ArrayList<FluidStack> storedFluids = this.getStoredFluids();
-        for (FluidStack fluid : storedFluids) {
+        for (FluidStack fluid : this.storedFluids) {
             if (fluid.isFluidEqual(Materials.Ozone.getGas(1L))) {
                 if (fluid.amount > MAX_OZONE_GAS_FOR_EXPLOSION) {
                     // TODO: Fix crash in hatch
@@ -267,8 +267,7 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
                 }
             }
         }
-        // Now do recipe checking logic
-        return super.checkProcessing();
+        return result;
     }
 
     @Override

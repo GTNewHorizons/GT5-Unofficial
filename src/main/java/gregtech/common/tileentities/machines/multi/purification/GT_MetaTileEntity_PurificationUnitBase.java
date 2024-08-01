@@ -128,6 +128,8 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
 
     protected int effectiveParallel = 1;
 
+    protected ArrayList<FluidStack> storedFluids = null;
+
     protected GT_MetaTileEntity_PurificationUnitBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -228,9 +230,31 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
-        return findRecipeForInputs(
-            this.getStoredFluids()
-                .toArray(new FluidStack[] {}));
+        this.storedFluids = this.getStoredFluids();
+        CheckRecipeResult result = overrideRecipeCheck();
+        if (result == null) result = findRecipeForInputs(storedFluids.toArray(new FluidStack[] {}));
+
+        // If we had a successful result, calculate effective parallel
+        if (result.wasSuccessful()) {
+            FluidStack waterInput = this.currentRecipe.mFluidInputs[0];
+            // Count total available purified water input of the previous step
+            long amountAvailable = 0;
+            for (FluidStack fluid : this.storedFluids) {
+                if (fluid.isFluidEqual(waterInput)) {
+                    amountAvailable += fluid.amount;
+                }
+            }
+            // Determine effective parallel
+            effectiveParallel = (int) Math.min(maxParallel, Math.floorDiv(amountAvailable, waterInput.amount));
+            // This should not happen, throw an error
+            if (effectiveParallel == 0) return CheckRecipeResultRegistry.INTERNAL_ERROR;
+        }
+
+        return result;
+    }
+
+    public CheckRecipeResult overrideRecipeCheck() {
+        return null;
     }
 
     /**
@@ -241,22 +265,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
      */
     public boolean doPurificationRecipeCheck() {
         effectiveParallel = 1;
-        boolean success = this.checkRecipe();
-        // If recipe check was successful, determine the effective parallel
-        if (success) {
-            FluidStack waterInput = this.currentRecipe.mFluidInputs[0];
-            // Count total available purified water input of the previous step
-            ArrayList<FluidStack> availableFluids = this.getStoredFluids();
-            long amountAvailable = 0;
-            for (FluidStack fluid : availableFluids) {
-                if (fluid.isFluidEqual(waterInput)) {
-                    amountAvailable += fluid.amount;
-                }
-            }
-            // Determine effective parallel
-            effectiveParallel = (int) Math.min(maxParallel, Math.floorDiv(amountAvailable, waterInput.amount));
-        }
-        return success;
+        return this.checkRecipe();
     }
 
     /**
@@ -350,10 +359,12 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
         this.mEfficiency = 10000;
         // These need to be set so the GUI code can display the produced outputs
 
-        // Make sure to scale purified water output with parallel amount
-        FluidStack[] fluidOutputs = this.currentRecipe.mFluidOutputs;
-        // Make a copy of the first entry, so we don't accidentally modify the recipe
-        fluidOutputs[0] = fluidOutputs[0].copy();
+        // Make sure to scale purified water output with parallel amount.
+        // Make sure to make a full copy of the array, so we don't go modifying recipes
+        FluidStack[] fluidOutputs = new FluidStack[this.currentRecipe.mFluidOutputs.length];
+        for (int i = 0; i < this.currentRecipe.mFluidOutputs.length; ++i) {
+            fluidOutputs[i] = this.currentRecipe.mFluidOutputs[i].copy();
+        }
         fluidOutputs[0].amount *= effectiveParallel;
         this.mOutputFluids = fluidOutputs;
         this.mOutputItems = this.currentRecipe.mOutputs;
@@ -644,6 +655,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
             }
 
         } else ret.add("This Purification Unit is not linked to any Water Purification Plant.");
+        ret.add("Current parallel: " + EnumChatFormatting.YELLOW + this.effectiveParallel);
         return ret.toArray(new String[0]);
     }
 
