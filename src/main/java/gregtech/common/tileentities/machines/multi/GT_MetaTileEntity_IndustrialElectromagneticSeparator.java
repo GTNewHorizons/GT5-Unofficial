@@ -84,18 +84,21 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
         public static String buildMagnetTooltip(MagnetTiers m) {
             String tooltip = "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
-                + "+"
+                + "Speed: +"
                 + Math.round((1F / m.speedBoost * 100) - 100)
-                + "% Speed/n "
+                + "%/n "
                 + EnumChatFormatting.DARK_PURPLE
+                + "EU Usage: "
                 + Math.round(m.euModifier * 100)
-                + "% EU Cost/n "
+                + "%/n "
                 + EnumChatFormatting.AQUA
-                + m.maxParallel
-                + " Parallels/n ";
+                + "Parallel: "
+                + m.maxParallel;
 
-            if (m.supportsExotic)
-                tooltip = tooltip + EnumChatFormatting.BOLD + EnumChatFormatting.GREEN + "Can Use Multiamp Hatches";
+            if (m.supportsExotic) tooltip = tooltip + "/n "
+                + EnumChatFormatting.BOLD
+                + EnumChatFormatting.GREEN
+                + "Can Use Multiamp Hatches";
 
             return tooltip;
         }
