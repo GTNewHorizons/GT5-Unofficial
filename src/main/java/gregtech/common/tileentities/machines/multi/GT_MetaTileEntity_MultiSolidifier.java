@@ -9,7 +9,6 @@ import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorOmdaCZ;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
@@ -17,12 +16,14 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -50,7 +51,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings2;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-
+import gregtech.common.blocks.GT_Block_Casings10;
 public class GT_MetaTileEntity_MultiSolidifier extends
     GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_MultiSolidifier> implements ISurvivalConstructable {
 
@@ -94,12 +95,12 @@ public class GT_MetaTileEntity_MultiSolidifier extends
             'B',
             buildHatchAdder(GT_MetaTileEntity_MultiSolidifier.class)
                 .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch)
-                .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(3))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(
                         GT_MetaTileEntity_MultiSolidifier::onCasingAdded,
-                        ofBlock(GregTech_API.sBlockCasings2, 0))))
+                        ofBlock(GregTech_API.sBlockCasings10, 3))))
         .addElement('C', ofBlock(GregTech_API.sBlockCasings2, 13))
         .addElement('D', ofBlock(GregTech_API.sBlockCasings2, 13))
         .addElement(
@@ -117,14 +118,12 @@ public class GT_MetaTileEntity_MultiSolidifier extends
     public GT_MetaTileEntity_MultiSolidifier(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
-
     public GT_MetaTileEntity_MultiSolidifier(String aName) {
         super(aName);
     }
-
     @Override
-    public IStructureDefinition<GT_MetaTileEntity_MultiSolidifier> getStructureDefinition() {
-        return STRUCTURE_DEFINITION;
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_MultiSolidifier(this.mName);
     }
 
     @Override
@@ -180,7 +179,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
             .addInfo("Water: +20%")
             .addInfo("IC2 Coolant: +50%")
             .addInfo("Cryotheum: +100%")
-            .addInfo("Super Colant: +200%")
+            .addInfo("Super Coolant: +200%")
             .addInfo("Gains 2x mold parallels per width expansion")
             .addInfo(EnumChatFormatting.BLUE + "Pretty solid, isn't it")
             .addInfo(AuthorOmdaCZ)
@@ -211,6 +210,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         buildPiece(MS_RIGHT, stackSize, hintsOnly, -tTotalHeight * 2 + 3, 4, 0);
     }
 
+    protected final List<List<GT_MetaTileEntity_Hatch_Output>> mOutputHatchesByLayer = new ArrayList<>();
     protected int mHeight;
     protected int nHeight;
 
@@ -230,9 +230,26 @@ public class GT_MetaTileEntity_MultiSolidifier extends
             built = survivialBuildPiece(MS_MID, stackSize, -2 * i, 4, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
-        if (mHeight == tTotalHeight - 2)
-            return survivialBuildPiece(MS_RIGHT, stackSize, tTotalHeight * 2 - 3, 4, 0, elementBudget, env, false, true);
-        else return survivialBuildPiece(MS_RIGHT, stackSize, -tTotalHeight * 2 + 3, 4, 0, elementBudget, env, false, true);
+        if (mHeight == tTotalHeight - 2) return survivialBuildPiece(
+            MS_RIGHT,
+            stackSize,
+            tTotalHeight * 2 - 3,
+            4,
+            0,
+            elementBudget,
+            env,
+            false,
+            true);
+        else return survivialBuildPiece(
+            MS_RIGHT,
+            stackSize,
+            -tTotalHeight * 2 + 3,
+            4,
+            0,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     private int mCasingAmount;
@@ -242,14 +259,10 @@ public class GT_MetaTileEntity_MultiSolidifier extends
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_MultiSolidifier(this.mName) {
-
-            public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
-                return null;
-            }
-        };
+    public IStructureDefinition<GT_MetaTileEntity_MultiSolidifier> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
     }
+
     protected boolean mTopLayerFound;
     protected int mCasing;
 
@@ -264,6 +277,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mOutputHatchesByLayer.forEach(List::clear);
         mHeight = 1;
         mTopLayerFound = false;
         mCasing = 0;
@@ -272,11 +286,10 @@ public class GT_MetaTileEntity_MultiSolidifier extends
 
         // check each layer
         while (mHeight < 30) {
-            if (!checkPiece(MS_MID, 2 * (mHeight - 1), 4, 0)) {
+            if (!checkPiece(MS_MID, 2 * mHeight, 4, 0)) {
+                if(!checkPiece(MS_RIGHT, 2 * mHeight - 3, 4, 0))
                 return false;
-            }
-            if (!checkPiece(MS_MID, -2 * (mHeight - 1), 4, 0)) {
-                return false;
+                else break;
             }
             if (mTopLayerFound) {
                 break;
