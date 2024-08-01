@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.recipe.RecipeMaps.neutroniumCompressorRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.BLACKHOLE;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -23,6 +24,7 @@ public class NeutroniumCompressorRecipes implements Runnable {
             .itemInputs(
                 GT_Utility.copyAmountUnsafe(7296, GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1)))
             .itemOutputs(getModItem(Avaritia.ID, "Singularity", 1L, 0))
+            .metadata(BLACKHOLE, 1)
             .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(neutroniumCompressorRecipes);
@@ -288,6 +290,7 @@ public class NeutroniumCompressorRecipes implements Runnable {
             .itemOutputs(ItemList.Sensor_IV.get(1))
             .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_HV)
+            .metadata(BLACKHOLE, 1)
             .addTo(neutroniumCompressorRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(

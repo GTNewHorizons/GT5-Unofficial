@@ -141,6 +141,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
 
     private boolean blackholeEnabled = false;
     private boolean blackholeOn = false;
+    private float blackHoleStability = 100;
     private GT_MetaTileEntity_Hatch_Input blackHoleHatch;
 
     private boolean neutroniumEnabled = false;
@@ -405,6 +406,9 @@ public class GT_MetaTileEntity_IndustrialCompressor
 
             @Nonnull
             protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
+                if (recipe.mSpecialValue > 0 && !blackholeOn) {
+                    return CheckRecipeResultRegistry.NO_BLACK_HOLE;
+                }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         }.setSpeedBonus(1F / 2F);
