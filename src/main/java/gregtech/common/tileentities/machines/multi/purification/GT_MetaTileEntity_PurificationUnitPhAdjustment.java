@@ -492,7 +492,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                 // instantly shatter the glass in the structure.
                 if (GoodGenerator.isModLoaded()) {
                     Fluid acid = FluidRegistry.getFluid("fluoroantimonic acid");
-                    if (stack.getFluid()
+                    if (stack != null && stack.getFluid()
                         .equals(acid)) {
                         // TODO: Actually break the glass and trigger achievement lol
                     }
