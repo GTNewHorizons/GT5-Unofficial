@@ -84,7 +84,8 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
         public static String buildMagnetTooltip(MagnetTiers m) {
             String tooltip = "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
-                + Math.round(1F / m.speedBoost * 100)
+                + "+"
+                + Math.round((1F / m.speedBoost * 100) - 100)
                 + "% Speed/n "
                 + EnumChatFormatting.DARK_PURPLE
                 + Math.round(m.euModifier * 100)
