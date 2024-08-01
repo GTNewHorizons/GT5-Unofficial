@@ -82,7 +82,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType())
             .addInfo("Factory Grade Advanced Vacuum Freezer")
-            .addInfo("Speed: +120% | EU Usage: 90% | Parallel: 8")
+            .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 4")
             .addInfo("Consumes 10L of " + mCryoFuelName + "/s during operation")
             .addInfo("Constructed exactly the same as a normal Vacuum Freezer")
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -201,14 +201,13 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2.2F)
-            .setEuModifier(0.9F)
+        return new ProcessingLogic().setSpeedBonus(1F / 2F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return 8;
+        return 4;
     }
 
     @Override
