@@ -35,6 +35,7 @@ public enum IDs_GoodGenerator {
     ComponentAssemblyLine(32026),
     AntimatterForge(32027),
     AntimatterGenerator(32028),
+    AntimatterHatch(32029),
     WireSignalium(32749),
     WireLumiium(32737),
 

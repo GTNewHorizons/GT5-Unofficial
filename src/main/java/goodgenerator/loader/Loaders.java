@@ -19,6 +19,7 @@ import goodgenerator.blocks.regularBlock.TEBlock;
 import goodgenerator.blocks.regularBlock.TurbineCasing;
 import goodgenerator.blocks.tileEntity.ComponentAssemblyLine;
 import goodgenerator.blocks.tileEntity.AntimatterForge;
+import goodgenerator.blocks.tileEntity.AntimatterOutputHatch;
 import goodgenerator.blocks.tileEntity.CoolantTower;
 import goodgenerator.blocks.tileEntity.EssentiaHatch;
 import goodgenerator.blocks.tileEntity.EssentiaOutputHatch;
@@ -229,6 +230,9 @@ public class Loaders {
     public static final Block magneticFluxCasing = new Casing(
         "magneticFluxCasing",
         new String[] { GoodGenerator.MOD_ID + ":magneticFluxCasing" });
+    public static final Block gravityStabilizationCasing = new Casing(
+        "gravityStabilizationCasing",
+        new String[] { GoodGenerator.MOD_ID + ":gravityStabilizationCasing" });
     public static final Block protomatterActivationCoil = new Casing(
         "protomatterActivationCoil",
         new String[] { GoodGenerator.MOD_ID + ":protomatterActivationCoil" });
@@ -276,6 +280,7 @@ public class Loaders {
     public static ItemStack CompAssline;
     public static ItemStack AMForge;
     public static ItemStack AMGenerator;
+    public static ItemStack AMHatch;
     // public static Item Isotope = new NuclearMetaItemGenerator();
 
     public static void GTMetaTileRegister() {
@@ -309,6 +314,7 @@ public class Loaders {
             .getStackForm(1L);
         Loaders.YFH = new YOTTAHatch(IDs_GoodGenerator.YottaHatch.ID, "YottaFluidTankHatch", "YOTHatch", 5)
             .getStackForm(1L);
+        Loaders.AMHatch = new AntimatterOutputHatch(IDs_GoodGenerator.AntimatterHatch.ID, "AntimatterHatch", "Antimatter Hatch").getStackForm(1L);
         Loaders.SCTurbine = new SupercriticalFluidTurbine(
             IDs_GoodGenerator.SupercriticalFluidTurbine.ID,
             "SupercriticalSteamTurbine",
@@ -393,6 +399,7 @@ public class Loaders {
         GameRegistry.registerBlock(compactFusionCoil, MyItemBlocks.class, "compactFusionCoil");
         GameRegistry.registerBlock(antimatterContainmentCasing, MyItemBlocks.class, "antimatterContainmentCasing");
         GameRegistry.registerBlock(magneticFluxCasing, MyItemBlocks.class, "magneticFluxCasing");
+        GameRegistry.registerBlock(gravityStabilizationCasing, MyItemBlocks.class, "gravityStabilizationCasing");
         GameRegistry.registerBlock(protomatterActivationCoil, MyItemBlocks.class, "protomatterActivationCoil");
         GameRegistry.registerItem(radiationProtectionPlate, "radiationProtectionPlate", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(wrappedUraniumIngot, "wrappedUraniumIngot", GoodGenerator.MOD_ID);
@@ -486,6 +493,10 @@ public class Loaders {
                 .of(preciseUnitCasing, 2);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][8] = TextureFactory
                 .of(preciseUnitCasing, 3);
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][9] = TextureFactory
+                .of(magneticFluxCasing, 0);
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][10] = TextureFactory
+                .of(gravityStabilizationCasing, 0);
         }
     }
 

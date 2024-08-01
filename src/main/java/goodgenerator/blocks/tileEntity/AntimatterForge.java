@@ -4,10 +4,13 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
+
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Nullable;
 
@@ -50,6 +53,7 @@ import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -71,6 +75,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
@@ -87,63 +92,60 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     public static final String MAIN_NAME = "antimatterForge";
     public static final int M = 1_000_000;
     private int speed = 100;
+    private long rollingCost = 0L;
     private boolean isLoadedChunk;
     public GT_Recipe mLastRecipe;
     public int para;
+    private Random r = new Random();
     private List<AntimatterOutputHatch> amOutputHatches = new ArrayList<>(16);
     private static final ClassValue<IStructureDefinition<AntimatterForge>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<AntimatterForge>>() {
 
         @Override
         protected IStructureDefinition<AntimatterForge> computeValue(Class<?> type) {
             return StructureDefinition.<AntimatterForge>builder()
-                .addShape(MAIN_NAME, transpose(ForgeStructure))
+                .addShape(MAIN_NAME, ForgeStructure)
+                .addElement('A', lazy(x -> ofBlock(x.getFrameBlock(), x.getFrameMeta())))
                 .addElement('B', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
-                .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(1), x.getCoilMeta())))
-                .addElement('D', lazy(x -> ofBlock(x.getCasingBlock(2), x.getCasingMeta())))
+                .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(2), x.getCasingMeta(2))))
+                .addElement('D', lazy(x -> ofBlock(x.getCasingBlock(1), x.getCasingMeta(1))))
                 .addElement(
                     'F',
                     lazy(
                         x -> GT_HatchElementBuilder.<AntimatterForge>builder()
-                            .atLeast(
+                            .anyOf(
                                 GT_HatchElement.InputHatch.or(GT_HatchElement.InputBus))
                             .adder(AntimatterForge::addFluidIO)
-                            .casingIndex(x.textureIndex())
+                            .casingIndex(x.textureIndex(2))
                             .dot(1)
-                            .hatchItemFilterAnd(x2 -> filterByMTETier(x2.hatchTier(), Integer.MAX_VALUE))
-                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta())))
-                .addElement(
-                    'E',
-                    lazy(
-                        x -> GT_HatchElementBuilder.<AntimatterForge>builder()
-                            .atLeast(
-                                GT_HatchElement.InputHatch)
-                            .adder(AntimatterForge::addFluidIO)
-                            .casingIndex(x.textureIndex())
-                            .dot(2)
-                            .hatchItemFilterAnd(x2 -> filterByMTETier(x2.hatchTier(), Integer.MAX_VALUE))
-                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta())))
+                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
                 .addElement(
                     'G',
                     lazy(
                         x -> GT_HatchElementBuilder.<AntimatterForge>builder()
-                            .atLeast(
+                            .anyOf(
                                 GT_HatchElement.OutputHatch)
                             .adder(AntimatterForge::addFluidIO)
-                            .casingIndex(x.textureIndex())
+                            .casingIndex(x.textureIndex(2))
+                            .dot(2)
+                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
+                .addElement(
+                    'E',
+                    lazy(
+                        x -> buildHatchAdder(AntimatterForge.class)
+                            .adder(AntimatterForge::addAntimatterHatch)
+                            .hatchClass(AntimatterOutputHatch.class)
+                            .casingIndex(x.textureIndex(1))
                             .dot(3)
-                            .hatchItemFilterAnd(x2 -> filterByMTETier(x2.hatchTier(), Integer.MAX_VALUE))
                             .build()))
                 .addElement(
                     'H',
                     lazy(
                         x -> GT_HatchElementBuilder.<AntimatterForge>builder()
-                            .anyOf(GT_HatchElement.Energy)
+                            .anyOf(GT_HatchElement.Energy.or(GT_HatchElement.ExoticEnergy))
                             .adder(AntimatterForge::addEnergyInjector)
-                            .casingIndex(x.textureIndex())
-                            .hatchItemFilterAnd(x2 -> filterByMTETier(x2.hatchTier(), Integer.MAX_VALUE))
+                            .casingIndex(x.textureIndex(2))
                             .dot(4)
-                            .build()))
-                .addElement('A', lazy(x -> ofBlock(x.getFrameBlock(), x.getFrameMeta())))
+                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
                 .build();
         }
     };
@@ -180,12 +182,12 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Antimatter Forge")
-            .addInfo("Dimensions not included!");
+            .addInfo("Dimensions not included!")
             .addSeparator()
-            .addCasingInfo("Placeholder", 1664)
-            .addCasingInfo("Placeholder", 560)
-            .addCasingInfo("Placeholder", 128)
-            .addCasingInfo("Placeholder", 63)
+            .addCasingInfoMin("Placeholder", 1664, false)
+            .addCasingInfoMin("Placeholder", 560, false)
+            .addCasingInfoMin("Placeholder", 128, false)
+            .addCasingInfoMin("Placeholder", 63, false)
             .addEnergyHatch("1-32, Hint block with dot 2", 2)
             .addInputHatch("1-16, Hint block with dot 1", 1)
             .addOutputHatch("1-16, Hint block with dot 1", 1)
@@ -214,16 +216,23 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     public Block getCasingBlock(int type) {
         switch(type) {
             case 1:
-                return Loaders.antimatterContainmentCasing;
+                return Loaders.magneticFluxCasing;
             case 2:
-                return ItemList.Casing_AdvancedRadiationProof.getBlock();
+                return Loaders.gravityStabilizationCasing;
             default:
-                return Loaders.antimatterContainmentCasing;
+                return Loaders.magneticFluxCasing;
         }
     }
 
-    public int getCasingMeta() {
-        return 0;
+    public int getCasingMeta(int type) {
+        switch(type) {
+            case 1:
+                return 0;
+            case 2:
+                return 0;
+            default:
+                return 0;
+        }
     }
 
     public Block getCoilBlock() {
@@ -247,23 +256,22 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     }
 
     public Block getFrameBlock() {
-        return Loaders.magneticFluxCasing;
+        return Loaders.antimatterContainmentCasing;
     }
 
     public int getFrameMeta() {
-        return 6;
+        return 0;
     }
 
-    public int getMaxPara() {
-        return 64;
-    }
-
-    public int extraPara(int startEnergy) {
-        return 1;
-    }
-
-    public int textureIndex() {
-        return 53;
+    public int textureIndex(int type) {
+        switch(type) {
+            case 1:
+                return (12 << 7) + 9;
+            case 2:
+                return (12 << 7) + 10;
+            default:
+                return (12 << 7) + 9;
+        }
     }
 
     private static final ITexture textureOverlay = TextureFactory.of(
@@ -376,6 +384,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         FluidStack[] antimatterStored = new FluidStack[16];
         long totalAntimatterAmount = 0;
         long minAntimatterAmount = Long.MAX_VALUE;
+        //Calculate the total amount of antimatter in all 16 hatches and the minimum amount found in any individual hatch
         for (int i = 0; i < amOutputHatches.size(); i++) {
             if (amOutputHatches.get(i) == null || !amOutputHatches.get(i).isValid() || amOutputHatches.get(i).getFluid() == null) continue;
             antimatterStored[i] = amOutputHatches.get(i).getFluid().copy();
@@ -383,14 +392,17 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             minAntimatterAmount = Math.min(minAntimatterAmount, antimatterStored[i].amount);
         }
 
+        //Reduce the amount of antimatter in each hatch by half of the difference between the lowest amount and current hatch contents 
         for (int i = 0; i < amOutputHatches.size(); i++) {
             if (amOutputHatches.get(i) == null || !amOutputHatches.get(i).isValid() || amOutputHatches.get(i).getFluid() == null) continue;
             FluidStack fluid = amOutputHatches.get(i).getFluid().copy();
-            amOutputHatches.get(i).drain((int)((fluid.amount - minAntimatterAmount) / 2), true);
+            amOutputHatches.get(i).drain((int)((fluid.amount - minAntimatterAmount) * 0.5), true);
         }
 
         long energyCost = calculateEnergyCost(totalAntimatterAmount);
-        if (drainEnergyInput(energyCost)) {
+
+        //If we run out of energy, reduce contained antimatter by 10%
+        if (!drainEnergyInput(energyCost)) {
             for (int i = 0; i < amOutputHatches.size(); i++) {
                 if (amOutputHatches.get(i) == null || !amOutputHatches.get(i).isValid() || amOutputHatches.get(i).getFluid() == null) continue;
                 FluidStack fluid = amOutputHatches.get(i).getFluid().copy();
@@ -404,13 +416,17 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         long containedProtomatter = 0;
         List<FluidStack> inputFluids = getStoredFluids();
         for (int i = 0; i < inputFluids.size(); i++) {
-            if (inputFluids.get(i).isFluidEqual(Materials.Antimatter.getFluid(1))) {
-                containedProtomatter += Math.min(inputFluids.get(i).amount, protomatterCost - containedProtomatter);
-                inputFluids.get(i).amount -= Math.min(protomatterCost - containedProtomatter, inputFluids.get(i).amount);
+            if (inputFluids.get(i).isFluidEqual(MaterialsUEVplus.Protomatter.getFluid(1))) {
+                containedProtomatter += inputFluids.get(i).amount;
             }
         }
 
-        distributeAntimatterToHatch(amOutputHatches, totalAntimatterAmount, ((float) containedProtomatter)/((float) protomatterCost));
+        System.out.println("\nCalculating antimatter cycle:");
+        System.out.format("Antimatter found: %d\n", totalAntimatterAmount);
+        System.out.format("Protomatted found: %d\n", containedProtomatter);
+
+        distributeAntimatterToHatch(amOutputHatches, totalAntimatterAmount, Math.min(containedProtomatter/protomatterCost, 1.0));
+
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         mEfficiencyIncrease = 10000;
         mMaxProgresstime = speed;
@@ -418,20 +434,61 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
+    /* How much passive energy is drained every tick
+    *  Base containment cost: 10M EU/t
+    *  The containment cost ramps up by the amount of antimatter each tick, up to 1000 times
+    *  If the current cost is more than 1000 times the amount of antimatter, or
+    *  if no antimatter is in the hatches, the value will decay by 1% every tick
+    */
     private long calculateEnergyContainmentCost(long antimatterAmount) {
-        return antimatterAmount;
+        if (antimatterAmount == 0) {
+            rollingCost *= 0.995;
+            if (rollingCost < 100) rollingCost = 0;
+        } else if (rollingCost < antimatterAmount * 1000) {
+            rollingCost += antimatterAmount;
+        } else {
+            rollingCost *= 0.995;
+        }
+        return 10_000_000 + rollingCost;
     }
 
+    //How much energy is consumed when machine does one operation
     private long calculateEnergyCost(long antimatterAmount) {
-        return antimatterAmount;
+        return antimatterAmount^2;
     }
 
+    //How much protomatter is required to do one operation
     private long calculateProtoMatterCost(long antimatterAmount) {
-        return antimatterAmount;
+        return antimatterAmount + 1;
     }
 
-    private void distributeAntimatterToHatch(List<AntimatterOutputHatch> hatches, long totalAntimatterAmount, float protomatterRequirement) {
+    private float cycles = 0;
+    private float positive = 0;
 
+    private void distributeAntimatterToHatch(List<AntimatterOutputHatch> hatches, long totalAntimatterAmount, double protomatterRatio) {
+        double coeff = Math.pow(((double)totalAntimatterAmount), 0.33);
+        System.out.println(coeff);
+
+        int difference = 0;
+
+        for (AntimatterOutputHatch hatch : hatches) {
+            //Skewed normal distribution multiplied by coefficient from antimatter amount
+            //If we don't have enough protomatter, the amount is adjusted accordingly for positive values while negative values are fully deducted
+            //We round up so you are guaranteed to be antimatter positive on the first run (reduces startup RNG)
+            int change = (int) (Math.ceil((r.nextGaussian() + 0.05) * coeff));
+            difference += change;
+            if (change >= 0) {
+                hatch.fill(MaterialsUEVplus.Antimatter.getFluid((long)(change * protomatterRatio)), true);
+            } else {
+                hatch.drain(-change, true);
+            }
+            cycles += 1;
+            if (difference >= 0) {
+                positive += 1;
+            }
+        }
+        System.out.format("Change this cycle: %d\n", difference);
+        System.out.format("Ratio of positive cycles: %f\n", positive/cycles);
     }
 
     @Override
@@ -462,14 +519,11 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     private boolean addEnergyInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy tHatch) {
-            if (tHatch.getTierForStructure() < hatchTier()) return false;
-            tHatch.updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add(tHatch);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti tHatch) {
-            if (tHatch.getTierForStructure() < hatchTier()) return false;
-            tHatch.updateTexture(aBaseCasingIndex);
-            //return eEnergyMulti.add(tHatch);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch hatch
+            && GT_ExoticEnergyInputHelper.isExoticEnergyInput(aMetaTileEntity)) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mExoticEnergyHatches.add(hatch);
         }
         return false;
     }
@@ -497,6 +551,20 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             tInput.updateCraftingIcon(this.getMachineCraftingIcon());
             return mDualInputHatches.add(tInput);
         }
+        return false;
+    }
+
+    private boolean addAntimatterHatch(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
+        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+        }
+        if (aMetaTileEntity instanceof AntimatterOutputHatch tAntimatter) {
+            return amOutputHatches.add(tAntimatter);
+        }
+
         return false;
     }
 
@@ -560,7 +628,12 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
     }
 
     protected long energyStorageCache;
+    protected long containmentCostCache;
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
+    private long getContainmentCost() {
+        return 10000000 + rollingCost;
+    }
 
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
@@ -580,11 +653,11 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
                 new TextWidget()
                     .setStringSupplier(
                         () -> StatCollector.translateToLocal("gui.LargeFusion.1") + " "
-                            + numberFormat.format(getEUVar())
+                            + numberFormat.format((double) getContainmentCost())
                             + " EU")
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.LongSyncer(this::getEUVar, this::setEUVar));
+            .widget(new FakeSyncWidget.LongSyncer(this::getContainmentCost, val -> containmentCostCache = val));
     }
 
     @Override
@@ -592,204 +665,6 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         return false;
     }
 
-    public static final String[] L0 = {
-        "                                               ",
-        "                                               ",
-        "                    FCCCCCF                    ",
-        "                   FFFJJJFFF                   ",
-        "                FFF FCCCCCF FFF                ",
-        "              FF               FF              ",
-        "            FF                   FF            ",
-        "           F                       F           ",
-        "          F                         F          ",
-        "         F                           F         ",
-        "        F                             F        ",
-        "       F                               F       ",
-        "      F                                 F      ",
-        "      F                                 F      ",
-        "     F                                   F     ",
-        "     F                                   F     ",
-        "    F                                     F    ",
-        "    F                                     F    ",
-        "    F                                     F    ",
-        "   F                                       F   ",
-        "  FFF                                     FFF  ",
-        "  CFC                                     CFC  ",
-        "  CJC                                     CJC  ",
-        "  CJC                                     CJC  ",
-        "  CJC                                     CJC  ",
-        "  CFC                                     CFC  ",
-        "  FFF                                     FFF  ",
-        "   F                                       F   ",
-        "    F                                     F    ",
-        "    F                                     F    ",
-        "    F                                     F    ",
-        "     F                                   F     ",
-        "     F                                   F     ",
-        "      F                                 F      ",
-        "      F                                 F      ",
-        "       F                               F       ",
-        "        F                             F        ",
-        "         F                           F         ",
-        "          F                         F          ",
-        "           F                       F           ",
-        "            FF                   FF            ",
-        "              FF               FF              ",
-        "                FFF FCCCCCF FFF                ",
-        "                   FFFJJJFFF                   ",
-        "                    FCCCCCF                    ",
-        "                                               ",
-        "                                               "};
-
-        public static final String[] L1 = {
-            "                                               ",
-            "                    FCCCCCF                    ",
-            "                   CC     CC                   ",
-            "                CCCCC     CCCCC                ",
-            "              CCCCCCC     CCCCCCC              ",
-            "            CCCCCCC FCCCCCF CCCCCCC            ",
-            "           CCCCC               CCCCC           ",
-            "          CCCC                   CCCC          ",
-            "         CCC                       CCC         ",
-            "        CCC                         CCC        ",
-            "       CCC                           CCC       ",
-            "      CCC                             CCC      ",
-            "     CCC                               CCC     ",
-            "     CCC                               CCC     ",
-            "    CCC                                 CCC    ",
-            "    CCC                                 CCC    ",
-            "   CCC                                   CCC   ",
-            "   CCC                                   CCC   ",
-            "   CCC                                   CCC   ",
-            "  CCC                                     CCC  ",
-            " FCCCF                                   FCCCF ",
-            " C   C                                   C   C ",
-            " C   C                                   C   C ",
-            " C   C                                   C   C ",
-            " C   C                                   C   C ",
-            " C   C                                   C   C ",
-            " FCCCF                                   FCCCF ",
-            "  CCC                                     CCC  ",
-            "   CCC                                   CCC   ",
-            "   CCC                                   CCC   ",
-            "   CCC                                   CCC   ",
-            "    CCC                                 CCC    ",
-            "    CCC                                 CCC    ",
-            "     CCC                               CCC     ",
-            "     CCC                               CCC     ",
-            "      CCC                             CCC      ",
-            "       CCC                           CCC       ",
-            "        CCC                         CCC        ",
-            "         CCC                       CCC         ",
-            "          CCCC                   CCCC          ",
-            "           CCCCC               CCCCC           ",
-            "            CCCCCCC FCCCCCF CCCCCCC            ",
-            "              CCCCCCC     CCCCCCC              ",
-            "                CCCCC     CCCCC                ",
-            "                   CC     CC                   ",
-            "                    FCCCCCF                    ",
-            "                                               "
-        };
-
-        public static final String[] L2 = {
-            "                    FCCCCCF                    ",
-            "                   CC     CC                   ",
-            "                CCCCC     CCCCC                ",
-            "              CCCCCHHHHHHHHHCCCCC              ",
-            "            CCCCHHHCC     CCHHHCCCC            ",
-            "           CCCHHCCCCC     CCCCCHHCCC           ",
-            "          CCHHCCCCC FCCCCCF CCCCCHHCC          ",
-            "         CCHCCCC               CCCCHCC         ",
-            "        CCHCCC                   CCCHCC        ",
-            "       CCHCC                       CCHCC       ",
-            "      CCHCC                         CCHCC      ",
-            "     CCHCC                           CCHCC     ",
-            "    CCHCC                             CCHCC    ",
-            "    CCHCC                             CCHCC    ",
-            "   CCHCC                               CCHCC   ",
-            "   CCHCC                               CCHCC   ",
-            "  CCHCC                                 CCHCC  ",
-            "  CCHCC                                 CCHCC  ",
-            "  CCHCC                                 CCHCC  ",
-            " CCHCC                                   CCHCC ",
-            "FCCHCCF                                 FCCHCCF",
-            "C  H  C                                 C  H  C",
-            "C  H  C                                 C  H  C",
-            "C  H  C                                 C  H  C",
-            "C  H  C                                 C  H  C",
-            "C  H  C                                 C  H  C",
-            "FCCHCCF                                 FCCHCCF",
-            " CCHCC                                   CCHCC ",
-            "  CCHCC                                 CCHCC  ",
-            "  CCHCC                                 CCHCC  ",
-            "  CCHCC                                 CCHCC  ",
-            "   CCHCC                               CCHCC   ",
-            "   CCHCC                               CCHCC   ",
-            "    CCHCC                             CCHCC    ",
-            "    CCHCC                             CCHCC    ",
-            "     CCHCC                           CCHCC     ",
-            "      CCHCC                         CCHCC      ",
-            "       CCHCC                       CCHCC       ",
-            "        CCHCCC                   CCCHCC        ",
-            "         CCHCCCC               CCCCHCC         ",
-            "          CCHHCCCCC FCCCCCF CCCCCHHCC          ",
-            "           CCCHHCCCCC     CCCCCHHCCC           ",
-            "            CCCCHHHCC     CCHHHCCCC            ",
-            "              CCCCCHHHHHHHHHCCCCC              ",
-            "                CCCCC     CCCCC                ",
-            "                   CC     CC                   ",
-            "                    FCCCCCF                    "
-        };
-
-        public static final String[] L3 = {
-            "                   FFFEEEFFF                   ",
-            "                FFFCC     CCFFF                ",
-            "              FFCCCHHHHHHHHHCCCFF              ",
-            "            FFCCHHHHHHHHHHHHHHHCCFF            ",
-            "           FCCHHHHHHHHHHHHHHHHHHHCCF           ",
-            "          FCHHHHHHHCC     CCHHHHHHHCF          ",
-            "         FCHHHHHCCCFFFIIIFFFCCCHHHHHCF         ",
-            "        FCHHHHCCFFF         FFFCCHHHHCF        ",
-            "       FCHHHCCFF               FFCCHHHCF       ",
-            "      FCHHHCFF                   FFCHHHCF      ",
-            "     FCHHHCF                       FCHHHCF     ",
-            "    FCHHHCF                         FCHHHCF    ",
-            "   FCHHHCF                           FCHHHCF   ",
-            "   FCHHHCF                           FCHHHCF   ",
-            "  FCHHHCF                             FCHHHCF  ",
-            "  FCHHHCF                             FCHHHCF  ",
-            " FCHHHCF                               FCHHHCF ",
-            " FCHHHCF                               FCHHHCF ",
-            " FCHHHCF                               FCHHHCF ",
-            "FCHHHCF                                 FCHHHCF",
-            "FCHHHCF                                 FCHHHCF",
-            "F HHH F                                 F HHH F",
-            "E HHH I                                 I HHH E",
-            "E HHH I                                 I HHH E",
-            "E HHH I                                 I HHH E",
-            "F HHH F                                 F HHH F",
-            "FCHHHCF                                 FCHHHCF",
-            "FCHHHCF                                 FCHHHCF",
-            " FCHHHCF                               FCHHHCF ",
-            " FCHHHCF                               FCHHHCF ",
-            " FCHHHCF                               FCHHHCF ",
-            "  FCHHHCF                             FCHHHCF  ",
-            "  FCHHHCF                             FCHHHCF  ",
-            "   FCHHHCF                           FCHHHCF   ",
-            "   FCHHHCF                           FCHHHCF   ",
-            "    FCHHHCF                         FCHHHCF    ",
-            "     FCHHHCF                       FCHHHCF     ",
-            "      FCHHHCFF                   FFCHHHCF      ",
-            "       FCHHHCCFF               FFCCHHHCF       ",
-            "        FCHHHHCCFFF         FFFCCHHHHCF        ",
-            "         FCHHHHHCCCFFFI~IFFFCCCHHHHHCF         ",
-            "          FCHHHHHHHCC     CCHHHHHHHCF          ",
-            "           FCCHHHHHHHHHHHHHHHHHHHCCF           ",
-            "            FFCCHHHHHHHHHHHHHHHCCFF            ",
-            "              FFCCCHHHHHHHHHCCCFF              ",
-            "                FFFCC     CCFFF                ",
-            "                   FFFEEEFFF                   "
-        };
         private static String[][] ForgeStructure = {{
             "                                                     ",
             "                                                     ",
