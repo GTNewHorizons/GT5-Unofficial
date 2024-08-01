@@ -110,9 +110,13 @@ public final class CheckRecipeResultRegistry {
         .ofFailure("backfiller_no_concrete");
 
     /**
-     * Black Hole Compressor did not have stabilized black hole
+     * Black Hole Compressor does not have an active black hole
      */
-    public static final CheckRecipeResult NO_BLACK_HOLE = SimpleCheckRecipeResult.ofFailure("no_blackhole");
+    public static final CheckRecipeResult NO_BLACK_HOLE = SimpleCheckRecipeResult.ofFailure("no_black_hole");
+    /**
+     * Black Hole Compressor became unstable
+     */
+    public static final CheckRecipeResult UNSTABLE_BLACK_HOLE = SimpleCheckRecipeResult.ofFailure("unstable_black_hole");
 
     public static final CheckRecipeResult NO_SEE_SKY = SimpleCheckRecipeResult.ofFailure("no_see_sky");
 

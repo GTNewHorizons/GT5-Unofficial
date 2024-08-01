@@ -347,6 +347,12 @@ public class GT_MetaTileEntity_IndustrialCompressor
     }
 
     @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(GT_Utility.roundUpVoltage(this.getMaxInputVoltage()));
+        logic.setAvailableAmperage(1L);
+    }
+
+    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
@@ -356,6 +362,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
         tag.setBoolean("hipEnabled", hipEnabled);
         tag.setBoolean("blackholeEnabled", blackholeEnabled);
         tag.setBoolean("blackholeOn", blackholeOn);
+        tag.setFloat("blackHoleStability", blackHoleStability);
     }
 
     @Override
@@ -378,8 +385,10 @@ public class GT_MetaTileEntity_IndustrialCompressor
                     + EnumChatFormatting.RESET);
         }
         if (tag.getBoolean("blackholeEnabled")) {
-            if (tag.getBoolean("blackholeOn")) currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Stabilized");
-
+            if (tag.getBoolean("blackholeOn")) {
+                currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Active");
+                currentTip.add(EnumChatFormatting.DARK_PURPLE + " Stability: " + EnumChatFormatting.BOLD + Math.round(tag.getFloat("blackHoleStability")) + "%");
+            }
             else currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Offline");
         }
     }
@@ -405,10 +414,21 @@ public class GT_MetaTileEntity_IndustrialCompressor
                 return compressorRecipes;
             }
 
-            @Nonnull
-            protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                //If recipe needs a black hole and one is not open, just wait
                 if (recipe.mSpecialValue > 0 && !blackholeOn) {
                     return CheckRecipeResultRegistry.NO_BLACK_HOLE;
+                }
+                return super.validateRecipe(recipe);
+            }
+
+            @Nonnull
+            protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
+                //If recipe needs a black hole and one is active but unstable, continuously void items
+                if (recipe.mSpecialValue > 0 && blackHoleStability <= 0) {
+                    return CheckRecipeResultRegistry.UNSTABLE_BLACK_HOLE;
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
@@ -418,6 +438,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
+        if (blackholeOn) blackHoleStability += 0.04F;
         if (cooling) {
             stopMachine(SimpleShutDownReason.ofCritical("overheated"));
         } else {
@@ -450,15 +471,18 @@ public class GT_MetaTileEntity_IndustrialCompressor
             } else coolingCounter += 1;
         }
         if (blackholeOn) {
-            if (blackHoleHatch != null) {
-                if (drain(blackHoleHatch, blackholeMaintainCost, false)) {
-                    drain(blackHoleHatch, blackholeMaintainCost, true);
-                    return;
-                }
-            }
-            explodeMultiblock();
+            if (blackHoleStability >= 0) blackHoleStability -= 0.05F;
+            else blackHoleStability = 0;
         }
     }
+
+            //TODO: Revisit for spacetime stabilization
+//            if (blackHoleHatch != null) {
+//                if (drain(blackHoleHatch, blackholeMaintainCost, false)) {
+//                    drain(blackHoleHatch, blackholeMaintainCost, true);
+//                }
+//            }
+
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
@@ -480,6 +504,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
         if (blackholeEnabled) {
             if (blackholeOn) {
                 blackholeOn = false;
+                blackHoleStability = 100;
             } else {
                 if (blackHoleHatch != null) {
                     if (drain(blackHoleHatch, blackholeCost, false)) {
