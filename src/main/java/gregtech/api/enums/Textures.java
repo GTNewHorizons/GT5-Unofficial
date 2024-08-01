@@ -87,6 +87,15 @@ public class Textures {
         MACHINE_CASING_TANK_14,
         MACHINE_CASING_TANK_0,
 
+        MACHINE_CASING_ITEM_PIPE_TIN,
+        MACHINE_CASING_ITEM_PIPE_BRASS,
+        MACHINE_CASING_ITEM_PIPE_ELECTRUM,
+        MACHINE_CASING_ITEM_PIPE_PLATINUM,
+        MACHINE_CASING_ITEM_PIPE_OSMIUM,
+        MACHINE_CASING_ITEM_PIPE_QUANTIUM,
+        MACHINE_CASING_ITEM_PIPE_FLUXED_ELECTRUM,
+        MACHINE_CASING_ITEM_PIPE_BLACK_PLUTONIUM,
+
         BLOCK_STEELEAF,
         BLOCK_ICHORIUM,
         BLOCK_FIRESTONE,
@@ -326,6 +335,17 @@ public class Textures {
         OVERLAY_FRONT_MULTI_CANNER_ACTIVE,
         OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW,
         OVERLAY_FRONT_MULTI_CANNER_GLOW,
+
+        LASER_PLATE,
+        MACHINE_CASING_LASER,
+        OVERLAY_FRONT_ENGRAVER,
+        OVERLAY_FRONT_ENGRAVER_ACTIVE,
+        OVERLAY_FRONT_ENGRAVER_ACTIVE_GLOW,
+        OVERLAY_FRONT_ENGRAVER_GLOW,
+        OVERLAY_FRONT_MULTI_LATHE,
+        OVERLAY_FRONT_MULTI_LATHE_ACTIVE,
+        OVERLAY_FRONT_MULTI_LATHE_ACTIVE_GLOW,
+        OVERLAY_FRONT_MULTI_LATHE_GLOW,
 
         MACHINE_CASING_RADIATIONPROOF,
         MACHINE_CASING_ADVANCEDRADIATIONPROOF,
@@ -1721,7 +1741,7 @@ public class Textures {
          * page 1: 0-15 GT casing 5, 22-26 GS dyson swarm, 48-57 GT casing 8, 63 EMT, 80-95 GT reinforced blocks, 96 casing 2 meta 6, 97 error casing
          * page 8: 0-111 TecTech, 112-127 GT casing 6
          * page 12: 0-127 GlodBlock
-         * page 16: 0-15 GT glass 1, 16-31 GT casing 9, 32-47 GT glass 2, 48-63 GT casing 10
+         * page 16: 0-15 GT glass 1, 16-31 GT casing 9, 32-47 GT glass 2, 48-63 GT casing 10, 64-79 GT casing 11
          * page 42: 0-126 glee8e, 127 KekzTech LSC base
          */
         // spotless:on
