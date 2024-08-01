@@ -116,24 +116,13 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         .<GT_MetaTileEntity_IndustrialElectromagneticSeparator>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            (transpose(
-                new String[][] {
-                    { "           ", "           ", "           ", " CD     DC ", " CDD   DDC ", "  CDD DDC  ",
-                        "   CDDDC   ", "    CCC    ", "           " },
-                    { "           ", "           ", "           ", " CD     DC ", " CDD   DDC ", "  CDD DDC  ",
-                        "   CDDDC   ", "    CCC    ", "           " },
-                    { "           ", "           ", "           ", "  CD   DC  ", "           ", "     D     ",
-                        "     C     ", "           ", "           " },
-                    { "           ", "           ", "           ", "  CD   DC  ", "           ", "     D     ",
-                        "     C     ", "           ", "           " },
-                    { "           ", "    BBB    ", "   BBBBB   ", " CDBBBBBDC ", "   BBBBB   ", "    BBB    ",
-                        "     D     ", "     C     ", "           " },
-                    { "           ", "    AAA    ", "   A   A   ", " CDA D ADC ", "   A   A   ", "    AAA    ",
-                        "     D     ", "     C     ", "           " },
-                    { "           ", "    BEB    ", "   BBBBB   ", " CDBBBBBDC ", "   BBBBB   ", "    BBB    ",
-                        "     D     ", "     C     ", "           " },
-                    { "    B~B    ", "   BBBBB   ", "  BBBBBBB  ", "CDBBBBBBBDC", "  BBBBBBB  ", "   BBBBB   ",
-                        "    BBB    ", "     D     ", "     C     " } })))
+            (new String[][] { { "  CCC  ", "       ", "       ", "       ", "       ", "  B~B  " },
+                { " CC CC ", "       ", "  BBB  ", "  AAA  ", "  BEB  ", " BBBBB " },
+                { "CC   CC", "       ", " BBBBB ", " A   A ", " BBBBB ", "BBBBBBB" },
+                { "C     C", "C     C", "CBBBBBC", "CA C AC", "CBBBBBC", "BBBBBBB" },
+                { "CC   CC", "       ", " BBBBB ", " A   A ", " BBBBB ", "BBBBBBB" },
+                { " CC CC ", "       ", "  BBB  ", "  AAA  ", "  BBB  ", " BBBBB " },
+                { "  CCC  ", "   C   ", "   C   ", "   C   ", "   C   ", "  BBB  " } }))
         .addElement('A', Glasses.chainAllGlasses())
         .addElement(
             'B',
@@ -146,8 +135,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                         onElementPass(
                             GT_MetaTileEntity_IndustrialElectromagneticSeparator::onCasingAdded,
                             ofBlock(GregTech_API.sBlockCasings10, 0)))))
-        .addElement('C', ofFrame(Materials.SteelMagnetic))
-        .addElement('D', ofFrame(Materials.IronMagnetic))
+        .addElement('C', ofFrame(Materials.NeodymiumMagnetic))
         .addElement(
             'E',
             buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
@@ -238,12 +226,11 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "ps")
             .addSeparator()
-            .beginStructureBlock(11, 8, 9, false)
+            .beginStructureBlock(7, 6, 7, false)
             .addController("Front Center")
             .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
             .addOtherStructurePart("Any glass", "x12")
-            .addOtherStructurePart("Magnetic Steel Frame Box", "x40")
-            .addOtherStructurePart("Magnetic Iron Frame Box", "x45")
+            .addOtherStructurePart("Magnetic Neodymium Frame Box", "x37")
             .addOtherStructurePart("Electromagnet Housing", "1 Block Above/Behind Controller", 2)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
@@ -255,13 +242,13 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 5, 7, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 5, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 5, 7, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 5, 0, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -277,7 +264,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         mExoticEnergyHatches.clear();
         mEnergyHatches.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 5, 7, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 5, 0)) return false;
         if (mCasingAmount < MIN_CASING) return false;
         if (mMagHatch == null) return false;
 
