@@ -1478,6 +1478,8 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_Canner,
     Machine_Multi_Solidifier,
 
+    Casing_Fluid_Solidifier,
+
     Machine_Multi_IndustrialCompressor,
     Machine_Multi_HIPCompressor,
     Machine_Multi_NeutroniumCompressor,
