@@ -339,7 +339,7 @@ public class GT_TileEntity_Ores extends TileEntity implements IAllSidedTexturedT
                             // Max applicable fortune
                             if (aFortune > 3) aFortune = 3;
                             int amount = aMinAmount
-                                + Math.max(new Random().nextInt(aFortune * (tIsRich ? 2 : 1) + 2) - 1, 0);
+                                + Math.max(worldObj.rand.nextInt(aFortune * (tIsRich ? 2 : 1) + 2) - 1, 0);
                             for (int i = 0; i < amount; i++) {
                                 rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
                             }
