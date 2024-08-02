@@ -40,7 +40,6 @@ import gregtech.loaders.postload.recipes.LatheRecipes;
 import gregtech.loaders.postload.recipes.MatterAmplifierRecipes;
 import gregtech.loaders.postload.recipes.MixerRecipes;
 import gregtech.loaders.postload.recipes.NEIHiding;
-import gregtech.loaders.postload.recipes.NeutroniumCompressorRecipes;
 import gregtech.loaders.postload.recipes.OreDictUnification;
 import gregtech.loaders.postload.recipes.PackagerRecipes;
 import gregtech.loaders.postload.recipes.PlasmaForgeRecipes;
@@ -102,7 +101,6 @@ public class GT_MachineRecipeLoader implements Runnable {
         new MatterAmplifierRecipes().run();
         new MixerRecipes().run();
         new NEIHiding().run();
-        new NeutroniumCompressorRecipes().run();
         new OreDictUnification().run();
         new PackagerRecipes().run();
         new PlasmaForgeRecipes().run();
