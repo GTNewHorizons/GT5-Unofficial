@@ -778,7 +778,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends GT_MetaTi
 
     @Override
     public boolean supportsVoidProtection() {
-        return true;
+        return false;
     }
 
     @Override
