@@ -76,8 +76,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     /**
      * Maximum amount of ticks between two lens swaps
      */
-    public static final int MAX_TIME_BETWEEN_SWAPS = GT_MetaTileEntity_PurificationPlant.CYCLE_TIME_TICKS
-        / (int) (100.0f / SUCCESS_PER_LENS);
+    public static final int MAX_TIME_BETWEEN_SWAPS = GT_MetaTileEntity_PurificationPlant.CYCLE_TIME_TICKS / 8;
     /**
      * Minimum amount of time between two lens swaps
      */
