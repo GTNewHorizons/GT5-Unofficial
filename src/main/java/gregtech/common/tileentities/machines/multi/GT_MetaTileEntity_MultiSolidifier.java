@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -23,7 +22,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -43,6 +41,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -309,7 +308,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         mHeight = 0;
         if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
             while (mHeight < 30) {
-                if (checkPiece(MS_MID, (-2 * mHeight) -4, 4, 0) && checkPiece(MS_MID, (2 * mHeight) + 4, 4, 0)) {
+                if (checkPiece(MS_MID, (-2 * mHeight) - 4, 4, 0) && checkPiece(MS_MID, (2 * mHeight) + 4, 4, 0)) {
                     mHeight++;
                 } else break;
             }
