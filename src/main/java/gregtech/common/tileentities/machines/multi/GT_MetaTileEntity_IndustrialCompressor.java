@@ -27,6 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -142,6 +143,8 @@ public class GT_MetaTileEntity_IndustrialCompressor
 
     private boolean blackholeEnabled = false;
     private boolean blackholeOn = false;
+    private boolean blackholeCatalyzing = false;
+    private int catalyzingCounter = 0;
     private float blackHoleStability = 100;
     private GT_MetaTileEntity_Hatch_Input blackHoleHatch;
 
@@ -151,7 +154,8 @@ public class GT_MetaTileEntity_IndustrialCompressor
     private int heat = 0;
     private boolean cooling = false;
 
-    private final FluidStack blackholeMaintainCost = new FluidStack((MaterialsUEVplus.SpaceTime).getMolten(1), 1);
+    private final FluidStack blackholeCatalyzingCost = (MaterialsUEVplus.SpaceTime).getMolten(1);
+    private int catalyzingCostModifier = 1;
     private final FluidStack blackholeCost = new FluidStack((MaterialsUEVplus.SpaceTime).getMolten(1), 16000);
 
     private boolean addBlackHoleHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -438,7 +442,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (blackholeOn) blackHoleStability += 0.04F;
+        if (blackholeOn && blackHoleStability < 100) blackHoleStability += 0.04F;
         if (cooling) {
             stopMachine(SimpleShutDownReason.ofCritical("overheated"));
         } else {
@@ -471,18 +475,22 @@ public class GT_MetaTileEntity_IndustrialCompressor
             } else coolingCounter += 1;
         }
         if (blackholeOn) {
+            if (blackholeCatalyzing && blackHoleHatch != null) {
+                FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
+                if (drain(blackHoleHatch, totalCost, false)) {
+                    drain(blackHoleHatch, totalCost, true);
+                    if (blackHoleStability < 100) blackHoleStability += 0.1F;
+                }
+                if (catalyzingCounter >= 100) {
+                    catalyzingCostModifier *= 2;
+                    catalyzingCounter = 0;
+                }
+                catalyzingCounter += 1;
+            }
             if (blackHoleStability >= 0) blackHoleStability -= 0.05F;
             else blackHoleStability = 0;
         }
     }
-
-            //TODO: Revisit for spacetime stabilization
-//            if (blackHoleHatch != null) {
-//                if (drain(blackHoleHatch, blackholeMaintainCost, false)) {
-//                    drain(blackHoleHatch, blackholeMaintainCost, true);
-//                }
-//            }
-
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
@@ -490,14 +498,37 @@ public class GT_MetaTileEntity_IndustrialCompressor
         builder.widget(
             new ButtonWidget().setOnClick((clickData, widget) -> toggleBlackHole())
                 .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
-                    if (!blackholeOn) ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_NONE);
-                    else ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_ALL);
-                    return ret.toArray(new IDrawable[0]);
+                    if (blackholeOn) {
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
+                            GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
+                    } else {
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                            GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
+                    }
                 })
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.black_hole_on"))
                 .setPos(80, 91)
-                .setSize(16, 16));
+                .setSize(16, 16))
+            .widget(
+                new ButtonWidget().setOnClick((clickData, widget) -> toggleBlackHoleCatalyzation())
+                    .setBackground(() -> {
+                        if (blackholeCatalyzing) {
+                            return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
+                                GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
+                        } else {
+                            return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                                GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
+                        }
+                    })
+                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.black_hole_catalyze"))
+                    .setPos(98, 91)
+                    .setSize(16, 16));
+    }
+
+    private void toggleBlackHoleCatalyzation() {
+        if (blackholeEnabled) {
+            blackholeCatalyzing = !blackholeCatalyzing;
+        }
     }
 
     private void toggleBlackHole() {
@@ -505,6 +536,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
             if (blackholeOn) {
                 blackholeOn = false;
                 blackHoleStability = 100;
+                catalyzingCostModifier = 0;
             } else {
                 if (blackHoleHatch != null) {
                     if (drain(blackHoleHatch, blackholeCost, false)) {
