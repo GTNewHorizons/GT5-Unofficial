@@ -21,8 +21,12 @@ public class UVTreatmentLensCycle {
         return lenses.get(currentLens);
     }
 
-    public void advance() {
-        currentLens = (currentLens + 1) % lenses.size();
+    public boolean advance() {
+        if (currentLens < lenses.size() - 1) {
+            currentLens = currentLens + 1;
+            return true;
+        }
+        return false;
     }
 
     public void reset() {

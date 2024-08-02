@@ -81,7 +81,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     /**
      * Minimum amount of time between two lens swaps
      */
-    public static final int MIN_TIME_BETWEEN_SWAPS = MAX_TIME_BETWEEN_SWAPS / 6;
+    public static final int MIN_TIME_BETWEEN_SWAPS = MAX_TIME_BETWEEN_SWAPS / 4;
 
     private int numSwapsPerformed = 0;
     private int timeUntilNextSwap = 0;
@@ -373,7 +373,12 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
 
             // If the time until the next swap became zero, move on to the next requested lens
             if (timeUntilNextSwap == 0) {
-                lensCycle.advance();
+                boolean advanced = lensCycle.advance();
+                if (!advanced) {
+                    // cycle didn't advance, we arrived at the end. This mainly means we want to stop the cycle
+                    // The easiest way to do this is by setting the time until next swap larger than the recipe time
+                    timeUntilNextSwap = mMaxProgresstime + 1;
+                }
             }
         }
 
@@ -420,6 +425,9 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
                 "Current lens requested: " + EnumChatFormatting.GREEN
                     + lensCycle.current()
                         .getDisplayName());
+            if (removedTooEarly) {
+                infoData.add("Removed lens too early. Failing this recipe.");
+            }
         }
         return infoData.toArray(new String[] {});
     }
