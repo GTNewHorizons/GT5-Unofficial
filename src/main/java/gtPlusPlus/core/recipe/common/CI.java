@@ -9,6 +9,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
@@ -515,7 +516,7 @@ public class CI {
         }
 
         if (aPrefix == OrePrefixes.circuit) {
-            return ItemUtils.getOrePrefixStack(OrePrefixes.circuit, aMaterial_Circuits[aTier], aAmount);
+            return GT_OreDictUnificator.get(OrePrefixes.circuit, aMaterial_Circuits[aTier], aAmount);
         }
 
         // Check for Cables first, catch SuperConductor case and swap to wire.
