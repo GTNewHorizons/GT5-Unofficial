@@ -55,10 +55,14 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.loader.Loaders;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.GTValues;
 =======
+=======
+import goodgenerator.items.MyMaterial;
+>>>>>>> 97ed546ec8 (Add antimatter forge mechanics)
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.GT_Values;
@@ -121,6 +125,29 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase
 public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<AntimatterForge>
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
+    
+    private static final FluidStack[] magneticUpgrades = { Materials.TengamAttuned.getMolten(1L), MaterialsUEVplus.Time.getMolten(1L) };
+    private static final FluidStack[] gravityUpgrades = { MaterialsUEVplus.SpaceTime.getMolten(1L), MaterialsUEVplus.Space.getMolten(1L), MaterialsUEVplus.Eternity.getMolten(1L) };
+    private static final FluidStack[] containmentUpgrades = { MyMaterial.shirabon.getMolten(1), MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1L) };
+    private static final FluidStack[] activationUpgrades = { MyMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1), MyMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1) };
+
+    private static final int MAGNETIC_ID = 0;
+    private static final int GRAVITY_ID = 1;
+    private static final int CONTAINMENT_ID = 2;
+    private static final int ACTIVATION_ID = 3;
+
+    private static final int passiveBaseMult = 1000;
+    private static final int activeBaseMult = 10000;
+
+    private static final float passiveBaseExp = 1.5f;
+    private static final float activeBaseExp = 1.5f;
+    private static final float coefficientBaseExp = 0.5f;
+    private static final float baseSkew = 0.2f;
+
+    private float[] modifiers = {0.0f, 0.0f, 0.0f, 0.0f};
+    private FluidStack[] upgradeFluids = {null, null, null, null};
+    private int[] fluidConsumptions = {0, 0, 0, 0};
+
     public static final String MAIN_NAME = "antimatterForge";
     public static final int M = 1_000_000;
     private int speed = 100;
@@ -179,13 +206,18 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
                     lazy(
                         x -> GT_HatchElementBuilder.<AntimatterForge>builder()
                             .anyOf(
+<<<<<<< HEAD
                                 GT_HatchElement.InputHatch.or(GT_HatchElement.InputBus))
 >>>>>>> 6afb7f13f6 (Add protomatter, implement new structure and make it work)
+=======
+                                GT_HatchElement.InputHatch)
+>>>>>>> 97ed546ec8 (Add antimatter forge mechanics)
                             .adder(AntimatterForge::addFluidIO)
                             .casingIndex(x.textureIndex(2))
                             .dot(1)
                             .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
                 .addElement(
+<<<<<<< HEAD
                     'G',
                     lazy(
 <<<<<<< HEAD
@@ -206,6 +238,8 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
                             .dot(2)
                             .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
                 .addElement(
+=======
+>>>>>>> 97ed546ec8 (Add antimatter forge mechanics)
                     'E',
                     lazy(
                         x -> buildHatchAdder(AntimatterForge.class)
@@ -267,6 +301,37 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         return new AntimatterForge(MAIN_NAME);
 >>>>>>> d4f1bf606f (Implement the start of the processing of SSASS)
     }
+
+
+
+    /* 
+     * 
+     * Produces (Antimatter^0.6) * N(0.2, 1) of antimatter per cycle, consuming Protomatter equal to the change in Antimatter.
+     * The change can be negative! (Normal Distribution)
+     * Consumes (Antimatter * 1000)^(1.5) EU/t passively. The consumption will decay by 0.5% every tick if no antimatter is found.
+     * Uses (Antimatter * 10000)^1.5 EU per operation to produce antimatter.
+     * 
+     * Every cycle, the lowest amount of antimatter in the 16 antimatter hatches is recoded.
+     * All other hatches will have their antimatter amount reduced
+     * 
+     * 
+     * If the machine runs out of energy or protomatter during a cycle, one tenth of the antimatter will be voided!
+     * 
+     * Can be supplied with stabilization fluids to improve antimatter generation.
+     * Magnetic Stabilization (Uses Antimatter^(1/2) per operation)
+     * 1. Molten Purified Tengam        - Passive cost exponent -0.15
+     * 2. Tachyon Rich Fluid            - Passive cost exponent -0.30
+     * Gravity Stabilization (Uses Antimatter^(1/2) per operation)
+     * 1. Molten Spacetime              - Active cost exponent -0.05
+     * 2. Spatially Enlarged Fluid      - Active cost exponent -0.10
+     * 3. Molten Eternity               - Active cost exponent -0.15
+     * Containment Stabilization (Uses Antimatter^(2/7) per operation)
+     * 1. Molten Shirabon               - Production exponent +0.05
+     * 2. Molten MHDCSM                 - Production exponent +0.10
+     * Activation Stabilization (Uses Antimatter^(1/3) per operation)
+     * 1. Depleted Naquadah Fuel Mk V   - Distribution skew +0.05
+     * 2. Depleted Naquadah Fuel Mk VI  - Distribution skew +0.10
+     */
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
@@ -562,6 +627,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         return GTValues.V[tier()] * getMaxPara() * extraPara(100) / 32;
     }
 
+<<<<<<< HEAD
 =======
 >>>>>>> d4f1bf606f (Implement the start of the processing of SSASS)
     public boolean turnCasingActive(boolean status) {
@@ -591,6 +657,8 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         return true;
     }
 
+=======
+>>>>>>> 97ed546ec8 (Add antimatter forge mechanics)
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
@@ -632,6 +700,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
 
     @Override
     public CheckRecipeResult checkProcessing() {
+        startRecipeProcessing();
         FluidStack[] antimatterStored = new FluidStack[16];
         long totalAntimatterAmount = 0;
         long minAntimatterAmount = Long.MAX_VALUE;
@@ -728,38 +797,103 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
 >>>>>>> 6afb7f13f6 (Add protomatter, implement new structure and make it work)
         }
 
+        //Check for upgrade fluids
+        long protomatterCost = calculateProtoMatterCost(totalAntimatterAmount);
+        long containedProtomatter = 0;
+
+        fluidConsumptions[MAGNETIC_ID] = (int)Math.ceil(Math.pow(totalAntimatterAmount, 0.5));
+        fluidConsumptions[GRAVITY_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 0.5));
+        fluidConsumptions[CONTAINMENT_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 2/7));
+        fluidConsumptions[ACTIVATION_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 1/3));
+
+        for (int i = 0; i < modifiers.length; i++) {
+            modifiers[i] = 0.0f;
+            upgradeFluids[i] = null;
+        }
+
+        List<FluidStack> inputFluids = getStoredFluids();
+        for (int i = 0; i < inputFluids.size(); i++) {
+            FluidStack inputFluid = inputFluids.get(i);
+            if (inputFluid.isFluidEqual(MaterialsUEVplus.Protomatter.getFluid(1))) {
+                containedProtomatter += inputFluid.amount;
+                continue;
+            }
+            for (int tier = 1; tier <= magneticUpgrades.length; tier++) {
+                if (inputFluid.isFluidEqual(magneticUpgrades[tier-1])) {
+                    if (inputFluid.amount >= fluidConsumptions[MAGNETIC_ID]) {
+                        modifiers[MAGNETIC_ID] = -0.15f * tier;
+                        upgradeFluids[MAGNETIC_ID] = inputFluid;
+                    }
+                }
+            }
+            for (int tier = 1; tier <= gravityUpgrades.length; tier++) {
+                if (inputFluid.isFluidEqual(gravityUpgrades[tier-1])) {
+                    if (inputFluid.amount >= fluidConsumptions[GRAVITY_ID]) {
+                        modifiers[GRAVITY_ID] = -0.05f * tier;
+                        upgradeFluids[GRAVITY_ID] = inputFluid;
+                    }
+                }
+            }
+            for (int tier = 1; tier <= containmentUpgrades.length; tier++) {
+                if (inputFluid.isFluidEqual(containmentUpgrades[tier-1])) {
+                    if (inputFluid.amount >= fluidConsumptions[CONTAINMENT_ID]) {
+                        modifiers[CONTAINMENT_ID] = 0.05f * tier;
+                        upgradeFluids[CONTAINMENT_ID] = inputFluid;
+                    }
+                }
+            }
+            for (int tier = 1; tier <= activationUpgrades.length; tier++) {
+                if (inputFluid.isFluidEqual(activationUpgrades[tier-1])) {
+                    if (inputFluid.amount >= fluidConsumptions[ACTIVATION_ID]) {
+                        modifiers[ACTIVATION_ID] = 0.05f * tier;
+                        upgradeFluids[ACTIVATION_ID] = inputFluid;
+                    }
+                }
+            }
+
+        }
+
         long energyCost = calculateEnergyCost(totalAntimatterAmount);
 
         //If we run out of energy, reduce contained antimatter by 10%
         if (!drainEnergyInput(energyCost)) {
-            for (int i = 0; i < amOutputHatches.size(); i++) {
-                if (amOutputHatches.get(i) == null || !amOutputHatches.get(i).isValid() || amOutputHatches.get(i).getFluid() == null) continue;
-                FluidStack fluid = amOutputHatches.get(i).getFluid().copy();
-                amOutputHatches.get(i).drain((int)Math.floor(fluid.amount * 0.1), true);
-            }
+            decimateAntimatter();
             stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+            endRecipeProcessing();
             return CheckRecipeResultRegistry.insufficientPower(energyCost);
-        }
-
-        long protomatterCost = calculateProtoMatterCost(totalAntimatterAmount);
-        long containedProtomatter = 0;
-        List<FluidStack> inputFluids = getStoredFluids();
-        for (int i = 0; i < inputFluids.size(); i++) {
-            if (inputFluids.get(i).isFluidEqual(MaterialsUEVplus.Protomatter.getFluid(1))) {
-                containedProtomatter += inputFluids.get(i).amount;
-            }
         }
 
         System.out.println("\nCalculating antimatter cycle:");
         System.out.format("Antimatter found: %d\n", totalAntimatterAmount);
         System.out.format("Protomatted found: %d\n", containedProtomatter);
 
-        distributeAntimatterToHatch(amOutputHatches, totalAntimatterAmount, Math.min(containedProtomatter/protomatterCost, 1.0));
+        //Drain upgrade fluids
+        for (int i = 0; i < upgradeFluids.length; i++) {
+            FluidStack upgradeFluid = upgradeFluids[i];
+            if (upgradeFluid != null) {
+                for (FluidStack inputFluid : inputFluids.toArray(new FluidStack[0])) {
+                    if (inputFluid.isFluidEqual(upgradeFluid)) {
+                        inputFluid.amount -= fluidConsumptions[i];
+                    }
+                }
+            }
+        }
+
+        int antimatterChange = distributeAntimatterToHatch(amOutputHatches, totalAntimatterAmount, containedProtomatter);
+
+        //We didn't have enough protomatter, reduce antimatter by 10% and stop the machine.
+        if (!this.depleteInput(MaterialsUEVplus.Protomatter.getFluid((long)Math.abs(antimatterChange)))) {
+            decimateAntimatter();
+            stopMachine(ShutDownReasonRegistry.outOfFluid(MaterialsUEVplus.Protomatter.getFluid(1L)));
+            endRecipeProcessing();
+            return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+        }
 
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         mEfficiencyIncrease = 10000;
         mMaxProgresstime = speed;
 
+        endRecipeProcessing();
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -782,12 +916,13 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         } else {
             rollingCost *= 0.995;
         }
-        return 10_000_000 + rollingCost;
+        return 10_000_000 + (long) Math.pow(rollingCost, 1.5 + modifiers[MAGNETIC_ID]);
     }
 
     //How much energy is consumed when machine does one operation
+    //Base formula: (Antimatter * 10000) ^ (1.5) 
     private long calculateEnergyCost(long antimatterAmount) {
-        return antimatterAmount^2;
+        return (long) Math.pow(antimatterAmount * activeBaseMult, activeBaseExp + modifiers[GRAVITY_ID]);
     }
 
 <<<<<<< HEAD
@@ -802,33 +937,31 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
         return antimatterAmount + 1;
     }
 
-    private float cycles = 0;
-    private float positive = 0;
+    private void decimateAntimatter() {
+        for (int i = 0; i < amOutputHatches.size(); i++) {
+            if (amOutputHatches.get(i) == null || !amOutputHatches.get(i).isValid() || amOutputHatches.get(i).getFluid() == null) continue;
+            FluidStack fluid = amOutputHatches.get(i).getFluid().copy();
+            amOutputHatches.get(i).drain((int)Math.floor(fluid.amount * 0.1), true);
+        }
+    }
 
-    private void distributeAntimatterToHatch(List<AntimatterOutputHatch> hatches, long totalAntimatterAmount, double protomatterRatio) {
-        double coeff = Math.pow(((double)totalAntimatterAmount), 0.33);
-        System.out.println(coeff);
-
+    private int distributeAntimatterToHatch(List<AntimatterOutputHatch> hatches, long totalAntimatterAmount, long protomatterAmount) {
+        double coeff = Math.pow((totalAntimatterAmount), 0.5 + modifiers[CONTAINMENT_ID]);
         int difference = 0;
 
         for (AntimatterOutputHatch hatch : hatches) {
             //Skewed normal distribution multiplied by coefficient from antimatter amount
-            //If we don't have enough protomatter, the amount is adjusted accordingly for positive values while negative values are fully deducted
             //We round up so you are guaranteed to be antimatter positive on the first run (reduces startup RNG)
-            int change = (int) (Math.ceil((r.nextGaussian() + 0.05) * coeff));
+            int change = (int) (Math.ceil((r.nextGaussian() + baseSkew + modifiers[ACTIVATION_ID]) * (coeff / 16)));
             difference += change;
             if (change >= 0) {
-                hatch.fill(MaterialsUEVplus.Antimatter.getFluid((long)(change * protomatterRatio)), true);
+                hatch.fill(MaterialsUEVplus.Antimatter.getFluid((long)(change)), true);
             } else {
                 hatch.drain(-change, true);
             }
-            cycles += 1;
-            if (difference >= 0) {
-                positive += 1;
-            }
         }
         System.out.format("Change this cycle: %d\n", difference);
-        System.out.format("Ratio of positive cycles: %f\n", positive/cycles);
+        return difference;
     }
 
 <<<<<<< HEAD
@@ -2120,7 +2253,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "                                                     ",
             "                                                     ",
             "                         DAD                         ",
-            "                         AGA                         ",
+            "                         AFA                         ",
             "                         D D                         ",
             "                                                     "
         },{
@@ -2174,7 +2307,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "                                                     ",
             "                                                     ",
             "                         DAD                         ",
-            "                         AGA                         ",
+            "                         AFA                         ",
             "                         D D                         ",
             "                                                     "
         },{
@@ -2228,7 +2361,7 @@ public class AntimatterForge extends GT_MetaTileEntity_ExtendedPowerMultiBlockBa
             "                                                     ",
             "                                                     ",
             "                         DAD                         ",
-            "                         AGA                         ",
+            "                         AFA                         ",
             "                         D D                         ",
             "                                                     "
         },{

@@ -19,7 +19,7 @@ public class AntimatterOutputHatch extends GT_MetaTileEntity_Hatch_Output {
         super(aID, aName, aNameRegional, 11);
         this.mDescriptionArray[1] = "Stores Antimatter";
         this.mDescriptionArray[2] = "Antimatter can be inserted from any side";
-        this.mDescriptionArray[3] = "Capacity: 100 000 000L";
+        this.mDescriptionArray[3] = "Capacity: 16,384,000L";
     }
 
     public AntimatterOutputHatch(String aName, int aTier, String[] aDescription,
@@ -35,7 +35,7 @@ public class AntimatterOutputHatch extends GT_MetaTileEntity_Hatch_Output {
 
     @Override
     public int getCapacity() {
-        return 100_000_000;
+        return 16_384_000;
     }
 
     @Override
