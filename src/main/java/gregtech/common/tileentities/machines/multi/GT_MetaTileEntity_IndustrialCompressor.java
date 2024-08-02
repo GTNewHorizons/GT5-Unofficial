@@ -14,7 +14,6 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -40,7 +39,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
@@ -312,7 +310,16 @@ public class GT_MetaTileEntity_IndustrialCompressor
                 true);
         }
         if (stackSize.stackSize > 3) {
-            built += survivialBuildPiece(STRUCTURE_PIECE_NEUTRONIUM, stackSize, -8, 2, 0, elementBudget, env, false, true);
+            built += survivialBuildPiece(
+                STRUCTURE_PIECE_NEUTRONIUM,
+                stackSize,
+                -8,
+                2,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
         }
         return built;
     }
@@ -391,9 +398,12 @@ public class GT_MetaTileEntity_IndustrialCompressor
         if (tag.getBoolean("blackholeEnabled")) {
             if (tag.getBoolean("blackholeOn")) {
                 currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Active");
-                currentTip.add(EnumChatFormatting.DARK_PURPLE + " Stability: " + EnumChatFormatting.BOLD + Math.round(tag.getFloat("blackHoleStability")) + "%");
-            }
-            else currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Offline");
+                currentTip.add(
+                    EnumChatFormatting.DARK_PURPLE + " Stability: "
+                        + EnumChatFormatting.BOLD
+                        + Math.round(tag.getFloat("blackHoleStability"))
+                        + "%");
+            } else currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Offline");
         }
     }
 
@@ -421,7 +431,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
-                //If recipe needs a black hole and one is not open, just wait
+                // If recipe needs a black hole and one is not open, just wait
                 if (recipe.mSpecialValue > 0 && !blackholeOn) {
                     return CheckRecipeResultRegistry.NO_BLACK_HOLE;
                 }
@@ -430,7 +440,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
 
             @Nonnull
             protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
-                //If recipe needs a black hole and one is active but unstable, continuously void items
+                // If recipe needs a black hole and one is active but unstable, continuously void items
                 if (recipe.mSpecialValue > 0 && blackHoleStability <= 0) {
                     return CheckRecipeResultRegistry.UNSTABLE_BLACK_HOLE;
                 }

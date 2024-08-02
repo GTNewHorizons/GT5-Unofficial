@@ -116,7 +116,8 @@ public final class CheckRecipeResultRegistry {
     /**
      * Black Hole Compressor became unstable
      */
-    public static final CheckRecipeResult UNSTABLE_BLACK_HOLE = SimpleCheckRecipeResult.ofFailure("unstable_black_hole");
+    public static final CheckRecipeResult UNSTABLE_BLACK_HOLE = SimpleCheckRecipeResult
+        .ofFailure("unstable_black_hole");
 
     public static final CheckRecipeResult NO_SEE_SKY = SimpleCheckRecipeResult.ofFailure("no_see_sky");
 

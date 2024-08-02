@@ -1,17 +1,16 @@
 package gregtech.nei.formatter;
 
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.RecipeDisplayInfo;
-import net.minecraft.util.StatCollector;
-
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.nei.RecipeDisplayInfo;
+
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class BlackHoleSpecialValueFormatter implements INEISpecialInfoFormatter{
+public class BlackHoleSpecialValueFormatter implements INEISpecialInfoFormatter {
 
     public static final BlackHoleSpecialValueFormatter INSTANCE = new BlackHoleSpecialValueFormatter();
 
@@ -26,6 +25,6 @@ public class BlackHoleSpecialValueFormatter implements INEISpecialInfoFormatter{
         }
 
         return Collections.singletonList(text);
-            //StatCollector.translateToLocalFormatted("GT5U.nei.start_eu", GT_Utility.formatNumbers(), ));
+        // StatCollector.translateToLocalFormatted("GT5U.nei.start_eu", GT_Utility.formatNumbers(), ));
     }
 }

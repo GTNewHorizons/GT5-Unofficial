@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 
-import gregtech.nei.formatter.BlackHoleSpecialValueFormatter;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -73,6 +72,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_RecipeMapUtil;
 import gregtech.api.util.GT_Utility;
+import gregtech.nei.formatter.BlackHoleSpecialValueFormatter;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
