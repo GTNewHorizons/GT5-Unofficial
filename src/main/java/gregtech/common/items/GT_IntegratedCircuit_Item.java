@@ -69,7 +69,7 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
         GT_ModHandler.addShapelessCraftingRecipe(
             ItemList.Circuit_Integrated.getWithDamage(1L, 0L),
             GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { OrePrefixes.circuit.get(Materials.Basic) });
+            new Object[] { OrePrefixes.circuit.get(Materials.LV) });
         long bits = GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE;
         GT_ModHandler.addCraftingRecipe(
             ItemList.Circuit_Integrated.getWithDamage(1L, 1L),

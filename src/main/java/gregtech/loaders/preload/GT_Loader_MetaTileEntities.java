@@ -3757,7 +3757,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             1000,
             true);
         GT_OreDictUnificator.registerOre(
-            OrePrefixes.pipeSmall.get(Materials.Ultimate),
+            OrePrefixes.pipeSmall.get(Materials.ZPM),
             new GT_MetaPipeEntity_Fluid(
                 5165,
                 "GT_Pipe_HighPressure_Small",
@@ -3768,7 +3768,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1500,
                 true).getStackForm(1L));
         GT_OreDictUnificator.registerOre(
-            OrePrefixes.pipeMedium.get(Materials.Ultimate),
+            OrePrefixes.pipeMedium.get(Materials.ZPM),
             new GT_MetaPipeEntity_Fluid(
                 5166,
                 "GT_Pipe_HighPressure",
@@ -3779,7 +3779,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1500,
                 true).getStackForm(1L));
         GT_OreDictUnificator.registerOre(
-            OrePrefixes.pipeLarge.get(Materials.Ultimate),
+            OrePrefixes.pipeLarge.get(Materials.ZPM),
             new GT_MetaPipeEntity_Fluid(
                 5167,
                 "GT_Pipe_HighPressure_Large",

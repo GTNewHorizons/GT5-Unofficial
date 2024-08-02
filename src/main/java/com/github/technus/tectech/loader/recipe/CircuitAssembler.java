@@ -43,7 +43,7 @@ public class CircuitAssembler implements Runnable {
         // Parametrizer Memory Card
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gold, 4))
             .itemOutputs(CustomItemList.parametrizerMemory.get(1))
             .fluidInputs(Materials.Plastic.getMolten(72))

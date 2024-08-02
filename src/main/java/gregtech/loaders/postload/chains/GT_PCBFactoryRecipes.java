@@ -50,7 +50,7 @@ public class GT_PCBFactoryRecipes {
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 32),
                 ItemList.Machine_ZPM_CircuitAssembler.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.Master), 16 },
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 16 },
                 ItemList.Robot_Arm_ZPM.get(8))
             .fluidInputs(new FluidStack(solderLuV, 144 * 36), Materials.Naquadah.getMolten(144 * 18))
             .itemOutputs(ItemList.PCBFactory.get(1))

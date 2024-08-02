@@ -40,7 +40,7 @@ public class GregtechRocketFuelGenerator {
             CI.bitsd,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Machine_Multi_DieselEngine.get(1), 'P',
                 ItemList.Electric_Piston_IV, 'E', ItemList.Field_Generator_EV, 'C',
-                OrePrefixes.circuit.get(Materials.Master), 'W', OrePrefixes.cableGt08.get(Materials.Platinum), 'G',
+                OrePrefixes.circuit.get(Materials.LuV), 'W', OrePrefixes.cableGt08.get(Materials.Platinum), 'G',
                 ALLOY.MARAGING350.getGear(1) });
 
         GT_ModHandler.addCraftingRecipe(
@@ -74,7 +74,7 @@ public class GregtechRocketFuelGenerator {
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
-                ItemList.Electric_Motor_EV, 'C', OrePrefixes.circuit.get(Materials.Elite), 'W',
+                ItemList.Electric_Motor_EV, 'C', OrePrefixes.circuit.get(Materials.IV), 'W',
                 OrePrefixes.cableGt02.get(Materials.Aluminium), 'G', ALLOY.TANTALLOY_61.getGear(1) });
 
         GT_ModHandler.addCraftingRecipe(
@@ -83,7 +83,7 @@ public class GregtechRocketFuelGenerator {
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
-                ItemList.Electric_Motor_IV, 'C', OrePrefixes.circuit.get(Materials.Master), 'W',
+                ItemList.Electric_Motor_IV, 'C', OrePrefixes.circuit.get(Materials.LuV), 'W',
                 OrePrefixes.cableGt02.get(Materials.Platinum), 'G', ALLOY.STELLITE.getGear(1) });
         final ItemStack INGREDIENT_1 = CI.electricPiston_LuV;
         final ItemStack INGREDIENT_2 = CI.electricMotor_LuV;
@@ -93,7 +93,7 @@ public class GregtechRocketFuelGenerator {
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_LuV, 'P', INGREDIENT_1, 'E', INGREDIENT_2, 'C',
-                OrePrefixes.circuit.get(Materials.Ultimate), 'W', OrePrefixes.cableGt02.get(Materials.Tungsten), 'G',
+                OrePrefixes.circuit.get(Materials.ZPM), 'W', OrePrefixes.cableGt02.get(Materials.Tungsten), 'G',
                 ALLOY.ZERON_100.getGear(1) });
     }
 }

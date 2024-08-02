@@ -1,6 +1,8 @@
 package com.github.technus.tectech.recipe;
 
+import static com.github.technus.tectech.recipe.TecTechRecipeMaps.researchStationFakeRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblylineVisualRecipes;
+import static gregtech.api.util.GT_RecipeConstants.RESEARCH_STATION_DATA;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,16 +54,17 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         }
         researchAmperage = GT_Utility.clamp(researchAmperage, 1, Short.MAX_VALUE);
         computationRequiredPerSec = GT_Utility.clamp(computationRequiredPerSec, 1, Short.MAX_VALUE);
-        TecTechRecipeMaps.researchStationFakeRecipes.addFakeRecipe(
-            false,
-            new ItemStack[] { aResearchItem },
-            new ItemStack[] { aOutput },
-            new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Writes Research result") },
-            null,
-            null,
-            totalComputationRequired,
-            researchEUt,
-            researchAmperage | computationRequiredPerSec << 16);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(aResearchItem)
+            .itemOutputs(aOutput)
+            .special(ItemList.Tool_DataStick.getWithName(1L, "Writes Research result"))
+            .duration(totalComputationRequired)
+            .eut(researchEUt)
+            .metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
+            .noOptimize()
+            .ignoreCollision()
+            .fake()
+            .addTo(researchStationFakeRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(aInputs)
@@ -186,16 +189,19 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         tPersistentHash = tPersistentHash * 31 + researchEUt;
         tPersistentHash = tPersistentHash * 31 + assDuration;
         tPersistentHash = tPersistentHash * 31 + assEUt;
-        TecTechRecipeMaps.researchStationFakeRecipes.addFakeRecipe(
-            false,
-            new ItemStack[] { aResearchItem },
-            new ItemStack[] { aOutput },
-            new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Writes Research result") },
-            null,
-            null,
-            totalComputationRequired,
-            researchEUt,
-            researchAmperage | computationRequiredPerSec << 16);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(aResearchItem)
+            .itemOutputs(aOutput)
+            .special(ItemList.Tool_DataStick.getWithName(1L, "Writes Research result"))
+            .duration(totalComputationRequired)
+            .eut(researchEUt)
+            .metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
+            .noOptimize()
+            .ignoreCollision()
+            .fake()
+            .addTo(researchStationFakeRecipes);
+
         assemblylineVisualRecipes.addFakeRecipe(
             false,
             tInputs,

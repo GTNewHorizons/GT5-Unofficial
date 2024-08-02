@@ -36,7 +36,7 @@ public class BW_Worldgen_Ore_Layer_Space extends BW_OreLayer {
 
     /**
      * Code-only Constructor Will work with NEI
-     * 
+     *
      * @param aName       veinname, should start with mix.
      * @param pDefault    enabled?
      * @param pMinY
@@ -64,24 +64,6 @@ public class BW_Worldgen_Ore_Layer_Space extends BW_OreLayer {
             .get("worldgen.GaGregBartworks." + this.mWorldGenName, "Density", pDensity));
         mSize = ((short) Math
             .max(1, GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName, "Size", pSize)));
-        // short pPrimary = primaryBW instanceof Materials ? (short)((Materials)primaryBW).mMetaItemSubID : (primaryBW
-        // instanceof Werkstoff ? ((Werkstoff)primaryBW).getmID() : 0);
-        // short pSecondary = secondaryBW instanceof Materials ? (short)((Materials)secondaryBW).mMetaItemSubID :
-        // (secondaryBW instanceof Werkstoff ? ((Werkstoff)secondaryBW).getmID() : 0);
-        // short pBetween = betweenBW instanceof Materials ? (short)((Materials)betweenBW).mMetaItemSubID : (betweenBW
-        // instanceof Werkstoff ? ((Werkstoff)betweenBW).getmID() : 0);
-        // short pSporadic = sporadicBW instanceof Materials ? (short)((Materials)sporadicBW).mMetaItemSubID :
-        // (sporadicBW instanceof Werkstoff ? ((Werkstoff)sporadicBW).getmID() : 0);
-        // mPrimaryMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName,
-        // "OrePrimaryLayer", pPrimary));
-        // mSecondaryMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName,
-        // "OreSecondaryLayer", pSecondary));
-        // mBetweenMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName,
-        // "OreSporadiclyInbetween", pBetween));
-        // mSporadicMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName,
-        // "OreSporaticlyAround", pSporadic));
-        // bwOres = ((byte) GregTech_API.sWorldgenFile.get("worldgen.GaGregBartworks." + this.mWorldGenName,
-        // "BWGTlogic", bwOres));
         if (mEnabled) {
             sWeight += this.mWeight;
             oreVeinWorldgenList.add(this);
@@ -104,7 +86,7 @@ public class BW_Worldgen_Ore_Layer_Space extends BW_OreLayer {
 
     /**
      * Script Friendly Constructor, WONT WORK WITH NEI
-     * 
+     *
      * @param aName
      * @param pDefault
      * @param pMinY
@@ -178,7 +160,7 @@ public class BW_Worldgen_Ore_Layer_Space extends BW_OreLayer {
 
     /**
      * Script Friendly Constructor, WONT WORK WITH NEI
-     * 
+     *
      * @param aName
      * @param enabled
      */

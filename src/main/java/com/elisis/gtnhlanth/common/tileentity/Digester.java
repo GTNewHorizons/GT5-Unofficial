@@ -73,9 +73,6 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
         .addElement('c', ofCoil(Digester::setCoilLevel, Digester::getCoilLevel))
         .build();
 
-    // private int mHeat;
-    // private int mNeededHeat;
-
     public Digester(String name) {
         super(name);
     }

@@ -753,7 +753,7 @@ public class GT_Achievements {
                             issueAchievement(player, "steel");
                         }
                     // } else if (data.mPrefix == OrePrefixes.circuit && data.mMaterial.mMaterial ==
-                    // Materials.Advanced) {
+                    // Materials.HV) {
                     // issueAchievement(player, "stepforward");
                 }
         }

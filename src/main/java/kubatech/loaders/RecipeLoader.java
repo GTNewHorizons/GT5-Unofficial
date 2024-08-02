@@ -111,7 +111,7 @@ public class RecipeLoader {
                 ItemList.ExtremeEntityCrusher.get(1),
                 bitsd,
                 new Object[] { "RCR", "CHC", "VVV", 'R', gregtech.api.enums.ItemList.Robot_Arm_EV, 'C',
-                    OrePrefixes.circuit.get(Materials.Data), 'H', gregtech.api.enums.ItemList.Hull_EV, 'V',
+                    OrePrefixes.circuit.get(Materials.EV), 'H', gregtech.api.enums.ItemList.Hull_EV, 'V',
                     GT_ModHandler.getModItem("OpenBlocks", "vacuumhopper", 1, new ItemStack(Blocks.hopper)) });
         }
         if (registerMTE(
@@ -155,7 +155,7 @@ public class RecipeLoader {
                     NewHorizonsCoreMod.isModLoaded()
                         ? GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 1, 11104) // IV World Accelerator
                         : gregtech.api.enums.ItemList.Robot_Arm_IV,
-                    'Z', OrePrefixes.circuit.get(Materials.Ultimate) });
+                    'Z', OrePrefixes.circuit.get(Materials.ZPM) });
 
             // Vanilla should always be loaded
             GT_MetaTileEntity_ExtremeIndustrialGreenhouse.addFertilizerItem(new ItemStack(Items.dye, 1, 15));

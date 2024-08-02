@@ -148,15 +148,7 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
             }
 
             if (aPlayer.motionY >= 0.0D && jumpCharge > 0.0F && !aPlayer.isInWater()) {
-                if (GT_ModHandler.getJumpKeyDown(aPlayer) && GT_ModHandler.getBoostKeyDown(aPlayer)) {
-                    if (jumpCharge == 1.0F) {
-                        aPlayer.motionX *= 3.5D;
-                        aPlayer.motionZ *= 3.5D;
-                    }
-
-                    aPlayer.motionY += (jumpCharge * 0.3F);
-                    jumpCharge = (float) (jumpCharge * 0.75D);
-                } else if (jumpCharge < 1.0F) {
+                if (jumpCharge < 1.0F) {
                     jumpCharge = 0.0F;
                 }
             }

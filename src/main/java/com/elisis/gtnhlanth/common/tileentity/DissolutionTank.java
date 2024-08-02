@@ -146,19 +146,12 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
         FluidStack majorGenericFluid = tRecipe.mFluidInputs[0];
         FluidStack minorGenericFluid = tRecipe.mFluidInputs[1];
 
-        // FluidStack majorInput = null;
-        // FluidStack minorInput = null;
-
         int majorAmount;
         int minorAmount;
 
         FluidStack fluidInputOne = tFluidInputs.get(0);
         FluidStack fluidInputTwo = tFluidInputs.get(1);
 
-        // majorInput = ((fluidInputOne.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName()))
-        // ? fluidInputOne
-        // : fluidInputTwo);
-        // GT_Log.out.print(majorInput.getLocalizedName());
         if (fluidInputOne.getUnlocalizedName()
             .equals(majorGenericFluid.getUnlocalizedName())) {
             if (fluidInputTwo.getUnlocalizedName()
@@ -183,12 +176,6 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 
             } else return false;
 
-        // GT_Log.out.print("out of switch weirdness");
-
-        // GT_Log.out.print("major " + majorInput.getLocalizedName());
-        // GT_Log.out.print("minor " + minorInput.getLocalizedName());
-
-        // GT_Log.out.print("mjrinputamt " + majorInput.amount);
         return majorAmount / tRecipe.mSpecialValue == minorAmount;
     }
 

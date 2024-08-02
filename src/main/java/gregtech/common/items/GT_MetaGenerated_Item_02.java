@@ -2531,7 +2531,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         RA.stdBuilder()
             .itemInputs(
                 ItemList.Cover_RedstoneTransmitterExternal.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
@@ -2540,7 +2540,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         RA.stdBuilder()
             .itemInputs(
                 ItemList.Cover_RedstoneReceiverExternal.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)

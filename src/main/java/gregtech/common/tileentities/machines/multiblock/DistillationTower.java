@@ -163,11 +163,6 @@ public class DistillationTower extends StackableController<DistillationTower, Di
         return StatCollector.translateToLocal(getTileEntityName());
     }
 
-    // @Override
-    // public String getLocalName() {
-    // return "Distillation Tower";
-    // }
-    //
     @Override
     protected String getStackableMiddle(int stackIndex) {
         return stackIndex % 2 == 0 ? STACKABLE_MIDDLE_1 : STACKABLE_MIDDLE_2;

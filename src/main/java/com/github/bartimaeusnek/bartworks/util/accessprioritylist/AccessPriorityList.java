@@ -262,10 +262,6 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public boolean remove(Object o) {
-        // Object p;
-        // for (Iterator it = this.iterator(); it.hasNext(); o.equals(p)){
-        // p = it.next();
-        // }
         throw new NotImplementedException("");
     }
 
