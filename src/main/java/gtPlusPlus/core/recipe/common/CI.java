@@ -515,10 +515,6 @@ public class CI {
         }
 
         if (aPrefix == OrePrefixes.circuit) {
-            /*
-             * if (aTier == 4) { return ItemUtils.getSimpleStack(CI.getDataStick(), aAmount); } else if (aTier == 5) {
-             * return ItemUtils.getSimpleStack(CI.getDataOrb(), aAmount); }
-             */
             return ItemUtils.getOrePrefixStack(OrePrefixes.circuit, aMaterial_Circuits[aTier], aAmount);
         }
 
