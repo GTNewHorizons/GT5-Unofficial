@@ -23,14 +23,13 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -43,15 +42,16 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Casings2;
+import gregtech.common.blocks.GT_Block_Casings10;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import gregtech.common.blocks.GT_Block_Casings10;
+
 public class GT_MetaTileEntity_MultiSolidifier extends
     GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_MultiSolidifier> implements ISurvivalConstructable {
 
@@ -74,7 +74,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         .addShape(
             MS_MID,
             (transpose(
-                new String[][] { { "BB", "BB", "BB", "BB", "BB" }, { "AA", "  ", " F", "  ", "AA" },
+                new String[][] { { "BB", "BB", "BB", "BB", "BB" }, { "AA", "  ", " D", "  ", "AA" },
                     { "AA", "  ", "  ", "  ", "AA" }, { "CC", "  ", " D", "  ", "CC" },
                     { "BB", "BB", "BB", "BB", "BB" } })))
         .addShape(
@@ -88,9 +88,9 @@ public class GT_MetaTileEntity_MultiSolidifier extends
                 new String[][] { { "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB" },
                     { "AAAAAAA", "       ", "D D D D", "       ", "AAAAAAA" },
                     { "AAAAAAA", "       ", "       ", "       ", "AAAAAAA" },
-                    { "CCCBCCC", "       ", "F F F F", "       ", "CCCECCC" },
+                    { "CCCBCCC", "       ", "D D D D", "       ", "CCCECCC" },
                     { "BBB~BBB", "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB" } })))
-        .addElement('A', ofGlassTieredMixed((byte) 4, (byte) 127, 2))
+        .addElement('A', Glasses.chainAllGlasses())
         .addElement(
             'B',
             buildHatchAdder(GT_MetaTileEntity_MultiSolidifier.class)
@@ -112,15 +112,16 @@ public class GT_MetaTileEntity_MultiSolidifier extends
                     onElementPass(
                         GT_MetaTileEntity_MultiSolidifier::onCasingAdded,
                         ofBlock(GregTech_API.sBlockCasings10, 3))))
-        .addElement('F', ofBlock(GregTech_API.sBlockCasings2, 13))
         .build();
 
     public GT_MetaTileEntity_MultiSolidifier(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
+
     public GT_MetaTileEntity_MultiSolidifier(String aName) {
         super(aName);
     }
+
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_MultiSolidifier(this.mName);
@@ -243,7 +244,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         else return survivialBuildPiece(
             MS_RIGHT,
             stackSize,
-            (-2 -tTotalHeight) * 2 + 4,
+            (-2 - tTotalHeight) * 2 + 4,
             4,
             0,
             elementBudget,
@@ -275,48 +276,45 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         if (aIsCasing) onCasingFound();
     }
 
-    /*@Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mOutputHatchesByLayer.forEach(List::clear);
-        mHeight = 1;
-        mTopLayerFound = false;
-        mCasing = 0;
-        // check base
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) return false;
-
-        // check each layer
-        while (mHeight < 30) {
-            if (!checkPiece(MS_MID, 2 * (mHeight + 1), 4, 0)) {
-                if(!checkPiece(MS_MID, -2 * (mHeight + 1), 4, 0)) {
-                    if (!checkPiece(MS_RIGHT, 2 * (mHeight + 1) - 3, 4, 0)) {
-                        mTopLayerFound = true;
-                    }
-                        return false;
-                }
-            }
-            if (mTopLayerFound) {
-                break;
-            }
-            // not top
-            mHeight++;
-        }
-    return true;
-    }
-*/
+    /*
+     * @Override
+     * public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+     * mOutputHatchesByLayer.forEach(List::clear);
+     * mHeight = 1;
+     * mTopLayerFound = false;
+     * mCasing = 0;
+     * // check base
+     * if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) return false;
+     * // check each layer
+     * while (mHeight < 30) {
+     * if (!checkPiece(MS_MID, 2 * (mHeight + 1), 4, 0)) {
+     * if(!checkPiece(MS_MID, -2 * (mHeight + 1), 4, 0)) {
+     * if (!checkPiece(MS_RIGHT, 2 * (mHeight + 1) - 3, 4, 0)) {
+     * mTopLayerFound = true;
+     * }
+     * return false;
+     * }
+     * }
+     * if (mTopLayerFound) {
+     * break;
+     * }
+     * // not top
+     * mHeight++;
+     * }
+     * return true;
+     * }
+     */
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mHeight = 2;
-    if (checkPiece(STRUCTURE_PIECE_MAIN, 4, 4, 0))
-    {
-    while (mHeight<30) {
-        if (checkPiece(MS_MID, -2 * (2+mHeight) - 2, 4, 0) && checkPiece(MS_MID, mHeight * 2 + 3, 4, 0)) {
-            mHeight++;
-        }
-        else return false;
-    }}
-    if (checkPiece(MS_RIGHT, (2+mHeight) * 2 - 4, 4, 0)&&checkPiece(MS_RIGHT, -mHeight * 2 + 4, 4, 0))
-        return true;
-    else return false;
+        mHeight = 0;
+        if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
+            while (mHeight < 30) {
+                if (checkPiece(MS_MID, (-2 * mHeight) -4, 4, 0) && checkPiece(MS_MID, (2 * mHeight) + 4, 4, 0)) {
+                    mHeight++;
+                } else break;
+            }
+        } else return false;
+        return checkPiece(MS_RIGHT, (-2 * mHeight) - 4, 4, 0) && checkPiece(MS_RIGHT, (mHeight * 2) + 4, 4, 0);
     }
 
     @Override
