@@ -340,15 +340,15 @@ public class GT_RecipeConstants {
                 // T1 masks require grade 1, 2 or 3 purified water
                 return GT_Utility.concat(
                     builder.copy()
-                        .fluidInputs(Materials.Grade1PurifiedWater.getFluid(2000L))
+                        .fluidInputs(Materials.Grade1PurifiedWater.getFluid(32000L))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .fluidInputs(Materials.Grade2PurifiedWater.getFluid(2000L))
+                        .fluidInputs(Materials.Grade2PurifiedWater.getFluid(32000L))
                         .duration(halfBoostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .fluidInputs(Materials.Grade3PurifiedWater.getFluid(2000L))
+                        .fluidInputs(Materials.Grade3PurifiedWater.getFluid(32000L))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -356,11 +356,11 @@ public class GT_RecipeConstants {
                 // T2 masks require grade 4 or 5 purified water
                 return GT_Utility.concat(
                     builder.copy()
-                        .fluidInputs(Materials.Grade4PurifiedWater.getFluid(2000L))
+                        .fluidInputs(Materials.Grade4PurifiedWater.getFluid(32000L))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .fluidInputs(Materials.Grade5PurifiedWater.getFluid(2000L))
+                        .fluidInputs(Materials.Grade5PurifiedWater.getFluid(32000L))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -368,15 +368,15 @@ public class GT_RecipeConstants {
                 // T3 masks require grade 6, 7 or 8 purified water
                 return GT_Utility.concat(
                     builder.copy()
-                        .fluidInputs(Materials.Grade6PurifiedWater.getFluid(2000L))
+                        .fluidInputs(Materials.Grade6PurifiedWater.getFluid(32000L))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .fluidInputs(Materials.Grade7PurifiedWater.getFluid(2000L))
+                        .fluidInputs(Materials.Grade7PurifiedWater.getFluid(32000L))
                         .duration(halfBoostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .fluidInputs(Materials.Grade8PurifiedWater.getFluid(2000L))
+                        .fluidInputs(Materials.Grade8PurifiedWater.getFluid(32000L))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
