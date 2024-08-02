@@ -136,7 +136,7 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
     // spotless:on
 
     private int casingCount = 0;
-    private static final int MIN_CASING = 120;
+    private static final int MIN_CASING = 50;
 
     private static final IStructureDefinition<GT_MetaTileEntity_PurificationUnitPlasmaHeater> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_PurificationUnitPlasmaHeater>builder()
@@ -378,7 +378,7 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
             .addCasingInfoExactlyColored(
                 "Heat-Resistant Trinium Plated Casing",
                 EnumChatFormatting.GRAY,
-                122,
+                54,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
