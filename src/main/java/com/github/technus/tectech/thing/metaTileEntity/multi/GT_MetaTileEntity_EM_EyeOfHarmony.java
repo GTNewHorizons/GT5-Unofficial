@@ -117,15 +117,16 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private static final double TIME_ACCEL_DECREASE_CHANCE_PER_TIER = 0.0925;
     // % Increase in recipe chance and % decrease in yield per tier.
     private static final double STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER = 0.05;
-    private static final double PARALLEL_PER_ASTRAL_ARRAY = 8;
+    private static final double PARALLEL_FOR_FIRST_ASTRAL_ARRAY = 8;
     private static final double CONSTANT_FOR_LOG = 1.7;
     private static final double LOG_CONSTANT = Math.log(CONSTANT_FOR_LOG);
     private static final double PARALLEL_MULTIPLIER_CONSTANT = 1.63;
-    private static final long POWER_DIVISION_CONSTANT = 20;
+    private static final double POWER_DIVISION_CONSTANT = 20.7;
     private static final double POWER_INCREASE_CONSTANT = 2.3;
     private static final int TOTAL_CASING_TIERS_WITH_POWER_PENALTY = 8;
     private static final long PRECISION_MULTIPLIER = 1_000_000;
-    private static final long ASTRAL_ARRAY_LIMIT = 10_000;
+    // Exact value to get 2^21 parallels.
+    private static final long ASTRAL_ARRAY_LIMIT = 8637;
 
     private String userUUID = "";
     private BigInteger outputEU_BigInt = BigInteger.ZERO;
@@ -1073,11 +1074,11 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             .addInfo(
                 "They are stored internally and can be retrieved via right-clicking the controller with a wire cutter.")
             .addInfo(
-                "The maximum amount of Astral Array is " + formatNumbers(ASTRAL_ARRAY_LIMIT)
+                "The maximum amount of stored Astral Arrays is " + formatNumbers(ASTRAL_ARRAY_LIMIT)
                     + ". The amount of parallel is calculated via these formulas:")
             .addInfo(
                 GREEN + "Parallel exponent = floor(log("
-                    + formatNumbers(PARALLEL_PER_ASTRAL_ARRAY)
+                    + formatNumbers(PARALLEL_FOR_FIRST_ASTRAL_ARRAY)
                     + " * Astral Array amount) / log("
                     + formatNumbers(CONSTANT_FOR_LOG)
                     + "))")
@@ -1261,7 +1262,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         if (astralArrayAmount != 0) {
             parallelExponent = (long) Math.floor(
-                Math.log(PARALLEL_PER_ASTRAL_ARRAY * Math.min(astralArrayAmount, ASTRAL_ARRAY_LIMIT)) / LOG_CONSTANT);
+                Math.log(PARALLEL_FOR_FIRST_ASTRAL_ARRAY * Math.min(astralArrayAmount, ASTRAL_ARRAY_LIMIT))
+                    / LOG_CONSTANT);
             parallelAmount = (long) pow(2, parallelExponent);
         } else {
             parallelAmount = 1;
@@ -1315,12 +1317,12 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         if (parallelAmount > 1) {
             outputEU_BigInt = outputEU_BigInt
                 .multiply(BigInteger.valueOf((long) (powerMultiplier * PRECISION_MULTIPLIER)))
-                .divide(BigInteger.valueOf(PRECISION_MULTIPLIER * POWER_DIVISION_CONSTANT));
+                .divide(BigInteger.valueOf((long) (PRECISION_MULTIPLIER * POWER_DIVISION_CONSTANT)));
 
             usedEU = usedEU
                 .multiply(
                     BigInteger.valueOf((long) (powerMultiplier * PARALLEL_MULTIPLIER_CONSTANT * PRECISION_MULTIPLIER)))
-                .divide(BigInteger.valueOf(PRECISION_MULTIPLIER * POWER_DIVISION_CONSTANT));
+                .divide(BigInteger.valueOf((long) (PRECISION_MULTIPLIER * POWER_DIVISION_CONSTANT)));
         }
 
         // Remove EU from the users network.
