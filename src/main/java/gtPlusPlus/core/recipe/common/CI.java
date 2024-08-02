@@ -428,9 +428,9 @@ public class CI {
         Materials.AnnealedCopper, Materials.Gold, Materials.Titanium, Materials.Nichrome, Materials.Platinum,
         Materials.YttriumBariumCuprate, Materials.Naquadah, Materials.Duranium, Materials.SuperconductorUHV, };
 
-    private static final Materials[] aMaterial_Circuits = new Materials[] { Materials.Primitive, Materials.Basic,
-        Materials.Good, Materials.Advanced, Materials.Data, Materials.Data, Materials.Elite, Materials.Master,
-        Materials.Ultimate, Materials.SuperconductorUHV, Materials.Infinite, };
+    private static final Materials[] aMaterial_Circuits = new Materials[] { Materials.ULV, Materials.LV,
+        Materials.MV, Materials.HV, Materials.EV, Materials.IV, Materials.LuV, Materials.ZPM,
+        Materials.UV, Materials.UHV, Materials.UEV, };
 
     private static final Material[][] aMaster = new Material[][] { aMaterial_Main, aMaterial_Secondary,
         aMaterial_Tertiary };
