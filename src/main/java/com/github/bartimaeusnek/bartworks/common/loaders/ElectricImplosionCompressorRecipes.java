@@ -54,8 +54,8 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .itemInputs(getModItem(GoodGenerator.ID, "highDensityPlutoniumNugget", 5L))
             .itemOutputs(getModItem(GoodGenerator.ID, "highDensityPlutonium", 1L))
             .fluidInputs(Materials.Neutronium.getMolten(72L))
-            .duration(TierEU.RECIPE_UEV)
-            .eut(1)
+            .duration(1)
+            .eut(TierEU.RECIPE_UEV)
             .noOptimize()
             .addTo(electricImplosionCompressorRecipes);
 
