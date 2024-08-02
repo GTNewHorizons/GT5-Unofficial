@@ -1597,7 +1597,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             str.add("Recipe Success Chance: " + RED + formatNumbers(100 * successChance) + RESET + "%");
             str.add("Recipe Yield: " + RED + formatNumbers(100 * yield) + RESET + "%");
             str.add(
-                "Effective Astral Array Fabricators:" + RED
+                "Effective Astral Array Fabricators: " + RED
                     + formatNumbers(Math.min(astralArrayAmount, ASTRAL_ARRAY_LIMIT)));
             str.add("Total Parallel: " + RED + formatNumbers(parallelAmount));
             str.add("EU Output: " + RED + toStandardForm(outputEU_BigInt) + RESET + " EU");
