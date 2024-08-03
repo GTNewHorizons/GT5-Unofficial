@@ -6664,7 +6664,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.BorosilicateGlass, 16),
                 GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2),
                 GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Polytetrafluoroethylene, 4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4),
                 ItemList.Shape_Extruder_Wire.get(16))
             .itemOutputs(ItemList.Spinneret.get(1))
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))

@@ -170,7 +170,7 @@ public class RecipeLoader {
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 8),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 4),
                 ItemList.Conveyor_Module_LuV.get(4),
                 GT_Utility.copyAmount(2, LanthItemList.BEAMLINE_PIPE),
                 GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 2),
@@ -189,7 +189,7 @@ public class RecipeLoader {
                 ItemList.Hull_LuV.get(1),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 8),
                 ItemList.Casing_Coil_Superconductor.get(2),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 8),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8),
                 ItemList.Electric_Pump_LuV.get(2),
                 GT_Utility.copyAmount(2, LanthItemList.BEAMLINE_PIPE),
                 GT_OreDictUnificator.get(OrePrefixes.cableGt08, Materials.VanadiumGallium, 2),
@@ -208,8 +208,8 @@ public class RecipeLoader {
                 ItemList.Hull_LuV.get(1),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 8),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.SuperconductorUHV, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 2),
                 GT_Utility.copyAmount(2, LanthItemList.BEAMLINE_PIPE),
                 GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.VanadiumGallium, 1),
                 GT_Utility.getIntegratedCircuit(16)
@@ -227,8 +227,8 @@ public class RecipeLoader {
                 ItemList.Hull_LuV.get(1),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 8),
                 ItemList.Casing_Coil_Superconductor.get(12),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 8),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.SuperconductorUHV, 8),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 8),
                 GT_Utility.copyAmount(8, LanthItemList.BEAMLINE_PIPE),
                 GT_OreDictUnificator.get(OrePrefixes.cableGt08, Materials.NiobiumTitanium, 8),
                 GT_Utility.getIntegratedCircuit(16))
@@ -316,7 +316,7 @@ public class RecipeLoader {
                 Materials.Copper.getPlates(4),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plate, 5),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorLuV, 4),
-                new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
                 ItemList.Emitter_LuV.get(6),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Gold, 32),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Electrum, 6))
@@ -340,7 +340,7 @@ public class RecipeLoader {
                 Materials.Copper.getPlates(4),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plate, 5),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorZPM, 4),
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
                 ItemList.Emitter_ZPM.get(6),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Gold, 64),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Electrum, 6))
@@ -360,7 +360,7 @@ public class RecipeLoader {
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
 
-                new Object[] { OrePrefixes.circuit.get(Materials.Elite), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.IV), 4 },
                 ItemList.Robot_Arm_LuV.get(2),
                 ItemList.Robot_Arm_LuV.get(2),
                 ItemList.Conveyor_Module_LuV.get(2),
@@ -410,7 +410,7 @@ public class RecipeLoader {
                 Materials.Argon.getGas(1000))
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
-                new Object[] { OrePrefixes.circuit.get(Materials.Elite), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.IV), 4 },
                 ItemList.Robot_Arm_LuV.get(2),
                 ItemList.Robot_Arm_LuV.get(2),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Gold, 16),
@@ -481,7 +481,7 @@ public class RecipeLoader {
             )
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
-                new Object[] { OrePrefixes.circuit.get(Materials.Master), 2 },
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
                 new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 2),
                 ItemList.Electric_Pump_LuV.get(1),
                 LanthItemList.BEAMLINE_PIPE,
@@ -505,7 +505,7 @@ public class RecipeLoader {
             )
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
-                new Object[] { OrePrefixes.circuit.get(Materials.Master), 6 },
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 6 },
                 new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 4),
                 ItemList.Electric_Pump_LuV.get(2),
                 ItemList.Electric_Motor_LuV.get(4),
@@ -3428,7 +3428,7 @@ public class RecipeLoader {
                 ItemList.Electric_Motor_IV.get(4L),
                 ItemList.Electric_Pump_IV.get(4L),
                 GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Desh, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4L),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4L),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(LanthItemList.DIGESTER)
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1440))
@@ -3443,7 +3443,7 @@ public class RecipeLoader {
                 ItemList.Electric_Motor_EV.get(4L),
                 ItemList.Electric_Pump_EV.get(2L),
                 GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.VibrantAlloy, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4L),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4L),
                 GT_Utility.getIntegratedCircuit(2))
             .itemOutputs(LanthItemList.DISSOLUTION_TANK)
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(720))
