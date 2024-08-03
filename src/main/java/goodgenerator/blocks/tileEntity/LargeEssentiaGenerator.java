@@ -422,19 +422,18 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
 
         // TO-DO Replace these fluids with actual fluids, adjust their values, and remove unnecessary imports needed for
         // these fluids
-        {
-            if (depleteInput(MaterialsUEVplus.QuarkGluonPlasma.getMolten(420))) {
-                ampLimit = Math.min(ampLimit, 64); // T5 Catalyst Fluid, UV Gated
-            } else if (depleteInput(MaterialsUEVplus.MagMatter.getMolten(1337))) {
-                ampLimit = Math.min(ampLimit, 32); // T4 Catalyst Fluid, ZPM Gated
-            } else if (depleteInput(MaterialsUEVplus.Universium.getMolten(42))) {
-                ampLimit = Math.min(ampLimit, 16); // T3 Catalyst fluid, LuV Gated
-            } else if (depleteInput(MaterialsUEVplus.SpaceTime.getMolten(9999))) {
-                ampLimit = Math.min(ampLimit, 8); // T2 Catalyst fluid, IV Gated
-            } else if (depleteInput(ELEMENT.STANDALONE.HYPOGEN.getFluidStack(69))) {
-                ampLimit = Math.min(ampLimit, 4); // T1 Catalyst fluid, EV Gated
-            } else ampLimit = 1; // Default Behaviour, EV Gated
-        } ;
+        if (depleteInput(MaterialsUEVplus.QuarkGluonPlasma.getMolten(420))) {
+            ampLimit = Math.min(ampLimit, 64); // T5 Catalyst Fluid, UV Gated
+        } else if (depleteInput(MaterialsUEVplus.MagMatter.getMolten(1337))) {
+            ampLimit = Math.min(ampLimit, 32); // T4 Catalyst Fluid, ZPM Gated
+        } else if (depleteInput(MaterialsUEVplus.Universium.getMolten(42))) {
+            ampLimit = Math.min(ampLimit, 16); // T3 Catalyst fluid, LuV Gated
+        } else if (depleteInput(MaterialsUEVplus.SpaceTime.getMolten(9999))) {
+            ampLimit = Math.min(ampLimit, 8); // T2 Catalyst fluid, IV Gated
+        } else if (depleteInput(ELEMENT.STANDALONE.HYPOGEN.getFluidStack(69))) {
+            ampLimit = Math.min(ampLimit, 4); // T1 Catalyst fluid, EV Gated
+        } else ampLimit = 1; // Default Behaviour, EV Gated
+
         for (EssentiaHatch hatch : this.mEssentiaHatch) {
             AspectList aspects = hatch.getAspects();
             for (Aspect aspect : aspects.aspects.keySet()) {
