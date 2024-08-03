@@ -344,63 +344,63 @@ public class GT_Loader_OreDictionary implements Runnable {
         // Fake Circuits
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Primitive,
+            Materials.ULV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitULV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Basic,
+            Materials.LV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitLV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Good,
+            Materials.MV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitMV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Advanced,
+            Materials.HV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitHV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Data,
+            Materials.EV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitEV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Elite,
+            Materials.IV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitIV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Master,
+            Materials.LuV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitLuV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Ultimate,
+            Materials.ZPM,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitZPM", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.SuperconductorUHV,
+            Materials.UV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Infinite,
+            Materials.UHV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUHV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Bio,
+            Materials.UEV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUEV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Optical,
+            Materials.UIV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUIV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Exotic,
+            Materials.UMV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUMV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Cosmic,
+            Materials.UXV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUXV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Transcendent,
+            Materials.MAX,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitMAX", 1L));
 
         GT_OreDictUnificator.registerOre(
