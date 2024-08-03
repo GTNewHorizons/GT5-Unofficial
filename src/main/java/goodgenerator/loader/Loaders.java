@@ -2,6 +2,7 @@ package goodgenerator.loader;
 
 import static goodgenerator.util.DescTextLocalization.addText;
 
+import goodgenerator.blocks.tileEntity.AntimatterGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -279,6 +280,7 @@ public class Loaders {
 
     public static ItemStack CompAssline;
     public static ItemStack AMForge;
+    public static ItemStack AMGenerator;
     public static ItemStack AMHatch;
     // public static Item Isotope = new NuclearMetaItemGenerator();
 
@@ -376,8 +378,14 @@ public class Loaders {
 >>>>>>> ef58e42a27 (Add antimatter)
 =======
         Loaders.AMForge = new AntimatterForge(IDs_GoodGenerator.AntimatterForge.ID, "AntimatterForge", "Semi-Stable Antimatter Stabilization Sequencer")
+<<<<<<< HEAD
 >>>>>>> 1cb1712bcd (Update ID)
         .getStackForm(1L);
+=======
+            .getStackForm(1L);
+        Loaders.AMGenerator = new AntimatterGenerator(IDs_GoodGenerator.AntimatterGenerator.ID, "AntimatterGenerator", "Shielded Lagrangian Annihilation Matrix")
+            .getStackForm(1L);
+>>>>>>> e09fa1c3f1 (Antimatter work (#2802))
     }
 
     public static void Register() {
