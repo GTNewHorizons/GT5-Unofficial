@@ -469,34 +469,9 @@ public class RECIPES_Machines {
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(18),
                 ItemList.Casing_Turbine1.get(1),
-                CI.getPlate(4, 4),
-                CI.getScrew(4, 8))
-            .itemOutputs(GregtechItemList.Casing_Turbine_Gas.get(1))
-            .fluidInputs(CI.tieredMaterials[3].getMolten(144 * 2))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                CI.getNumberedAdvancedCircuit(18),
-                ItemList.LargeGasTurbine.get(1),
-                CI.getPlate(5, 8),
-                CI.getScrew(5, 16),
-                CI.getGear(5, 4),
-                CI.getCircuit(5, 8))
-            .itemOutputs(GregtechItemList.Large_Gas_Turbine.get(1))
-            .fluidInputs(CI.tieredMaterials[5].getMolten(144 * 8))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-        // HP Steam
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                CI.getNumberedAdvancedCircuit(18),
-                ItemList.Casing_Turbine2.get(1),
                 CI.getPlate(5, 4),
                 CI.getScrew(5, 8))
-            .itemOutputs(GregtechItemList.Casing_Turbine_HP.get(1))
+            .itemOutputs(GregtechItemList.Casing_Turbine_Gas.get(1))
             .fluidInputs(CI.tieredMaterials[4].getMolten(144 * 2))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -504,15 +479,40 @@ public class RECIPES_Machines {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(18),
-                ItemList.LargeHPSteamTurbine.get(1),
+                ItemList.LargeGasTurbine.get(1),
                 CI.getPlate(6, 8),
                 CI.getScrew(6, 16),
                 CI.getGear(6, 4),
                 CI.getCircuit(6, 8))
-            .itemOutputs(GregtechItemList.Large_HPSteam_Turbine.get(1))
+            .itemOutputs(GregtechItemList.Large_Gas_Turbine.get(1))
             .fluidInputs(CI.tieredMaterials[6].getMolten(144 * 8))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
+            .addTo(assemblerRecipes);
+        // HP Steam
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(18),
+                ItemList.Casing_Turbine2.get(1),
+                CI.getPlate(4, 4),
+                CI.getScrew(4, 8))
+            .itemOutputs(GregtechItemList.Casing_Turbine_HP.get(1))
+            .fluidInputs(CI.tieredMaterials[3].getMolten(144 * 2))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                CI.getNumberedAdvancedCircuit(18),
+                ItemList.LargeHPSteamTurbine.get(1),
+                CI.getPlate(5, 8),
+                CI.getScrew(5, 16),
+                CI.getGear(5, 4),
+                CI.getCircuit(5, 8))
+            .itemOutputs(GregtechItemList.Large_HPSteam_Turbine.get(1))
+            .fluidInputs(CI.tieredMaterials[5].getMolten(144 * 8))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
         // Plasma
         GT_Values.RA.stdBuilder()
