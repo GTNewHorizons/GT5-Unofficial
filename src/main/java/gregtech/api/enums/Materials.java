@@ -376,6 +376,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Nano                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Nano"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 11)));
     public static Materials Piko                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Piko"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 12)));
     public static Materials Quantum                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Quantum"                 ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 13)));
+    public static Materials Ultimate                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Ultimate"                ,   "Ultimate"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 8)));
 
 
     /**
@@ -395,8 +396,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Elite = Materials.IV;
     @Deprecated
     public static Materials Master = Materials.LuV;
-    @Deprecated
-    public static Materials Ultimate = Materials.ZPM;
     @Deprecated
     public static Materials Infinite = Materials.UHV;
     @Deprecated
