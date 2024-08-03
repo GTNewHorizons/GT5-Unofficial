@@ -6771,7 +6771,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 getModItem(IC2NuclearControl.ID, "ItemSensorLocationCard", 1L, 0),
                 GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.MV), 2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -6782,7 +6782,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 getModItem(IC2NuclearControl.ID, "Item55ReactorCard", 1L, 0),
                 GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.MV), 2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);

@@ -3037,22 +3037,22 @@ public class ResearchStationAssemblyLine implements Runnable {
             getItemContainer("Hatch_Dynamo_UEV").get(1L), getItemContainer("Hatch_Dynamo_UIV").get(1L),
             getItemContainer("Hatch_Dynamo_UMV").get(1L), getItemContainer("Hatch_Dynamo_UXV").get(1L) };
 
-        Object[] circuitsTierPlusTwo = { new Object[] { OrePrefixes.circuit.get(Materials.Good), 1L }, // MV
-            new Object[] { OrePrefixes.circuit.get(Materials.Advanced), 1L }, // HV
-            new Object[] { OrePrefixes.circuit.get(Materials.Data), 1L }, // EV
-            new Object[] { OrePrefixes.circuit.get(Materials.Elite), 1L }, // IV
-            new Object[] { OrePrefixes.circuit.get(Materials.Master), 1L }, // LuV
-            new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 1L }, // ZPM
-            new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1L }, // UV
-            new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 1L }, // UHV
-            new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1L }, // UEV
-            new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L }, // UIV
-            new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 1L }, // UMV
-            new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 1L }, // UXV
-            new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 4L }, // MAX (Technically not MAX, can be
+        Object[] circuitsTierPlusTwo = { new Object[] { OrePrefixes.circuit.get(Materials.MV), 1L },
+            new Object[] { OrePrefixes.circuit.get(Materials.HV), 1L },
+            new Object[] { OrePrefixes.circuit.get(Materials.EV), 1L },
+            new Object[] { OrePrefixes.circuit.get(Materials.IV), 1L },
+            new Object[] { OrePrefixes.circuit.get(Materials.LuV), 1L },
+            new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1L },
+            new Object[] { OrePrefixes.circuit.get(Materials.UV), 1L },
+            new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1L },
+            new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1L },
+            new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1L },
+            new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1L },
+            new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1L },
+            new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4L }, // MAX (Technically not MAX, can be
             // changed once MAX circuits become
             // craftable)
-            new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 16L } // MAX (Technically not MAX, can be
+            new Object[] { OrePrefixes.circuit.get(Materials.UXV), 16L } // MAX (Technically not MAX, can be
             // changed once MAX circuits become
             // craftable)
         };
