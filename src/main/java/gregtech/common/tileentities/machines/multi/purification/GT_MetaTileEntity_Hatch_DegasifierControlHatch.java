@@ -39,6 +39,11 @@ public class GT_MetaTileEntity_Hatch_DegasifierControlHatch extends GT_MetaTileE
     }
 
     @Override
+    public boolean allowGeneralRedstoneOutput() {
+        return true;
+    }
+
+    @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
         ItemStack aStack) {
         return false;

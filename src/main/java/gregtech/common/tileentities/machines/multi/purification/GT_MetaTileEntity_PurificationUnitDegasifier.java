@@ -506,10 +506,6 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
                 EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + ", Any Trinium Casing",
                 1)
             .toolTipFinisher("GregTech");
-        // structure:
-        // Heat-Resistant Trinium Plated Casing: 780-803
-        // Omni-Purpose Infinity Fused Glass 622
-        // Bedrockium Frame Box: 126
         return tt;
     }
 
@@ -545,7 +541,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
             int gasToInsert = controlSignal.getControlBit12();
             FluidStack gasStack = INERT_GASES.get()[gasToInsert];
             // Check if it was inserted
-            if (wasFluidInsertedExact(gasStack)) new ControlBitStatus(gasStack, true);
+            if (wasFluidInsertedExact(gasStack)) return new ControlBitStatus(gasStack, true);
             else return new ControlBitStatus(null, false);
         }
 
