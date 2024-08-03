@@ -950,8 +950,8 @@ public class RECIPES_Machines {
                 ItemUtils.getSimpleStack(CI.robotArm_LV, 4 * (1)),
                 ItemList.Cover_Controller.get(1, CI.electricMotor_MV),
                 CI.machineHull_MV,
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 2),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 2))
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 2))
             .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockCircuitProgrammer))
             .fluidInputs(ELEMENT.getInstance().IRON.getFluidStack(144 * 4))
             .duration(30 * SECONDS)
@@ -985,7 +985,7 @@ public class RECIPES_Machines {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CI.machineHull_LV,
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 4),
                 ItemUtils.getItemStackOfAmountFromOreDict("plateTumbaga", 8),
                 ItemUtils.getSimpleStack(Blocks.jukebox))
             .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockCustomJukebox))
@@ -1733,7 +1733,7 @@ public class RECIPES_Machines {
             16,
             new Object[] { GregtechItemList.Controller_MolecularTransformer.get(1),
                 GT_ModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1),
-                new Object[] { OrePrefixes.circuit.get(Materials.Bio), 8 }, ItemList.Electric_Pump_UEV.get(4),
+                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 8 }, ItemList.Electric_Pump_UEV.get(4),
                 ItemList.Field_Generator_UEV.get(4), GregtechItemList.Laser_Lens_Special.get(1) },
             new FluidStack[] { MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(144 * 10),
                 ALLOY.PIKYONIUM.getFluidStack(144 * 32) },
@@ -2420,7 +2420,7 @@ public class RECIPES_Machines {
             GregtechItemList.Controller_LargeSemifluidGenerator.get(1L),
             CI.bitsd,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
-                ItemList.Electric_Pump_EV, 'C', OrePrefixes.circuit.get(Materials.Data), 'W',
+                ItemList.Electric_Pump_EV, 'C', OrePrefixes.circuit.get(Materials.EV), 'W',
                 OrePrefixes.cableGt08.get(Materials.Electrum), 'G', ALLOY.INCONEL_792.getGear(1) });
 
         if (CORE.ConfigSwitches.enableMultiblock_PowerSubstation) {
@@ -2744,7 +2744,7 @@ public class RECIPES_Machines {
                     GregtechItemList.Casing_Adv_BlastFurnace.get(1),
                     ALLOY.MARAGING250.getPlate(4),
                     ALLOY.MARAGING300.getGear(1),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 2),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 2),
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(GregtechItemList.Hatch_Input_Pyrotheum.get(1L))
                 .duration(2 * SECONDS + 10 * TICKS)
