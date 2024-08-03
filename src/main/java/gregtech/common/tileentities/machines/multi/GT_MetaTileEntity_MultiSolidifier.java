@@ -13,10 +13,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -25,7 +25,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -54,30 +53,32 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class GT_MetaTileEntity_MultiSolidifier extends
     GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_MultiSolidifier> implements ISurvivalConstructable {
 
-    protected final String MS_LEFT = mName + "left";
-    protected final String MS_MID = mName + "mid";
-    protected final String MS_RIGHT = mName + "right";
+    protected final String MS_LEFT_MID = mName + "leftmid";
+    protected final String MS_RIGHT_MID = mName + "rightmid";
+    protected final String MS_END = mName + "end";
 
     protected int casingAmount = 0;
-    protected int height = 0;
+    protected int Width = 0;
     protected int eV = 0, mCeil = 0, mFloor = 0;
-
-    private int moldParallel;
 
     private final String STRUCTURE_PIECE_MAIN = "main";
     private final IStructureDefinition<GT_MetaTileEntity_MultiSolidifier> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_MultiSolidifier>builder()
         .addShape(
-            MS_LEFT,
-            (transpose(new String[][] { { "BBBBBBBBB", "BAAAAAAAB", "BAAAAAAAB", "BCCCECCCB", "BBBBBBBBB" } })))
+            MS_LEFT_MID,
+            (transpose(
+                new String[][] { { "BB", "BB", "BB", "BB", "BB" }, { "AA", "  ", "D ", "  ", "AA" },
+                    { "AA", "  ", "  ", "  ", "AA" }, { "CC", "  ", "D ", "  ", "CC" },
+                    { "BB", "BB", "BB", "BB", "BB" } }))
+            )
         .addShape(
-            MS_MID,
+            MS_RIGHT_MID,
             (transpose(
                 new String[][] { { "BB", "BB", "BB", "BB", "BB" }, { "AA", "  ", " D", "  ", "AA" },
                     { "AA", "  ", "  ", "  ", "AA" }, { "CC", "  ", " D", "  ", "CC" },
                     { "BB", "BB", "BB", "BB", "BB" } })))
         .addShape(
-            MS_RIGHT,
+            MS_END,
             (transpose(
                 new String[][] { { "B", "B", "B", "B", "B" }, { "B", "B", "B", "B", "B" }, { "B", "B", "B", "B", "B" },
                     { "B", "B", "B", "B", "B" }, { "B", "B", "B", "B", "B" } })))
@@ -201,39 +202,39 @@ public class GT_MetaTileEntity_MultiSolidifier extends
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 4, 0);
-        int tTotalHeight = Math.min(30, stackSize.stackSize + 3); // min 2 output layer, so at least 1 + 2 height
-        for (int i = 1; i < tTotalHeight - 1; i++) {
-            buildPiece(MS_MID, stackSize, hintsOnly, 3 + 2 * i, 4, 0);
-            buildPiece(MS_MID, stackSize, hintsOnly, -2 - 2 * i, 4, 0);
+        int tTotalWidth = Math.min(30, stackSize.stackSize + 3); // min 2 output layer, so at least 1 + 2 Width
+        for (int i = 1; i < tTotalWidth - 1; i++) {
+            buildPiece(MS_LEFT_MID, stackSize, hintsOnly, 3 + 2 * i, 4, 0);
+            buildPiece(MS_RIGHT_MID, stackSize, hintsOnly, -2 - 2 * i, 4, 0);
         }
-        buildPiece(MS_RIGHT, stackSize, hintsOnly, (tTotalHeight + 2) * 2 - 4, 4, 0);
-        buildPiece(MS_RIGHT, stackSize, hintsOnly, (-tTotalHeight - 2) * 2 + 4, 4, 0);
+        buildPiece(MS_END, stackSize, hintsOnly, (tTotalWidth + 2) * 2 - 4, 4, 0);
+        buildPiece(MS_END, stackSize, hintsOnly, (-tTotalWidth - 2) * 2 + 4, 4, 0);
     }
 
     protected final List<List<GT_MetaTileEntity_Hatch_Output>> mOutputHatchesByLayer = new ArrayList<>();
-    protected int mHeight;
-    protected int nHeight;
+    protected int mWidth;
+    protected int nWidth;
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        mHeight = 0;
-        nHeight = 0;
+        mWidth = 0;
+        nWidth = 0;
         int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 4, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int tTotalHeight = Math.min(30, stackSize.stackSize + 3); // min 2 output layer, so at least 1 + 2 height
-        for (int i = 1; i < tTotalHeight - 1; i++) {
-            mHeight = i;
-            nHeight = i;
-            built = survivialBuildPiece(MS_MID, stackSize, 3 + 2 * i, 4, 0, elementBudget, env, false, true);
+        int tTotalWidth = Math.min(30, stackSize.stackSize + 3); // min 2 output layer, so at least 1 + 2 Width
+        for (int i = 1; i < tTotalWidth - 1; i++) {
+            mWidth = i;
+            nWidth = i;
+            built = survivialBuildPiece(MS_LEFT_MID, stackSize, 3 + 2 * i, 4, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
-            built = survivialBuildPiece(MS_MID, stackSize, -2 - 2 * i, 4, 0, elementBudget, env, false, true);
+            built = survivialBuildPiece(MS_RIGHT_MID, stackSize, -2 - 2 * i, 4, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
-        if (mHeight == tTotalHeight - 2) return survivialBuildPiece(
-            MS_RIGHT,
+        if (mWidth == tTotalWidth - 2) return survivialBuildPiece(
+            MS_END,
             stackSize,
-            (2 + tTotalHeight) * 2 - 4,
+            (2 + tTotalWidth) * 2 - 4,
             4,
             0,
             elementBudget,
@@ -241,9 +242,9 @@ public class GT_MetaTileEntity_MultiSolidifier extends
             false,
             true);
         else return survivialBuildPiece(
-            MS_RIGHT,
+            MS_END,
             stackSize,
-            (-2 - tTotalHeight) * 2 + 4,
+            (-2 - tTotalWidth) * 2 + 4,
             4,
             0,
             elementBudget,
@@ -275,45 +276,17 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         if (aIsCasing) onCasingFound();
     }
 
-    /*
-     * @Override
-     * public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-     * mOutputHatchesByLayer.forEach(List::clear);
-     * mHeight = 1;
-     * mTopLayerFound = false;
-     * mCasing = 0;
-     * // check base
-     * if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) return false;
-     * // check each layer
-     * while (mHeight < 30) {
-     * if (!checkPiece(MS_MID, 2 * (mHeight + 1), 4, 0)) {
-     * if(!checkPiece(MS_MID, -2 * (mHeight + 1), 4, 0)) {
-     * if (!checkPiece(MS_RIGHT, 2 * (mHeight + 1) - 3, 4, 0)) {
-     * mTopLayerFound = true;
-     * }
-     * return false;
-     * }
-     * }
-     * if (mTopLayerFound) {
-     * break;
-     * }
-     * // not top
-     * mHeight++;
-     * }
-     * return true;
-     * }
-     */
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mHeight = 0;
+        mWidth = 0;
         if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
-            while (mHeight < 30) {
-                if (checkPiece(MS_MID, (-2 * mHeight) - 4, 4, 0) && checkPiece(MS_MID, (2 * mHeight) + 4, 4, 0)) {
-                    mHeight++;
+            while (mWidth < 30) {
+                if (checkPiece(MS_RIGHT_MID, (-2 * (mWidth + 1)) - 2, 4, 0) && checkPiece(MS_LEFT_MID, (2 * (mWidth + 1)) + 3, 4, 0)) {
+                    mWidth++;
                 } else break;
             }
         } else return false;
-        return checkPiece(MS_RIGHT, (-2 * mHeight) - 4, 4, 0) && checkPiece(MS_RIGHT, (mHeight * 2) + 4, 4, 0);
+        return checkPiece(MS_END, (-2 * mWidth) - 4, 4, 0) && checkPiece(MS_END, (mWidth * 2) + 4, 4, 0);
     }
 
     @Override
@@ -322,20 +295,22 @@ public class GT_MetaTileEntity_MultiSolidifier extends
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
-    public int getMaxParallelRecipes() {
-        return ((1 + moldParallel) * height);
-    }
+    private int moldParallel = 0;
 
-    @Nonnull
+    public int getMaxParallelRecipes() {
+        return (moldParallel * (mWidth + 4) * 2);
+    }
     @Override
-    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.fluidCannerRecipes, RecipeMaps.cannerRecipes);
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.fluidSolidifierRecipes;
     }
 
     @Override
     public int getRecipeCatalystPriority() {
         return -10;
     }
+
+
 
     @Override
     public boolean supportsMachineModeSwitch() {
@@ -347,10 +322,6 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
-            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
-                + EnumChatFormatting.WHITE
-                + EnumChatFormatting.RESET);
     }
 
     @Override
