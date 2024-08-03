@@ -5945,32 +5945,32 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             ItemList.Machine_LV_Replicator.get(1L),
             bitsd,
             new Object[] { "EFE", aTextCableHull, aTextMotorWire, 'M', ItemList.Hull_LV, 'F',
-                ItemList.Field_Generator_LV, 'E', ItemList.Emitter_LV, 'C', OrePrefixes.circuit.get(Materials.MV),
-                'W', OrePrefixes.cableGt04.get(Materials.Tin) });
+                ItemList.Field_Generator_LV, 'E', ItemList.Emitter_LV, 'C', OrePrefixes.circuit.get(Materials.MV), 'W',
+                OrePrefixes.cableGt04.get(Materials.Tin) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Machine_MV_Replicator.get(1L),
             bitsd,
             new Object[] { "EFE", aTextCableHull, aTextMotorWire, 'M', ItemList.Hull_MV, 'F',
-                ItemList.Field_Generator_MV, 'E', ItemList.Emitter_MV, 'C', OrePrefixes.circuit.get(Materials.HV),
-                'W', OrePrefixes.cableGt04.get(Materials.AnyCopper) });
+                ItemList.Field_Generator_MV, 'E', ItemList.Emitter_MV, 'C', OrePrefixes.circuit.get(Materials.HV), 'W',
+                OrePrefixes.cableGt04.get(Materials.AnyCopper) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Machine_HV_Replicator.get(1L),
             bitsd,
             new Object[] { "EFE", aTextCableHull, aTextMotorWire, 'M', ItemList.Hull_HV, 'F',
-                ItemList.Field_Generator_HV, 'E', ItemList.Emitter_HV, 'C', OrePrefixes.circuit.get(Materials.EV),
-                'W', OrePrefixes.cableGt04.get(Materials.Gold) });
+                ItemList.Field_Generator_HV, 'E', ItemList.Emitter_HV, 'C', OrePrefixes.circuit.get(Materials.EV), 'W',
+                OrePrefixes.cableGt04.get(Materials.Gold) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Machine_EV_Replicator.get(1L),
             bitsd,
             new Object[] { "EFE", aTextCableHull, aTextMotorWire, 'M', ItemList.Hull_EV, 'F',
-                ItemList.Field_Generator_EV, 'E', ItemList.Emitter_EV, 'C', OrePrefixes.circuit.get(Materials.IV),
-                'W', OrePrefixes.cableGt04.get(Materials.Aluminium) });
+                ItemList.Field_Generator_EV, 'E', ItemList.Emitter_EV, 'C', OrePrefixes.circuit.get(Materials.IV), 'W',
+                OrePrefixes.cableGt04.get(Materials.Aluminium) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Machine_IV_Replicator.get(1L),
             bitsd,
             new Object[] { "EFE", aTextCableHull, aTextMotorWire, 'M', ItemList.Hull_IV, 'F',
-                ItemList.Field_Generator_IV, 'E', ItemList.Emitter_IV, 'C', OrePrefixes.circuit.get(Materials.LuV),
-                'W', OrePrefixes.cableGt04.get(Materials.Tungsten) });
+                ItemList.Field_Generator_IV, 'E', ItemList.Emitter_IV, 'C', OrePrefixes.circuit.get(Materials.LuV), 'W',
+                OrePrefixes.cableGt04.get(Materials.Tungsten) });
 
         GT_ModHandler.addCraftingRecipe(
             ItemList.Machine_LV_Brewery.get(1L),
@@ -6019,9 +6019,8 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             ItemList.Machine_HV_Miner.get(1L),
             bitsd,
             new Object[] { "RPR", aTextWireHull, "CSC", 'M', ItemList.Hull_HV, 'E', ItemList.Electric_Motor_HV, 'P',
-                ItemList.Electric_Piston_HV, 'R', ItemList.Robot_Arm_HV, 'C',
-                OrePrefixes.circuit.get(Materials.HV), 'W', OrePrefixes.cableGt04.get(Materials.Gold), 'S',
-                ItemList.Sensor_HV });
+                ItemList.Electric_Piston_HV, 'R', ItemList.Robot_Arm_HV, 'C', OrePrefixes.circuit.get(Materials.HV),
+                'W', OrePrefixes.cableGt04.get(Materials.Gold), 'S', ItemList.Sensor_HV });
 
         GT_ModHandler.addCraftingRecipe(
             ItemList.Machine_Multi_BlastFurnace.get(1L),
@@ -6200,8 +6199,8 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             ItemList.Generator_Plasma_LuV.get(1L),
             bitsd,
             new Object[] { "UCU", "FMF", aTextWireCoil, 'M', ItemList.Hull_ZPM, 'F', ItemList.Field_Generator_EV, 'C',
-                OrePrefixes.circuit.get(Materials.LuV), 'W', OrePrefixes.wireGt04.get(Materials.VanadiumGallium),
-                'U', OrePrefixes.stick.get(Materials.Europium) });
+                OrePrefixes.circuit.get(Materials.LuV), 'W', OrePrefixes.wireGt04.get(Materials.VanadiumGallium), 'U',
+                OrePrefixes.stick.get(Materials.Europium) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Generator_Plasma_ZPMV.get(1L),
             bitsd,
@@ -6259,8 +6258,8 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             ItemList.Pump_HV.get(1L),
             bitsd,
             new Object[] { "CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_HV, 'B',
-                OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.HV),
-                'P', ItemList.Electric_Pump_HV });
+                OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.HV), 'P',
+                ItemList.Electric_Pump_HV });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Pump_EV.get(1L),
             bitsd,
@@ -6344,8 +6343,8 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             ItemList.Seismic_Prospector_Adv_HV.get(1L),
             bitsd,
             new Object[] { "WWW", "EME", "CXC", 'M', ItemList.Hull_HV, 'W',
-                OrePrefixes.plateDouble.get(Materials.StainlessSteel), 'E', OrePrefixes.circuit.get(Materials.HV),
-                'C', ItemList.Sensor_HV, 'X', OrePrefixes.cableGt04.get(Materials.Gold) });
+                OrePrefixes.plateDouble.get(Materials.StainlessSteel), 'E', OrePrefixes.circuit.get(Materials.HV), 'C',
+                ItemList.Sensor_HV, 'X', OrePrefixes.cableGt04.get(Materials.Gold) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Seismic_Prospector_Adv_EV.get(1L),
             bitsd,
