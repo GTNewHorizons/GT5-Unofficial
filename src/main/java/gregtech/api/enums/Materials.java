@@ -348,6 +348,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Yellorium               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "Yellorium"               ,   "Yellorium"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      );
     public static Materials Zectium                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2  |8                   , 255, 255, 255,   0,   "Zectium"                 ,   "Zectium"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlack       );
     public static Materials Ultimate                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Ultimate"                ,   "Ultimate"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 8)));
+    public static Materials Advanced                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Advanced"                ,   "Advanced"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 4)));
 
     /**
      * Tiered materials, primarily Circuitry, Batteries and other Technical things
@@ -388,8 +389,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Basic = Materials.LV;
     @Deprecated
     public static Materials Good = Materials.MV;
-    @Deprecated
-    public static Materials Advanced = Materials.HV;
     @Deprecated
     public static Materials Data = Materials.EV;
     @Deprecated
