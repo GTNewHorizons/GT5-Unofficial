@@ -477,7 +477,6 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(SphaleriteFlotationFroth, 1000))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
-            .noOptimize()
             .addTo(flotationCellRecipes);
 
         // Chalcopyrite
@@ -494,7 +493,6 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(ChalcopyriteFlotationFroth, 1000))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_IV)
-            .noOptimize()
             .addTo(flotationCellRecipes);
 
         // Nickel
@@ -511,7 +509,6 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(NickelFlotationFroth, 1000))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_IV)
-            .noOptimize()
             .addTo(flotationCellRecipes);
 
         // Platinum
@@ -528,7 +525,6 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(PlatinumFlotationFroth, 1000))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
-            .noOptimize()
             .addTo(flotationCellRecipes);
 
         // Pentlandite
@@ -545,7 +541,6 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(PentlanditeFlotationFroth, 1000))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
-            .noOptimize()
             .addTo(flotationCellRecipes);
 
         // Redstone
@@ -562,7 +557,6 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(RedstoneFlotationFroth, 1000))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_IV)
-            .noOptimize()
             .addTo(flotationCellRecipes);
 
         // Spessartine
@@ -579,7 +573,6 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(SpessartineFlotationFroth, 1000))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
-            .noOptimize()
             .addTo(flotationCellRecipes);
 
         // Grossular
@@ -596,7 +589,6 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(GrossularFlotationFroth, 1000))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
-            .noOptimize()
             .addTo(flotationCellRecipes);
 
         // Almandine
@@ -613,7 +605,6 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(AlmandineFlotationFroth, 1000))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_IV)
-            .noOptimize()
             .addTo(flotationCellRecipes);
 
         // Pyrope
@@ -630,7 +621,6 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(PyropeFlotationFroth, 1000))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_EV)
-            .noOptimize()
             .addTo(flotationCellRecipes);
 
         // Monazite
@@ -647,7 +637,6 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(MonaziteFlotationFroth, 1000))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
-            .noOptimize()
             .addTo(flotationCellRecipes);
     }
 

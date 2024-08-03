@@ -113,6 +113,7 @@ import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.DISSOLUTION_TANK_RATIO;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.GT_RecipeConstants.WaferEngravingRecipes;
 import static gregtech.common.items.GT_MetaGenerated_Item_01.registerCauldronCleaningFor;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
@@ -609,7 +610,7 @@ public class RecipeLoader {
                 .duration(60 * GT_RecipeBuilder.SECONDS)
                 .eut(1920)
                 .requiresCleanRoom()
-                .addTo(laserEngraverRecipes);
+                .addTo(WaferEngravingRecipes);
 
         }
 
@@ -748,7 +749,7 @@ public class RecipeLoader {
                     .requiresCleanRoom()
                     .duration(120 * SECONDS)
                     .eut(1920)
-                    .addTo(laserEngraverRecipes);
+                    .addTo(WaferEngravingRecipes);
 
             } else if (mask == MaskList.NOR) {
 
@@ -760,7 +761,7 @@ public class RecipeLoader {
                     .requiresCleanRoom()
                     .duration(120 * SECONDS)
                     .eut(1920)
-                    .addTo(laserEngraverRecipes);
+                    .addTo(WaferEngravingRecipes);
 
             }
 
@@ -778,7 +779,7 @@ public class RecipeLoader {
                         .requiresCleanRoom()
                         .duration(120 * SECONDS)
                         .eut(1920)
-                        .addTo(laserEngraverRecipes);
+                        .addTo(WaferEngravingRecipes);
 
                 }
             }

@@ -13,8 +13,6 @@ import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -25,10 +23,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
 public class ElectricImplosionCompressorRecipes implements Runnable {
-
-    private static final ItemStack[] circuits = { ItemList.Circuit_ExoticProcessor.get(1),
-        ItemList.Circuit_OpticalAssembly.get(1), ItemList.Circuit_Biowaresupercomputer.get(1),
-        ItemList.Circuit_Wetwaremainframe.get(1) };
 
     @Override
     public void run() {
@@ -85,8 +79,8 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .itemInputs(getModItem(GoodGenerator.ID, "highDensityPlutoniumNugget", 5L))
             .itemOutputs(getModItem(GoodGenerator.ID, "highDensityPlutonium", 1L))
             .fluidInputs(Materials.Neutronium.getMolten(72L))
-            .duration(TierEU.RECIPE_UEV)
-            .eut(1)
+            .duration(1)
+            .eut(TierEU.RECIPE_UEV)
             .noOptimize()
             .addTo(electricImplosionCompressorRecipes);
 
@@ -208,23 +202,21 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
 
         final int partFraction = (int) (144 * part.mMaterialAmount / M);
 
-        for (ItemStack circuit : circuits) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    circuit.splitStack(circuitMultiplier),
-                    getModItem(SuperSolarPanels.ID, "solarsplitter", 1, 0),
-                    getModItem(OpenComputers.ID, "hologram2", circuitMultiplier, 0),
-                    GT_OreDictUnificator.get(part, MaterialsUEVplus.Eternity, multiplier))
-                .itemOutputs(
-                    GT_OreDictUnificator
-                        .get(part, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, multiplier))
-                .fluidInputs(
-                    MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter
-                        .getMolten((long) partFraction * multiplier))
-                .duration((int) (multiplier * (20 * partFraction / 144.0)))
-                .eut(TierEU.RECIPE_UXV)
-                .noOptimize()
-                .addTo(electricImplosionCompressorRecipes);
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                new Object[] { OrePrefixes.circuit.get(Materials.UHV), circuitMultiplier },
+                getModItem(SuperSolarPanels.ID, "solarsplitter", 1, 0),
+                getModItem(OpenComputers.ID, "hologram2", circuitMultiplier, 0),
+                GT_OreDictUnificator.get(part, MaterialsUEVplus.Eternity, multiplier))
+            .itemOutputs(
+                GT_OreDictUnificator
+                    .get(part, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, multiplier))
+            .fluidInputs(
+                MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter
+                    .getMolten((long) partFraction * multiplier))
+            .duration((int) (multiplier * (20 * partFraction / 144.0)))
+            .eut(TierEU.RECIPE_UXV)
+            .noOptimize()
+            .addTo(electricImplosionCompressorRecipes);
     }
 }
