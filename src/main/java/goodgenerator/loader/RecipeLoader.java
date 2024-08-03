@@ -97,7 +97,7 @@ public class RecipeLoader {
                 ItemRefer.Radiation_Protection_Plate.get(16),
                 ItemList.Field_Generator_ZPM.get(2),
                 ItemList.Electric_Pump_ZPM.get(8),
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
                 GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorLuV, 8),
                 GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Naquadah, 4),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 8),

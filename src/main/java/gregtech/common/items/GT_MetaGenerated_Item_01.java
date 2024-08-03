@@ -1443,7 +1443,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
-                OrePrefixes.battery.get(Materials.Ultimate)));
+                OrePrefixes.battery.get(Materials.ZPM)));
 
         // ZPM Module
         ItemList.ZPM.set(
@@ -1466,7 +1466,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
-                OrePrefixes.battery.get(Materials.Ultimate)));
+                OrePrefixes.battery.get(Materials.ZPM)));
 
         // UV Battery
         ItemList.ZPM2.set(
@@ -1533,7 +1533,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
-                OrePrefixes.battery.get(Materials.Ultimate)));
+                OrePrefixes.battery.get(Materials.ZPM)));
 
         // UV Cluster
         ItemList.Energy_Cluster.set(

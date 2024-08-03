@@ -5726,7 +5726,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             bitsd,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_EV, 'W',
                 OrePrefixes.wireGt16.get(Materials.Aluminium), 'T', OreDictNames.craftingChest, 'B',
-                OrePrefixes.battery.get(Materials.Master), 'C', OrePrefixes.circuit.get(Materials.EV) });
+                OrePrefixes.battery.get(Materials.LuV), 'C', OrePrefixes.circuit.get(Materials.EV) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Battery_Charger_4by4_IV.get(1L),
             bitsd,
