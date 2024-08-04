@@ -65,6 +65,6 @@ public class GT_Packet_Sound extends GT_Packet_New {
 
     @Override
     public byte getPacketID() {
-        return 1;
+        return GT_PacketTypes.SOUND.id;
     }
 }
