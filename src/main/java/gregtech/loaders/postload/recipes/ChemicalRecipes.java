@@ -1,7 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.BartWorks;
-import static gregtech.api.enums.Mods.GTNHLanthanides;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -3699,108 +3698,103 @@ public class ChemicalRecipes implements Runnable {
             .eut(30)
             .addTo(UniversalChemical);
 
-        if (BartWorks.isModLoaded()) {
-            // CaSi2 + 2HCl = 2Si + CaCl2 + 2H
+        // CaSi2 + 2HCl = 2Si + CaCl2 + 2H
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CalciumDisilicide, 3),
-                    GT_Utility.getIntegratedCircuit(1))
-                .itemOutputs(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 2),
-                    getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 3L, 63))
-                .fluidInputs(Materials.HydrochloricAcid.getFluid(2000))
-                .fluidOutputs(Materials.Hydrogen.getGas(2000))
-                .duration(45 * SECONDS)
-                .eut(30)
-                .addTo(UniversalChemical);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CalciumDisilicide, 3),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 2),
+                getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 3L, 63))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(2000))
+            .fluidOutputs(Materials.Hydrogen.getGas(2000))
+            .duration(45 * SECONDS)
+            .eut(30)
+            .addTo(UniversalChemical);
 
-            // SiCl4 + 2Zn = 2ZnCl2 + Si
+        // SiCl4 + 2Zn = 2ZnCl2 + Si
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 2),
-                    GT_Utility.getIntegratedCircuit(1))
-                .itemOutputs(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 1),
-                    getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 6L, 10052))
-                .fluidInputs(Materials.SiliconTetrachloride.getFluid(1000))
-                .duration(20 * SECONDS)
-                .eut(30)
-                .addTo(UniversalChemical);
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 2),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 1),
+                getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 6L, 10052))
+            .fluidInputs(Materials.SiliconTetrachloride.getFluid(1000))
+            .duration(20 * SECONDS)
+            .eut(30)
+            .addTo(UniversalChemical);
 
-        if (GTNHLanthanides.isModLoaded() && GTPlusPlus.isModLoaded()) {
+        // C4H8O + 2H =Pd= C4H10O
 
-            // C4H8O + 2H =Pd= C4H10O
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.Butyraldehyde, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Palladium, 1))
+            .itemOutputs(ItemList.Cell_Empty.get(1))
+            .fluidInputs(Materials.Hydrogen.getGas(2000))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("butanol"), 1000))
+            .duration(10 * SECONDS)
+            .eut(30)
+            .addTo(UniversalChemical);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.Butyraldehyde, 1),
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Palladium, 1))
-                .itemOutputs(ItemList.Cell_Empty.get(1))
-                .fluidInputs(Materials.Hydrogen.getGas(2000))
-                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("butanol"), 1000))
-                .duration(10 * SECONDS)
-                .eut(30)
-                .addTo(UniversalChemical);
+        // 4CH2O + C2H4O =NaOH= C5H12O4 + CO
 
-            // 4CH2O + C2H4O =NaOH= C5H12O4 + CO
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                getModItem(GTPlusPlus.ID, "Formaldehyde", 4),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1))
+            .itemOutputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.Pentaerythritol, 21),
+                Materials.Empty.getCells(4))
+            .fluidInputs(MaterialsKevlar.Acetaldehyde.getGas(1000))
+            .fluidOutputs(Materials.CarbonMonoxide.getGas(1000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    getModItem(GTPlusPlus.ID, "Formaldehyde", 4),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1))
-                .itemOutputs(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.Pentaerythritol, 21),
-                    Materials.Empty.getCells(4))
-                .fluidInputs(MaterialsKevlar.Acetaldehyde.getGas(1000))
-                .fluidOutputs(Materials.CarbonMonoxide.getGas(1000))
-                .duration(30 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(UniversalChemical);
+        // 4CH2O + C2H4O =NaOH= C5H12O4 + CO
 
-            // 4CH2O + C2H4O =NaOH= C5H12O4 + CO
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.Acetaldehyde, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1))
+            .itemOutputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.Pentaerythritol, 21),
+                Materials.Empty.getCells(1))
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 4000))
+            .fluidOutputs(Materials.CarbonMonoxide.getGas(1000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.Acetaldehyde, 1),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1))
-                .itemOutputs(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.Pentaerythritol, 21),
-                    Materials.Empty.getCells(1))
-                .fluidInputs(new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 4000))
-                .fluidOutputs(Materials.CarbonMonoxide.getGas(1000))
-                .duration(30 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(UniversalChemical);
+        // CaC2 + 2H2O = Ca(OH)2 + C2H2
 
-            // CaC2 + 2H2O = Ca(OH)2 + C2H2
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CalciumCarbide, 3),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(getModItem(GTPlusPlus.ID, "itemDustCalciumHydroxide", 5))
+            .fluidInputs(Materials.Water.getFluid(2000))
+            .fluidOutputs(MaterialsKevlar.Acetylene.getGas(1000))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CalciumCarbide, 3),
-                    GT_Utility.getIntegratedCircuit(1))
-                .itemOutputs(getModItem(GTPlusPlus.ID, "itemDustCalciumHydroxide", 5))
-                .fluidInputs(Materials.Water.getFluid(2000))
-                .fluidOutputs(MaterialsKevlar.Acetylene.getGas(1000))
-                .duration(15 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(UniversalChemical);
+        // Co(NO3)2 + 2NaOH = Co(OH)2 + 2NaNO3
 
-            // Co(NO3)2 + 2NaOH = Co(OH)2 + 2NaNO3
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    MaterialsKevlar.CobaltIINitrate.getDust(9),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 6))
-                .itemOutputs(
-                    MaterialsKevlar.CobaltIIHydroxide.getDust(5),
-                    getModItem(GTPlusPlus.ID, "itemDustSodiumNitrate", 10))
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(UniversalChemical);
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                MaterialsKevlar.CobaltIINitrate.getDust(9),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 6))
+            .itemOutputs(
+                MaterialsKevlar.CobaltIIHydroxide.getDust(5),
+                getModItem(GTPlusPlus.ID, "itemDustSodiumNitrate", 10))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(UniversalChemical);
     }
 
     public void addDefaultPolymerizationRecipes(Fluid aBasicMaterial, ItemStack aBasicMaterialCell, Fluid aPolymer) {
@@ -5625,349 +5619,337 @@ public class ChemicalRecipes implements Runnable {
             .eut(500000)
             .addTo(multiblockChemicalReactorRecipes);
 
-        if (GTNHLanthanides.isModLoaded() && GTPlusPlus.isModLoaded()) {
-            // CH2O + 2C6H7N + HCl = C13H14N2(HCl) + H2O
+        // CH2O + 2C6H7N + HCl = C13H14N2(HCl) + H2O
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.getIntegratedCircuit(1))
-                .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 1000),
-                    new FluidStack(FluidRegistry.getFluid("aniline"), 2000),
-                    Materials.HydrochloricAcid.getFluid(1000))
-                .fluidOutputs(MaterialsKevlar.DiaminodiphenylmethanMixture.getFluid(1000))
-                .duration(60 * SECONDS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
+            .fluidInputs(
+                new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 1000),
+                new FluidStack(FluidRegistry.getFluid("aniline"), 2000),
+                Materials.HydrochloricAcid.getFluid(1000))
+            .fluidOutputs(MaterialsKevlar.DiaminodiphenylmethanMixture.getFluid(1000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            // C6H5NO2 + 6H =Pd= C6H7N + 2H2O
+        // C6H5NO2 + 6H =Pd= C6H7N + 2H2O
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1))
-                .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 9000),
-                    Materials.Hydrogen.getGas(54000))
-                .fluidOutputs(Materials.Water.getFluid(18000), new FluidStack(FluidRegistry.getFluid("aniline"), 9000))
-                .duration(45 * SECONDS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1))
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 9000), Materials.Hydrogen.getGas(54000))
+            .fluidOutputs(Materials.Water.getFluid(18000), new FluidStack(FluidRegistry.getFluid("aniline"), 9000))
+            .duration(45 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            // C6H6 + HNO3 =H2SO4= C6H5NO2 + H2O
+        // C6H6 + HNO3 =H2SO4= C6H5NO2 + H2O
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.getIntegratedCircuit(1))
-                .fluidInputs(
-                    Materials.Benzene.getFluid(5000),
-                    Materials.SulfuricAcid.getFluid(3000),
-                    Materials.NitricAcid.getFluid(5000),
-                    GT_ModHandler.getDistilledWater(10000))
-                .fluidOutputs(
-                    new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 5000),
-                    Materials.DilutedSulfuricAcid.getFluid(3000))
-                .duration(6 * SECONDS)
-                .eut(TierEU.RECIPE_IV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
+            .fluidInputs(
+                Materials.Benzene.getFluid(5000),
+                Materials.SulfuricAcid.getFluid(3000),
+                Materials.NitricAcid.getFluid(5000),
+                GT_ModHandler.getDistilledWater(10000))
+            .fluidOutputs(
+                new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 5000),
+                Materials.DilutedSulfuricAcid.getFluid(3000))
+            .duration(6 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            // C13H14N2(HCl) + 2COCl2 = C15H10N2O2(5HCl)
+        // C13H14N2(HCl) + 2COCl2 = C15H10N2O2(5HCl)
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.getIntegratedCircuit(1))
-                .fluidInputs(
-                    MaterialsKevlar.DiaminodiphenylmethanMixture.getFluid(1000),
-                    new FluidStack(FluidRegistry.getFluid("phosgene"), 2000))
-                .fluidOutputs(MaterialsKevlar.DiphenylmethaneDiisocyanateMixture.getFluid(1000))
-                .duration(30 * SECONDS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
+            .fluidInputs(
+                MaterialsKevlar.DiaminodiphenylmethanMixture.getFluid(1000),
+                new FluidStack(FluidRegistry.getFluid("phosgene"), 2000))
+            .fluidOutputs(MaterialsKevlar.DiphenylmethaneDiisocyanateMixture.getFluid(1000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.getIntegratedCircuit(9),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1))
-                .fluidInputs(MaterialsKevlar.Butyraldehyde.getFluid(9000), Materials.Hydrogen.getGas(18000))
-                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("butanol"), 9000))
-                .duration(4 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(9),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1))
+            .fluidInputs(MaterialsKevlar.Butyraldehyde.getFluid(9000), Materials.Hydrogen.getGas(18000))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("butanol"), 9000))
+            .duration(4 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.KevlarCatalyst, 1))
-                .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("butanol"), 2000),
-                    new FluidStack(FluidRegistry.getFluid("propionicacid"), 1000),
-                    Materials.IronIIIChloride.getFluid(100))
-                .duration(30 * SECONDS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.KevlarCatalyst, 1))
+            .fluidInputs(
+                new FluidStack(FluidRegistry.getFluid("butanol"), 2000),
+                new FluidStack(FluidRegistry.getFluid("propionicacid"), 1000),
+                Materials.IronIIIChloride.getFluid(100))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.getIntegratedCircuit(9),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 9))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.KevlarCatalyst, 9))
-                .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("butanol"), 18000),
-                    new FluidStack(FluidRegistry.getFluid("propionicacid"), 9000),
-                    Materials.IronIIIChloride.getFluid(900))
-                .duration(3 * MINUTES + 45 * SECONDS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(9),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 9))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.KevlarCatalyst, 9))
+            .fluidInputs(
+                new FluidStack(FluidRegistry.getFluid("butanol"), 18000),
+                new FluidStack(FluidRegistry.getFluid("propionicacid"), 9000),
+                Materials.IronIIIChloride.getFluid(900))
+            .duration(3 * MINUTES + 45 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            // C2H4 + CO + H2O =C4NiO= C3H6O2
+        // C2H4 + CO + H2O =C4NiO= C3H6O2
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.getIntegratedCircuit(1))
-                .fluidInputs(
-                    Materials.Ethylene.getGas(1000),
-                    Materials.CarbonMonoxide.getGas(1000),
-                    MaterialsKevlar.NickelTetracarbonyl.getFluid(100),
-                    Materials.Water.getFluid(1000))
-                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("propionicacid"), 1000))
-                .duration(10 * SECONDS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
+            .fluidInputs(
+                Materials.Ethylene.getGas(1000),
+                Materials.CarbonMonoxide.getGas(1000),
+                MaterialsKevlar.NickelTetracarbonyl.getFluid(100),
+                Materials.Water.getFluid(1000))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("propionicacid"), 1000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.getIntegratedCircuit(9))
-                .fluidInputs(
-                    Materials.Ethylene.getGas(9000),
-                    Materials.CarbonMonoxide.getGas(9000),
-                    MaterialsKevlar.NickelTetracarbonyl.getFluid(900),
-                    Materials.Water.getFluid(9000))
-                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("propionicacid"), 9000))
-                .duration(1 * MINUTES + 15 * SECONDS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(9))
+            .fluidInputs(
+                Materials.Ethylene.getGas(9000),
+                Materials.CarbonMonoxide.getGas(9000),
+                MaterialsKevlar.NickelTetracarbonyl.getFluid(900),
+                Materials.Water.getFluid(9000))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("propionicacid"), 9000))
+            .duration(1 * MINUTES + 15 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            // C6H7N + HNO3 =H2SO4,C4H6O3= C6H6N2O2 + H2O
+        // C6H7N + HNO3 =H2SO4,C4H6O3= C6H6N2O2 + H2O
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.getIntegratedCircuit(2))
-                .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("aniline"), 1000),
-                    new FluidStack(FluidRegistry.getFluid("molten.aceticanhydride"), 100),
-                    Materials.NitrationMixture.getFluid(2000))
-                .fluidOutputs(
-                    MaterialsKevlar.IVNitroaniline.getFluid(1000),
-                    Materials.DilutedSulfuricAcid.getFluid(1000))
-                .duration(15 * SECONDS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
+            .fluidInputs(
+                new FluidStack(FluidRegistry.getFluid("aniline"), 1000),
+                new FluidStack(FluidRegistry.getFluid("molten.aceticanhydride"), 100),
+                Materials.NitrationMixture.getFluid(2000))
+            .fluidOutputs(MaterialsKevlar.IVNitroaniline.getFluid(1000), Materials.DilutedSulfuricAcid.getFluid(1000))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.getIntegratedCircuit(9))
-                .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("aniline"), 9000),
-                    new FluidStack(FluidRegistry.getFluid("molten.aceticanhydride"), 900),
-                    Materials.NitrationMixture.getFluid(18000))
-                .fluidOutputs(
-                    MaterialsKevlar.IVNitroaniline.getFluid(9000),
-                    Materials.DilutedSulfuricAcid.getFluid(9000))
-                .duration(1 * MINUTES + 40 * SECONDS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(9))
+            .fluidInputs(
+                new FluidStack(FluidRegistry.getFluid("aniline"), 9000),
+                new FluidStack(FluidRegistry.getFluid("molten.aceticanhydride"), 900),
+                Materials.NitrationMixture.getFluid(18000))
+            .fluidOutputs(MaterialsKevlar.IVNitroaniline.getFluid(9000), Materials.DilutedSulfuricAcid.getFluid(9000))
+            .duration(1 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            // C6H6N2O2 + 6H =Pd,NO2= C6H8N2 + 2H2O
+        // C6H6N2O2 + 6H =Pd,NO2= C6H8N2 + 2H2O
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 16))
-                .fluidInputs(
-                    Materials.NitrogenDioxide.getGas(100),
-                    Materials.Hydrogen.getGas(6000),
-                    MaterialsKevlar.IVNitroaniline.getFluid(1000))
-                .fluidOutputs(Materials.Water.getFluid(2000))
-                .duration(20 * SECONDS)
-                .eut(500000)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 16))
+            .fluidInputs(
+                Materials.NitrogenDioxide.getGas(100),
+                Materials.Hydrogen.getGas(6000),
+                MaterialsKevlar.IVNitroaniline.getFluid(1000))
+            .fluidOutputs(Materials.Water.getFluid(2000))
+            .duration(20 * SECONDS)
+            .eut(500000)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            // C4H10O2 =Cu= C4H6O2 + 4H
+        // C4H10O2 =Cu= C4H6O2 + 4H
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1))
-                .fluidInputs(new FluidStack(FluidRegistry.getFluid("1,4-butanediol"), 1000))
-                .fluidOutputs(MaterialsKevlar.GammaButyrolactone.getFluid(1000), Materials.Hydrogen.getGas(4000))
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1))
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("1,4-butanediol"), 1000))
+            .fluidOutputs(MaterialsKevlar.GammaButyrolactone.getFluid(1000), Materials.Hydrogen.getGas(4000))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.getIntegratedCircuit(9),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 9))
-                .fluidInputs(new FluidStack(FluidRegistry.getFluid("1,4-butanediol"), 9000))
-                .fluidOutputs(MaterialsKevlar.GammaButyrolactone.getFluid(9000), Materials.Hydrogen.getGas(36000))
-                .duration(35 * SECONDS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(9),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 9))
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("1,4-butanediol"), 9000))
+            .fluidOutputs(MaterialsKevlar.GammaButyrolactone.getFluid(9000), Materials.Hydrogen.getGas(36000))
+            .duration(35 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            // 2CH2O + C2H2 =SiO2,CuO,Bi2O3= C4H6O2
+        // 2CH2O + C2H2 =SiO2,CuO,Bi2O3= C4H6O2
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CupricOxide, 1),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.BismuthIIIOxide, 1),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 12))
-                .fluidInputs(
-                    MaterialsKevlar.Acetylene.getGas(1000),
-                    new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 2000))
-                .duration(20 * SECONDS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CupricOxide, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.BismuthIIIOxide, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 12))
+            .fluidInputs(
+                MaterialsKevlar.Acetylene.getGas(1000),
+                new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 2000))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.getIntegratedCircuit(9),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CupricOxide, 9),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.BismuthIIIOxide, 9),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 9))
-                .itemOutputs(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 64),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 44))
-                .fluidInputs(
-                    MaterialsKevlar.Acetylene.getGas(9000),
-                    new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 18000))
-                .duration(2 * MINUTES + 30 * SECONDS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(9),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CupricOxide, 9),
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.BismuthIIIOxide, 9),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 9))
+            .itemOutputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 64),
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 44))
+            .fluidInputs(
+                MaterialsKevlar.Acetylene.getGas(9000),
+                new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 18000))
+            .duration(2 * MINUTES + 30 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            // C4H6O2 + 4H =NiAl= C4H10O2
+        // C4H6O2 + 4H =NiAl= C4H10O2
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 12),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.RaneyNickelActivated, 1))
-                .fluidInputs(Materials.Hydrogen.getGas(4000))
-                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("1,4-butanediol"), 1000))
-                .duration(15 * SECONDS)
-                .eut(500000)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 12),
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.RaneyNickelActivated, 1))
+            .fluidInputs(Materials.Hydrogen.getGas(4000))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("1,4-butanediol"), 1000))
+            .duration(15 * SECONDS)
+            .eut(500000)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.getIntegratedCircuit(1),
-                    getModItem(GTPlusPlus.ID, "itemDustCalciumChloride", 1),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 9),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 9))
-                .fluidInputs(MaterialsKevlar.NMethylIIPyrrolidone.getFluid(1000))
-                .fluidOutputs(
-                    MaterialsKevlar.LiquidCrystalKevlar.getFluid(9000),
-                    Materials.DilutedHydrochloricAcid.getFluid(2000))
-                .duration(30 * SECONDS)
-                .eut(500000)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1),
+                getModItem(GTPlusPlus.ID, "itemDustCalciumChloride", 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 9),
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 9))
+            .fluidInputs(MaterialsKevlar.NMethylIIPyrrolidone.getFluid(1000))
+            .fluidOutputs(
+                MaterialsKevlar.LiquidCrystalKevlar.getFluid(9000),
+                Materials.DilutedHydrochloricAcid.getFluid(2000))
+            .duration(30 * SECONDS)
+            .eut(500000)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.getIntegratedCircuit(9),
-                    getModItem(GTPlusPlus.ID, "itemDustCalciumChloride", 7),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 63),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 63))
-                .fluidInputs(MaterialsKevlar.NMethylIIPyrrolidone.getFluid(7000))
-                .fluidOutputs(
-                    MaterialsKevlar.LiquidCrystalKevlar.getFluid(63000),
-                    Materials.DilutedHydrochloricAcid.getFluid(14000))
-                .duration(2 * MINUTES + 55 * SECONDS)
-                .eut(500000)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(9),
+                getModItem(GTPlusPlus.ID, "itemDustCalciumChloride", 7),
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 63),
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 63))
+            .fluidInputs(MaterialsKevlar.NMethylIIPyrrolidone.getFluid(7000))
+            .fluidOutputs(
+                MaterialsKevlar.LiquidCrystalKevlar.getFluid(63000),
+                Materials.DilutedHydrochloricAcid.getFluid(14000))
+            .duration(2 * MINUTES + 55 * SECONDS)
+            .eut(500000)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            // Na2B4O7(H2O)10 + 2HCl = 2NaCl + 4H3BO3 + 5H2O
+        // Na2B4O7(H2O)10 + 2HCl = 2NaCl + 4H3BO3 + 5H2O
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Borax, 23))
-                .itemOutputs(Materials.Salt.getDust(4))
-                .fluidInputs(Materials.HydrochloricAcid.getFluid(2000))
-                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("boricacid"), 4000), Materials.Water.getFluid(5000))
-                .duration(40 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Borax, 23))
+            .itemOutputs(Materials.Salt.getDust(4))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(2000))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("boricacid"), 4000), Materials.Water.getFluid(5000))
+            .duration(40 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            // H3BO3 + 3CH4O =H2SO4= C3H9BO3 + 3H2O
+        // H3BO3 + 3CH4O =H2SO4= C3H9BO3 + 3H2O
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.getIntegratedCircuit(1))
-                .fluidInputs(
-                    Materials.Methanol.getFluid(3000),
-                    new FluidStack(FluidRegistry.getFluid("boricacid"), 1000),
-                    Materials.SulfuricAcid.getFluid(6000))
-                .fluidOutputs(
-                    Materials.DilutedSulfuricAcid.getFluid(6000),
-                    MaterialsKevlar.TrimethylBorate.getFluid(1000))
-                .duration(30 * SECONDS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
+            .fluidInputs(
+                Materials.Methanol.getFluid(3000),
+                new FluidStack(FluidRegistry.getFluid("boricacid"), 1000),
+                Materials.SulfuricAcid.getFluid(6000))
+            .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(6000), MaterialsKevlar.TrimethylBorate.getFluid(1000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.getIntegratedCircuit(9))
-                .fluidInputs(
-                    Materials.Methanol.getFluid(27000),
-                    new FluidStack(FluidRegistry.getFluid("boricacid"), 9000),
-                    Materials.SulfuricAcid.getFluid(54000))
-                .fluidOutputs(
-                    Materials.DilutedSulfuricAcid.getFluid(54000),
-                    MaterialsKevlar.TrimethylBorate.getFluid(9000))
-                .duration(3 * MINUTES + 45 * SECONDS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(9))
+            .fluidInputs(
+                Materials.Methanol.getFluid(27000),
+                new FluidStack(FluidRegistry.getFluid("boricacid"), 9000),
+                Materials.SulfuricAcid.getFluid(54000))
+            .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(54000), MaterialsKevlar.TrimethylBorate.getFluid(9000))
+            .duration(3 * MINUTES + 45 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            // RhCl3 + 3C18H15P + 3NaBH4 + CO = RhC55H46P3O + 3NaCl + 3B + 11H
+        // RhCl3 + 3C18H15P + 3NaBH4 + CO = RhC55H46P3O + 3NaCl + 3B + 11H
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.RhodiumChloride, 4),
-                    MaterialsKevlar.Triphenylphosphene.getDust(64),
-                    MaterialsKevlar.Triphenylphosphene.getDust(38),
-                    MaterialsKevlar.SodiumBorohydride.getDust(18))
-                .itemOutputs(
-                    MaterialsKevlar.OrganorhodiumCatalyst.getDust(64),
-                    MaterialsKevlar.OrganorhodiumCatalyst.getDust(42),
-                    Materials.Salt.getDust(6),
-                    Materials.Boron.getDust(3))
-                .fluidInputs(Materials.CarbonMonoxide.getGas(1000))
-                .fluidOutputs(Materials.Hydrogen.getGas(11000))
-                .duration(40 * SECONDS)
-                .eut(500000)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.RhodiumChloride, 4),
+                MaterialsKevlar.Triphenylphosphene.getDust(64),
+                MaterialsKevlar.Triphenylphosphene.getDust(38),
+                MaterialsKevlar.SodiumBorohydride.getDust(18))
+            .itemOutputs(
+                MaterialsKevlar.OrganorhodiumCatalyst.getDust(64),
+                MaterialsKevlar.OrganorhodiumCatalyst.getDust(42),
+                Materials.Salt.getDust(6),
+                Materials.Boron.getDust(3))
+            .fluidInputs(Materials.CarbonMonoxide.getGas(1000))
+            .fluidOutputs(Materials.Hydrogen.getGas(11000))
+            .duration(40 * SECONDS)
+            .eut(500000)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            // 2NaOH + N2H4 =Mn= 2N + 2H2O + 2NaH
+        // 2NaOH + N2H4 =Mn= 2N + 2H2O + 2NaH
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.getIntegratedCircuit(9),
-                    Materials.SodiumHydroxide.getDust(6),
-                    Materials.Manganese.getDustTiny(1))
-                .itemOutputs(MaterialsKevlar.SodiumHydride.getDust(4))
-                .fluidInputs(new FluidStack(FluidRegistry.getFluid("fluid.hydrazine"), 1000))
-                .fluidOutputs(Materials.Nitrogen.getGas(2000), Materials.Water.getFluid(2000))
-                .duration(10 * TICKS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(9),
+                Materials.SodiumHydroxide.getDust(6),
+                Materials.Manganese.getDustTiny(1))
+            .itemOutputs(MaterialsKevlar.SodiumHydride.getDust(4))
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("fluid.hydrazine"), 1000))
+            .fluidOutputs(Materials.Nitrogen.getGas(2000), Materials.Water.getFluid(2000))
+            .duration(10 * TICKS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.getIntegratedCircuit(18),
-                    Materials.SodiumHydroxide.getDust(54),
-                    Materials.Manganese.getDust(1))
-                .itemOutputs(MaterialsKevlar.SodiumHydride.getDust(36))
-                .fluidInputs(new FluidStack(FluidRegistry.getFluid("fluid.hydrazine"), 9000))
-                .fluidOutputs(Materials.Nitrogen.getGas(18000), Materials.Water.getFluid(18000))
-                .duration(3 * SECONDS + 10 * TICKS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(multiblockChemicalReactorRecipes);
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(18),
+                Materials.SodiumHydroxide.getDust(54),
+                Materials.Manganese.getDust(1))
+            .itemOutputs(MaterialsKevlar.SodiumHydride.getDust(36))
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("fluid.hydrazine"), 9000))
+            .fluidOutputs(Materials.Nitrogen.getGas(18000), Materials.Water.getFluid(18000))
+            .duration(3 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
     }
 }

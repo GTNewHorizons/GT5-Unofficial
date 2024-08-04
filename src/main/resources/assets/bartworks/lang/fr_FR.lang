@@ -1,0 +1,160 @@
+itemGroup.GT2C=Compatibilité Gregtech 2
+item.GT_Rockcutter_Item_LV.name=Coupeur de roche LV
+item.GT_Rockcutter_Item_MV.name=Coupeur de roche MV
+item.GT_Rockcutter_Item_HV.name=Coupeur de roche HV
+item.GT_Teslastaff_Item.name=Bâton Tesla
+BW_ItemBlocks.0.name=Cellule de Lapis Engravée
+BW_ItemBlocks.1.name=Cellule de Lapis Plaquée
+GT_LESU_CASING.0.name=Bloc carter du LESU
+
+itemGroup.bartworks=BartWorks inter-temporel
+BW_Machinery_Casings.0.name=Bloc de Ferrite en Nickel-Zinc
+BW_Machinery_Casings.1.name=Bloc de bobinage de Transformateur
+item.BW_PaperRotor.name=Rotor primitif en papier (Vent seulement)
+item.BW_LeatherRotor.name=Rotor primitif en cuir (Vent seulement)
+item.BW_WoolRotor.name=Rotor primitif en laine (Vent seulement)
+item.BW_CombinedRotor.name=Rotor primitif combiné (Vent seulement)
+tile.BWRotorBlock.0.name=Boîte d'arbre de transmission primitive
+item.grindstone_top.name=partie haute de Meule
+item.grindstone_bottom.name=partie basse de Meule
+item.completed_grindstone.name=Meule
+item.rotors.leatherParts.name=Charpente en bois recouverte de cuir
+item.rotors.woolParts.name=Charpente en bois recouverte de laine
+item.rotors.paperParts.name=Charpente en bois recouverte de papier
+item.rotors.combinedParts.name=Charpente en bois recouverte de plusieurs matériaux
+item.BW_SimpleWindMeter.name=Simple Anémomètre
+tile.BWHeatedWaterPump.0.name=Simple pompe à eau Stirling
+item.BWrawtube.name=Tube de Verre allongé
+item.BWmotor.name=Simple Moteur Stirling
+item.BWstove.name=Simple réchaud chauffé
+
+itemGroup.BioTab=Bio-ingéniérie BartWorks
+filled.item.petriDish.name=Boîte à Pétri avec culture
+item.petriDish.name=Boîte à Pétri stérilisée
+item.DNASampleFlask.name=Fiole d'échantillonnage ADN
+item.PlasmidCell.name=Fiole d'échantillonnage de Plasmide
+item.DetergentPowder.name=Poudre détergente
+item.Agarose.name=Agarose
+item.IncubationModule.name=Module d'incubation
+item.Cells.name=Cellules bactériennes
+item.PlasmaMembrane.name=Membrane Cellulaire
+labModule.item.DNAExtractionModule.name=Module d'extraction d'ADN
+labModule.item.PCRThermoclyclingModule.name=Module de thermocycle PCR
+labModule.item.PlasmidSynthesisModule.name=Module de synthèse pour Plasmides
+labModule.item.TransformationModule.name=Module de transformation
+labModule.item.ClonalCellularSynthesisModule.name=Module de synthèse cellulaire clonale
+BW_GlasBlocks.0.name=Bloc de Verre Borosilicate
+BW_GlasBlocks.1.name=Bloc de Verre Borosilicate renforcé en Nickel
+BW_GlasBlocks.2.name=Bloc de Verre Borosilicate renforcé en Tungsten
+BW_GlasBlocks.3.name=Bloc de Verre Borosilicate renforcé en Chrome
+BW_GlasBlocks.4.name=Bloc de Verre Borosilicate renforcé en Iridium
+BW_GlasBlocks.5.name=Bloc de Verre Borosilicate renforcé en Osmium
+BW_GlasBlocks.6.name=Bloc de Verre Borosilicate coloré (Rouge)
+BW_GlasBlocks.7.name=Bloc de Verre Borosilicate coloré (Vert)
+BW_GlasBlocks.8.name=Bloc de Verre Borosilicate coloré (Violet)
+BW_GlasBlocks.9.name=Bloc de Verre Borosilicate coloré (Jaune)
+BW_GlasBlocks.10.name=Bloc de Verre Borosilicate coloré (Vert Clair)
+BW_GlasBlocks.11.name=Bloc de Verre Borosilicate coloré (Marron)
+BW_GlasBlocks.12.name=Bloc de Verre Thorium Yttrium
+
+tooltip.glas.0.name=Tier de verre:
+tooltip.LESU.0.name=Capacité maximum!
+tooltip.LESU.1.name=Plusieurs contrôleurs!
+
+tooltip.windmeter.0.name=Un simple anémomètre pour choisir une place pour l'éolienne.
+tooltip.windmeter.1.name=Utilisations restantes:
+tooltip.windmeter.2.name=non existant
+tooltip.windmeter.3.name=plutôt léger
+tooltip.windmeter.4.name=commun
+tooltip.windmeter.5.name=plutôt fort
+tooltip.windmeter.6.name=très fort
+tooltip.windmeter.7.name=trop fort
+tooltip.windmeter.8.name=Le vent ici semble être
+tooltip.rotor.0.name=Diamètre:
+tooltip.rotor.1.name=Durabilité:
+tooltip.rotor.2.name=Efficacité
+tooltip.cp.0.name=Y-a-t-il un circuit dedans?
+
+tooltip.bw.0.name=Ajouté par
+tooltip.bw.1.name=Ajouté par bartimaeusnek via
+tooltip.bw.yes.name=Oui
+tooltip.bw.no.name=Non
+tooltip.bw.tier.name=Tier:
+tooltip.bw.kg.0.name=kg
+tooltip.bw.kg.1.name=kgs
+tooltip.bw.empty.name=Vide
+
+tooltip.teslastaff.0.name=Pas de garrantie!
+tooltip.labmodule.0.name=un module utilisé pour changer le mode de fonctionnement du BioLab
+tooltip.labparts.0.name=Une boîte de Pétrie vide stérélisée.
+tooltip.labparts.1.name=Une fiole d'ADN vide.
+tooltip.labparts.2.name=Une cellule de plasmide vide.
+tooltip.labparts.3.name=Un nettoyant spécial pour la Bio-ingéniérie.
+tooltip.labparts.4.name=Une poudre de séparation d'ADN par électrophorèse.
+tooltip.labparts.5.name=Une boîte de Pétri contenant:
+tooltip.labparts.6.name=Ceci est une culture faible, elle ne peut pas se reproduire dans la Bio Cuve!
+tooltip.labparts.7.name=Une fiole d'ADN contenant:
+tooltip.labparts.8.name=Une cellule de plasmide contenant:
+
+tooltip.tile.waterpump.0.name=Produit
+tooltip.tile.waterpump.1.name=L/s Water quand il est alimenté.
+tooltip.tile.waterpump.2.name=Doit être placé sur le sol.
+
+tooltip.tile.mbf.0.name=Bloc contrôleur pour le haut fourneau;Taille(LxHxP): 15x20x15 (creux);Contrôleur: 3ème couche centré au milieu;Intérieur 13x18x13 bobines de chauffage (creux);Extérieur 15x18x15 Verre Borosilicate;Le verre limite le tier d'énergie en entrée;1+ Trappe/Bus d'entrée (n'importe quel bloc carter);1+ bus de sortie(n'importe quel bloc carter);1+ trappe d'énergie (n'importe quel bloc carter);1x trappe de maintenance (n'importe quel bloc carter);Blocs carter de machine résistant à la chaleur pour l'extérieur 15x15 (couche 20);La récupération se câle sur le tier de la trappe d'échappement;Blocs carter de machine résistant à la chaleur pour la base;Chaque 900K supérieur à la température de base donne 5% de rapidité (multiplicativement);Chaque 1800k supérieur à la température de base donne un overclock gratuit;Chaque overclock reduit le temps de craft de 25% et augmente la consommation d'EU/t de 400%;Cause une pollution maximale.
+tooltip.tile.mbf.1.name=Pollution par seconde
+tooltip.tile.windmill.0.name=Un broyeur primitif fonctionnant a l'énergie cinétique.;Taille(LxHxP): 7x12x7;Couche 1: 7x7 Briques, les coins sont laissés vide,le contrôleur est centré devant.;(creux), les mur doivent contenir au moins un Dispenseur;Couche 7: 7x7 Planches de Bois. les coins sont laissés vide, (creux).;Couche 8: 7x7 Planches de Bois. les coins sont laissés vide, (creux),;le bloc centré devant doit être une Boîte d'arbre de transmission primitive.;Couche 9: 7x7 Planches de Bois. les coins sont laissés vide, (creux).;Couche 11: 3x3 Planches de Bois. les coins sont pleins, (creux).;A besoin d'un Rotor d'éolienne dans la Boîte d'arbre de transmission pour fonctionner.;Les objets d'entrée doivent aller dans le contrôleur.;Les objets de sortie apparaîtront dans les Dispenseurs.;C'est plus rapide dans les régions venteuses (comme les éoliennes IC2).
+tooltip.tile.lesu.0.name=Bloc contrôleur pour le GT2-Stylé L.E.S.U.;Taille: n'importe;
+tooltip.tile.lesu.1.name=Stockage par carter du LESU:
+tooltip.tile.lesu.2.name=EU de sortie: le nombre de blocs carter LESU;EU d'entrée: prochain Tier de voltage après les EU de sortie;l'ampérage d'entrée/sortie peut être configurée via 4 Circuits dans le GUI;La face de sortie à un point dessus.
+tooltip.tile.lesu.3.name=Seulement un seul contrôleur autorisé, pas de partage des murs!
+tooltip.tile.manualtravo.0.name=Bloc contrôleur pour le Transformateur Manuel;4 modes de fonctionnement;Fonctionne avec 2 modes en ce moment:;Mode 1: Circuit 0 dans le contrôleur: unique source et ascendant;Mode 2: Circuit 1 dans le contrôleur: unique source et descendant;Mode 3: Circuit 2 dans le contrôleur: plusieurs sources et ascendant;Mode 4: Circuit 3 dans le contrôleur: plusieurs sources et descendant;Pour les modes directs: 3xHx3;La base doit contenir au moins une trappe d'énergie;1 Couche de Blocs de bobinage de Transformateur pour chaque tier converti;Au milieu des Blocs de bobinage de Transformeur il doit y avoir un Bloc de Ferrite en Nickel-Zinc;Le haut doit contenir au moins une Trappe Dynamo;La trappe de maintenance peut être placée n'importe où;Les modes avec plusieurs sources sont désactivés pour le moment.
+tooltip.tile.tiereddsc.0.name=Voltage:
+tooltip.tile.tiereddsc.1.name=Ampérage d'entrée:
+tooltip.tile.tiereddsc.2.name=Ampérage de sortie:
+tooltip.tile.tiereddsc.3.name=Capacité:
+tooltip.tile.diode.0.name=Une simple diode qui autorise les flux d'énergie dans un seul sens.
+tooltip.tile.energydistributor.0.name=Répartit l'ampérage sur plusieur faces.
+tooltip.tile.biolab.0.name=Le BioLab, une station de bio-ingéniérie multifonction.
+tooltip.tile.radhatch.0.name=Radioactive Item Chamber for Multiblocks Chambre d'objets radiactifs pour multi-blocs
+tooltip.tile.radhatch.1.name=Utiliser un tournevis pour régler le niveau de confinement
+tooltip.tile.radhatch.2.name=Matériau:
+tooltip.tile.radhatch.3.name=Sievert:
+tooltip.tile.radhatch.4.name=Quantité:
+tooltip.tile.radhatch.5.name=Temps (en t/s/m/h) pour se désintégrer(1kg):
+tooltip.tile.radhatch.6.name=t
+tooltip.tile.radhatch.7.name=s
+tooltip.tile.radhatch.8.name=m
+tooltip.tile.radhatch.9.name=h
+tooltip.tile.acidgen.0.name=Un générateur à acide
+tooltip.tile.acidgen.1.name=Crée de l'énergie à partir de potentiels chimiques.
+
+# RecipeMap
+bw.recipe.biolab=Bio Lab
+bw.recipe.BacteriaVat=Bio Cuve
+bw.fuels.acidgens=Générateur à Acide
+
+nei.biovat.0.name=A besoin du tier de verre: %s
+nei.biovat.1.name=A besoin du montant exact Sievert: %s Sv
+nei.biovat.2.name=A besoin d'un minimum Sievert: %s Sv
+
+tile.diode.name=Diode câble
+tile.energydistributor.name=Distributeur d'énergie
+tile.acidgenerator.name=Générateur à Acide
+tile.bw.mbf.name=Méga Haut Fourneau
+tile.bw.mvf.name=Méga Refroidisseur A Vide
+tile.biolab.name=Bio Lab
+tile.biovat.name=Bio Cuve
+tile.radiohatch.name=Trappe Radioactive
+tile.bw.windmill.name=Eolienne
+tile.manutrafo.name=Transformateur Manuel
+
+
+itemGroup.bartworksMetaMaterials=Méta Matériaux De BartWorks
+
+
+planet.Ross128b=Ross128b
+moon.Ross128ba=Ross128ba
+star.Ross128=Ross128
+solarsystem.Ross128System=Système-Ross128
+
+itemGroup.bw.MetaItems.0=Objets du Remaniement des Circuits BartWorks

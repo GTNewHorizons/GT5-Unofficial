@@ -47,7 +47,7 @@ import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
-import gregtech.api.multitileentity.MultiTileEntityBlockInternal;
+import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityClassContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
@@ -69,7 +69,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MultiTileEntity extends CoverableTileEntity
-    implements IMultiTileEntity.IMTE_BreakBlock, MultiTileBasicRender, SyncedMultiTileEntity {
+    implements IMultiTileEntity, MultiTileBasicRender, SyncedMultiTileEntity {
 
     private ITexture baseTexture = null;
     private ITexture topOverlayTexture = null;
@@ -129,13 +129,13 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public void initFromNBT(NBTTagCompound nbt, short mteID, short mteRegistry) {
-        if (this.mteID == mteID && this.mteRegistry == mteRegistry) {
+    public void initFromNBT(NBTTagCompound nbt, short muteID, short muteRegistry) {
+        if (this.mteID == muteID && this.mteRegistry == muteRegistry) {
             return;
         }
         // Set ID and Registry ID.
-        this.mteID = mteID;
-        this.mteRegistry = mteRegistry;
+        this.mteID = muteID;
+        this.mteRegistry = muteRegistry;
         // Read the Default Parameters from NBT.
         if (nbt != null) readFromNBT(nbt);
     }
@@ -171,12 +171,11 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     @Override
     public void copyTextures() {
         // Loading an instance
-        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
-            .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
-        if (!(tCanonicalTileEntity instanceof MultiTileEntity)) {
+        final TileEntity referenceTileEntity = MultiTileEntityRegistry
+            .getReferenceTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
+        if (!(referenceTileEntity instanceof MultiTileEntity canonicalEntity)) {
             return;
         }
-        final MultiTileEntity canonicalEntity = (MultiTileEntity) tCanonicalTileEntity;
         baseTexture = canonicalEntity.baseTexture;
         topOverlayTexture = canonicalEntity.topOverlayTexture;
         bottomOverlayTexture = canonicalEntity.bottomOverlayTexture;
@@ -225,7 +224,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
                 if (tClass != null) {
                     // Add the Default Parameters. Useful for things that differ between different tiers/types of the
                     // same machine
-                    nbt = GT_Util.fuseNBT(nbt, tClass.mParameters);
+                    nbt = GT_Util.fuseNBT(nbt, tClass.getParameters());
                 }
             }
         }
@@ -279,33 +278,33 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     protected void readTasksNBT(NBTTagCompound nbt) {}
 
     @Override
-    public final void writeToNBT(NBTTagCompound aNBT) {
-        super.writeToNBT(aNBT);
+    public final void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
         // write the IDs
-        aNBT.setShort(NBT.MTE_ID, mteID);
-        aNBT.setShort(NBT.MTE_REG, mteRegistry);
+        nbt.setShort(NBT.MTE_ID, mteID);
+        nbt.setShort(NBT.MTE_REG, mteRegistry);
         // write the Custom Name
         if (GT_Utility.isStringValid(customName)) {
             final NBTTagCompound displayNBT;
-            if (aNBT.hasKey(NBT.DISPLAY)) {
-                displayNBT = aNBT.getCompoundTag(NBT.DISPLAY);
+            if (nbt.hasKey(NBT.DISPLAY)) {
+                displayNBT = nbt.getCompoundTag(NBT.DISPLAY);
             } else {
                 displayNBT = new NBTTagCompound();
-                aNBT.setTag(NBT.DISPLAY, displayNBT);
+                nbt.setTag(NBT.DISPLAY, displayNBT);
             }
             displayNBT.setString(NBT.CUSTOM_NAME, customName);
         }
 
         // write the rest
         try {
-            aNBT.setString(NBT.OWNER, ownerName);
-            aNBT.setString(NBT.OWNER_UUID, ownerUUID == null ? "" : ownerUUID.toString());
-            aNBT.setBoolean(NBT.LOCK_UPGRADE, lockUpgrade);
-            aNBT.setInteger(NBT.FACING, facing.ordinal());
+            nbt.setString(NBT.OWNER, ownerName);
+            nbt.setString(NBT.OWNER_UUID, ownerUUID == null ? "" : ownerUUID.toString());
+            nbt.setBoolean(NBT.LOCK_UPGRADE, lockUpgrade);
+            nbt.setInteger(NBT.FACING, facing.ordinal());
 
-            writeCoverNBT(aNBT, false);
-            writeTasksNBT(aNBT);
-            writeMultiTileNBT(aNBT);
+            writeCoverNBT(nbt, false);
+            writeTasksNBT(nbt);
+            writeMultiTileNBT(nbt);
         } catch (Throwable e) {
             GT_FML_LOGGER.error("writeToNBT", e);
         }
@@ -373,7 +372,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     public void doBlockUpdate() {
         final Block tBlock = getBlock(getCoords());
         worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, tBlock);
-        if (this instanceof IMTE_IsProvidingStrongPower) {
+        if (this.providesStrongPower()) {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (getBlockAtSide(side)
                     .isNormalCube(worldObj, xCoord + side.offsetX, yCoord + side.offsetY, zCoord + side.offsetZ)) {
@@ -989,15 +988,15 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public boolean breakBlock() {
+    public boolean onBlockBroken() {
         isDead = true;
         onBaseTEDestroyed();
         return false;
     }
 
     @Override
-    public boolean getSubItems(MultiTileEntityBlockInternal aBlock, Item aItem, CreativeTabs aTab,
-        List<ItemStack> aList, short aID) {
+    public boolean getSubItems(MultiTileEntityBlock block, Item item, CreativeTabs tab, List<ItemStack> list,
+        short aID) {
         return true;
     }
 
@@ -1377,5 +1376,10 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         timedPacket.clearData();
         getTimedPacketData(timedPacket);
         GT_Values.NW.sendPacketToAllPlayersInRange(worldObj, timedPacket, getXCoord(), getZCoord());
+    }
+
+    @Override
+    public void onChunkUnload() {
+        super.onChunkUnload();
     }
 }

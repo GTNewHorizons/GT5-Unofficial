@@ -16,11 +16,11 @@ public class Laser extends UpgradeCasing {
     }
 
     @Override
-    public boolean breakBlock() {
+    public boolean onBlockBroken() {
         final IMultiBlockController controller = getTarget(false);
         if (controller != null) {
             controller.setLaserSupport(false);
         }
-        return super.breakBlock();
+        return super.onBlockBroken();
     }
 }

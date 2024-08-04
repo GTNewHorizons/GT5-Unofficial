@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Utility;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
@@ -43,13 +44,18 @@ public class GT_BreederCell_Item extends GT_Generic_Item implements IReactorComp
         GregTech_API.sAfterGTPostload.add(() -> {
             mProduct = aProduct.get();
             if (!hidden && !neiAdded) {
-                GT_Values.RA.addIC2ReactorBreederCell(
-                    new ItemStack(this),
-                    mProduct,
-                    deflector,
-                    mHeatBonusStep,
-                    mHeatBonusMultiplier,
-                    getMaxDamage());
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(new ItemStack(this))
+                    .itemOutputs(mProduct)
+                    .setNEIDesc(
+                        deflector ? "Neutron reflecting Breeder" : "Heat neutral Breeder",
+                        String.format("Every %d reactor hull heat", mHeatBonusStep),
+                        String.format("increase speed by %d00%%", mHeatBonusMultiplier),
+                        String.format("Required pulses: %d", getMaxDamage()))
+                    .duration(0)
+                    .eut(0)
+                    .addTo(RecipeMaps.ic2NuclearFakeRecipes);
+
                 neiAdded = true;
             }
         });

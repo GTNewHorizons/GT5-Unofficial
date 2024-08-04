@@ -30,12 +30,12 @@ public class FusionOverclockDescriber extends EUOverclockDescriber {
             .setDurationDecreasePerOC(getDurationDecreasePerOC());
     }
 
-    protected int getEUtIncreasePerOC() {
-        return 1;
+    protected double getEUtIncreasePerOC() {
+        return 2.0;
     }
 
-    protected int getDurationDecreasePerOC() {
-        return 1;
+    protected double getDurationDecreasePerOC() {
+        return 2.0;
     }
 
     @Override

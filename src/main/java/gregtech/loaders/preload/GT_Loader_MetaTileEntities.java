@@ -121,6 +121,10 @@ import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_DEGASIFIER_CONTROL;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_LENS_HOUSING;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_LENS_INDICATOR;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_PH_SENSOR;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_COAL_BOILER;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_LAVA_BOILER;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_SOLAR_BOILER;
@@ -146,6 +150,8 @@ import static gregtech.api.enums.MetaTileEntityIDs.HULL_WROUGHT_IRON;
 import static gregtech.api.enums.MetaTileEntityIDs.HULL_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.IMPLOSION_COMPRESSOR_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_APIARY;
+import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_LASER_ENGRAVER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_IV;
@@ -224,6 +230,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_ABSORBER_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_CONVERTER_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_CONVERTER_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_CONVERTER_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.MAG_HATCH;
 import static gregtech.api.enums.MetaTileEntityIDs.MAINTENANCE_HATCH;
 import static gregtech.api.enums.MetaTileEntityIDs.MASS_FABRICATOR_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.MASS_FABRICATOR_HV;
@@ -261,6 +268,8 @@ import static gregtech.api.enums.MetaTileEntityIDs.MULTIBLOCK_PUMP_MKI_CONTROLLE
 import static gregtech.api.enums.MetaTileEntityIDs.MULTILOCK_PUMP_MKIII_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.MULTILOCK_PUMP_MKII_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.MULTILOCK_PUMP_MKIV_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.MULTI_CANNER_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.MULTI_LATHE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.MULTI_SMELTER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.NANO_FORGE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_EV;
@@ -313,6 +322,15 @@ import static gregtech.api.enums.MetaTileEntityIDs.PUMP_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_PLANT_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_CLARIFIER;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_DEGASIFIER;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_FLOCCULATOR;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_OZONATION;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_PARTICLE_EXTRACTOR;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_PH_ADJUSTMENT;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_PLASMA_HEATER;
+import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_UV_TREATMENT;
 import static gregtech.api.enums.MetaTileEntityIDs.PYROLYSE_OVEN_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_IV;
@@ -482,6 +500,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Multi
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_QuadrupleHumongous;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MagHatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Wireless_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Wireless_Hatch;
@@ -550,6 +569,8 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionCompu
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer3;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_HeatExchanger;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ImplosionCompressor;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialElectromagneticSeparator;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialLaserEngraver;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IntegratedOreFactory;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Bronze;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Steel;
@@ -561,7 +582,9 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbin
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_HPSteam;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Plasma;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Steam;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiCanner;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiFurnace;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiLathe;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_NanoForge;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilCracker;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill1;
@@ -581,6 +604,19 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Transcenden
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_Hatch_DegasifierControlHatch;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_LensHousing;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_LensIndicator;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationPlant;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitClarifier;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitDegasifier;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitFlocculation;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitOzonation;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitParticleExtractor;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitPhAdjustment;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitPlasmaHeater;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitUVTreatment;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_pHSensor;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Bronze;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Steel;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_Compressor_Bronze;
@@ -600,8 +636,6 @@ import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperChest;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperTank;
 
 // Free IDs left for machines in GT as of 29th of July 2022 - Colen. Please try use them up in order.
-// 358
-// 359
 // 366
 // 367
 // 368
@@ -842,7 +876,57 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 DTPF_CONTROLLER.ID,
                 "multimachine.plasmaforge",
                 "Dimensionally Transcendent Plasma Forge").getStackForm(1L));
-
+        ItemList.Machine_Multi_PurificationPlant.set(
+            new GT_MetaTileEntity_PurificationPlant(
+                PURIFICATION_PLANT_CONTROLLER.ID,
+                "multimachine.purificationplant",
+                "Water Purification Plant").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitClarifier.set(
+            new GT_MetaTileEntity_PurificationUnitClarifier(
+                PURIFICATION_UNIT_CLARIFIER.ID,
+                "multimachine.purificationunitclarifier",
+                "Clarifier Purification Unit").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitFlocculator.set(
+            new GT_MetaTileEntity_PurificationUnitFlocculation(
+                PURIFICATION_UNIT_FLOCCULATOR.ID,
+                "multimachine.purificationunitflocculator",
+                "Flocculation Purification Unit").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitPhAdjustment.set(
+            new GT_MetaTileEntity_PurificationUnitPhAdjustment(
+                PURIFICATION_UNIT_PH_ADJUSTMENT.ID,
+                "multimachine.purificationunitphadjustment",
+                "pH Neutralization Purification Unit").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitOzonation.set(
+            new GT_MetaTileEntity_PurificationUnitOzonation(
+                PURIFICATION_UNIT_OZONATION.ID,
+                "multimachine.purificationunitozonation",
+                "Ozonation Purification Unit").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitPlasmaHeater.set(
+            new GT_MetaTileEntity_PurificationUnitPlasmaHeater(
+                PURIFICATION_UNIT_PLASMA_HEATER.ID,
+                "multimachine.purificationunitplasmaheater",
+                "Extreme Temperature Fluctuation Purification Unit").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitUVTreatment.set(
+            new GT_MetaTileEntity_PurificationUnitUVTreatment(
+                PURIFICATION_UNIT_UV_TREATMENT.ID,
+                "multimachine.purificationunituvtreatment",
+                "High Energy Laser Purification Unit").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitDegasifier.set(
+            new GT_MetaTileEntity_PurificationUnitDegasifier(
+                PURIFICATION_UNIT_DEGASIFIER.ID,
+                "multimachine.purificationunitdegasifier",
+                "Residual Decontaminant Degasser Purification Unit").getStackForm(1L));
+        ItemList.Machine_Multi_PurificationUnitParticleExtractor.set(
+            new GT_MetaTileEntity_PurificationUnitParticleExtractor(
+                PURIFICATION_UNIT_PARTICLE_EXTRACTOR.ID,
+                "multimachine.purificationunitextractor",
+                "Absolute Baryonic Perfection Purification Unit").getStackForm(1L));
+        ItemList.Hatch_DegasifierControl.set(
+            new GT_MetaTileEntity_Hatch_DegasifierControlHatch(
+                HATCH_DEGASIFIER_CONTROL.ID,
+                "hatch.degasifiercontrol",
+                "Degasser Control Hatch",
+                8).getStackForm(1L));
         ItemList.Machine_Multi_LargeBoiler_Bronze.set(
             new GT_MetaTileEntity_LargeBoiler_Bronze(
                 LARGE_BRONZE_BOILER_CONTROLLER.ID,
@@ -1035,6 +1119,28 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Machine_Multi_DroneCentre.set(
             new GT_MetaTileEntity_DroneCentre(Drone_Centre.ID, "multimachine_DroneCentre", "Drone Centre")
                 .getStackForm(1));
+
+        ItemList.Machine_Multi_IndustrialElectromagneticSeparator.set(
+            new GT_MetaTileEntity_IndustrialElectromagneticSeparator(
+                INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR_CONTROLLER.ID,
+                "multimachine.electromagneticseparator",
+                "Magnetic Flux Exhibitor").getStackForm(1));
+
+        ItemList.Machine_Multi_Canner.set(
+            new GT_MetaTileEntity_MultiCanner(MULTI_CANNER_CONTROLLER.ID, "multimachine.canner", "TurboCan Pro")
+                .getStackForm(1));
+
+        ItemList.Machine_Multi_IndustrialLaserEngraver.set(
+            new GT_MetaTileEntity_IndustrialLaserEngraver(
+                INDUSTRIAL_LASER_ENGRAVER_CONTROLLER.ID,
+                "multimachine.engraver",
+                "High Energy Laser Emitter").getStackForm(1));
+
+        ItemList.Machine_Multi_Lathe.set(
+            new GT_MetaTileEntity_MultiLathe(
+                MULTI_LATHE_CONTROLLER.ID,
+                "multimachine.lathe",
+                "Industrial Precision Lathe").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
@@ -2358,6 +2464,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 CRAFTING_INPUT_SLAVE.ID,
                 "hatch.crafting_input.slave",
                 "Crafting Input Slave").getStackForm(1L));
+    }
+
+    private static void registerMagHatch() {
+        ItemList.Hatch_Electromagnet.set(
+            new GT_MetaTileEntity_MagHatch(MAG_HATCH.ID, "hatch.mag_hatch", "Electromagnet Housing").getStackForm(1L));
     }
 
     private static void registerInputBus() {
@@ -4036,6 +4147,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         registerSuperChest();
         registerLongDistancePipe();
         registerAE2Hatches();
+        registerMagHatch();
         registerInputBus();
         registerOutputBus();
         registerMufflerHatch();
@@ -4116,6 +4228,17 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 AUTOMATABLE_DATA_ACCESS_HATCH.ID,
                 "hatch.dataaccess.auto",
                 "Automatable Data Access Hatch",
+                8).getStackForm(1L));
+        ItemList.Hatch_pHSensor.set(
+            new GT_MetaTileEntity_pHSensor(HATCH_PH_SENSOR.ID, "hatch.phsensor", "pH Sensor Hatch", 7).getStackForm(1));
+        ItemList.Hatch_LensHousing.set(
+            new GT_MetaTileEntity_LensHousing(HATCH_LENS_HOUSING.ID, "hatch.lenshousing", "Lens Housing")
+                .getStackForm(1L));
+        ItemList.Hatch_LensIndicator.set(
+            new GT_MetaTileEntity_LensIndicator(
+                HATCH_LENS_INDICATOR.ID,
+                "hatch.lensindicator",
+                "Lens Indicator Hatch",
                 8).getStackForm(1L));
         generateWiresAndPipes();
     }

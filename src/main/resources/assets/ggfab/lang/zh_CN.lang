@@ -1,0 +1,28 @@
+ggfab.info.advassline.0=高级装配线教程
+ggfab.info.advassline.1=爱来自 §6GigaGram§rFab 与 w
+ggfab.info.advassline.2=这种新式装配线支持流水线式装配，也就是说，这种装配线会逐一从输入总线中获取原材料，而不是像其他GT机器一样在启动时获取所有原材料。这种工作模式使得他获得了等同与当前配方物品输入数量的并行数。
+ggfab.info.advassline.3=你可以将高级装配线想象成一组装配刀片机，每个装配刀片可以互相独立的工作。
+ggfab.info.advassline.4=高级装配线会在输入总线第一格的内容与任意一个闪存记录的配方相符合时开始工作。第一装配刀片会从第一个输入总线获取输入。在（配方时间/物品输入个数）的时间后，第一装配刀片的工作结束了，之后便会将半成品转交给第二装配刀片，然后第二装配刀片再从自己的输入总线中获取输入。于此同时，在第二装配刀片工作时，第一装配刀片会继续尝试从第一输入总线中获取输入，如果这里仍然有足够的输入，则第一装配刀片会直接开始工作。
+ggfab.info.advassline.5=如果一个配方有n个输入，那么第N个装配刀片就是最终装配刀片，在他完成工作时就会将成品放到末尾的输出总线中。除最终装配刀片外，其他装配刀片在自己的工作结束时都会试图将半成品交给下一个刀片。如果下一个刀片无法从自己的输入总线中找到输入，则上一片刀片会停留在§4停滞§r状态，并最终使整个装配线阻塞。为了帮助你发现阻塞的装配线，任何含有§4停滞§r状态的装配刀片的装配线将会亮起橙红色指示灯。
+ggfab.info.advassline.6=高级装配线的瞬时能耗是正在工作的装配刀片的数量乘以当前配方的EU/t。§4停滞§r状态的装配刀片不会消耗能量。额外需要注意的是，本机器会使用所有能量供应舱室中最低的电压等级来计算配方等级与普通的非完美超频。
+ggfab.info.advassline.7=在使用一些特殊的能量供应舱室时，高级装配线可以进行额外的超频（称为§2激光超频§r），但是会使用比非完美超频更多的能量。每个§2激光超频§r会使得能量指数增加%s。
+ggfab.info.advassline.8=一层激光超频会使配方时间变为50%%，但会使用%s%%能量。二层激光超频会使配方时间变为25%%，但会使用%s%% (%s * %s)能量。激光超频仍然不会越过1tick极限。高级装配线在计算超频时会优先考虑并行，然后考虑非完美超频，最后进行§2激光超频§r。
+ggfab.waila.advassline.slice=装配刀片 #%s: %s秒 / %s秒
+ggfab.waila.advassline.slice.small=装配刀片 #%s: %s刻 / %s刻
+ggfab.waila.advassline.slice.idle=装配刀片 #%s: 空闲
+ggfab.waila.advassline.slice.stuck=装配刀片 #%s: §4停滞
+ggfab.gui.advassline.slice.idle=装配刀片 #%s: 空闲
+ggfab.gui.advassline.slice.stuck=装配刀片 #%s: §4停滞
+ggfab.gui.advassline.slice.unknown=装配刀片 #%s: ?
+
+ggfab.info.linked_input_bus.not_owned=§6记录的设置来自于不同的拥有者！
+ggfab.info.linked_input_bus.invalid_data=§6找到了配置，但是它已不再有效！
+ggfab.info.linked_input_bus.data_pasted=§2已粘贴频道("%s§2")和编程芯片配置!
+ggfab.info.linked_input_bus.data_copied=§2已记录频道("%s§2")和编程芯片配置!
+ggfab.info.linked_input_bus.no_channel=§6还没有设置频道！
+
+ggfab.info.biome=群系:
+
+ggfab.tooltip.linked_input_bus.change_freq_warn=如果这是最后一个本频道的输入总线，改变频道会使剩余的内容物洒在地上！
+ggfab.tooltip.linked_input_bus.private=私有频道不会与其余玩家共享
+ggfab.tooltip.linked_input_bus.private.1=如果这是最后一个本频道的输入总线，改变频道会使剩余的内容物洒在地上！

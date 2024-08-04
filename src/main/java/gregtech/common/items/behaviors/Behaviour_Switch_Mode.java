@@ -7,8 +7,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.net.GT_Packet_ToolSwitchMode;
 import gregtech.api.util.GT_Utility;
 
 public class Behaviour_Switch_Mode extends Behaviour_None {
@@ -17,7 +19,7 @@ public class Behaviour_Switch_Mode extends Behaviour_None {
 
     @Override
     public ItemStack onItemRightClick(GT_MetaBase_Item aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
-        if (aStack != null && (aPlayer == null || aPlayer.isSneaking()) && !aWorld.isRemote) {
+        if (aStack != null && (aPlayer == null || aPlayer.isSneaking()) && aWorld.isRemote) {
 
             GT_MetaGenerated_Tool itemTool = (GT_MetaGenerated_Tool) aItem;
             final byte maxMode = itemTool.getToolMaxMode(aStack);
@@ -25,11 +27,9 @@ public class Behaviour_Switch_Mode extends Behaviour_None {
                 return aStack;
             }
 
-            MovingObjectPosition mop = GT_Utility.getPlayerLookingTarget();
+            MovingObjectPosition mop = GT_Utility.getPlayerLookingTarget(aPlayer);
             if (mop == null) {
-                byte currentMode = itemTool.getToolMode(aStack);
-                currentMode = (byte) ((currentMode + 1) % maxMode);
-                itemTool.setToolMode(aStack, currentMode);
+                GT_Values.NW.sendToServer(new GT_Packet_ToolSwitchMode());
             }
             return aStack;
         }

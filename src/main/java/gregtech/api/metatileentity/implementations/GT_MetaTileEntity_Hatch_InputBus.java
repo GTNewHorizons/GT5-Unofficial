@@ -302,11 +302,18 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
         buildContext.addCloseListener(() -> uiButtonCount = 0);
         addSortStacksButton(builder);
         addOneStackLimitButton(builder);
-        switch (mTier) {
-            case 0 -> getBaseMetaTileEntity().add1by1Slot(builder);
-            case 1 -> getBaseMetaTileEntity().add2by2Slots(builder);
-            case 2 -> getBaseMetaTileEntity().add3by3Slots(builder);
-            default -> getBaseMetaTileEntity().add4by4Slots(builder);
+        // Remove one for ghost circuit slot
+        int slotCount = getSizeInventory();
+        if (allowSelectCircuit()) {
+            slotCount = slotCount - 1;
+        }
+        // We do this to decouple slot count from tier in here, since there is no reason to do so.
+        switch (slotCount) {
+            case 1 -> getBaseMetaTileEntity().add1by1Slot(builder);
+            case 4 -> getBaseMetaTileEntity().add2by2Slots(builder);
+            case 9 -> getBaseMetaTileEntity().add3by3Slots(builder);
+            case 16 -> getBaseMetaTileEntity().add4by4Slots(builder);
+            default -> {}
         }
     }
 

@@ -116,22 +116,22 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     public BaseMetaPipeEntity() {}
 
     @Override
-    public void writeToNBT(NBTTagCompound aNBT) {
+    public void writeToNBT(NBTTagCompound nbt) {
         try {
-            super.writeToNBT(aNBT);
+            super.writeToNBT(nbt);
         } catch (Throwable e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity", e);
         }
         try {
-            aNBT.setInteger("mID", mID);
-            writeCoverNBT(aNBT, false);
-            aNBT.setByte("mConnections", mConnections);
-            aNBT.setByte("mColor", mColor);
-            aNBT.setBoolean("mWorks", !mWorks);
+            nbt.setInteger("mID", mID);
+            writeCoverNBT(nbt, false);
+            nbt.setByte("mConnections", mConnections);
+            nbt.setByte("mColor", mColor);
+            nbt.setBoolean("mWorks", !mWorks);
         } catch (Throwable e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity", e);
         }
-        saveMetaTileNBT(aNBT);
+        saveMetaTileNBT(nbt);
     }
 
     @Override

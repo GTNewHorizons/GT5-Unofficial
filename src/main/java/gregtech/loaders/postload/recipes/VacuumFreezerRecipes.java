@@ -1,6 +1,5 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -400,17 +399,15 @@ public class VacuumFreezerRecipes implements Runnable {
                 .addTo(vacuumFreezerRecipes);
         }
 
-        if (GTPlusPlus.isModLoaded()) {
-            // hot transcendent metal ingot cooling
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.TranscendentMetal, 1L))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.TranscendentMetal, 1L))
-                .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 144),
-                    Materials.SuperCoolant.getFluid(1000))
-                .duration(1 * SECONDS)
-                .eut(TierEU.RECIPE_UIV)
-                .addTo(vacuumFreezerRecipes);
-        }
+        // hot transcendent metal ingot cooling
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.TranscendentMetal, 1L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.TranscendentMetal, 1L))
+            .fluidInputs(
+                new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 144),
+                Materials.SuperCoolant.getFluid(1000))
+            .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(vacuumFreezerRecipes);
     }
 }

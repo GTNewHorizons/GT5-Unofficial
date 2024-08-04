@@ -295,16 +295,6 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * @deprecated Deprecated in favor of {@link #setEUtIncreasePerOC(double)}. Calls
-     *             {@link #setEUtIncreasePerOC(double)} where the given value is 2^eutIncreasePerOC
-     */
-    @Deprecated
-    @Nonnull
-    public GT_OverclockCalculator setEUtIncreasePerOC(int eutIncreasePerOC) {
-        return setEUtIncreasePerOC(Math.pow(2, eutIncreasePerOC));
-    }
-
-    /**
      * Sets the amount that the eut would be multiplied by per overclock. Do not set as 1(ONE) if the duration decrease
      * is also 1(ONE)!
      */
@@ -314,16 +304,6 @@ public class GT_OverclockCalculator {
             throw new IllegalArgumentException("EUt increase can't be a negative number or zero");
         this.eutIncreasePerOC = eutIncreasePerOC;
         return this;
-    }
-
-    /**
-     * @deprecated Deprecated in favor of {@link #setDurationDecreasePerOC(double)}. Calls
-     *             {@link #setDurationDecreasePerOC(double)} where the given value is 2^durationDecreasePerOC
-     */
-    @Deprecated
-    @Nonnull
-    public GT_OverclockCalculator setDurationDecreasePerOC(int durationDecreasePerOC) {
-        return setDurationDecreasePerOC(Math.pow(2, durationDecreasePerOC));
     }
 
     /**
@@ -562,6 +542,13 @@ public class GT_OverclockCalculator {
             throw new IllegalStateException("Tried to get performed overclocks before calculating");
         }
         return overclockCount;
+    }
+
+    /**
+     * @return Whether the calculation has happened
+     */
+    public boolean getCalculationStatus() {
+        return calculated;
     }
 
     /**

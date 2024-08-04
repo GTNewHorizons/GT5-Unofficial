@@ -31,8 +31,8 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
     protected int duration;
     protected long availableVoltage;
     protected long availableAmperage;
-    protected int overClockTimeReduction = 1;
-    protected int overClockPowerIncrease = 2;
+    protected double overClockTimeReduction = 2.0;
+    protected double overClockPowerIncrease = 4.0;
     protected boolean protectItems;
     protected boolean protectFluids;
     protected int maxParallel = 1;
@@ -159,11 +159,7 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
         return getThis();
     }
 
-    /**
-     * Sets custom overclock ratio. 2/4 by default.
-     * Parameters represent number of bit shift, so 1 -> 2x, 2 -> 4x.
-     */
-    public P setOverclock(int timeReduction, int powerIncrease) {
+    public P setOverclock(double timeReduction, double powerIncrease) {
         this.overClockTimeReduction = timeReduction;
         this.overClockPowerIncrease = powerIncrease;
         return getThis();
@@ -173,7 +169,7 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
      * Sets overclock ratio to 4/4.
      */
     public P enablePerfectOverclock() {
-        return this.setOverclock(2, 2);
+        return this.setOverclock(4.0, 4.0);
     }
 
     /**

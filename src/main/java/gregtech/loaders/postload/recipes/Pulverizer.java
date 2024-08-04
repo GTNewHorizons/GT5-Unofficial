@@ -539,27 +539,6 @@ public class Pulverizer implements Runnable {
             .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.CompressedFireclay.get(1))
-            .itemOutputs(Materials.Fireclay.getDustSmall(1))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.Firebrick.get(1))
-            .itemOutputs(Materials.Brick.getDust(1))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.Casing_Firebricks.get(1))
-            .itemOutputs(Materials.Brick.getDust(4))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Machine_Bricked_BlastFurnace.get(1))
             .itemOutputs(Materials.Brick.getDust(8), Materials.Iron.getDust(1))
             .duration(20 * SECONDS)

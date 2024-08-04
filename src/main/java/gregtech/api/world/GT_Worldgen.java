@@ -65,20 +65,23 @@ public abstract class GT_Worldgen {
      *         Overworld, Twilight Forest and Deep Dark)
      */
     public boolean isGenerationAllowed(World aWorld, int aDimensionType, int aAllowedDimensionType) {
+        return isGenerationAllowed(aWorld.provider.getDimensionName(), aDimensionType, aAllowedDimensionType);
+    }
 
-        if (!((aWorld.provider.getDimensionName()
-            .equalsIgnoreCase("Overworld"))
-            || (aWorld.provider.getDimensionName()
-                .equalsIgnoreCase("Nether"))
-            || (aWorld.provider.getDimensionName()
-                .equalsIgnoreCase("The End"))
-            || (aWorld.provider.getDimensionName()
-                .equalsIgnoreCase("Twilight Forest"))
-            || (aWorld.provider.getDimensionName()
-                .equalsIgnoreCase("Underdark"))))
-            return false;
+    /**
+     *
+     * @param aDimName              The Dimension Name
+     * @param aDimensionType        The Type of Worldgeneration to add. -1 = Nether, 0 = Overworld, +1 = End
+     * @param aAllowedDimensionType The Type of allowed Worldgeneration
+     * @return if generation for this world is allowed for MoronTech (tm) OreGen (ATM (2.0.3.1Dev) only End, Nether,
+     *         Overworld, Twilight Forest and Deep Dark)
+     */
+    public boolean isGenerationAllowed(String aDimName, int aDimensionType, int aAllowedDimensionType) {
+        if (!(aDimName.equalsIgnoreCase("Overworld") || aDimName.equalsIgnoreCase("Nether")
+            || aDimName.equalsIgnoreCase("The End")
+            || aDimName.equalsIgnoreCase("Twilight Forest")
+            || aDimName.equalsIgnoreCase("Underdark"))) return false;
 
-        String aDimName = aWorld.provider.getDimensionName();
         Boolean tAllowed = mDimensionMap.get(aDimName);
         if (tAllowed == null) {
             boolean tValue = GregTech_API.sWorldgenFile

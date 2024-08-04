@@ -1,23 +1,309 @@
-[
-  {
-    "modid": "${modId}",
-    "name": "${modName}",
-    "description": "This Mod adds the awesome Technology of GregTech-Intergalactical to your World!",
-    "mcversion": "${minecraftVersion}",
-    "version": "${modVersion}",
-    "logoFile": "/assets/gregtech_addon/textures/LogoGTI_Long.png",
-    "url": "http://forum.industrial-craft.net/index.php?page=Thread&threadID=11488",
-    "updateUrl": "",
-    "authors": [
-      "Gregorius Techneticies",
-      "Blood Asp"
-    ],
-    "credits": "Notch and Mojang for Minecraft, Alblaka and his Team for IndustrialCraft, Mr. Brain for many of the Crop Textures, OvermindDL for helping me with Code, TheSirusKing and matix for a few Textures",
-    "parent": "",
-    "screenshots": [],
-    "dependencies": [
-      "Industrialcraft",
-      "structurelib"
-    ]
-  }
-]
+{
+  "modListVersion": 2,
+  "modList": [
+    {
+      "modid": "gregtech",
+      "name": "GregTech",
+      "description": "This Mod adds the awesome Technology of GregTech-Intergalactical to your World!",
+      "mcversion": "${minecraftVersion}",
+      "version": "${modVersion}",
+      "logoFile": "/assets/gregtech_addon/textures/LogoGTI_Long.png",
+      "url": "http://forum.industrial-craft.net/index.php?page=Thread&threadID=11488",
+      "updateUrl": "",
+      "authors": [
+        "Gregorius Techneticies",
+        "Blood Asp"
+      ],
+      "credits": "Notch and Mojang for Minecraft, Alblaka and his Team for IndustrialCraft, Mr. Brain for many of the Crop Textures, OvermindDL for helping me with Code, TheSirusKing and matix for a few Textures",
+      "parent": "",
+      "screenshots": [],
+      "dependencies": [
+        "Industrialcraft",
+        "structurelib"
+      ]
+    },
+    {
+      "modid": "ggfab",
+      "name": "GigaGramFab",
+      "description": "Production at scale",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "https://glease.github.io/GigaGramFab",
+      "updateUrl": "",
+      "authorList": [
+        "glee8e"
+      ],
+      "credits": "",
+      "logoFile": "",
+      "screenshots": [],
+      "dependencies": [
+        "gregtech"
+      ]
+    },
+    {
+      "modid": "bartworks",
+      "name": "BartWorks",
+      "description": "A Gregtech Addon.",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "https://github.com/bartimaeusnek/bartworks",
+      "updateUrl": "",
+      "authorList": [
+        "bartimaeusnek"
+      ],
+      "credits": "Gregorius Techneticies for making gregtech and allowing me to port his old stuff.\n Austin Appleby and Yonik Seeley for creating and putting the MurmurHash3 into the public domain.\n Spluff and EmeraldsEmerald for the Awesome Textures aswell.",
+      "logoFile": "",
+      "screenshots": [],
+      "parent": "",
+      "requiredMods": [],
+      "dependencies": [],
+      "dependants": [],
+      "useDependencyInformation": false
+    },
+    {
+      "modid": "bartworkscrossmod",
+      "name": "BartWorks Mod Additions",
+      "description": "",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "https://github.com/bartimaeusnek/bartworks",
+      "updateUrl": "",
+      "authorList": [
+        "bartimaeusnek"
+      ],
+      "credits": "",
+      "logoFile": "",
+      "screenshots": [],
+      "parent": "bartworks",
+      "requiredMods": [],
+      "dependencies": [],
+      "dependants": [],
+      "useDependencyInformation": false
+    },
+    {
+      "modid": "bartworkscrossmodtgregworkscontainer",
+      "name": "BartWorks Mod Additions - TGregworks Container",
+      "description": "",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "https://github.com/bartimaeusnek/bartworks",
+      "updateUrl": "",
+      "authorList": [
+        "bartimaeusnek"
+      ],
+      "credits": "",
+      "logoFile": "",
+      "screenshots": [],
+      "parent": "bartworks",
+      "requiredMods": [],
+      "dependencies": [],
+      "dependants": [],
+      "useDependencyInformation": false
+    },
+    {
+      "modid": "galacticgreg",
+      "name": "Galactic Greg",
+      "description": "Adds Gregtech Oregen to Galacticraft Dimensions",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "http://forum.industrial-craft.net/index.php?page=Thread&threadID=11039",
+      "updateUrl": "",
+      "authorList": [
+        "Blood Asp, Namikon"
+      ],
+      "credits": "To GregoriusT and micdoodle8 for making such good Mods",
+      "logoFile": "assets/galacticgreg/galacticgreg.png",
+      "screenshots": [],
+      "dependencies": []
+    },
+    {
+      "modid": "GT++",
+      "name": "miscutils",
+      "description": "Adds over 100 new Multiblocks, Machines, etc to Gregtech.",
+      "credits": "",
+      "logoFile": "",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "https://github.com/draknyte1/GTplusplus/wiki",
+      "updateUrl": "",
+      "authorList": [
+        "Alkalus/Draknyte1"
+      ],
+      "screenshots": [
+        ""
+      ],
+      "requiredMods": [
+        "Forge"
+      ],
+      "dependencies": [
+        "Forge",
+        "TConstruct",
+        "PlayerAPI",
+        "dreamcraft",
+        "IC2",
+        "ihl",
+        "psychedelicraft",
+        "gregtech",
+        "Forestry",
+        "MagicBees",
+        "CoFHCore",
+        "Growthcraft",
+        "Railcraft",
+        "CompactWindmills",
+        "ForbiddenMagic",
+        "MorePlanet",
+        "PneumaticCraft",
+        "ExtraUtilities",
+        "Thaumcraft",
+        "rftools",
+        "simplyjetpacks",
+        "BigReactors",
+        "EnderIO",
+        "tectech",
+        "GTRedtech",
+        "beyondrealitycore",
+        "OpenBlocks",
+        "IC2NuclearControl",
+        "TGregworks",
+        "StevesCarts",
+        "xreliquary"
+      ]
+    },
+    {
+      "modid": "ToxicEverglades",
+      "name": "${modName} ToxicEverglades",
+      "description": "Everglades, but toxic.",
+      "credits": "",
+      "logoFile": "",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "https://github.com/draknyte1/GTplusplus/wiki",
+      "updateUrl": "",
+      "authorList": [
+        "Alkalus/Draknyte1"
+      ],
+      "screenshots": [
+        ""
+      ],
+      "parent": "miscutils",
+      "requiredMods": [],
+      "dependencies": []
+    },
+    {
+      "modid": "tectech",
+      "name": "TecTech - Tec Technology!",
+      "description": "TecTech - Tec Technology Interdimensional! Replace UUMatter with something overly complicated and annoying! (GT5u Addon)",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "",
+      "updateUrl": "",
+      "authorList": [
+        "_Technus_"
+      ],
+      "credits": "The Forge and FML guys, for making this example",
+      "logoFile": "TecTechIcon.png",
+      "screenshots": [],
+      "dependencies": []
+    },
+    {
+      "modid": "kekztech",
+      "name": "KekzTech",
+      "description": "",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "",
+      "updateUrl": "",
+      "authorList": [
+        "Shinkuri"
+      ],
+      "credits": "",
+      "logoFile": "",
+      "screenshots": [],
+      "requiredMods": [
+        "IC2",
+        "gregtech",
+        "tectech",
+        "Thaumcraft",
+        "ThaumicTinkerer"
+      ],
+      "dependencies": [
+        "IC2",
+        "gregtech",
+        "tectech",
+        "Thaumcraft",
+        "ThaumicTinkerer",
+        "bartworks",
+        "dreamcraft"
+      ],
+      "useDependencyInformation": true
+    },
+    {
+      "modid": "GoodGenerator",
+      "name": "Good Generator",
+      "description": "Add some powerful generators",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "",
+      "updateUrl": "",
+      "authorList": [
+        "GlodBlock"
+      ],
+      "credits": "",
+      "logoFile": "",
+      "screenshots": [],
+      "requiredMods": [
+        "Forge",
+        "IC2",
+        "gregtech",
+        "bartworks",
+        "tectech",
+        "structurelib"
+      ],
+      "dependencies": [
+        "IC2",
+        "gregtech",
+        "bartworks",
+        "tectech",
+        "structurelib",
+        "dreamcraft"
+      ],
+      "useDependencyInformation": true
+    },
+    {
+      "modid": "kubatech",
+      "name": "KubaTech",
+      "description": "Gregtech addon.",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "https://github.com/GTNewHorizons/KubaTech/",
+      "updateUrl": "",
+      "authorList": [
+        "kuba6000"
+      ],
+      "credits": "",
+      "logoFile": "assets/kubatech/textures/gui/logo.jpg",
+      "screenshots": [],
+      "parent": "",
+      "requiredMods": [],
+      "dependencies": [],
+      "dependants": [],
+      "useDependencyInformation": false
+    },
+    {
+      "modid": "gtnhlanth",
+      "name": "GTNH: Lanthanides",
+      "description": "",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "",
+      "updateUrl": "",
+      "authorList": [
+        "Elisis"
+      ],
+      "credits": "",
+      "logoFile": "",
+      "screenshots": [],
+      "dependencies": []
+    }
+  ]
+}

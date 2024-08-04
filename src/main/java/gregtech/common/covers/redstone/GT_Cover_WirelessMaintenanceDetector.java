@@ -184,7 +184,7 @@ public class GT_Cover_WirelessMaintenanceDetector
     // GUI stuff
 
     private static final String[] extraTexts = new String[] { "No Issues", ">= 1 Issue", ">= 2 Issues", ">= 3 Issues",
-        ">= 4 Issues", ">= 5 Issues", "Rotor < 80%", "Rotor < 100%" };
+        ">= 4 Issues", ">= 5 Issues", "Rotor < 20%", "Rotor ≈ 0%" };
 
     @Override
     public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {

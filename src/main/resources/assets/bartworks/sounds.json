@@ -1,0 +1,11 @@
+{
+  "hatch.RadOn": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "radhatch",
+        "stream": false
+      }
+    ]
+  }
+}

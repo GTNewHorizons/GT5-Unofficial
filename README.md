@@ -26,6 +26,12 @@ as version and steps to reproduce.
 Please do! However, please take a note of
 [current issues](https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues) and what is currently being worked on.
 
+You don't need to clone the repository with full history to contribute, to save disk space and bandwidth you can clone:
+```bash
+git clone --depth 3 https://github.com/GTNewHorizons/GT5-Unofficial.git GT5-Unofficial
+```
+This way you'll get the last 3 commits of history in your local checkout, instead of all of it.
+
 It is suggested to run `./gradlew build` inside your cloned repository before importing it to your IDE. This will reduce
 the chance of strange errors.
 

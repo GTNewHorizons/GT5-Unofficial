@@ -13,6 +13,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.elisis.gtnhlanth.common.item.MaskList;
+import com.elisis.gtnhlanth.common.item.PhotolithographicMask;
+import com.elisis.gtnhlanth.common.register.LanthItemList;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -21,6 +25,8 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
+import gregtech.common.items.GT_MetaGenerated_Item_03;
+import gregtech.common.items.ID_MetaItem_03;
 
 // this class is intended to be import-static-ed on every recipe script
 // so take care to not put unrelated stuff here!
@@ -97,6 +103,88 @@ public class GT_RecipeConstants {
     public static final RecipeMetadataKey<Boolean> ON_FIRE = SimpleRecipeMetadataKey.create(Boolean.class, "on_fire");
 
     /**
+     * Nano Forge Tier.
+     */
+    public static final RecipeMetadataKey<Integer> NANO_FORGE_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "nano_forge_tier");
+
+    /**
+     * FOG Exotic recipe tier.
+     */
+    public static final RecipeMetadataKey<Integer> FOG_EXOTIC_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "fog_exotic_tier");
+
+    /**
+     * FOG Plasma recipe tier.
+     */
+    public static final RecipeMetadataKey<Integer> FOG_PLASMA_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "fog_plasma_tier");
+
+    /**
+     * DEFC Casing tier.
+     */
+    public static final RecipeMetadataKey<Integer> DEFC_CASING_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "defc_casing_tier");
+
+    /**
+     * Chemplant Casing tier. Beware, codewise index starts at 0, but it is tier 1.
+     */
+    public static final RecipeMetadataKey<Integer> CHEMPLANT_CASING_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "chemplant_casing_tier");
+
+    /**
+     * QFT Focus tier.
+     */
+    public static final RecipeMetadataKey<Integer> QFT_FOCUS_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "qft_focus_tier");
+
+    /**
+     * Dissolution Tank Ratio.
+     */
+    public static final RecipeMetadataKey<Integer> DISSOLUTION_TANK_RATIO = SimpleRecipeMetadataKey
+        .create(Integer.class, "dissolution_tank_ratio");
+
+    /**
+     * Duration in days for the RTG.
+     */
+    public static final RecipeMetadataKey<Integer> RTG_DURATION_IN_DAYS = SimpleRecipeMetadataKey
+        .create(Integer.class, "rtg_duration_in_days");
+
+    /**
+     * Basic output for the Large Naquadah Generator.
+     */
+    public static final RecipeMetadataKey<Integer> LNG_BASIC_OUTPUT = SimpleRecipeMetadataKey
+        .create(Integer.class, "lng_basic_output");
+
+    /**
+     * Coil tier for the Naquadah Fuel Refinery.
+     */
+    public static final RecipeMetadataKey<Integer> NFR_COIL_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "nfr_coil_tier");
+
+    /**
+     * NKE range for the neutron activator.
+     */
+    public static final RecipeMetadataKey<Integer> NKE_RANGE = SimpleRecipeMetadataKey
+        .create(Integer.class, "nke_range");
+    /**
+     * Precise Assembler casing tier.
+     */
+    public static final RecipeMetadataKey<Integer> PRECISE_ASSEMBLER_CASING_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "precise_assembler_casing_tier");
+    /**
+     * CoAL casing tier.
+     */
+    public static final RecipeMetadataKey<Integer> COAL_CASING_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "coal_casing_tier");
+
+    /**
+     * LFTR output power.
+     */
+    public static final RecipeMetadataKey<Integer> LFTR_OUTPUT_POWER = SimpleRecipeMetadataKey
+        .create(Integer.class, "lftr_output_power");
+
+    /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
      * Will override the fluid input with oxygen/plasma for the respective recipe maps, so there is no point setting it.
      */
@@ -147,6 +235,154 @@ public class GT_RecipeConstants {
                 // LCR does not need cleanroom.
                 .metadata(CLEANROOM, false)
                 .addTo(RecipeMaps.multiblockChemicalReactorRecipes));
+    });
+
+    /**
+     * Adds an engraver recipe that might use purified water. Still added to the regular recipemap if it ends up not
+     * needing it.
+     */
+    public static final IRecipeMap WaferEngravingRecipes = IRecipeMap.newRecipeMap(builder -> {
+        // spotless:off
+        enum Wafer{
+            Naquadah,
+            Europium,
+            Americium,
+            // Beamline masks
+            MaskT1,
+            MaskT2,
+            MaskT3,
+        }
+        // spotless:on
+        // Find the wafer used
+        Wafer wafer = null;
+        PhotolithographicMask t1Item = (PhotolithographicMask) LanthItemList.maskMap.get(MaskList.BLANK1);
+        PhotolithographicMask t2Item = (PhotolithographicMask) LanthItemList.maskMap.get(MaskList.BLANK2);
+        PhotolithographicMask t3Item = (PhotolithographicMask) LanthItemList.maskMap.get(MaskList.BLANK3);
+        for (ItemStack input : builder.getItemInputsBasic()) {
+            if (input.getItem() instanceof GT_MetaGenerated_Item_03) {
+                int meta = input.getItemDamage() - 32000;
+                // Check if this input item is indicating a wafer recipe we want to modify
+                if (meta == ID_MetaItem_03.Circuit_Silicon_Wafer3.ID) wafer = Wafer.Naquadah;
+                else if (meta == ID_MetaItem_03.Circuit_Silicon_Wafer4.ID) wafer = Wafer.Europium;
+                else if (meta == ID_MetaItem_03.Circuit_Silicon_Wafer5.ID) wafer = Wafer.Americium;
+            }
+
+            // Now look for beamline masks
+            if (input.getItem() instanceof PhotolithographicMask mask) {
+                String spectrum = mask.getDescSpectrum();
+                if (spectrum.equals(t1Item.getDescSpectrum())) wafer = Wafer.MaskT1;
+                else if (spectrum.equals(t2Item.getDescSpectrum())) wafer = Wafer.MaskT2;
+                else if (spectrum.equals(t3Item.getDescSpectrum())) wafer = Wafer.MaskT3;
+            }
+
+            // Found a wafer, stop checking inputs
+            if (wafer != null) break;
+        }
+
+        int recipeTime = builder.duration;
+        // Bonus for using purified water of a higher tier than necessary
+        int halfBoostedRecipeTime = (int) (recipeTime * 0.75);
+        int boostedRecipeTime = (int) (recipeTime * 0.5);
+
+        // If this recipe does not use a wafer, exit without modifying it.
+        if (wafer == null) return builder.addTo(RecipeMaps.laserEngraverRecipes);
+        switch (wafer) {
+            case Naquadah -> {
+                ArrayList<ItemStack> items = new ArrayList<>(Arrays.asList(builder.getItemInputsBasic()));
+                items.add(GT_Utility.getIntegratedCircuit(1));
+                ItemStack[] inputItemsWithC1 = items.toArray(new ItemStack[] {});
+
+                ArrayList<ItemStack> items2 = new ArrayList<>(Arrays.asList(builder.getItemInputsBasic()));
+                items2.add(GT_Utility.getIntegratedCircuit(2));
+                ItemStack[] itemsWithC2 = items2.toArray(new ItemStack[] {});
+                // Naquadah wafers can use grade 1-2 purified water for a bonus
+                return GT_Utility.concat(
+                    builder.copy()
+                        .itemInputs(inputItemsWithC1)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .itemInputs(itemsWithC2)
+                        .fluidInputs(Materials.Grade1PurifiedWater.getFluid(100L))
+                        .duration(halfBoostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .itemInputs(itemsWithC2)
+                        .fluidInputs(Materials.Grade2PurifiedWater.getFluid(100L))
+                        .duration(boostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes));
+            }
+            case Europium -> {
+                // Require purified water for europium wafers, at least grade 3
+                return GT_Utility.concat(
+                    builder.copy()
+                        .fluidInputs(Materials.Grade3PurifiedWater.getFluid(100L))
+                        .duration(recipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade4PurifiedWater.getFluid(100L))
+                        .duration(boostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes));
+            }
+            case Americium -> {
+                // Require purified water for americium wafers, at least grade 5
+                return GT_Utility.concat(
+                    builder.copy()
+                        .fluidInputs(Materials.Grade5PurifiedWater.getFluid(100L))
+                        .duration(recipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade6PurifiedWater.getFluid(100L))
+                        .duration(boostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes));
+            }
+            // Masks require much more purified water because they can make many wafers at once
+            case MaskT1 -> {
+                // T1 masks require grade 1, 2 or 3 purified water
+                return GT_Utility.concat(
+                    builder.copy()
+                        .fluidInputs(Materials.Grade1PurifiedWater.getFluid(32000L))
+                        .duration(recipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade2PurifiedWater.getFluid(32000L))
+                        .duration(halfBoostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade3PurifiedWater.getFluid(32000L))
+                        .duration(boostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes));
+            }
+            case MaskT2 -> {
+                // T2 masks require grade 4 or 5 purified water
+                return GT_Utility.concat(
+                    builder.copy()
+                        .fluidInputs(Materials.Grade4PurifiedWater.getFluid(32000L))
+                        .duration(recipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade5PurifiedWater.getFluid(32000L))
+                        .duration(boostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes));
+            }
+            case MaskT3 -> {
+                // T3 masks require grade 6, 7 or 8 purified water
+                return GT_Utility.concat(
+                    builder.copy()
+                        .fluidInputs(Materials.Grade6PurifiedWater.getFluid(32000L))
+                        .duration(recipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade7PurifiedWater.getFluid(32000L))
+                        .duration(halfBoostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade8PurifiedWater.getFluid(32000L))
+                        .duration(boostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes));
+            }
+        }
+
+        throw new RuntimeException("Unreachable code reached in Laser Engraver Recipe Transformer");
     });
 
     /**
@@ -328,5 +564,19 @@ public class GT_RecipeConstants {
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COIL_HEAT);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUSION_THRESHOLD);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUEL_VALUE);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NANO_FORGE_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_EXOTIC_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_PLASMA_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DEFC_CASING_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(CHEMPLANT_CASING_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(QFT_FOCUS_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DISSOLUTION_TANK_RATIO);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RTG_DURATION_IN_DAYS);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(LNG_BASIC_OUTPUT);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NFR_COIL_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NKE_RANGE);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(PRECISE_ASSEMBLER_CASING_TIER);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COAL_CASING_TIER);
+
     }
 }

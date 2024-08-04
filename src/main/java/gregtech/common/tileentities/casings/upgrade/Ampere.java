@@ -31,12 +31,12 @@ public class Ampere extends UpgradeCasing {
     }
 
     @Override
-    public boolean breakBlock() {
+    public boolean onBlockBroken() {
         final IMultiBlockController controller = getTarget(false);
         if (controller != null) {
             controller.setMaxAmperage(2);
         }
-        return super.breakBlock();
+        return super.onBlockBroken();
     }
 
     @Override

@@ -8,32 +8,34 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.multitileentity.WeakTargetRef;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 
 public class WallShareablePart extends MultiBlockPart {
 
-    protected List<ChunkCoordinates> targetPositions = new ArrayList<>();
+    protected List<WeakTargetRef<IMultiBlockController>> targets = new ArrayList<>();
 
     @Override
-    public void setTarget(IMultiBlockController aTarget, int aAllowedModes) {
-        if (targetPositions.size() >= 1) {
-            allowedModes = 0;
+    public void setTarget(IMultiBlockController newController, int allowedModes) {
+        if (targets.size() >= 1) {
+            this.allowedModes = 0;
             setMode((byte) 0);
-            targetPosition = null;
+            controller.invalidate();
         } else {
-            allowedModes = aAllowedModes;
+            this.allowedModes = allowedModes;
+            controller.setTarget(newController);
         }
 
-        if (aTarget == null) {
+        if (newController == null) {
             return;
         }
 
-        targetPositions.add(aTarget.getCoords());
+        targets.add(new WeakTargetRef<IMultiBlockController>(IMultiBlockController.class, true));
     }
 
     @Override
     public UUID getLockedInventory() {
-        if (targetPositions.size() > 1) {
+        if (targets.size() > 1) {
             return null;
         }
         return super.getLockedInventory();
@@ -41,11 +43,13 @@ public class WallShareablePart extends MultiBlockPart {
 
     @Override
     public IMultiBlockController getTarget(boolean aCheckValidity) {
-        if (targetPositions.size() != 1) {
+        if (targets.size() != 1) {
             return null;
         }
 
-        targetPosition = targetPositions.get(0);
+        controller.setTarget(
+            targets.get(0)
+                .get());
         return super.getTarget(aCheckValidity);
     }
 
@@ -55,9 +59,9 @@ public class WallShareablePart extends MultiBlockPart {
     }
 
     @Override
-    public boolean breakBlock() {
-        for (final ChunkCoordinates coordinates : targetPositions) {
-            IMultiBlockController target = getTarget(coordinates, false);
+    public boolean onBlockBroken() {
+        for (final WeakTargetRef<IMultiBlockController> tar : targets) {
+            IMultiBlockController target = getTarget(tar.getPosition(), false);
             if (target == null) {
                 continue;
             }
@@ -73,8 +77,8 @@ public class WallShareablePart extends MultiBlockPart {
             if (te instanceof MultiBlockPart part) {
                 final IMultiBlockController tController = part.getTarget(false);
                 if (tController != null) tController.onStructureChange();
-            } else if (te instanceof IMultiBlockController controller) {
-                controller.onStructureChange();
+            } else if (te instanceof IMultiBlockController tController) {
+                tController.onStructureChange();
             }
         }
     }

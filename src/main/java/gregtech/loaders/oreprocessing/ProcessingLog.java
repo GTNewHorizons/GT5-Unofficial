@@ -187,10 +187,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .duration(10 * SECONDS)
                             .eut(8)
                             .addTo(cutterRecipes);
-                        GT_ModHandler.addSawmillRecipe(
-                            new ItemStack(aStack.getItem(), 1, i),
-                            tPlanks,
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L));
                         GT_ModHandler.removeRecipeDelayed(new ItemStack(aStack.getItem(), 1, i));
                         GT_ModHandler.addCraftingRecipe(
                             GT_Utility.copyAmount(
@@ -260,10 +256,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .duration(10 * SECONDS)
                         .eut(8)
                         .addTo(cutterRecipes);
-                    GT_ModHandler.addSawmillRecipe(
-                        GT_Utility.copyAmount(1, aStack),
-                        tPlanks,
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L));
                     GT_ModHandler.removeRecipeDelayed(GT_Utility.copyAmount(1, aStack));
                     GT_ModHandler.addCraftingRecipe(
                         GT_Utility.copyAmount(

@@ -1,8 +1,11 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
 import java.util.Locale;
@@ -59,21 +62,21 @@ public class ProcessingDye implements IOreRecipeRegistrator {
     }
 
     public void registerAlloySmelter(ItemStack stack, Dyes dye) {
-        GT_ModHandler.addAlloySmelterRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 8L),
-            GT_Utility.copyAmount(1, stack),
-            new ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex),
-            200,
-            8,
-            false);
+        RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 8L),
+                GT_Utility.copyAmount(1, stack))
+            .itemOutputs(new ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
+            .duration(10 * SECONDS)
+            .eut(8)
+            .addTo(alloySmelterRecipes);
 
-        GT_ModHandler.addAlloySmelterRecipe(
-            new ItemStack(Blocks.glass, 8, 32767),
-            GT_Utility.copyAmount(1, stack),
-            new ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex),
-            200,
-            8,
-            false);
+        RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.glass, 8, WILDCARD), GT_Utility.copyAmount(1, stack))
+            .itemOutputs(new ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
+            .duration(10 * SECONDS)
+            .eut(8)
+            .addTo(alloySmelterRecipes);
     }
 
     public void registerChemicalReactor(ItemStack stack, Dyes dye) {

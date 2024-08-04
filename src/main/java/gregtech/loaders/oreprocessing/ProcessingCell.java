@@ -1,8 +1,11 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
+import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
@@ -11,7 +14,6 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -39,11 +41,16 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                 if (aMaterial == Materials.Empty) {
                     GT_ModHandler.removeRecipeByOutputDelayed(aStack);
                     if (aModName.equalsIgnoreCase("AtomicScience")) {
-                        GT_ModHandler.addExtractionRecipe(ItemList.Cell_Empty.get(1L), aStack);
+                        RA.stdBuilder()
+                            .itemInputs(ItemList.Cell_Empty.get(1L))
+                            .itemOutputs(aStack)
+                            .duration(15 * SECONDS)
+                            .eut(2)
+                            .addTo(extractorRecipes);
                     }
                 } else {
                     if (aMaterial.mFuelPower > 0) {
-                        GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                        GT_RecipeBuilder recipeBuilder = RA.stdBuilder();
                         recipeBuilder.itemInputs(GT_Utility.copyAmount(1, aStack));
                         if (GT_Utility.getFluidForFilledItem(aStack, true) == null
                             && GT_Utility.getContainerItem(aStack, true) != null) {
@@ -122,7 +129,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         // Electrolyzer recipe
                         if (GT_Utility.getFluidForFilledItem(aStack, true) == null) {
                             // dust stuffed cell e.g. Phosphate, Phosphorous Pentoxide
-                            GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                            GT_RecipeBuilder recipeBuilder = RA.stdBuilder();
                             if (tCapsuleCount > 0L) {
                                 recipeBuilder.itemInputs(
                                     GT_Utility.copyAmount(tItemAmount, aStack),
@@ -140,7 +147,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                 .addTo(electrolyzerRecipes);
                         } else {
                             long tCellBalance = tCapsuleCount + tItemAmount - 1;
-                            GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                            GT_RecipeBuilder recipeBuilder = RA.stdBuilder();
                             if (tCellBalance > 0L) {
                                 recipeBuilder.itemInputs(aStack, ItemList.Cell_Empty.get(tCellBalance));
                             } else {
@@ -157,7 +164,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         }
                     }
                     if ((aMaterial.mExtraData & 0x2) != 0) {
-                        GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                        GT_RecipeBuilder recipeBuilder = RA.stdBuilder();
                         if (tCapsuleCount > 0L) {
                             recipeBuilder.itemInputs(
                                 GT_Utility.copyAmount(tItemAmount, aStack),
@@ -180,7 +187,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                 if (aMaterial == Materials.Empty) {
                     GT_ModHandler.removeRecipeByOutputDelayed(aStack);
                 } else {
-                    GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                    GT_RecipeBuilder recipeBuilder = RA.stdBuilder();
                     recipeBuilder.itemInputs(GT_Utility.copyAmount(1, aStack));
                     if (GT_Utility.getFluidForFilledItem(aStack, true) == null
                         && GT_Utility.getContainerItem(aStack, true) != null) {
@@ -426,7 +433,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             .addTo(GT_RecipeConstants.Fuel);
                     }
                     if (GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L) != null) {
-                        GT_Values.RA.stdBuilder()
+                        RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(1, aStack))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L))
                             .duration(((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)

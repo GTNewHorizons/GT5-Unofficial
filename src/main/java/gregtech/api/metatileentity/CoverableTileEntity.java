@@ -194,6 +194,22 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return true;
     }
 
+    protected void onCoverUnload() {
+        byte validCoversMask = this.validCoversMask;
+        if (validCoversMask == 0) return;
+
+        for (int i = Integer.numberOfTrailingZeros(validCoversMask); i < 6; i++) {
+            if (((validCoversMask >>> i) & 1) == 0) continue;
+            onCoverUnloadAtSide(ForgeDirection.VALID_DIRECTIONS[i]);
+        }
+    }
+
+    public void onCoverUnloadAtSide(ForgeDirection side) {
+        final CoverInfo coverInfo = getCoverInfoAtSide(side);
+        if (!coverInfo.isValid()) return;
+        coverInfo.onCoverUnload();
+    }
+
     public boolean tickCoverAtSide(ForgeDirection side) {
         return tickCoverAtSide(side, mTickTimer);
     }

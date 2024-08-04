@@ -4,7 +4,6 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.GT_Values.ticksBetweenSounds;
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static net.minecraftforge.common.util.ForgeDirection.UP;
 
@@ -42,7 +41,6 @@ import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
-import ic2.core.Ic2Items;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -192,8 +190,8 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
                     case GLASS -> switch (this.mTier) {
                         case 0, 1, 2, 3    -> new ItemStack(Blocks.glass, 1, W);
-                        case 4, 5, 6, 7, 8 -> BartWorks.isModLoaded() ? "blockGlass" + VN[aTier] : Ic2Items.reinforcedGlass;
-                        default            -> BartWorks.isModLoaded() ? "blockGlass" + VN[8]     : Ic2Items.reinforcedGlass;
+                        case 4, 5, 6, 7, 8 -> "blockGlass" + VN[aTier];
+                        default            -> "blockGlass" + VN[8];
                     };
 
                     case PLATE -> switch (this.mTier) {

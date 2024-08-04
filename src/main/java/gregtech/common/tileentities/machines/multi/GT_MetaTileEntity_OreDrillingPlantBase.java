@@ -59,6 +59,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.crossmod.visualprospecting.GT_VisualProspecting_Database;
 
 public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTileEntity_DrillerBase
     implements IMetricsExporter {
@@ -80,6 +81,9 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     /** Used to drive the drill's y-level in the UI. */
     private int clientYHead = 0;
 
+    /** Contains the name of the currently mined vein. Used for driving metrics cover output. */
+    private String veinName = null;
+
     GT_MetaTileEntity_OreDrillingPlantBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -93,6 +97,11 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         super.saveNBTData(aNBT);
         aNBT.setInteger("chunkRadiusConfig", chunkRadiusConfig);
         aNBT.setBoolean("replaceWithCobblestone", replaceWithCobblestone);
+        if (veinName != null) {
+            aNBT.setString("veinName", veinName);
+        } else if (aNBT.hasKey("veinName")) {
+            aNBT.removeTag("veinName");
+        }
     }
 
     @Override
@@ -103,6 +112,11 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         }
         if (aNBT.hasKey("replaceWithCobblestone")) {
             replaceWithCobblestone = aNBT.getBoolean("replaceWithCobblestone");
+        }
+        if (aNBT.hasKey("veinName")) {
+            veinName = aNBT.getString("veinName");
+        } else {
+            veinName = null;
         }
     }
 
@@ -163,6 +177,10 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         }
         fillMineListIfEmpty(xDrill, yDrill, zDrill, xPipe, zPipe, yHead);
         if (oreBlockPositions.isEmpty()) {
+            if (veinName == null) {
+                updateVeinNameFromVP(getDrillCoords());
+            }
+
             switch (tryLowerPipeState()) {
                 case 2 -> {
                     mMaxProgresstime = 0;
@@ -285,7 +303,10 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             fillChunkMineList(yHead, yDrill);
             if (oreBlockPositions.isEmpty()) {
                 GT_ChunkManager.releaseChunk((TileEntity) getBaseMetaTileEntity(), mCurrentChunk);
-                if (!moveToNextChunk(xDrill >> 4, zDrill >> 4)) workState = STATE_UPWARD;
+                if (!moveToNextChunk(xDrill >> 4, zDrill >> 4)) {
+                    workState = STATE_UPWARD;
+                    updateVeinNameFromVP();
+                }
                 return true;
             }
         }
@@ -294,6 +315,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
 
     private void createInitialWorkingChunk() {
         mCurrentChunk = getTopLeftChunkCoords();
+        updateVeinNameFromVP();
         if (mChunkLoadingEnabled) {
             GT_ChunkManager.requestChunkLoad((TileEntity) getBaseMetaTileEntity(), mCurrentChunk);
             mWorkChunkNeedsReload = false;
@@ -394,6 +416,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             GT_ChunkManager.releaseChunk((TileEntity) getBaseMetaTileEntity(), mCurrentChunk);
         }
         mCurrentChunk = null;
+        updateVeinNameFromVP();
     }
 
     private boolean moveToNextChunk(int centerX, int centerZ) {
@@ -425,10 +448,23 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             mCurrentChunk = null;
             return false;
         }
+
         mCurrentChunk = new ChunkCoordIntPair(nextChunkX, nextChunkZ);
+        updateVeinNameFromVP();
+
         GT_ChunkManager
             .requestChunkLoad((TileEntity) getBaseMetaTileEntity(), new ChunkCoordIntPair(nextChunkX, nextChunkZ));
         return true;
+    }
+
+    private void updateVeinNameFromVP() {
+        updateVeinNameFromVP(mCurrentChunk);
+    }
+
+    private void updateVeinNameFromVP(@NotNull ChunkCoordIntPair coords) {
+        veinName = GT_VisualProspecting_Database
+            .getVeinName(getBaseMetaTileEntity().getWorld().provider.dimensionId, coords)
+            .orElse(null);
     }
 
     @Override
@@ -503,7 +539,16 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         final int blockMeta = getBaseMetaTileEntity().getMetaID(posX, posY, posZ);
         if (oreBlock.canSilkHarvest(getBaseMetaTileEntity().getWorld(), null, posX, posY, posZ, blockMeta)) {
             return Collections.singleton(new ItemStack(oreBlock, 1, blockMeta));
-        } else return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, mTier + 3);
+        }
+        if (oreBlock instanceof GT_Block_Ores_Abstract) {
+            TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntity(posX, posY, posZ);
+            if (tTileEntity instanceof GT_TileEntity_Ores && ((GT_TileEntity_Ores) tTileEntity).mMetaData >= 16000) {
+                // GT_Log.out.println("Running Small Ore");
+                return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, mTier + 3);
+            }
+        }
+        // GT_Log.out.println("Running Normal Ore");
+        return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, 0);
     }
 
     private boolean tryConsumeDrillingFluid(boolean simulate) {
@@ -626,11 +671,20 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                     .setEnabled(
                         widget -> getBaseMetaTileEntity().isActive() && clientCurrentChunk > 0
                             && workState == STATE_AT_BOTTOM))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_current_vein", veinName))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(
+                        widget -> veinName != null && (workState == STATE_AT_BOTTOM || workState == STATE_DOWNWARD)))
             .widget(new FakeSyncWidget.IntegerSyncer(oreBlockPositions::size, (newInt) -> clientOreListSize = newInt))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getTotalChunkCount, (newInt) -> clientTotalChunks = newInt))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getChunkNumber, (newInt) -> clientCurrentChunk = newInt))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> workState, (newInt) -> workState = newInt))
-            .widget(new FakeSyncWidget.IntegerSyncer(this::getYHead, (newInt) -> clientYHead = newInt));
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getYHead, (newInt) -> clientYHead = newInt))
+            .widget(new FakeSyncWidget.StringSyncer(() -> veinName, (newString) -> veinName = newString));
     }
 
     @Override
@@ -710,12 +764,16 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                     StatCollector.translateToLocalFormatted(
                         "GT5U.gui.text.drill_chunks_left",
                         GT_Utility.formatNumbers(getChunkNumber()),
-                        GT_Utility.formatNumbers(getTotalChunkCount())));
+                        GT_Utility.formatNumbers(getTotalChunkCount())),
+                    veinName == null ? ""
+                        : StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_current_vein", veinName));
                 case STATE_DOWNWARD -> ImmutableList.of(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.gui.text.drill_ores_left_layer",
                         getYHead(),
-                        GT_Utility.formatNumbers(oreBlockPositions.size())));
+                        GT_Utility.formatNumbers(oreBlockPositions.size())),
+                    veinName == null ? ""
+                        : StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_current_vein", veinName));
                 case STATE_UPWARD, STATE_ABORT -> ImmutableList
                     .of(StatCollector.translateToLocal("GT5U.gui.text.retracting_pipe"));
 

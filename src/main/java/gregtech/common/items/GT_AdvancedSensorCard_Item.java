@@ -172,7 +172,10 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
             final List<String> payload = builder.build();
             card.setInt(OUTPUT_ENTRY_LENGTH_KEY, payload.size());
             for (int i = 0; i < payload.size(); i++) {
-                card.setString(String.format(OUTPUT_ENTRY_KEY, i), payload.get(i));
+                final String payloadItem = payload.get(i);
+                if (!payloadItem.isEmpty()) {
+                    card.setString(String.format(OUTPUT_ENTRY_KEY, i), payloadItem);
+                }
             }
         });
 

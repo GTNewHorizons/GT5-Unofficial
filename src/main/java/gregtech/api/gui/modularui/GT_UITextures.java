@@ -26,7 +26,8 @@ public class GT_UITextures {
         .of(GregTech.ID, "gui/background/text_field_light_gray", 61, 12, 1);
     public static final AdaptableUITexture BACKGROUND_NEI_SINGLE_RECIPE = AdaptableUITexture
         .of(GregTech.ID, "gui/background/nei_single_recipe.png", 64, 64, 2);
-
+    public static final UITexture BACKGROUND_FLOCCULATION_RECIPE = UITexture
+        .fullImage(GregTech.ID, "gui/background/flocculation_recipe.png");
     public static final SteamTexture SLOT_ITEM_STEAM = SteamTexture.fullImage(GregTech.ID, "gui/slot/item_%s");
     public static final SteamTexture SLOT_FLUID_STEAM = SteamTexture.fullImage(GregTech.ID, "gui/slot/fluid_%s");
     public static final AdaptableUITexture SLOT_DARK_GRAY = AdaptableUITexture
@@ -88,6 +89,7 @@ public class GT_UITextures {
         .fullImage(GregTech.ID, "gui/overlay_slot/explosive");
     public static final UITexture OVERLAY_SLOT_EXTRUDER_SHAPE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_slot/extruder_shape");
+    public static final UITexture OVERLAY_SLOT_FILTER = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/filter");
     public static final UITexture OVERLAY_SLOT_FURNACE = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/furnace");
     public static final SteamTexture OVERLAY_SLOT_FURNACE_STEAM = SteamTexture
         .fullImage(GregTech.ID, "gui/overlay_slot/furnace_%s");
@@ -204,6 +206,14 @@ public class GT_UITextures {
     public static final UITexture PROGRESSBAR_SLICE = UITexture.fullImage(GregTech.ID, "gui/progressbar/slice");
     public static final UITexture PROGRESSBAR_STORED_EU = UITexture.fullImage(GregTech.ID, "gui/progressbar/stored_eu");
     public static final UITexture PROGRESSBAR_WIREMILL = UITexture.fullImage(GregTech.ID, "gui/progressbar/wiremill");
+    public static final UITexture PROGRESSBAR_FLOCCULATION = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/flocculation");
+    public static final UITexture PROGRESSBAR_CLARIFIER = UITexture.fullImage(GregTech.ID, "gui/progressbar/clarifier");
+    public static final UITexture PROGRESSBAR_PH_NEUTRALIZATION = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/phneutralization");
+    public static final UITexture PROGRESSBAR_OZONATION = UITexture.fullImage(GregTech.ID, "gui/progressbar/ozonation");
+    public static final UITexture PROGRESSBAR_PLASMA_HEATER = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/water_plasma_heater");
 
     public static FallbackableUITexture fallbackableProgressbar(String name, UITexture fallback) {
         return new FallbackableUITexture(UITexture.fullImage(GregTech.ID, "gui/progressbar/" + name), fallback);
@@ -391,6 +401,42 @@ public class GT_UITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/retract_pipes");
     public static final UITexture OVERLAY_BUTTON_HOURGLASS = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/hourglass");
+
+    public static final UITexture OVERLAY_BUTTON_LIQUIDMODE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/LiquidMode");
+
+    public static final UITexture OVERLAY_BUTTON_LIQUIDMODE_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/LiquidMode_off");
+
+    // These icons are for mode switching machine modes
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DEFAULT = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_default");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CHEMBATH = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_chembath");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_WASHPLANT = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_washplant");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_simplewasher");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_PACKAGER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_packager");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_UNPACKAGER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_unpackager");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SEPARATOR = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_separator");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_POLARIZER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_polarizer");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_lpf_fluid");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_METAL = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_lpf_metal");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_BENDING = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_bending");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_FORMING = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_forming");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SLICING = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_slicing");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CUTTING = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_cutting");
 
     /**
      * Can adjust size as needed.

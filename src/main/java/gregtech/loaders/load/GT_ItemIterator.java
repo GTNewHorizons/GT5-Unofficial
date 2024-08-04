@@ -240,10 +240,6 @@ public class GT_ItemIterator implements Runnable {
                             .duration(20 * SECONDS)
                             .eut(2)
                             .addTo(maceratorRecipes);
-                        GT_ModHandler.addSawmillRecipe(
-                            new ItemStack(tItem, 1, 0),
-                            new ItemStack(Items.stick, 4),
-                            new ItemStack(Items.stick, 2));
                         GT_Values.RA.stdBuilder()
                             .itemInputs(new ItemStack(tItem, 1, 1))
                             .itemOutputs(new ItemStack(Items.stick, 4))

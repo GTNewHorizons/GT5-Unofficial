@@ -49,22 +49,36 @@ public class CuttingRecipes implements Runnable {
                 1 * MINUTES + 20 * SECONDS,
                 TierEU.RECIPE_HV,
                 true);
+            // Naq wafer also gets recipes using purified water
+            recipeWithPurifiedWater(
+                new ItemStack[] { ItemList.Circuit_Silicon_Ingot3.get(1) },
+                new ItemStack[] { ItemList.Circuit_Silicon_Wafer3.get(128),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 16) },
+                Materials.Grade1PurifiedWater,
+                Materials.Grade2PurifiedWater,
+                (int) ((1 * MINUTES + 20 * SECONDS) * 0.75),
+                (1 * MINUTES + 20 * SECONDS) / 2,
+                TierEU.RECIPE_HV);
 
-            recipeWithClassicFluids(
+            recipeWithPurifiedWater(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot4.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer4.get(64), ItemList.Circuit_Silicon_Wafer4.get(32),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 32) },
+                Materials.Grade3PurifiedWater,
+                Materials.Grade4PurifiedWater,
                 2 * MINUTES,
-                TierEU.RECIPE_EV,
-                true);
+                1 * MINUTES,
+                TierEU.RECIPE_EV);
 
-            recipeWithClassicFluids(
+            recipeWithPurifiedWater(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot5.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer5.get(64), ItemList.Circuit_Silicon_Wafer5.get(64),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 64) },
+                Materials.Grade5PurifiedWater,
+                Materials.Grade6PurifiedWater,
                 2 * MINUTES + 40 * SECONDS,
-                TierEU.RECIPE_IV,
-                true);
+                (2 * MINUTES + 40 * SECONDS) / 2,
+                TierEU.RECIPE_IV);
 
         }
 
@@ -223,6 +237,25 @@ public class CuttingRecipes implements Runnable {
 
         }
 
+    }
+
+    public void recipeWithPurifiedWater(ItemStack[] inputs, ItemStack[] outputs, Materials lowTierWater,
+        Materials highTierWater, int duration, int boostedDuration, long eut) {
+        GT_Values.RA.stdBuilder()
+            .itemInputs(inputs)
+            .itemOutputs(outputs)
+            .fluidInputs(lowTierWater.getFluid(100L))
+            .duration(duration)
+            .eut(eut)
+            .addTo(cutterRecipes);
+        // Bonus for using higher tier water
+        GT_Values.RA.stdBuilder()
+            .itemInputs(inputs)
+            .itemOutputs(outputs)
+            .fluidInputs(highTierWater.getFluid(100L))
+            .duration(boostedDuration)
+            .eut(eut)
+            .addTo(cutterRecipes);
     }
 
     public void recipeWithClassicFluids(ItemStack[] inputs, ItemStack[] outputs, int duration, long eut,

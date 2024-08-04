@@ -1,8 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.BartWorks;
-import static gregtech.api.enums.Mods.GTNHLanthanides;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
@@ -631,31 +629,26 @@ public class BlastFurnaceRecipes implements Runnable {
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
 
-        if (GTNHLanthanides.isModLoaded() && GTPlusPlus.isModLoaded()) {
+        GT_Values.RA.stdBuilder()
+            .itemInputs(MaterialsUEVplus.TranscendentMetal.getDust(1), GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.TranscendentMetal, 1))
+            .fluidInputs(Materials.Tungsten.getMolten(144))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.celestialtungsten"), 72))
+            .duration(3 * MINUTES)
+            .eut(32000000)
+            .metadata(COIL_HEAT, 11701)
+            .addTo(blastFurnaceRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(MaterialsUEVplus.TranscendentMetal.getDust(1), GT_Utility.getIntegratedCircuit(1))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.TranscendentMetal, 1))
-                .fluidInputs(Materials.Tungsten.getMolten(144))
-                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.celestialtungsten"), 72))
-                .duration(3 * MINUTES)
-                .eut(32000000)
-                .metadata(COIL_HEAT, 11701)
-                .addTo(blastFurnaceRecipes);
+        // Rh + 3Cl = RhCl3
 
-            // Rh + 3Cl = RhCl3
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 1L, 78),
-                    GT_Utility.getIntegratedCircuit(2))
-                .itemOutputs(MaterialsKevlar.RhodiumChloride.getDust(4))
-                .fluidInputs(Materials.Chlorine.getGas(3000))
-                .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_HV)
-                .metadata(COIL_HEAT, 573)
-                .addTo(blastFurnaceRecipes);
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 1L, 78), GT_Utility.getIntegratedCircuit(2))
+            .itemOutputs(MaterialsKevlar.RhodiumChloride.getDust(4))
+            .fluidInputs(Materials.Chlorine.getGas(3000))
+            .duration(30 * SECONDS)
+            .eut((int) TierEU.RECIPE_HV)
+            .metadata(COIL_HEAT, 573)
+            .addTo(blastFurnaceRecipes);
     }
 
     public void registerPrimitiveBlastFurnaceRecipes() {

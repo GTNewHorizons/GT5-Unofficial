@@ -29,7 +29,7 @@ public class Inventory extends UpgradeCasing {
     }
 
     public String getInventoryID() {
-        return inventoryID.toString();
+        return inventoryID != null ? inventoryID.toString() : "";
     }
 
     public void setInventoryName(String aInventoryName) {
@@ -58,30 +58,30 @@ public class Inventory extends UpgradeCasing {
     }
 
     @Override
-    public void readMultiTileNBT(NBTTagCompound aNBT) {
-        super.readMultiTileNBT(aNBT);
-        if (aNBT.hasKey(NBT.UPGRADE_INVENTORY_NAME)) {
-            inventoryName = aNBT.getString(NBT.UPGRADE_INVENTORY_NAME);
+    public void readMultiTileNBT(NBTTagCompound nbt) {
+        super.readMultiTileNBT(nbt);
+        if (nbt.hasKey(NBT.UPGRADE_INVENTORY_NAME)) {
+            inventoryName = nbt.getString(NBT.UPGRADE_INVENTORY_NAME);
         } else {
             inventoryName = "inventory";
         }
-        inventorySize = aNBT.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
+        inventorySize = nbt.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
     }
 
     @Override
-    public void writeMultiTileNBT(NBTTagCompound aNBT) {
-        super.writeMultiTileNBT(aNBT);
-        aNBT.setString(NBT.UPGRADE_INVENTORY_UUID, inventoryID.toString());
-        aNBT.setString(NBT.UPGRADE_INVENTORY_NAME, inventoryName);
+    public void writeMultiTileNBT(NBTTagCompound nbt) {
+        super.writeMultiTileNBT(nbt);
+        if (inventoryID != null) nbt.setString(NBT.UPGRADE_INVENTORY_UUID, inventoryID.toString());
+        if (inventoryName != null) nbt.setString(NBT.UPGRADE_INVENTORY_NAME, inventoryName);
     }
 
     @Override
-    public boolean breakBlock() {
+    public boolean onBlockBroken() {
         final IMultiBlockController controller = getTarget(false);
-        if (controller != null) {
+        if (controller != null && inventoryID != null) {
             controller.unregisterItemInventory(inventoryID, type);
         }
-        return super.breakBlock();
+        return super.onBlockBroken();
     }
 
     @Override
@@ -96,7 +96,7 @@ public class Inventory extends UpgradeCasing {
                 .setSetter((val) -> {
                     inventoryName = val;
                     final IMultiBlockController controller = getTarget(false);
-                    if (controller != null) {
+                    if (controller != null && inventoryID != null) {
                         controller.changeItemInventoryDisplayName(inventoryID, inventoryName, type);
                     }
                 })

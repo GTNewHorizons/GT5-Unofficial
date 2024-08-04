@@ -78,9 +78,9 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
             max = dc.getMaxItemCount();
             used = dc.getProgresstime();
         } else if (mte instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
-            if (((GT_MetaTileEntity_Hatch_OutputBus_ME) mte).isLastOutputFailed()) {
+            if (((GT_MetaTileEntity_Hatch_OutputBus_ME) mte).canAcceptItem()) {
                 max = 64;
-                used = 64;
+                used = 0;
             }
         } else {
             final int[] slots = slot >= 0 ? new int[] { slot } : tileEntity.getAccessibleSlotsFromSide(ordinalSide);

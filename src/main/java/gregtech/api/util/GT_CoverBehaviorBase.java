@@ -256,6 +256,14 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     /**
+     * Called when Base TE being unloaded.
+     */
+    public void onCoverUnload(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
+        ICoverable aTileEntity) {
+        onCoverUnloadImpl(side, aCoverID, forceCast(aCoverVariable), aTileEntity);
+    }
+
+    /**
      * How Blast Proof the Cover is. 30 is normal.
      */
     public final float getBlastProofLevel(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
@@ -580,6 +588,9 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     protected void onDroppedImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {}
 
     protected void onBaseTEDestroyedImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {}
+
+    protected void onCoverUnloadImpl(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
+        ICoverable aTileEntity) {}
 
     protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID, T aCoverVariable,
         ICoverable aTileEntity, long aTimer) {

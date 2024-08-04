@@ -44,6 +44,7 @@ import org.lwjgl.input.Keyboard;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -65,6 +66,7 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.fluid.IFluidStore;
+import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
@@ -104,6 +106,7 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
@@ -114,6 +117,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     implements ControllerWithOptionalFeatures, IAddGregtechLogo, IAddUIWidgets, IBindPlayerInventoryUI {
 
     public static boolean disableMaintenance;
+    public boolean hasMaintenanceChecks = getDefaultHasMaintenanceChecks();
     public boolean mMachine = false, mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false,
         mSolderingTool = false, mCrowbar = false, mRunningOnLoad = false;
     public boolean mStructureChanged = false;
@@ -126,6 +130,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public String mNEI;
     public int damageFactorLow = 5;
     public float damageFactorHigh = 0.6f;
+    public int machineMode = 0;
+    public List<UITexture> machineModeIcons = new ArrayList<UITexture>();
 
     public boolean mLockedToSingleRecipe = getDefaultRecipeLockingMode();
     protected boolean inputSeparation = getDefaultInputSeparationMode();
@@ -144,6 +150,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public ArrayList<GT_MetaTileEntity_Hatch_InputBus> mInputBusses = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_OutputBus> mOutputBusses = new ArrayList<>();
     public ArrayList<IDualInputHatch> mDualInputHatches = new ArrayList<>();
+    public ArrayList<ISmartInputHatch> mSmartInputHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Dynamo> mDynamoHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Muffler> mMufflerHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Energy> mEnergyHatches = new ArrayList<>();
@@ -154,6 +161,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected GT_SoundLoop activitySoundLoop;
 
     private long mLastWorkingTick = 0;
+    private static final int CHECK_INTERVAL = 100; // How often should we check for a new recipe on an idle machine?
+    private final int randomTickOffset = (int) (Math.random() * CHECK_INTERVAL + 1);
 
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
     protected static final byte PROCESS_START_SOUND_INDEX = 1;
@@ -168,6 +177,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         this.damageFactorHigh = (float) GregTech_API.sMachineFile
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorHigh", 0.6f);
         this.mNEI = "";
+        if (!shouldCheckMaintenance()) fixAllIssues();
     }
 
     public GT_MetaTileEntity_MultiBlockBase(String aName) {
@@ -179,6 +189,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorLow", 5);
         this.damageFactorHigh = (float) GregTech_API.sMachineFile
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorHigh", 0.6f);
+        if (!shouldCheckMaintenance()) fixAllIssues();
     }
 
     @Override
@@ -250,6 +261,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         aNBT.setInteger("mEfficiency", mEfficiency);
         aNBT.setInteger("mPollution", mPollution);
         aNBT.setInteger("mRuntime", mRuntime);
+
+        if (supportsMachineModeSwitch()) {
+            aNBT.setInteger("machineMode", machineMode);
+        }
+
         if (supportsSingleRecipeLocking()) {
             aNBT.setBoolean("mLockedToSingleRecipe", mLockedToSingleRecipe);
             if (mLockedToSingleRecipe && mSingleRecipeCheck != null)
@@ -291,6 +307,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mEfficiency = aNBT.getInteger("mEfficiency");
         mPollution = aNBT.getInteger("mPollution");
         mRuntime = aNBT.getInteger("mRuntime");
+        if (aNBT.hasKey("machineMode")) {
+            machineMode = aNBT.getInteger("machineMode");
+        }
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = aNBT.getBoolean("mLockedToSingleRecipe");
             if (mLockedToSingleRecipe && aNBT.hasKey("mSingleRecipeCheck", Constants.NBT.TAG_COMPOUND)) {
@@ -324,13 +343,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             for (int i = 0; i < mOutputFluids.length; i++)
                 mOutputFluids[i] = GT_Utility.loadFluid(aNBT, "mOutputFluids" + i);
         }
-
-        mWrench = aNBT.getBoolean("mWrench");
-        mScrewdriver = aNBT.getBoolean("mScrewdriver");
-        mSoftHammer = aNBT.getBoolean("mSoftHammer");
-        mHardHammer = aNBT.getBoolean("mHardHammer");
-        mSolderingTool = aNBT.getBoolean("mSolderingTool");
-        mCrowbar = aNBT.getBoolean("mCrowbar");
+        if (shouldCheckMaintenance()) {
+            mWrench = aNBT.getBoolean("mWrench");
+            mScrewdriver = aNBT.getBoolean("mScrewdriver");
+            mSoftHammer = aNBT.getBoolean("mSoftHammer");
+            mHardHammer = aNBT.getBoolean("mHardHammer");
+            mSolderingTool = aNBT.getBoolean("mSolderingTool");
+            mCrowbar = aNBT.getBoolean("mCrowbar");
+        } else fixAllIssues();
     }
 
     protected SingleRecipeCheck loadSingleRecipeChecker(NBTTagCompound aNBT) {
@@ -375,6 +395,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mMufflerHatches.clear();
         mMaintenanceHatches.clear();
         mDualInputHatches.clear();
+        mSmartInputHatches.clear();
     }
 
     public boolean checkStructure(boolean aForceReset) {
@@ -444,33 +465,27 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
     }
 
-    private void checkMaintenance() {
-        if (disableMaintenance) {
-            mWrench = true;
-            mScrewdriver = true;
-            mSoftHammer = true;
-            mHardHammer = true;
-            mSolderingTool = true;
-            mCrowbar = true;
+    public void checkMaintenance() {
+        if (!shouldCheckMaintenance()) return;
 
-            return;
-        }
-        for (GT_MetaTileEntity_Hatch_Maintenance tHatch : filterValidMTEs(mMaintenanceHatches)) {
-            if (tHatch.mAuto && !(mWrench && mScrewdriver && mSoftHammer && mHardHammer && mSolderingTool && mCrowbar))
-                tHatch.autoMaintainance();
-            if (tHatch.mWrench) mWrench = true;
-            if (tHatch.mScrewdriver) mScrewdriver = true;
-            if (tHatch.mSoftHammer) mSoftHammer = true;
-            if (tHatch.mHardHammer) mHardHammer = true;
-            if (tHatch.mSolderingTool) mSolderingTool = true;
-            if (tHatch.mCrowbar) mCrowbar = true;
+        boolean broken = !(mWrench && mScrewdriver && mSoftHammer && mHardHammer && mSolderingTool && mCrowbar);
+        if (broken) {
+            for (GT_MetaTileEntity_Hatch_Maintenance tHatch : filterValidMTEs(mMaintenanceHatches)) {
+                if (tHatch.mAuto) tHatch.autoMaintainance();
+                if (tHatch.mWrench) mWrench = true;
+                if (tHatch.mScrewdriver) mScrewdriver = true;
+                if (tHatch.mSoftHammer) mSoftHammer = true;
+                if (tHatch.mHardHammer) mHardHammer = true;
+                if (tHatch.mSolderingTool) mSolderingTool = true;
+                if (tHatch.mCrowbar) mCrowbar = true;
 
-            tHatch.mWrench = false;
-            tHatch.mScrewdriver = false;
-            tHatch.mSoftHammer = false;
-            tHatch.mHardHammer = false;
-            tHatch.mSolderingTool = false;
-            tHatch.mCrowbar = false;
+                tHatch.mWrench = false;
+                tHatch.mScrewdriver = false;
+                tHatch.mSoftHammer = false;
+                tHatch.mHardHammer = false;
+                tHatch.mSolderingTool = false;
+                tHatch.mCrowbar = false;
+            }
         }
     }
 
@@ -505,11 +520,16 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             shouldCheck |= craftingInputMe.justUpdated();
         }
         if (shouldCheck) return true;
+        // Do the same for Smart Input Hatches
+        for (ISmartInputHatch smartInputHatch : mSmartInputHatches) {
+            shouldCheck |= smartInputHatch.justUpdated();
+        }
+        if (shouldCheck) return true;
 
         // Perform more frequent recipe change after the machine just shuts down.
         long timeElapsed = aTick - mLastWorkingTick;
 
-        if (timeElapsed >= 100) return aTick % 100 == 0;
+        if (timeElapsed >= CHECK_INTERVAL) return (aTick + randomTickOffset) % CHECK_INTERVAL == 0;
         // Batch mode should be a lot less aggressive at recipe checking
         if (!isBatchModeEnabled()) {
             return timeElapsed == 5 || timeElapsed == 12
@@ -573,10 +593,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 }
             }
         } else {
-            if (shouldCheckRecipeThisTick(aTick) || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
-                || aBaseMetaTileEntity.hasInventoryBeenModified()) {
+            // Check if the machine is enabled in the first place!
+            if (aBaseMetaTileEntity.isAllowedToWork()) {
 
-                if (aBaseMetaTileEntity.isAllowedToWork()) {
+                if (shouldCheckRecipeThisTick(aTick) || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
+                    || aBaseMetaTileEntity.hasInventoryBeenModified()) {
                     if (checkRecipe()) {
                         markDirty();
                     }
@@ -975,21 +996,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             stopMachine(ShutDownReasonRegistry.NO_MACHINE_PART);
             return false;
         }
-        if (getRepairStatus() == 0) {
+        if (shouldCheckMaintenance() && getRepairStatus() == 0) {
             stopMachine(ShutDownReasonRegistry.NO_REPAIR);
             return false;
         }
         if (mRuntime++ > 1000) {
             mRuntime = 0;
-            if (getBaseMetaTileEntity().getRandomNumber(6000) == 0) {
-                switch (getBaseMetaTileEntity().getRandomNumber(6)) {
-                    case 0 -> mWrench = false;
-                    case 1 -> mScrewdriver = false;
-                    case 2 -> mSoftHammer = false;
-                    case 3 -> mHardHammer = false;
-                    case 4 -> mSolderingTool = false;
-                    case 5 -> mCrowbar = false;
-                }
+            if (shouldCheckMaintenance() && getBaseMetaTileEntity().getRandomNumber(6000) == 0) {
+                causeMaintenanceIssue();
             }
             if (mInventory[1] != null && getBaseMetaTileEntity().getRandomNumber(2) == 0
                 && !mInventory[1].getUnlocalizedName()
@@ -1005,6 +1019,17 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }
         return true;
+    }
+
+    public void causeMaintenanceIssue() {
+        switch (getBaseMetaTileEntity().getRandomNumber(6)) {
+            case 0 -> mWrench = false;
+            case 1 -> mScrewdriver = false;
+            case 2 -> mSoftHammer = false;
+            case 3 -> mHardHammer = false;
+            case 4 -> mSolderingTool = false;
+            case 5 -> mCrowbar = false;
+        }
     }
 
     public void explodeMultiblock() {
@@ -1170,7 +1195,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(aEUt)
             .setEUt(V[tier] * mAmperage)
             .setDuration(aDuration)
-            .setDurationDecreasePerOC(perfectOC ? 2 : 1)
+            .setDurationDecreasePerOC(perfectOC ? 4.0 : 2.0)
             .calculate();
         mEUt = (int) calculator.getConsumption();
         mMaxProgresstime = calculator.getDuration();
@@ -1261,12 +1286,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public boolean addOutput(ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack)) return false;
         aStack = GT_Utility.copyOrNull(aStack);
-        for (GT_MetaTileEntity_Hatch_OutputBus tHatch : filterValidMTEs(mOutputBusses)) {
-            if (tHatch.storeAll(aStack)) {
-                return true;
-            }
+
+        final List<GT_MetaTileEntity_Hatch_OutputBus> filteredBuses = filterValidMTEs(mOutputBusses);
+        if (dumpItem(filteredBuses, aStack, true) || dumpItem(filteredBuses, aStack, false)) {
+            return true;
         }
+
         boolean outputSuccess = true;
+        // noinspection DataFlowIssue
         while (outputSuccess && aStack.stackSize > 0) {
             outputSuccess = false;
             ItemStack single = aStack.splitStack(1);
@@ -1278,6 +1305,21 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }
         return outputSuccess;
+    }
+
+    private boolean dumpItem(List<GT_MetaTileEntity_Hatch_OutputBus> outputBuses, ItemStack itemStack,
+        boolean restrictiveBusesOnly) {
+        for (GT_MetaTileEntity_Hatch_OutputBus outputBus : outputBuses) {
+            if (restrictiveBusesOnly && !outputBus.isLocked()) {
+                continue;
+            }
+
+            if (outputBus.storeAll(itemStack)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public boolean depleteInput(ItemStack aStack) {
@@ -1580,6 +1622,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return mDualInputHatches.add(hatch);
         }
+        if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
+            // Only add them to be iterated if enabled for performance reasons
+            if (hatch.doFastRecipeCheck()) {
+                mSmartInputHatches.add(hatch);
+            }
+        }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
             setHatchRecipeMap((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
             return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
@@ -1686,7 +1734,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return mDualInputHatches.add(hatch);
         }
-
+        if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
+            mSmartInputHatches.add(hatch);
+        }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
@@ -1712,6 +1762,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
+            mSmartInputHatches.add(hatch);
+        }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
@@ -1822,13 +1875,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return false;
+        return supportsSlotAutomation(aIndex);
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return false;
+        return supportsSlotAutomation(aIndex);
     }
 
     protected ItemStack[] getCompactedInputs() {
@@ -1880,11 +1933,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (tag.getBoolean("incompleteStructure")) {
             currentTip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
         }
-        currentTip.add(
-            (tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
-                + "  Efficiency: "
-                + tag.getFloat("efficiency")
-                + "%");
+        String efficiency = RESET + "  Efficiency: " + tag.getFloat("efficiency") + "%";
+        if (tag.getBoolean("hasProblems")) {
+            currentTip.add(RED + "** HAS PROBLEMS **" + efficiency);
+        } else if (!tag.getBoolean("incompleteStructure")) {
+            currentTip.add(GREEN + "Running Fine" + efficiency);
+        }
 
         boolean isActive = tag.getBoolean("isActive");
         if (isActive) {
@@ -2088,7 +2142,16 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     public ItemStack getControllerSlot() {
-        return mInventory[1];
+        return mInventory[getControllerSlotIndex()];
+    }
+
+    public final int getControllerSlotIndex() {
+        return 1;
+    }
+
+    // True if the slot with index aSlot may be interacted with through automation
+    protected boolean supportsSlotAutomation(int aSlot) {
+        return false;
     }
 
     @Override
@@ -2115,9 +2178,24 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
         List<ItemStack> ret = new ArrayList<>();
         for (final GT_MetaTileEntity_Hatch tBus : filterValidMTEs(mOutputBusses)) {
-            final IInventory tBusInv = tBus.getBaseMetaTileEntity();
-            for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
-                ret.add(tBus.getStackInSlot(i));
+            if (!(tBus instanceof GT_MetaTileEntity_Hatch_OutputBus_ME)) {
+                final IInventory tBusInv = tBus.getBaseMetaTileEntity();
+                for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
+                    final ItemStack stackInSlot = tBus.getStackInSlot(i);
+
+                    if (stackInSlot == null && tBus instanceof IItemLockable lockable && lockable.isLocked()) {
+                        // getItemOutputSlots is only used to calculate free room for the purposes of parallels and
+                        // void protection. We can use a fake item stack here without creating weirdness in the output
+                        // bus' actual inventory.
+                        assert lockable.getLockedItem() != null;
+                        ItemStack fakeItemStack = lockable.getLockedItem()
+                            .copy();
+                        fakeItemStack.stackSize = 0;
+                        ret.add(fakeItemStack);
+                    } else {
+                        ret.add(stackInSlot);
+                    }
+                }
             }
         }
         return ret;
@@ -2155,7 +2233,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public boolean canDumpItemToME() {
         for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(mOutputBusses)) {
             if (tHatch instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
-                return true;
+                if ((((GT_MetaTileEntity_Hatch_OutputBus_ME) tHatch).canAcceptItem())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -2165,7 +2245,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public boolean canDumpFluidToME() {
         for (IFluidStore tHatch : getFluidOutputSlots(new FluidStack[0])) {
             if (tHatch instanceof GT_MetaTileEntity_Hatch_Output_ME) {
-                return true;
+                if ((((GT_MetaTileEntity_Hatch_Output_ME) tHatch).canAcceptFluid())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -2194,6 +2276,50 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public Pos2d getInputSeparationButtonPos() {
         return new Pos2d(26, 91);
+    }
+
+    /**
+     * Creates the icon list for this machine. Override this and add the overlays to machineModeIcons in order.
+     */
+    public void setMachineModeIcons() {
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
+    }
+
+    /**
+     * Override this if you are a multi-machine and want a GUI button. You will also want to override
+     * setMachineModeIcons().
+     * Override nextMachineMode() if you have more than 2 modes.
+     */
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return false;
+    }
+
+    @Override
+    public int getMachineMode() {
+        return machineMode;
+    }
+
+    @Override
+    public UITexture getMachineModeIcon(int index) {
+        return machineModeIcons.get(index);
+    }
+
+    @Override
+    public void setMachineMode(int index) {
+        machineMode = index;
+    }
+
+    @Override
+    public int nextMachineMode() {
+        if (machineMode == 0) return 1;
+        else return 0;
+    }
+
+    @Override
+    public Pos2d getMachineModeSwitchButtonPos() {
+        return new Pos2d(80, 91);
     }
 
     @Override
@@ -2284,9 +2410,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         drawTexts(screenElements, inventorySlot);
         builder.widget(screenElements);
 
+        setMachineModeIcons();
         builder.widget(createPowerSwitchButton(builder))
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
+            .widget(createModeSwitchButton(builder))
             .widget(createBatchModeButton(builder))
             .widget(createLockToSingleRecipeButton(builder));
     }
@@ -2382,7 +2510,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         screenElements.setSynced(false)
             .setSpace(0)
             .setPos(10, 7);
-
+        if (supportsMachineModeSwitch()) {
+            screenElements.widget(
+                TextWidget.dynamicString(
+                    () -> EnumChatFormatting.WHITE + GT_Utility.trans("400", "Running mode: ")
+                        + EnumChatFormatting.GOLD
+                        + getMachineModeName()));
+        }
         screenElements
             .widget(
                 new TextWidget(GT_Utility.trans("132", "Pipe is loose.")).setDefaultColor(COLOR_TEXT_WHITE.get())
@@ -2536,5 +2670,22 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @TestOnly
     protected void setExoticEnergyHatches(List<GT_MetaTileEntity_Hatch> ExoticEnergyHatches) {
         this.mExoticEnergyHatches = ExoticEnergyHatches;
+    }
+
+    public void fixAllIssues() {
+        mWrench = true;
+        mScrewdriver = true;
+        mSoftHammer = true;
+        mHardHammer = true;
+        mSolderingTool = true;
+        mCrowbar = true;
+    }
+
+    public boolean getDefaultHasMaintenanceChecks() {
+        return true;
+    }
+
+    public boolean shouldCheckMaintenance() {
+        return !disableMaintenance && hasMaintenanceChecks;
     }
 }

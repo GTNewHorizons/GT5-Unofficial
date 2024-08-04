@@ -1,6 +1,5 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
@@ -540,30 +539,28 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         // Beecombs fluid extractor recipes
-        if (BartWorks.isModLoaded()) {
-            // xenon
-            GT_Values.RA.stdBuilder()
-                .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 134))
-                .fluidOutputs(getFluidStack("xenon", 250))
-                .duration(2 * SECONDS + 10 * TICKS)
-                .eut(TierEU.RECIPE_IV)
-                .addTo(fluidExtractionRecipes);
+        // xenon
+        GT_Values.RA.stdBuilder()
+            .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 134))
+            .fluidOutputs(getFluidStack("xenon", 250))
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(fluidExtractionRecipes);
 
-            // neon
-            GT_Values.RA.stdBuilder()
-                .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 135))
-                .fluidOutputs(getFluidStack("neon", 250))
-                .duration(15 * TICKS)
-                .eut(TierEU.RECIPE_IV)
-                .addTo(fluidExtractionRecipes);
+        // neon
+        GT_Values.RA.stdBuilder()
+            .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 135))
+            .fluidOutputs(getFluidStack("neon", 250))
+            .duration(15 * TICKS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(fluidExtractionRecipes);
 
-            // krpton
-            GT_Values.RA.stdBuilder()
-                .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 136))
-                .fluidOutputs(getFluidStack("krypton", 250))
-                .duration(1 * SECONDS + 5 * TICKS)
-                .eut(TierEU.RECIPE_IV)
-                .addTo(fluidExtractionRecipes);
-        }
+        // krpton
+        GT_Values.RA.stdBuilder()
+            .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 136))
+            .fluidOutputs(getFluidStack("krypton", 250))
+            .duration(1 * SECONDS + 5 * TICKS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(fluidExtractionRecipes);
     }
 }

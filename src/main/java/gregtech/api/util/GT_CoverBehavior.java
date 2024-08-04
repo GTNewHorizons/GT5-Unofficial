@@ -100,6 +100,18 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
     }
 
     @Override
+    protected void onBaseTEDestroyedImpl(ForgeDirection side, int aCoverID,
+        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+        onBaseTEDestroyed(side, aCoverID, convert(aCoverVariable), aTileEntity);
+    }
+
+    @Override
+    protected void onCoverUnloadImpl(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
+        ICoverable aTileEntity) {
+        onCoverUnload(aTileEntity);
+    }
+
+    @Override
     protected String getDescriptionImpl(ForgeDirection side, int aCoverID,
         ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
         return getDescription(side, aCoverID, convert(aCoverVariable), aTileEntity);
@@ -274,6 +286,12 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
         boolean aForced) {
         return true;
     }
+
+    public void onCoverUnload(ICoverable aTileEntity) {
+
+    }
+
+    public void onBaseTEDestroyed(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {}
 
     /**
      * Gives a small Text for the status of the Cover.
