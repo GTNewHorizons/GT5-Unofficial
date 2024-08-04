@@ -1,16 +1,18 @@
 package gregtech.common.render;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
-import gregtech.common.tileentities.render.TileWormhole;
+import static com.github.technus.tectech.rendering.EOH.EOH_RenderingUtils.addRenderedBlockInWorld;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+
 import org.lwjgl.opengl.GL11;
 
-import static com.github.technus.tectech.rendering.EOH.EOH_RenderingUtils.addRenderedBlockInWorld;
+import cpw.mods.fml.client.registry.ClientRegistry;
+import gregtech.common.tileentities.render.TileWormhole;
 
 public class GT_WormholeRenderer extends TileEntitySpecialRenderer {
 
@@ -20,40 +22,6 @@ public class GT_WormholeRenderer extends TileEntitySpecialRenderer {
 
     private static final double trimPercentage = .95;
     private static final double corePercentage = trimPercentage / Math.sqrt(3);
-
-    private void placeCube() {
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.addVertex(1, 1, 1);
-        tessellator.addVertex(1, -1, 1);
-        tessellator.addVertex(1, -1, -1);
-        tessellator.addVertex(1, 1, -1);
-
-        tessellator.addVertex(-1, 1, 1);
-        tessellator.addVertex(-1, 1, -1);
-        tessellator.addVertex(-1, -1, -1);
-        tessellator.addVertex(-1, -1, 1);
-
-        tessellator.addVertex(1, 1, 1);
-        tessellator.addVertex(1, 1, -1);
-        tessellator.addVertex(-1, 1, -1);
-        tessellator.addVertex(-1, 1, 1);
-
-        tessellator.addVertex(1, -1, 1);
-        tessellator.addVertex(-1, -1, 1);
-        tessellator.addVertex(-1, -1, -1);
-        tessellator.addVertex(1, -1, -1);
-
-        tessellator.addVertex(1, 1, 1);
-        tessellator.addVertex(-1, 1, 1);
-        tessellator.addVertex(-1, -1, 1);
-        tessellator.addVertex(1, -1, 1);
-
-        tessellator.addVertex(1, 1, -1);
-        tessellator.addVertex(1, -1, -1);
-        tessellator.addVertex(-1, -1, -1);
-        tessellator.addVertex(-1, 1, -1);
-
-    }
 
     private static void render(Block coreBlock, double rotation) {
 
@@ -85,17 +53,6 @@ public class GT_WormholeRenderer extends TileEntitySpecialRenderer {
             GL11.glPopMatrix();
         }
 
-    }
-
-    private static void newRenderCube(Block block, double rotation, double size) {
-        // White Trim
-        GL11.glPushMatrix();
-        GL11.glRotated(rotation, 0, -1, .1);
-        Tessellator.instance.startDrawingQuads();
-        Tessellator.instance.setColorRGBA_F(0F, 0F, 0F, 0);
-        addRenderedBlockInWorld(Blocks.quartz_block, 0, 0, 0, 0);
-        Tessellator.instance.draw();
-        GL11.glPopMatrix();
     }
 
     @Override
