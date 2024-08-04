@@ -358,7 +358,6 @@ public class GT_MetaTileEntity_WormholeGenerator extends
     }
 
     // #endregion
-
     @Override
     public void onBlockDestroyed() {
         super.onBlockDestroyed();
@@ -381,9 +380,7 @@ public class GT_MetaTileEntity_WormholeGenerator extends
 
     private void destroyRenderBlock() {
         IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
-        System.out.println("Destroying render block");
         if (gregTechTileEntity.getWorld() == null) {
-            System.out.println("World was null!?  - destroyRenderBlock");
             return;
         }
 
@@ -407,13 +404,10 @@ public class GT_MetaTileEntity_WormholeGenerator extends
     @Nullable
     private TileWormhole createRenderBlock() {
 
-        System.out.println("Creating render block");
-
         IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
         World world = gregTechTileEntity.getWorld();
 
         if (world == null) {
-            System.out.println("World was null!?  - createRenderBlock");
             return null;
         }
 
@@ -435,7 +429,6 @@ public class GT_MetaTileEntity_WormholeGenerator extends
         TileWormhole wormhole = (TileWormhole) world.getTileEntity(xTarget, yTarget, zTarget);
 
         if (wormhole == null) {
-            System.out.println("failed to create wormhole??");
             return null;
         }
         return wormhole;
@@ -467,7 +460,6 @@ public class GT_MetaTileEntity_WormholeGenerator extends
 
     public void updateRenderDim() {
         TileWormhole temp = getRenderBlock();
-        if (temp == null) System.out.println("Could not get previous dimBlock");
 
         World target = Optional.ofNullable(mLink)
             .map(link -> link.getDest(mSelfReference))
@@ -835,8 +827,6 @@ public class GT_MetaTileEntity_WormholeGenerator extends
 
         public boolean connect(WeakReference<GT_MetaTileEntity_WormholeGenerator> tile) {
             tryPromote();
-
-            System.out.println("Connecting");
 
             if (mMaster == null) {
                 mMaster = tile;

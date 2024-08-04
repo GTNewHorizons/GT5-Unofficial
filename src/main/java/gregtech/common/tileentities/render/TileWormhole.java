@@ -42,23 +42,21 @@ public class TileWormhole extends TileEntityAdvanced {
     }
 
     public int getDimFromWorld(World target) {
-        if (target == null) return 3;
+        if (target == null) return 0;
         String dimName = Optional.ofNullable(target.provider)
             .map(WorldProvider::getDimensionName)
             .orElse(null);
-        if (dimName == null) return 3;
+        if (dimName == null) return 0;
         for (int i = 0; i < DimensionHelper.DimName.length; i++) {
             if (dimName.equals(DimensionHelper.DimName[i])) return i;
         }
-        return 3;
+        return 0;
     }
 
     public void setDimFromWorld(World target) {
         int newName = getDimFromWorld(target);
         if (target != null & dimID != newName) {
             dimID = newName;
-            // this.markDirty();
-            this.updateEntity();
         }
     }
 
@@ -90,7 +88,7 @@ public class TileWormhole extends TileEntityAdvanced {
 
     @Override
     public int getPacketCooldown() {
-        return 5;
+        return 20;
     }
 
     @Override
