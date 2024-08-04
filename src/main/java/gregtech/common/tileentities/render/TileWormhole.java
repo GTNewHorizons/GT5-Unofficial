@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -20,12 +19,10 @@ public class TileWormhole extends TileEntityAdvanced {
     @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public boolean shouldRender = false;
     @Annotations.NetworkedField(targetSide = Side.CLIENT)
-    public int dimID = 4;
+    public int dimID = 0;
 
     @Annotations.NetworkedField(targetSide = Side.CLIENT)
-    public double targetRadius = 3;
-
-    public ItemStack renderBlock;
+    public double targetRadius = 0;
 
     @Override
     public void addExtraNetworkedData(List<Object> networkedList) {
@@ -80,13 +77,6 @@ public class TileWormhole extends TileEntityAdvanced {
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
     }
-
-    /*
-     * @Override
-     * public AxisAlignedBB getRenderBoundingBox() {
-     * return 65536;
-     * }
-     */
 
     @Override
     public double getMaxRenderDistanceSquared() {
