@@ -1439,11 +1439,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Energy_Lapotronic_Orb.ID,
                 "Lapotronic Energy Orb",
                 "Reusable battery",
-                "batteryIV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
-                OrePrefixes.battery.get(Materials.ZPM)));
+                OrePrefixes.battery.get(Materials.IV)));
 
         // ZPM Module
         ItemList.ZPM.set(
@@ -1462,11 +1461,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Energy_Lapotronic_orb_2.ID,
                 "Lapotronic Energy Orb Cluster",
                 "Reusable battery",
-                "batteryLuV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
-                OrePrefixes.battery.get(Materials.ZPM)));
+                OrePrefixes.battery.get(Materials.LuV)));
 
         // UV Battery
         ItemList.ZPM2.set(
@@ -1529,7 +1527,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Energy_Module.ID,
                 "Energy Module",
                 "Reusable battery",
-                "batteryZPM",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
@@ -1541,10 +1538,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Energy_Cluster.ID,
                 "Energy Cluster",
                 "Reusable battery",
-                "batteryUV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L),
+                OrePrefixes.battery.get(Materials.UV)));
 
         // UIV, UMV, UXV and MAX component textures backported from gregicality.
         ItemList.Electric_Motor_LV.set(
