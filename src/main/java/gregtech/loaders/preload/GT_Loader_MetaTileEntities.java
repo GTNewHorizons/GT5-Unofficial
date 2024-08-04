@@ -99,7 +99,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.DebugTechAccessor;
 import static gregtech.api.enums.MetaTileEntityIDs.DroneDownLink;
 import static gregtech.api.enums.MetaTileEntityIDs.Drone_Centre;
 import static gregtech.api.enums.MetaTileEntityIDs.EBF_CONTROLLER;
@@ -529,7 +528,6 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_AdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Boxinator;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Charger;
-import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Debug_TechAccessor;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_IndustrialApiary;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Massfabricator;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_MicrowaveEnergyTransmitter;
@@ -4117,14 +4115,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         registerMagicEnergyConverters();
         registerPlasmaGenerators();
         registerMultiblockControllers();
-
-        // debug tech accessor
-        ItemList.DebugTechAccessor.set(
-            new GT_MetaTileEntity_Debug_TechAccessor(
-                DebugTechAccessor.ID,
-                "debugtechaccessor",
-                "Debug Tech Accessor",
-                5).getStackForm(1L));
 
         ItemList.AdvDebugStructureWriter.set(
             new GT_MetaTileEntity_AdvDebugStructureWriter(

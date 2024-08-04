@@ -688,8 +688,7 @@ public enum MetaTileEntityIDs {
     sofc2(13102),
     tfft(13104),
     lsc(13106),
-    tfftHatch(13109),
-    DebugTechAccessor(13110);
+    tfftHatch(13109);
 
     public final int ID;
 
