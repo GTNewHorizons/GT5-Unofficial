@@ -74,6 +74,7 @@ import gregtech.common.blocks.GT_Block_Stones;
 import gregtech.common.blocks.GT_Block_TintedIndustrialGlass;
 import gregtech.common.blocks.GT_Cyclotron_Coils;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.GT_WormholeRenderBlock;
 import gregtech.common.items.GT_DepletetCell_Item;
 import gregtech.common.items.GT_FluidDisplayItem;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
