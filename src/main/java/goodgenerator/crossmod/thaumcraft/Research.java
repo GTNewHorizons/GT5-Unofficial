@@ -70,7 +70,7 @@ public class Research {
                 GregTech_API.sThaumcraftCompat.addInfusionRecipe(
                     "ESSENTIA_GENERATOR",
                     ItemList.Hull_HV.get(1),
-                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
+                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
                         new ItemStack(ConfigBlocks.blockJar, 1),
                         GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Thaumium, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L),
@@ -576,10 +576,10 @@ public class Research {
                             new ItemStack(ConfigBlocks.blockCrystal, 1, 1),
                             new ItemStack(ConfigBlocks.blockMetalDevice, 1, 3), ItemList.Electric_Piston_IV.get(1),
                             GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.FierySteel, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L) },
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L) },
                         ItemRefer.Large_Essentia_Smeltery.get(1),
                         16,
                         Arrays.asList(
