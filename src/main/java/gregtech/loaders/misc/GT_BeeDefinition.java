@@ -2511,7 +2511,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
             AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
         }, dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(RAREEARTH, REDSTONE, 10);
+            IBeeMutationCustom tMutation = dis.registerMutation(RAREEARTH, IRON, 10);
             tMutation.requireResource(GregTech_API.sBlockMetal5, 0);
         }),
     EUROPIUM(GT_BranchDefinition.RAREMETAL, "Europium", false, new Color(0xDAA0E2), new Color(0xAB7EB1), beeSpecies -> {
