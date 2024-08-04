@@ -21,6 +21,10 @@ import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -42,12 +46,10 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
 
-public class GT_MetaTileEntity_LargeFluidExtractor extends
-    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_LargeFluidExtractor> implements ISurvivalConstructable{
+public class GT_MetaTileEntity_LargeFluidExtractor
+    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_LargeFluidExtractor>
+    implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int CASING_INDEX = 48; // Robust Tungstensteel Machine Casing
@@ -249,10 +251,13 @@ public class GT_MetaTileEntity_LargeFluidExtractor extends
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Fluid Extractor")
             .addInfo("Controller block for the Large Fluid Extractor")
-            .addInfo(String.format("%d%% the speed of single block machines of the same voltage", (int)(BASE_SPEED_BONUS * 100)))
-            .addInfo(String.format("Only uses %d%% of the EU/t normally required", (int)(BASE_EU_DISCOUNT * 100)))
-            .addInfo(String.format("Every coil tier above Cupronickel gives +%d%% speed", (int)(SPEED_PER_COIL * 100)))
-            .addInfo(String.format("Every solenoid tier above MV gives +%d parallels", (int)(PARALLELS_PER_SOLENOID)))
+            .addInfo(
+                String.format(
+                    "%d%% the speed of single block machines of the same voltage",
+                    (int) (BASE_SPEED_BONUS * 100)))
+            .addInfo(String.format("Only uses %d%% of the EU/t normally required", (int) (BASE_EU_DISCOUNT * 100)))
+            .addInfo(String.format("Every coil tier above Cupronickel gives +%d%% speed", (int) (SPEED_PER_COIL * 100)))
+            .addInfo(String.format("Every solenoid tier above MV gives +%d parallels", (int) (PARALLELS_PER_SOLENOID)))
             .addInfo("The energy hatch tier is limited by the glass tier")
             .addSeparator()
             .beginStructureBlock(7, 9, 7, false)
@@ -311,27 +316,38 @@ public class GT_MetaTileEntity_LargeFluidExtractor extends
         var data = new ArrayList<String>();
 
         data.addAll(Arrays.asList(super.getInfoData()));
-        
+
         if (mStructureBadGlassTier) {
-            data.add(EnumChatFormatting.RED + "Energy hatch tier is too high for the glass tier." + EnumChatFormatting.RESET);
+            data.add(
+                EnumChatFormatting.RED + "Energy hatch tier is too high for the glass tier."
+                    + EnumChatFormatting.RESET);
         }
 
         if (mStructureBadCasingCount) {
-            data.add(EnumChatFormatting.RED + "Not enough casings. Need " + (BASE_CASING_COUNT - MAX_HATCHES_ALLOWED) + ", but have " + mCasingAmount + "." + EnumChatFormatting.RESET);
+            data.add(
+                EnumChatFormatting.RED + "Not enough casings. Need "
+                    + (BASE_CASING_COUNT - MAX_HATCHES_ALLOWED)
+                    + ", but have "
+                    + mCasingAmount
+                    + "."
+                    + EnumChatFormatting.RESET);
         }
 
-        data.add(String.format("Max Parallels: %s%d%s",
-            EnumChatFormatting.YELLOW,
-            getParallels(),
-            EnumChatFormatting.RESET));
-        data.add(String.format("Heating Coil Speed Bonus: +%s%.0f%s %%",
-            EnumChatFormatting.YELLOW,
-            getSpeedBonus() * 100,
-            EnumChatFormatting.RESET));
-        data.add(String.format("Total Speed: %s%.0f%s %%",
-            EnumChatFormatting.YELLOW,
-            (getSpeedBonus() + BASE_SPEED_BONUS) * 100,
-            EnumChatFormatting.RESET));
+        data.add(
+            String
+                .format("Max Parallels: %s%d%s", EnumChatFormatting.YELLOW, getParallels(), EnumChatFormatting.RESET));
+        data.add(
+            String.format(
+                "Heating Coil Speed Bonus: +%s%.0f%s %%",
+                EnumChatFormatting.YELLOW,
+                getSpeedBonus() * 100,
+                EnumChatFormatting.RESET));
+        data.add(
+            String.format(
+                "Total Speed: %s%.0f%s %%",
+                EnumChatFormatting.YELLOW,
+                (getSpeedBonus() + BASE_SPEED_BONUS) * 100,
+                EnumChatFormatting.RESET));
 
         return data.toArray(new String[data.size()]);
     }
@@ -345,19 +361,18 @@ public class GT_MetaTileEntity_LargeFluidExtractor extends
     }
 
     private class LFEProcessingLogic extends ProcessingLogic {
+
         @Override
         @Nonnull
         protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
-            return super.createParallelHelper(recipe)
-                .setEUtModifier((float)BASE_EU_DISCOUNT)
+            return super.createParallelHelper(recipe).setEUtModifier((float) BASE_EU_DISCOUNT)
                 .setMaxParallel(getParallels());
         }
 
         @Override
         @Nonnull
         protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
-            return super.createOverclockCalculator(recipe)
-                .setSpeedBoost((float) (getSpeedBonus() + BASE_SPEED_BONUS));
+            return super.createOverclockCalculator(recipe).setSpeedBoost((float) (getSpeedBonus() + BASE_SPEED_BONUS));
         }
     }
 }
