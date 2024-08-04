@@ -115,6 +115,7 @@ import gregtech.loaders.preload.GT_Loader_MetaTileEntities;
 import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
 import gregtech.loaders.preload.GT_Loader_OreDictionary;
 import gregtech.loaders.preload.GT_Loader_OreProcessing;
+import gregtech.loaders.preload.GT_Loader_Technologies;
 import gregtech.loaders.preload.GT_PreLoad;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
@@ -288,6 +289,7 @@ public class GT_Mod implements IGT_Mod {
         new GT_CoverBehaviorLoader().run();
         new GT_SonictronLoader().run();
         new GT_SpawnEventHandler();
+        new GT_Loader_Technologies().run();
 
         GT_PreLoad.sortToTheEnd();
         GregTech_API.sPreloadFinished = true;

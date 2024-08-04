@@ -1554,6 +1554,8 @@ gt.time.second.plural=seconds
 #Tool modes
 gt.wrench.mode.1=Line Mode
 
+#Researchable technologies
+gt.tech.debug.name=DebugTech 9000
 
 # GT++
 # Shit I stole from GTNH~
