@@ -309,8 +309,8 @@ public class GT_MetaTileEntity_DistillationTower extends
             .allMatch(
                 tLayerOutputHatches -> tLayerOutputHatches.stream()
                     .anyMatch(
-                        tHatch -> (tHatch instanceof GT_MetaTileEntity_Hatch_Output_ME)
-                            && (((GT_MetaTileEntity_Hatch_Output_ME) tHatch).canAcceptFluid())));
+                        tHatch -> (tHatch instanceof GT_MetaTileEntity_Hatch_Output_ME tMEHatch)
+                            && (tMEHatch.canAcceptFluid())));
     }
 
     @Override
