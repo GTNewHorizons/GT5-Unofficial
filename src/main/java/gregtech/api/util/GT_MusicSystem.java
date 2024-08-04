@@ -447,6 +447,7 @@ public final class GT_MusicSystem {
                 || mc.theWorld.provider == null) {
                 return;
             }
+            final long now = System.currentTimeMillis();
             currentDimension = mc.theWorld.provider.dimensionId;
 
             activelyPlayingMusic.forEach((uuid, data) -> data.resetMark());
@@ -456,6 +457,13 @@ public final class GT_MusicSystem {
                 final ClientSourceData data = activelyPlayingMusic
                     .computeIfAbsent(uuid, ignored -> new ClientSourceData());
                 data.mark();
+                if (data.currentSound != null && !mc.getSoundHandler()
+                    .isSoundPlaying(data.currentSound)
+                    && (now - data.clientReferenceStartTime)
+                        < getMusicRecordDurations().getOrDefault(data.currentSoundResource, Integer.MAX_VALUE)) {
+                    data.currentSound = null;
+                    data.currentSoundResource = null;
+                }
                 if (!data.equalSound(musicSource)) {
                     data.resetSound(mc, musicSource);
                 } else {
