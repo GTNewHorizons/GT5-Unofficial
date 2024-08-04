@@ -507,7 +507,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 NandChip.ID,
                 "NAND Chip",
                 "A very simple Circuit",
-                OrePrefixes.circuit.get(Materials.Primitive),
+                OrePrefixes.circuit.get(Materials.ULV),
                 SubTag.NO_UNIFICATION));
 
         // Vacuum Tube Item01
@@ -520,7 +520,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Integrated_Good.ID,
                 "Good Integrated Circuit",
                 "Good Circuit",
-                OrePrefixes.circuit.get(Materials.Good),
+                OrePrefixes.circuit.get(Materials.MV),
                 SubTag.NO_UNIFICATION));
 
         // Good Integrated Circuit Item01
@@ -531,7 +531,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Microprocessor.ID,
                 "Microprocessor",
                 "A Basic Circuit",
-                OrePrefixes.circuit.get(Materials.Basic),
+                OrePrefixes.circuit.get(Materials.LV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Processor.set(
@@ -539,7 +539,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Processor.ID,
                 "Integrated Processor",
                 "A Good Circuit",
-                OrePrefixes.circuit.get(Materials.Good),
+                OrePrefixes.circuit.get(Materials.MV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Nanoprocessor.set(
@@ -547,7 +547,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Nanoprocessor.ID,
                 "Nanoprocessor",
                 "An Advanced Circuit",
-                OrePrefixes.circuit.get(Materials.Advanced),
+                OrePrefixes.circuit.get(Materials.HV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Nanocomputer.set(
@@ -555,7 +555,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Nanocomputer.ID,
                 "Nanoprocessor Assembly",
                 "An Extreme Circuit",
-                OrePrefixes.circuit.get(Materials.Data),
+                OrePrefixes.circuit.get(Materials.EV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Elitenanocomputer.set(
@@ -563,7 +563,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Elitenanocomputer.ID,
                 "Elite Nanocomputer",
                 "An Elite Circuit",
-                OrePrefixes.circuit.get(Materials.Elite),
+                OrePrefixes.circuit.get(Materials.IV),
                 SubTag.NO_UNIFICATION));
 
         // Quantum circuits
@@ -572,7 +572,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Quantumprocessor.ID,
                 "Quantumprocessor",
                 "An Extreme Circuit",
-                OrePrefixes.circuit.get(Materials.Data),
+                OrePrefixes.circuit.get(Materials.EV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Quantumcomputer.set(
@@ -580,7 +580,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Quantumcomputer.ID,
                 "Quantumprocessor Assembly",
                 "An Elite Circuit",
-                OrePrefixes.circuit.get(Materials.Elite),
+                OrePrefixes.circuit.get(Materials.IV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Masterquantumcomputer.set(
@@ -588,7 +588,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Masterquantumcomputer.ID,
                 "Master Quantumcomputer",
                 "A Master Circuit",
-                OrePrefixes.circuit.get(Materials.Master),
+                OrePrefixes.circuit.get(Materials.LuV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Quantummainframe.set(
@@ -596,7 +596,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Quantummainframe.ID,
                 "Quantumprocessor Mainframe",
                 "An Ultimate Circuit",
-                OrePrefixes.circuit.get(Materials.Ultimate),
+                OrePrefixes.circuit.get(Materials.ZPM),
                 SubTag.NO_UNIFICATION));
 
         // Crystal circuits
@@ -605,7 +605,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Crystalprocessor.ID,
                 "Crystalprocessor",
                 "An Elite Circuit",
-                OrePrefixes.circuit.get(Materials.Elite),
+                OrePrefixes.circuit.get(Materials.IV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Crystalcomputer.set(
@@ -613,7 +613,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Crystalcomputer.ID,
                 "Crystalprocessor Assembly",
                 "A Master Circuit",
-                OrePrefixes.circuit.get(Materials.Master),
+                OrePrefixes.circuit.get(Materials.LuV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Ultimatecrystalcomputer.set(
@@ -621,7 +621,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Ultimatecrystalcomputer.ID,
                 "Ultimate Crystalcomputer",
                 "An Ultimate Circuit",
-                OrePrefixes.circuit.get(Materials.Ultimate),
+                OrePrefixes.circuit.get(Materials.ZPM),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Crystalmainframe.set(
@@ -629,7 +629,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Crystalmainframe.ID,
                 "Crystalprocessor Mainframe",
                 "A Super Circuit",
-                OrePrefixes.circuit.get(Materials.SuperconductorUHV),
+                OrePrefixes.circuit.get(Materials.UV),
                 SubTag.NO_UNIFICATION));
 
         // ???? Scared to remove.
@@ -641,7 +641,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Neuroprocessor.ID,
                 "Wetwareprocessor",
                 "A Master Circuit",
-                OrePrefixes.circuit.get(Materials.Master),
+                OrePrefixes.circuit.get(Materials.LuV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Wetwarecomputer.set(
@@ -649,7 +649,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Wetwarecomputer.ID,
                 "Wetwareprocessor Assembly",
                 "An Ultimate Circuit",
-                OrePrefixes.circuit.get(Materials.Ultimate),
+                OrePrefixes.circuit.get(Materials.ZPM),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Wetwaresupercomputer.set(
@@ -657,7 +657,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Wetwaresupercomputer.ID,
                 "Wetware Supercomputer",
                 "A Super Circuit",
-                OrePrefixes.circuit.get(Materials.SuperconductorUHV),
+                OrePrefixes.circuit.get(Materials.UV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Wetwaremainframe.set(
@@ -665,7 +665,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Wetwaremainframe.ID,
                 "Wetware Mainframe",
                 "An Infinite Circuit",
-                OrePrefixes.circuit.get(Materials.Infinite),
+                OrePrefixes.circuit.get(Materials.UHV),
                 SubTag.NO_UNIFICATION));
 
         // Bioware circuits.
@@ -674,7 +674,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Bioprocessor.ID,
                 "Bioprocessor",
                 "An Ultimate Circuit",
-                OrePrefixes.circuit.get(Materials.Ultimate),
+                OrePrefixes.circuit.get(Materials.ZPM),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Biowarecomputer.set(
@@ -682,7 +682,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Biowarecomputer.ID,
                 "Biowareprocessor Assembly",
                 "A Super Circuit",
-                OrePrefixes.circuit.get(Materials.SuperconductorUHV),
+                OrePrefixes.circuit.get(Materials.UV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Biowaresupercomputer.set(
@@ -690,7 +690,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Biowaresupercomputer.ID,
                 "Bioware Supercomputer",
                 "An Infinite Circuit",
-                OrePrefixes.circuit.get(Materials.Infinite),
+                OrePrefixes.circuit.get(Materials.UHV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Biomainframe.set(
@@ -698,7 +698,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Biomainframe.ID,
                 "Bio Mainframe",
                 "A Bio Circuit",
-                OrePrefixes.circuit.get(Materials.Bio),
+                OrePrefixes.circuit.get(Materials.UEV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Board_Coated_Basic
@@ -734,7 +734,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_OpticalProcessor.ID,
                 "Optical Processor",
                 "An Optical Circuit",
-                OrePrefixes.circuit.get(Materials.SuperconductorUHV),
+                OrePrefixes.circuit.get(Materials.UV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_OpticalAssembly.set(
@@ -742,7 +742,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_OpticalAssembly.ID,
                 "Optical Assembly",
                 "An Optical Circuit",
-                OrePrefixes.circuit.get(Materials.Infinite),
+                OrePrefixes.circuit.get(Materials.UHV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_OpticalComputer.set(
@@ -750,7 +750,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_OpticalComputer.ID,
                 "Optical Computer",
                 "An Optical Circuit",
-                OrePrefixes.circuit.get(Materials.Bio),
+                OrePrefixes.circuit.get(Materials.UEV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_OpticalMainframe.set(
@@ -758,7 +758,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_OpticalMainframe.ID,
                 "Optical Mainframe",
                 "An Optical Circuit",
-                OrePrefixes.circuit.get(Materials.Optical),
+                OrePrefixes.circuit.get(Materials.UIV),
                 SubTag.NO_UNIFICATION));
 
         // Exotic circuits
@@ -767,7 +767,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_ExoticProcessor.ID,
                 "Exotic Processor",
                 "An Exotic Circuit",
-                OrePrefixes.circuit.get(Materials.Infinite),
+                OrePrefixes.circuit.get(Materials.UHV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_ExoticAssembly.set(
@@ -775,7 +775,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_ExoticAssembly.ID,
                 "Exotic Assembly",
                 "An Exotic Circuit",
-                OrePrefixes.circuit.get(Materials.Bio),
+                OrePrefixes.circuit.get(Materials.UEV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_ExoticComputer.set(
@@ -783,7 +783,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_ExoticComputer.ID,
                 "Exotic Computer",
                 "An Exotic Circuit",
-                OrePrefixes.circuit.get(Materials.Optical),
+                OrePrefixes.circuit.get(Materials.UIV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_ExoticMainframe.set(
@@ -791,7 +791,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_ExoticMainframe.ID,
                 "Exotic Mainframe",
                 "An Exotic Circuit",
-                OrePrefixes.circuit.get(Materials.Exotic),
+                OrePrefixes.circuit.get(Materials.UMV),
                 SubTag.NO_UNIFICATION));
 
         // Cosmic circuits
@@ -800,7 +800,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_CosmicProcessor.ID,
                 "Cosmic Processor",
                 "A Cosmic Circuit",
-                OrePrefixes.circuit.get(Materials.Bio),
+                OrePrefixes.circuit.get(Materials.UEV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_CosmicAssembly.set(
@@ -808,7 +808,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_CosmicAssembly.ID,
                 "Cosmic Assembly",
                 "A Cosmic Circuit",
-                OrePrefixes.circuit.get(Materials.Optical),
+                OrePrefixes.circuit.get(Materials.UIV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_CosmicComputer.set(
@@ -816,7 +816,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_CosmicComputer.ID,
                 "Cosmic Computer",
                 "A Cosmic Circuit",
-                OrePrefixes.circuit.get(Materials.Exotic),
+                OrePrefixes.circuit.get(Materials.UMV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_CosmicMainframe.set(
@@ -824,7 +824,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_CosmicMainframe.ID,
                 "Cosmic Mainframe",
                 "A Cosmic Circuit",
-                OrePrefixes.circuit.get(Materials.Cosmic),
+                OrePrefixes.circuit.get(Materials.UXV),
                 SubTag.NO_UNIFICATION));
 
         // Transcendent circuits
@@ -833,7 +833,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_TranscendentProcessor.ID,
                 "Temporally Transcendent Processor",
                 "A circuit operating outside of known spacetime",
-                OrePrefixes.circuit.get(Materials.Optical),
+                OrePrefixes.circuit.get(Materials.UIV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_TranscendentAssembly.set(
@@ -841,7 +841,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_TranscendentAssembly.ID,
                 "Temporally Transcendent Assembly",
                 "A circuit operating outside of known spacetime",
-                OrePrefixes.circuit.get(Materials.Exotic),
+                OrePrefixes.circuit.get(Materials.UMV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_TranscendentComputer.set(
@@ -849,7 +849,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_TranscendentComputer.ID,
                 "Temporally Transcendent Computer",
                 "A circuit operating outside of known spacetime",
-                OrePrefixes.circuit.get(Materials.Cosmic),
+                OrePrefixes.circuit.get(Materials.UXV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_TranscendentMainframe.set(
@@ -857,7 +857,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_TranscendentMainframe.ID,
                 "Temporally Transcendent Mainframe",
                 "A circuit operating outside of known spacetime",
-                OrePrefixes.circuit.get(Materials.Transcendent),
+                OrePrefixes.circuit.get(Materials.MAX),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Tube_Wires.set(addItem(Tube_Wires.ID, "Tube Wires", "For the Vacuum Tubes", o));
