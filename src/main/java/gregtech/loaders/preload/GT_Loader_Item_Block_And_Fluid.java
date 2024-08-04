@@ -86,6 +86,7 @@ import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.GT_NeutronReflector_Item;
 import gregtech.common.items.GT_TierDrone;
 import gregtech.common.items.GT_VolumetricFlask;
+import gregtech.common.items.ItemTechAccessor;
 import gregtech.common.tileentities.render.TileDrone;
 import gregtech.common.tileentities.render.TileLaser;
 
@@ -531,6 +532,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 1F,
                 GT_ModHandler.getIC2Item("reactorDepletedMOXQuad", 1),
                 true));
+
+        ItemList.TechTreeAccessor.set(new ItemTechAccessor());
 
         GT_Log.out.println("GT_Mod: Adding Blocks.");
         GregTech_API.sBlockMachines = new GT_Block_Machines();

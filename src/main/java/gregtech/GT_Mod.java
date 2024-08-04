@@ -30,6 +30,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.cleanroommc.modularui.factory.GuiManager;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.SetMultimap;
 
@@ -83,6 +84,7 @@ import gregtech.common.misc.GT_Command;
 import gregtech.common.misc.spaceprojects.commands.SPM_Command;
 import gregtech.common.misc.spaceprojects.commands.SP_Command;
 import gregtech.common.misc.spaceprojects.commands.SpaceProject_Command;
+import gregtech.common.misc.techtree.gui.TechTreeGuiFactory;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import gregtech.crossmod.holoinventory.HoloInventory;
@@ -273,6 +275,8 @@ public class GT_Mod implements IGT_Mod {
             .registries()
             .interfaceTerminal()
             .register(GT_MetaTileEntity_Hatch_CraftingInput_ME.class);
+
+        GuiManager.registerFactory(TechTreeGuiFactory.INSTANCE);
 
         GT_PreLoad.runMineTweakerCompat();
 
