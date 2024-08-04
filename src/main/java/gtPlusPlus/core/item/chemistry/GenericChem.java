@@ -864,7 +864,7 @@ public class GenericChem extends ItemPackage {
         GT_ModHandler.addShapelessCraftingRecipe(
             GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 0L),
             0,
-            new Object[] { OrePrefixes.circuit.get(Materials.Advanced) });
+            new Object[] { OrePrefixes.circuit.get(Materials.HV) });
 
         long bits = 0;
         BioRecipes.addCraftingRecipe(

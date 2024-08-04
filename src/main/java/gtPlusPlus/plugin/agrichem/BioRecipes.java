@@ -1136,7 +1136,7 @@ public class BioRecipes {
         GT_ModHandler.addShapelessCraftingRecipe(
             GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(1L, 0L),
             0,
-            new Object[] { OrePrefixes.circuit.get(Materials.Primitive) });
+            new Object[] { OrePrefixes.circuit.get(Materials.ULV) });
 
         long bits = 0;
         addCraftingRecipe(

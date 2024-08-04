@@ -35,4 +35,8 @@ public class PhotolithographicMask extends Item implements ICanFocus {
 
     }
 
+    public String getDescSpectrum() {
+        return descSpectrum;
+    }
+
 }
