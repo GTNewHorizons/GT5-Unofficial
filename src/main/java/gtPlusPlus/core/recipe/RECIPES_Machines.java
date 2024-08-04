@@ -312,6 +312,13 @@ public class RECIPES_Machines {
     private static void multiForgeHammer() {
 
         GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getSimpleStack(CI.machineHull_IV, 2),
+                ItemList.Machine_IV_Hammer.get(1),
+                CI.getPlate(4, 8),
+                CI.getBolt(5, 32),
+                ELEMENT.getInstance().ZIRCONIUM.getFineWire(32),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4L))
             .itemOutputs(GregtechItemList.Controller_IndustrialForgeHammer.get(1))
             .fluidInputs(CI.getTieredFluid(4, 144 * 12))
             .duration(30 * SECONDS)
