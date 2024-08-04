@@ -1567,12 +1567,12 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 GT_ModHandler.getIC2Item("batBox", 1L),
                 bits_no_remove_buffered,
                 new Object[] { "PCP", "BBB", "PPP", 'C', OrePrefixes.cableGt01.get(Materials.Tin), 'P',
-                    OrePrefixes.plank.get(Materials.Wood), 'B', OrePrefixes.battery.get(Materials.Basic) });
+                    OrePrefixes.plank.get(Materials.Wood), 'B', OrePrefixes.battery.get(Materials.LV) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("mfeUnit", 1L),
                 bits_no_remove_buffered,
                 new Object[] { "CEC", "EME", "CEC", 'C', OrePrefixes.cableGt01.get(Materials.Gold), 'E',
-                    OrePrefixes.battery.get(Materials.Elite), 'M', GT_ModHandler.getIC2Item("machine", 1L) });
+                    OrePrefixes.battery.get(Materials.IV), 'M', GT_ModHandler.getIC2Item("machine", 1L) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("lvTransformer", 1L),
                 bits_no_remove_buffered,
@@ -1587,31 +1587,31 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 GT_ModHandler.getIC2Item("hvTransformer", 1L),
                 bits_no_remove_buffered,
                 new Object[] { " C ", "IMB", " C ", 'C', OrePrefixes.cableGt01.get(Materials.Gold), 'M',
-                    GT_ModHandler.getIC2Item("mvTransformer", 1L), 'I', OrePrefixes.circuit.get(Materials.Basic), 'B',
-                    OrePrefixes.battery.get(Materials.Advanced) });
+                    GT_ModHandler.getIC2Item("mvTransformer", 1L), 'I', OrePrefixes.circuit.get(Materials.LV), 'B',
+                    OrePrefixes.battery.get(Materials.HV) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("evTransformer", 1L),
                 bits_no_remove_buffered,
                 new Object[] { " C ", "IMB", " C ", 'C', OrePrefixes.cableGt01.get(Materials.Aluminium), 'M',
-                    GT_ModHandler.getIC2Item("hvTransformer", 1L), 'I', OrePrefixes.circuit.get(Materials.Advanced),
-                    'B', OrePrefixes.battery.get(Materials.Master) });
+                    GT_ModHandler.getIC2Item("hvTransformer", 1L), 'I', OrePrefixes.circuit.get(Materials.HV), 'B',
+                    OrePrefixes.battery.get(Materials.LuV) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("cesuUnit", 1L),
                 bits_no_remove_buffered,
                 new Object[] { "PCP", "BBB", "PPP", 'C', OrePrefixes.cableGt01.get(Materials.Copper), 'P',
-                    OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.battery.get(Materials.Advanced) });
+                    OrePrefixes.plate.get(Materials.Bronze), 'B', OrePrefixes.battery.get(Materials.HV) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("teleporter", 1L),
                 bits_no_remove_buffered,
                 new Object[] { "GFG", "CMC", "GDG", 'C', OrePrefixes.cableGt01.get(Materials.Platinum), 'G',
-                    OrePrefixes.circuit.get(Materials.Advanced), 'D', OrePrefixes.gem.get(Materials.Diamond), 'M',
+                    OrePrefixes.circuit.get(Materials.HV), 'D', OrePrefixes.gem.get(Materials.Diamond), 'M',
                     GT_ModHandler.getIC2Item("machine", 1L), 'F',
                     GT_ModHandler.getIC2Item("frequencyTransmitter", 1L) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("energyOMat", 1L),
                 bits_no_remove_buffered,
                 new Object[] { "RBR", "CMC", 'C', OrePrefixes.cableGt01.get(Materials.Copper), 'R',
-                    OrePrefixes.dust.get(Materials.Redstone), 'B', OrePrefixes.battery.get(Materials.Basic), 'M',
+                    OrePrefixes.dust.get(Materials.Redstone), 'B', OrePrefixes.battery.get(Materials.LV), 'M',
                     GT_ModHandler.getIC2Item("machine", 1L) });
 
             GT_ModHandler.addCraftingRecipe(
@@ -1624,7 +1624,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 bits_no_remove_buffered,
                 new Object[] { "CC ", "RGR", "RIR", 'C', OrePrefixes.cableGt01.get(Materials.Copper), 'R',
                     OrePrefixes.dust.get(Materials.Redstone), 'G', OrePrefixes.block.get(Materials.Glass), 'I',
-                    OrePrefixes.circuit.get(Materials.Basic) });
+                    OrePrefixes.circuit.get(Materials.LV) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("coil", 1L),
                 bits_no_remove_buffered,
@@ -1634,14 +1634,14 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 GT_ModHandler.getIC2Item("powerunit", 1L),
                 bits_no_remove_buffered,
                 new Object[] { "BCA", "BIM", "BCA", 'C', OrePrefixes.cableGt01.get(Materials.Copper), 'B',
-                    OrePrefixes.battery.get(Materials.Basic), 'A', GT_ModHandler.getIC2Item("casingiron", 1L), 'I',
-                    OrePrefixes.circuit.get(Materials.Basic), 'M', GT_ModHandler.getIC2Item("elemotor", 1L) });
+                    OrePrefixes.battery.get(Materials.LV), 'A', GT_ModHandler.getIC2Item("casingiron", 1L), 'I',
+                    OrePrefixes.circuit.get(Materials.LV), 'M', GT_ModHandler.getIC2Item("elemotor", 1L) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("powerunitsmall", 1L),
                 bits_no_remove_buffered,
                 new Object[] { " CA", "BIM", " CA", 'C', OrePrefixes.cableGt01.get(Materials.Copper), 'B',
-                    OrePrefixes.battery.get(Materials.Basic), 'A', GT_ModHandler.getIC2Item("casingiron", 1L), 'I',
-                    OrePrefixes.circuit.get(Materials.Basic), 'M', GT_ModHandler.getIC2Item("elemotor", 1L) });
+                    OrePrefixes.battery.get(Materials.LV), 'A', GT_ModHandler.getIC2Item("casingiron", 1L), 'I',
+                    OrePrefixes.circuit.get(Materials.LV), 'M', GT_ModHandler.getIC2Item("elemotor", 1L) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("remote", 1L),
                 bits_no_remove_buffered,
@@ -1652,14 +1652,14 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 GT_ModHandler.getIC2Item("odScanner", 1L),
                 bits_no_remove_buffered,
                 new Object[] { "PGP", "CBC", "WWW", 'W', OrePrefixes.cableGt01.get(Materials.Copper), 'G',
-                    OrePrefixes.dust.get(Materials.Glowstone), 'B', OrePrefixes.battery.get(Materials.Advanced), 'C',
-                    OrePrefixes.circuit.get(Materials.Advanced), 'P', GT_ModHandler.getIC2Item("casinggold", 1L) });
+                    OrePrefixes.dust.get(Materials.Glowstone), 'B', OrePrefixes.battery.get(Materials.HV), 'C',
+                    OrePrefixes.circuit.get(Materials.HV), 'P', GT_ModHandler.getIC2Item("casinggold", 1L) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("ovScanner", 1L),
                 bits_no_remove_buffered,
                 new Object[] { "PDP", "GCG", "WSW", 'W', OrePrefixes.cableGt01.get(Materials.Gold), 'G',
-                    OrePrefixes.dust.get(Materials.Glowstone), 'D', OrePrefixes.battery.get(Materials.Elite), 'C',
-                    OrePrefixes.circuit.get(Materials.Advanced), 'P', GT_ModHandler.getIC2Item("casinggold", 1L), 'S',
+                    OrePrefixes.dust.get(Materials.Glowstone), 'D', OrePrefixes.battery.get(Materials.IV), 'C',
+                    OrePrefixes.circuit.get(Materials.HV), 'P', GT_ModHandler.getIC2Item("casinggold", 1L), 'S',
                     GT_ModHandler.getIC2Item("odScanner", 1L) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("staticBoots", 1L),
@@ -1670,36 +1670,36 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 GT_ModHandler.getIC2Item("ecMeter", 1L),
                 bits_no_remove_buffered,
                 new Object[] { " G ", "CIC", "C C", 'C', OrePrefixes.cableGt01.get(Materials.Copper), 'G',
-                    OrePrefixes.dust.get(Materials.Glowstone), 'I', OrePrefixes.circuit.get(Materials.Basic) });
+                    OrePrefixes.dust.get(Materials.Glowstone), 'I', OrePrefixes.circuit.get(Materials.LV) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("obscurator", 1L),
                 bits_no_remove_buffered,
                 new Object[] { "RER", "CAC", "RRR", 'C', OrePrefixes.cableGt01.get(Materials.Gold), 'R',
-                    OrePrefixes.dust.get(Materials.Redstone), 'E', OrePrefixes.battery.get(Materials.Advanced), 'A',
-                    OrePrefixes.circuit.get(Materials.Advanced) });
+                    OrePrefixes.dust.get(Materials.Redstone), 'E', OrePrefixes.battery.get(Materials.HV), 'A',
+                    OrePrefixes.circuit.get(Materials.HV) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("overclockerUpgrade", 1L),
                 bits_no_remove_buffered,
                 new Object[] { "CCC", "WEW", 'W', OrePrefixes.cableGt01.get(Materials.Copper), 'C',
                     GT_ModHandler.getIC2Item("reactorCoolantSimple", 1L, 1), 'E',
-                    OrePrefixes.circuit.get(Materials.Basic) });
+                    OrePrefixes.circuit.get(Materials.LV) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("transformerUpgrade", 1L),
                 bits_no_remove_buffered,
                 new Object[] { "GGG", "WTW", "GEG", 'W', OrePrefixes.cableGt01.get(Materials.Gold), 'T',
-                    GT_ModHandler.getIC2Item("mvTransformer", 1L), 'E', OrePrefixes.circuit.get(Materials.Basic), 'G',
+                    GT_ModHandler.getIC2Item("mvTransformer", 1L), 'E', OrePrefixes.circuit.get(Materials.LV), 'G',
                     OrePrefixes.block.get(Materials.Glass) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("energyStorageUpgrade", 1L),
                 bits_no_remove_buffered,
                 new Object[] { "PPP", "WBW", "PEP", 'W', OrePrefixes.cableGt01.get(Materials.Copper), 'E',
-                    OrePrefixes.circuit.get(Materials.Basic), 'P', OrePrefixes.plank.get(Materials.Wood), 'B',
-                    OrePrefixes.battery.get(Materials.Basic) });
+                    OrePrefixes.circuit.get(Materials.LV), 'P', OrePrefixes.plank.get(Materials.Wood), 'B',
+                    OrePrefixes.battery.get(Materials.LV) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("ejectorUpgrade", 1L),
                 bits_no_remove_buffered,
                 new Object[] { "PHP", "WEW", 'W', OrePrefixes.cableGt01.get(Materials.Copper), 'E',
-                    OrePrefixes.circuit.get(Materials.Basic), 'P', new ItemStack(Blocks.piston), 'H',
+                    OrePrefixes.circuit.get(Materials.LV), 'P', new ItemStack(Blocks.piston), 'H',
                     new ItemStack(Blocks.hopper) });
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("suBattery", 1L),
@@ -1711,7 +1711,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 bits_no_remove_buffered,
                 new Object[] { "PHP", "WEW", 'W', OrePrefixes.cableGt01.get(Materials.Copper), 'P',
                     new ItemStack(Blocks.sticky_piston), 'R', new ItemStack(Blocks.hopper), 'E',
-                    OrePrefixes.circuit.get(Materials.Basic) });
+                    OrePrefixes.circuit.get(Materials.LV) });
 
         } else {
             GT_ModHandler.addCraftingRecipe(
@@ -1746,7 +1746,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
             GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "PPP", "GEC", "SBd", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
                 OrePrefixes.gemExquisite.get(Materials.Diamond), 'E', ItemList.Emitter_HV, 'C',
-                OrePrefixes.circuit.get(Materials.Elite), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B',
+                OrePrefixes.circuit.get(Materials.IV), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B',
                 new ItemStack(
                     Ic2Items.chargingEnergyCrystal.copy()
                         .getItem(),
@@ -1757,7 +1757,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
             GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "PPP", "GEC", "SBd", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
                 OrePrefixes.gemExquisite.get(Materials.Ruby), 'E', ItemList.Emitter_HV, 'C',
-                OrePrefixes.circuit.get(Materials.Elite), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B',
+                OrePrefixes.circuit.get(Materials.IV), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B',
                 new ItemStack(
                     Ic2Items.chargingEnergyCrystal.copy()
                         .getItem(),
@@ -1768,7 +1768,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
             GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "PPP", "GEC", "SBd", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
                 OrePrefixes.gemExquisite.get(Materials.Jasper), 'E', ItemList.Emitter_HV, 'C',
-                OrePrefixes.circuit.get(Materials.Elite), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B',
+                OrePrefixes.circuit.get(Materials.IV), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B',
                 new ItemStack(
                     Ic2Items.chargingEnergyCrystal.copy()
                         .getItem(),
@@ -1779,7 +1779,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
             GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "PPP", "GEC", "SBd", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
                 OrePrefixes.gemExquisite.get(Materials.GarnetRed), 'E', ItemList.Emitter_HV, 'C',
-                OrePrefixes.circuit.get(Materials.Elite), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B',
+                OrePrefixes.circuit.get(Materials.IV), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B',
                 new ItemStack(
                     Ic2Items.chargingEnergyCrystal.copy()
                         .getItem(),
@@ -1868,8 +1868,8 @@ public class GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(
             GT_ModHandler.getIC2Item("crophavester", 1L),
             bits_no_remove_buffered,
-            new Object[] { "ACA", "PMS", "WOW", 'M', ItemList.Hull_MV, 'C', OrePrefixes.circuit.get(Materials.Good),
-                'A', ItemList.Robot_Arm_LV, 'P', ItemList.Electric_Piston_LV, 'S', ItemList.Sensor_LV, 'W',
+            new Object[] { "ACA", "PMS", "WOW", 'M', ItemList.Hull_MV, 'C', OrePrefixes.circuit.get(Materials.MV), 'A',
+                ItemList.Robot_Arm_LV, 'P', ItemList.Electric_Piston_LV, 'S', ItemList.Sensor_LV, 'W',
                 OrePrefixes.toolHeadSense.get(Materials.Aluminium), 'O', ItemList.Conveyor_Module_LV });
 
         GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("RTGenerator", 1L));
@@ -1877,14 +1877,14 @@ public class GT_CraftingRecipeLoader implements Runnable {
             GT_ModHandler.getIC2Item("RTGenerator", 1L),
             bits_no_remove_buffered,
             new Object[] { "III", "IMI", "ICI", 'I', OrePrefixes.itemCasing.get(Materials.Steel), 'C',
-                OrePrefixes.circuit.get(Materials.Master), 'M', ItemList.Hull_IV });
+                OrePrefixes.circuit.get(Materials.LuV), 'M', ItemList.Hull_IV });
 
         GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("RTHeatGenerator", 1L));
         GT_ModHandler.addCraftingRecipe(
             GT_ModHandler.getIC2Item("RTHeatGenerator", 1L),
             bits_no_remove_buffered,
             new Object[] { "III", "IMB", "ICI", 'I', OrePrefixes.itemCasing.get(Materials.Steel), 'C',
-                OrePrefixes.circuit.get(Materials.Master), 'M', ItemList.Hull_IV, 'B',
+                OrePrefixes.circuit.get(Materials.LuV), 'M', ItemList.Hull_IV, 'B',
                 GT_OreDictUnificator.get(OrePrefixes.block, Materials.Copper, 1) });
 
         GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("carbonrotor", 1L));
@@ -1927,7 +1927,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
             GT_ModHandler.addCraftingRecipe(
                 tStack,
                 bits_no_remove_buffered,
-                new Object[] { "ICI", "GIG", "DPD", 'C', OrePrefixes.circuit.get(Materials.Advanced), 'D',
+                new Object[] { "ICI", "GIG", "DPD", 'C', OrePrefixes.circuit.get(Materials.HV), 'D',
                     OrePrefixes.gear.get(Materials.Diamond), 'G', OrePrefixes.gear.get(Materials.Gold), 'I',
                     OrePrefixes.gear.get(Materials.Steel), 'P', GT_ModHandler.getIC2Item("diamondDrill", 1L, 32767) });
         }
@@ -1953,9 +1953,9 @@ public class GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(
             GT_ModHandler.getIC2Item("nanoSaber", 1L),
             bits_no_remove_buffered,
-            new Object[] { "PI ", "PI ", "CLC", 'L', OrePrefixes.battery.get(Materials.Master), 'I',
+            new Object[] { "PI ", "PI ", "CLC", 'L', OrePrefixes.battery.get(Materials.LuV), 'I',
                 OrePrefixes.plateAlloy.get("Iridium"), 'P', OrePrefixes.plate.get(Materials.Platinum), 'C',
-                OrePrefixes.circuit.get(Materials.Elite) });
+                OrePrefixes.circuit.get(Materials.IV) });
 
         GT_ModHandler.removeRecipeByOutputDelayed(new ItemStack(Items.flint_and_steel, 1));
         GT_ModHandler.addCraftingRecipe(
@@ -1983,7 +1983,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                     OrePrefixes.plate.get(Materials.TungstenSteel), 'J',
                     GT_ModHandler.getModItem(GraviSuite.ID, "advJetpack", 1, GT_Values.W), 'N',
                     GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemArmorNanoChestplate", 1, GT_Values.W), 'W',
-                    OrePrefixes.wireGt12.get(Materials.Platinum), 'P', OrePrefixes.circuit.get(Materials.Elite) });
+                    OrePrefixes.wireGt12.get(Materials.Platinum), 'P', OrePrefixes.circuit.get(Materials.IV) });
 
             GT_ModHandler
                 .removeRecipeByOutputDelayed(GT_ModHandler.getModItem(GraviSuite.ID, "advLappack", 1, GT_Values.W));
@@ -1993,7 +1993,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 new Object[] { "CEC", "EJE", "WPW", 'C', OrePrefixes.plateAlloy.get(Materials.Carbon), 'J',
                     GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemArmorEnergypack", 1L, GT_Values.W), 'E',
                     GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemBatCrystal", 1L, GT_Values.W), 'W',
-                    OrePrefixes.wireGt04.get(Materials.Platinum), 'P', OrePrefixes.circuit.get(Materials.Data) });
+                    OrePrefixes.wireGt04.get(Materials.Platinum), 'P', OrePrefixes.circuit.get(Materials.EV) });
 
             GT_ModHandler
                 .removeRecipeByOutputDelayed(GT_ModHandler.getModItem(GraviSuite.ID, "advJetpack", 1, GT_Values.W));
@@ -2004,7 +2004,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                     GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemArmorJetpackElectric", 1, GT_Values.W), 'E',
                     OrePrefixes.plate.get(Materials.Titanium), 'X',
                     GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemArmorAlloyChestplate", 1L), 'Z',
-                    OrePrefixes.circuit.get(Materials.Data), 'Y', OrePrefixes.wireGt02.get(Materials.Platinum) });
+                    OrePrefixes.circuit.get(Materials.EV), 'Y', OrePrefixes.wireGt02.get(Materials.Platinum) });
         }
 
         GT_ModHandler.addShapelessCraftingRecipe(
