@@ -200,6 +200,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_ADVANCED_GAS_TURBINE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_BRONZE_BOILER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_GAS_TURBINE_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.LARGE_FLUID_EXTRACTOR;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_HEAT_EXCHANGER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_HP_STEAM_TURBINE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_PLASMA_TURBINE_CONTROLLER;
@@ -577,6 +578,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Titanium;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_TungstenSteel;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeChemicalReactor;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeFluidExtractor;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Gas;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_GasAdvanced;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_HPSteam;
@@ -1141,6 +1143,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 MULTI_LATHE_CONTROLLER.ID,
                 "multimachine.lathe",
                 "Industrial Precision Lathe").getStackForm(1));
+
+        ItemList.LargeFluidExtractor.set(
+            new GT_MetaTileEntity_LargeFluidExtractor(
+                LARGE_FLUID_EXTRACTOR.ID,
+                "multimachine.fluidextractor",
+                "Large Fluid Extractor").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
