@@ -5,54 +5,16 @@
 
 package gregtech.common;
 
-import static gregtech.api.enums.GT_Values.calculateMaxPlasmaTurbineEfficiency;
-import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GregTech;
-import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
-
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.function.Function;
-
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.resources.IReloadableResourceManager;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.IResourceManagerReloadListener;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.oredict.OreDictionary;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-
-import com.glodblock.github.nei.recipes.FluidRecipe;
-import com.glodblock.github.nei.recipes.extractor.GregTech5RecipeExtractor;
-import com.gtnewhorizon.structurelib.alignment.IAlignment;
-import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
-
 import appeng.api.util.IOrientable;
 import appeng.tile.misc.TileInterface;
 import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Scale;
 import codechicken.lib.vec.Transformation;
 import codechicken.lib.vec.Translation;
+import com.glodblock.github.nei.recipes.FluidRecipe;
+import com.glodblock.github.nei.recipes.extractor.GregTech5RecipeExtractor;
+import com.gtnewhorizon.structurelib.alignment.IAlignment;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -97,6 +59,7 @@ import gregtech.common.render.GT_MultiTile_Renderer;
 import gregtech.common.render.GT_PollutionRenderer;
 import gregtech.common.render.GT_RenderDrone;
 import gregtech.common.render.GT_Renderer_Block;
+import gregtech.common.render.GT_WormholeRenderer;
 import gregtech.common.render.items.GT_MetaGenerated_Item_Renderer;
 import gregtech.common.tileentities.debug.GT_MetaTileEntity_AdvDebugStructureWriter;
 import gregtech.loaders.ExtraIcons;
@@ -104,6 +67,41 @@ import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.preload.GT_PreLoad;
 import gregtech.nei.NEI_GT_Config;
 import ic2.api.tile.IWrenchable;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.World;
+import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
+
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.function.Function;
+
+import static gregtech.api.enums.GT_Values.calculateMaxPlasmaTurbineEfficiency;
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.GregTech;
+import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
 
 // Referenced classes of package gregtech.common:
 // GT_Proxy
@@ -624,6 +622,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
         new GT_MultiTile_Renderer();
         new GT_RenderDrone();
         new GT_LaserRenderer();
+        new GT_WormholeRenderer();
         metaGeneratedItemRenderer = new GT_MetaGenerated_Item_Renderer();
         for (GT_MetaGenerated_Item item : GT_MetaGenerated_Item.sInstances.values()) {
             metaGeneratedItemRenderer.registerItem(item);

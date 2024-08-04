@@ -298,6 +298,7 @@ public class GregTech_API {
     public static Block sBlockLongDistancePipes;
     public static Block sDroneRender;
     public static Block sLaserRender;
+    public static Block sWormholeRender;
     /**
      * Getting assigned by the Config
      */
