@@ -1,14 +1,6 @@
 package gregtech.api.multitileentity.enums;
 
-<<<<<<< HEAD
-import static gregtech.api.util.GT_StructureUtilityMuTE.createMuTEStructureCasing;
-import static gregtech.loaders.preload.GT_Loader_MultiTileEntities.CASING_REGISTRY_NAME;
-
 import gregtech.api.enums.GTValues;
-import gregtech.api.util.GT_StructureUtilityMuTE;
-=======
-import gregtech.api.enums.GT_Values;
->>>>>>> 295704b8ca (remove old mutes)
 
 public enum GT_MultiTileCasing {
 

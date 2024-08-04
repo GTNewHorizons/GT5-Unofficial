@@ -4,9 +4,9 @@ import javax.annotation.Nonnull;
 
 import com.gtnewhorizons.mutecore.MuTECore;
 import com.gtnewhorizons.mutecore.api.registry.MultiTileContainer.FakeEntity;
-import com.gtnewhorizons.mutecore.shadow.dev.dominion.ecs.api.Entity;
-import com.gtnewhorizons.mutecore.shadow.dev.dominion.ecs.api.Results;
-import com.gtnewhorizons.mutecore.shadow.dev.dominion.ecs.api.Results.With1;
+import dev.dominion.ecs.api.Entity;
+import dev.dominion.ecs.api.Results;
+import dev.dominion.ecs.api.Results.With1;
 
 /**
  * Processing logic class, dedicated for MultiTileEntities.

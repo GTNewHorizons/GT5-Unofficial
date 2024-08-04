@@ -1,17 +1,16 @@
 package gregtech.api.multitileentity.data;
 
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizons.mutecore.shadow.dev.dominion.ecs.api.Entity;
+import gregtech.api.multitileentity.StructureHandler;
 
 public class Structure {
 
-    private IStructureDefinition<Entity> definition;
+    private Class<? extends StructureHandler> handlerClass;
 
-    public Structure(IStructureDefinition<Entity> definition) {
-        this.definition = definition;
+    public Structure(Class<? extends StructureHandler> handlerClass) {
+        this.handlerClass = handlerClass;
     }
 
-    public IStructureDefinition<Entity> getDefinition() {
-        return definition;
+    public Class<? extends StructureHandler> getHandlerClass() {
+        return handlerClass;
     }
 }

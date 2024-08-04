@@ -8,46 +8,46 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.mutecore.api.data.Coordinates;
-import com.gtnewhorizons.mutecore.shadow.dev.dominion.ecs.api.Entity;
+import com.gtnewhorizons.mutecore.api.data.WorldContainer;
+import dev.dominion.ecs.api.Entity;
 
 import gregtech.api.multitileentity.data.Structure;
+import gregtech.api.multitileentity.data.TooltipComponent;
 
 public abstract class StructureHandler implements IAlignment, ISurvivalConstructable {
 
-    Entity entity;
+    private final Entity entity;
 
     public StructureHandler(Entity entity) {
         this.entity = entity;
     }
 
-    protected void construct(ItemStack stackSize, int offsetX, int offsetY, int offsetZ, boolean hintsOnly) {
+    protected final void construct(ItemStack stackSize, String piece, int offsetX, int offsetY, int offsetZ, boolean hintsOnly) {
         Coordinates coords = entity.get(Coordinates.class);
+        getStructureDefinition().buildOrHints(entity, stackSize, piece, entity.get(WorldContainer.class).getWorld(), entity.get(ExtendedFacing.class), coords.getX(), coords.getY(), coords.getZ(), offsetX, offsetY, offsetZ, hintsOnly);
     }
 
-    @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return 0;
-    }
-
-    protected int survivalConstruct(ItemStack stackSize, int offsetX, int offsetY, int offsetZ, int elementBudget,
+    protected final int survivalConstruct(ItemStack stackSize, String piece, int offsetX, int offsetY, int offsetZ, int elementBudget,
         ISurvivalBuildEnvironment env) {
         Coordinates coords = entity.get(Coordinates.class);
-        return 0;
+        return getStructureDefinition().survivalBuild(entity, stackSize, piece, entity.get(WorldContainer.class).getWorld(), entity.get(ExtendedFacing.class), coords.getX(), coords.getY(), coords.getZ(), offsetX, offsetY, offsetZ, elementBudget, env, true);
     }
 
     @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return null;
+    public final String[] getStructureDescription(ItemStack stackSize) {
+        return entity.get(TooltipComponent.class).getTooltip().getStructureHint();
     }
 
     @Override
-    public ExtendedFacing getExtendedFacing() {
+    public final ExtendedFacing getExtendedFacing() {
         return entity.get(ExtendedFacing.class);
     }
 
     @Override
-    public void setExtendedFacing(ExtendedFacing alignment) {
+    public final void setExtendedFacing(ExtendedFacing alignment) {
+        if (!getAlignmentLimits().isNewExtendedFacingValid(alignment)) return;
         entity.removeType(ExtendedFacing.class);
         entity.add(alignment);
     }
@@ -58,8 +58,5 @@ public abstract class StructureHandler implements IAlignment, ISurvivalConstruct
     }
 
     @Override
-    public IStructureDefinition<Entity> getStructureDefinition() {
-        return entity.get(Structure.class)
-            .getDefinition();
-    }
+    public abstract IStructureDefinition<Entity> getStructureDefinition();
 }

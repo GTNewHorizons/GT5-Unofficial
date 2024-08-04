@@ -2,11 +2,15 @@ package gregtech.api.multitileentity;
 
 import java.lang.ref.WeakReference;
 
+import com.gtnewhorizons.mutecore.api.data.Coordinates;
+import com.gtnewhorizons.mutecore.api.data.WorldContainer;
+import dev.dominion.ecs.api.Entity;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
-public class WeakTargetRef<T extends TileEntity> {
+public class WeakTargetRef<T extends Entity> {
 
     protected final ChunkCoordinates position = new ChunkCoordinates(0, -1, 0);
     protected final Class<?> targetClass;
@@ -25,11 +29,13 @@ public class WeakTargetRef<T extends TileEntity> {
     }
 
     public void setTarget(T newTarget) {
+        // Needs to be reworked in another way likely as it will be always true rn
         if (!targetClass.isInstance(newTarget)) {
             throw new IllegalArgumentException("Target is not of the correct type");
         }
-        position.set(newTarget.xCoord, newTarget.yCoord, newTarget.zCoord);
-        world = newTarget.getWorldObj();
+        Coordinates coords = newTarget.get(Coordinates.class);
+        position.set(coords.getX(), coords.getY(), coords.getZ());
+        world = newTarget.get(WorldContainer.class).getWorld();
     }
 
     public void setWorld(World world) {

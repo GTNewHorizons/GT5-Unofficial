@@ -32,22 +32,6 @@ public class GTSoundLoop extends MovingSound {
         volume = VOLUME_RAMP;
     }
 
-<<<<<<< HEAD:src/main/java/gregtech/client/GTSoundLoop.java
-    public GTSoundLoop(ResourceLocation sound, MultiTileBasicMachine base, boolean stopWhenActive,
-        boolean stopWhenInactive) {
-        super(sound);
-        this.whileActive = stopWhenActive;
-        this.whileInactive = stopWhenInactive;
-        xPosF = base.getXCoord();
-        yPosF = base.getYCoord();
-        zPosF = base.getZCoord();
-        worldID = base.getWorld().provider.dimensionId;
-        repeat = true;
-        volume = VOLUME_RAMP;
-    }
-
-=======
->>>>>>> 295704b8ca (remove old mutes):src/main/java/gregtech/client/GT_SoundLoop.java
     @Override
     public void update() {
         if (donePlaying) {

@@ -33,7 +33,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
-<<<<<<< HEAD:src/main/java/gregtech/common/tileentities/automation/MTERecipeFilter.java
 import gregtech.api.metatileentity.implementations.MTESpecialFilter;
 import gregtech.api.multitileentity.MultiTileEntityItem;
 import gregtech.api.recipe.RecipeMap;
@@ -41,13 +40,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
-=======
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SpecialFilter;
-import gregtech.api.recipe.RecipeMap;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Item_Machines;
->>>>>>> 295704b8ca (remove old mutes):src/main/java/gregtech/common/tileentities/automation/GT_MetaTileEntity_RecipeFilter.java
 
 public class MTERecipeFilter extends MTESpecialFilter {
 
