@@ -2,10 +2,14 @@ package gregtech.loaders.preload;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.gtnewhorizon.structurelib.alignment.constructable.IMultiblockInfoContainer;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -17,8 +21,11 @@ import com.gtnewhorizons.mutecore.api.data.FluidOutputInventory;
 import com.gtnewhorizons.mutecore.api.data.ItemInputInventory;
 import com.gtnewhorizons.mutecore.api.data.ItemOutputInventory;
 import com.gtnewhorizons.mutecore.api.gui.MuTEGUI;
+import com.gtnewhorizons.mutecore.api.item.MultiTileEntityItem;
 import com.gtnewhorizons.mutecore.api.registry.MultiTileEntityRegistry;
 import com.gtnewhorizons.mutecore.api.tile.MultiTileEntity;
+
+import blockrenderer6343.integration.structurelib.StructureCompatNEIHandler;
 import dev.dominion.ecs.api.Entity;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -32,6 +39,7 @@ import gregtech.api.multitileentity.enums.GT_MultiTileMachine;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class GT_Loader_MultiTileEntities implements Runnable {
 
@@ -48,8 +56,9 @@ public class GT_Loader_MultiTileEntities implements Runnable {
     @Override
     public void run() {
         GT_FML_LOGGER.info("GTMod: Registering MultiTileEntities");
+        IMultiblockInfoContainer.registerTileClass(MultiTileEntity.class, new MultiTileEntityInfo());
         MACHINE_BLOCK = new MultiTileEntityBlock(Material.anvil);
-        GameRegistry.registerBlock(MACHINE_BLOCK, "multitile_machine_block");
+        GameRegistry.registerBlock(MACHINE_BLOCK, MultiTileEntityItem.class, MACHINE_REGISTRY_NAME);
         MACHINE_REGISTRY = new MultiTileEntityRegistry(MACHINE_BLOCK);
         MultiTileEntityRegistry.registerRegistry(MACHINE_BLOCK, MACHINE_REGISTRY);
         registerMachines();
@@ -58,13 +67,6 @@ public class GT_Loader_MultiTileEntities implements Runnable {
     }
 
     private static void registerMachines() {
-        final GT_Multiblock_Tooltip_Builder cokeOvenTooltip = new GT_Multiblock_Tooltip_Builder();
-        cokeOvenTooltip.addMachineType("Coke Oven")
-            .addInfo("Used for charcoal")
-            .beginStructureBlock(3, 3, 3, true)
-            .addCasingInfoExactly("Coke Oven Bricks", 25, false)
-            .addPollutionAmount(10)
-            .toolTipFinisher(GT_Values.AuthorBlueWeabo);
         MACHINE_REGISTRY.create(GT_MultiTileMachine.CokeOven.getId(), MultiTileEntity.class)
             .addComponents(
                 new ItemInputInventory(3, 64),
@@ -72,14 +74,89 @@ public class GT_Loader_MultiTileEntities implements Runnable {
                 new FluidOutputInventory(1, 24000),
                 new Structure(CokeOvenStructureHandler.class),
                 ExtendedFacing.NORTH_NORMAL_NONE,
-                new TooltipComponent(cokeOvenTooltip))
+                new TooltipComponent(new MultiblockTooltipBuilder().addMachineType("Coke Oven")
+                    .addInfo("Used for charcoal")
+                    .beginStructureBlock(3, 3, 3, true)
+                    .addCasingInfoExactly("Coke Oven Bricks", 25, false)
+                    .addPollutionAmount(10)
+                    .toolTipFinisher(GT_Values.AuthorBlueWeabo)))
             .gui((e, sm) -> {return new ModularPanel("cokeOven");})
             .tooltipClass(TooltipComponent.class)
+            .unlocalizedName("coke.oven.gt5u")
             .register();
+        MACHINE_REGISTRY.create(1, MultiTileEntity.class)
+            .addComponents(
+                new ItemInputInventory(3, 64),
+                new ItemOutputInventory(3, 64),
+                new Structure(CokeOvenStructureHandler.class),
+                ExtendedFacing.NORTH_NORMAL_NONE,
+                new TooltipComponent(new GT_Multiblock_Tooltip_Builder().addMachineType("Coke Oven")
+                    .addInfo("Used for charcoal")
+                    .beginStructureBlock(3, 3, 3, true)
+                    .addCasingInfoExactly("Coke Oven Bricks", 25, false)
+                    .addPollutionAmount(10)
+                    .toolTipFinisher(GT_Values.AuthorBlueWeabo)))
+            .gui((e, sm) -> {return new ModularPanel("cokeOven");})
+            .tooltipClass(TooltipComponent.class)
+            .unlocalizedName("macerator.gt5u")
+            .register();
+    }
+
+    private static class MultiTileEntityInfo implements IMultiblockInfoContainer<MultiTileEntity> {
+
+        @Override
+        public void construct(ItemStack stackSize, boolean hintsOnly, MultiTileEntity tileEntity,
+                ExtendedFacing aSide) {
+            Entity entity = tileEntity.getEntity();
+            if (!entity.has(Structure.class)) return;
+            Structure struct = entity.get(Structure.class);
+            StructureHandler structH;
+            try {
+                structH = struct.getHandlerClass().getConstructor(Entity.class).newInstance(entity);
+            } catch  (Exception ing){
+                return;
+            }
+            structH.construct(stackSize, hintsOnly);
+        }
+
+        @Override
+        public int survivalConstruct(ItemStack stackSize, int elementBudge, ISurvivalBuildEnvironment env,
+                MultiTileEntity tileEntity, ExtendedFacing aSide) {
+            Entity entity = tileEntity.getEntity();
+            if (!entity.has(Structure.class)) return -1;
+            Structure struct = entity.get(Structure.class);
+            StructureHandler structH;
+            try {
+                structH = struct.getHandlerClass().getConstructor(Entity.class).newInstance(entity);
+            } catch  (Exception ing){
+                return -1;
+            }
+            return structH.survivalConstruct(stackSize, elementBudge, env);
+        }
+
+        @Override
+        public String[] getDescription(ItemStack stackSize) {
+            Item item = stackSize.getItem();
+            if (!(item instanceof MultiTileEntityItem muteItem)) return new String[0];
+
+            MultiTileEntityBlock muBlock = (MultiTileEntityBlock) Block.getBlockFromItem(muteItem);
+            Entity entity = muBlock.getRegistry().getMultiTileContainer(stackSize.getItemDamage()).getOriginalEntity();
+            if (!entity.has(Structure.class)) return new String[0];
+            Structure struct = entity.get(Structure.class);
+            StructureHandler structH;
+            try {
+                structH = struct.getHandlerClass().getConstructor(Entity.class).newInstance(entity);
+            } catch  (Exception ing){
+                return new String[0];
+            }
+            return structH.getStructureDescription(stackSize);
+        }
+
 
     }
 
     private static class CokeOvenStructureHandler extends StructureHandler {
+        public static final IStructureDefinition<Entity> STRUCTURE = StructureDefinition.<Entity>builder().addShape("main", new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A-A", "AAA" }, { "AAA", "AAA", "AAA" } }).addElement('A', StructureUtility.ofBlock(GregTech_API.sBlockCasings8, 1)).build();
 
         public CokeOvenStructureHandler(Entity entity) {
             super(entity);
@@ -97,7 +174,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
 
         @Override
         public IStructureDefinition<Entity> getStructureDefinition() {
-            return StructureDefinition.<Entity>builder().addShape("main", new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A-A", "AAA" }, { "AAA", "AAA", "AAA" } }).addElement('A', StructureUtility.ofBlock(GregTech_API.sBlockCasings8, 1)).build();
+            return STRUCTURE;
         }
     }
 
