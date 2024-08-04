@@ -25,7 +25,7 @@ public enum CombType {
     CRYOTHEUM(10, "cryotheum", true, Materials.Cryotheum, 50, 0x2660ff, 0x5af7ff, ItemComb.Voltage.HV),
 
     // Alloy Line
-    REDALLOY(11, "red alloy", true, Materials.RedAlloy, 100, 0xE60000, 0xB80000, ItemComb.Voltage.LV),
+    REDALLOY(11, "red_alloy", true, Materials.RedAlloy, 100, 0xE60000, 0xB80000, ItemComb.Voltage.LV),
     REDSTONEALLOY(12, "redstone_alloy", true, Materials.RedstoneAlloy, 90, 0xB80000, 0xA50808, ItemComb.Voltage.LV),
     CONDUCTIVEIRON(13, "conductive_iron", true, Materials.ConductiveIron, 80, 0x817671, 0xCEADA3, ItemComb.Voltage.MV),
     VIBRANTALLOY(14, "vibrant_alloy", true, Materials.VibrantAlloy, 50, 0x86A12D, 0xC4F2AE, ItemComb.Voltage.HV),
@@ -116,8 +116,8 @@ public enum CombType {
     NAGA(86, "naga", true, Materials._NULL, 100, 0x0D5A0D, 0x28874B, ItemComb.Voltage.MV),
     LICH(87, "lich", true, Materials._NULL, 90, 0x5C605E, 0xC5C5C5, ItemComb.Voltage.HV),
     HYDRA(88, "hydra", true, Materials._NULL, 80, 0x872836, 0xB8132C, ItemComb.Voltage.HV),
-    URGHAST(89, "urghast", true, Materials._NULL, 70, 0x7C0618, 0xA7041C, ItemComb.Voltage.EV),
-    SNOWQUEEN(90, "snowqueen", true, Materials._NULL, 60, 0x9C0018, 0xD02001, ItemComb.Voltage.EV),
+    URGHAST(89, "ur_ghast", true, Materials._NULL, 70, 0x7C0618, 0xA7041C, ItemComb.Voltage.EV),
+    SNOWQUEEN(90, "snow_queen", true, Materials._NULL, 60, 0x9C0018, 0xD02001, ItemComb.Voltage.EV),
 
     // Space
     SPACE(91, "space", true, Materials._NULL, 100, 0x003366, 0xC0C0C0, ItemComb.Voltage.HV),

@@ -2511,11 +2511,10 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
             AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
         }, dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(RAREEARTH, REDSTONE, 5, 4);
-            tMutation.requireResource(GregTech_API.sBlockMetal5, 1);
+            IBeeMutationCustom tMutation = dis.registerMutation(RAREEARTH, REDSTONE, 10);
+            tMutation.requireResource(GregTech_API.sBlockMetal5, 0);
         }),
     EUROPIUM(GT_BranchDefinition.RAREMETAL, "Europium", false, new Color(0xDAA0E2), new Color(0xAB7EB1), beeSpecies -> {
-        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.NEODYMIUM), 0.20f);
         beeSpecies.addProduct(WerkstoffMaterialPool.EuropiumIIIOxide.get(OrePrefixes.dust, 1), 0.10F);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.EUROPIUM), 0.075f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
@@ -2527,8 +2526,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
         AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
     }, dis -> {
-        IBeeMutationCustom tMutation = dis.registerMutation(NEODYMIUM, HYDROGEN, 10);
-        tMutation.requireResource(GregTech_API.sBlockMetal3, 4);
+        IBeeMutationCustom tMutation = dis.registerMutation(NEODYMIUM, HYDROGEN, 5, 4);
+        tMutation.requireResource(GregTech_API.sBlockMetal3, 3);
     }),
     // infused Shards line
     AIR(GT_BranchDefinition.INFUSEDSHARD, "Air", false, new Color(0xFFFF7E), new Color(0x60602F), beeSpecies -> {
