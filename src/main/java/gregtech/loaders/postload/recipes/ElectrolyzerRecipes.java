@@ -169,7 +169,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .itemOutputs(Materials.Carbon.getDust(1))
             .fluidInputs(Materials.CarbonMonoxide.getGas(1000))
             .fluidOutputs(Materials.Oxygen.getGas(1000))
-            .duration(30 * SECONDS)
+            .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
 
@@ -177,7 +177,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .itemInputs(GT_Utility.getIntegratedCircuit(11), Materials.Empty.getCells(1))
             .itemOutputs(Materials.Carbon.getDust(1), Materials.Oxygen.getCells(1))
             .fluidInputs(Materials.CarbonMonoxide.getGas(1000))
-            .duration(30 * SECONDS)
+            .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
         // SO2 = S + 2O
