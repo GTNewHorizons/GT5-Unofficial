@@ -508,9 +508,10 @@ public class GT_StructureUtility {
     /**
      * Solenoid coil structure element.
      *
-     * @param aSolenoidTierSetter Notify the controller of this new solenoid. Got called exactly once per solenoid. Might be
-     *                           called less times if structure test fails. If the setter returns false then it assumes
-     *                           the solenoid is rejected.
+     * @param aSolenoidTierSetter Notify the controller of this new solenoid. Got called exactly once per solenoid.
+     *                            Might be
+     *                            called less times if structure test fails. If the setter returns false then it assumes
+     *                            the solenoid is rejected.
      * @param aSolenoidTierGetter Get the solenoid voltage tier. Null means no tier recorded yet.
      */
     public static <T> IStructureElement<T> ofSolenoidCoil(BiPredicate<T, Byte> aSolenoidTierSetter,
@@ -526,10 +527,10 @@ public class GT_StructureUtility {
 
                 if (block != GregTech_API.sSolenoidCoilCasings) return false;
 
-                var coils = ((GT_Cyclotron_Coils)GregTech_API.sSolenoidCoilCasings);
+                var coils = ((GT_Cyclotron_Coils) GregTech_API.sSolenoidCoilCasings);
 
                 Byte existingLevel = aSolenoidTierGetter.apply(t);
-                byte newLevel = (byte)(coils.getVoltageTier(world.getBlockMetadata(x, y, z)));
+                byte newLevel = (byte) (coils.getVoltageTier(world.getBlockMetadata(x, y, z)));
 
                 if (existingLevel == null) {
                     return aSolenoidTierSetter.test(t, newLevel);
@@ -540,7 +541,8 @@ public class GT_StructureUtility {
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                StructureLibAPI.hintParticle(world, x, y, z, GregTech_API.sSolenoidCoilCasings, getMetaFromHint(trigger));
+                StructureLibAPI
+                    .hintParticle(world, x, y, z, GregTech_API.sSolenoidCoilCasings, getMetaFromHint(trigger));
                 return true;
             }
 
@@ -577,8 +579,8 @@ public class GT_StructureUtility {
                 AutoPlaceEnvironment env) {
                 Block block = world.getBlock(x, y, z);
 
-                boolean isCoil = block == GregTech_API.sSolenoidCoilCasings &&
-                    world.getBlockMetadata(x, y, z) == getMetaFromHint(trigger);
+                boolean isCoil = block == GregTech_API.sSolenoidCoilCasings
+                    && world.getBlockMetadata(x, y, z) == getMetaFromHint(trigger);
 
                 if (isCoil) return SKIP;
 
