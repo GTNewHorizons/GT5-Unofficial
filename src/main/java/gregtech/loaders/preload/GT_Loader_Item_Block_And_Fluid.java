@@ -51,27 +51,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Casings1;
-import gregtech.common.blocks.GT_Block_Casings10;
-import gregtech.common.blocks.GT_Block_Casings11;
-import gregtech.common.blocks.GT_Block_Casings2;
-import gregtech.common.blocks.GT_Block_Casings3;
-import gregtech.common.blocks.GT_Block_Casings4;
-import gregtech.common.blocks.GT_Block_Casings5;
-import gregtech.common.blocks.GT_Block_Casings6;
-import gregtech.common.blocks.GT_Block_Casings8;
-import gregtech.common.blocks.GT_Block_Casings9;
-import gregtech.common.blocks.GT_Block_Concretes;
-import gregtech.common.blocks.GT_Block_Drone;
-import gregtech.common.blocks.GT_Block_Granites;
-import gregtech.common.blocks.GT_Block_Laser;
-import gregtech.common.blocks.GT_Block_Machines;
-import gregtech.common.blocks.GT_Block_Metal;
-import gregtech.common.blocks.GT_Block_Ores;
-import gregtech.common.blocks.GT_Block_Reinforced;
-import gregtech.common.blocks.GT_Block_Stones;
-import gregtech.common.blocks.GT_Cyclotron_Coils;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.*;
 import gregtech.common.items.GT_DepletetCell_Item;
 import gregtech.common.items.GT_FluidDisplayItem;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
@@ -86,6 +66,7 @@ import gregtech.common.items.GT_TierDrone;
 import gregtech.common.items.GT_VolumetricFlask;
 import gregtech.common.tileentities.render.TileDrone;
 import gregtech.common.tileentities.render.TileLaser;
+import gregtech.common.tileentities.render.TileWormhole;
 
 public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
@@ -549,6 +530,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockOres1 = new GT_Block_Ores();
         GregTech_API.sDroneRender = new GT_Block_Drone();
         GregTech_API.sLaserRender = new GT_Block_Laser();
+        GregTech_API.sWormholeRender = new GT_WormholeRenderBlock();
         // meta ID order, DO NOT CHANGE ORDER
 
         GregTech_API.sBlockMetal1 = new GT_Block_Metal(
@@ -676,6 +658,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GameRegistry.registerTileEntity(TileDrone.class, "DroneRender");
         GT_Log.out.println("GT_Mod: Registering the LaserRender.");
         GameRegistry.registerTileEntity(TileLaser.class, "LaserRenderer");
+        GT_Log.out.println("GT_Mod: Registering the WormholeRender.");
+        GameRegistry.registerTileEntity(TileWormhole.class, "WormholeRender");
 
         GT_Log.out.println("GT_Mod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");

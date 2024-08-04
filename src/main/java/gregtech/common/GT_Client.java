@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
 
+import gregtech.common.render.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
@@ -88,15 +89,6 @@ import gregtech.api.util.GT_PlayedSound;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.blocks.GT_Item_Machines;
-import gregtech.common.render.GT_CapeRenderer;
-import gregtech.common.render.GT_FlaskRenderer;
-import gregtech.common.render.GT_FluidDisplayStackRenderer;
-import gregtech.common.render.GT_LaserRenderer;
-import gregtech.common.render.GT_MetaGenerated_Tool_Renderer;
-import gregtech.common.render.GT_MultiTile_Renderer;
-import gregtech.common.render.GT_PollutionRenderer;
-import gregtech.common.render.GT_RenderDrone;
-import gregtech.common.render.GT_Renderer_Block;
 import gregtech.common.render.items.GT_MetaGenerated_Item_Renderer;
 import gregtech.common.tileentities.debug.GT_MetaTileEntity_AdvDebugStructureWriter;
 import gregtech.loaders.ExtraIcons;
@@ -624,6 +616,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
         new GT_MultiTile_Renderer();
         new GT_RenderDrone();
         new GT_LaserRenderer();
+        new GT_WormholeRenderer();
         metaGeneratedItemRenderer = new GT_MetaGenerated_Item_Renderer();
         for (GT_MetaGenerated_Item item : GT_MetaGenerated_Item.sInstances.values()) {
             metaGeneratedItemRenderer.registerItem(item);

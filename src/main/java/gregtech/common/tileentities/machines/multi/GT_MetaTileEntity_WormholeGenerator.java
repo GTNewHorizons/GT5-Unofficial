@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,9 +26,17 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import appeng.api.AEApi;
+import gregtech.api.enums.TierEU;
+import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
+import gregtech.api.metatileentity.MetaTileEntity;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
@@ -59,6 +68,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.common.tileentities.render.TileWormhole;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT_MetaTileEntity_WormholeGenerator extends
@@ -84,6 +94,21 @@ public class GT_MetaTileEntity_WormholeGenerator extends
      */
     public static double COLLAPSE_THRESHOLD = 32;
 
+    /**
+     * The wormhole render radius percent of the max size when specified wormhole power is reached (purely aesthetical)
+     */
+    public static double RENDER_PERCENT_TARGET = .1;
+
+    /**
+     * Wormhole energy to specify reach the specified size percentage (purely aesthetical)
+     */
+    public static double RENDER_TARGET_ENERGY = TierEU.IV*256;
+
+    /**
+     * Maximum wormhole radius (purely aesthetical)
+     */
+    public static double RENDER_MAX_RADIUS = 2.999/Math.sqrt(3);
+
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final byte GLASS_TIER_UNSET = -2;
 
@@ -104,13 +129,13 @@ public class GT_MetaTileEntity_WormholeGenerator extends
     private final GT_MetaTileEntity_Hatch_EnergyMulti[] mSendHatches = new GT_MetaTileEntity_Hatch_EnergyMulti[MAX_HATCHES];
     private final GT_MetaTileEntity_Hatch_DynamoMulti[] mReceiveHatches = new GT_MetaTileEntity_Hatch_DynamoMulti[MAX_HATCHES];
 
-    private final ItemStack singularity = appeng.api.AEApi.instance()
+    private final ItemStack singularity = AEApi.instance()
         .definitions()
         .materials()
         .singularity()
         .maybeStack(1)
         .get();
-    private final ItemStack qeSingularity = appeng.api.AEApi.instance()
+    private final ItemStack qeSingularity = AEApi.instance()
         .definitions()
         .materials()
         .qESingularity()
@@ -334,6 +359,154 @@ public class GT_MetaTileEntity_WormholeGenerator extends
 
     // #endregion
 
+    @Override
+    public void onBlockDestroyed() {
+        super.onBlockDestroyed();
+        destroyRenderBlock();
+    }
+
+    @Override
+    public void onDisableWorking() {
+        super.onDisableWorking();
+        //destroyRenderBlock();
+    }
+
+    @Override
+    public void onStructureChange() {
+        super.onStructureChange();
+        if (!checkStructure(false,this.getBaseMetaTileEntity())){
+            destroyRenderBlock();
+        }
+    }
+
+    private void destroyRenderBlock() {
+        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
+        System.out.println("Destroying render block");
+        if (gregTechTileEntity.getWorld() == null) {
+            System.out.println("World was null!?  - destroyRenderBlock");
+            return;
+        }
+
+        int x = gregTechTileEntity.getXCoord();
+        int y = gregTechTileEntity.getYCoord();
+        int z = gregTechTileEntity.getZCoord();
+
+        int xOffset = 3 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        int yOffset = 3 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        int zOffset = 3 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+
+        int xTarget = x+xOffset;
+        int yTarget = y+yOffset;
+        int zTarget = z+zOffset;
+
+        Optional.of(gregTechTileEntity)
+                .map(IHasWorldObjectAndCoords::getWorld)
+                .ifPresent(
+                    w->w.setBlock(xTarget,yTarget,zTarget,Blocks.air)
+                );
+    }
+
+    @Nullable
+    private TileWormhole createRenderBlock() {
+
+        System.out.println("Creating render block");
+
+        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
+        World world = gregTechTileEntity.getWorld();
+
+        if (world == null) {
+            System.out.println("World was null!?  - createRenderBlock");
+            return null;
+        }
+
+
+        int x = gregTechTileEntity.getXCoord();
+        int y = gregTechTileEntity.getYCoord();
+        int z = gregTechTileEntity.getZCoord();
+
+        int xOffset = 3 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        int yOffset = 3 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        int zOffset = 3 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+
+        int xTarget = x+xOffset;
+        int yTarget = y+yOffset;
+        int zTarget = z+zOffset;
+
+        world.setBlock(xTarget,yTarget,zTarget,Blocks.air);
+        world.setBlock(xTarget,yTarget,zTarget,GregTech_API.sWormholeRender);
+
+        TileWormhole wormhole =(TileWormhole) world.getTileEntity(xTarget,yTarget,zTarget);
+
+        if (wormhole == null) {
+            System.out.println("failed to create wormhole??");
+            return null;
+        }
+        return wormhole;
+    }
+
+    @Nullable
+    private TileWormhole getRenderBlock(){
+        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
+
+        int x = gregTechTileEntity.getXCoord();
+        int y = gregTechTileEntity.getYCoord();
+        int z = gregTechTileEntity.getZCoord();
+
+        double xOffset = 3 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        double zOffset = 3 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        double yOffset = 3 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+
+        int wX = (int) (x + xOffset);
+        int wY = (int) (y + yOffset);
+        int wZ = (int) (z + zOffset);
+
+        TileEntity tile = Optional.ofNullable(gregTechTileEntity.getWorld())
+                                             .map(w-> w.getTileEntity(wX,wY,wZ))
+                                             .orElse(null);
+        if (tile instanceof TileWormhole wormhole)
+            return wormhole;
+        return null;
+
+    }
+
+    public void updateRenderDim(){
+        TileWormhole temp = getRenderBlock();
+        if (temp == null)
+            System.out.println("Could not get previous dimBlock");
+
+        World target = Optional.ofNullable(mLink)
+                .map(link->link.getDest(mSelfReference))
+                .map(MetaTileEntity::getBaseMetaTileEntity)
+                .map(IHasWorldObjectAndCoords::getWorld)
+                .orElse(null);
+
+        TileWormhole hole = getRenderBlock();
+        if (hole == null)
+            hole = createRenderBlock();
+
+        if (hole!=null){
+            hole.setDimFromWorld(target);
+        }
+    }
+
+
+    public void updateRenderRadius(double radius){
+        TileWormhole hole = getRenderBlock();
+        if (hole == null)
+            hole = createRenderBlock();
+
+        if (hole!=null){
+            hole.setRadius(radius);
+        }
+    }
+    private static double wormholeRadiusCalc(double energy){
+        if (energy < COLLAPSE_THRESHOLD)
+            return 0;
+
+        double offset = RENDER_TARGET_ENERGY + (COLLAPSE_THRESHOLD-RENDER_TARGET_ENERGY)/(RENDER_PERCENT_TARGET);
+        return RENDER_MAX_RADIUS*(COLLAPSE_THRESHOLD-energy)/(offset-energy);
+    }
+
     // #region Logic
 
     @Override
@@ -344,9 +517,7 @@ public class GT_MetaTileEntity_WormholeGenerator extends
     @Override
     public void onUnload() {
         super.onUnload();
-
         mIsUnloading = true;
-
         if (mLink != null) {
             mLink.disconnect(mSelfReference);
         }
@@ -359,6 +530,7 @@ public class GT_MetaTileEntity_WormholeGenerator extends
         mMaxProgresstime = 20;
         mEfficiency = Math.max(0, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000));
 
+
         if (doRandomMaintenanceDamage()) {
             if (onRunningTick(mInventory[1])) {
                 markDirty();
@@ -369,12 +541,12 @@ public class GT_MetaTileEntity_WormholeGenerator extends
                     if (mLink != null) {
                         mLink.update(mSelfReference);
                     }
-
                     checkRecipe();
                 }
             }
         }
     }
+
 
     @Override
     @Nonnull
@@ -390,7 +562,6 @@ public class GT_MetaTileEntity_WormholeGenerator extends
                 if (!HATCH_MASK[i]) continue;
 
                 long optimal = mLink.mWormholeEnergy > Long.MAX_VALUE ? Long.MAX_VALUE : ((long) mLink.mWormholeEnergy);
-
                 if (getTransferable(i) > 0) {
                     if (mLink.mWormholeEnergy <= 0) {
                         var singularityStack = singularity.copy();
@@ -398,18 +569,18 @@ public class GT_MetaTileEntity_WormholeGenerator extends
                         if (!depleteInput(singularityStack)) {
                             return new ResultMissingItem(singularityStack);
                         }
-
                         mLink.mWormholeEnergy = 1;
                         optimal = 1;
                     }
-
                     transferPower(optimal, i);
                 }
             }
         }
 
-        return mLink.mWormholeEnergy > 0 ? SimpleCheckRecipeResult.ofSuccess("none")
-            : SimpleCheckRecipeResult.ofFailure("none");
+        if (mLink.mWormholeEnergy > 0) {
+            return SimpleCheckRecipeResult.ofSuccess("none");
+        }
+        return SimpleCheckRecipeResult.ofFailure("none");
     }
 
     private void checkFrequency() {
@@ -435,13 +606,11 @@ public class GT_MetaTileEntity_WormholeGenerator extends
         if (!Objects.equals(freq, mLink == null ? null : mLink.mFrequency)) {
             if (mLink != null) {
                 mLink.disconnect(mSelfReference);
-
                 mLink = null;
             }
 
             if (freq != null) {
                 mLink = WormholeLink.get(freq);
-
                 mLink.connect(mSelfReference);
             }
         }
@@ -486,7 +655,7 @@ public class GT_MetaTileEntity_WormholeGenerator extends
 
         // spotless:off
         long toSend = (long)(Math.min(Math.min(Math.min(available, empty), maxSend), maxReceive) * (1.0 - (getIdealStatus() - getRepairStatus()) * 0.1));
-        
+
         double overclocks = Math.max(Math.log((double)toSend / (double)optimal) / Math.log(4.0), 0.0);
 
         long toReceive = (long) (
@@ -500,6 +669,11 @@ public class GT_MetaTileEntity_WormholeGenerator extends
 
         inputHatch.setEUVar(inputHatch.getEUVar() - toSend);
         outputHatch.setEUVar(outputHatch.getEUVar() + toReceive);
+
+
+        double size = wormholeRadiusCalc((double) optimal /20);
+        this.updateRenderRadius(size);
+        dest.updateRenderRadius(size);
 
         mLink.onEnergyTransferred(toSend);
         mLink.mSendAmounts[index] += toSend;
@@ -646,9 +820,9 @@ public class GT_MetaTileEntity_WormholeGenerator extends
 
                     if (mWormholeEnergy < COLLAPSE_THRESHOLD) {
                         mWormholeEnergy = 0;
+
                     }
                 }
-
                 Arrays.fill(mSendAmounts, 0);
                 Arrays.fill(mReceiveAmounts, 0);
             }
@@ -670,16 +844,34 @@ public class GT_MetaTileEntity_WormholeGenerator extends
             return mMaster != null && mSlave != null;
         }
 
+
         public boolean connect(WeakReference<GT_MetaTileEntity_WormholeGenerator> tile) {
             tryPromote();
 
+            System.out.println("Connecting");
+
             if (mMaster == null) {
                 mMaster = tile;
+                Optional.ofNullable(mMaster)
+                    .map(Reference::get)
+                    .ifPresent(GT_MetaTileEntity_WormholeGenerator::updateRenderDim);
+
+                Optional.ofNullable(mSlave)
+                    .map(Reference::get)
+                    .ifPresent(GT_MetaTileEntity_WormholeGenerator::updateRenderDim);
                 return true;
             }
-
             if (mSlave == null) {
                 mSlave = tile;
+
+                Optional.of(mMaster)
+                    .map(Reference::get)
+                    .ifPresent(GT_MetaTileEntity_WormholeGenerator::updateRenderDim);
+
+                Optional.ofNullable(mSlave)
+                    .map(Reference::get)
+                    .ifPresent(GT_MetaTileEntity_WormholeGenerator::updateRenderDim);
+
                 return true;
             }
 
@@ -687,6 +879,8 @@ public class GT_MetaTileEntity_WormholeGenerator extends
         }
 
         public void disconnect(WeakReference<GT_MetaTileEntity_WormholeGenerator> tile) {
+            Objects.requireNonNull(tile.get()).destroyRenderBlock();
+
             if (tile == mMaster) mMaster = null;
             if (tile == mSlave) mSlave = null;
 
