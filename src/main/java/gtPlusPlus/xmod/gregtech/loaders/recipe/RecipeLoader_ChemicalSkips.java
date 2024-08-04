@@ -496,18 +496,6 @@ public class RecipeLoader_ChemicalSkips {
             .itemInputs(
                 GT_Utility.getIntegratedCircuit(10),
                 CI.getEmptyCatalyst(1),
-                WerkstoffLoader.Hedenbergit.get(OrePrefixes.lens, 1),
-                GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 1, false),
-                ItemList.Circuit_Silicon_Wafer6.get(64))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mLimpidWaterCatalyst, 1))
-            .fluidInputs(ELEMENT.STANDALONE.HYPOGEN.getFluidStack(9216))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_UEV)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(10),
-                CI.getEmptyCatalyst(1),
                 Materials.Naquadah.getDust(64),
                 Materials.Adamantium.getDust(64),
                 Materials.Silver.getNanite(1))
@@ -568,18 +556,6 @@ public class RecipeLoader_ChemicalSkips {
                 ItemList.Circuit_Chip_Biocell.get(64),
                 MaterialsUEVplus.TranscendentMetal.getNanite(1))
             .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mBiologicalIntelligenceCatalyst, 1))
-            .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 92160))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_UMV)
-            .addTo(assemblerRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.getIntegratedCircuit(10),
-                CI.getEmptyCatalyst(1),
-                WerkstoffLoader.Hedenbergit.get(OrePrefixes.lens, 64),
-                GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 64, false),
-                ItemList.Circuit_Silicon_Wafer6.get(64))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mFlawlessWaterCatalyst, 1))
             .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 92160))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)

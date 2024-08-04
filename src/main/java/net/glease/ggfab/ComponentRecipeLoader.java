@@ -30,9 +30,9 @@ class ComponentRecipeLoader implements Runnable {
             .metadata(RESEARCH_TIME, 1 * HOURS + 6 * MINUTES)
             .itemInputs(
                 ItemList.Machine_Multi_Assemblyline.get(1L),
-                new Object[] { OrePrefixes.circuit.get(Materials.Master), 2 },
-                new Object[] { OrePrefixes.circuit.get(Materials.Elite), 4 },
-                new Object[] { OrePrefixes.circuit.get(Materials.Data), 8 },
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
+                new Object[] { OrePrefixes.circuit.get(Materials.IV), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.EV), 8 },
                 ItemList.Automation_ChestBuffer_LuV.get(1L))
             .fluidInputs(new FluidStack(solderIndalloy, 1296), Materials.Lubricant.getFluid(2000))
             .itemOutputs(GGItemList.AdvAssLine.get(1L))

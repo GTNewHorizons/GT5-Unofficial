@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -34,6 +35,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -62,7 +64,6 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
     private int mCasing;
     private static IStructureDefinition<GregtechMTE_AlgaePondBase> STRUCTURE_DEFINITION = null;
     private int checkMeta;
-    private int minTierOfHatch;
     private static final Class<?> cofhWater;
 
     static {
@@ -96,7 +97,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
             .addInfo("Provide compost to boost production by one tier")
             .addInfo("Does not require power or maintenance")
             .addInfo("All Machine Casings must be the same tier, this dictates machine speed.")
-            .addInfo("All Buses/Hatches must, at least, match the tier of the Casings")
+            .addInfo("Requires one Input Hatch that matches the tier of the Casings")
             .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock.")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
@@ -146,7 +147,15 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
                                 GregTech_API.sBlockCasings1,
                                 GregtechMTE_AlgaePondBase::setMeta,
                                 GregtechMTE_AlgaePondBase::getMeta,
-                                10))))
+                                10)),
+                        onElementPass(
+                            x -> ++x.mCasing,
+                            addTieredBlock(
+                                TT_Container_Casings.sBlockCasingsNH,
+                                GregtechMTE_AlgaePondBase::setMeta,
+                                GregtechMTE_AlgaePondBase::getMeta,
+                                10,
+                                15))))
                 .addElement('X', ofBlock(ModBlocks.blockCasings2Misc, 15))
                 .build();
         }
@@ -169,10 +178,18 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
         mCasing = 0;
         mLevel = 0;
         checkMeta = 0;
-        minTierOfHatch = 100;
-        if (checkPiece(mName, 4, 2, 0) && mCasing >= 64 && checkMeta > 0) {
+
+        if (checkPiece(mName, 4, 2, 0) && mCasing >= 64
+            && checkMeta > 0
+            && mInputHatches.size() >= 1
+            && mOutputBusses.size() >= 1) {
             mLevel = checkMeta - 1;
-            return mLevel <= minTierOfHatch;
+            for (GT_MetaTileEntity_Hatch_Input inputHatch : mInputHatches) {
+                if (inputHatch.mTier < mLevel) {
+                    return false;
+                }
+            }
+            return true;
         }
         return false;
     }
@@ -363,7 +380,8 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
             int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ;
             aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(xDir, -1, zDir);
             aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir, -1, zDir);
-            if (aInitStructureCheck == GregTech_API.sBlockCasings1) {
+            if (aInitStructureCheck == GregTech_API.sBlockCasings1
+                || aInitStructureCheck == TT_Container_Casings.sBlockCasingsNH) {
                 return aInitStructureCheckMeta;
             }
             return 0;

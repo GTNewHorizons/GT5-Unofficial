@@ -26,7 +26,8 @@ public class GT_UITextures {
         .of(GregTech.ID, "gui/background/text_field_light_gray", 61, 12, 1);
     public static final AdaptableUITexture BACKGROUND_NEI_SINGLE_RECIPE = AdaptableUITexture
         .of(GregTech.ID, "gui/background/nei_single_recipe.png", 64, 64, 2);
-
+    public static final UITexture BACKGROUND_FLOCCULATION_RECIPE = UITexture
+        .fullImage(GregTech.ID, "gui/background/flocculation_recipe.png");
     public static final SteamTexture SLOT_ITEM_STEAM = SteamTexture.fullImage(GregTech.ID, "gui/slot/item_%s");
     public static final SteamTexture SLOT_FLUID_STEAM = SteamTexture.fullImage(GregTech.ID, "gui/slot/fluid_%s");
     public static final AdaptableUITexture SLOT_DARK_GRAY = AdaptableUITexture
@@ -205,6 +206,14 @@ public class GT_UITextures {
     public static final UITexture PROGRESSBAR_SLICE = UITexture.fullImage(GregTech.ID, "gui/progressbar/slice");
     public static final UITexture PROGRESSBAR_STORED_EU = UITexture.fullImage(GregTech.ID, "gui/progressbar/stored_eu");
     public static final UITexture PROGRESSBAR_WIREMILL = UITexture.fullImage(GregTech.ID, "gui/progressbar/wiremill");
+    public static final UITexture PROGRESSBAR_FLOCCULATION = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/flocculation");
+    public static final UITexture PROGRESSBAR_CLARIFIER = UITexture.fullImage(GregTech.ID, "gui/progressbar/clarifier");
+    public static final UITexture PROGRESSBAR_PH_NEUTRALIZATION = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/phneutralization");
+    public static final UITexture PROGRESSBAR_OZONATION = UITexture.fullImage(GregTech.ID, "gui/progressbar/ozonation");
+    public static final UITexture PROGRESSBAR_PLASMA_HEATER = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/water_plasma_heater");
 
     public static FallbackableUITexture fallbackableProgressbar(String name, UITexture fallback) {
         return new FallbackableUITexture(UITexture.fullImage(GregTech.ID, "gui/progressbar/" + name), fallback);
