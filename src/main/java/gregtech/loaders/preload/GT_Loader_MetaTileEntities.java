@@ -151,6 +151,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.HULL_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.IMPLOSION_COMPRESSOR_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_APIARY;
 import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_EXTRACTOR_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_LASER_ENGRAVER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_HV;
@@ -474,6 +475,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialExtractor;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.GT_Mod;
@@ -1135,6 +1137,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 INDUSTRIAL_LASER_ENGRAVER_CONTROLLER.ID,
                 "multimachine.engraver",
                 "High Energy Laser Emitter").getStackForm(1));
+
+        ItemList.Machine_Multi_IndustrialExtractor.set(
+            new GT_MetaTileEntity_IndustrialExtractor(
+                INDUSTRIAL_EXTRACTOR_CONTROLLER.ID,
+                "multimachine.extractor",
+                "Dissection Engine").getStackForm(1));
 
         ItemList.Machine_Multi_Lathe.set(
             new GT_MetaTileEntity_MultiLathe(
