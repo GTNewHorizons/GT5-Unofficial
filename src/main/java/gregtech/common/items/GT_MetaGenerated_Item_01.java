@@ -2018,7 +2018,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.ItemFilter_Import.set(
             addItem(
                 ItemFilter_Import.ID,
-                "Filtered Cover (Import)",
+                "Filtered Conveyor Cover (Import)",
                 "Right click with an item to set filter (Only supports Import Mode)"));
 
         ItemList.Cover_FluidLimiter
