@@ -2041,7 +2041,7 @@ public enum ItemList implements IItemContainer {
     TierdDrone2,
     Hatch_DroneDownLink,
     Casing_Shielded_Accelerator,
-    WormholeGenerator;
+    WormholeGenerator,
     Hatch_pHSensor,
     Hatch_LensHousing,
     Hatch_LensIndicator,
@@ -2071,7 +2071,6 @@ public enum ItemList implements IItemContainer {
     Quark_Creation_Catalyst_Bottom,
     Quark_Creation_Catalyst_Top,
     Quark_Creation_Catalyst_Unaligned,
-    Casing_Shielded_Accelerator,
     GlassOmniPurposeInfinityFused,
     GlassQuarkContainment,
     BlockQuarkPipe,
