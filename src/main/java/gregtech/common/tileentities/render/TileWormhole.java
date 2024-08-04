@@ -1,5 +1,8 @@
 package gregtech.common.tileentities.render;
 
+import java.util.List;
+import java.util.Optional;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,11 +15,7 @@ import micdoodle8.mods.galacticraft.core.util.Annotations;
 import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 import pers.gwyog.gtneioreplugin.util.DimensionHelper;
 
-import java.util.List;
-import java.util.Optional;
-
 public class TileWormhole extends TileEntityAdvanced {
-
 
     @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public boolean shouldRender = false;
@@ -45,14 +44,14 @@ public class TileWormhole extends TileEntityAdvanced {
         dimID = compound.getInteger("dimID");
     }
 
-
-    public int getDimFromWorld(World target){
+    public int getDimFromWorld(World target) {
         if (target == null) return 3;
-        String dimName = Optional.ofNullable(target.provider).map(WorldProvider::getDimensionName).orElse(null);
+        String dimName = Optional.ofNullable(target.provider)
+            .map(WorldProvider::getDimensionName)
+            .orElse(null);
         if (dimName == null) return 3;
-        for(int i = 0; i< DimensionHelper.DimName.length; i++){
-            if (dimName.equals(DimensionHelper.DimName[i]))
-                return i;
+        for (int i = 0; i < DimensionHelper.DimName.length; i++) {
+            if (dimName.equals(DimensionHelper.DimName[i])) return i;
         }
         return 3;
     }
@@ -61,17 +60,16 @@ public class TileWormhole extends TileEntityAdvanced {
         int newName = getDimFromWorld(target);
         if (target != null & dimID != newName) {
             dimID = newName;
-            //this.markDirty();
+            // this.markDirty();
             this.updateEntity();
         }
     }
 
-    public void setRadius(double target){
+    public void setRadius(double target) {
         targetRadius = target;
     }
 
-
-    public Block getBlock(){
+    public Block getBlock() {
         return ModBlocks.getBlock(DimensionHelper.DimNameDisplayed[dimID]);
     }
 
@@ -83,14 +81,12 @@ public class TileWormhole extends TileEntityAdvanced {
         }
     }
 
-
     /*
-    @Override
-    public AxisAlignedBB getRenderBoundingBox() {
-        return 65536;
-    }
-
- */
+     * @Override
+     * public AxisAlignedBB getRenderBoundingBox() {
+     * return 65536;
+     * }
+     */
 
     @Override
     public double getMaxRenderDistanceSquared() {

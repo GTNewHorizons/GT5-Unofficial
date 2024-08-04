@@ -1,29 +1,25 @@
 package gregtech.common.blocks;
 
-import java.util.ArrayList;
-
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.thing.block.TileEyeOfHarmony;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.common.tileentities.render.TileWormhole;
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.util.GT_CreativeTab;
-import gregtech.common.tileentities.render.TileWormhole;
+import java.util.ArrayList;
 
 public class GT_WormholeRenderBlock extends Block {
+
     public GT_WormholeRenderBlock() {
         super(Material.iron);
         this.setResistance(20f);
         this.setHardness(-1.0f);
-        //this.setCreativeTab(TecTech.creativeTabTecTech);
+        // this.setCreativeTab(TecTech.creativeTabTecTech);
         this.setBlockName("WormholeRenderer");
         this.setLightLevel(100.0f);
         GameRegistry.registerBlock(this, getUnlocalizedName());
@@ -59,7 +55,6 @@ public class GT_WormholeRenderBlock extends Block {
     public boolean hasTileEntity(int metadata) {
         return true;
     }
-
 
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
