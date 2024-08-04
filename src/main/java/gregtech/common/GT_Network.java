@@ -20,26 +20,9 @@ import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.net.GT_Packet;
-import gregtech.api.net.GT_Packet_Block_Event;
-import gregtech.api.net.GT_Packet_ClientPreference;
-import gregtech.api.net.GT_Packet_GtTileEntityGuiRequest;
-import gregtech.api.net.GT_Packet_MultiTileEntity;
-import gregtech.api.net.GT_Packet_Pollution;
-import gregtech.api.net.GT_Packet_RequestCoverData;
-import gregtech.api.net.GT_Packet_SendCoverData;
-import gregtech.api.net.GT_Packet_SendOregenPattern;
-import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
-import gregtech.api.net.GT_Packet_Sound;
-import gregtech.api.net.GT_Packet_TileEntity;
-import gregtech.api.net.GT_Packet_TileEntityCover;
-import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
-import gregtech.api.net.GT_Packet_TileEntityCoverNew;
-import gregtech.api.net.GT_Packet_ToolSwitchMode;
-import gregtech.api.net.GT_Packet_UpdateItem;
-import gregtech.api.net.GT_Packet_WirelessRedstoneCover;
+import gregtech.api.net.GT_PacketTypes;
+import gregtech.api.net.GT_Packet_New;
 import gregtech.api.net.IGT_NetworkHandler;
-import gregtech.common.blocks.GT_Packet_Ores;
-import gregtech.common.net.MessageSetFlaskCapacity;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
@@ -55,33 +38,10 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
     private final GT_Packet[] mSubChannels;
 
     public GT_Network() {
-        this(
-            "GregTech",
-            new GT_Packet_TileEntity(), // 0
-            new GT_Packet_Sound(), // 1
-            new GT_Packet_Block_Event(), // 2
-            new GT_Packet_Ores(), // 3
-            new GT_Packet_Pollution(), // 4
-            new MessageSetFlaskCapacity(), // 5
-            new GT_Packet_TileEntityCover(), // 6
-            new GT_Packet_TileEntityCoverGUI(), // 7
-            // 8
-            new GT_Packet_ClientPreference(), // 9
-            new GT_Packet_WirelessRedstoneCover(), // 10
-            new GT_Packet_TileEntityCoverNew(), // 11
-            new GT_Packet_SetConfigurationCircuit(), // 12
-            new GT_Packet_UpdateItem(), // 13
-            // 14
-            new GT_Packet_GtTileEntityGuiRequest(), // 15
-            new GT_Packet_SendCoverData(), // 16
-            new GT_Packet_RequestCoverData(), // 17
-            new GT_Packet_MultiTileEntity(true), // 18
-            new GT_Packet_SendOregenPattern(), // 19
-            new GT_Packet_ToolSwitchMode() // 20
-        );
+        this("GregTech", GT_PacketTypes.referencePackets());
     }
 
-    public GT_Network(String channelName, GT_Packet... packetTypes) {
+    public GT_Network(String channelName, GT_Packet_New... packetTypes) {
         this.mChannel = NetworkRegistry.INSTANCE.newChannel(channelName, this, new HandlerShared());
         final int lastPId = packetTypes[packetTypes.length - 1].getPacketID();
         this.mSubChannels = new GT_Packet[lastPId + 1];
