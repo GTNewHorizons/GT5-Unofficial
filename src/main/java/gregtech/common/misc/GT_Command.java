@@ -19,9 +19,11 @@ import net.minecraft.util.EnumChatFormatting;
 
 import com.gtnewhorizon.structurelib.StructureLib;
 
+import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.objects.GT_ChunkManager;
+import gregtech.api.util.GT_MusicSystem;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
@@ -35,13 +37,13 @@ public final class GT_Command extends CommandBase {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "Usage: gt <subcommand>. Valid subcommands are: toggle, chunks, pollution.";
+        return "Usage: gt <subcommand>. Valid subcommands are: toggle, chunks, pollution, global_energy_add, global_energy_set, global_energy_join, dump_music_durations.";
     }
 
     private void printHelp(ICommandSender sender) {
         sender.addChatMessage(
             new ChatComponentText(
-                "Usage: gt <toggle|chunks|pollution|global_energy_add|global_energy_set|global_energy_join>"));
+                "Usage: gt <toggle|chunks|pollution|global_energy_add|global_energy_set|global_energy_join|dump_music_durations>"));
         sender.addChatMessage(new ChatComponentText("\"toggle D1\" - toggles general.Debug (D1)"));
         sender.addChatMessage(new ChatComponentText("\"toggle D2\" - toggles general.Debug2 (D2)"));
         sender.addChatMessage(new ChatComponentText("\"toggle debugCleanroom\" - toggles cleanroom debug log"));
@@ -96,6 +98,9 @@ public final class GT_Command extends CommandBase {
         sender.addChatMessage(
             new ChatComponentText(
                 "Usage:" + EnumChatFormatting.RED + " global_energy_display " + EnumChatFormatting.BLUE + "[Name]"));
+        sender.addChatMessage(
+            new ChatComponentText(
+                "\"dump_music_durations\" - dumps soundmeta/durations.json for all registered records in the game to the log. Client-only"));
     }
 
     @Override
@@ -110,7 +115,8 @@ public final class GT_Command extends CommandBase {
                 "global_energy_add",
                 "global_energy_set",
                 "global_energy_join",
-                "global_energy_display")
+                "global_energy_display",
+                "dump_music_durations")
             .anyMatch(s -> s.startsWith(test)))) {
             Stream
                 .of(
@@ -120,7 +126,8 @@ public final class GT_Command extends CommandBase {
                     "global_energy_add",
                     "global_energy_set",
                     "global_energy_join",
-                    "global_energy_display")
+                    "global_energy_display",
+                    "dump_music_durations")
                 .filter(s -> test.isEmpty() || s.startsWith(test))
                 .forEach(l::add);
         } else if (test.equals("toggle")) {
@@ -329,6 +336,14 @@ public final class GT_Command extends CommandBase {
                             + EnumChatFormatting.RESET
                             + "."));
 
+            }
+            case "dump_music_durations" -> {
+                if (!FMLLaunchHandler.side()
+                    .isClient()) {
+                    sender
+                        .addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "This command is client-only."));
+                }
+                GT_MusicSystem.ClientSystem.dumpAllRecordDurations();
             }
             default -> {
                 sender

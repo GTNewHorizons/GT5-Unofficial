@@ -701,7 +701,12 @@ public enum MetaTileEntityIDs {
     sofc2(13102),
     tfft(13104),
     lsc(13106),
-    tfftHatch(13109);
+    tfftHatch(13109),
+    BETTER_JUKEBOX_LV(14301),
+    BETTER_JUKEBOX_MV(14302),
+    BETTER_JUKEBOX_HV(14303),
+    BETTER_JUKEBOX_EV(14304),
+    BETTER_JUKEBOX_IV(14305);
 
     public final int ID;
 
