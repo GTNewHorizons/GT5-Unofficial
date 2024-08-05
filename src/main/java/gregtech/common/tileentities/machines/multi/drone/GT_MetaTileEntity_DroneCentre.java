@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi.drone;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_Values.AuthorSilverMoon;
@@ -9,12 +10,15 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.io.IOException;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
@@ -93,12 +97,16 @@ public class GT_MetaTileEntity_DroneCentre extends
     private static final IIconContainer INACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/DRONE_CENTRE_INACTIVE");
     private final int MACHINE_LIST_WINDOW_ID = 10;
     private final int CUSTOM_NAME_WINDOW_ID = 11;
+    private static final int CASINGS_MIN = 85;
+    private int mCasingAmount = 0;
     private Vec3Impl centreCoord;
     private int droneLevel = 0;
     private int buttonID;
     private String searchFilter = "";
     private boolean useRender = true;
-    private final List<DroneConnection> connectionList = new ArrayList<>();
+    private boolean showLocalizedName = false;
+    private String sort = "distance";
+    private List<DroneConnection> connectionList = new ArrayList<>();
     public HashMap<String, String> tempNameList = new HashMap<>();
     // Save centre by dimID
     private static final HashMultimap<Integer, GT_MetaTileEntity_DroneCentre> droneMap = HashMultimap.create();
@@ -109,18 +117,18 @@ public class GT_MetaTileEntity_DroneCentre extends
             "main",
             transpose(
                 new String[][] { { "     ", "     ", "     ", "     ", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
-                    { "CE~EC", "C   C", "C   C", "C   C", "CAAAC", "CCCCC", "CAAAC", "C   C", "CCCCC" },
-                    { "CEEEC", "CBBBC", "CBDBC", "CBBBC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
-                    { "C   C", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "C   C" },
-                    { "C   C", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "C   C" },
+                    { "CC~CC", "C   C", "C   C", "C   C", "CAAAC", "CCCCC", "CAAAC", "C   C", "CCCCC" },
+                    { "CCCCC", "CBBBC", "CBDBC", "CBBBC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
                     { "C   C", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "C   C" } }))
         .addElement(
-            'E',
+            'C',
             buildHatchAdder(GT_MetaTileEntity_DroneCentre.class).atLeast(InputBus)
                 .casingIndex(59)
                 .dot(1)
-                .buildAndChain(ofBlock(GregTech_API.sBlockCasings4, 2)))
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings4, 2))
+                .buildAndChain(
+                    onElementPass(
+                        GT_MetaTileEntity_DroneCentre::onCasingAdded,
+                        ofBlock(GregTech_API.sBlockCasings4, 2))))
         .addElement('A', chainAllGlasses())
         .addElement('B', ofBlock(GregTech_API.sBlockCasings1, 11))
         .addElement('D', ofBlock(GregTech_API.sBlockCasings4, 0))
@@ -178,7 +186,7 @@ public class GT_MetaTileEntity_DroneCentre extends
             .addInfo("Monitors multiblock machines in range.")
             .addInfo("Replace maintenance hatch on other multi with drone downlink module.")
             .addInfo("Provides maintenance, power control, monitoring and etc.")
-            .addInfo("Range is determined by drone tier: T1-32, T2-128, T3-512")
+            .addInfo("Range is determined by drone tier: T1-128, T2-512, T3-4096")
             .addInfo("Place drones in input bus; only one needed to operate.")
             .addInfo("Automatically upgrade based on the drone level in the input bus.")
             .addInfo("There is a chance per second that the drone will crash.")
@@ -186,8 +194,14 @@ public class GT_MetaTileEntity_DroneCentre extends
             .addInfo("If machine is too far, remote control would not available")
             .addInfo(AuthorSilverMoon)
             .addSeparator()
-            .beginStructureBlock(5, 6, 9, false)
-            .addStructureInfo("Do not need maintenance hatch")
+            .beginStructureBlock(5, 4, 9, false)
+            .addController("Front center")
+            .addCasingInfoRange("Stable Titanium Machine Casing", CASINGS_MIN, 91, false)
+            .addCasingInfoExactly("Heat Proof Machine Casing", 8, false)
+            .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 1, false)
+            .addCasingInfoExactly("Any tiered glass", 6, false)
+            .addInputBus("Any Titanium Casing", 1)
+            .addStructureInfo("No maintenance hatch needed")
             .addSeparator()
             .toolTipFinisher("Gregtech");
         return tt;
@@ -216,9 +230,14 @@ public class GT_MetaTileEntity_DroneCentre extends
         return true;
     }
 
+    private void onCasingAdded() {
+        mCasingAmount++;
+    }
+
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece("main", 2, 1, 0);
+        mCasingAmount = 0;
+        return checkPiece("main", 2, 1, 0) && mCasingAmount >= CASINGS_MIN;
     }
 
     @Override
@@ -259,7 +278,6 @@ public class GT_MetaTileEntity_DroneCentre extends
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            fixAll();
             if (aTick % 20 == 0) {
                 if (switch (droneLevel) {
                     case 1 -> getBaseMetaTileEntity().getRandomNumber(28800);
@@ -267,7 +285,9 @@ public class GT_MetaTileEntity_DroneCentre extends
                     default -> 1;
                 } == 0) {
                     droneLevel = 0;
+                    startRecipeProcessing();
                     if (!tryConsumeDrone()) stopMachine(ShutDownReasonRegistry.outOfStuff("Any Drone", 1));
+                    endRecipeProcessing();
                 }
             }
             // Clean invalid connections every 4 seconds
@@ -282,6 +302,7 @@ public class GT_MetaTileEntity_DroneCentre extends
         super.loadNBTData(aNBT);
         droneLevel = aNBT.getInteger("drone");
         useRender = aNBT.getBoolean("useRender");
+        sort = aNBT.getString("sort");
         NBTTagCompound nameList = aNBT.getCompoundTag("conList");
         for (String s : nameList.func_150296_c()) {
             tempNameList.put(s, nameList.getString(s));
@@ -293,9 +314,10 @@ public class GT_MetaTileEntity_DroneCentre extends
         super.saveNBTData(aNBT);
         aNBT.setInteger("drone", droneLevel);
         aNBT.setBoolean("useRender", useRender);
+        aNBT.setString("sort", sort);
         NBTTagCompound conList = new NBTTagCompound();
         for (DroneConnection con : connectionList) {
-            if (!Objects.equals(con.customName, con.machine.getLocalName()))
+            if (!con.customName.equals(con.machine.getLocalName()))
                 conList.setString(con.machineCoord.toString(), con.customName);
         }
         aNBT.setTag("conList", conList);
@@ -384,15 +406,20 @@ public class GT_MetaTileEntity_DroneCentre extends
         droneMap.remove(getBaseMetaTileEntity().getWorld().provider.dimensionId, this);
     }
 
+    @Override
+    public void onUnload() {
+        droneMap.remove(getBaseMetaTileEntity().getWorld().provider.dimensionId, this);
+    }
+
     public List<DroneConnection> getConnectionList() {
         return connectionList;
     }
 
     public int getRange() {
         return switch (droneLevel) {
-            case 1 -> 32;
-            case 2 -> 128;
-            case 3 -> 512;
+            case 1 -> 128;
+            case 2 -> 512;
+            case 3 -> 4096;
             default -> 0;
         };
     }
@@ -459,10 +486,6 @@ public class GT_MetaTileEntity_DroneCentre extends
         this.getBaseMetaTileEntity()
             .getWorld()
             .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
-    }
-
-    private void fixAll() {
-        this.mWrench = this.mScrewdriver = this.mSoftHammer = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
     }
 
     @Override
@@ -611,8 +634,87 @@ public class GT_MetaTileEntity_DroneCentre extends
             .setFocusOnGuiOpen(false)
             .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
             .addTooltip(StatCollector.translateToLocal("GT5U.gui.text.drone_search"))
-            .setPos(10, 30)
-            .setSize(240, 16));
+            .setPos(50, 30)
+            .setSize(200, 16))
+            // Sort button
+            .widget(new ButtonWidget() {
+
+                @Override
+                public ClickResult onClick(int buttonId, boolean doubleClick) {
+                    ClickResult result = super.onClick(buttonId, doubleClick);
+                    syncToServer(2, buffer -> {});
+                    return result;
+                }
+
+                @Override
+                public void readOnServer(int id, PacketBuffer buf) {
+                    switch (id) {
+                        case 1 -> super.readOnServer(id, buf);
+                        case 2 -> {
+                            getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
+                            getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
+                        }
+                    }
+                }
+            }.setOnClick((clickData, widget) -> {
+                switch (sort) {
+                    case "name" -> sort = "distance";
+                    case "distance" -> sort = "error";
+                    case "error" -> sort = "name";
+                }
+            })
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_" + sort))
+                .setBackground(
+                    () -> new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_SORTING_MODE })
+                .setPos(10, 30)
+                .setSize(16, 16))
+            .widget(new FakeSyncWidget.StringSyncer(() -> sort, var1 -> sort = var1))
+            // Localized Button
+            .widget(new ButtonWidget() {
+
+                @Override
+                public ClickResult onClick(int buttonId, boolean doubleClick) {
+                    ClickResult result = super.onClick(buttonId, doubleClick);
+                    syncToServer(2, buffer -> {});
+                    return result;
+                }
+
+                @Override
+                public void readOnServer(int id, PacketBuffer buf) {
+                    switch (id) {
+                        case 1 -> super.readOnServer(id, buf);
+                        case 2 -> {
+                            getContext().closeWindow(MACHINE_LIST_WINDOW_ID);
+                            getContext().openSyncedWindow(MACHINE_LIST_WINDOW_ID);
+                        }
+                    }
+                }
+            }.setOnClick((clickData, widget) -> showLocalizedName = !showLocalizedName)
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_showLocalName"))
+                .setBackground(
+                    () -> new IDrawable[] {
+                        showLocalizedName ? GT_UITextures.BUTTON_STANDARD_PRESSED : GT_UITextures.BUTTON_STANDARD,
+                        GT_UITextures.OVERLAY_BUTTON_CYCLIC })
+                .setPos(30, 30)
+                .setSize(16, 16));
+        // Sort first
+        switch (sort) {
+            case "name" -> connectionList = connectionList.stream()
+                .sorted(
+                    (o1, o2) -> Collator.getInstance(Locale.UK)
+                        .compare(o1.getCustomName(false), o2.getCustomName(false)))
+                .collect(Collectors.toList());
+            case "distance" -> connectionList = connectionList.stream()
+                .sorted(Comparator.comparing(DroneConnection::getDistanceSquared))
+                .collect(Collectors.toList());
+            case "error" -> connectionList = connectionList.stream()
+                .sorted(
+                    Comparator.comparing(DroneConnection::isMachineShutdown)
+                        .reversed()
+                        .thenComparing(DroneConnection::getDistanceSquared))
+                .collect(Collectors.toList());
+        }
+
         Scrollable MachineContainer = new Scrollable().setVerticalScroll();
         int posY = 0;
         for (int i = 0; i < connectionList.size(); i++) {
@@ -741,7 +843,7 @@ public class GT_MetaTileEntity_DroneCentre extends
             row.widget(
                 new TextWidget(
                     connectionList.get(i)
-                        .getCustomName()).setTextAlignment(Alignment.CenterLeft)
+                        .getCustomName(showLocalizedName)).setTextAlignment(Alignment.CenterLeft)
                             .setPos(0, 4));
             MachineContainer.widget(
                 row.setAlignment(MainAxisAlignment.SPACE_BETWEEN)
@@ -778,7 +880,7 @@ public class GT_MetaTileEntity_DroneCentre extends
                 }
             }.setGetter(
                 () -> connectionList.get(buttonID)
-                    .getCustomName())
+                    .getCustomName(false))
                 .setSetter(
                     var -> connectionList.get(buttonID)
                         .setCustomName(var))
@@ -806,5 +908,10 @@ public class GT_MetaTileEntity_DroneCentre extends
 
     public static HashMultimap<Integer, GT_MetaTileEntity_DroneCentre> getCentreMap() {
         return droneMap;
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

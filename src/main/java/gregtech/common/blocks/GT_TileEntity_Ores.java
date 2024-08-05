@@ -12,7 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -20,18 +21,22 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
+import gregtech.api.interfaces.tileentity.IAllSidedTexturedTileEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
-public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntity {
+public class GT_TileEntity_Ores extends TileEntity implements IAllSidedTexturedTileEntity {
 
     public short mMetaData = 0;
+    protected static boolean shouldFortune = false;
+    protected static boolean shouldSilkTouch = false;
     public boolean mNatural = false;
     public boolean mBlocked = true;
     public boolean mBlockedChecked = false;
+    private short mMetadataForCachedTexture = -1;
+    private ITexture[] mCachedTexture;
 
     public static byte getHarvestData(short aMetaData, int aBaseBlockHarvestLevel) {
         Materials aMaterial = GregTech_API.sGeneratedMaterials[(aMetaData % 1000)];
@@ -297,11 +302,75 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
             rList.add(new ItemStack(Blocks.cobblestone, 1, 0));
             return rList;
         }
+        Materials aOreMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
         if (this.mMetaData < 16000) {
-            rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
+            boolean tIsRich = false;
+
+            // For Sake of god of balance!
+
+            // Dense ore
+
+            // NetherOre
+            if (GT_Mod.gregtechproxy.mNetherOreYieldMultiplier && !tIsRich) {
+                tIsRich = (this.mMetaData >= 1000 && this.mMetaData < 2000);
+            }
+            // EndOre
+            if (GT_Mod.gregtechproxy.mEndOreYieldMultiplier && !tIsRich) {
+                tIsRich = (this.mMetaData >= 2000 && this.mMetaData < 3000);
+            }
+
+            // Silk Touch
+            if (shouldSilkTouch) {
+                rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
+
+            } else {
+                switch (GT_Mod.gregtechproxy.oreDropSystem) {
+                    case Item -> {
+                        rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, (tIsRich ? 2 : 1)));
+                    }
+                    // TODO: Test
+                    case FortuneItem -> {
+                        // if shouldFortune and isNatural then get fortune drops
+                        // if not shouldFortune or not isNatural then get normal drops
+                        // if not shouldFortune and isNatural then get normal drops
+                        // if shouldFortune and not isNatural then get normal drops
+                        if (shouldFortune && this.mNatural && aFortune > 0) {
+                            int aMinAmount = 1;
+                            // Max applicable fortune
+                            if (aFortune > 3) aFortune = 3;
+                            int amount = aMinAmount
+                                + Math.max(worldObj.rand.nextInt(aFortune * (tIsRich ? 2 : 1) + 2) - 1, 0);
+                            for (int i = 0; i < amount; i++) {
+                                rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
+                            }
+                        } else {
+                            for (int i = 0; i < (tIsRich ? 2 : 1); i++) {
+                                rList.add(GT_OreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
+                            }
+                        }
+                    }
+                    case UnifiedBlock -> {
+                        // Unified ore
+                        for (int i = 0; i < (tIsRich ? 2 : 1); i++) {
+                            rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData % 1000));
+                        }
+                    }
+                    case PerDimBlock -> {
+                        // Per Dimension ore
+                        if (tIsRich) {
+                            rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
+                        } else {
+                            rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData % 1000));
+                        }
+                    }
+                    case Block -> {
+                        // Regular ore
+                        rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
+                    }
+                }
+            }
             return rList;
         }
-        Materials aOreMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
 
         // Everyone gets a free small fortune boost
         aFortune += 1;
@@ -388,9 +457,17 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, ForgeDirection side) {
+    public ITexture[] getTexture(Block aBlock) {
+        if (mMetadataForCachedTexture == mMetaData && mCachedTexture != null) return mCachedTexture;
+
+        mMetadataForCachedTexture = mMetaData;
+        mCachedTexture = getTextureInternal(aBlock);
+        return mCachedTexture;
+    }
+
+    private ITexture @NotNull [] getTextureInternal(Block aBlock) {
         Materials aMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
-        if ((aMaterial != null) && (this.mMetaData < 32000)) {
+        if ((aMaterial != null) && (this.mMetaData < 32000) && (aBlock instanceof GT_Block_Ores_Abstract)) {
             ITexture iTexture = TextureFactory.builder()
                 .addIcon(
                     aMaterial.mIconSet.mTextures[this.mMetaData / 16000 == 0 ? OrePrefixes.ore.mTextureIndex
@@ -398,10 +475,8 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                 .setRGBA(aMaterial.mRGBa)
                 .stdOrient()
                 .build();
-            if (aBlock instanceof GT_Block_Ores_Abstract) {
-                return new ITexture[] {
-                    ((GT_Block_Ores_Abstract) aBlock).getTextureSet()[((this.mMetaData / 1000) % 16)], iTexture };
-            }
+            return new ITexture[] { ((GT_Block_Ores_Abstract) aBlock).getTextureSet()[((this.mMetaData / 1000) % 16)],
+                iTexture };
         }
         return new ITexture[] { TextureFactory.of(Blocks.stone, 0), TextureFactory.builder()
             .addIcon(SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])

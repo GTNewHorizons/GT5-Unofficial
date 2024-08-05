@@ -21,6 +21,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -42,6 +43,8 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.SoundResource;
@@ -75,6 +78,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
 
 public abstract class GT_MetaTileEntity_FusionComputer
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_FusionComputer>
@@ -96,7 +100,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                                 "  h         h  ", "  h         h  ", " i           i ", " h           h ",
                                 " i           i ", "  h         h  ", "  h         h  ", "   h       h   ",
                                 "    hh   hh    ", "      ihi      ", "               ", },
-                            { "      xhx      ", "    hhccchh    ", "   eccxhxcce   ", "  eceh   hece  ",
+                            { "      xhx      ", "    hhccchh    ", "   eccxdxcce   ", "  eceh   hece  ",
                                 " hce       ech ", " hch       hch ", "xcx         xcx", "hch         hch",
                                 "xcx         xcx", " hch       hch ", " hce       ech ", "  eceh   hece  ",
                                 "   eccx~xcce   ", "    hhccchh    ", "      xhx      ", },
@@ -111,7 +115,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                     lazy(
                         t -> buildHatchAdder(GT_MetaTileEntity_FusionComputer.class)
                             .atLeast(
-                                ImmutableMap.of(InputHatch.withAdder(GT_MetaTileEntity_FusionComputer::addInjector), 2))
+                                ImmutableMap.of(InputHatch.withAdder(GT_MetaTileEntity_FusionComputer::addInjector), 1))
                             .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
                             .casingIndex(53)
                             .dot(1)
@@ -133,6 +137,15 @@ public abstract class GT_MetaTileEntity_FusionComputer
                             .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
                             .casingIndex(53)
                             .dot(3)
+                            .buildAndChain(t.getCasing(), t.getCasingMeta())))
+                .addElement(
+                    'd',
+                    lazy(
+                        t -> buildHatchAdder(GT_MetaTileEntity_FusionComputer.class)
+                            .adder(GT_MetaTileEntity_FusionComputer::addDroneHatch)
+                            .hatchId(9401)
+                            .casingIndex(53)
+                            .dot(4)
                             .buildAndChain(t.getCasing(), t.getCasingMeta())))
                 .build();
         }
@@ -223,18 +236,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (checkPiece(STRUCTURE_PIECE_MAIN, 7, 1, 12) && mInputHatches.size() > 1
-            && !mOutputHatches.isEmpty()
-            && !mEnergyHatches.isEmpty()) {
-            mWrench = true;
-            mScrewdriver = true;
-            mSoftHammer = true;
-            mHardHammer = true;
-            mSolderingTool = true;
-            mCrowbar = true;
-            return true;
-        }
-        return false;
+        return checkPiece(STRUCTURE_PIECE_MAIN, 7, 1, 12) && !mOutputHatches.isEmpty() && !mEnergyHatches.isEmpty();
     }
 
     private boolean addEnergyInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
@@ -264,6 +266,15 @@ public abstract class GT_MetaTileEntity_FusionComputer
         if (tHatch.getTierForStructure() < tier()) return false;
         tHatch.updateTexture(aBaseCasingIndex);
         return mOutputHatches.add(tHatch);
+    }
+
+    private boolean addDroneHatch(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
+        if (aBaseMetaTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (!(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DroneDownLink tHatch)) return false;
+        tHatch.updateTexture(aBaseCasingIndex);
+        return addToMachineList(aBaseMetaTileEntity, aBaseCasingIndex);
     }
 
     public abstract Block getCasing();
@@ -452,6 +463,8 @@ public abstract class GT_MetaTileEntity_FusionComputer
             aBaseMetaTileEntity
                 .setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
+        } else {
+            doActivitySound(getActivitySoundLoop());
         }
     }
 
@@ -533,9 +546,10 @@ public abstract class GT_MetaTileEntity_FusionComputer
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 1, 12, elementBudget, env, false, true);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
-        return SoundResource.GT_MACHINES_FUSION_LOOP;
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_FUSION_LOOP.resourceLocation;
     }
 
     @Override
@@ -652,5 +666,10 @@ public abstract class GT_MetaTileEntity_FusionComputer
     @Override
     public Set<VoidingMode> getAllowedVoidingModes() {
         return VoidingMode.FLUID_ONLY_MODES;
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

@@ -1,0 +1,418 @@
+{
+  "Essentia": [
+    {
+      "name": "Aer",
+      "fuelValue": 1000,
+      "category": "AIR",
+      "consumeCeo": 1.0
+    },
+    {
+      "name": "Terra",
+      "fuelValue": 800,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Ignis",
+      "fuelValue": 16000,
+      "category": "THERMAL",
+      "consumeCeo": 1.0
+    },
+    {
+      "name": "Aqua",
+      "fuelValue": 5000,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Ordo",
+      "fuelValue": 12000,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Perditio",
+      "fuelValue": 4500,
+      "category": "UNSTABLE",
+      "consumeCeo": 1.0
+    },
+    {
+      "name": "Vacuos",
+      "fuelValue": 8200,
+      "category": "UNSTABLE",
+      "consumeCeo": 1.5
+    },
+    {
+      "name": "Lux",
+      "fuelValue": 13000,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Lux",
+      "fuelValue": 13000,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Tempestas",
+      "fuelValue": 61200,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Motus",
+      "fuelValue": 20000,
+      "category": "AIR",
+      "consumeCeo": 0.5
+    },
+    {
+      "name": "Gelum",
+      "fuelValue": 3900,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Vitreus",
+      "fuelValue": 2000,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Victus",
+      "fuelValue": 20000,
+      "category": "VICTUS",
+      "consumeCeo": 1.0
+    },
+    {
+      "name": "Venenum",
+      "fuelValue": 17000,
+      "category": "UNSTABLE",
+      "consumeCeo": 2.0
+    },
+    {
+      "name": "Potentia",
+      "fuelValue": 25600,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Permutatio",
+      "fuelValue": 6000,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Metallum",
+      "fuelValue": 2600,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Mortuus",
+      "fuelValue": 7200,
+      "category": "TAINTED",
+      "consumeCeo": 1.0
+    },
+    {
+      "name": "Volatus",
+      "fuelValue": 56000,
+      "category": "AIR",
+      "consumeCeo": 2.0
+    },
+    {
+      "name": "Tenebrae",
+      "fuelValue": 9000,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Spiritus",
+      "fuelValue": 37600,
+      "category": "VICTUS",
+      "consumeCeo": 0.7
+    },
+    {
+      "name": "Sano",
+      "fuelValue": 24600,
+      "category": "VICTUS",
+      "consumeCeo": 1.2
+    },
+    {
+      "name": "Iter",
+      "fuelValue": 16000,
+      "category": "MECHANICS",
+      "consumeCeo": 1.0
+    },
+    {
+      "name": "Alienis",
+      "fuelValue": 9700,
+      "category": "TAINTED",
+      "consumeCeo": 1.7
+    },
+    {
+      "name": "Praecantatio",
+      "fuelValue": 36000,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Auram",
+      "fuelValue": 42000,
+      "category": "AIR",
+      "consumeCeo": 2.7
+    },
+    {
+      "name": "Vitium",
+      "fuelValue": 4700,
+      "category": "TAINTED",
+      "consumeCeo": 10.0
+    },
+    {
+      "name": "Limus",
+      "fuelValue": 11800,
+      "category": "MECHANICS",
+      "consumeCeo": 1.0
+    },
+    {
+      "name": "Herba",
+      "fuelValue": 2600,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Arbor",
+      "fuelValue": 4500,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Bestia",
+      "fuelValue": 1000,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Corpus",
+      "fuelValue": 5200,
+      "category": "VICTUS",
+      "consumeCeo": 0.9
+    },
+    {
+      "name": "Corpus",
+      "fuelValue": 5200,
+      "category": "VICTUS",
+      "consumeCeo": 0.9
+    },
+    {
+      "name": "Exanimis",
+      "fuelValue": 9000,
+      "category": "TAINTED",
+      "consumeCeo": 1.2
+    },
+    {
+      "name": "Cognitio",
+      "fuelValue": 2200,
+      "category": "SPRITE",
+      "consumeCeo": 1.2
+    },
+    {
+      "name": "Sensus",
+      "fuelValue": 1400,
+      "category": "SPRITE",
+      "consumeCeo": 0.7
+    },
+    {
+      "name": "Humanus",
+      "fuelValue": 16700,
+      "category": "VICTUS",
+      "consumeCeo": 1.3
+    },
+    {
+      "name": "Messis",
+      "fuelValue": 9800,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Perfodio",
+      "fuelValue": 1300,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Instrumentum",
+      "fuelValue": 1200,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Meto",
+      "fuelValue": 3600,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Telum",
+      "fuelValue": 14200,
+      "category": "UNSTABLE",
+      "consumeCeo": 2.5
+    },
+    {
+      "name": "Tutamen",
+      "fuelValue": 6200,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Fames",
+      "fuelValue": 17600,
+      "category": "VICTUS",
+      "consumeCeo": 1.1
+    },
+    {
+      "name": "Lucrum",
+      "fuelValue": 6000,
+      "category": "SPRITE",
+      "consumeCeo": 2.0
+    },
+    {
+      "name": "Fabrico",
+      "fuelValue": 1100,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Pannus",
+      "fuelValue": 600,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Machina",
+      "fuelValue": 61200,
+      "category": "MECHANICS",
+      "consumeCeo": 1.0
+    },
+    {
+      "name": "Vinculum",
+      "fuelValue": 500,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Strontio",
+      "fuelValue": 200,
+      "category": "SPRITE",
+      "consumeCeo": 0.03
+    },
+    {
+      "name": "Nebrisum",
+      "fuelValue": 24300,
+      "category": "SPRITE",
+      "consumeCeo": 2.0
+    },
+    {
+      "name": "Electrum",
+      "fuelValue": 8,
+      "category": "ELECTRIC",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Magneto",
+      "fuelValue": 108000,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Radio",
+      "fuelValue": 238000,
+      "category": "RADIATION",
+      "consumeCeo": 1.0
+    },
+    {
+      "name": "Custom1",
+      "fuelValue": 300000,
+      "category": "THERMAL",
+      "consumeCeo": 7.0
+    },
+    {
+      "name": "Custom2",
+      "fuelValue": 1,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Custom3",
+      "fuelValue": 217000,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Custom4",
+      "fuelValue": 118000,
+      "category": "RADIATION",
+      "consumeCeo": 0.5
+    },
+    {
+      "name": "Custom5",
+      "fuelValue": 120000,
+      "category": "VICTUS",
+      "consumeCeo": 0.6
+    },
+    {
+      "name": "Luxuria",
+      "fuelValue": 79200,
+      "category": "SPRITE",
+      "consumeCeo": 3.7
+    },
+    {
+      "name": "Infernus",
+      "fuelValue": 35700,
+      "category": "THERMAL",
+      "consumeCeo": 3.0
+    },
+    {
+      "name": "Superbia",
+      "fuelValue": 10900,
+      "category": "SPRITE",
+      "consumeCeo": 2.1
+    },
+    {
+      "name": "Gula",
+      "fuelValue": 64000,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Invidia",
+      "fuelValue": 7700,
+      "category": "SPRITE",
+      "consumeCeo": 1.0
+    },
+    {
+      "name": "Desidia",
+      "fuelValue": 600,
+      "category": "SPRITE",
+      "consumeCeo": 0.1
+    },
+    {
+      "name": "Ira",
+      "fuelValue": 86200,
+      "category": "THERMAL",
+      "consumeCeo": 5.0
+    },
+    {
+      "name": "Tempus",
+      "fuelValue": 142857,
+      "category": "NORMAL",
+      "consumeCeo": 0.0
+    },
+    {
+      "name": "Terminus",
+      "fuelValue": 300000,
+      "category": "UNSTABLE",
+      "consumeCeo": 10.0
+    }
+  ]
+}
