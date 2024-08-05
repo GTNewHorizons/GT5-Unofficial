@@ -1,15 +1,15 @@
 package goodgenerator.blocks.tileEntity;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 public class AntimatterOutputHatch extends GT_MetaTileEntity_Hatch_Output {
 
@@ -22,10 +22,12 @@ public class AntimatterOutputHatch extends GT_MetaTileEntity_Hatch_Output {
         this.mDescriptionArray[3] = "Capacity: 16,384,000L";
     }
 
-    public AntimatterOutputHatch(String aName, int aTier, String[] aDescription,
-        ITexture[][][] aTextures) {
+    public AntimatterOutputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        setLockedFluidName(MaterialsUEVplus.Antimatter.getFluid(1).getFluid().getName());
+        setLockedFluidName(
+            MaterialsUEVplus.Antimatter.getFluid(1)
+                .getFluid()
+                .getName());
     }
 
     @Override
@@ -45,7 +47,7 @@ public class AntimatterOutputHatch extends GT_MetaTileEntity_Hatch_Output {
 
     @Override
     protected void onEmptyingContainerWhenEmpty() {
-        //Disable removing the lock
+        // Disable removing the lock
     }
 
     @Override
@@ -61,7 +63,8 @@ public class AntimatterOutputHatch extends GT_MetaTileEntity_Hatch_Output {
 
     @Override
     public boolean isLiquidInput(ForgeDirection side) {
-        return side != this.getBaseMetaTileEntity().getFrontFacing();
+        return side != this.getBaseMetaTileEntity()
+            .getFrontFacing();
     }
 
     @Override

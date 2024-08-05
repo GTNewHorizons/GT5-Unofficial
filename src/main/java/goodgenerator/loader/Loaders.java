@@ -2,7 +2,6 @@ package goodgenerator.loader;
 
 import static goodgenerator.util.DescTextLocalization.addText;
 
-import goodgenerator.blocks.tileEntity.AntimatterGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,9 +16,10 @@ import goodgenerator.blocks.regularBlock.ComplexTextureCasing;
 import goodgenerator.blocks.regularBlock.Frame;
 import goodgenerator.blocks.regularBlock.TEBlock;
 import goodgenerator.blocks.regularBlock.TurbineCasing;
-import goodgenerator.blocks.tileEntity.ComponentAssemblyLine;
 import goodgenerator.blocks.tileEntity.AntimatterForge;
+import goodgenerator.blocks.tileEntity.AntimatterGenerator;
 import goodgenerator.blocks.tileEntity.AntimatterOutputHatch;
+import goodgenerator.blocks.tileEntity.ComponentAssemblyLine;
 import goodgenerator.blocks.tileEntity.CoolantTower;
 import goodgenerator.blocks.tileEntity.EssentiaHatch;
 import goodgenerator.blocks.tileEntity.EssentiaOutputHatch;
@@ -236,6 +236,9 @@ public class Loaders {
     public static final Block protomatterActivationCoil = new Casing(
         "protomatterActivationCoil",
         new String[] { GoodGenerator.MOD_ID + ":protomatterActivationCoil" });
+    public static final Block antimatterAnnihilationMatrix = new Casing(
+        "antimatterAnnihilationMatrix",
+        new String[] { GoodGenerator.MOD_ID + ":antimatterAnnihilationMatrix" });
     public static final Block essentiaFilterCasing = new Casing(
         "essentiaFilterCasing",
         new String[] { GoodGenerator.MOD_ID + ":essentiaFilterCasing" });
@@ -314,7 +317,10 @@ public class Loaders {
             .getStackForm(1L);
         Loaders.YFH = new YOTTAHatch(IDs_GoodGenerator.YottaHatch.ID, "YottaFluidTankHatch", "YOTHatch", 5)
             .getStackForm(1L);
-        Loaders.AMHatch = new AntimatterOutputHatch(IDs_GoodGenerator.AntimatterHatch.ID, "AntimatterHatch", "Antimatter Hatch").getStackForm(1L);
+        Loaders.AMHatch = new AntimatterOutputHatch(
+            IDs_GoodGenerator.AntimatterHatch.ID,
+            "AntimatterHatch",
+            "Antimatter Hatch").getStackForm(1L);
         Loaders.SCTurbine = new SupercriticalFluidTurbine(
             IDs_GoodGenerator.SupercriticalFluidTurbine.ID,
             "SupercriticalSteamTurbine",
@@ -366,10 +372,14 @@ public class Loaders {
         CrackRecipeAdder.registerPipe(IDs_GoodGenerator.PipeIncoloy903.ID, MyMaterial.incoloy903, 15000, 8000, true);
         CrackRecipeAdder.registerWire(IDs_GoodGenerator.WireSignalium.ID, MyMaterial.signalium, 12, 131072, 16, true);
         CrackRecipeAdder.registerWire(IDs_GoodGenerator.WireLumiium.ID, MyMaterial.lumiium, 8, 524288, 64, true);
-        Loaders.AMForge = new AntimatterForge(IDs_GoodGenerator.AntimatterForge.ID, "AntimatterForge", "Semi-Stable Antimatter Stabilization Sequencer")
-            .getStackForm(1L);
-        Loaders.AMGenerator = new AntimatterGenerator(IDs_GoodGenerator.AntimatterGenerator.ID, "AntimatterGenerator", "Shielded Lagrangian Annihilation Matrix")
-            .getStackForm(1L);
+        Loaders.AMForge = new AntimatterForge(
+            IDs_GoodGenerator.AntimatterForge.ID,
+            "AntimatterForge",
+            "Semi-Stable Antimatter Stabilization Sequencer").getStackForm(1L);
+        Loaders.AMGenerator = new AntimatterGenerator(
+            IDs_GoodGenerator.AntimatterGenerator.ID,
+            "AntimatterGenerator",
+            "Shielded Lagrangian Annihilation Matrix").getStackForm(1L);
     }
 
     public static void Register() {
@@ -401,6 +411,7 @@ public class Loaders {
         GameRegistry.registerBlock(magneticFluxCasing, MyItemBlocks.class, "magneticFluxCasing");
         GameRegistry.registerBlock(gravityStabilizationCasing, MyItemBlocks.class, "gravityStabilizationCasing");
         GameRegistry.registerBlock(protomatterActivationCoil, MyItemBlocks.class, "protomatterActivationCoil");
+        GameRegistry.registerBlock(antimatterAnnihilationMatrix, MyItemBlocks.class, "antimatterAnnihilationMatrix");
         GameRegistry.registerItem(radiationProtectionPlate, "radiationProtectionPlate", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(wrappedUraniumIngot, "wrappedUraniumIngot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityUraniumNugget, "highDensityUraniumNugget", GoodGenerator.MOD_ID);
