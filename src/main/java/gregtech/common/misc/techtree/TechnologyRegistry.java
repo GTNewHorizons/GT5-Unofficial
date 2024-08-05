@@ -38,4 +38,8 @@ public class TechnologyRegistry {
     public static Collection<ITechnology> getTechnologies() {
         return registeredTechs.values();
     }
+
+    public static ITechnology findTechnology(String internalName) {
+        return registeredTechs.get(internalName);
+    }
 }
