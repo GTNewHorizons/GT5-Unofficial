@@ -568,6 +568,16 @@ public class DistilleryRecipes implements Runnable {
             .addTo(distillationTowerRecipes);
 
         GT_Values.RA.stdBuilder()
+            .fluidInputs(Materials.MTBEMixtureAlt.getGas(900L))
+            .fluidOutputs(
+                Materials.AntiKnock.getFluid(400L),
+                Materials.Methanol.getFluid(500L),
+                Materials.Butane.getGas(400L))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(distillationTowerRecipes);
+
+        GT_Values.RA.stdBuilder()
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
             .fluidOutputs(
