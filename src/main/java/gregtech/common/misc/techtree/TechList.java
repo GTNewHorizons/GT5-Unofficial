@@ -5,4 +5,5 @@ import gregtech.common.misc.techtree.interfaces.ITechnology;
 public class TechList {
 
     public static ITechnology DebugTech;
+    public static ITechnology DebugTech2;
 }

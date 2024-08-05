@@ -12,5 +12,8 @@ public class GT_Loader_Technologies implements Runnable {
 
         TechList.DebugTech = new TechnologyBuilder("DebugTech").unlocalizedName("gt.tech.debug.name")
             .buildAndRegister();
+
+        TechList.DebugTech2 = new TechnologyBuilder("DebugTech2").unlocalizedName("gt.tech.debug2.name")
+            .buildAndRegister();
     }
 }
