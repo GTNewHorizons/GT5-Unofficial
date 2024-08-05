@@ -84,6 +84,11 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechPollutionDevices;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechPowerSubStation;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechQuantumForceTransformer;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRTG;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneButtonPanel;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneCircuitBlock;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneLamp;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneStrengthDisplay;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneStrengthScale;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRocketFuelGenerator;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSemiFluidgenerators;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSimpleWasher;
@@ -180,6 +185,11 @@ public class COMPAT_HANDLER {
         GregtechIndustrialRockBreaker.run();
         GregtechIndustrialChisel.run();
         GregtechIndustrialFluidHeater.run();
+        GregtechRedstoneButtonPanel.run();
+        GregtechRedstoneCircuitBlock.run();
+        GregtechRedstoneLamp.run();
+        GregtechRedstoneStrengthDisplay.run();
+        GregtechRedstoneStrengthScale.run();
     }
 
     // InterMod
