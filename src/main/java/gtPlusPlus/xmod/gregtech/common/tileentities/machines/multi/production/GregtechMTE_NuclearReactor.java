@@ -110,8 +110,8 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
             .addMufflerHatch("Top 3x3", 2)
             .addStructureInfo("All dynamos must be between EV and LuV tier.")
             .addStructureInfo("All other hatches must be IV+ tier.")
-            .addStructureInfo("4x Output Hatches or 1x Output Hatch (ME), 1+ Input Hatches, 4x Dynamo Hatches")
-            .addStructureInfo("2x Maintenance Hatches, 4x Mufflers")
+            .addStructureInfo("4x Output Hatches or 1x Output Hatch (ME), 1+ Input Hatches")
+            .addStructureInfo("4x Dynamo Hatches, 4x Mufflers")
             .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
@@ -268,8 +268,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
         if (checkPiece(mName, 3, 3, 0) && mCasing >= 27) {
             if ((mOutputHatches.size() >= 3 || canDumpFluidToME()) && mInputHatches.size() >= 1
                 && mDynamoHatches.size() == 4
-                && mMufflerHatches.size() == 4
-                && mMaintenanceHatches.size() == 2) {
+                && mMufflerHatches.size() == 4) {
                 this.turnCasingActive(false);
                 return true;
             }
