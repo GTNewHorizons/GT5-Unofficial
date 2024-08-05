@@ -5,14 +5,13 @@ import java.util.Collection;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.GuiSyncManager;
 import com.cleanroommc.modularui.widget.ScrollWidget;
 import com.cleanroommc.modularui.widget.scroll.HorizontalScrollData;
-import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
@@ -40,22 +39,9 @@ public class TechTreeGui {
     }
 
     public static IWidget buildTechWidget(TechTreeGuiData data, ITechnology tech) {
-        return new ButtonWidget<>().size(120, 16)
-            .overlay(IKey.lang(tech.getUnlocalizedName()))
-            .onMousePressed(mouseButton -> {
-                // Make this tech the selected technology
-                if (mouseButton == 0) {
-                    data.setSelectedTechnology(tech);
-                }
-                return true;
-            })
-            // Dynamically set background of this button based on the currently selected tech
-            .background(new DynamicDrawable(() -> {
-                if (data.getSelectedTechnology() == tech) {
-                    return UITextures.BUTTON_STANDARD_TOGGLE_DOWN;
-                }
-                return UITextures.BUTTON_STANDARD_TOGGLE_UP;
-            }));
+        return new ToggleButton().size(120, 16)
+            .overlay(IKey.lang(tech.getUnlocalizedName()));
+        // todo
     }
 
     public static Column makeTechContainer(int depth) {
