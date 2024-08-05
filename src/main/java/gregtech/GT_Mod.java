@@ -273,7 +273,9 @@ public class GT_Mod implements IGT_Mod {
                 .getParentFile());
         GT_PreLoad.adjustScrap();
 
-        GT_KeyBindings.registerBindings();
+        if (isClientSide()) {
+            GT_KeyBindings.registerBindings();
+        }
 
         AEApi.instance()
             .registries()
