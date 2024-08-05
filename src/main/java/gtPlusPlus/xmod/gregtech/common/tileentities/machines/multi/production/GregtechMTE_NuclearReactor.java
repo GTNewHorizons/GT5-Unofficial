@@ -106,7 +106,6 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
             .addInputHatch("Top or bottom layer edges", 1)
             .addOutputHatch("Top or bottom layer edges", 1)
             .addDynamoHatch("Top or bottom layer edges", 1)
-            .addMaintenanceHatch("Top or bottom layer edges", 1)
             .addMufflerHatch("Top 3x3", 2)
             .addStructureInfo("All dynamos must be between EV and LuV tier.")
             .addStructureInfo("All other hatches must be IV+ tier.")
