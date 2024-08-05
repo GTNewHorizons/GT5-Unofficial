@@ -75,6 +75,7 @@ import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_SpawnEventHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.item.ItemHolder;
+import gregtech.client.GT_KeyBindings;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
 import gregtech.common.GT_Proxy;
@@ -84,6 +85,7 @@ import gregtech.common.misc.GT_Command;
 import gregtech.common.misc.spaceprojects.commands.SPM_Command;
 import gregtech.common.misc.spaceprojects.commands.SP_Command;
 import gregtech.common.misc.spaceprojects.commands.SpaceProject_Command;
+import gregtech.common.misc.techtree.gui.GuiOpenEventHandler;
 import gregtech.common.misc.techtree.gui.TechTreeGuiFactory;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
@@ -271,12 +273,17 @@ public class GT_Mod implements IGT_Mod {
                 .getParentFile());
         GT_PreLoad.adjustScrap();
 
+        GT_KeyBindings.registerBindings();
+
         AEApi.instance()
             .registries()
             .interfaceTerminal()
             .register(GT_MetaTileEntity_Hatch_CraftingInput_ME.class);
 
         GuiManager.registerFactory(TechTreeGuiFactory.INSTANCE);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(GuiOpenEventHandler.INSTANCE);
 
         GT_PreLoad.runMineTweakerCompat();
 
