@@ -1,14 +1,21 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_Values.AuthorOmdaCZ;
+import static gregtech.api.enums.GT_Values.Colen;
+import static gregtech.api.enums.Mods.BuildCraftFactory;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.ProjectRedIllumination;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
@@ -16,12 +23,29 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 
+import com.github.technus.tectech.thing.casing.TT_Container_Casings;
+import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
+import cpw.mods.fml.client.config.GuiEditArrayEntries;
+import goodgenerator.blocks.regularBlock.Casing;
+import goodgenerator.loader.Loaders;
+import goodgenerator.main.GoodGenerator;
+import gtPlusPlus.GTplusplus;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaSpecialMachineCasings;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.GregtechMTE_ChemicalPlant;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -49,6 +73,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings10;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class GT_MetaTileEntity_MultiSolidifier extends
     GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_MultiSolidifier> implements ISurvivalConstructable {
@@ -60,6 +85,11 @@ public class GT_MetaTileEntity_MultiSolidifier extends
     protected int casingAmount = 0;
     protected int Width = 0;
     protected int eV = 0, mCeil = 0, mFloor = 0;
+    private int casingTier;
+    private int spacetimeCompressionFieldMetadata = -1;
+
+
+    public List fluidSolidifierCasings = new ArrayList((GregTech_API.sBlockCasings10, 3),(GTplusplus.) );
 
     private final String STRUCTURE_PIECE_MAIN = "main";
     private final IStructureDefinition<GT_MetaTileEntity_MultiSolidifier> STRUCTURE_DEFINITION = StructureDefinition
@@ -68,14 +98,14 @@ public class GT_MetaTileEntity_MultiSolidifier extends
             MS_LEFT_MID,
             (transpose(
                 new String[][] { { "BB", "BB", "BB", "BB", "BB" }, { "AA", "  ", "D ", "  ", "AA" },
-                    { "AA", "  ", "  ", "  ", "AA" }, { "CC", "  ", "D ", "  ", "CC" },
+                    { "AA", "  ", "  ", "  ", "AA" }, { "CC", "  ", "F ", "  ", "CC" },
                     { "BB", "BB", "BB", "BB", "BB" } }))
             )
         .addShape(
             MS_RIGHT_MID,
             (transpose(
                 new String[][] { { "BB", "BB", "BB", "BB", "BB" }, { "AA", "  ", " D", "  ", "AA" },
-                    { "AA", "  ", "  ", "  ", "AA" }, { "CC", "  ", " D", "  ", "CC" },
+                    { "AA", "  ", "  ", "  ", "AA" }, { "CC", "  ", " F", "  ", "CC" },
                     { "BB", "BB", "BB", "BB", "BB" } })))
         .addShape(
             MS_END,
@@ -88,19 +118,39 @@ public class GT_MetaTileEntity_MultiSolidifier extends
                 new String[][] { { "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB" },
                     { "AAAAAAA", "       ", "D D D D", "       ", "AAAAAAA" },
                     { "AAAAAAA", "       ", "       ", "       ", "AAAAAAA" },
-                    { "CCCBCCC", "       ", "D D D D", "       ", "CCCECCC" },
+                    { "CCCBCCC", "       ", "F F F F", "       ", "CCCECCC" },
                     { "BBB~BBB", "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB" } })))
         .addElement('A', Glasses.chainAllGlasses())
         .addElement(
             'B',
+
             buildHatchAdder(GT_MetaTileEntity_MultiSolidifier.class)
                 .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch)
                 .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(3))
                 .dot(1)
                 .buildAndChain(
-                    onElementPass(
+                    StructureUtility.<IStructureElement<GT_MetaTileEntity_MultiSolidifier>, GT_MetaTileEntity_MultiSolidifier>onElementPass(
                         GT_MetaTileEntity_MultiSolidifier::onCasingAdded,
+                        /*
                         ofBlock(GregTech_API.sBlockCasings10, 3))))
+                         */
+                        withChannel(
+                            "casing",
+                            ofBlocksTiered(
+                                (block, meta) -> block == TT_Container_Casings.SpacetimeCompressionFieldGenerators ? meta : null,
+                                ImmutableList.of(
+                                    Pair.of(GregTech_API.sBlockCasings10, 3),
+                                    Pair.of(GregtechItemList.Casing_Machine_Custom_3, 1),
+                                    Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 2),
+                                    Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 3),
+                                    Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 4),
+                                    Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 5),
+                                    Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 6),
+                                    Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 7),
+                                    Pair.of(TT_Container_Casings.SpacetimeCompressionFieldGenerators, 8)),
+                                -1,
+                                (t, meta) -> t.spacetimeCompressionFieldMetadata = meta,
+                                t -> t.spacetimeCompressionFieldMetadata)))))
         .addElement('C', ofBlock(GregTech_API.sBlockCasings10, 4))
         .addElement('D', ofBlock(GregTech_API.sBlockCasings2, 13))
         .addElement(
@@ -112,6 +162,10 @@ public class GT_MetaTileEntity_MultiSolidifier extends
                     onElementPass(
                         GT_MetaTileEntity_MultiSolidifier::onCasingAdded,
                         ofBlock(GregTech_API.sBlockCasings10, 3))))
+        .addElement('F', BuildCraftFactory.isModLoaded()
+                ? ofChain(
+        ofBlock(Block.getBlockFromName("BuildCraft|Factory:hopperBlock"), 10))
+        : ofChain(ofBlock(Blocks.hopper, 0)))
         .build();
 
     public GT_MetaTileEntity_MultiSolidifier(final int aID, final String aName, final String aNameRegional) {
