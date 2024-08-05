@@ -21,7 +21,7 @@ public class TechnologyRegistry {
 
     /**
      * Register a new technology into the system
-     * 
+     *
      * @param tech The technology to register.
      * @throws RuntimeException if there already is a technology with the same internal name
      */
@@ -29,7 +29,7 @@ public class TechnologyRegistry {
         if (technologyExists(tech.getInternalName())) {
             throw new RuntimeException("Technology with internal name" + tech.getInternalName() + " already exists.");
         }
-        registeredTechs.put(tech.getLocalizedName(), tech);
+        registeredTechs.put(tech.getInternalName(), tech);
     }
 
     /**

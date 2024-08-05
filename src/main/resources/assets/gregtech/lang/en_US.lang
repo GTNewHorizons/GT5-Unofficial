@@ -1566,6 +1566,7 @@ gt.wrench.mode.1=Line Mode
 #Researchable technologies
 gt.tech.debug.name=DebugTech 9000
 gt.tech.debug2.name=DebugTech 9001
+gt.tech.debug3.name=DebugTech 9002
 
 #Tech tree gui
 gt.gui.techtree.title=Technology Tree
