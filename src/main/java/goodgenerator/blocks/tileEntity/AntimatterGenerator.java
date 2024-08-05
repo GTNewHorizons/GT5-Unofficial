@@ -12,6 +12,8 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.util.GT_HatchElementBuilder;
 import net.minecraft.block.Block;
@@ -38,12 +40,18 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AntimatterGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     implements IConstructable, ISurvivalConstructable {
 
     public static final String MAIN_NAME = "antimatterGenerator";
-    protected IStructureDefinition<goodgenerator.blocks.tileEntity.AntimatterGenerator> multiDefinition = null;
+    protected IStructureDefinition<AntimatterGenerator> multiDefinition = null;
     protected long trueOutput = 0;
     protected int trueEff = 0;
     protected int times = 1;
@@ -1181,7 +1189,7 @@ public class AntimatterGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase
                 .addElement('E', lazy(x -> ofBlock(x.getCasingBlock(2), x.getCasingMeta())))
                 //idk how you want to handle these adders
                 .addElement('F', lazy(x -> GT_HatchElementBuilder.<AntimatterGenerator>builder()
-                    .anyOf(GT_HatchElement.Energy)
+                    .anyOf(GT_HatchElement.ExoticEnergy)
                     .adder(AntimatterGenerator::addLaserSource)
                     .casingIndex(x.textureIndex())
                     .hatchItemFilterAnd(x2 -> filterByMTETier(x2.hatchTier(), Integer.MAX_VALUE))
@@ -1263,11 +1271,65 @@ public class AntimatterGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase
         return info;
     }
 
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if (this.getBaseMetaTileEntity()
+            .isServerSide()) {
+            if (mMaxProgresstime != 0 && mProgresstime % 20 == 0) {
+                startRecipeProcessing();
+                List<FluidStack> inputFluids = getStoredFluids();
+                long containedAntimatter = 0;
+                FluidStack catalystFluid = null;
+                int i;
+
+                for (i = 0; i < inputFluids.size(); i++) {
+                    FluidStack inputFluid = inputFluids.get(i);
+                    if (inputFluid.isFluidEqual(MaterialsUEVplus.Antimatter.getFluid(1)))
+                        containedAntimatter += inputFluid.amount;
+                    else catalystFluid = inputFluid;
+                    inputFluid.amount = 0;
+                }
+
+                //If i > 1, we iterated 3 times and have too many fluids.
+                if (i == 1 && containedAntimatter > 0 && catalystFluid != null) {
+                    createEU(containedAntimatter, catalystFluid);
+                }
+
+                return super.onRunningTick(aStack);
+            }
+        }
+        return true;
+    }
+
+    private static final Map<Fluid, Float> catalysts;
+
+    static {
+        catalysts = new HashMap<>();
+        catalysts.put(Materials.Copper.mFluid, 1F);
+        catalysts.put(Materials.SuperconductorUIVBase.mFluid, 1.02F);
+        catalysts.put(Materials.SuperconductorUMVBase.mFluid, 1.03F);
+        catalysts.put(MaterialsUEVplus.BlackDwarfMatter.mFluid, 1.04F);
+    }
+
+    //(Antimatter^(EXP) * 1e12 )/(Math.min((Antimatter/Matter),(Matter/Antimatter)))
+    public void createEU(long antimatter, FluidStack catalyst) {
+        Float modifier = catalysts.get(catalyst.getFluid());
+        long catalystCount = catalyst.amount;
+        long generatedEU = 0;
+
+        if (modifier != null) {
+            generatedEU = (long) ((Math.pow(antimatter, modifier) * 1e12) / (Math.min((antimatter / catalystCount), (catalystCount / antimatter))));
+        }
+
+        long amps = maxAmperesOut();
+        addEnergyOutput_EM(generatedEU / amps, amps);
+    }
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(mName, 17, 15, 3) && mMaintenanceHatches.size() == 1
-            && mDynamoHatches.size() + eDynamoMulti.size() == 1;
+        if (!structureCheck_EM(mName, 17, 15, 3) && mMaintenanceHatches.size() == 1
+            && mDynamoHatches.size() + eDynamoMulti.size() == 60) return false;
+        return !(mInputHatches.size() == 2);
     }
 
     @Override
@@ -1292,7 +1354,7 @@ public class AntimatterGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new goodgenerator.blocks.tileEntity.AntimatterGenerator(this.mName);
+        return new AntimatterGenerator(this.mName);
     }
 
     @Override
