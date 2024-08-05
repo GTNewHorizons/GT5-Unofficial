@@ -12,6 +12,9 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -254,6 +257,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         tierPipeCasing = -1;
         tierMachineCasing = -1;
         tCountCasing = 0;
+        placeWater();
         if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierMachineCasing < 0) return false;
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
@@ -441,6 +445,33 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
             if (mUpdate < 0) mUpdate = 300;
+        }
+    }
+
+    private void placeWater() {
+        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
+
+        final ForgeDirection frontFacing = gregTechTileEntity.getFrontFacing();
+
+
+        int x = gregTechTileEntity.getXCoord();
+        int y = gregTechTileEntity.getYCoord();
+        int z = gregTechTileEntity.getZCoord();
+
+        double xOffset = 1 - getExtendedFacing().getRelativeBackInWorld().offsetX;
+        double zOffset = 4 + getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        double yOffset = getExtendedFacing().getRelativeBackInWorld().offsetY;
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                Block tBlock = this.getBaseMetaTileEntity().getWorld().getBlock((int) (i + xOffset + x), (int) (y + yOffset), (int) (j + zOffset + z));
+                if (tBlock == Blocks.air) {
+                    this.getBaseMetaTileEntity()
+                        .getWorld()
+                        .setBlock((int) (i + xOffset + x), (int) (y + yOffset), (int) (j + zOffset + z), Blocks.pumpkin);
+                }
+
+            }
         }
     }
 }
