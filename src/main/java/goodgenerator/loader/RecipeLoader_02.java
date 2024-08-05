@@ -74,7 +74,7 @@ public class RecipeLoader_02 {
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlueAlloy, 1),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 32),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Beryllium, 32),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1))
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1))
             .itemOutputs(ItemRefer.Speeding_Pipe.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -525,7 +525,7 @@ public class RecipeLoader_02 {
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Naquadah, 1),
                 ItemRefer.Fluid_Storage_Core_T3.get(10),
-                new Object[] { OrePrefixes.circuit.get(Materials.Master), 8 },
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 8 },
                 ItemList.Electric_Pump_IV.get(8),
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.NiobiumTitanium, 8),
                 MyMaterial.adamantiumAlloy.get(OrePrefixes.plate, 32))
@@ -544,7 +544,7 @@ public class RecipeLoader_02 {
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1),
                 ItemRefer.Fluid_Storage_Core_T4.get(10),
-                new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 8 },
+                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 8 },
                 ItemList.Electric_Pump_LuV.get(8),
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.MysteriousCrystal, 8),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.ElectrumFlux, 32))
@@ -563,7 +563,7 @@ public class RecipeLoader_02 {
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1),
                 ItemRefer.Fluid_Storage_Core_T5.get(10),
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 8 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
                 ItemList.Electric_Pump_ZPM.get(8),
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.DraconiumAwakened, 8),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 64))
@@ -582,7 +582,7 @@ public class RecipeLoader_02 {
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
                 ItemRefer.Fluid_Storage_Core_T6.get(2),
-                new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 8L },
+                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 8L },
                 ItemList.Electric_Pump_UV.get(8),
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.NetherStar, 8),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 64))
@@ -601,7 +601,7 @@ public class RecipeLoader_02 {
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
                 ItemRefer.Fluid_Storage_Core_T7.get(2),
-                new Object[] { OrePrefixes.circuit.get(Materials.Bio), 8L },
+                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 8L },
                 ItemList.Electric_Pump_UHV.get(8),
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.NetherStar, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CosmicNeutronium, 32),
@@ -621,7 +621,7 @@ public class RecipeLoader_02 {
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
                 ItemRefer.Fluid_Storage_Core_T8.get(2),
-                new Object[] { OrePrefixes.circuit.get(Materials.Optical), 8L },
+                new Object[] { OrePrefixes.circuit.get(Materials.UIV), 8L },
                 ItemList.Electric_Pump_UEV.get(8),
                 GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NetherStar, 12),
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 12),
@@ -643,7 +643,7 @@ public class RecipeLoader_02 {
                 .itemInputs(
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 2),
                     ItemRefer.Fluid_Storage_Core_T9.get(2),
-                    new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 8L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 8L },
                     ItemList.Electric_Pump_UIV.get(8),
                     GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NetherStar, 12),
                     GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 12),
@@ -664,7 +664,7 @@ public class RecipeLoader_02 {
                 .itemInputs(
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 2),
                     ItemRefer.Fluid_Storage_Core_T10.get(2),
-                    new Object[] { OrePrefixes.circuit.get(Materials.Cosmic), 12L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 12L },
                     ItemList.Electric_Pump_UMV.get(8),
                     GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NetherStar, 64),
                     GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 12),
@@ -1082,6 +1082,14 @@ public class RecipeLoader_02 {
             FluidRegistry.getFluidStack("supercriticalsteam", 32000),
             8000);
 
+        MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
+            FluidRegistry.getFluidStack("molten.solarsalthot", 3200),
+            FluidRegistry.getFluidStack("molten.solarsaltcold", 3200),
+            FluidRegistry.getFluidStack("ic2distilledwater", 20000),
+            FluidRegistry.getFluidStack("ic2superheatedsteam", 3200000),
+            FluidRegistry.getFluidStack("supercriticalsteam", 32000),
+            1600);
+
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Lepidolite, 1))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
@@ -1131,7 +1139,7 @@ public class RecipeLoader_02 {
                 MyMaterial.marM200.get(OrePrefixes.plate, 2),
                 MyMaterial.marCeM200.get(OrePrefixes.gearGt, 2),
                 MyMaterial.incoloy903.get(OrePrefixes.pipeLarge, 2),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
                 ItemList.Hull_IV.get(1))
             .itemOutputs(ItemRefer.SC_Fluid_Turbine.get(1))
             .duration(15 * SECONDS)
@@ -1341,7 +1349,7 @@ public class RecipeLoader_02 {
                     ItemList.Robot_Arm_EV.get(2),
                     GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Osmiridium, 2),
                     MyMaterial.marM200.get(OrePrefixes.plateDouble, 2),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1),
                     ELEMENT.getInstance().RUTHENIUM.getBolt(32),
                     GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Platinum, 8))
                 .fluidInputs(MyMaterial.zircaloy4.getMolten(576))
@@ -1457,7 +1465,7 @@ public class RecipeLoader_02 {
                 ItemList.FusionComputer_LuV.get(48),
                 ItemRefer.HiC_T1.get(8),
                 MyMaterial.marCeM200.get(OrePrefixes.plate, 32),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 8),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 8),
                 ItemList.Circuit_Wafer_HPIC.get(16),
                 ItemList.Field_Generator_LuV.get(4),
                 MyMaterial.marM200.get(OrePrefixes.stickLong, 8))
@@ -1560,7 +1568,7 @@ public class RecipeLoader_02 {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.Casing_Fusion_Internal2.get(3),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 1),
                 ItemRefer.HiC_T5.get(4),
                 CI.getEnergyCore(5, 1))
             .itemOutputs(ItemRefer.Compact_Fusion_Coil_T4.get(1))
