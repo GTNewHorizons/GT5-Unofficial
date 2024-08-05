@@ -667,6 +667,7 @@ public class MaterialsUEVplus {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     public static Materials SixPhasedCopper = new Materials(
         147,
         TextureSet.SET_SHINY,
@@ -759,10 +760,20 @@ public class MaterialsUEVplus {
         8 * 2621440,
         26,
         256,
+=======
+    public static Materials Protomatter = new Materials(
+        146,
+        TextureSet.SET_FLUID,
+        1.0F,
+        0,
+        2,
+        16,
+>>>>>>> 3bd491c92e (Generator structure def do be crashing)
         255,
         255,
         255,
         0,
+<<<<<<< HEAD
         "GravitonShard",
         "Graviton Shard",
         -1,
@@ -895,6 +906,20 @@ public class MaterialsUEVplus {
             1,
             1,
             Dyes._NULL);
+=======
+        "Protomatter",
+        "Protomatter",
+        -1,
+        -1,
+        0,
+        1,
+        false,
+        true,
+        1,
+        1,
+        1,
+        Dyes._NULL);
+>>>>>>> 3bd491c92e (Generator structure def do be crashing)
 
 >>>>>>> 6afb7f13f6 (Add protomatter, implement new structure and make it work)
     /**

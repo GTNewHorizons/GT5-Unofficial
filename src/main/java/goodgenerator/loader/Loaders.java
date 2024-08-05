@@ -2,7 +2,6 @@ package goodgenerator.loader;
 
 import static goodgenerator.util.DescTextLocalization.addText;
 
-import goodgenerator.blocks.tileEntity.AntimatterGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,6 +10,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.blocks.myFluids.FluidsBuilder;
+<<<<<<< HEAD
 import goodgenerator.blocks.regularBlock.BlockCasing;
 import goodgenerator.blocks.regularBlock.BlockComplexTextureCasing;
 import goodgenerator.blocks.regularBlock.BlockFrame;
@@ -34,14 +34,49 @@ import goodgenerator.blocks.tileEntity.MTELargeFusionComputer2;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer3;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer4;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer5;
+=======
+import goodgenerator.blocks.regularBlock.Casing;
+import goodgenerator.blocks.regularBlock.ComplexTextureCasing;
+import goodgenerator.blocks.regularBlock.Frame;
+import goodgenerator.blocks.regularBlock.TEBlock;
+import goodgenerator.blocks.regularBlock.TurbineCasing;
+>>>>>>> 3bd491c92e (Generator structure def do be crashing)
 import goodgenerator.blocks.tileEntity.AntimatterForge;
+import goodgenerator.blocks.tileEntity.AntimatterGenerator;
 import goodgenerator.blocks.tileEntity.AntimatterOutputHatch;
+<<<<<<< HEAD
 import goodgenerator.blocks.tileEntity.MTEMultiNqGenerator;
 import goodgenerator.blocks.tileEntity.MTENeutronActivator;
 import goodgenerator.blocks.tileEntity.MTEPreciseAssembler;
 import goodgenerator.blocks.tileEntity.MTESupercriticalFluidTurbine;
 import goodgenerator.blocks.tileEntity.MTEUniversalChemicalFuelEngine;
 import goodgenerator.blocks.tileEntity.MTEYottaFluidTank;
+=======
+import goodgenerator.blocks.tileEntity.ComponentAssemblyLine;
+import goodgenerator.blocks.tileEntity.CoolantTower;
+import goodgenerator.blocks.tileEntity.EssentiaHatch;
+import goodgenerator.blocks.tileEntity.EssentiaOutputHatch;
+import goodgenerator.blocks.tileEntity.EssentiaOutputHatch_ME;
+import goodgenerator.blocks.tileEntity.ExtremeHeatExchanger;
+import goodgenerator.blocks.tileEntity.FuelRefineFactory;
+import goodgenerator.blocks.tileEntity.GTMetaTileEntity.DieselGenerator;
+import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronAccelerator;
+import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronSensor;
+import goodgenerator.blocks.tileEntity.GTMetaTileEntity.YOTTAHatch;
+import goodgenerator.blocks.tileEntity.LargeEssentiaGenerator;
+import goodgenerator.blocks.tileEntity.LargeEssentiaSmeltery;
+import goodgenerator.blocks.tileEntity.LargeFusionComputer1;
+import goodgenerator.blocks.tileEntity.LargeFusionComputer2;
+import goodgenerator.blocks.tileEntity.LargeFusionComputer3;
+import goodgenerator.blocks.tileEntity.LargeFusionComputer4;
+import goodgenerator.blocks.tileEntity.LargeFusionComputer5;
+import goodgenerator.blocks.tileEntity.MultiNqGenerator;
+import goodgenerator.blocks.tileEntity.NeutronActivator;
+import goodgenerator.blocks.tileEntity.PreciseAssembler;
+import goodgenerator.blocks.tileEntity.SupercriticalFluidTurbine;
+import goodgenerator.blocks.tileEntity.UniversalChemicalFuelEngine;
+import goodgenerator.blocks.tileEntity.YottaFluidTank;
+>>>>>>> 3bd491c92e (Generator structure def do be crashing)
 import goodgenerator.client.render.BlockRenderHandler;
 import goodgenerator.crossmod.ic2.CropsLoader;
 import goodgenerator.crossmod.nei.NEIConfig;
@@ -236,8 +271,16 @@ public class Loaders {
         new String[] { GoodGenerator.MOD_ID + ":gravityStabilizationCasing" });
     public static final Block protomatterActivationCoil = new BlockCasing(
         "protomatterActivationCoil",
+<<<<<<< HEAD
         new String[] { GoodGenerator.MOD_ID + ":protomatterActivationCoil" }); 
     public static final Block essentiaFilterCasing = new BlockCasing(
+=======
+        new String[] { GoodGenerator.MOD_ID + ":protomatterActivationCoil" });
+    public static final Block antimatterAnnihilationMatrix = new Casing(
+        "antimatterAnnihilationMatrix",
+        new String[] { GoodGenerator.MOD_ID + ":antimatterAnnihilationMatrix" });
+    public static final Block essentiaFilterCasing = new Casing(
+>>>>>>> 3bd491c92e (Generator structure def do be crashing)
         "essentiaFilterCasing",
         new String[] { GoodGenerator.MOD_ID + ":essentiaFilterCasing" });
     public static Block essentiaHatch;
@@ -315,7 +358,10 @@ public class Loaders {
             .getStackForm(1L);
         Loaders.YFH = new MTEYOTTAHatch(MetaTileEntityIDs.YottaHatch.ID, "YottaFluidTankHatch", "YOTHatch", 5)
             .getStackForm(1L);
-        Loaders.AMHatch = new AntimatterOutputHatch(IDs_GoodGenerator.AntimatterHatch.ID, "AntimatterHatch", "Antimatter Hatch").getStackForm(1L);
+        Loaders.AMHatch = new AntimatterOutputHatch(
+            IDs_GoodGenerator.AntimatterHatch.ID,
+            "AntimatterHatch",
+            "Antimatter Hatch").getStackForm(1L);
         Loaders.SCTurbine = new SupercriticalFluidTurbine(
             IDs_GoodGenerator.SupercriticalFluidTurbine.ID,
             "SupercriticalSteamTurbine",
@@ -374,6 +420,7 @@ public class Loaders {
         CrackRecipeAdder.registerWire(IDs_GoodGenerator.WireSignalium.ID, MyMaterial.signalium, 12, 131072, 16, true);
         CrackRecipeAdder.registerWire(IDs_GoodGenerator.WireLumiium.ID, MyMaterial.lumiium, 8, 524288, 64, true);
 <<<<<<< HEAD
+<<<<<<< HEAD
         Loaders.AMForge = new AntimatterForge(IDOffset + 250, "AntimatterForge", "Semi-Stable Antimatter Stabilization Sequencer")
 >>>>>>> ef58e42a27 (Add antimatter)
 =======
@@ -386,6 +433,16 @@ public class Loaders {
         Loaders.AMGenerator = new AntimatterGenerator(IDs_GoodGenerator.AntimatterGenerator.ID, "AntimatterGenerator", "Shielded Lagrangian Annihilation Matrix")
             .getStackForm(1L);
 >>>>>>> e09fa1c3f1 (Antimatter work (#2802))
+=======
+        Loaders.AMForge = new AntimatterForge(
+            IDs_GoodGenerator.AntimatterForge.ID,
+            "AntimatterForge",
+            "Semi-Stable Antimatter Stabilization Sequencer").getStackForm(1L);
+        Loaders.AMGenerator = new AntimatterGenerator(
+            IDs_GoodGenerator.AntimatterGenerator.ID,
+            "AntimatterGenerator",
+            "Shielded Lagrangian Annihilation Matrix").getStackForm(1L);
+>>>>>>> 3bd491c92e (Generator structure def do be crashing)
     }
 
     public static void Register() {
@@ -428,7 +485,11 @@ public class Loaders {
         GameRegistry.registerBlock(magneticFluxCasing, MyItemBlocks.class, "magneticFluxCasing");
         GameRegistry.registerBlock(gravityStabilizationCasing, MyItemBlocks.class, "gravityStabilizationCasing");
         GameRegistry.registerBlock(protomatterActivationCoil, MyItemBlocks.class, "protomatterActivationCoil");
+<<<<<<< HEAD
 >>>>>>> ef58e42a27 (Add antimatter)
+=======
+        GameRegistry.registerBlock(antimatterAnnihilationMatrix, MyItemBlocks.class, "antimatterAnnihilationMatrix");
+>>>>>>> 3bd491c92e (Generator structure def do be crashing)
         GameRegistry.registerItem(radiationProtectionPlate, "radiationProtectionPlate", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(wrappedUraniumIngot, "wrappedUraniumIngot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityUraniumNugget, "highDensityUraniumNugget", GoodGenerator.MOD_ID);
