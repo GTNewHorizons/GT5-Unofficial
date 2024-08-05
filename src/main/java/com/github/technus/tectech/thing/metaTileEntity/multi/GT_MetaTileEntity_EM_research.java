@@ -49,6 +49,11 @@ import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -89,6 +94,9 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     private String machineType = assembly;
     private ItemStack holdItem;
     private long computationRemaining, computationRequired;
+
+    // Used to sync currently researching item to GUI
+    private String clientOutputName;
 
     private static LinkedHashMap<String, String> lServerNames;
 
@@ -587,7 +595,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 + EnumChatFormatting.RESET
                 + " / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(computationRequired / 20L) };
+                + GT_Utility.formatNumbers(getComputationRequired()) };
     }
 
     @Override
@@ -744,14 +752,59 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+        screenElements
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> EnumChatFormatting.WHITE + "Researching: "
+                            + EnumChatFormatting.AQUA
+                            + clientOutputName
+                            + EnumChatFormatting.RESET)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(widget -> computationRequired > 0 && !clientOutputName.isEmpty()))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> EnumChatFormatting.WHITE + "Computation: "
+                            + getComputationConsumed()
+                            + " / "
+                            + getComputationRequired()
+                            + " ("
+                            + 100L * (getComputationRequired() > 0 ? getComputationConsumed() / getComputationRequired()
+                                : 0)
+                            + "%)"
+                            + EnumChatFormatting.RESET)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(widget -> computationRequired > 0 && !clientOutputName.isEmpty()))
+            .widget(new FakeSyncWidget.LongSyncer(() -> computationRequired, aLong -> computationRequired = aLong))
+            .widget(new FakeSyncWidget.LongSyncer(() -> computationRemaining, aLong -> computationRemaining = aLong))
+            .widget(new FakeSyncWidget.StringSyncer(() -> {
+                if (tRecipe != null && tRecipe.mOutput != null) {
+                    return tRecipe.mOutput.getDisplayName();
+                }
+                return "";
+            }, aString -> clientOutputName = aString));
+    }
+
+    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", mEfficiency / 100.0F);
         tag.setBoolean("incompleteStructure", (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0);
         tag.setString("machineType", machineType);
-        tag.setLong("computation", (computationRequired - computationRemaining) / 20L);
-        tag.setLong("computationRequired", computationRequired / 20L);
+        tag.setLong("computation", getComputationConsumed());
+        tag.setLong("computationRequired", getComputationRequired());
+    }
+
+    private long getComputationConsumed() {
+        return (computationRequired - computationRemaining) / 20L;
+    }
+
+    private long getComputationRequired() {
+        return computationRequired / 20L;
     }
 
     @Override
