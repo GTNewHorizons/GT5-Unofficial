@@ -3,7 +3,7 @@ package gregtech.common.misc.techtree.interfaces;
 import java.util.Collection;
 
 /**
- * Represents a researchable technology
+ * Represents
  *
  * @author NotAPenguin0
  */
@@ -27,7 +27,7 @@ public interface ITechnology {
     /**
      * Adds a technology as a child technology of this technology. Note that this should NEVER be called without making
      * sure the reverse relation is also satisfied. Essentially, do not call this outside of the Technology constructor.
-     *
+     * 
      * @param tech The technology to add as a child
      */
     void addChildTechnology(ITechnology tech);
