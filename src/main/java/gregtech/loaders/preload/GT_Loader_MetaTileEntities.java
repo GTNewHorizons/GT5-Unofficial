@@ -59,6 +59,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.BLACK_HOLE_HATCH;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_IV;
@@ -121,6 +122,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.HEAT_DETECTOR_HATCH;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_COAL_BOILER;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_LAVA_BOILER;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_SOLAR_BOILER;
@@ -462,6 +464,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
+import gregtech.common.tileentities.machines.multi.hatches.GT_MetaTileEntity_HeatDetectorHatch;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.GT_Mod;
@@ -4159,6 +4162,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "hatch.dataaccess.auto",
                 "Automatable Data Access Hatch",
                 8).getStackForm(1L));
+        ItemList.Hatch_HeatDetector.set(
+new GT_MetaTileEntity_HeatDetectorHatch(HEAT_DETECTOR_HATCH.ID,  "hatch.heatdetector", "Heat Detection Hatch", 7).getStackForm(1));
+        ItemList.Hatch_BlackHole.set(
+            new GT_MetaTileEntity_HeatDetectorHatch(BLACK_HOLE_HATCH.ID,  "hatch.blackhole", "Black Hole Control Hatch", 9).getStackForm(1));
         generateWiresAndPipes();
     }
 
