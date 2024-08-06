@@ -62,7 +62,6 @@ public class GregtechMetaTileEntity_IndustrialMacerator
     private static final int HORIZONTAL_OFF_SET = 1;
     private static final int VERTICAL_OFF_SET = 5;
     private static final int DEPTH_OFF_SET = 0;
-    private static int showNei = 1;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialMacerator> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialMacerator(final int aID, final String aName, final String aNameRegional) {
@@ -203,12 +202,11 @@ public class GregtechMetaTileEntity_IndustrialMacerator
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        if (checkPiece(tier1, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) {
-            controllerTier = 1;
-            return mCasing >= 26 && checkHatch();
-        }
-        if (checkPiece(tier2, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && controllerTier > 1) {
-            controllerTier = 2;
+        if (controllerTier == 1) {
+            if (checkPiece(tier1, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) {
+                return mCasing >= 26 && checkHatch();
+            }
+        } else if (checkPiece(tier2, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) {
             return mCasing >= 26 && checkHatch();
         }
         return false;
