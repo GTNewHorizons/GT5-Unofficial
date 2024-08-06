@@ -17,7 +17,9 @@ import java.util.UUID;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundEventAccessorComposite;
 import net.minecraft.client.audio.SoundRegistry;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemRecord;
+import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
 
@@ -30,15 +32,19 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jcraft.jorbis.VorbisFile;
 
+import baubles.api.BaublesApi;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.net.GT_Packet_MusicSystemData;
 import gregtech.client.ElectricJukeboxSound;
+import gregtech.common.items.GT_WirelessHeadphones;
+import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_BetterJukebox;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
 /**
  * A system that keeps track of jukebox music tracks playing in different locations.
@@ -61,8 +67,8 @@ public final class GT_MusicSystem {
         public final UUID sourceID;
         /** Currently playing track */
         public ResourceLocation currentRecord;
-        /** Whether this source supports interdimensional headphones */
-        public boolean interdimensional;
+        /** Headphone range */
+        public GT_MetaTileEntity_BetterJukebox.HeadphoneLimit headphoneLimit;
         /**
          * {@link System#currentTimeMillis()} at the time this record started playing, in server time
          */
@@ -71,6 +77,8 @@ public final class GT_MusicSystem {
         public long playingForMs;
         /** The origin of this source used for wireless headphone range calculations */
         public final Vector4i originPosition = new Vector4i();
+        /** Number of blocks from {@link MusicSource#originPosition} the headphones can work */
+        public int headphoneBlockRange;
         /** Densely packed parameters for each "emitter" associated with the source, for fast iteration */
         public int[] emitterParameters; // [{x,y,z,dim,volume}, {x, ...}, {x, ...}, ...]
         /** Offsets into the parameters array */
@@ -162,6 +170,15 @@ public final class GT_MusicSystem {
             return closest;
         }
 
+        public boolean inHeadphoneRange(int x, int y, int z, int dim) {
+            return switch (headphoneLimit) {
+                case BETWEEN_DIMENSIONS -> true;
+                case INSIDE_DIMENSION -> dim == originPosition.w;
+                case BLOCK_RANGE -> dim == originPosition.w
+                    && originPosition.distanceSquared(x, y, z, dim) <= sq(headphoneBlockRange);
+            };
+        }
+
         public void encode(final ByteBuf target) {
             target.writeLong(sourceID.getMostSignificantBits());
             target.writeLong(sourceID.getLeastSignificantBits());
@@ -178,7 +195,8 @@ public final class GT_MusicSystem {
             } else {
                 target.writeBoolean(false);
             }
-            target.writeBoolean(interdimensional);
+            target.writeByte((byte) headphoneLimit.ordinal());
+            ByteBufUtils.writeVarInt(target, headphoneBlockRange, 5);
             target.writeLong(startedPlayingAtMs);
             target.writeLong(playingForMs);
             ByteBufUtils.writeVarInt(target, originPosition.x, 5);
@@ -201,7 +219,8 @@ public final class GT_MusicSystem {
                 final String path = ByteBufUtils.readUTF8String(bytes);
                 source.currentRecord = new ResourceLocation(domain, path);
             }
-            source.interdimensional = bytes.readBoolean();
+            source.headphoneLimit = GT_MetaTileEntity_BetterJukebox.HeadphoneLimit.ENTRIES.get(bytes.readByte());
+            source.headphoneBlockRange = ByteBufUtils.readVarInt(bytes, 5);
             source.startedPlayingAtMs = bytes.readLong();
             source.playingForMs = bytes.readLong();
             final int originX = ByteBufUtils.readVarInt(bytes, 5);
@@ -266,7 +285,6 @@ public final class GT_MusicSystem {
 
         public static synchronized void tick() {
             final long now = System.currentTimeMillis();
-            final var soundDurations = getMusicRecordDurations();
             tickAnyDirty = false;
             musicSources.forEach((uuid, source) -> {
                 source.playingForMs = now - source.startedPlayingAtMs;
@@ -332,16 +350,17 @@ public final class GT_MusicSystem {
                 }
             }
 
-            public void resetSound(final Minecraft mc, final MusicSource source) {
+            public void resetSound(final Minecraft mc, final MusicSource source, final boolean onHeadphones) {
                 clearSound(mc);
-                if (source == null) {
+                if (source == null || source.emitterParameters.length == 0) {
                     return;
                 }
-                int closestEmitter = source.closestEmitter(
-                    (int) Math.floor(mc.thePlayer.posX),
-                    (int) Math.floor(mc.thePlayer.posY),
-                    (int) Math.floor(mc.thePlayer.posZ),
-                    currentDimension);
+                int closestEmitter = onHeadphones ? 0
+                    : source.closestEmitter(
+                        (int) Math.floor(mc.thePlayer.posX),
+                        (int) Math.floor(mc.thePlayer.posY),
+                        (int) Math.floor(mc.thePlayer.posZ),
+                        currentDimension);
                 if (closestEmitter < 0) {
                     return;
                 }
@@ -350,20 +369,24 @@ public final class GT_MusicSystem {
                 this.clientReferenceStartTime = System.currentTimeMillis() - source.playingForMs;
                 if (currentSoundResource != null) {
                     this.currentSound = makeRecord(source, closestEmitter);
+                    if (onHeadphones) {
+                        this.currentSound.volume = 1.0e20f;
+                    }
                     mc.getSoundHandler()
                         .playSound(this.currentSound);
                 }
             }
 
-            public void updateSound(final Minecraft mc, final MusicSource source) {
-                if (source == null || currentSound == null) {
+            public void updateSound(final Minecraft mc, final MusicSource source, final boolean onHeadphones) {
+                if (source == null || currentSound == null || source.emitterParameters.length == 0) {
                     return;
                 }
-                int closestEmitter = source.closestEmitter(
-                    (int) Math.floor(mc.thePlayer.posX),
-                    (int) Math.floor(mc.thePlayer.posY),
-                    (int) Math.floor(mc.thePlayer.posZ),
-                    currentDimension);
+                int closestEmitter = onHeadphones ? 0
+                    : source.closestEmitter(
+                        (int) Math.floor(mc.thePlayer.posX),
+                        (int) Math.floor(mc.thePlayer.posY),
+                        (int) Math.floor(mc.thePlayer.posZ),
+                        currentDimension);
                 if (closestEmitter < 0) {
                     currentSound.volume = 0.0f;
                     return;
@@ -372,7 +395,8 @@ public final class GT_MusicSystem {
                 currentSound.xPosition = source.emitterParameters[offset + MusicSource.EMITTER_X];
                 currentSound.yPosition = source.emitterParameters[offset + MusicSource.EMITTER_Y];
                 currentSound.zPosition = source.emitterParameters[offset + MusicSource.EMITTER_Z];
-                currentSound.volume = source.emitterParameters[offset + MusicSource.EMITTER_VOLUME_X_100] / 100.0f;
+                currentSound.volume = onHeadphones ? 1.0e20f
+                    : source.emitterParameters[offset + MusicSource.EMITTER_VOLUME_X_100] / 100.0f;
             }
         }
 
@@ -382,10 +406,13 @@ public final class GT_MusicSystem {
         private static final Object2ObjectOpenHashMap<UUID, ClientSourceData> activelyPlayingMusic = new Object2ObjectOpenHashMap<>(
             16);
 
+        private static final ObjectOpenHashSet<UUID> wornHeadphones = new ObjectOpenHashSet<>();
+
         private static int currentDimension = Integer.MIN_VALUE;
 
         private static boolean soundsPaused = false;
         private static long pauseTimeMs = 0;
+        private static int tickCounter = 0;
 
         public static void loadUpdatedSources(ByteBuf bytes) {
             final int sourceCount = ByteBufUtils.readVarInt(bytes, 5);
@@ -462,8 +489,27 @@ public final class GT_MusicSystem {
                 || mc.theWorld.provider == null) {
                 return;
             }
+            tickCounter++;
             final long now = System.currentTimeMillis();
             currentDimension = mc.theWorld.provider.dimensionId;
+
+            headphoneCheck: if ((tickCounter % 20) == 0) {
+                wornHeadphones.clear();
+                final IInventory baubles = BaublesApi.getBaubles(mc.thePlayer);
+                if (baubles == null) {
+                    break headphoneCheck;
+                }
+                final int baublesSize = baubles.getSizeInventory();
+                for (int i = 0; i < baublesSize; i++) {
+                    final ItemStack item = baubles.getStackInSlot(i);
+                    if (item != null && item.getItem() instanceof GT_WirelessHeadphones headphones) {
+                        final UUID id = headphones.getBoundJukeboxUUID(item);
+                        if (id != null) {
+                            wornHeadphones.add(id);
+                        }
+                    }
+                }
+            }
 
             activelyPlayingMusic.forEach((uuid, data) -> data.resetMark());
 
@@ -479,10 +525,11 @@ public final class GT_MusicSystem {
                     data.currentSound = null;
                     data.currentSoundResource = null;
                 }
+                final boolean onHeadphones = wornHeadphones.contains(uuid);
                 if (!data.equalSound(musicSource)) {
-                    data.resetSound(mc, musicSource);
+                    data.resetSound(mc, musicSource, onHeadphones);
                 } else {
-                    data.updateSound(mc, musicSource);
+                    data.updateSound(mc, musicSource, onHeadphones);
                 }
             });
 

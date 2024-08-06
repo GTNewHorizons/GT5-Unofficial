@@ -26,6 +26,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.joml.Vector4i;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -61,7 +62,7 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
     implements IAddUIWidgets, ISoundP2PHandler {
 
     // Stored state
-    private UUID jukeboxUuid = UNSET_UUID;
+    public UUID jukeboxUuid = UNSET_UUID;
     public boolean loopMode = true;
     public boolean shuffleMode = false;
     public int playbackSlot = 0;
@@ -84,9 +85,12 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
     private static final Random SHUFFLER = new Random();
 
     public enum HeadphoneLimit {
+
         BLOCK_RANGE,
         INSIDE_DIMENSION,
-        BETWEEN_DIMENSIONS
+        BETWEEN_DIMENSIONS;
+
+        public static final ImmutableList<HeadphoneLimit> ENTRIES = ImmutableList.copyOf(values());
     }
 
     public static final class BalanceMath {
@@ -94,7 +98,8 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
         public static int MAX_TIER = GTVoltageIndex.IV;
         public static float VANILLA_JUKEBOX_RANGE = 4.0f; // 64 blocks
 
-        private static float[] LISTENING_VOLUME = new float[] { VANILLA_JUKEBOX_RANGE, // ULV (does not exist)
+        private static final float[] LISTENING_VOLUME = new float[] { //
+            VANILLA_JUKEBOX_RANGE, // ULV (unpowered fallback)
             VANILLA_JUKEBOX_RANGE + 1.0f, // LV, 80 blocks
             VANILLA_JUKEBOX_RANGE + 2.0f, // MV, 96 blocks
             VANILLA_JUKEBOX_RANGE + 4.0f, // HV, 118 blocks
@@ -102,12 +107,13 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
             VANILLA_JUKEBOX_RANGE + 6.0f, // IV, 160 blocks, equivalent to default load distance of 10 chunks
         };
 
-        private static float[] HEADPHONE_BLOCK_RANGE = new float[] { 64.0f, // ULV (does not exist)
-            128.0f, // LV
-            160.0f, // MV
-            320.0f, // HV
-            9001.0f, // EV, alreadu unlimited here - this value is ignored
-            9002.0f, // IV, already unlimited here - this value is ignored
+        private static final int[] HEADPHONE_BLOCK_RANGE = new int[] { //
+            64, // ULV (unpowered fallback)
+            128, // LV
+            160, // MV
+            320, // HV
+            9001, // EV, alreadu unlimited here - this value is ignored
+            9002, // IV, already unlimited here - this value is ignored
         };
 
         public static float listeningVolume(int tier) {
@@ -115,7 +121,7 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
             return LISTENING_VOLUME[tier];
         }
 
-        public static float headphoneBlockRange(int tier) {
+        public static int headphoneBlockRange(int tier) {
             tier = MathHelper.clamp_int(tier, 0, MAX_TIER);
             return HEADPHONE_BLOCK_RANGE[tier];
         }
@@ -158,7 +164,7 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
                 BalanceMath.volumeToAttenuationDistance(BalanceMath.listeningVolume(aTier))));
         strings.add(switch (BalanceMath.headphoneLimit(aTier)) {
             case BLOCK_RANGE -> String.format(
-                "Headphone signal range: %s%.1f blocks",
+                "Headphone signal range: %s%d blocks",
                 EnumChatFormatting.WHITE,
                 BalanceMath.headphoneBlockRange(aTier));
             case INSIDE_DIMENSION -> String
@@ -219,7 +225,8 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
         if (musicSource == null) {
             musicSource = GT_MusicSystem.ServerSystem.registerOrGetMusicSource(jukeboxUuid);
             musicSource.originPosition.set(interdimPosition);
-            musicSource.interdimensional = BalanceMath.headphoneLimit(mTier) == HeadphoneLimit.BETWEEN_DIMENSIONS;
+            musicSource.headphoneLimit = BalanceMath.headphoneLimit(mTier);
+            musicSource.headphoneBlockRange = BalanceMath.headphoneBlockRange(mTier);
             musicSource.startedPlayingAtMs = System.currentTimeMillis();
             updateEmitterList();
         }
@@ -264,14 +271,15 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
                 if (!powered) { // just got power again
                     powered = true;
                     musicSource.modified = true;
-                    musicSource.interdimensional = BalanceMath.headphoneLimit(mTier)
-                        == HeadphoneLimit.BETWEEN_DIMENSIONS;
+                    musicSource.headphoneLimit = BalanceMath.headphoneLimit(mTier);
+                    musicSource.headphoneBlockRange = BalanceMath.headphoneBlockRange(mTier);
                     updateEmitterList();
                 }
             } else if ((!hasMinimumEU || currentlyPlaying != null) && powered) { // was powered, but no longer is
                 powered = false;
                 musicSource.modified = true;
-                musicSource.interdimensional = false;
+                musicSource.headphoneLimit = HeadphoneLimit.BLOCK_RANGE;
+                musicSource.headphoneBlockRange = BalanceMath.headphoneBlockRange(0);
                 updateEmitterList();
             }
 
@@ -398,11 +406,6 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
     @Override
     public long maxEUStore() {
         return 512L + BalanceMath.eutUsage(mTier) * 50;
-    }
-
-    @Override
-    public long maxEUInput() {
-        return V[mTier];
     }
 
     @Override
@@ -659,10 +662,8 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
         final Vector4i position = new Vector4i();
         target.resizeEmitterArray(1 + emitters.size());
         position.set(te.getXCoord(), te.getYCoord(), te.getZCoord(), te.getWorld().provider.dimensionId);
-        final float actualVolume = MathHelper.clamp_float(
-            playbackVolume,
-            0.0f,
-            powered ? BalanceMath.listeningVolume(mTier) : BalanceMath.VANILLA_JUKEBOX_RANGE);
+        final float actualVolume = MathHelper
+            .clamp_float(playbackVolume, 0.0f, BalanceMath.listeningVolume(powered ? mTier : 0));
         target.setEmitter(0, position, actualVolume);
         final float actualP2PVolume = MathHelper
             .clamp_float(p2pVolume, 0.0f, powered ? BalanceMath.listeningVolume(mTier) : 0.0f);

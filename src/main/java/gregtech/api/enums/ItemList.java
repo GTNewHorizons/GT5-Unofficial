@@ -2080,6 +2080,7 @@ public enum ItemList implements IItemContainer {
     BetterJukebox_HV,
     BetterJukebox_EV,
     BetterJukebox_IV,
+    WirelessHeadphones,
     // semicolon after the comment to reduce merge conflicts
     ;
 
