@@ -27,7 +27,7 @@ public class GregtechFluidHandler {
                 "Gelid Cryotheum",
                 GT_Materials.Cryotheum,
                 4,
-                -1200,
+                5,
                 GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Cryotheum, 1L),
                 ItemUtils.getEmptyCell(),
                 1000);

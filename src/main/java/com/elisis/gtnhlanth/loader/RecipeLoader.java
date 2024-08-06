@@ -113,31 +113,21 @@ import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.DISSOLUTION_TANK_RATIO;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.GT_RecipeConstants.WaferEngravingRecipes;
 import static gregtech.common.items.GT_MetaGenerated_Item_01.registerCauldronCleaningFor;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.vacuumFurnaceRecipes;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.HashSet;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.elisis.gtnhlanth.Tags;
 import com.elisis.gtnhlanth.common.item.MaskList;
@@ -156,6 +146,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.interfaces.IRecipeMutableAccess;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -180,7 +171,7 @@ public class RecipeLoader {
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 8),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 4),
                 ItemList.Conveyor_Module_LuV.get(4),
                 GT_Utility.copyAmount(2, LanthItemList.BEAMLINE_PIPE),
                 GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 2),
@@ -199,7 +190,7 @@ public class RecipeLoader {
                 ItemList.Hull_LuV.get(1),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 8),
                 ItemList.Casing_Coil_Superconductor.get(2),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 8),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8),
                 ItemList.Electric_Pump_LuV.get(2),
                 GT_Utility.copyAmount(2, LanthItemList.BEAMLINE_PIPE),
                 GT_OreDictUnificator.get(OrePrefixes.cableGt08, Materials.VanadiumGallium, 2),
@@ -218,8 +209,8 @@ public class RecipeLoader {
                 ItemList.Hull_LuV.get(1),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 8),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.SuperconductorUHV, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 2),
                 GT_Utility.copyAmount(2, LanthItemList.BEAMLINE_PIPE),
                 GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.VanadiumGallium, 1),
                 GT_Utility.getIntegratedCircuit(16)
@@ -237,8 +228,8 @@ public class RecipeLoader {
                 ItemList.Hull_LuV.get(1),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 8),
                 ItemList.Casing_Coil_Superconductor.get(12),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 8),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.SuperconductorUHV, 8),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 8),
                 GT_Utility.copyAmount(8, LanthItemList.BEAMLINE_PIPE),
                 GT_OreDictUnificator.get(OrePrefixes.cableGt08, Materials.NiobiumTitanium, 8),
                 GT_Utility.getIntegratedCircuit(16))
@@ -326,7 +317,7 @@ public class RecipeLoader {
                 Materials.Copper.getPlates(4),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plate, 5),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorLuV, 4),
-                new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
                 ItemList.Emitter_LuV.get(6),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Gold, 32),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Electrum, 6))
@@ -350,7 +341,7 @@ public class RecipeLoader {
                 Materials.Copper.getPlates(4),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plate, 5),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorZPM, 4),
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
                 ItemList.Emitter_ZPM.get(6),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Gold, 64),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Electrum, 6))
@@ -370,7 +361,7 @@ public class RecipeLoader {
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
 
-                new Object[] { OrePrefixes.circuit.get(Materials.Elite), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.IV), 4 },
                 ItemList.Robot_Arm_LuV.get(2),
                 ItemList.Robot_Arm_LuV.get(2),
                 ItemList.Conveyor_Module_LuV.get(2),
@@ -420,7 +411,7 @@ public class RecipeLoader {
                 Materials.Argon.getGas(1000))
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
-                new Object[] { OrePrefixes.circuit.get(Materials.Elite), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.IV), 4 },
                 ItemList.Robot_Arm_LuV.get(2),
                 ItemList.Robot_Arm_LuV.get(2),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Gold, 16),
@@ -491,7 +482,7 @@ public class RecipeLoader {
             )
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
-                new Object[] { OrePrefixes.circuit.get(Materials.Master), 2 },
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
                 new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 2),
                 ItemList.Electric_Pump_LuV.get(1),
                 LanthItemList.BEAMLINE_PIPE,
@@ -515,7 +506,7 @@ public class RecipeLoader {
             )
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
-                new Object[] { OrePrefixes.circuit.get(Materials.Master), 6 },
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 6 },
                 new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 4),
                 ItemList.Electric_Pump_LuV.get(2),
                 ItemList.Electric_Motor_LuV.get(4),
@@ -619,7 +610,7 @@ public class RecipeLoader {
                 .duration(60 * GT_RecipeBuilder.SECONDS)
                 .eut(1920)
                 .requiresCleanRoom()
-                .addTo(laserEngraverRecipes);
+                .addTo(WaferEngravingRecipes);
 
         }
 
@@ -758,7 +749,7 @@ public class RecipeLoader {
                     .requiresCleanRoom()
                     .duration(120 * SECONDS)
                     .eut(1920)
-                    .addTo(laserEngraverRecipes);
+                    .addTo(WaferEngravingRecipes);
 
             } else if (mask == MaskList.NOR) {
 
@@ -770,7 +761,7 @@ public class RecipeLoader {
                     .requiresCleanRoom()
                     .duration(120 * SECONDS)
                     .eut(1920)
-                    .addTo(laserEngraverRecipes);
+                    .addTo(WaferEngravingRecipes);
 
             }
 
@@ -788,7 +779,7 @@ public class RecipeLoader {
                         .requiresCleanRoom()
                         .duration(120 * SECONDS)
                         .eut(1920)
-                        .addTo(laserEngraverRecipes);
+                        .addTo(WaferEngravingRecipes);
 
                 }
             }
@@ -3438,7 +3429,7 @@ public class RecipeLoader {
                 ItemList.Electric_Motor_IV.get(4L),
                 ItemList.Electric_Pump_IV.get(4L),
                 GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Desh, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4L),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4L),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(LanthItemList.DIGESTER)
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1440))
@@ -3453,7 +3444,7 @@ public class RecipeLoader {
                 ItemList.Electric_Motor_EV.get(4L),
                 ItemList.Electric_Pump_EV.get(2L),
                 GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.VibrantAlloy, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4L),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4L),
                 GT_Utility.getIntegratedCircuit(2))
             .itemOutputs(LanthItemList.DISSOLUTION_TANK)
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(720))
@@ -4280,133 +4271,26 @@ public class RecipeLoader {
         GT_Log.out.print("Crafting Table done!\n");
     }
 
-    // below are taken from GoodGenerator
-
-    // I don't understand. . .
-    // I use and copy some private methods in Bartworks because his system runs well.
-    // Bartworks is under MIT License
-    /*
-     * Copyright (c) 2018-2020 bartimaeusnek Permission is hereby granted, free of charge, to any person obtaining a
-     * copy of this software and associated documentation files (the "Software"), to deal in the Software without
-     * restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
-     * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-     * subject to the following conditions: The above copyright notice and this permission notice shall be included in
-     * all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
-     * KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-     * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-     * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
-     * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-     */
     public static void replaceInCraftTable(Object obj) {
-
-        Constructor<?> cs = null;
-        PlatinumSludgeOverHaul BartObj = null;
-        try {
-            cs = PlatinumSludgeOverHaul.class.getDeclaredConstructor();
-            cs.setAccessible(true);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-
-        if (cs == null) return;
-
-        try {
-            BartObj = (PlatinumSludgeOverHaul) cs.newInstance();
-        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-
-        Method recipeCheck = null;
-
-        try {
-            recipeCheck = PlatinumSludgeOverHaul.class.getDeclaredMethod("checkRecipe", Object.class, Materials.class);
-            recipeCheck.setAccessible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        String inputName = "output";
-        String inputItemName = "input";
-        if (!(obj instanceof ShapedOreRecipe || obj instanceof ShapelessOreRecipe)) {
-            if (obj instanceof ShapedRecipes || (obj instanceof ShapelessRecipes)) {
-                inputName = "recipeOutput";
-                inputItemName = "recipeItems";
-            }
-        }
         IRecipe recipe = (IRecipe) obj;
         ItemStack result = recipe.getRecipeOutput();
-
-        Field out = FieldUtils.getDeclaredField(recipe.getClass(), inputName, true);
-        if (out == null) out = FieldUtils.getField(recipe.getClass(), inputName, true);
-
-        Field in = FieldUtils.getDeclaredField(recipe.getClass(), inputItemName, true);
-        if (in == null) in = FieldUtils.getField(recipe.getClass(), inputItemName, true);
-        if (in == null) return;
-
-        // this part here is NOT MIT LICENSED BUT LICSENSED UNDER THE Apache License, Version 2.0!
-        try {
-            if (Modifier.isFinal(in.getModifiers())) {
-                // Do all JREs implement Field with a private ivar called "modifiers"?
-                Field modifiersField = Field.class.getDeclaredField("modifiers");
-                boolean doForceAccess = !modifiersField.isAccessible();
-                if (doForceAccess) {
-                    modifiersField.setAccessible(true);
-                }
-                try {
-                    modifiersField.setInt(in, in.getModifiers() & ~Modifier.FINAL);
-                } finally {
-                    if (doForceAccess) {
-                        modifiersField.setAccessible(false);
-                    }
-                }
-            }
-        } catch (NoSuchFieldException ignored) {
-            // The field class contains always a modifiers field
-        } catch (IllegalAccessException ignored) {
-            // The modifiers field is made accessible
-        }
-        // END OF APACHE COMMONS COLLECTION COPY
-
-        Object input;
-        try {
-            input = in.get(obj);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        if (!(recipe instanceof IRecipeMutableAccess mutableRecipe)) {
             return;
         }
 
-        if (out == null || recipeCheck == null) return;
+        Object input = mutableRecipe.gt5u$getRecipeInputs();
 
         if (GT_Utility.areStacksEqual(result, Materials.Cerium.getDust(1), true)) {
-
-            recipeCheck.setAccessible(true);
-            boolean isOk = true;
-
-            try {
-                isOk = (boolean) recipeCheck.invoke(BartObj, input, Materials.Cerium);
-            } catch (InvocationTargetException | IllegalAccessException ignored) {}
-
-            if (isOk) return;
-            try {
-                out.set(recipe, WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 2));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Cerium)) {
+                return;
             }
+            mutableRecipe.gt5u$setRecipeOutputItem(WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 2));
         } else if (GT_Utility.areStacksEqual(result, Materials.Samarium.getDust(1), true)) {
-
-            recipeCheck.setAccessible(true);
-            boolean isOk = true;
-
-            try {
-                isOk = (boolean) recipeCheck.invoke(BartObj, input, Materials.Samarium);
-            } catch (InvocationTargetException | IllegalAccessException ignored) {}
-
-            if (isOk) return;
-            try {
-                out.set(recipe, WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 2));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Samarium)) {
+                return;
             }
+            mutableRecipe
+                .gt5u$setRecipeOutputItem(WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 2));
         }
     }
 

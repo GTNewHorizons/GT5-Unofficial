@@ -146,7 +146,7 @@ public class GT_MetaTileEntity_MultiCanner extends
         tt.addMachineType("Canner/Fluid Canner")
             .addInfo("Controller Block for the TurboCan Pro")
             .addInfo("Use screwdriver to switch mode")
-            .addInfo("200% the speed of single block machines of the same voltage")
+            .addInfo("100% faster than single block machines of the same voltage")
             .addInfo("Gains 8 parallels per voltage tier")
             .addInfo(EnumChatFormatting.BLUE + "It's uncanny!")
             .addInfo(AuthorFourIsTheNumber)
@@ -234,19 +234,22 @@ public class GT_MetaTileEntity_MultiCanner extends
     }
 
     @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        setMachineMode(nextMachineMode());
+        PlayerUtils.messagePlayer(
+            aPlayer,
+            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+    }
+
+    @Override
     public void setMachineModeIcons() {
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_PACKAGER);
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        setMachineMode(nextMachineMode());
-        if (machineMode == MACHINEMODE_FLUIDCANNER) {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Fluid Canning Mode.");
-        } else {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Canning Mode.");
-        }
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.MULTI_CANNER.mode." + machineMode);
     }
 
     @Override

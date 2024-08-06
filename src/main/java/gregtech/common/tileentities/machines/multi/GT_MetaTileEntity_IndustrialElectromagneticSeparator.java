@@ -65,7 +65,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     public enum MagnetTiers {
 
-        Iron(8, 0.8F, 1F, false),
+        Iron(8, 0.8F, 1.1F, false),
         Steel(24, 0.75F, 1.25F, false),
         Neodymium(48, 0.7F, 1.5F, false),
         Samarium(96, 0.6F, 2F, false),
@@ -84,17 +84,21 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
         public static String buildMagnetTooltip(MagnetTiers m) {
             String tooltip = "Used in Magnetic Flux Exhibitor/n " + EnumChatFormatting.LIGHT_PURPLE
-                + Math.round(1F / m.speedBoost * 100)
-                + "% Speed/n "
+                + "Speed: +"
+                + Math.round((1F / m.speedBoost * 100) - 100)
+                + "%/n "
                 + EnumChatFormatting.DARK_PURPLE
+                + "EU Usage: "
                 + Math.round(m.euModifier * 100)
-                + "% EU Cost/n "
+                + "%/n "
                 + EnumChatFormatting.AQUA
-                + m.maxParallel
-                + " Parallels/n ";
+                + "Parallel: "
+                + m.maxParallel;
 
-            if (m.supportsExotic)
-                tooltip = tooltip + EnumChatFormatting.BOLD + EnumChatFormatting.GREEN + "Can Use Multiamp Hatches";
+            if (m.supportsExotic) tooltip = tooltip + "/n "
+                + EnumChatFormatting.BOLD
+                + EnumChatFormatting.GREEN
+                + "Can Use Multiamp Hatches";
 
             return tooltip;
         }
@@ -112,24 +116,13 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         .<GT_MetaTileEntity_IndustrialElectromagneticSeparator>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            (transpose(
-                new String[][] {
-                    { "           ", "           ", "           ", " CD     DC ", " CDD   DDC ", "  CDD DDC  ",
-                        "   CDDDC   ", "    CCC    ", "           " },
-                    { "           ", "           ", "           ", " CD     DC ", " CDD   DDC ", "  CDD DDC  ",
-                        "   CDDDC   ", "    CCC    ", "           " },
-                    { "           ", "           ", "           ", "  CD   DC  ", "           ", "     D     ",
-                        "     C     ", "           ", "           " },
-                    { "           ", "           ", "           ", "  CD   DC  ", "           ", "     D     ",
-                        "     C     ", "           ", "           " },
-                    { "           ", "    BBB    ", "   BBBBB   ", " CDBBBBBDC ", "   BBBBB   ", "    BBB    ",
-                        "     D     ", "     C     ", "           " },
-                    { "           ", "    AAA    ", "   A   A   ", " CDA D ADC ", "   A   A   ", "    AAA    ",
-                        "     D     ", "     C     ", "           " },
-                    { "           ", "    BEB    ", "   BBBBB   ", " CDBBBBBDC ", "   BBBBB   ", "    BBB    ",
-                        "     D     ", "     C     ", "           " },
-                    { "    B~B    ", "   BBBBB   ", "  BBBBBBB  ", "CDBBBBBBBDC", "  BBBBBBB  ", "   BBBBB   ",
-                        "    BBB    ", "     D     ", "     C     " } })))
+            (new String[][] { { "  CCC  ", "       ", "       ", "       ", "       ", "  B~B  " },
+                { " CC CC ", "       ", "  BBB  ", "  AAA  ", "  BEB  ", " BBBBB " },
+                { "CC   CC", "       ", " BBBBB ", " A   A ", " BBBBB ", "BBBBBBB" },
+                { "C     C", "C     C", "CBBBBBC", "CA C AC", "CBBBBBC", "BBBBBBB" },
+                { "CC   CC", "       ", " BBBBB ", " A   A ", " BBBBB ", "BBBBBBB" },
+                { " CC CC ", "       ", "  BBB  ", "  AAA  ", "  BBB  ", " BBBBB " },
+                { "  CCC  ", "   C   ", "   C   ", "   C   ", "   C   ", "  BBB  " } }))
         .addElement('A', Glasses.chainAllGlasses())
         .addElement(
             'B',
@@ -143,7 +136,6 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                             GT_MetaTileEntity_IndustrialElectromagneticSeparator::onCasingAdded,
                             ofBlock(GregTech_API.sBlockCasings10, 0)))))
         .addElement('C', ofFrame(Materials.NeodymiumMagnetic))
-        .addElement('D', ofFrame(Materials.SamariumMagnetic))
         .addElement(
             'E',
             buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
@@ -234,12 +226,11 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "ps")
             .addSeparator()
-            .beginStructureBlock(11, 8, 9, false)
+            .beginStructureBlock(7, 6, 7, false)
             .addController("Front Center")
             .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
             .addOtherStructurePart("Any glass", "x12")
-            .addOtherStructurePart("Magnetic Neodymium Frame Box", "x40")
-            .addOtherStructurePart("Magnetic Samarium Frame Box", "x45")
+            .addOtherStructurePart("Magnetic Neodymium Frame Box", "x37")
             .addOtherStructurePart("Electromagnet Housing", "1 Block Above/Behind Controller", 2)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
@@ -251,13 +242,13 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 5, 7, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 5, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 5, 7, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 5, 0, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -273,7 +264,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         mExoticEnergyHatches.clear();
         mEnergyHatches.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 5, 7, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 5, 0)) return false;
         if (mCasingAmount < MIN_CASING) return false;
         if (mMagHatch == null) return false;
 
@@ -346,19 +337,22 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
     }
 
     @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        setMachineMode(nextMachineMode());
+        PlayerUtils.messagePlayer(
+            aPlayer,
+            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+    }
+
+    @Override
     public void setMachineModeIcons() {
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_SEPARATOR);
         machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_POLARIZER);
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        setMachineMode(nextMachineMode());
-        if (machineMode == MACHINEMODE_POLARIZER) {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Polarizing Mode.");
-        } else {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Separating Mode.");
-        }
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode." + machineMode);
     }
 
     @Override

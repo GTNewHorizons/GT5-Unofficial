@@ -144,13 +144,14 @@ public class ElectrolyzerRecipes implements Runnable {
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
+        // CO2 = C + 2O
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Carbon.getDust(1))
             .fluidInputs(Materials.CarbonDioxide.getGas(1000))
             .fluidOutputs(Materials.Oxygen.getGas(2000))
-            .duration(15 * SECONDS)
+            .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
 
@@ -158,6 +159,24 @@ public class ElectrolyzerRecipes implements Runnable {
             .itemInputs(GT_Utility.getIntegratedCircuit(11), Materials.Empty.getCells(2))
             .itemOutputs(Materials.Carbon.getDust(1), Materials.Oxygen.getCells(2))
             .fluidInputs(Materials.CarbonDioxide.getGas(1000))
+            .duration(45 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(electrolyzerRecipes);
+        // CO = C + O
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(Materials.Carbon.getDust(1))
+            .fluidInputs(Materials.CarbonMonoxide.getGas(1000))
+            .fluidOutputs(Materials.Oxygen.getGas(1000))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(electrolyzerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(11), Materials.Empty.getCells(1))
+            .itemOutputs(Materials.Carbon.getDust(1), Materials.Oxygen.getCells(1))
+            .fluidInputs(Materials.CarbonMonoxide.getGas(1000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
@@ -295,6 +314,18 @@ public class ElectrolyzerRecipes implements Runnable {
             .fluidOutputs(Materials.SulfuricAcid.getFluid(1000))
             .duration(45 * SECONDS)
             .eut(30)
+            .addTo(electrolyzerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.PhosphoricAcid, 1L),
+                ItemList.Cell_Empty.get(6L))
+            .itemOutputs(
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 3L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 4L))
+            .duration(27 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
 
     }

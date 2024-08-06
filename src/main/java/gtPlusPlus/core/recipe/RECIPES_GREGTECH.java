@@ -549,8 +549,8 @@ public class RECIPES_GREGTECH {
                 GregtechItemList.Industrial_AlloyBlastSmelter.get(64L, new Object() {}),
                 ItemList.UV_Coil.get(16L, new Object() {}),
                 ItemList.Conveyor_Module_UV.get(4L, new Object() {}),
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 8 },
-                new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 16 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
+                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 16 },
                 ItemList.Circuit_Chip_PPIC.get(16, new Object() {}),
                 ALLOY.PIKYONIUM.getPlate(16),
                 ALLOY.CINOBITE.getScrew(32))
@@ -1644,9 +1644,9 @@ public class RECIPES_GREGTECH {
                 Particle.getBaseParticle(Particle.STRANGE),
                 Particle.getBaseParticle(Particle.TOP),
                 Particle.getBaseParticle(Particle.BOTTOM))
-            .outputChances(50, 50, 50, 50, 50, 50)
+            .outputChances(100, 100, 100, 100, 100, 100)
             .fluidInputs(FluidUtils.getFluidStack("plasma.hydrogen", 100))
-            .duration(45 * MINUTES)
+            .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(cyclotronRecipes);
         // Lepton Smash

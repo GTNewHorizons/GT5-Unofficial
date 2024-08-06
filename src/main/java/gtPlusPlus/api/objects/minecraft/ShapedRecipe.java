@@ -4,12 +4,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import gregtech.api.interfaces.IRecipeMutableAccess;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
-public class ShapedRecipe {
+public class ShapedRecipe implements IRecipeMutableAccess {
 
     private static final String CHARS = "abcdefghijklmnop";
     public ShapedOreRecipe mRecipe;
@@ -247,5 +248,20 @@ public class ShapedRecipe {
             Logger.RECIPE("[Fix][1] Error thrown when making a ShapedOreRecipe object.");
             t.printStackTrace();
         }
+    }
+
+    @Override
+    public ItemStack gt5u$getRecipeOutputItem() {
+        return ((IRecipeMutableAccess) mRecipe).gt5u$getRecipeOutputItem();
+    }
+
+    @Override
+    public void gt5u$setRecipeOutputItem(ItemStack newItem) {
+        ((IRecipeMutableAccess) mRecipe).gt5u$setRecipeOutputItem(newItem);
+    }
+
+    @Override
+    public Object gt5u$getRecipeInputs() {
+        return ((IRecipeMutableAccess) mRecipe).gt5u$getRecipeInputs();
     }
 }

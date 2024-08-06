@@ -247,7 +247,7 @@ public class GT_MetaTileEntity_NanoForge extends
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 return super.createOverclockCalculator(recipe)
-                    .setDurationDecreasePerOC(mSpecialTier > recipe.mSpecialValue ? 2 : 1);
+                    .setDurationDecreasePerOC(mSpecialTier > recipe.mSpecialValue ? 4.0 : 2.0);
             }
         };
     }
