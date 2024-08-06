@@ -5726,25 +5726,25 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             bitsd,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_EV, 'W',
                 OrePrefixes.wireGt16.get(Materials.Aluminium), 'T', OreDictNames.craftingChest, 'B',
-                OrePrefixes.battery.get(Materials.LuV), 'C', OrePrefixes.circuit.get(Materials.EV) });
+                OrePrefixes.battery.get(Materials.EV), 'C', OrePrefixes.circuit.get(Materials.EV) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Battery_Charger_4by4_IV.get(1L),
             bitsd,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_IV, 'W',
                 OrePrefixes.wireGt16.get(Materials.Tungsten), 'T', OreDictNames.craftingChest, 'B',
-                ItemList.Energy_LapotronicOrb, 'C', OrePrefixes.circuit.get(Materials.IV) });
+                OrePrefixes.battery.get(Materials.IV), 'C', OrePrefixes.circuit.get(Materials.IV) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Battery_Charger_4by4_LuV.get(1L),
             bitsd,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_LuV, 'W',
                 OrePrefixes.wireGt16.get(Materials.VanadiumGallium), 'T', OreDictNames.craftingChest, 'B',
-                ItemList.Energy_LapotronicOrb2, 'C', OrePrefixes.circuit.get(Materials.LuV) });
+                OrePrefixes.battery.get(Materials.LuV), 'C', OrePrefixes.circuit.get(Materials.LuV) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Battery_Charger_4by4_ZPM.get(1L),
             bitsd,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_ZPM, 'W',
                 OrePrefixes.wireGt16.get(Materials.Naquadah), 'T', OreDictNames.craftingChest, 'B',
-                ItemList.Energy_LapotronicOrb2, 'C', OrePrefixes.circuit.get(Materials.ZPM) });
+                OrePrefixes.battery.get(Materials.ZPM), 'C', OrePrefixes.circuit.get(Materials.ZPM) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Battery_Charger_4by4_UV.get(1L),
             bitsd,

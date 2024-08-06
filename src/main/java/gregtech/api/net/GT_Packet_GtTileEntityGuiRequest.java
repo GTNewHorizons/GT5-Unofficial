@@ -81,7 +81,7 @@ public class GT_Packet_GtTileEntityGuiRequest extends GT_Packet_New {
 
     @Override
     public byte getPacketID() {
-        return 15;
+        return GT_PacketTypes.TILE_ENTITY_GUI_REQUEST.id;
     }
 
     @Override
