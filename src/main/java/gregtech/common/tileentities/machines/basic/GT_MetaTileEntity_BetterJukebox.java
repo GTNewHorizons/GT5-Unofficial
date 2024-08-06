@@ -70,7 +70,7 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
     public float p2pVolume = BalanceMath.VANILLA_JUKEBOX_RANGE;
     public long discProgressMs = 0;
     /** Makes all music discs play for 4 seconds */
-    public boolean superFastDebugMode = true;
+    public boolean superFastDebugMode = false;
     // Computed state
     private final Vector4i interdimPositionCache = new Vector4i(); // XYZ, Dimension ID
     private GT_MusicSystem.MusicSource musicSource = null;
