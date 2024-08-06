@@ -2,18 +2,20 @@ package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
-import static gregtech.api.metatileentity.BaseTileEntity.ITEM_TRANSFER_TOOLTIP;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_JUKEBOX;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_JUKEBOX;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.item.ItemRecord;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
@@ -24,10 +26,17 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.joml.Vector4i;
 
+import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.gtnewhorizons.modularui.common.widget.SliderWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import appeng.api.implementations.tiles.ISoundP2PHandler;
 import appeng.me.GridAccessException;
@@ -55,17 +64,24 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
     private UUID jukeboxUuid = UNSET_UUID;
     public boolean loopMode = true;
     public boolean shuffleMode = false;
-    public int nextPlaybackSlot = 0;
+    public int playbackSlot = 0;
     public float playbackVolume = BalanceMath.VANILLA_JUKEBOX_RANGE;
     public float p2pVolume = BalanceMath.VANILLA_JUKEBOX_RANGE;
+    public long discProgressMs = 0;
+    /** Makes all music discs play for 4 seconds */
+    public boolean superFastDebugMode = true;
     // Computed state
     private final Vector4i interdimPositionCache = new Vector4i(); // XYZ, Dimension ID
     private GT_MusicSystem.MusicSource musicSource = null;
     private boolean powered = false;
+    private long discStartMs = 0;
+    public long discDurationMs = 1;
+    private ItemRecord currentlyPlaying = null;
 
     // Constants
     public static final UUID UNSET_UUID = UUID.nameUUIDFromBytes(new byte[] { 0 });
     public static final int INPUT_SLOTS = 21;
+    private static final Random SHUFFLER = new Random();
 
     public enum HeadphoneLimit {
         BLOCK_RANGE,
@@ -114,13 +130,13 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
             }
         }
 
-        public static float rangeToAttenuationDistance(float range) {
+        public static float volumeToAttenuationDistance(float range) {
             // SoundManager.playSound logic
-            if (range >= 1.0f) {
-                return 16.0f * range;
-            } else {
-                return 16.0f;
-            }
+            return 16.0f * range;
+        }
+
+        public static float attenuationDistanceToVolume(float blockRange) {
+            return blockRange / 16.0f;
         }
 
         public static long eutUsage(int tier) {
@@ -139,7 +155,7 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
             String.format(
                 "Range: %s%.1f blocks",
                 EnumChatFormatting.WHITE,
-                BalanceMath.rangeToAttenuationDistance(BalanceMath.listeningVolume(aTier))));
+                BalanceMath.volumeToAttenuationDistance(BalanceMath.listeningVolume(aTier))));
         strings.add(switch (BalanceMath.headphoneLimit(aTier)) {
             case BLOCK_RANGE -> String.format(
                 "Headphone signal range: %s%.1f blocks",
@@ -173,50 +189,21 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection != ForgeDirection.UP) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
-        if (active) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
-            TextureFactory.of(OVERLAY_TELEPORTER_ACTIVE), TextureFactory.builder()
-                .addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW)
-                .glow()
-                .build() };
-        return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_TELEPORTER),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_TELEPORTER_GLOW)
-                .glow()
-                .build() };
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        super.onPostTick(aBaseMetaTileEntity, aTimer);
-        if (aBaseMetaTileEntity.isClientSide() || !aBaseMetaTileEntity.isAllowedToWork()) {
-            return;
+        if (sideDirection == baseMetaTileEntity.getFrontFacing()) {
+            return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_PIPE_OUT) };
         }
-        final Vector4i interdimPosition = interdimPositionCache;
-        interdimPosition.x = aBaseMetaTileEntity.getXCoord();
-        interdimPosition.y = aBaseMetaTileEntity.getYCoord();
-        interdimPosition.z = aBaseMetaTileEntity.getZCoord();
-        interdimPosition.w = aBaseMetaTileEntity.getWorld().provider.dimensionId;
-
-        if (nextPlaybackSlot < 0 || nextPlaybackSlot >= INPUT_SLOTS) {
-            nextPlaybackSlot = shuffleMode ? ThreadLocalRandom.current()
-                .nextInt(INPUT_SLOTS) : 0;
+        if (sideDirection != ForgeDirection.UP) {
+            return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_SIDE_JUKEBOX) };
         }
-
-        if (aBaseMetaTileEntity.isUniversalEnergyStored(getMinimumStoredEU())
-            && aBaseMetaTileEntity.decreaseStoredEnergyUnits(BalanceMath.eutUsage(mTier), false)) {
-            if (!powered) {
-                powered = true;
-                updateEmitterList();
-            }
-        } else if (powered) { // was powered, but no longer is
-            powered = false;
-            updateEmitterList();
-        }
+        return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.builder()
+            .addIcon(OVERLAY_TOP_JUKEBOX)
+            .extFacing()
+            .build() };
     }
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
         if (aBaseMetaTileEntity.isClientSide()) {
             return;
         }
@@ -231,12 +218,161 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
         }
         if (musicSource == null) {
             musicSource = GT_MusicSystem.ServerSystem.registerOrGetMusicSource(jukeboxUuid);
-            musicSource.currentRecord = new ResourceLocation("minecraft", "records.chirp");
             musicSource.originPosition.set(interdimPosition);
             musicSource.interdimensional = BalanceMath.headphoneLimit(mTier) == HeadphoneLimit.BETWEEN_DIMENSIONS;
             musicSource.startedPlayingAtMs = System.currentTimeMillis();
             updateEmitterList();
         }
+        if (doesSlotContainValidRecord(playbackSlot)
+            && mInventory[playbackSlot].getItem() instanceof ItemRecord record) {
+            final ResourceLocation resource = record.getRecordResource(record.recordName);
+            currentlyPlaying = record;
+            // Assume a safe disc duration of 500 seconds if not known in the registry
+            discDurationMs = GT_MusicSystem.getMusicRecordDurations()
+                .getOrDefault(resource, 500_000);
+            discStartMs = System.currentTimeMillis() - discProgressMs;
+            musicSource.setRecord(
+                new ResourceLocation(resource.getResourceDomain(), "records." + resource.getResourcePath()),
+                discProgressMs);
+        }
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        try {
+            if (aBaseMetaTileEntity.isClientSide() || !aBaseMetaTileEntity.isAllowedToWork() || musicSource == null) {
+                if (currentlyPlaying != null) {
+                    stopCurrentSong(System.currentTimeMillis());
+                }
+                return;
+            }
+            final Vector4i interdimPosition = interdimPositionCache;
+            interdimPosition.x = aBaseMetaTileEntity.getXCoord();
+            interdimPosition.y = aBaseMetaTileEntity.getYCoord();
+            interdimPosition.z = aBaseMetaTileEntity.getZCoord();
+            interdimPosition.w = aBaseMetaTileEntity.getWorld().provider.dimensionId;
+            final long now = System.currentTimeMillis();
+
+            if (superFastDebugMode && discDurationMs > 4000) {
+                discDurationMs = 4000;
+            }
+
+            // power check
+            final boolean hasMinimumEU = aBaseMetaTileEntity.isUniversalEnergyStored(getMinimumStoredEU());
+            if (currentlyPlaying != null && hasMinimumEU
+                && aBaseMetaTileEntity.decreaseStoredEnergyUnits(BalanceMath.eutUsage(mTier), false)) {
+                if (!powered) { // just got power again
+                    powered = true;
+                    musicSource.modified = true;
+                    musicSource.interdimensional = BalanceMath.headphoneLimit(mTier)
+                        == HeadphoneLimit.BETWEEN_DIMENSIONS;
+                    updateEmitterList();
+                }
+            } else if ((!hasMinimumEU || currentlyPlaying != null) && powered) { // was powered, but no longer is
+                powered = false;
+                musicSource.modified = true;
+                musicSource.interdimensional = false;
+                updateEmitterList();
+            }
+
+            // check if current disc finished
+            if (currentlyPlaying != null) {
+                discProgressMs = now - discStartMs;
+                final boolean hasValidRecord = doesSlotContainValidRecord(playbackSlot);
+                final boolean wasDiscSwapped = hasValidRecord
+                    && mInventory[getInputSlot() + playbackSlot].getItem() != currentlyPlaying;
+                if (discProgressMs >= discDurationMs || !hasValidRecord || wasDiscSwapped) {
+                    stopCurrentSong(now);
+                    if (!loopMode) {
+                        // should be empty, but swap just in case it's not
+                        final ItemStack oldOut = mInventory[getOutputSlot()];
+                        mInventory[getOutputSlot()] = mInventory[getInputSlot() + playbackSlot];
+                        mInventory[getInputSlot() + playbackSlot] = oldOut;
+                        markDirty();
+                    }
+                    if (!(hasValidRecord && wasDiscSwapped)) {
+                        // don't switch slots if someone just put a new disc in the active slot
+                        pickNextSlot();
+                    }
+                } else {
+                    // keep on playing
+                    return;
+                }
+            }
+
+            if (playbackSlot < 0 || playbackSlot >= INPUT_SLOTS
+                || ((aTimer % 10) == 0 && !doesSlotContainValidRecord(playbackSlot))) {
+                pickNextSlot();
+            }
+
+            final boolean hasValidRecord = doesSlotContainValidRecord(playbackSlot);
+            final boolean canStartPlaying = loopMode || isOutputEmpty();
+            if (!hasValidRecord) {
+                stopCurrentSong(now);
+            } else if (canStartPlaying
+                && mInventory[getInputSlot() + playbackSlot].getItem() instanceof ItemRecord record) {
+                    final ResourceLocation resource = record.getRecordResource(record.recordName);
+                    currentlyPlaying = record;
+                    musicSource.setRecord(
+                        new ResourceLocation(resource.getResourceDomain(), "records." + resource.getResourcePath()));
+                    // Assume a safe disc duration of 500 seconds if not known in the registry
+                    discDurationMs = GT_MusicSystem.getMusicRecordDurations()
+                        .getOrDefault(resource, 500_000);
+                    discProgressMs = 0;
+                    discStartMs = now;
+                }
+        } finally {
+            super.onPostTick(aBaseMetaTileEntity, aTimer);
+        }
+    }
+
+    private void stopCurrentSong(long nowMs) {
+        if (currentlyPlaying == null) {
+            return;
+        }
+        musicSource.setRecord(null);
+        currentlyPlaying = null;
+        discDurationMs = 1;
+        discProgressMs = 0;
+        discStartMs = nowMs;
+        markDirty();
+    }
+
+    private void pickNextSlot() {
+        playbackSlot = MathHelper.clamp_int(playbackSlot, 0, INPUT_SLOTS);
+        if (shuffleMode) {
+            final int[] validSlots = new int[INPUT_SLOTS];
+            int validSlotCount = 0;
+            for (int i = 0; i < INPUT_SLOTS; i++) {
+                if (i != playbackSlot && doesSlotContainValidRecord(i)) {
+                    validSlots[validSlotCount++] = i;
+                }
+            }
+            switch (validSlotCount) {
+                case 0 -> {}
+                case 1 -> {
+                    playbackSlot = validSlots[0];
+                }
+                default -> {
+                    playbackSlot = validSlots[SHUFFLER.nextInt(validSlotCount)];
+                }
+            }
+        } else {
+            int attempt = 0;
+            int nextSlot = playbackSlot;
+            do {
+                attempt++;
+                nextSlot = (nextSlot + 1) % INPUT_SLOTS;
+            } while (!doesSlotContainValidRecord(nextSlot) && attempt <= INPUT_SLOTS);
+            if (attempt <= INPUT_SLOTS) {
+                playbackSlot = nextSlot;
+            }
+        }
+    }
+
+    public boolean doesSlotContainValidRecord(int slot) {
+        return mInventory[getInputSlot() + slot] != null
+            && mInventory[getInputSlot() + slot].getItem() instanceof ItemRecord;
     }
 
     @Override
@@ -252,16 +388,6 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
             return;
         }
         GT_MusicSystem.ServerSystem.removeMusicSource(jukeboxUuid);
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isInputFacing(ForgeDirection side) {
-        return true;
     }
 
     @Override
@@ -293,30 +419,39 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
     public static final String NBTKEY_UUID_HIGH = "jukeboxUUIDHigh";
     public static final String NBTKEY_LOOP_MODE = "loopMode";
     public static final String NBTKEY_SHUFFLE_MODE = "shuffleMode";
-    public static final String NBTKEY_NEXT_PLAYBACK_SLOT = "nextPlaybackSlot";
+    public static final String NBTKEY_PLAYBACK_SLOT = "playbackSlot";
     public static final String NBTKEY_VOLUME_PLAY = "playbackVolume";
     public static final String NBTKEY_VOLUME_P2P = "p2pVolume";
+    public static final String NBTKEY_DISC_PROGRESS_MS = "discProgressMs";
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "Jukebox UUID: " + ((jukeboxUuid == UNSET_UUID) ? "unset" : jukeboxUuid), };
+        return new String[] { "Jukebox UUID: " + ((jukeboxUuid == UNSET_UUID) ? "unset" : jukeboxUuid),
+            "Loop mode: " + loopMode, "Shuffle mode: " + shuffleMode, "Played the disc for [ms]: " + discProgressMs,
+            "Current disc duration [ms]: " + discDurationMs,
+            "Playback range [blocks]: " + BalanceMath.volumeToAttenuationDistance(playbackVolume),
+            "P2P range [blocks]: " + BalanceMath.volumeToAttenuationDistance(playbackVolume),
+            "Raw playback strength: " + playbackVolume, "Raw p2p strength: " + p2pVolume };
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
         if (jukeboxUuid != UNSET_UUID) {
             aNBT.setLong(NBTKEY_UUID_LOW, jukeboxUuid.getLeastSignificantBits());
             aNBT.setLong(NBTKEY_UUID_HIGH, jukeboxUuid.getMostSignificantBits());
             aNBT.setBoolean(NBTKEY_LOOP_MODE, loopMode);
             aNBT.setBoolean(NBTKEY_SHUFFLE_MODE, shuffleMode);
-            aNBT.setInteger(NBTKEY_NEXT_PLAYBACK_SLOT, nextPlaybackSlot);
+            aNBT.setInteger(NBTKEY_PLAYBACK_SLOT, playbackSlot);
             aNBT.setFloat(NBTKEY_VOLUME_PLAY, playbackVolume);
             aNBT.setFloat(NBTKEY_VOLUME_P2P, p2pVolume);
+            aNBT.setLong(NBTKEY_DISC_PROGRESS_MS, discProgressMs);
         }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
         if (aNBT.hasKey(NBTKEY_UUID_LOW, Constants.NBT.TAG_ANY_NUMERIC)
             && aNBT.hasKey(NBTKEY_UUID_HIGH, Constants.NBT.TAG_ANY_NUMERIC)) {
             jukeboxUuid = new UUID(aNBT.getLong(NBTKEY_UUID_HIGH), aNBT.getLong(NBTKEY_UUID_LOW));
@@ -327,14 +462,17 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
         if (aNBT.hasKey(NBTKEY_SHUFFLE_MODE, Constants.NBT.TAG_ANY_NUMERIC)) {
             shuffleMode = aNBT.getBoolean(NBTKEY_SHUFFLE_MODE);
         }
-        if (aNBT.hasKey(NBTKEY_NEXT_PLAYBACK_SLOT, Constants.NBT.TAG_ANY_NUMERIC)) {
-            nextPlaybackSlot = aNBT.getInteger(NBTKEY_NEXT_PLAYBACK_SLOT);
+        if (aNBT.hasKey(NBTKEY_PLAYBACK_SLOT, Constants.NBT.TAG_ANY_NUMERIC)) {
+            playbackSlot = aNBT.getInteger(NBTKEY_PLAYBACK_SLOT);
         }
         if (aNBT.hasKey(NBTKEY_VOLUME_PLAY, Constants.NBT.TAG_ANY_NUMERIC)) {
             playbackVolume = aNBT.getFloat(NBTKEY_VOLUME_PLAY);
         }
         if (aNBT.hasKey(NBTKEY_VOLUME_P2P, Constants.NBT.TAG_ANY_NUMERIC)) {
             p2pVolume = aNBT.getFloat(NBTKEY_VOLUME_P2P);
+        }
+        if (aNBT.hasKey(NBTKEY_DISC_PROGRESS_MS, Constants.NBT.TAG_ANY_NUMERIC)) {
+            discProgressMs = aNBT.getLong(NBTKEY_DISC_PROGRESS_MS);
         }
 
         final float maxVolume = BalanceMath.listeningVolume(mTier);
@@ -351,38 +489,145 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
     protected BasicUIProperties getUIProperties() {
         return super.getUIProperties().toBuilder()
             .itemInputPositionsGetter(count -> UIHelper.getGridPositions(count, 7, 6, 7, 3))
-            .itemOutputPositionsGetter(count -> UIHelper.getGridPositions(count, 151, 24, 1))
+            .itemOutputPositionsGetter(count -> UIHelper.getGridPositions(count, 153, 24, 1))
+            .specialItemPositionGetter(() -> new Pos2d(115, 62))
             .progressBarPos(Pos2d.cartesian(133, 24))
+            .progressBarTexture(new FallbackableUITexture(GT_UITextures.PROGRESSBAR_ARROW))
             .build();
+    }
+
+    @Override
+    protected void addProgressBar(ModularWindow.Builder builder, BasicUIProperties uiProperties) {
+        builder.widget(
+            setNEITransferRect(
+                new ProgressBar().setProgress(() -> discProgressMs / (float) Math.max(1, discDurationMs))
+                    .setTexture(uiProperties.progressBarTexture.get(), uiProperties.progressBarImageSize)
+                    .setDirection(uiProperties.progressBarDirection)
+                    .setPos(uiProperties.progressBarPos)
+                    .setSize(uiProperties.progressBarSize)
+                    .setUpdateTooltipEveryTick(true)
+                    .attachSyncer(
+                        new FakeSyncWidget.LongSyncer(() -> this.discProgressMs, val -> this.discProgressMs = val),
+                        builder)
+                    .attachSyncer(
+                        new FakeSyncWidget.LongSyncer(() -> this.discDurationMs, val -> this.discDurationMs = val),
+                        builder)
+                    .dynamicTooltip(
+                        () -> Collections.singletonList(
+                            String.format("%,.2f / %,.2f", discProgressMs / 1000.0f, discDurationMs / 1000.0f))),
+                uiProperties.neiTransferRectId));
+        addProgressBarSpecialTextures(builder, uiProperties);
+    }
+
+    @Override
+    protected SlotWidget createChargerSlot(int x, int y) {
+        return super.createChargerSlot(97, 62);
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
+        final BasicUIProperties props = getUIProperties();
+        final List<Pos2d> inputSlots = props.itemInputPositionsGetter.apply(mInputSlotCount);
         // Loop
         builder.widget(
             new CycleButtonWidget().setToggle(() -> loopMode, val -> loopMode = val)
                 .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
                 .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setGTTooltip(() -> mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP))
+                .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.betterjukebox.loop.tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(133, 6)
+                .setPos(153, 6)
                 .setSize(18, 18));
         // Shuffle
         builder.widget(new CycleButtonWidget().setToggle(() -> shuffleMode, val -> {
             shuffleMode = val;
             if (shuffleMode) {
-                nextPlaybackSlot = -1;
+                playbackSlot = -1;
             } else {
-                nextPlaybackSlot = 0;
+                playbackSlot = 0;
             }
         })
             .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_SHUFFLE)
             .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-            .setGTTooltip(() -> mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP))
+            .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.betterjukebox.shuffle.tooltip"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(133, 42)
+            .setPos(153, 42)
             .setSize(18, 18));
+        // Currently playing slot highlight using the hotbar active texture
+        final DrawableWidget slotHighlight = new DrawableWidget();
+        builder.widget(
+            slotHighlight
+                .setDrawable(
+                    new UITexture(
+                        new ResourceLocation("minecraft", "textures/gui/widgets.png"),
+                        0.0f,
+                        22.0f / 256.0f,
+                        24.0f / 256.0f,
+                        46.0f / 256.0f))
+                .setSize(24, 24)
+                .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> this.playbackSlot, val -> {
+                    this.playbackSlot = val;
+                    slotHighlight.checkNeedsRebuild();
+                }), builder)
+                .setPosProvider(
+                    (screenSize, window, parent) -> inputSlots.get(MathHelper.clamp_int(playbackSlot, 0, INPUT_SLOTS))
+                        .add(-3, -3)));
+        // Attenuation distance (controls internal "volume")
+        // Caching tooltip data caches the formatted p2p range value, so we have to use the uncached variant here.
+        builder.widget(
+            new SliderWidget()
+                .setBounds(0.0f, BalanceMath.volumeToAttenuationDistance(BalanceMath.listeningVolume(mTier)))
+                .setGetter(this::getPlaybackBlockRange)
+                .setSetter(this::setPlaybackBlockRange)
+                .dynamicTooltip(
+                    () -> mTooltipCache.getUncachedTooltipData(
+                        "GT5U.machines.betterjukebox.attenuationDistance.tooltip",
+                        (int) getPlaybackBlockRange()).text)
+                .setUpdateTooltipEveryTick(true)
+                .setPos(44, 63)
+                .setSize(52, 8));
+        builder.widget(
+            new SliderWidget()
+                .setBounds(0.0f, BalanceMath.volumeToAttenuationDistance(BalanceMath.listeningVolume(mTier)))
+                .setGetter(this::getP2PBlockRange)
+                .setSetter(this::setP2PBlockRange)
+                .dynamicTooltip(
+                    () -> mTooltipCache.getUncachedTooltipData(
+                        "GT5U.machines.betterjukebox.p2pAttenuationDistance.tooltip",
+                        (int) getP2PBlockRange()).text)
+                .setUpdateTooltipEveryTick(true)
+                .setPos(44, 71)
+                .setSize(52, 8));
+    }
+
+    private float getPlaybackBlockRange() {
+        return BalanceMath.volumeToAttenuationDistance(playbackVolume);
+    }
+
+    private float getP2PBlockRange() {
+        return BalanceMath.volumeToAttenuationDistance(p2pVolume);
+    }
+
+    private void setPlaybackBlockRange(float blockRange) {
+        float volume = BalanceMath.attenuationDistanceToVolume(blockRange);
+        volume = MathHelper.clamp_float(volume, 0.0f, BalanceMath.listeningVolume(mTier));
+        if (volume != playbackVolume) {
+            playbackVolume = volume;
+            if (getBaseMetaTileEntity().isServerSide()) {
+                updateEmitterList();
+            }
+        }
+    }
+
+    private void setP2PBlockRange(float blockRange) {
+        float volume = BalanceMath.attenuationDistanceToVolume(blockRange);
+        volume = MathHelper.clamp_float(volume, 0.0f, BalanceMath.listeningVolume(mTier));
+        if (volume != p2pVolume) {
+            p2pVolume = volume;
+            if (getBaseMetaTileEntity().isServerSide()) {
+                updateEmitterList();
+            }
+        }
     }
 
     private final EnumMap<ForgeDirection, PartP2PSound> attachedSoundP2P = new EnumMap<>(ForgeDirection.class);
@@ -457,4 +702,5 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
     public void onSoundP2POutputUpdate(PartP2PSound p2p, TunnelCollection<PartP2PSound> outputs) {
         updateEmitterList();
     }
+
 }

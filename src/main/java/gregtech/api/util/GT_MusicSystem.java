@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -215,6 +217,17 @@ public final class GT_MusicSystem {
 
             return source;
         }
+
+        public void setRecord(final ResourceLocation record) {
+            setRecord(record, 0);
+        }
+
+        public void setRecord(final ResourceLocation record, long seekOffset) {
+            modified = true;
+            currentRecord = record;
+            playingForMs = seekOffset;
+            startedPlayingAtMs = System.currentTimeMillis() - seekOffset;
+        }
     }
 
     public static final class ServerSystem {
@@ -335,9 +348,11 @@ public final class GT_MusicSystem {
                 this.currentSoundResource = source.currentRecord;
                 this.originalStartTime = source.startedPlayingAtMs;
                 this.clientReferenceStartTime = System.currentTimeMillis() - source.playingForMs;
-                this.currentSound = makeRecord(source, closestEmitter);
-                mc.getSoundHandler()
-                    .playSound(this.currentSound);
+                if (currentSoundResource != null) {
+                    this.currentSound = makeRecord(source, closestEmitter);
+                    mc.getSoundHandler()
+                        .playSound(this.currentSound);
+                }
             }
 
             public void updateSound(final Minecraft mc, final MusicSource source) {
@@ -563,15 +578,18 @@ public final class GT_MusicSystem {
             final Gson gson = new Gson();
 
             try {
-                final ArrayList<URL> candidates = Collections
-                    .list(Launch.classLoader.getResources("/soundmeta/durations.json"));
-                candidates.add(
-                    Launch.minecraftHome.toPath()
-                        .resolve("config")
-                        .resolve("soundmeta")
-                        .resolve("durations.json")
-                        .toUri()
-                        .toURL());
+                final ArrayList<URL> candidates = Collections.list(
+                    GT_MusicSystem.class.getClassLoader()
+                        .getResources("soundmeta/durations.json"));
+                final Path configPath = Launch.minecraftHome.toPath()
+                    .resolve("config")
+                    .resolve("soundmeta")
+                    .resolve("durations.json");
+                if (Files.exists(configPath)) {
+                    candidates.add(
+                        configPath.toUri()
+                            .toURL());
+                }
                 for (final URL url : candidates) {
                     try {
                         final String objectJson = IOUtils.toString(url);
