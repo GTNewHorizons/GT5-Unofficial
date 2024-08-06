@@ -85,6 +85,43 @@ public class RecipeLoader_ChemicalSkips {
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
+        // Platline subsets (from Pd, Os, Ir)
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffLoader.PDRawPowder.get(OrePrefixes.dust, 32),
+                ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0))
+            .itemOutputs(Materials.Palladium.getDust(64))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .metadata(QFT_FOCUS_TIER, 1)
+            .addTo(quantumForceTransformerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffLoader.IrLeachResidue.get(OrePrefixes.dust, 32),
+                ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0))
+            .itemOutputs(
+                Materials.Iridium.getDust(64),
+                Materials.Gold.getDust(64),
+                Materials.SiliconDioxide.getDust(64))
+            .outputChances(5000, 2500, 2500)
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .metadata(QFT_FOCUS_TIER, 1)
+            .addTo(quantumForceTransformerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffLoader.IrOsLeachResidue.get(OrePrefixes.dust, 32),
+                ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0))
+            .itemOutputs(
+                Materials.Osmium.getDust(64),
+                Materials.Iridium.getDust(64),
+                Materials.Gold.getDust(64),
+                Materials.SiliconDioxide.getDust(64))
+            .outputChances(2500, 3750, 1875, 1875)
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .metadata(QFT_FOCUS_TIER, 1)
+            .addTo(quantumForceTransformerRecipes);
         // Early Plastics
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Carbon.getDust(64), ItemUtils.getSimpleStack(GenericChem.mPlasticPolymerCatalyst, 0))
