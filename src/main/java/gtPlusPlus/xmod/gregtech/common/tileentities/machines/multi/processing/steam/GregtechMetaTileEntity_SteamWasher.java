@@ -14,7 +14,17 @@ import javax.annotation.Nonnull;
 
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.recipe.metadata.PCBFactoryTierKey;
+import gregtech.api.recipe.metadata.PCBFactoryUpgrade;
+import gregtech.api.recipe.metadata.PCBFactoryUpgradeKey;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.VoidProtectionHelper;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -27,6 +37,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -102,6 +113,9 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
 
     private static final int MACHINEMODE_OREWASH = 0;
     private static final int MACHINEMODE_SIMPLEWASH = 1;
+    private int amountWaterBlock = 0;
+
+    private boolean isBroken = true;
 
     private int tierGearBoxCasing = -1;
     private int tierPipeCasing = -1;
@@ -204,8 +218,8 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                 .addElement(
                     'E',
                     ofChain(
+                        ofBlockAnyMeta(Blocks.air),
                         ofBlockAnyMeta(Blocks.water),
-                        ofBlockAnyMeta(Blocks.flowing_water),
                         ofBlockAnyMeta(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater))))
                 .addElement(
                     'A',
@@ -257,7 +271,6 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         tierPipeCasing = -1;
         tierMachineCasing = -1;
         tCountCasing = 0;
-        placeWater();
         if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierMachineCasing < 0) return false;
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
@@ -300,8 +313,17 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
+
         return new ProcessingLogic() {
 
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+                if (checkForWater()) {
+                    return CheckRecipeResultRegistry.SUCCESSFUL;
+                }
+                return SimpleCheckRecipeResult.ofFailure("no_water");
+            }
             @Override
             @Nonnull
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
@@ -447,31 +469,86 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
             if (mUpdate < 0) mUpdate = 300;
         }
     }
-
-    private void placeWater() {
+    private boolean checkForWater() {
+        ExtendedFacing facing = getExtendedFacing();
+        final ForgeDirection frontFacing = facing.getDirection();
+        final Flip curFlip = facing.getFlip();
         IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
 
-        final ForgeDirection frontFacing = gregTechTileEntity.getFrontFacing();
+        double xOffset = getExtendedFacing().getRelativeBackInWorld().offsetX;
+        double zOffset = getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        double yOffset = getExtendedFacing().getRelativeBackInWorld().offsetY;
 
+        if (frontFacing == ForgeDirection.WEST) {
+            xOffset -= 1;
+            if (curFlip.isHorizontallyFlipped()) {
+                zOffset -= 6;
+            } else zOffset += 4;
+        }
+
+        if (frontFacing == ForgeDirection.EAST) {
+            xOffset -= 1;
+            if (curFlip.isHorizontallyFlipped()) {
+                zOffset += 4;
+            } else zOffset -= 6;
+        }
+
+        if (frontFacing == ForgeDirection.NORTH) {
+            zOffset -= 1;
+            if (curFlip.isHorizontallyFlipped()) {
+                xOffset += 4;
+            } else xOffset -= 6;
+        }
+
+        if (frontFacing == ForgeDirection.SOUTH) {
+            zOffset -= 1;
+            if (curFlip.isHorizontallyFlipped()) {
+                xOffset -= 6;
+            } else xOffset += 4;
+        }
 
         int x = gregTechTileEntity.getXCoord();
         int y = gregTechTileEntity.getYCoord();
         int z = gregTechTileEntity.getZCoord();
 
-        double xOffset = 1 - getExtendedFacing().getRelativeBackInWorld().offsetX;
-        double zOffset = 4 + getExtendedFacing().getRelativeBackInWorld().offsetZ;
-        double yOffset = getExtendedFacing().getRelativeBackInWorld().offsetY;
+        amountWaterBlock = 0;
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 Block tBlock = this.getBaseMetaTileEntity().getWorld().getBlock((int) (i + xOffset + x), (int) (y + yOffset), (int) (j + zOffset + z));
-                if (tBlock == Blocks.air) {
-                    this.getBaseMetaTileEntity()
-                        .getWorld()
-                        .setBlock((int) (i + xOffset + x), (int) (y + yOffset), (int) (j + zOffset + z), Blocks.pumpkin);
+                if (tBlock == Blocks.air || tBlock == Blocks.flowing_water) {
+                    if (tryConsumeWater()) {
+                        this.getBaseMetaTileEntity()
+                            .getWorld()
+                            .setBlock((int) (i + xOffset + x), (int) (y + yOffset), (int) (j + zOffset + z), Blocks.water);
+                    }
                 }
-
+                if (tBlock == Blocks.water) {
+                    amountWaterBlock++;
+                }
             }
         }
+        return amountWaterBlock >= 8;
+    }
+
+    private boolean tryConsumeWater() {
+        if (getStoredFluids() != null) {
+            for (FluidStack waterCapacity : this.getStoredFluids()) {
+                if (waterCapacity.isFluidEqual(FluidUtils.getWater(1000))) {
+                    if (waterCapacity.amount >= 1000) {
+                        waterCapacity.amount -= 1000;
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean checkBrokenMachine() {
+        if (mMachine) {
+            return false;
+        } else isBroken = false;
+        return false;
     }
 }
