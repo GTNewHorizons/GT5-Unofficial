@@ -18,6 +18,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipe
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
@@ -85,12 +86,16 @@ public class RecipeLoader_ChemicalSkips {
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
-        // Platline subsets (from Pd, Os, Ir)
+        // Partial platline (from Pd, Os, Ir)
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                WerkstoffLoader.PDRawPowder.get(OrePrefixes.dust, 32),
+                WerkstoffLoader.PDMetallicPowder.get(OrePrefixes.dust, 32),
                 ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0))
-            .itemOutputs(Materials.Palladium.getDust(64))
+            .itemOutputs(
+                Materials.Palladium.getDust(64),
+                Materials.Platinum.getDust(64),
+                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.dust, 64))
+            .outputChances(3333, 3333, 3333)
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_FOCUS_TIER, 1)
@@ -101,9 +106,9 @@ public class RecipeLoader_ChemicalSkips {
                 ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0))
             .itemOutputs(
                 Materials.Iridium.getDust(64),
-                Materials.Gold.getDust(64),
-                Materials.SiliconDioxide.getDust(64))
-            .outputChances(5000, 2500, 2500)
+                Materials.Platinum.getDust(64),
+                Materials.Osmiridium.getDust(64))
+            .outputChances(3333, 3333, 3333)
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_FOCUS_TIER, 1)
@@ -112,12 +117,8 @@ public class RecipeLoader_ChemicalSkips {
             .itemInputs(
                 WerkstoffLoader.IrOsLeachResidue.get(OrePrefixes.dust, 32),
                 ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0))
-            .itemOutputs(
-                Materials.Osmium.getDust(64),
-                Materials.Iridium.getDust(64),
-                Materials.Gold.getDust(64),
-                Materials.SiliconDioxide.getDust(64))
-            .outputChances(2500, 3750, 1875, 1875)
+            .itemOutputs(Materials.Osmium.getDust(64), Materials.Iridium.getDust(64), Materials.Osmiridium.getDust(64))
+            .outputChances(3333, 3333, 3333)
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_FOCUS_TIER, 1)
@@ -231,6 +232,22 @@ public class RecipeLoader_ChemicalSkips {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 Materials.Bastnasite.getDust(32),
+                ItemUtils.getSimpleStack(GenericChem.mRareEarthGroupCatalyst, 0))
+            .itemOutputs(
+                Materials.Holmium.getDust(64),
+                Materials.Cerium.getDust(64),
+                Materials.Samarium.getDust(64),
+                Materials.Gadolinium.getDust(64),
+                Materials.Lanthanum.getDust(64))
+            .outputChances(2000, 2000, 2000, 2000, 2000)
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .metadata(QFT_FOCUS_TIER, 2)
+            .addTo(quantumForceTransformerRecipes);
+        // Bastline from Cerium-rich mixture
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 16),
                 ItemUtils.getSimpleStack(GenericChem.mRareEarthGroupCatalyst, 0))
             .itemOutputs(
                 Materials.Holmium.getDust(64),
