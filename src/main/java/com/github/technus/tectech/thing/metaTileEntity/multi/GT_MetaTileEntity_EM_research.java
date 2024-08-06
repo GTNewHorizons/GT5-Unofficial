@@ -34,6 +34,7 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -756,28 +757,22 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         super.drawTexts(screenElements, inventorySlot);
         screenElements
             .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> EnumChatFormatting.WHITE + "Researching: "
-                            + EnumChatFormatting.AQUA
-                            + clientOutputName
-                            + EnumChatFormatting.RESET)
+                new TextWidget().setStringSupplier(
+                    () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.researching_item", clientOutputName))
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> computationRequired > 0 && !clientOutputName.isEmpty()))
+                    .setEnabled(
+                        widget -> computationRequired > 0 && clientOutputName != null && !clientOutputName.isEmpty()))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> EnumChatFormatting.WHITE + "Computation: "
-                            + getComputationConsumed()
-                            + " / "
-                            + getComputationRequired()
-                            + " ("
-                            + 100L * (getComputationRequired() > 0 ? getComputationConsumed() / getComputationRequired()
-                                : 0)
-                            + "%)"
-                            + EnumChatFormatting.RESET)
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.research_progress",
+                            getComputationConsumed(),
+                            getComputationRequired(),
+                            GT_Utility.formatNumbers(getComputationProgress())))
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> computationRequired > 0 && !clientOutputName.isEmpty()))
+                    .setEnabled(
+                        widget -> computationRequired > 0 && clientOutputName != null && !clientOutputName.isEmpty()))
             .widget(new FakeSyncWidget.LongSyncer(() -> computationRequired, aLong -> computationRequired = aLong))
             .widget(new FakeSyncWidget.LongSyncer(() -> computationRemaining, aLong -> computationRemaining = aLong))
             .widget(new FakeSyncWidget.StringSyncer(() -> {
@@ -805,6 +800,11 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     private long getComputationRequired() {
         return computationRequired / 20L;
+    }
+
+    private double getComputationProgress() {
+        return 100d
+            * (getComputationRequired() > 0d ? (double) getComputationConsumed() / getComputationRequired() : 0d);
     }
 
     @Override
