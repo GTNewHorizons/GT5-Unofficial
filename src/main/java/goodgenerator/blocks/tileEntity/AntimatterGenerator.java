@@ -7,16 +7,24 @@ import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
+import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -27,7 +35,15 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
+
+import client.gui.KT_UITextures;
 import goodgenerator.blocks.structures.AntimatterStructures;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.GT_HatchElement;
@@ -35,6 +51,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -58,6 +75,9 @@ public class AntimatterGenerator extends GT_MetaTileEntity_ExtendedPowerMultiBlo
     protected long trueOutput = 0;
     protected int trueEff = 0;
     protected int times = 1;
+    private UUID owner_uuid;
+    private boolean wirelessEnabled = false;
+    private boolean canUseWireless = true;
 
     private static final ClassValue<IStructureDefinition<AntimatterGenerator>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<AntimatterGenerator>>() {
 
@@ -127,18 +147,6 @@ public class AntimatterGenerator extends GT_MetaTileEntity_ExtendedPowerMultiBlo
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-
-        super.saveNBTData(aNBT);
     }
 
     @Override
@@ -222,14 +230,28 @@ public class AntimatterGenerator extends GT_MetaTileEntity_ExtendedPowerMultiBlo
                 * (Math.min(((float)antimatter / (float)catalystCount), ((float)catalystCount / (float)antimatter))));
         }
 
+
         System.out.format("Created %d EU\n", generatedEU);
-        float invHatchCount = 1.0F / (float)mExoticEnergyHatches.size();
-        for (GT_MetaTileEntity_Hatch tHatch : getExoticEnergyHatches()) {
-            if (tHatch instanceof GT_MetaTileEntity_Hatch_DynamoTunnel tLaserSource) {
-                tLaserSource.setEUVar(tLaserSource.getEUVar() + (long) (generatedEU * invHatchCount));
+
+        if (wirelessEnabled && modifier >= 1.03F) {
+            //Clamp the EU to the maximum of the hatches so wireless cannot bypass the limitations
+            long euCapacity = 0;
+            for (GT_MetaTileEntity_Hatch tHatch : getExoticEnergyHatches()) {
+                if (tHatch instanceof GT_MetaTileEntity_Hatch_DynamoTunnel tLaserSource) {
+                    euCapacity += tLaserSource.maxEUStore();
+                }
+            }
+            generatedEU = Math.min(generatedEU, euCapacity);
+            addEUToGlobalEnergyMap(owner_uuid, generatedEU);
+            System.out.format("Clamped to %d EU\n", generatedEU);
+        } else {
+            float invHatchCount = 1.0F / (float)mExoticEnergyHatches.size();
+            for (GT_MetaTileEntity_Hatch tHatch : getExoticEnergyHatches()) {
+                if (tHatch instanceof GT_MetaTileEntity_Hatch_DynamoTunnel tLaserSource) {
+                    tLaserSource.setEUVar(tLaserSource.getEUVar() + (long) (generatedEU * invHatchCount));
+                }
             }
         }
-        addEnergyOutput(generatedEU);
     }
 
     @Override
@@ -246,6 +268,21 @@ public class AntimatterGenerator extends GT_MetaTileEntity_ExtendedPowerMultiBlo
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
         buildPiece(MAIN_NAME, itemStack, hintsOnly, 17, 27, 16);
+    }
+
+
+    @Override
+    public void saveNBTData(NBTTagCompound nbt) {
+        nbt = (nbt == null) ? new NBTTagCompound() : nbt;
+        nbt.setBoolean("wirelessEnabled", wirelessEnabled);
+        super.saveNBTData(nbt);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound nbt) {
+        nbt = (nbt == null) ? new NBTTagCompound() : nbt;
+        wirelessEnabled = nbt.getBoolean("wirelessEnabled");
+        super.loadNBTData(nbt);
     }
 
     @Override
@@ -274,6 +311,32 @@ public class AntimatterGenerator extends GT_MetaTileEntity_ExtendedPowerMultiBlo
     }
 
     @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        wirelessEnabled = !wirelessEnabled;
+        GT_Utility.sendChatToPlayer(aPlayer, "Wireless network mode " + (wirelessEnabled ? "enabled." : "disabled."));
+        if (wirelessEnabled) {
+            GT_Utility.sendChatToPlayer(aPlayer, "Wireless only works with UMV Superconductor or better.");
+        }
+    }
+
+    @Override
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPreTick(aBaseMetaTileEntity, aTick);
+
+        if (aBaseMetaTileEntity.isServerSide()) {
+
+            // On first tick find the player name and attempt to add them to the map.
+            if (aTick == 1) {
+
+                // UUID and username of the owner.
+                owner_uuid = aBaseMetaTileEntity.getOwnerUuid();
+
+                strongCheckOrAddUser(owner_uuid);
+            }
+        }
+    }
+
+    @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Antimatter Generator")
@@ -286,6 +349,44 @@ public class AntimatterGenerator extends GT_MetaTileEntity_ExtendedPowerMultiBlo
             .addInfo("No crashy please :3")
             .toolTipFinisher("Good Generator");
         return tt;
+    }
+
+    protected boolean canUseWireless() {
+        return true;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient()) {
+                canUseWireless = canUseWireless();
+            }
+            if (canUseWireless) {
+                wirelessEnabled = !wirelessEnabled;
+            }
+        })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(GT_UITextures.BUTTON_STANDARD);
+                if (canUseWireless) {
+                    if (wirelessEnabled) {
+                        ret.add(KT_UITextures.OVERLAY_BUTTON_WIRELESS_ON);
+                    } else {
+                        ret.add(KT_UITextures.OVERLAY_BUTTON_WIRELESS_OFF);
+                    }
+                } else {
+                    ret.add(KT_UITextures.OVERLAY_BUTTON_WIRELESS_OFF_DISABLED);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .setPos(80, 91)
+            .setSize(16, 16)
+            .addTooltip(StatCollector.translateToLocal("gui.kekztech_lapotronicenergyunit.wireless"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> wirelessEnabled, val -> wirelessEnabled = val))
+            .widget(new FakeSyncWidget.BooleanSyncer(this::canUseWireless, val -> canUseWireless = val));
     }
 
     @Override
