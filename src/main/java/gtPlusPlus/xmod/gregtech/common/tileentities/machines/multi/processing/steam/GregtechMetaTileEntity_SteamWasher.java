@@ -319,7 +319,10 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
-                if (checkForWater()) {
+                if (isBroken) {
+                    checkForWater();
+                    isBroken = false;
+                } else {
                     return CheckRecipeResultRegistry.SUCCESSFUL;
                 }
                 return SimpleCheckRecipeResult.ofFailure("no_water");
@@ -467,6 +470,9 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
             if (mUpdate < 0) mUpdate = 300;
+            if ((aTick % 1200) == 0) {
+                isBroken = true;
+            }
         }
     }
     private boolean checkForWater() {
@@ -479,32 +485,23 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         double zOffset = getExtendedFacing().getRelativeBackInWorld().offsetZ;
         double yOffset = getExtendedFacing().getRelativeBackInWorld().offsetY;
 
-        if (frontFacing == ForgeDirection.WEST) {
-            xOffset -= 1;
-            if (curFlip.isHorizontallyFlipped()) {
-                zOffset -= 6;
-            } else zOffset += 4;
-        }
-
-        if (frontFacing == ForgeDirection.EAST) {
-            xOffset -= 1;
-            if (curFlip.isHorizontallyFlipped()) {
-                zOffset += 4;
-            } else zOffset -= 6;
-        }
-
-        if (frontFacing == ForgeDirection.NORTH) {
-            zOffset -= 1;
-            if (curFlip.isHorizontallyFlipped()) {
-                xOffset += 4;
-            } else xOffset -= 6;
-        }
-
-        if (frontFacing == ForgeDirection.SOUTH) {
-            zOffset -= 1;
-            if (curFlip.isHorizontallyFlipped()) {
-                xOffset -= 6;
-            } else xOffset += 4;
+        switch (frontFacing) {
+            case WEST -> {
+                xOffset -= 1;
+                zOffset += curFlip.isHorizontallyFlipped() ? - 6 : 4;
+            }
+            case EAST -> {
+                xOffset -= 1;
+                zOffset += curFlip.isHorizontallyFlipped() ? 4 : -6;
+            }
+            case NORTH -> {
+                zOffset -= 1;
+                xOffset += curFlip.isHorizontallyFlipped() ? 4 : -6;
+            }
+            case SOUTH -> {
+                zOffset -= 1;
+                xOffset += curFlip.isHorizontallyFlipped() ? -6 : 4;
+            }
         }
 
         int x = gregTechTileEntity.getXCoord();
@@ -516,7 +513,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 Block tBlock = this.getBaseMetaTileEntity().getWorld().getBlock((int) (i + xOffset + x), (int) (y + yOffset), (int) (j + zOffset + z));
-                if (tBlock == Blocks.air || tBlock == Blocks.flowing_water) {
+                if (tBlock == Blocks.air) {
                     if (tryConsumeWater()) {
                         this.getBaseMetaTileEntity()
                             .getWorld()
