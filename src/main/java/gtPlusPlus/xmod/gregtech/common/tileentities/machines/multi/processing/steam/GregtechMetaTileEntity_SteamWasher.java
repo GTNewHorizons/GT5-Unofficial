@@ -12,19 +12,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.objects.ItemData;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.recipe.metadata.PCBFactoryTierKey;
-import gregtech.api.recipe.metadata.PCBFactoryUpgrade;
-import gregtech.api.recipe.metadata.PCBFactoryUpgradeKey;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.VoidProtectionHelper;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -36,14 +23,16 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
 import net.minecraftforge.fluids.FluidStack;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -62,12 +51,16 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.blocks.GT_Block_Casings1;
 import gregtech.common.blocks.GT_Block_Casings2;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
@@ -327,6 +320,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                 }
                 return SimpleCheckRecipeResult.ofFailure("no_water");
             }
+
             @Override
             @Nonnull
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
@@ -475,6 +469,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
             }
         }
     }
+
     private boolean checkForWater() {
         ExtendedFacing facing = getExtendedFacing();
         final ForgeDirection frontFacing = facing.getDirection();
@@ -488,7 +483,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         switch (frontFacing) {
             case WEST -> {
                 xOffset -= 1;
-                zOffset += curFlip.isHorizontallyFlipped() ? - 6 : 4;
+                zOffset += curFlip.isHorizontallyFlipped() ? -6 : 4;
             }
             case EAST -> {
                 xOffset -= 1;
@@ -512,12 +507,18 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                Block tBlock = this.getBaseMetaTileEntity().getWorld().getBlock((int) (i + xOffset + x), (int) (y + yOffset), (int) (j + zOffset + z));
+                Block tBlock = this.getBaseMetaTileEntity()
+                    .getWorld()
+                    .getBlock((int) (i + xOffset + x), (int) (y + yOffset), (int) (j + zOffset + z));
                 if (tBlock == Blocks.air) {
                     if (tryConsumeWater()) {
                         this.getBaseMetaTileEntity()
                             .getWorld()
-                            .setBlock((int) (i + xOffset + x), (int) (y + yOffset), (int) (j + zOffset + z), Blocks.water);
+                            .setBlock(
+                                (int) (i + xOffset + x),
+                                (int) (y + yOffset),
+                                (int) (j + zOffset + z),
+                                Blocks.water);
                     }
                 }
                 if (tBlock == Blocks.water) {
