@@ -2045,6 +2045,17 @@ public class WerkstoffMaterialPool implements Runnable {
             .onlyDust(),
         offsetID3b + 9,
         TextureSet.SET_DULL);
+    
+    public static final Werkstoff NitrogenPlasmaSilaneMix = new Werkstoff(
+    		new short[] {140, 125, 220},
+    		"Silane-Nitrogen Plasma Mixture",
+    		subscriptNumbers("SiH4/N"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID3b + 10,
+    		TextureSet.SET_FLUID
+    		);
 
     public static void runInit() {
         addSubTags();
