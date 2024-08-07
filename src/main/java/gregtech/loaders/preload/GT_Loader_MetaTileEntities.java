@@ -585,8 +585,8 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbin
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Steam;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiCanner;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiFurnace;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiSolidifier;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiLathe;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiSolidifier;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_NanoForge;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilCracker;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill1;
