@@ -9,6 +9,7 @@ import net.minecraftforge.common.DimensionManager;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import gregtech.api.net.GT_PacketTypes;
 import gregtech.api.net.GT_Packet_New;
 import gregtech.common.items.GT_VolumetricFlask;
 import io.netty.buffer.ByteBuf;
@@ -38,7 +39,7 @@ public final class MessageSetFlaskCapacity extends GT_Packet_New {
 
     @Override
     public byte getPacketID() {
-        return 5;
+        return GT_PacketTypes.SET_FLASK_CAPACITY.id;
     }
 
     @Override

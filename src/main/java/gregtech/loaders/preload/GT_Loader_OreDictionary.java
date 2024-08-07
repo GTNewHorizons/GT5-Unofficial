@@ -168,16 +168,15 @@ public class GT_Loader_OreDictionary implements Runnable {
         GT_OreDictUnificator.registerOre("cropLemon", ItemList.FR_Lemon.get(1L));
         GT_OreDictUnificator.registerOre("cropCoffee", ItemList.IC2_CoffeeBeans.get(1L));
         GT_OreDictUnificator.registerOre("cropPotato", ItemList.Food_Raw_Potato.get(1L));
+        GT_OreDictUnificator.registerOre(OrePrefixes.battery, Materials.LV, GT_ModHandler.getIC2Item("reBattery", 1L));
         GT_OreDictUnificator
-            .registerOre(OrePrefixes.battery, Materials.Basic, GT_ModHandler.getIC2Item("reBattery", 1L));
+            .registerOre(OrePrefixes.battery, Materials.LV, GT_ModHandler.getIC2Item("chargedReBattery", 1L, 32767));
         GT_OreDictUnificator
-            .registerOre(OrePrefixes.battery, Materials.Basic, GT_ModHandler.getIC2Item("chargedReBattery", 1L, 32767));
+            .registerOre(OrePrefixes.battery, Materials.MV, GT_ModHandler.getIC2Item("advBattery", 1L, 32767));
         GT_OreDictUnificator
-            .registerOre(OrePrefixes.battery, Materials.Advanced, GT_ModHandler.getIC2Item("advBattery", 1L, 32767));
+            .registerOre(OrePrefixes.battery, Materials.HV, GT_ModHandler.getIC2Item("energyCrystal", 1L, 32767));
         GT_OreDictUnificator
-            .registerOre(OrePrefixes.battery, Materials.Elite, GT_ModHandler.getIC2Item("energyCrystal", 1L, 32767));
-        GT_OreDictUnificator
-            .registerOre(OrePrefixes.battery, Materials.Master, GT_ModHandler.getIC2Item("lapotronCrystal", 1L, 32767));
+            .registerOre(OrePrefixes.battery, Materials.EV, GT_ModHandler.getIC2Item("lapotronCrystal", 1L, 32767));
 
         GT_OreDictUnificator
             .registerOre(OreDictNames.craftingWireCopper, GT_ModHandler.getIC2Item("insulatedCopperCableItem", 1L));
@@ -271,9 +270,9 @@ public class GT_Loader_OreDictionary implements Runnable {
         GT_OreDictUnificator.addToBlacklist(GT_ModHandler.getIC2Item("electronicCircuit", 1L));
         GT_OreDictUnificator.addToBlacklist(GT_ModHandler.getIC2Item("advancedCircuit", 1L));
         GT_OreDictUnificator
-            .registerOre(OrePrefixes.circuit, Materials.Basic, GT_ModHandler.getIC2Item("electronicCircuit", 1L));
+            .registerOre(OrePrefixes.circuit, Materials.LV, GT_ModHandler.getIC2Item("electronicCircuit", 1L));
         GT_OreDictUnificator
-            .registerOre(OrePrefixes.circuit, Materials.Advanced, GT_ModHandler.getIC2Item("advancedCircuit", 1L));
+            .registerOre(OrePrefixes.circuit, Materials.HV, GT_ModHandler.getIC2Item("advancedCircuit", 1L));
 
         GT_OreDictUnificator.registerOre(
             OrePrefixes.itemCasing,
@@ -344,63 +343,63 @@ public class GT_Loader_OreDictionary implements Runnable {
         // Fake Circuits
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Primitive,
+            Materials.ULV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitULV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Basic,
+            Materials.LV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitLV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Good,
+            Materials.MV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitMV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Advanced,
+            Materials.HV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitHV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Data,
+            Materials.EV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitEV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Elite,
+            Materials.IV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitIV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Master,
+            Materials.LuV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitLuV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Ultimate,
+            Materials.ZPM,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitZPM", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.SuperconductorUHV,
+            Materials.UV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Infinite,
+            Materials.UHV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUHV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Bio,
+            Materials.UEV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUEV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Optical,
+            Materials.UIV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUIV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Exotic,
+            Materials.UMV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUMV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Cosmic,
+            Materials.UXV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUXV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Transcendent,
+            Materials.MAX,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitMAX", 1L));
 
         GT_OreDictUnificator.registerOre(

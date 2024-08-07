@@ -9,6 +9,7 @@ import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.util.GT_RecipeConstants.LFTR_OUTPUT_POWER;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
 
@@ -105,12 +106,11 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
             .addInputHatch("Top or bottom layer edges", 1)
             .addOutputHatch("Top or bottom layer edges", 1)
             .addDynamoHatch("Top or bottom layer edges", 1)
-            .addMaintenanceHatch("Top or bottom layer edges", 1)
             .addMufflerHatch("Top 3x3", 2)
             .addStructureInfo("All dynamos must be between EV and LuV tier.")
             .addStructureInfo("All other hatches must be IV+ tier.")
-            .addStructureInfo("4x Output Hatches or 1x Output Hatch (ME), 1+ Input Hatches, 4x Dynamo Hatches")
-            .addStructureInfo("2x Maintenance Hatches, 4x Mufflers")
+            .addStructureInfo("4x Output Hatches or 1x Output Hatch (ME), 1+ Input Hatches")
+            .addStructureInfo("4x Dynamo Hatches, 4x Mufflers")
             .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
@@ -267,8 +267,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
         if (checkPiece(mName, 3, 3, 0) && mCasing >= 27) {
             if ((mOutputHatches.size() >= 3 || canDumpFluidToME()) && mInputHatches.size() >= 1
                 && mDynamoHatches.size() == 4
-                && mMufflerHatches.size() == 4
-                && mMaintenanceHatches.size() == 2) {
+                && mMufflerHatches.size() == 4) {
                 this.turnCasingActive(false);
                 return true;
             }
@@ -355,7 +354,8 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
             @NotNull
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
-                return GT_OverclockCalculator.ofNoOverclock(recipe.mSpecialValue * 4L, recipe.mDuration);
+                return GT_OverclockCalculator
+                    .ofNoOverclock(recipe.getMetadataOrDefault(LFTR_OUTPUT_POWER, 0) * 4L, recipe.mDuration);
             }
 
             @NotNull
@@ -382,7 +382,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
                     }
                 }
                 if (aFuelFluid != null) {
-                    for (FluidStack fluidStack : getStoredFluids()) {
+                    for (FluidStack fluidStack : inputFluids) {
                         if (fluidStack.isFluidEqual(aFuelFluid)) {
                             mFuelRemaining += fluidStack.amount;
                         } else if (fluidStack.getFluid()

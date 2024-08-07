@@ -33,7 +33,7 @@ public class GT_Packet_UpdateItem extends GT_Packet_New {
 
     @Override
     public byte getPacketID() {
-        return 13;
+        return GT_PacketTypes.UPDATE_ITEM.id;
     }
 
     @Override
