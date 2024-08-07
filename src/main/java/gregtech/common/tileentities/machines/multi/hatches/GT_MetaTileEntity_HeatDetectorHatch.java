@@ -38,7 +38,8 @@ public class GT_MetaTileEntity_HeatDetectorHatch extends GT_MetaTileEntity_Hatch
         super(aID, aName, aNameRegional, aTier, 0, "Controls black hole compressor.");
     }
 
-    public GT_MetaTileEntity_HeatDetectorHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_HeatDetectorHatch(String aName, int aTier, String[] aDescription,
+        ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -69,13 +70,13 @@ public class GT_MetaTileEntity_HeatDetectorHatch extends GT_MetaTileEntity_Hatch
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-                                  ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-                                 ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -86,7 +87,7 @@ public class GT_MetaTileEntity_HeatDetectorHatch extends GT_MetaTileEntity_Hatch
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-                                float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
@@ -99,8 +100,7 @@ public class GT_MetaTileEntity_HeatDetectorHatch extends GT_MetaTileEntity_Hatch
     @Override
     public String[] getDescription() {
         return new String[] { "Can be installed in the Semi-Stable Black Hole Containment Module.",
-            "Used to control opening and closing of black hole",
-            "Right click to open the GUI and change settings." };
+            "Used to control opening and closing of black hole", "Right click to open the GUI and change settings." };
     }
 
     @Override
@@ -118,10 +118,10 @@ public class GT_MetaTileEntity_HeatDetectorHatch extends GT_MetaTileEntity_Hatch
     }
 
     /**
-     * Updates redstone output strength based on the pH of the multiblock.
+     * Updates redstone output strength based on the heat of the HIP unit.
      */
-    public void updateRedstoneOutput(float pH) {
-        isOn = (pH > threshold) ^ inverted;
+    public void updateRedstoneOutput(float heat) {
+        isOn = (heat > threshold) ^ inverted;
     }
 
     @Override
@@ -161,13 +161,13 @@ public class GT_MetaTileEntity_HeatDetectorHatch extends GT_MetaTileEntity_Hatch
         final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
         builder.widget(
-                new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
-                    .setTextureGetter(
-                        (state) -> state == 1 ? GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON
-                            : GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                    .addTooltip(0, NORMAL)
-                    .addTooltip(1, INVERTED)
-                    .setPos(10, 8))
+            new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
+                .setTextureGetter(
+                    (state) -> state == 1 ? GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON
+                        : GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                .addTooltip(0, NORMAL)
+                .addTooltip(1, INVERTED)
+                .setPos(10, 8))
             .widget(
                 new TextWidget().setStringSupplier(() -> inverted ? INVERTED : NORMAL)
                     .setDefaultColor(COLOR_TEXT_GRAY.get())

@@ -24,6 +24,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.widget.CoverCycleButtonWidget;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialCompressor;
 
 public class GT_MetaTileEntity_BlackHoleHatch extends GT_MetaTileEntity_Hatch {
 
@@ -69,13 +70,13 @@ public class GT_MetaTileEntity_BlackHoleHatch extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-                                  ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-                                 ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -86,7 +87,7 @@ public class GT_MetaTileEntity_BlackHoleHatch extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-                                float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
@@ -99,8 +100,7 @@ public class GT_MetaTileEntity_BlackHoleHatch extends GT_MetaTileEntity_Hatch {
     @Override
     public String[] getDescription() {
         return new String[] { "Can be installed in the Semi-Stable Black Hole Containment Module.",
-            "Used to control opening and closing of black hole",
-            "Right click to open the GUI and change settings." };
+            "Used to control opening and closing of black hole", "Right click to open the GUI and change settings." };
     }
 
     @Override
@@ -117,11 +117,10 @@ public class GT_MetaTileEntity_BlackHoleHatch extends GT_MetaTileEntity_Hatch {
         super.saveNBTData(aNBT);
     }
 
-    /**
-     * Updates redstone output strength based on the pH of the multiblock.
-     */
-    public void updateRedstoneOutput(float pH) {
-        isOn = (pH > threshold) ^ inverted;
+    GT_MetaTileEntity_IndustrialCompressor compressor;
+
+    public void linkToCompressor(GT_MetaTileEntity_IndustrialCompressor c) {
+        compressor = c;
     }
 
     @Override
@@ -152,6 +151,11 @@ public class GT_MetaTileEntity_BlackHoleHatch extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
+    public void onDisableWorking() {
+        compressor.toggleBlackHole();
+    }
+
+    @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont) };
     }
@@ -161,13 +165,13 @@ public class GT_MetaTileEntity_BlackHoleHatch extends GT_MetaTileEntity_Hatch {
         final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
         builder.widget(
-                new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
-                    .setTextureGetter(
-                        (state) -> state == 1 ? GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON
-                            : GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                    .addTooltip(0, NORMAL)
-                    .addTooltip(1, INVERTED)
-                    .setPos(10, 8))
+            new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
+                .setTextureGetter(
+                    (state) -> state == 1 ? GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON
+                        : GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                .addTooltip(0, NORMAL)
+                .addTooltip(1, INVERTED)
+                .setPos(10, 8))
             .widget(
                 new TextWidget().setStringSupplier(() -> inverted ? INVERTED : NORMAL)
                     .setDefaultColor(COLOR_TEXT_GRAY.get())

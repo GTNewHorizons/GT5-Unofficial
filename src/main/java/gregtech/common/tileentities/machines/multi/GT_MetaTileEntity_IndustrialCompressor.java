@@ -68,6 +68,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.GT_Block_Casings2;
+import gregtech.common.tileentities.machines.multi.hatches.GT_MetaTileEntity_BlackHoleHatch;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -85,7 +86,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
             STRUCTURE_PIECE_MAIN,
             (new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A A", "AAA" }, { "AAA", "AAA", "AAA" } }))
         .addShape(STRUCTURE_PIECE_HIP, (new String[][] { { " AA", "  C", " CC", " C ", " on" } }))
-        .addShape(STRUCTURE_PIECE_BLACKHOLE, (new String[][] { { "AA ", " A ", " b ", " A ", "AAA" } }))
+        .addShape(STRUCTURE_PIECE_BLACKHOLE, (new String[][] { { "AA ", " A ", " b ", " A ", "AdA" } }))
         .addShape(
             STRUCTURE_PIECE_NEUTRONIUM,
             (new String[][] { { "NNNNN", "ggggg", "LLLLL", "f   f" }, { "NNNNN", "g---g", "LNNNL", "     " },
@@ -113,6 +114,14 @@ public class GT_MetaTileEntity_IndustrialCompressor
             ofCoil(
                 GT_MetaTileEntity_IndustrialCompressor::setCoilLevel,
                 GT_MetaTileEntity_IndustrialCompressor::getCoilLevel))
+        .addElement(
+            'd',
+            buildHatchAdder(GT_MetaTileEntity_IndustrialCompressor.class)
+                .adder(GT_MetaTileEntity_IndustrialCompressor::addBlackHoleController)
+                .hatchClass(GT_MetaTileEntity_BlackHoleHatch.class)
+                .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                .dot(2)
+                .build())
         .addElement(
             'n',
             buildHatchAdder(GT_MetaTileEntity_IndustrialCompressor.class)
@@ -145,6 +154,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
     private int catalyzingCounter = 0;
     private float blackHoleStability = 100;
     private GT_MetaTileEntity_Hatch_Input blackHoleHatch;
+    private GT_MetaTileEntity_BlackHoleHatch blackHoleController;
 
     private boolean neutroniumEnabled = false;
 
@@ -162,6 +172,19 @@ public class GT_MetaTileEntity_IndustrialCompressor
             if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
                 blackHoleHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
                 blackHoleHatch.updateTexture(aBaseCasingIndex);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean addBlackHoleController(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity != null) {
+            final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+            if (aMetaTileEntity instanceof GT_MetaTileEntity_BlackHoleHatch) {
+                blackHoleController = (GT_MetaTileEntity_BlackHoleHatch) aMetaTileEntity;
+                blackHoleController.updateTexture(aBaseCasingIndex);
+                blackHoleController.linkToCompressor(this);
                 return true;
             }
         }
@@ -541,7 +564,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
         }
     }
 
-    private void toggleBlackHole() {
+    public void toggleBlackHole() {
         if (blackholeEnabled) {
             if (blackholeOn) {
                 blackholeOn = false;

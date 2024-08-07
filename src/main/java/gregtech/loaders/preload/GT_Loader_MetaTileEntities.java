@@ -464,7 +464,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
-import gregtech.common.tileentities.machines.multi.hatches.GT_MetaTileEntity_HeatDetectorHatch;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.GT_Mod;
@@ -596,6 +595,8 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Transcenden
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
+import gregtech.common.tileentities.machines.multi.hatches.GT_MetaTileEntity_BlackHoleHatch;
+import gregtech.common.tileentities.machines.multi.hatches.GT_MetaTileEntity_HeatDetectorHatch;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Bronze;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Steel;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_Compressor_Bronze;
@@ -4163,9 +4164,14 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Automatable Data Access Hatch",
                 8).getStackForm(1L));
         ItemList.Hatch_HeatDetector.set(
-new GT_MetaTileEntity_HeatDetectorHatch(HEAT_DETECTOR_HATCH.ID,  "hatch.heatdetector", "Heat Detection Hatch", 7).getStackForm(1));
+            new GT_MetaTileEntity_HeatDetectorHatch(
+                HEAT_DETECTOR_HATCH.ID,
+                "hatch.heatdetector",
+                "Heat Detection Hatch",
+                7).getStackForm(1));
         ItemList.Hatch_BlackHole.set(
-            new GT_MetaTileEntity_HeatDetectorHatch(BLACK_HOLE_HATCH.ID,  "hatch.blackhole", "Black Hole Control Hatch", 9).getStackForm(1));
+            new GT_MetaTileEntity_BlackHoleHatch(BLACK_HOLE_HATCH.ID, "hatch.blackhole", "Black Hole Control Hatch", 9)
+                .getStackForm(1));
         generateWiresAndPipes();
     }
 
