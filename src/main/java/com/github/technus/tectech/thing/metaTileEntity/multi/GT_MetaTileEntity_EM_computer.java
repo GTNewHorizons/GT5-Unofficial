@@ -274,11 +274,11 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             return SimpleCheckRecipeResult.ofFailure("no_computing");
         }
         if (overclock.getStatus(true).isOk && overvolt.getStatus(true).isOk) {
-            float eut = V[8] * (float) overVoltageRatio * (float) overClockRatio;
+            float eut = V[7] * (float) overClockRatio * (float) overVoltageRatio;
             if (eut < Integer.MAX_VALUE - 7) {
                 mEUt = -(int) eut;
             } else {
-                mEUt = -(int) V[8];
+                mEUt = -(int) V[7];
                 return CheckRecipeResultRegistry.POWER_OVERFLOW;
             }
             short thingsActive = 0;
@@ -314,7 +314,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 return SimpleCheckRecipeResult.ofSuccess("computing");
             } else {
                 eAvailableData = 0;
-                mEUt = -(int) V[8];
+                mEUt = -(int) V[7];
                 eAmpereFlow = 1;
                 mMaxProgresstime = 20;
                 mEfficiencyIncrease = 10000;
