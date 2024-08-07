@@ -40,7 +40,7 @@ public class TechTreeGui {
     }
 
     public static IWidget buildTechWidget(TechTreeGuiData data, ITechnology tech) {
-        return new ButtonWidget<>().size(120, 16)
+        return new TechSelectorButton<>().size(120, 16)
             .overlay(IKey.lang(tech.getUnlocalizedName()))
             .onMousePressed(mouseButton -> {
                 // Make this tech the selected technology
