@@ -1863,7 +1863,7 @@ public class RecipeLoader_02 {
                 FluidStack output = FluidRegistry.getFluidStack(tOutName, tPlasma.amount);
                 if (output == null) output = FluidRegistry.getFluidStack("molten." + tOutName, tPlasma.amount);
                 if (output != null) {
-                    long waterAmount = (long) (tUnit * EHEEfficiencyMultiplier * tPlasma.amount / 16);
+                    long waterAmount = (long) (tUnit * EHEEfficiencyMultiplier * tPlasma.amount / 160);
                     long criticalSteamAmount = (long) (tUnit * EHEEfficiencyMultiplier * tPlasma.amount / 10);
                     MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
                         tPlasma,
