@@ -1835,7 +1835,7 @@ public class RecipeLoader_02 {
             .addTo(plasmaForgeRecipes);
     }
 
-    public static float EHEEfficiencyMultiplier = 1.5f;
+    public static float EHEEfficiencyMultiplier = 1.0f;
 
     public static void FinishLoadRecipe() {
         for (GT_Recipe plasmaFuel : RecipeMaps.plasmaFuels.getAllRecipes()) {
