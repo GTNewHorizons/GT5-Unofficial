@@ -11,8 +11,11 @@ import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_Values.AuthorCloud;
 import static gregtech.api.enums.GT_Values.AuthorOmdaCZ;
+import static gregtech.api.enums.GT_Values.authorBaps;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
+import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
@@ -80,9 +83,11 @@ public class GT_MetaTileEntity_MultiSolidifier extends
     protected final String MS_END = mName + "end";
 
     protected int casingAmount = 0;
+    protected int pipeCasingAmount = 0;
     protected int Width = 0;
     protected int eV = 0, mCeil = 0, mFloor = 0;
     private int casingTier = -1;
+    private int pipeCasingTier = -1;
     private int pipeMeta = -1;
     private int machineTier = 0;
     private static final int SOLIDIFIER_CASING_INDEX = ((GT_Block_Casings10) GregTech_API.sBlockCasings10)
@@ -156,12 +161,23 @@ public class GT_MetaTileEntity_MultiSolidifier extends
                                 -1,
                                 GT_MetaTileEntity_MultiSolidifier::setCasingTier,
                                 GT_MetaTileEntity_MultiSolidifier::getCasingTier)))))
-        .addElement('C', ofBlock(GregTech_API.sBlockCasings10, 4))
-        .addElement(
-            'D',
-            withChannel(
-                "pipe casing",
+        .addElement('C', /*
+        ofBlock(GregTech_API.sBlockCasings10
+        */
+            onElementPass(
+                x -> x.pipeCasingAmount++,
                 ofBlocksTiered(
+                    this::tierExtractor,
+                    ImmutableList.of(
+                        Pair.of(GregTech_API.sBlockCasings10, 4),
+                        Pair.of(ModBlocks.blockCustomPipeGearCasings, 13),
+                        Pair.of(ModBlocks.blockCustomPipeGearCasings, 15)),
+                    -1,
+                    GT_MetaTileEntity_MultiSolidifier::setPipeCasingTier,
+                    GT_MetaTileEntity_MultiSolidifier::getPipeCasingTier)))
+        .addElement(
+            'F',
+               /* ofBlocksTiered(
                     (block, meta) -> block == ModBlocks.blockCustomPipeGearCasings ? meta : null,
                     ImmutableList.of(
                         Pair.of(ModBlocks.blockCustomPipeGearCasings, 8),
@@ -169,7 +185,11 @@ public class GT_MetaTileEntity_MultiSolidifier extends
                         Pair.of(ModBlocks.blockCustomPipeGearCasings, 15)),
                     -1,
                     (t, meta) -> t.pipeMeta = meta,
-                    t -> t.pipeMeta)))
+                    t -> t.pipeMeta))
+                    */
+            TinkerConstruct.isModLoaded()//maybe temporary if someone makes textures for new special decorative block
+                ? ofChain(ofBlock(Block.getBlockFromName("TinkersConstruct|CastingTable"), 10))
+                : ofChain(ofBlock(Blocks.cauldron, 0)))
         .addElement(
             'E',
             buildHatchAdder(GT_MetaTileEntity_MultiSolidifier.class).atLeast(InputHatch)
@@ -180,8 +200,8 @@ public class GT_MetaTileEntity_MultiSolidifier extends
                         GT_MetaTileEntity_MultiSolidifier::onCasingAdded,
                         ofBlock(GregTech_API.sBlockCasings10, 3))))
         .addElement(
-            'F',
-            BuildCraftFactory.isModLoaded()
+            'D',
+            BuildCraftFactory.isModLoaded()//maybe temporary if someone makes textures for new special decorative block
                 ? ofChain(ofBlock(Block.getBlockFromName("BuildCraft|Factory:hopperBlock"), 10))
                 : ofChain(ofBlock(Blocks.hopper, 0)))
         .build();
@@ -212,7 +232,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 3)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE)
                         .extFacing()
@@ -225,7 +245,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 3)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_CANNER)
                         .extFacing()
@@ -238,7 +258,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)) };
+                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 3)) };
         }
         return rTexture;
     }
@@ -255,18 +275,18 @@ public class GT_MetaTileEntity_MultiSolidifier extends
             .addInfo("Super Coolant: +200%")
             .addInfo("Gains 2x mold parallels per width expansion")
             .addInfo(EnumChatFormatting.BLUE + "Pretty solid, isn't it")
-            .addInfo(AuthorOmdaCZ)
+            .addInfo(AuthorOmdaCZ + "with help of" + AuthorCloud + "&" + authorBaps)
             .addSeparator()
             .beginVariableStructureBlock(9, 65, 5, 5, 5, 5, true)
             .addController("Front Center bottom")
-            .addCasingInfoMin("Solid Steel Machine Casing", 69, false)
+            .addCasingInfoMin("Solidifier/Laurenium/DTPF Casing", 69, false)
             .addCasingInfoMin("Steel Pipe Casing", 18, false)
-            .addInputBus("Any Solid Steel Casing", 1)
-            .addOutputBus("Any Solid Steel Casing", 1)
-            .addInputHatch("Any Solid Steel Casing", 1)
-            .addInputHatch("Solid Steel Casing second layer in the back centre", 1)
-            .addEnergyHatch("Any Solid Steel Casing", 1)
-            .addMaintenanceHatch("Any Solid Steel Casing", 1)
+            .addInputBus("Any Tiered Casing", 1)
+            .addOutputBus("Any Tiered Casing", 1)
+            .addInputHatch("Any Tiered Casing", 1)
+            .addInputHatch("Solidifier Casing second layer in the back centre", 1)
+            .addEnergyHatch("Any Tiered Casing", 1)
+            .addMaintenanceHatch("Any Tiered Casing", 1)
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -274,12 +294,12 @@ public class GT_MetaTileEntity_MultiSolidifier extends
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 4, 0);
-        int tTotalWidth = Math.min(30, stackSize.stackSize + 3); // min 2 output layer, so at least 1 + 2 Width
+        int tTotalWidth = Math.min(30, stackSize.stackSize + 3); // max Width, minimal mid pieces to build on each side
         for (int i = 1; i < tTotalWidth - 1; i++) {
-            buildPiece(MS_LEFT_MID, stackSize, hintsOnly, 3 + 2 * i, 4, 0);
-            buildPiece(MS_RIGHT_MID, stackSize, hintsOnly, -2 - 2 * i, 4, 0);
+            buildPiece(MS_LEFT_MID, stackSize, hintsOnly, 3 + 2 * i, 4, 0); //horizontal offset 3 from controller and number of pieces times width of each piece
+            buildPiece(MS_RIGHT_MID, stackSize, hintsOnly, -2 - 2 * i, 4, 0); //the same but on other side of controller, for some reason -2 works right but -3 is weird
         }
-        buildPiece(MS_END, stackSize, hintsOnly, (tTotalWidth + 2) * 2 - 4, 4, 0);
+        buildPiece(MS_END, stackSize, hintsOnly, (tTotalWidth + 2) * 2 - 4, 4, 0);//trial and error numbers that work
         buildPiece(MS_END, stackSize, hintsOnly, (-tTotalWidth - 2) * 2 + 4, 4, 0);
     }
 
@@ -294,7 +314,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         nWidth = 0;
         int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 4, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int tTotalWidth = Math.min(30, stackSize.stackSize + 3); // min 2 output layer, so at least 1 + 2 Width
+        int tTotalWidth = Math.min(30, stackSize.stackSize + 3);
         for (int i = 1; i < tTotalWidth - 1; i++) {
             mWidth = i;
             nWidth = i;
@@ -352,6 +372,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mWidth = 0;
         casingTier = -1;
+        pipeCasingTier= -1;
         if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
             while (mWidth < 30) {
                 if (checkPiece(MS_RIGHT_MID, (-2 * (mWidth + 1)) - 2, 4, 0)
@@ -360,7 +381,7 @@ public class GT_MetaTileEntity_MultiSolidifier extends
                 } else break;
             }
         } else return false;
-        machineTier = Math.min(getPipeCasingTier(pipeMeta), casingTier);
+        machineTier = Math.min(getPipeCasingTier(pipeCasingTier), casingTier);
         if (casingTier >= -1) {
             updateHatchTextures(casingIndices.get(casingTier));
         }
@@ -385,6 +406,14 @@ public class GT_MetaTileEntity_MultiSolidifier extends
 
     private int getCasingTier() {
         return casingTier;
+    }
+
+    private void setPipeCasingTier(int tier) {
+        pipeCasingTier = tier;
+    }
+
+    private int getPipeCasingTier() {
+        return pipeCasingTier;
     }
 
     private int tierExtractor(Block block, int meta) {
