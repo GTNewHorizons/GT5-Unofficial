@@ -18,6 +18,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import gregtech.api.util.GT_Log;
+import net.minecraftforge.fluids.Fluid;
 
 @Mod(
     modid = Tags.MODID,
@@ -71,34 +73,14 @@ public class GTNHLanthanides {
         BotRecipes.addGTRecipe();
         // RecipeLoader.loadZylonRecipes();
         proxy.postInit(e);
-        // GT_Log.out.print(FluidRegistry.getFluid("Sodium Tungstate").getName());
 
-        // GT_Log.out.print(Arrays.toString(Werkstoff.werkstoffNameHashMap.keySet().toArray()));
-        // GT_Log.out.print(Arrays.toString(Werkstoff.werkstoffHashMap.keySet().toArray()));
-
-        /*
-         * GT_Log.out.print("HMMM " + Arrays.toString(OreDictionary.getOreIDs(
-         * WerkstoffMaterialPool.DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1))));
-         */
     }
 
     @EventHandler
     public static void onModLoadingComplete(FMLLoadCompleteEvent e) {
-        // GT_Log.out.print("AAAAAAAAAAAAAA " + new
-        // ItemStack(LanthItemList.maskMap.get(MaskList.CPU)).getUnlocalizedName());
-        //
-        // GT_Log.out.print("We are done loading");
+
         BotRecipes.removeRecipes();
         RecipeLoader.removeCeriumSources();
 
-        /*
-         * for (GT_ItemStack stack : BeamlineRecipeAdder.instance.TargetChamberRecipes.mRecipeItemMap.keySet()) {
-         * GT_Log.out.print(" Recipes for: " + stack.mItem.getUnlocalizedName() + ": "); for (GT_Recipe recipe :
-         * BeamlineRecipeAdder.instance.TargetChamberRecipes.mRecipeItemMap.get(stack)) {
-         * GT_Log.out.print(Arrays.toString(recipe.mOutputs)); } }
-         */
-
-        // GT_Log.out.print("blah blah " +
-        // WerkstoffMaterialPool.PTMEGElastomer.hasGenerationFeature(OrePrefixes.ingot));
     }
 }

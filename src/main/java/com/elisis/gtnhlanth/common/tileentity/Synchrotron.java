@@ -44,6 +44,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import forestry.core.fluids.Fluids;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TickTime;
@@ -499,10 +500,10 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
             .addInfo("Valid Coolants:");
 
-        // Valid coolant list
-        for (Fluid fluid : BeamlineRecipeLoader.coolantMap.keySet()) {
+     // Valid coolant list
+        for (String fluidName : BeamlineRecipeLoader.coolantMap.keySet()) {
 
-            tt.addInfo("- " + fluid.getLocalizedName(new FluidStack(fluid, 1)));
+            tt.addInfo("- " + FluidRegistry.getFluid(fluidName).getLocalizedName(null));
 
         }
 
@@ -781,12 +782,17 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         primaryFluid.amount -= CONSUMED_FLUID;
 
-        FluidStack fluidOutput = new FluidStack(
-            BeamlineRecipeLoader.coolantMap.get(primaryFluid.getFluid()),
-            CONSUMED_FLUID);
+        Fluid fluidOutput = BeamlineRecipeLoader.coolantMap.get(primaryFluid.getFluid().getName());
+        
         if (Objects.isNull(fluidOutput)) return false;
+        
+        FluidStack fluidOutputStack = new FluidStack(
+            fluidOutput,
+            CONSUMED_FLUID);
 
-        this.addFluidOutputs(new FluidStack[] { fluidOutput });
+        if (Objects.isNull(fluidOutputStack)) return false;
+
+        this.addFluidOutputs(new FluidStack[] { fluidOutputStack });
 
         outputAfterRecipe();
 

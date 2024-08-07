@@ -17,14 +17,6 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
 import com.elisis.gtnhlanth.common.beamline.BeamInformation;
 import com.elisis.gtnhlanth.common.beamline.BeamLinePacket;
 import com.elisis.gtnhlanth.common.beamline.Particle;
@@ -41,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import forestry.core.fluids.Fluids;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TickTime;
@@ -50,10 +43,18 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> implements ISurvivalConstructable {
 
@@ -184,9 +185,9 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
             .addInfo("Valid Coolants:");
 
         // Valid coolant list
-        for (Fluid fluid : BeamlineRecipeLoader.coolantMap.keySet()) {
+        for (String fluidName : BeamlineRecipeLoader.coolantMap.keySet()) {
 
-            tt.addInfo("- " + fluid.getLocalizedName(new FluidStack(fluid, 1)));
+        	tt.addInfo("- " + FluidRegistry.getFluid(fluidName).getLocalizedName(null));
 
         }
 
@@ -359,13 +360,17 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
 
         primFluid.amount -= fluidConsumed;
 
-        FluidStack fluidOutput = new FluidStack(
-            BeamlineRecipeLoader.coolantMap.get(primFluid.getFluid()),
+        Fluid fluidOutput = BeamlineRecipeLoader.coolantMap.get(primFluid.getFluid().getName());
+        
+        if (Objects.isNull(fluidOutput)) return false;
+        
+        FluidStack fluidOutputStack = new FluidStack(
+            fluidOutput,
             fluidConsumed);
 
-        if (Objects.isNull(fluidOutput)) return false;
+        if (Objects.isNull(fluidOutputStack)) return false;
 
-        this.addFluidOutputs(new FluidStack[] { fluidOutput });
+        this.addFluidOutputs(new FluidStack[] { fluidOutputStack });
 
         outputAfterRecipe();
 
