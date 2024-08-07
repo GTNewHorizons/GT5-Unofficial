@@ -1193,21 +1193,6 @@ public class RecipeLoader_02 {
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    ItemList.Casing_ZPM.get(3),
-                    ItemList.Robot_Arm_EV.get(2),
-                    GT_OreDictUnificator.get(OrePrefixes.cableGt04, MyMaterial.lumiium.getBridgeMaterial(), 2),
-                    MyMaterial.marCeM200.get(OrePrefixes.plateDouble, 2),
-                    ItemRefer.HiC_T1.get(1),
-                    MyMaterial.signalium.get(OrePrefixes.bolt, 32),
-                    MyMaterial.titaniumBetaC.get(OrePrefixes.gearGtSmall, 8))
-                .fluidInputs(Materials.BlackSteel.getMolten(576))
-                .itemOutputs(ItemRefer.Precise_Electronic_Unit_T1.get(2))
-                .duration(40 * SECONDS)
-                .eut(TierEU.RECIPE_IV)
-                .addTo(assemblerRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
                     ItemRefer.HiC_T1.get(2),
                     GT_ModHandler.getModItem("dreamcraft", "item.EngravedDiamondCrystalChip", 8),
                     ItemList.Circuit_Chip_NAND.get(16),

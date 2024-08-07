@@ -52,7 +52,7 @@ public class GT_PurifiedWaterRecipes {
         // Grade 1 - Clarifier
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.ActivatedCarbonFilterMesh.get(1))
-            .fluidInputs(GT_ModHandler.getDistilledWater(1000L))
+            .fluidInputs(GT_ModHandler.getWater(1000L))
             .fluidOutputs(Materials.Grade1PurifiedWater.getFluid(900L))
             .itemOutputs(new ItemStack(Items.stick, 1), Materials.Stone.getDust(1), Materials.Gold.getNuggets(1))
             .outputChances(1000, 500, 100)
