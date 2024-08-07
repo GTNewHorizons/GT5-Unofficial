@@ -86,7 +86,7 @@ public class RecipeLoader_ChemicalSkips {
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
-        // Partial platline (from Pd, Os, Ir)
+        // Partial platline (from Pd, Os, Ir, Rh and leach)
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 WerkstoffLoader.PDMetallicPowder.get(OrePrefixes.dust, 32),
@@ -119,6 +119,34 @@ public class RecipeLoader_ChemicalSkips {
                 ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0))
             .itemOutputs(Materials.Osmium.getDust(64), Materials.Iridium.getDust(64), Materials.Osmiridium.getDust(64))
             .outputChances(3333, 3333, 3333)
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .metadata(QFT_FOCUS_TIER, 1)
+            .addTo(quantumForceTransformerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffLoader.CrudeRhMetall.get(OrePrefixes.dust, 32),
+                ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0))
+            .itemOutputs(
+                WerkstoffLoader.Rhodium.get(OrePrefixes.dust, 64),
+                Materials.Palladium.getDust(64),
+                Materials.Platinum.getDust(64),
+                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.dust, 64))
+            .outputChances(2500, 2500, 2500, 2500)
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .metadata(QFT_FOCUS_TIER, 1)
+            .addTo(quantumForceTransformerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                WerkstoffLoader.LeachResidue.get(OrePrefixes.dust, 32),
+                ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0))
+            .itemOutputs(
+                Materials.Iridium.getDust(64),
+                Materials.Osmium.getDust(64),
+                WerkstoffLoader.Rhodium.get(OrePrefixes.dust, 64),
+                WerkstoffLoader.Ruthenium.get(OrePrefixes.dust, 64))
+            .outputChances(2500, 2500, 2500, 2500)
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_FOCUS_TIER, 1)
