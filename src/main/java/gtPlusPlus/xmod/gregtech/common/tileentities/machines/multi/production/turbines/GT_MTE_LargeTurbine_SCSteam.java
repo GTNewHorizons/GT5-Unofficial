@@ -81,7 +81,7 @@ public class GT_MTE_LargeTurbine_SCSteam extends GregtechMetaTileEntity_LargerTu
         }
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
-        addOutput(GT_ModHandler.getSteam(totalFlow));
+        addOutput(GT_ModHandler.getSteam(totalFlow * 10));
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);
             // if(totalFlow>aOptFlow){efficiency = 1.0f;}
@@ -91,7 +91,7 @@ public class GT_MTE_LargeTurbine_SCSteam extends GregtechMetaTileEntity_LargerTu
             tEU = MathUtils.safeInt((long) tEU * (long) aBaseEff / 10000L);
         }
 
-        return tEU * 100L;
+        return tEU * 10L;
     }
 
     @Override
