@@ -1,12 +1,12 @@
 package gregtech.common.tileentities.machines.multi.fuelboilers;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.GregTech_API.*;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.AuthorOmni;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.*;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -20,6 +20,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -28,7 +29,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 
-public class FBBronze extends FueledBoiler<FBBronze> implements ISurvivalConstructable {
+public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvivalConstructable {
 
     private int tierWall = -1;
     private int tierPipe = -1;
@@ -44,7 +45,7 @@ public class FBBronze extends FueledBoiler<FBBronze> implements ISurvivalConstru
     private static final int X_OFFSET = 1;
     private static final int Y_OFFSET = 5;
     private static final int Z_OFFSET = 2;
-    private static String[][] structure =
+    private static final String[][] structure =
         // spotless:off
         new String[][] {
             { "             ", "             ", "     BBBBB   ", "     BBBBB   ", "     BBBBB   ", "     F   F   " , "     F   F   " },
@@ -56,13 +57,14 @@ public class FBBronze extends FueledBoiler<FBBronze> implements ISurvivalConstru
             { "             ", "             ", "     BBBBB   ", "     BBBBB   ", "     BBBBB   ", "     F   F   " , "     F   F   " } };
     // spotless:on
 
-    private static final IStructureDefinition<FBBronze> STRUCTURE_DEFINITION = StructureDefinition.<FBBronze>builder()
+    private static final IStructureDefinition<LargeFiretube> STRUCTURE_DEFINITION = StructureDefinition
+        .<LargeFiretube>builder()
         .addShape(MAIN_PIECE_NAME, structure)
         // IO
         // Fuel in
         .addElement(
             'E',
-            GT_StructureUtility.<FBBronze>buildHatchAdder()
+            GT_StructureUtility.<LargeFiretube>buildHatchAdder()
                 .atLeastList(ImmutableList.of(InputHatch))
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
@@ -70,7 +72,7 @@ public class FBBronze extends FueledBoiler<FBBronze> implements ISurvivalConstru
         // Water in
         .addElement(
             'W',
-            GT_StructureUtility.<FBBronze>buildHatchAdder()
+            GT_StructureUtility.<LargeFiretube>buildHatchAdder()
                 .atLeastList(ImmutableList.of(InputHatch))
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
@@ -78,7 +80,7 @@ public class FBBronze extends FueledBoiler<FBBronze> implements ISurvivalConstru
         // Pollution out
         .addElement(
             'M',
-            GT_StructureUtility.<FBBronze>buildHatchAdder()
+            GT_StructureUtility.<LargeFiretube>buildHatchAdder()
                 .atLeastList(ImmutableList.of(Muffler))
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
@@ -86,7 +88,7 @@ public class FBBronze extends FueledBoiler<FBBronze> implements ISurvivalConstru
         // Steam out
         .addElement(
             'S',
-            GT_StructureUtility.<FBBronze>buildHatchAdder()
+            GT_StructureUtility.<LargeFiretube>buildHatchAdder()
                 .atLeastList(ImmutableList.of(OutputHatch))
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
@@ -133,11 +135,11 @@ public class FBBronze extends FueledBoiler<FBBronze> implements ISurvivalConstru
                 t -> t.tierFirebox))
         .build();
 
-    public FBBronze(int id, String name, String localizedName) {
+    public LargeFiretube(int id, String name, String localizedName) {
         super(id, name, localizedName);
     }
 
-    protected FBBronze(String name) {
+    protected LargeFiretube(String name) {
         super(name);
     }
 
@@ -155,7 +157,7 @@ public class FBBronze extends FueledBoiler<FBBronze> implements ISurvivalConstru
     }
 
     @Override
-    public IStructureDefinition<FBBronze> getStructureDefinition() {
+    public IStructureDefinition<LargeFiretube> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -174,12 +176,34 @@ public class FBBronze extends FueledBoiler<FBBronze> implements ISurvivalConstru
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new FBBronze(this.mName);
+        return new LargeFiretube(this.mName);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
-        return new ITexture[] { TextureFactory.of(Blocks.dirt) };
+        if (side == facing) {
+            if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_BOILER_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_BOILER)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_BOILER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+        }
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX) };
     }
 }

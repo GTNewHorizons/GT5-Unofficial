@@ -1403,7 +1403,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Degasser Control Hatch",
                 8).getStackForm(1L));
         ItemList.Machine_Multi_LargeFiretubeBoiler.set(
-            new FBBronze(LARGE_FIRETUBE_BOILER.ID, "multimachine.firetube.large", "Large Firetube Boiler")
+            new LargeFiretube(LARGE_FIRETUBE_BOILER.ID, "multimachine.firetube.large", "Large Firetube Boiler")
                 .getStackForm(1L));
         ItemList.Machine_Multi_LargeBoiler_Bronze.set(
             new MTELargeBoilerBronze(
