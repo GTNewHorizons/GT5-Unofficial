@@ -1,31 +1,17 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
-import static com.github.technus.tectech.util.TT_Utility.getUniqueIdentifier;
-import static gregtech.api.enums.Mods.GraviSuite;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.enums.Mods.OpenComputers;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-
 import java.util.HashMap;
 import java.util.Map;
-
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.github.technus.tectech.TecTech;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
 import com.github.technus.tectech.util.CommonValues;
+import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
 import com.github.technus.tectech.util.TT_Utility;
+import static com.github.technus.tectech.util.TT_Utility.getUniqueIdentifier;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -37,6 +23,8 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.OpenComputers;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
@@ -46,6 +34,15 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Created by Tec on 03.04.2017.
@@ -197,8 +194,6 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
                             (1 + overclock * overclock) / (1 + (overclock - overvolt) * (overclock - overvolt)));
                     }
                 }
-            } else {
-                computation += comp.computation * overclock;
             }
         }
         if (tickingComponents) {
@@ -239,11 +234,11 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
                         }
                     }
                     heat += Math.max(-heat, Math.ceil(heatC));
-                    heat -= Math.max(heat / 1000, 1);
+                    heat -= Math.max(heat / 1000, 20);
                 }
 
                 else if (heat < 0) {
-                    heat -= Math.min(heat / 10, -1);
+                    heat -= Math.min(heat / 1000, -1);
                 }
 
                 if (heat > 10000) {
@@ -279,8 +274,6 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
                 + (heat + 99) / 100
                 + EnumChatFormatting.RESET
                 + " %" };
-        // heat==0? --> ((heat+9)/10) = 0
-        // Heat==1-10? --> 1
     }
 
     @Override
@@ -360,10 +353,10 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
         new RackComponent(ItemList.Circuit_Wetwaresupercomputer.get(1), 200, 42, -1f, 4000, true); // UV
         new RackComponent(ItemList.Circuit_Wetwaremainframe.get(1), 220, 40, -1f, 4000, true); // UHV
 
-        new RackComponent("IC2:ic2.reactorVent", 0, -1, 20f, 2000, false); // Heat Vent
-        new RackComponent("IC2:ic2.reactorVentCore", 0, -1, 40f, 4000, false); // Reactor Heat Vent
-        new RackComponent("IC2:ic2.reactorVentDiamond", 0, -1, 80f, 6000, false); // Advanced Heat Vent
-        new RackComponent("IC2:ic2.reactorVentGold", 0, -1, 120f, 8000, false); // Overclocked Heat Vent
+        new RackComponent("IC2:ic2.reactorVent", 0, -1, 80f, 4000, false); // Heat Vent
+        new RackComponent("IC2:ic2.reactorVentCore", 0, -1, 120f, 6000, false); // Reactor Heat Vent
+        new RackComponent("IC2:ic2.reactorVentGold", 0, -1, 160f, 8000, false); // Overclocked Heat Vent
+        new RackComponent("IC2:ic2.reactorVentDiamond", 0, -1, 200f, 10000, false); // Advanced Heat Vent
 
         if (NewHorizonsCoreMod.isModLoaded()) {
             // GTNH-GT5u circuits (these components causes crashes when used with the original GT5u)
@@ -378,7 +371,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
             new RackComponent(ItemList.Circuit_OpticalMainframe.get(1), 260, 20, -1f, 8000, true); // UIV
 
             new RackComponent("dreamcraft:item.PikoCircuit", 260, 12, -1f, 9500, true); // UMV
-            new RackComponent("dreamcraft:item.QuantumCircuit", 300, 10, -1f, 10000, true); // UXV
+            new RackComponent("dreamcraft:item.QuantumCircuit", 320, 10, -1f, 10000, true); // UXV
         }
 
         if (OpenComputers.isModLoaded()) {
@@ -386,10 +379,6 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
             new RackComponent("OpenComputers:item.oc.GraphicsCard2", 100, 44, -1f, 2000, true); // GPU T3
             new RackComponent("OpenComputers:item.oc.APU1", 120, 42, -1f, 2000, true); // APU T3
             new RackComponent("OpenComputers:item.oc.APU2", 240, 40, -1f, 2000, true); // APU Creative
-        }
-
-        if (GraviSuite.isModLoaded()) {
-            new RackComponent("GraviSuite:itemSimpleItem", 0, -1, 200f, 10000, false); // Cooling Core
         }
     }
 
