@@ -1741,6 +1741,7 @@ public class Textures {
          * by Default pages are null
          * page 0: 0-63 GT casing 1-4, 64-127 GT++
          * page 1: 0-15 GT casing 5, 22-26 GS dyson swarm, 48-57 GT casing 8, 63 EMT, 80-95 GT reinforced blocks, 96 casing 2 meta 6, 97 error casing
+         * page 2: 0-15 solenoid coils
          * page 8: 0-111 TecTech, 112-127 GT casing 6
          * page 12: 0-127 GlodBlock
          * page 16: 0-15 GT glass 1, 16-31 GT casing 9, 32-47 GT glass 2, 48-63 GT casing 10, 64-79 GT casing 11
@@ -1763,6 +1764,7 @@ public class Textures {
             casingTexturePages[0] = new ITexture[128];
             // adds some known pages, modders also can do it...
             GT_Utility.addTexturePage((byte) 1);
+            GT_Utility.addTexturePage((byte) 2);
             GT_Utility.addTexturePage((byte) 8);
             GT_Utility.addTexturePage((byte) 16);
             setCasingTextureForId(ERROR_TEXTURE_INDEX, ERROR_RENDERING[0]);

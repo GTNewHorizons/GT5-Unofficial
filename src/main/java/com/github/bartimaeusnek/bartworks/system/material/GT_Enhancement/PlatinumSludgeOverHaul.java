@@ -536,8 +536,8 @@ public class PlatinumSludgeOverHaul {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
-            .fluidInputs(RutheniumTetroxideSollution.getFluidOrGas(800))
-            .fluidOutputs(HotRutheniumTetroxideSollution.getFluidOrGas(1600))
+            .fluidInputs(RutheniumTetroxideSollution.getFluidOrGas(1000))
+            .fluidOutputs(HotRutheniumTetroxideSollution.getFluidOrGas(2000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .noOptimize()

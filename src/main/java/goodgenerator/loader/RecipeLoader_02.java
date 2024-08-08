@@ -1108,7 +1108,7 @@ public class RecipeLoader_02 {
             .itemOutputs(MyMaterial.marCeM200.get(OrePrefixes.ingotHot, 19))
             .duration(4 * MINUTES + 45 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(COIL_HEAT, 4500)
+            .metadata(COIL_HEAT, 5400)
             .addTo(blastFurnaceRecipes);
 
         GT_ModHandler.addCraftingRecipe(

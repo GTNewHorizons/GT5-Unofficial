@@ -123,7 +123,6 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
             .addStructureInfo(GOLD + "1+ " + GRAY + "Input Hatch")
             .addStructureInfo(GOLD + "1+ " + GRAY + "Output Hatch")
             .addStructureInfo(GOLD + "1+ " + GRAY + "Input Bus")
-            .addStructureInfo(GOLD + "1 " + GRAY + "Maintenance Hatch")
             .toolTipFinisher("Gregtech");
         return tt;
     }
@@ -254,7 +253,9 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
             return false;
         }
 
-        return (mMaintenanceHatches.size() == 1);
+        // Maintenance hatch not required but left for compatibility.
+        // Don't allow more than 1, no free casing spam!
+        return (mMaintenanceHatches.size() <= 1);
     }
 
     @Override
@@ -359,5 +360,10 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     @Override
     public boolean supportsVoidProtection() {
         return true;
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

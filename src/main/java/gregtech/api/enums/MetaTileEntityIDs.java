@@ -702,6 +702,7 @@ public enum MetaTileEntityIDs {
     tfft(13104),
     lsc(13106),
     tfftHatch(13109),
+    WORMHOLE_GENERATOR_CONTROLLER(13115),
     BETTER_JUKEBOX_LV(14301),
     BETTER_JUKEBOX_MV(14302),
     BETTER_JUKEBOX_HV(14303),
