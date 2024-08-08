@@ -1,17 +1,30 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
+import static com.github.technus.tectech.util.TT_Utility.getUniqueIdentifier;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.OpenComputers;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
 import java.util.HashMap;
 import java.util.Map;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.github.technus.tectech.TecTech;
-import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
 import com.github.technus.tectech.util.CommonValues;
-import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
 import com.github.technus.tectech.util.TT_Utility;
-import static com.github.technus.tectech.util.TT_Utility.getUniqueIdentifier;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -23,8 +36,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.enums.Mods.OpenComputers;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
@@ -34,15 +45,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Created by Tec on 03.04.2017.
@@ -133,6 +135,11 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
     }
 
     @Override
+    public int getInventoryStackLimit() {
+        return 1;
+    }
+
+    @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         if (aBaseMetaTileEntity.isActive() || heat > 500) {
@@ -189,9 +196,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
                         * (comp.heatConstant > 0 ? comp.heatConstant * overclock * overvolt * overvolt : -10f);
 
                     if (overvolt > TecTech.RANDOM.nextFloat()) {
-                        computation += comp.computation * Math.max(
-                            0,
-                            (1 + overclock * overclock) / (1 + (overclock - overvolt) * (overclock - overvolt)));
+                        computation += comp.computation * Math.max(0, (1 + overclock * overclock) / (1 + (overclock - overvolt) * (overclock - overvolt)));
                     }
                 }
             }
@@ -200,11 +205,6 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
             this.heat += Math.ceil(heat);
         }
         return (int) Math.floor(computation);
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 1;
     }
 
     public int tickComponents(float oc, float ov) {
@@ -227,7 +227,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
                         if (comp == null) {
                             continue;
                         }
-                        if (heat > comp.maxHeat) {
+                        if (heat - 20 > comp.maxHeat) {
                             mInventory[i] = null;
                         } else if (comp.heatConstant < 0) {
                             heatC += comp.heatConstant * (heat / 10000f);
@@ -235,16 +235,6 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
                     }
                     heat += Math.max(-heat, Math.ceil(heatC));
                     heat -= Math.max(heat / 1000, 20);
-                }
-
-                else if (heat < 0) {
-                    heat -= Math.min(heat / 1000, -1);
-                }
-
-                if (heat > 10000) {
-                    aBaseMetaTileEntity.setToFire();
-                } else if (heat < -10000) {
-                    heat = -10000;
                 }
             }
         }
