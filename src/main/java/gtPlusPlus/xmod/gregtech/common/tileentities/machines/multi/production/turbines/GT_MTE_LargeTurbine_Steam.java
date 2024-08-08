@@ -107,25 +107,32 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
             String fluidName = aFluids.get(i)
                 .getFluid()
                 .getUnlocalizedName(aFluids.get(i));
-            if (fluidName.equals("fluid.steam") || fluidName.equals("ic2.fluidSteam")
-                || fluidName.equals("fluid.mfr.steam.still.name")) {
-                flow = Math.min(aFluids.get(i).amount, remainingFlow); // try to use up w/o exceeding remainingFlow
-                depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
-                this.storedFluid += aFluids.get(i).amount;
-                remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
-                totalFlow += flow; // track total input used
-                if (!achievement) {
-                    GT_Mod.achievements.issueAchievement(
-                        this.getBaseMetaTileEntity()
-                            .getWorld()
-                            .getPlayerEntityByName(
-                                this.getBaseMetaTileEntity()
-                                    .getOwnerName()),
-                        "muchsteam");
-                    achievement = true;
+            switch (fluidName) {
+                case "fluid.steam", "ic2.fluidSteam", "fluid.mfr.steam.still.name" -> {
+                    flow = Math.min(aFluids.get(i).amount, remainingFlow); // try to use up w/o exceeding remainingFlow
+                    depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
+                    this.storedFluid += aFluids.get(i).amount;
+                    remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
+                    totalFlow += flow; // track total input used
+                    if (!achievement) {
+                        GT_Mod.achievements.issueAchievement(
+                            this.getBaseMetaTileEntity()
+                                .getWorld()
+                                .getPlayerEntityByName(
+                                    this.getBaseMetaTileEntity()
+                                        .getOwnerName()),
+                            "muchsteam");
+                        achievement = true;
+                    }
                 }
-            } else if (fluidName.equals("ic2.fluidSuperheatedSteam")) {
-                depleteInput(new FluidStack(aFluids.get(i), aFluids.get(i).amount));
+                case "fluid.densesteam" -> {
+                    flow = Math.min(aFluids.get(i).amount, remainingFlow / 1000 + 1); // Dense Steam is 1000x the EU value
+                    depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
+                    this.storedFluid += aFluids.get(i).amount;
+                    remainingFlow -= flow * 1000; // track amount we're allowed to continue depleting from hatches
+                    totalFlow += flow * 1000; // track total input used
+                }
+                case "ic2.fluidSuperheatedSteam" -> depleteInput(new FluidStack(aFluids.get(i), aFluids.get(i).amount));
             }
         }
         if (totalFlow <= 0) return 0;
