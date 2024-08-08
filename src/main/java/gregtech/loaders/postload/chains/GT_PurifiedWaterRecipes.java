@@ -35,6 +35,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.maps.PurificationUnitParticleExtractorFrontend;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -217,6 +218,15 @@ public class GT_PurifiedWaterRecipes {
             ItemList.Quark_Creation_Catalyst_Top.get(1L), ItemList.Quark_Creation_Catalyst_Strange.get(1L),
             ItemList.Quark_Creation_Catalyst_Charm.get(1L) };
 
+        // Add all combinations of input items to the frontend map
+        for (int i = 0; i < catalystInputs.length; ++i) {
+            for (int j = 1; j < catalystInputs.length; ++j) {
+                PurificationUnitParticleExtractorFrontend.inputItems.add(catalystInputs[i]);
+                PurificationUnitParticleExtractorFrontend.inputItemsShuffled
+                    .add(catalystInputs[(i + j) % catalystInputs.length]);
+            }
+        }
+
         // Add re-alignment recipes
         for (int i = 0; i < catalystInputs.length; ++i) {
             GT_Values.RA.stdBuilder()
@@ -249,6 +259,8 @@ public class GT_PurifiedWaterRecipes {
         }
 
         GT_Values.RA.stdBuilder()
+            // Fake item inputs
+            .itemInputs(ItemList.Quark_Creation_Catalyst_Charm.get(1), ItemList.Quark_Creation_Catalyst_Strange.get(1))
             .fluidInputs(Materials.Grade7PurifiedWater.getFluid(1000L))
             .fluidOutputs(
                 Materials.Grade8PurifiedWater.getFluid(900L),
