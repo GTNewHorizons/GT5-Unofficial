@@ -50,7 +50,7 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
         new String[][] {
             { "             ", "             ", "     BBBBB   ", "     BBBBB   ", "     BBBBB   ", "     F   F   " , "     F   F   " },
             { "             ", "    BBBBBBB  ", "    BH----B  ", "    BH----B  ", "    BH----B  ", "    BBBBBBB  " , "             " },
-            { "     BBBBB   ", "    BH----B  ", "   T-PPPPPBBB", "   T-H----BBB", "   T-PPPPPBBB", " ~  BH----B  " , "FFF  BBBBB   " },
+            { "     BBBBB   ", "    BH----B  ", "   T-PPPPPBBB", "   T-H----BBB", "   T-PPPPPBBB", " ~  BH----B  " , "FZF  BBBBB   " },
             { "     BBSBB   ", "    BH----B  ", "   T-H----BBM", " PPP-H----BBW", " P T-H----BBB", "EP  BH----B  " , "FFF  BBBBB   " },
             { "     BBBBB   ", "    BH----B  ", "   T-PPPPPBBB", "   T-H----BBB", "   T-PPPPPBBB", "    BH----B  " , " F   BBBBB   " },
             { "             ", "    BBBBBBB  ", "    BH----B  ", "    BH----B  ", "    BH----B  ", "    BBBBBBB  " , "             " },
@@ -90,6 +90,14 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
             'S',
             GT_StructureUtility.<LargeFiretube>buildHatchAdder()
                 .atLeast(OutputHatch)
+                .casingIndex(CASING_TEXTURE_INDEX)
+                .dot(1)
+                .build())
+        // Tools in
+        .addElement(
+            'Z',
+            GT_StructureUtility.<LargeFiretube>buildHatchAdder()
+                .atLeast(Maintenance)
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
                 .build())
