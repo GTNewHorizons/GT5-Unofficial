@@ -78,7 +78,7 @@ public class SupercriticalFluidTurbine extends GT_MetaTileEntity_LargeTurbineBas
         }
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
-        addOutput(GT_ModHandler.getSteam(totalFlow * 10));
+        addOutput(GT_ModHandler.getSteam(totalFlow * 100));
         if (totalFlow == aOptFlow) {
             tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
         } else {
@@ -91,7 +91,7 @@ public class SupercriticalFluidTurbine extends GT_MetaTileEntity_LargeTurbineBas
             tEU = GT_Utility.safeInt(maxPower);
         }
 
-        return tEU * 10;
+        return tEU * 100;
     }
 
     @Override
@@ -151,8 +151,8 @@ public class SupercriticalFluidTurbine extends GT_MetaTileEntity_LargeTurbineBas
             .addInfo("Controller block for Supercritical Fluid Turbine")
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Use Supercritical Steam to generate power.")
-            .addInfo("Outputs 10L of Steam per 1L of SC Steam as well as producing power")
-            .addInfo("1L Supercritical Steam = 10 EU")
+            .addInfo("Outputs 100L of Steam per 1L of SC Steam as well as producing power")
+            .addInfo("1L Supercritical Steam = 100 EU")
             .addInfo("Extreme Heated Steam will cause more damage to the turbine.")
             .addInfo("Power output depends on turbine and fitting")
             .addInfo("Use screwdriver to adjust fitting of turbine")
