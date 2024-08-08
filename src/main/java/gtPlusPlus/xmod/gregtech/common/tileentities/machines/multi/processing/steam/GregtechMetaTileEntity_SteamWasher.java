@@ -8,6 +8,7 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -301,6 +302,12 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
             return GTPPRecipeMaps.simpleWasherRecipes;
         }
         return RecipeMaps.oreWasherRecipes;
+    }
+
+    @NotNull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(GTPPRecipeMaps.simpleWasherRecipes, RecipeMaps.oreWasherRecipes);
     }
 
     @Override
