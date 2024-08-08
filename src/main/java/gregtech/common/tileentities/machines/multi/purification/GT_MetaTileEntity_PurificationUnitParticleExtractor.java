@@ -298,6 +298,12 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(17, 17, 17, false)
             .toolTipFinisher("GregTech");
+        // structure info
+        // frame box: 108
+        // quark exclusion casing: 318
+        // femtometer: 96
+        // glass: 240
+        // pipe: 37
         return tt;
     }
 
