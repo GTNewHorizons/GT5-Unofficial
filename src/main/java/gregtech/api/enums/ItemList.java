@@ -1471,6 +1471,10 @@ public enum ItemList implements IItemContainer {
     Electromagnet_Tengam,
 
     Machine_Multi_Canner,
+    Machine_Multi_Solidifier,
+
+    Casing_Fluid_Solidifier,
+    Radiator_Fluid_Solidifier,
     Machine_Multi_IndustrialLaserEngraver,
     Laser_Plate,
     Casing_Laser,

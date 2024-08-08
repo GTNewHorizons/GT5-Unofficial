@@ -271,6 +271,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.MULTILOCK_PUMP_MKIV_CONTROLLE
 import static gregtech.api.enums.MetaTileEntityIDs.MULTI_CANNER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.MULTI_LATHE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.MULTI_SMELTER_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.MULTI_SOLIDIFIER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.NANO_FORGE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_IV;
@@ -585,6 +586,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbin
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiCanner;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiFurnace;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiLathe;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiSolidifier;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_NanoForge;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilCracker;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill1;
@@ -1130,6 +1132,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_MultiCanner(MULTI_CANNER_CONTROLLER.ID, "multimachine.canner", "TurboCan Pro")
                 .getStackForm(1));
 
+        ItemList.Machine_Multi_Solidifier.set(
+            new GT_MetaTileEntity_MultiSolidifier(
+                MULTI_SOLIDIFIER_CONTROLLER.ID,
+                "multimachine.solidifier",
+                "Fluid Shaper 2024").getStackForm(1));
         ItemList.Machine_Multi_IndustrialLaserEngraver.set(
             new GT_MetaTileEntity_IndustrialLaserEngraver(
                 INDUSTRIAL_LASER_ENGRAVER_CONTROLLER.ID,
