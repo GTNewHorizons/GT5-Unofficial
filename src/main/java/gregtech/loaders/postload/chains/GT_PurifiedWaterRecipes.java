@@ -17,9 +17,13 @@ import static gregtech.api.recipe.RecipeMaps.purificationParticleExtractionRecip
 import static gregtech.api.recipe.RecipeMaps.purificationPhAdjustmentRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPlasmaHeatingRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationUVTreatmentRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 import static gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitParticleExtractor.BARYONIC_MATTER_OUTPUT;
 
 import net.minecraft.init.Items;
@@ -261,6 +265,33 @@ public class GT_PurifiedWaterRecipes {
                 .duration(5 * MINUTES)
                 .addTo(plasmaForgeRecipes);
         }
+
+        // Recipe for quark catalyst housing
+        GT_Values.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.Electromagnet_Tengam.get(1))
+            .metadata(RESEARCH_TIME, 1 * HOURS)
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 16),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 16),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 16),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CosmicNeutronium, 16),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tritanium, 64),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.CosmicNeutronium, 64),
+                ItemList.Electromagnet_Tengam.get(4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 16),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 8),
+                ItemList.Field_Generator_UEV.get(4))
+            .fluidInputs(
+                Materials.Neutronium.getMolten(16 * 144),
+                Materials.Infinity.getMolten(16 * 144),
+                Materials.Tritanium.getMolten(16 * 144),
+                Materials.CosmicNeutronium.getMolten(16 * 144))
+            .itemOutputs(ItemList.Quark_Catalyst_Housing.get(1))
+            .eut(TierEU.RECIPE_UIV)
+            .duration(60 * SECONDS)
+            .addTo(AssemblyLine);
 
         GT_Values.RA.stdBuilder()
             // Fake item inputs
