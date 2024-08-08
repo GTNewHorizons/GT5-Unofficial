@@ -419,14 +419,11 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                     + " ONE"
                     + EnumChatFormatting.GRAY
                     + " type of fuel in hatches!")
-            .addInfo("Can consume 1000L/s of coolant to increase efficiency:")
-            .addInfo(
-                String.format(
-                    "IC2 Coolant %d%%, Super Coolant %d%%, Cryotheum %d%%, Tachyon Rich Temporal Fluid %d%%",
-                    CoolantEfficiency[3],
-                    CoolantEfficiency[2],
-                    CoolantEfficiency[1],
-                    CoolantEfficiency[0]))
+            .addInfo("Can consume coolants to increase efficiency:")
+            .addInfo(String.format("IC2 Coolant | %d%% | 1000 L/s ", CoolantEfficiency[3]))
+            .addInfo(String.format("Super Coolant | %d%% | 1000 L/s", CoolantEfficiency[2]))
+            .addInfo(String.format("Cryotheum | %d%% | 1000 L/s", CoolantEfficiency[1]))
+            .addInfo(String.format("Tachyon Rich Temporal Fluid | %d%% | 20 L/s", CoolantEfficiency[0]))
             .addInfo("Can consume excited liquid to increase the output power and fuel usage:")
             .addInfo(String.format("Molten Caesium | %dx power | 180 L/s ", ExcitedLiquidCoe[4]))
             .addInfo(String.format("Molten Uranium-235 | %dx power | 180 L/s", ExcitedLiquidCoe[3]))
