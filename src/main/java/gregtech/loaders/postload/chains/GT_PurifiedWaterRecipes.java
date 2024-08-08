@@ -22,8 +22,6 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitParticleExtractor.BARYONIC_MATTER_OUTPUT;
 
-import java.util.Arrays;
-
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -41,6 +39,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationPlant;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_PurificationUnitUVTreatment;
 import gtPlusPlus.core.material.Particle;
 
 public class GT_PurifiedWaterRecipes {
@@ -179,22 +178,27 @@ public class GT_PurifiedWaterRecipes {
             .metadata(BASE_CHANCE, 0.0f)
             .addTo(purificationPlasmaHeatingRecipes);
 
+        GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS.add(MyMaterial.orundum.get(OrePrefixes.lens, 1));
+        GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS
+            .add(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amber, 1));
+        GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS
+            .add(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedAir, 1));
+        GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS
+            .add(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Emerald, 1));
+        GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS
+            .add(GT_OreDictUnificator.get(OrePrefixes.lens, ManaDiamond, 1));
+        GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS
+            .add(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.BlueTopaz, 1));
+        GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS
+            .add(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amethyst, 1));
+        GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS.add(FluorBuergerit.get(OrePrefixes.lens, 1));
+        GT_MetaTileEntity_PurificationUnitUVTreatment.LENS_ITEMS
+            .add(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 1));
+
         // Grade 6 - UV treatment
         GT_Values.RA.stdBuilder()
             .fluidInputs(Materials.Grade5PurifiedWater.getFluid(1000L))
             .fluidOutputs(Materials.Grade6PurifiedWater.getFluid(900L))
-            // These are not actually consumed and are purely for display purposes
-            .special(
-                Arrays.asList(
-                    MyMaterial.orundum.get(OrePrefixes.lens, 1),
-                    GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amber, 1),
-                    GT_OreDictUnificator.get(OrePrefixes.lens, Materials.InfusedAir, 1),
-                    GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Emerald, 1),
-                    GT_OreDictUnificator.get(OrePrefixes.lens, ManaDiamond, 1),
-                    GT_OreDictUnificator.get(OrePrefixes.lens, Materials.BlueTopaz, 1),
-                    GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Amethyst, 1),
-                    FluorBuergerit.get(OrePrefixes.lens, 1),
-                    GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 1)))
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_UV)

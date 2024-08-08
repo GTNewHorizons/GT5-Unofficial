@@ -61,6 +61,7 @@ import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.recipe.maps.PrinterBackend;
 import gregtech.api.recipe.maps.PurificationUnitClarifierFrontend;
 import gregtech.api.recipe.maps.PurificationUnitFlocculatorFrontend;
+import gregtech.api.recipe.maps.PurificationUnitLaserFrontend;
 import gregtech.api.recipe.maps.PurificationUnitOzonationFrontend;
 import gregtech.api.recipe.maps.PurificationUnitParticleExtractorFrontend;
 import gregtech.api.recipe.maps.PurificationUnitPhAdjustmentFrontend;
@@ -1226,9 +1227,10 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationUVTreatmentRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantuvtreatment")
-        .maxIO(0, 0, 1, 1)
+        .maxIO(9, 0, 1, 1)
         .minInputs(0, 1)
         .progressBar(GT_UITextures.PROGRESSBAR_ARROW)
+        .frontend(PurificationUnitLaserFrontend::new)
         .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationDegasifierRecipes = RecipeMapBuilder
