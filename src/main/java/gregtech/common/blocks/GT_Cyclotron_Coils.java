@@ -40,7 +40,7 @@ public class GT_Cyclotron_Coils extends GT_Block_Casings_Abstract {
 
     @Override // Magic numbers...
     public int getTextureIndex(int aMeta) {
-        return 208 + aMeta;
+        return (2 << 7) | aMeta;
     }
 
     @Override
