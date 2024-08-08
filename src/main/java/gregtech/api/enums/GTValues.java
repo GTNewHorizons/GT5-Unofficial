@@ -684,6 +684,24 @@ public class GTValues {
         + EnumChatFormatting.BOLD
         + "APenguin";
 
+    // Spotless splits this over too many lines
+    // TODO: use this dynamically
+    // spotless:off
+    public static final Supplier<String> AuthorOmni =
+        () -> "Author: " + EnumChatFormatting.GOLD + "Omni " + EnumChatFormatting.BOLD + "| "
+        + switch ((int) Math.floor(Math.random() * 5)) {
+            case 0 -> ""
+                + EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD + EnumChatFormatting.OBFUSCATED
+                + "Aptugongermatherinn";
+            default -> switch ((int) Math.floor(Math.random() * 4)) {
+                case 0 -> "" + EnumChatFormatting.BLACK + EnumChatFormatting.ITALIC + "Pollution ";
+                case 1 -> "" + EnumChatFormatting.WHITE + EnumChatFormatting.ITALIC + "Steam ";
+                case 2 -> "" + EnumChatFormatting.YELLOW + EnumChatFormatting.ITALIC + "Klaxon ";
+                default -> "" + EnumChatFormatting.RED + EnumChatFormatting.ITALIC + "Explosion ";
+            } + EnumChatFormatting.GOLD + "Enjoyer";
+        };
+    //spotless:on
+
     // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
     public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {
         return (5F + (7.5F + material.mToolQuality)) / 10.0;

@@ -3,14 +3,13 @@ package gregtech.common.tileentities.machines.multi.fuelboilers;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.GregTech_API.*;
 import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_Values.AuthorOmni;
 import static gregtech.api.util.GT_StructureUtility.*;
 
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ImmutableList;
@@ -19,8 +18,15 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.common.blocks.GT_Block_Casings_Abstract;
 
 public class FBBronze extends FueledBoiler<FBBronze> implements ISurvivalConstructable {
 
@@ -32,19 +38,22 @@ public class FBBronze extends FueledBoiler<FBBronze> implements ISurvivalConstru
     // There's only one piece to this structure... for now >:)
     // TODO: multiple boiler chambers + superheater
     private static final String MAIN_PIECE_NAME = "main";
+    private static final int CASING_TEXTURE_INDEX = ((GT_Block_Casings_Abstract) GregTech_API.sBlockCasings2)
+        .getTextureIndex(10);
+
     private static final int X_OFFSET = 1;
-    private static final int Y_OFFSET = 1;
+    private static final int Y_OFFSET = 5;
     private static final int Z_OFFSET = 2;
     private static String[][] structure =
         // spotless:off
         new String[][] {
-            { "     F   F   ", "     F   F   ", "     BBBBB   ", "     BBBBB   ", "     BBBBB   ", "             ", "             " },
-            { "             ", "    BBBBBBB  ", "    BH----B  ", "    BH----B  ", "    BH----B  ", "    BBBBBBB  ", "             " },
-            { "FFF  BBBBB   ", " ~  BH----B  ", "   T-PPPPPBBB", "   T-H----BBB", "   T-PPPPPBBB", "    BH----B  ", "     BBBBB   " },
-            { "FFF  BBBBB   ", "EP  BH----B  ", " P T-H----BBB", " PPP-H----BBW", "   T-H----BBM", "    BH----B  ", "     BBSBB   " },
-            { " F   BBBBB   ", "    BH----B  ", "   T-PPPPPBBB", "   T-H----BBB", "   T-PPPPPBBB", "    BH----B  ", "     BBBBB   " },
-            { "             ", "    BBBBBBB  ", "    BH----B  ", "    BH----B  ", "    BH----B  ", "    BBBBBBB  ", "             " },
-            { "     F   F   ", "     F   F   ", "     BBBBB   ", "     BBBBB   ", "     BBBBB   ", "             ", "             " } };
+            { "             ", "             ", "     BBBBB   ", "     BBBBB   ", "     BBBBB   ", "     F   F   " , "     F   F   " },
+            { "             ", "    BBBBBBB  ", "    BH----B  ", "    BH----B  ", "    BH----B  ", "    BBBBBBB  " , "             " },
+            { "     BBBBB   ", "    BH----B  ", "   T-PPPPPBBB", "   T-H----BBB", "   T-PPPPPBBB", " ~  BH----B  " , "FFF  BBBBB   " },
+            { "     BBSBB   ", "    BH----B  ", "   T-H----BBM", " PPP-H----BBW", " P T-H----BBB", "EP  BH----B  " , "FFF  BBBBB   " },
+            { "     BBBBB   ", "    BH----B  ", "   T-PPPPPBBB", "   T-H----BBB", "   T-PPPPPBBB", "    BH----B  " , " F   BBBBB   " },
+            { "             ", "    BBBBBBB  ", "    BH----B  ", "    BH----B  ", "    BH----B  ", "    BBBBBBB  " , "             " },
+            { "             ", "             ", "     BBBBB   ", "     BBBBB   ", "     BBBBB   ", "     F   F   " , "     F   F   " } };
     // spotless:on
 
     private static final IStructureDefinition<FBBronze> STRUCTURE_DEFINITION = StructureDefinition.<FBBronze>builder()
@@ -55,24 +64,32 @@ public class FBBronze extends FueledBoiler<FBBronze> implements ISurvivalConstru
             'E',
             GT_StructureUtility.<FBBronze>buildHatchAdder()
                 .atLeastList(ImmutableList.of(InputHatch))
+                .casingIndex(CASING_TEXTURE_INDEX)
+                .dot(1)
                 .build())
         // Water in
         .addElement(
             'W',
             GT_StructureUtility.<FBBronze>buildHatchAdder()
                 .atLeastList(ImmutableList.of(InputHatch))
+                .casingIndex(CASING_TEXTURE_INDEX)
+                .dot(1)
                 .build())
         // Pollution out
         .addElement(
             'M',
             GT_StructureUtility.<FBBronze>buildHatchAdder()
                 .atLeastList(ImmutableList.of(Muffler))
+                .casingIndex(CASING_TEXTURE_INDEX)
+                .dot(1)
                 .build())
         // Steam out
         .addElement(
             'S',
             GT_StructureUtility.<FBBronze>buildHatchAdder()
                 .atLeastList(ImmutableList.of(OutputHatch))
+                .casingIndex(CASING_TEXTURE_INDEX)
+                .dot(1)
                 .build())
         // Building blocks
         // Invar frame
@@ -116,8 +133,12 @@ public class FBBronze extends FueledBoiler<FBBronze> implements ISurvivalConstru
                 t -> t.tierFirebox))
         .build();
 
-    protected FBBronze(int id, String name, String localizedName) {
+    public FBBronze(int id, String name, String localizedName) {
         super(id, name, localizedName);
+    }
+
+    protected FBBronze(String name) {
+        super(name);
     }
 
     @Override
@@ -130,14 +151,7 @@ public class FBBronze extends FueledBoiler<FBBronze> implements ISurvivalConstru
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(
-                MAIN_PIECE_NAME,
-                stackSize,
-                hintsOnly,
-                X_OFFSET,
-                Y_OFFSET,
-                Z_OFFSET
-        );
+        buildPiece(MAIN_PIECE_NAME, stackSize, hintsOnly, X_OFFSET, Y_OFFSET, Z_OFFSET);
     }
 
     @Override
@@ -149,20 +163,23 @@ public class FBBronze extends FueledBoiler<FBBronze> implements ISurvivalConstru
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Boiler")
-                .addInfo("Controller block for the Burner Boiler")
-                .addInfo("Burns fuels to generate steam efficiently")
-                .addInfo("Each tier allows higher heat and 4X throughput");
-        return null;
+            .addInfo("Controller block for the Large Firetube Boiler")
+            .addInfo("Burns fuels to generate steam efficiently")
+            .addInfo("Each tier allows higher heat and 4X throughput")
+            .beginStructureBlock(13, 7, 7, false)
+            .addInfo(AuthorOmni.get())
+            .toolTipFinisher("GregTech");
+        return tt;
     }
-
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return null;
+        return new FBBronze(this.mName);
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing, int colorIndex, boolean active, boolean redstoneLevel) {
-        return new ITexture[0];
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int colorIndex, boolean active, boolean redstoneLevel) {
+        return new ITexture[] { TextureFactory.of(Blocks.dirt) };
     }
 }

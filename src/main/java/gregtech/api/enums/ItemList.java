@@ -1172,6 +1172,7 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_PurificationUnitUVTreatment,
     Machine_Multi_PurificationUnitDegasifier,
     Machine_Multi_PurificationUnitParticleExtractor,
+    Machine_Multi_LargeFiretubeBoiler,
     Hatch_DegasifierControl,
     Machine_LV_AlloySmelter,
     Machine_MV_AlloySmelter,

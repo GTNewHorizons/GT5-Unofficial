@@ -18,6 +18,10 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
         super(id, name, localizedName);
     }
 
+    public FueledBoiler(String name) {
+        super(name);
+    }
+
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
