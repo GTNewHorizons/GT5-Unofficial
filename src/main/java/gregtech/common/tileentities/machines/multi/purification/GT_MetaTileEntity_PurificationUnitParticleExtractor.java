@@ -477,12 +477,12 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
 
     public EnumChatFormatting getQuarkColor(ItemStack stack) {
         int meta = stack.getItemDamage() - 32000;
-        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Up.ID) return EnumChatFormatting.RED;
-        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Down.ID) return EnumChatFormatting.YELLOW;
-        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Strange.ID) return EnumChatFormatting.DARK_PURPLE;
-        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Charm.ID) return EnumChatFormatting.LIGHT_PURPLE;
-        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Bottom.ID) return EnumChatFormatting.GREEN;
-        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Top.ID) return EnumChatFormatting.BLUE;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Up.ID) return EnumChatFormatting.BLUE;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Down.ID) return EnumChatFormatting.LIGHT_PURPLE;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Strange.ID) return EnumChatFormatting.YELLOW;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Charm.ID) return EnumChatFormatting.GREEN;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Bottom.ID) return EnumChatFormatting.AQUA;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Top.ID) return EnumChatFormatting.RED;
         return EnumChatFormatting.GRAY;
     }
 

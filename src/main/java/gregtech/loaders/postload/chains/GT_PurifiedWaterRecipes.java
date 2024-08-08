@@ -304,6 +304,21 @@ public class GT_PurifiedWaterRecipes {
             .duration(duration)
             .eut(TierEU.RECIPE_UEV)
             .metadata(BASE_CHANCE, 0.0f)
+            .fake()
+            .addTo(purificationParticleExtractionRecipes);
+
+        // real recipe
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(Materials.Grade7PurifiedWater.getFluid(1000L))
+            .fluidOutputs(
+                Materials.Grade8PurifiedWater.getFluid(900L),
+                Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT))
+            .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L))
+            .ignoreCollision()
+            .duration(duration)
+            .eut(TierEU.RECIPE_UEV)
+            .metadata(BASE_CHANCE, 0.0f)
+            .hidden()
             .addTo(purificationParticleExtractionRecipes);
     }
 }
