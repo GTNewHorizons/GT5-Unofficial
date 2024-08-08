@@ -279,7 +279,6 @@ public class GT_PurifiedWaterRecipes {
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tritanium, 64),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.CosmicNeutronium, 64),
-                ItemList.Electromagnet_Tengam.get(4),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 16),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 8),
                 ItemList.Field_Generator_UEV.get(4))
