@@ -106,7 +106,6 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
 
     private static final int MACHINEMODE_OREWASH = 0;
     private static final int MACHINEMODE_SIMPLEWASH = 1;
-    private int amountWaterBlock = 0;
 
     private boolean isBroken = true;
 
@@ -211,7 +210,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                 .addElement(
                     'E',
                     ofChain(
-                        ofBlockAnyMeta(Blocks.air),
+                        isAir(),
                         ofBlockAnyMeta(Blocks.water),
                         ofBlockAnyMeta(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater))))
                 .addElement(
@@ -470,7 +469,7 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         }
     }
 
-    private boolean checkForWater() {
+    private void checkForWater() {
         ExtendedFacing facing = getExtendedFacing();
         final ForgeDirection frontFacing = facing.getDirection();
         final Flip curFlip = facing.getFlip();
@@ -503,7 +502,6 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
         int y = gregTechTileEntity.getYCoord();
         int z = gregTechTileEntity.getZCoord();
 
-        amountWaterBlock = 0;
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -521,12 +519,8 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                                 Blocks.water);
                     }
                 }
-                if (tBlock == Blocks.water) {
-                    amountWaterBlock++;
-                }
             }
         }
-        return amountWaterBlock >= 8;
     }
 
     private boolean tryConsumeWater() {
@@ -540,13 +534,6 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
                 }
             }
         }
-        return false;
-    }
-
-    private boolean checkBrokenMachine() {
-        if (mMachine) {
-            return false;
-        } else isBroken = false;
         return false;
     }
 }
