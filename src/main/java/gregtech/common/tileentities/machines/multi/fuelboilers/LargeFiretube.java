@@ -65,7 +65,7 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
         .addElement(
             'E',
             GT_StructureUtility.<LargeFiretube>buildHatchAdder()
-                .atLeastList(ImmutableList.of(InputHatch))
+                .atLeast(InputHatch)
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
                 .build())
@@ -73,7 +73,7 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
         .addElement(
             'W',
             GT_StructureUtility.<LargeFiretube>buildHatchAdder()
-                .atLeastList(ImmutableList.of(InputHatch))
+                .atLeast(InputHatch)
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
                 .build())
@@ -81,7 +81,7 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
         .addElement(
             'M',
             GT_StructureUtility.<LargeFiretube>buildHatchAdder()
-                .atLeastList(ImmutableList.of(Muffler))
+                .atLeast(Muffler)
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
                 .build())
@@ -89,7 +89,7 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
         .addElement(
             'S',
             GT_StructureUtility.<LargeFiretube>buildHatchAdder()
-                .atLeastList(ImmutableList.of(OutputHatch))
+                .atLeast(OutputHatch)
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
                 .build())
