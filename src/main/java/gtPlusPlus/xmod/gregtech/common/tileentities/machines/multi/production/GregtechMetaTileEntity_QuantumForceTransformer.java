@@ -279,16 +279,6 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
             .addOutputHatch(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
             .addOutputBus(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
             .addEnergyHatch(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
-            .addMaintenanceHatch(
-                EnumChatFormatting.BLUE + "Bottom"
-                    + EnumChatFormatting.GRAY
-                    + " or "
-                    + EnumChatFormatting.AQUA
-                    + "Top"
-                    + EnumChatFormatting.GRAY
-                    + " Layer",
-                4,
-                5)
             .addStructureInfo(
                 EnumChatFormatting.WHITE + "Neptunium Plasma Hatch: "
                     + EnumChatFormatting.GREEN
@@ -324,7 +314,13 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
             return false;
         }
 
-        if (mMaintenanceHatches.size() != 1 || mOutputBusses.isEmpty() || mOutputHatches.isEmpty()) {
+        if (mOutputBusses.isEmpty() || mOutputHatches.isEmpty()) {
+            return false;
+        }
+
+        // Maintenance hatch not required but left for compatibility.
+        // Don't allow more than 1, no free casing spam!
+        if (mMaintenanceHatches.size() > 1) {
             return false;
         }
 
@@ -935,5 +931,10 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     @Override
     public boolean supportsBatchMode() {
         return true;
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }
