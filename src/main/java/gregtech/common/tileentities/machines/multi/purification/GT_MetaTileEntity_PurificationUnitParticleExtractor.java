@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi.purification;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
@@ -94,7 +95,7 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
                         .dot(1)
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
-                ofBlock(GregTech_API.sBlockCasings10, 2)))
+                onElementPass(t -> t.numCasings++, ofBlock(GregTech_API.sBlockCasings10, 2))))
         // Particle Beam Guidance Pipe Casing
         .addElement('B', ofBlock(GregTech_API.sBlockCasings9, 14))
         // Femtometer-Calibrated Particle Beam Casing
@@ -163,6 +164,8 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
     private ArrayList<ItemStack> insertedCatalysts = new ArrayList<>();
 
     private int correctIndexA = -1, correctIndexB = -1;
+    private int numCasings = 0;
+    private static final int MIN_CASINGS = 300;
 
     public GT_MetaTileEntity_PurificationUnitParticleExtractor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -236,7 +239,9 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        numCasings = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
+        if (numCasings < MIN_CASINGS) return false;
         return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 
@@ -297,6 +302,41 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
                     + "This ultimately creates both Stabilised Baryonic Matter and, most importantly, absolutely perfectly purified water.")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(17, 17, 17, false)
+            .addCasingInfoMinColored(
+                "Quark Exclusion Casing",
+                EnumChatFormatting.GRAY,
+                MIN_CASINGS,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Femtometer-Calibrated Particle Beam Casing",
+                EnumChatFormatting.GRAY,
+                96,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Particle Beam Guidance Pipe Casing",
+                EnumChatFormatting.GRAY,
+                37,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Non-Photonic Matter Exclusion Glass",
+                EnumChatFormatting.GRAY,
+                240,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Bedrockium Frame Box",
+                EnumChatFormatting.GRAY,
+                108,
+                EnumChatFormatting.GOLD,
+                false)
+            .addController("Front Center")
+            .addInputBus("Any Quark Exclusion Casing", 1)
+            .addInputHatch("Any Quark Exclusion Casing", 1)
+            .addOutputBus("Any Quark Exclusion Casing", 1)
+            .addOutputHatch("Any Quark Exclusion Casing", 1)
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -437,12 +477,12 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
 
     public EnumChatFormatting getQuarkColor(ItemStack stack) {
         int meta = stack.getItemDamage() - 32000;
-        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Up.ID) return EnumChatFormatting.RED;
-        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Down.ID) return EnumChatFormatting.YELLOW;
-        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Strange.ID) return EnumChatFormatting.DARK_PURPLE;
-        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Charm.ID) return EnumChatFormatting.LIGHT_PURPLE;
-        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Bottom.ID) return EnumChatFormatting.GREEN;
-        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Top.ID) return EnumChatFormatting.BLUE;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Up.ID) return EnumChatFormatting.BLUE;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Down.ID) return EnumChatFormatting.LIGHT_PURPLE;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Strange.ID) return EnumChatFormatting.YELLOW;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Charm.ID) return EnumChatFormatting.GREEN;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Bottom.ID) return EnumChatFormatting.AQUA;
+        if (meta == ID_MetaItem_03.Quark_Creation_Catalyst_Top.ID) return EnumChatFormatting.RED;
         return EnumChatFormatting.GRAY;
     }
 
