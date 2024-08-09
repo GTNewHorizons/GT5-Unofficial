@@ -136,7 +136,7 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
                     } else if (!isUsingDenseSteam){
                         continue;
                     }
-                    flow = Math.min(aFluids.get(i).amount, remainingFlow / 1000); // Dense Steam is 1000x the EU value
+                    flow = Math.min(aFluids.get(i).amount, remainingFlow / 1000 + 1); // Dense Steam is 1000x the EU value
                     depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
                     this.storedFluid += aFluids.get(i).amount;
                     remainingFlow -= flow * 1000; // track amount we're allowed to continue depleting from hatches
