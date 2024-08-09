@@ -411,7 +411,7 @@ public class RECIPES_GREGTECH {
                     CI.getTertiaryTieredFluid(j - 2, 144 * 16),
                     CI.getAlternativeTieredFluid(j, 144 * 16))
                 .itemOutputs(aGemCasings[aCasingSlot++])
-                .eut(GT_Values.V[j])
+                .eut(GT_Values.VP[j])
                 .duration(2 * MINUTES)
                 .addTo(AssemblyLine);
         }
@@ -446,7 +446,7 @@ public class RECIPES_GREGTECH {
                     CI.getAlternativeTieredFluid(j, 144 * 16),
                     CI.getTertiaryTieredFluid(j - 1, 144 * 16))
                 .itemOutputs(aGemBatteries[aCasingSlot++])
-                .eut(GT_Values.V[j])
+                .eut(GT_Values.VP[j])
                 .duration(2 * MINUTES)
                 .addTo(AssemblyLine);
         }
@@ -510,7 +510,7 @@ public class RECIPES_GREGTECH {
                         CI.getAlternativeTieredFluid(h - 1, 144 * 4 * 8),
                         CI.getAlternativeTieredFluid(h - 2, 144 * 4 * 8))
                     .itemOutputs(aChargeOutputs[aCurrSlot])
-                    .eut(GT_Values.V[h])
+                    .eut(GT_Values.VP[h])
                     .duration((aCurrSlot + 1) * HOURS)
                     .addTo(AssemblyLine);
                 aCurrSlot++;
@@ -1214,7 +1214,7 @@ public class RECIPES_GREGTECH {
                 .itemOutputs(aPackOutput[aAS])
                 .fluidInputs(CI.getTieredFluid(i, (144 * 4)))
                 .duration(30 * i * SECONDS)
-                .eut(GT_Values.V[i])
+                .eut(GT_Values.VP[i])
                 .addTo(assemblerRecipes);
         }
 

@@ -289,24 +289,22 @@ public class GT_RecipeConstants {
         switch (wafer) {
             case Naquadah -> {
                 ArrayList<ItemStack> items = new ArrayList<>(Arrays.asList(builder.getItemInputsBasic()));
-                items.add(GT_Utility.getIntegratedCircuit(1));
-                ItemStack[] inputItemsWithC1 = items.toArray(new ItemStack[] {});
-
-                ArrayList<ItemStack> items2 = new ArrayList<>(Arrays.asList(builder.getItemInputsBasic()));
-                items2.add(GT_Utility.getIntegratedCircuit(2));
-                ItemStack[] itemsWithC2 = items2.toArray(new ItemStack[] {});
-                // Naquadah wafers can use grade 1-2 purified water for a bonus
+                ItemStack[] itemInputs = items.toArray(new ItemStack[] {});
+                // Naquadah wafers can use grade 1-2 purified water for a bonus, otherwise use distilled so we don't
+                // have to
+                // deal with circuits
                 return GT_Utility.concat(
                     builder.copy()
-                        .itemInputs(inputItemsWithC1)
+                        .itemInputs(itemInputs)
+                        .fluidInputs(GT_ModHandler.getDistilledWater(100L))
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .itemInputs(itemsWithC2)
+                        .itemInputs(itemInputs)
                         .fluidInputs(Materials.Grade1PurifiedWater.getFluid(100L))
                         .duration(halfBoostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .itemInputs(itemsWithC2)
+                        .itemInputs(itemInputs)
                         .fluidInputs(Materials.Grade2PurifiedWater.getFluid(100L))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
