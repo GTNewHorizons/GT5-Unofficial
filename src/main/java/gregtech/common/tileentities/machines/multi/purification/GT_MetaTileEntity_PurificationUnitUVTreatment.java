@@ -82,6 +82,8 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
      */
     public static final int MIN_TIME_BETWEEN_SWAPS = MAX_TIME_BETWEEN_SWAPS / 4;
 
+    public static final ArrayList<ItemStack> LENS_ITEMS = new ArrayList<>();
+
     private int numSwapsPerformed = 0;
     private int timeUntilNextSwap = 0;
 
@@ -318,8 +320,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
     public CheckRecipeResult checkProcessing() {
         CheckRecipeResult result = super.checkProcessing();
         if (result.wasSuccessful()) {
-            // Note that this cast is fine, look at GT_PurifiedWaterRecipes.java
-            this.lensCycle = new UVTreatmentLensCycle((List<ItemStack>) this.currentRecipe.mSpecialItems);
+            this.lensCycle = new UVTreatmentLensCycle(LENS_ITEMS);
         }
         return result;
     }
