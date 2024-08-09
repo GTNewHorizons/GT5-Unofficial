@@ -461,6 +461,7 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.ITexture;
@@ -477,6 +478,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.GT_Cover_Arm;
+import gregtech.common.covers.GT_Cover_Chest;
 import gregtech.common.covers.GT_Cover_ControlsWork;
 import gregtech.common.covers.GT_Cover_Conveyor;
 import gregtech.common.covers.GT_Cover_Crafting;
@@ -2848,6 +2850,68 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "Displays the fluid stored in the Tank",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)));
+        ItemList.Cover_Chest_Basic.set(
+            addItem(
+                tLastID = 380,
+                "Basic Item Holder",
+                "Hold a few item for use within machine GUI",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L)));
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Sensor_EV.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_PlayerDetector.get(1L))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+
+        GregTech_API.registerCover(
+            ItemList.Cover_Controller.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_CONTROLLER)),
+            new GT_Cover_ControlsWork(TextureFactory.of(OVERLAY_CONTROLLER)));
+
+        final ITexture doesWorkCoverTexture = TextureFactory.of(
+            TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
+                .glow()
+                .build());
+        GregTech_API.registerCover(
+            ItemList.Cover_Chest_Basic.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(Textures.BlockIcons.AUTOMATION_CHESTBUFFER)),
+            new GT_Cover_Chest(9, TextureFactory.of(Textures.BlockIcons.AUTOMATION_CHESTBUFFER)));
+        GregTech_API.registerCover(
+            ItemList.Cover_ActivityDetector.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], doesWorkCoverTexture),
+            new GT_Cover_DoesWork(doesWorkCoverTexture));
+        GregTech_API.registerCover(
+            ItemList.Cover_FluidDetector.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)),
+            new GT_Cover_LiquidMeter(TextureFactory.of(OVERLAY_FLUIDDETECTOR)));
+        GregTech_API.registerCover(
+            ItemList.Cover_ItemDetector.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ITEMDETECTOR)),
+            new GT_Cover_ItemMeter(TextureFactory.of(OVERLAY_ITEMDETECTOR)));
+        GregTech_API.registerCover(
+            ItemList.Cover_EnergyDetector.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ENERGYDETECTOR)),
+            new GT_Cover_EUMeter(TextureFactory.of(OVERLAY_ENERGYDETECTOR)));
+
+        final ITexture playerDectectorCoverTexture = TextureFactory.of(
+            TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
+                .glow()
+                .build());
+        GregTech_API.registerCover(
+            ItemList.Cover_PlayerDetector.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], playerDectectorCoverTexture),
+            new GT_Cover_PlayerDetector(playerDectectorCoverTexture));
+        GregTech_API.registerCover(
+            ItemList.Cover_FluidStorageMonitor.get(1L),
+            TextureFactory.of(OVERLAY_FLUID_STORAGE_MONITOR0),
+            new GT_Cover_FluidStorageMonitor());
 
         ItemList.Cover_Screen.set(
             addItem(
