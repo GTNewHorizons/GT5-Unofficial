@@ -277,16 +277,13 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
     }
 
     public double getUnitSteamPower(String steam) {
-        switch (steam) {
-            case "steam":
-                return 0.5;
-            case "ic2superheatedsteam":
-                return 1;
-            case "supercriticalsteam":
-                return 100;
-            default:
-                return -1;
-        }
+        return switch (steam) {
+            case "steam" -> 0.5;
+            case "ic2superheatedsteam" -> 1;
+            case "supercriticalsteam" -> 100;
+            case "densesupercriticalsteam" -> 1;
+            default -> -1;
+        };
     }
 
     @Override
