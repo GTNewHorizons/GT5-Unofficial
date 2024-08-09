@@ -164,7 +164,7 @@ public class FuelRecipeLoader {
                 MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2000),
                 FluidRegistry.getFluidStack("heavyradox", 250))
             .fluidOutputs(MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(750))
-            .duration(10 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(300_000_000)
             .metadata(NFR_COIL_TIER, 3)
             .noOptimize()
