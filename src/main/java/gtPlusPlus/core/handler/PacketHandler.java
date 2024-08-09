@@ -9,6 +9,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
+import gregtech.api.net.PacketOpenTechTree;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.network.handler.AbstractClientMessageHandler;
 import gtPlusPlus.core.network.packet.AbstractPacket;
@@ -25,6 +26,8 @@ public class PacketHandler {
     public static final void init() {
         registerMessage(Packet_VolumetricFlaskGui.class, Packet_VolumetricFlaskGui.class);
         registerMessage(Packet_VolumetricFlaskGui2.class, Packet_VolumetricFlaskGui2.class);
+        // GT message because yes
+        registerMessage(PacketOpenTechTree.class, PacketOpenTechTree.class);
     }
 
     /**
