@@ -1,5 +1,7 @@
 package gregtech.common.items;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
 
@@ -10,7 +12,7 @@ public enum DropType {
     COOLANT("coolant", true),
     HOT_COOLANT("hot coolant", true),
     HYDRA("hydra blood", true),
-    SNOW_QUEEN("snowqueen blood", true),
+    SNOW_QUEEN("snow queen blood", true),
     OXYGEN("oxygen", true),
     LAPIS("lapis coolant", true),
     ENDERGOO("ender goo", true);
@@ -34,10 +36,7 @@ public enum DropType {
 
     public String getName() {
 
-        return GT_LanguageManager.addStringLocalization(
-            "drop." + this.name,
-            this.name.substring(0, 1)
-                .toUpperCase() + this.name.substring(1) + " Drop");
+        return GT_LanguageManager.addStringLocalization("drop." + this.name, WordUtils.capitalize(this.name) + " Drop");
     }
 
     public int[] getColours() {
