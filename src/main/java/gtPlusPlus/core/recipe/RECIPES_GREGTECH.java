@@ -621,16 +621,6 @@ public class RECIPES_GREGTECH {
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(laserEngraverRecipes);
-
-        // Distillus Upgrade Chip
-        RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.Laser_Lens_WoodsGlass.get(0),
-                ItemUtils.simpleMetaStack(AgriculturalChem.mBioCircuit, 20, 1))
-            .itemOutputs(GregtechItemList.Distillus_Upgrade_Chip.get(1))
-            .duration(5 * MINUTES)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(laserEngraverRecipes);
     }
 
     private static void breweryRecipes() {

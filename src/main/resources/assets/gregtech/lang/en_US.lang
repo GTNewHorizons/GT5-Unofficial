@@ -1849,3 +1849,5 @@ achievement.gt.blockmachines.moleculartransformer.controller.tier.single.desc=[A
 achievement.gt.blockmachines.gtpp.multimachine.replicator=Elemental Duplicator
 achievement.gt.blockmachines.gtpp.multimachine.replicator.desc=[AL] Pickup this item to see the recipe in NEI
 
+# 2024-7-25
+tooltip.large_distill_tower.tier=Tier: §6%s
