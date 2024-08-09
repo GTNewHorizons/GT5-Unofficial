@@ -59,6 +59,11 @@ import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_IV;
@@ -540,6 +545,7 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_AdvSeismicProspector;
+import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_BetterJukebox;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Boxinator;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Charger;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_IndustrialApiary;
@@ -1562,6 +1568,39 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "basicmachine.microtransmitter.08",
                 "UV Microwave Energy Transmitter",
                 8).getStackForm(1L));
+    }
+
+    private static void registerBetterJukebox() {
+        ItemList.BetterJukebox_LV.set(
+            new GT_MetaTileEntity_BetterJukebox(
+                BETTER_JUKEBOX_LV.ID,
+                "basicmachine.betterjukebox.tier.01",
+                "Basic Electric Jukebox",
+                1).getStackForm(1L));
+        ItemList.BetterJukebox_MV.set(
+            new GT_MetaTileEntity_BetterJukebox(
+                BETTER_JUKEBOX_MV.ID,
+                "basicmachine.betterjukebox.tier.02",
+                "Advanced Electric Jukebox",
+                2).getStackForm(1L));
+        ItemList.BetterJukebox_HV.set(
+            new GT_MetaTileEntity_BetterJukebox(
+                BETTER_JUKEBOX_HV.ID,
+                "basicmachine.betterjukebox.tier.03",
+                "Advanced Electric Jukebox II",
+                3).getStackForm(1L));
+        ItemList.BetterJukebox_EV.set(
+            new GT_MetaTileEntity_BetterJukebox(
+                BETTER_JUKEBOX_EV.ID,
+                "basicmachine.betterjukebox.tier.04",
+                "Extreme Music Mixer",
+                4).getStackForm(1L));
+        ItemList.BetterJukebox_IV.set(
+            new GT_MetaTileEntity_BetterJukebox(
+                BETTER_JUKEBOX_IV.ID,
+                "basicmachine.betterjukebox.tier.05",
+                "Duke Mix'em 3D",
+                5).getStackForm(1L));
     }
 
     private static void registerChestBuffer() {
@@ -4182,6 +4221,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         registerMonsterRepellator();
         registerAdvancedSeismicProspector();
         registerMicrowaveEnergyTransmitter();
+        registerBetterJukebox();
         registerChestBuffer();
         registerItemFilter();
         registerTypeFilter();
