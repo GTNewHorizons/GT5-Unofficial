@@ -118,6 +118,10 @@ public class GT_Cyclotron_Coils extends GT_Block_Casings_Abstract {
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
     }
 
+    public int getVoltageTier(int meta) {
+        return meta + 2;
+    }
+
     @Override
     public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
         return aWorld.getBlockMetadata(aX, aY, aZ) > 9 ? super.colorMultiplier(aWorld, aX, aY, aZ)
