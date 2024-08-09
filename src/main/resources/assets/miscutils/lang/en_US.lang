@@ -50,6 +50,7 @@ tile.blockVolumetricFlaskSetter.name=Volumetric Flask Configurator
 tile.blockSuperLight.name=Shining Star
 tile.blockPestKiller.name=Pest Killer
 tile.blockSuperJukebox.name=Sir Mixalot [Jukebox]
+tile.blockSuperJukebox.deprecated=§cDEPRECATED, Use the Electric Jukeboxes instead
 
 //Tools
 item.itemBufferCore.name=Energy Core

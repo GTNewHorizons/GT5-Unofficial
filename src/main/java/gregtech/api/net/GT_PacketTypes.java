@@ -31,6 +31,7 @@ public enum GT_PacketTypes {
     MULTI_TILE_ENTITY(18, new GT_Packet_MultiTileEntity(true)),
     SEND_OREGEN_PATTERN(19, new GT_Packet_SendOregenPattern()),
     TOOL_SWITCH_MODE(20, new GT_Packet_ToolSwitchMode()),
+    MUSIC_SYSTEM_DATA(21, new GT_Packet_MusicSystemData()),
     // merge conflict prevention comment, keep a trailing comma above
     ;
 

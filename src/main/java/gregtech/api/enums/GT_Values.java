@@ -678,6 +678,11 @@ public class GT_Values {
         + "Gold";
     public static final String AuthorVolence = "Author: " + EnumChatFormatting.AQUA + "Volence";
 
+    public static final String AuthorEigenRaven = "Author: " + EnumChatFormatting.DARK_PURPLE
+        + "Eigen"
+        + EnumChatFormatting.BOLD
+        + "Raven";
+
     public static final String AuthorNotAPenguin = "Author: " + EnumChatFormatting.WHITE
         + EnumChatFormatting.BOLD
         + "Not"

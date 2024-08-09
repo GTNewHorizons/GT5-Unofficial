@@ -19,6 +19,12 @@ import cpw.mods.fml.relauncher.FMLLaunchHandler;
 public enum Mixin {
 
     // Minecraft
+    SoundManagerMixin(new Builder("Seeking sound playback")
+        .addMixinClasses("minecraft.SoundManagerMixin", "minecraft.SoundManagerInnerMixin")
+        .addTargetedMod(VANILLA)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.EARLY)
+        .setSide(Side.CLIENT)),
     WorldMixin(new Builder("Block update detection").addMixinClasses("minecraft.WorldMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)

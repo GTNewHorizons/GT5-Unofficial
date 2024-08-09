@@ -338,6 +338,8 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_BUTTON_ARROW_GREEN_DOWN = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/arrow_green_down");
     public static final UITexture OVERLAY_BUTTON_CYCLIC = UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic");
+    public static final UITexture OVERLAY_BUTTON_SHUFFLE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/shuffle");
     public static final UITexture OVERLAY_BUTTON_EMIT_ENERGY = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/emit_energy");
     public static final UITexture OVERLAY_BUTTON_EMIT_REDSTONE = UITexture

@@ -12,6 +12,10 @@ public interface IGT_NetworkHandler {
 
     void sendToAllAround(GT_Packet aPacket, TargetPoint aPosition);
 
+    default void sendToAll(GT_Packet aPacket) {
+        throw new UnsupportedOperationException("sendToAll not implemented");
+    }
+
     void sendToServer(GT_Packet aPacket);
 
     void sendPacketToAllPlayersInRange(World aWorld, GT_Packet aPacket, int aX, int aZ);
