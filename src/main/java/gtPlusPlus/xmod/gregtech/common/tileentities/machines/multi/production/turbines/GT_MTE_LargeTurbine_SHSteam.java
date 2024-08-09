@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.t
 
 import java.util.ArrayList;
 
+import gregtech.api.enums.Materials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,6 +26,9 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
 
     public boolean achievement = false;
     private boolean looseFit = false;
+    private boolean hasConsumedSteam;
+    private boolean isUsingDenseSteam;
+
 
     public GT_MTE_LargeTurbine_SHSteam(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -68,11 +72,12 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
     long fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers) {
         if (looseFit) {
             aOptFlow *= 4;
+            final double flowMultiplier = Math.pow(1.1f, ((aBaseEff - 7500) / 10000F) * 20f);
             if (aBaseEff > 10000) {
-                aOptFlow *= Math.pow(1.1f, ((aBaseEff - 7500) / 10000F) * 20f);
+                aOptFlow *= flowMultiplier;
                 aBaseEff = 7500;
             } else if (aBaseEff > 7500) {
-                aOptFlow *= Math.pow(1.1f, ((aBaseEff - 7500) / 10000F) * 20f);
+                aOptFlow *= flowMultiplier;
                 aBaseEff *= 0.75f;
             } else {
                 aBaseEff *= 0.75f;
@@ -90,37 +95,64 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
         int remainingFlow = MathUtils.safeInt((long) (realOptFlow * 1.25f)); // Allowed to use up to
         // 125% of optimal flow.
 
+        hasConsumedSteam = false;
+
         storedFluid = 0;
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
             String fluidName = aFluids.get(i)
                 .getFluid()
                 .getUnlocalizedName(aFluids.get(i));
-            if (fluidName.equals("ic2.fluidSuperheatedSteam")) {
-                flow = Math.min(aFluids.get(i).amount, remainingFlow); // try to use up w/o exceeding remainingFlow
-                depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
-                this.storedFluid += aFluids.get(i).amount;
-                remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
-                totalFlow += flow; // track total input used
-                if (!achievement) {
-                    try {
-                        GT_Mod.achievements.issueAchievement(
-                            this.getBaseMetaTileEntity()
-                                .getWorld()
-                                .getPlayerEntityByName(
-                                    this.getBaseMetaTileEntity()
-                                        .getOwnerName()),
-                            "efficientsteam");
-                    } catch (Exception e) {}
-                    achievement = true;
+            switch (fluidName) {
+                case "ic2.fluidSuperheatedSteam" -> {
+                    if (!hasConsumedSteam) {
+                        hasConsumedSteam = true;
+                        isUsingDenseSteam = false;
+                    } else if (isUsingDenseSteam) {
+                        continue;
+                    }
+                    flow = Math.min(aFluids.get(i).amount, remainingFlow); // try to use up w/o exceeding remainingFlow
+                    depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
+                    this.storedFluid += aFluids.get(i).amount;
+                    remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
+                    totalFlow += flow; // track total input used
+                    if (!achievement) {
+                        try {
+                            GT_Mod.achievements.issueAchievement(
+                                this.getBaseMetaTileEntity()
+                                    .getWorld()
+                                    .getPlayerEntityByName(
+                                        this.getBaseMetaTileEntity()
+                                            .getOwnerName()),
+                                "efficientsteam");
+                        } catch (Exception e) {
+                        }
+                        achievement = true;
+                    }
                 }
-            } else if (fluidName.equals("fluid.steam") || fluidName.equals("ic2.fluidSteam")
-                || fluidName.equals("fluid.mfr.steam.still.name")) {
+                case "fluid.densesuperheatedsteam" -> {
+                    if (!hasConsumedSteam) {
+                        hasConsumedSteam = true;
+                        isUsingDenseSteam = true;
+                    } else if (!isUsingDenseSteam){
+                        continue;
+                    }
+                    flow = Math.min(aFluids.get(i).amount, remainingFlow / 1000); // Dense Steam is 1000x the EU value
+                    depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
+                    this.storedFluid += aFluids.get(i).amount;
+                    remainingFlow -= flow * 1000; // track amount we're allowed to continue depleting from hatches
+                    totalFlow += flow * 1000; // track total input used
+                }
+                case "fluid.steam", "ic2.fluidSteam", "fluid.mfr.steam.still.name" ->
                     depleteInput(new FluidStack(aFluids.get(i), aFluids.get(i).amount));
-                }
+            }
         }
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
-        addOutput(GT_ModHandler.getSteam(totalFlow));
+        if (isUsingDenseSteam) {
+            addOutput(Materials.DenseSteam.getGas(totalFlow / 1000));
+        } else {
+            addOutput(GT_ModHandler.getSteam(totalFlow));
+        }
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);
             // if(totalFlow>aOptFlow){efficiency = 1.0f;}
