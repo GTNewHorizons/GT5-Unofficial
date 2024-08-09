@@ -455,8 +455,7 @@ public class GT_HatchElementBuilder<T> {
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
-                ItemStack newTrigger = ChannelDataAccessor.withChannel(trigger, "no_hatch");
-                if (newTrigger == trigger) {
+                if (!ChannelDataAccessor.hasSubChannel(trigger, "no_hatch")) {
                     env.getChatter()
                         .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_building_hatch"));
                 } else return PlaceResult.SKIP;
