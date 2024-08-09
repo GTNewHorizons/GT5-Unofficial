@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.t
 
 import java.util.ArrayList;
 
+import gregtech.api.enums.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,6 +17,9 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT_MTE_LargeTurbine_SCSteam extends GregtechMetaTileEntity_LargerTurbineBase {
+
+    private boolean hasConsumedSteam;
+    private boolean isUsingDenseSteam;
 
     public GT_MTE_LargeTurbine_SCSteam(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -72,16 +76,38 @@ public class GT_MTE_LargeTurbine_SCSteam extends GregtechMetaTileEntity_LargerTu
         FluidStack tSCSteam = FluidRegistry.getFluidStack("supercriticalsteam", 1);
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
             if (GT_Utility.areFluidsEqual(aFluids.get(i), tSCSteam, true)) {
+                if (!hasConsumedSteam) {
+                    hasConsumedSteam = true;
+                    isUsingDenseSteam = false;
+                } else if (isUsingDenseSteam) {
+                    continue;
+                }
                 flow = Math.min(aFluids.get(i).amount, remainingFlow); // try to use up w/o exceeding remainingFlow
                 depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
                 this.storedFluid += aFluids.get(i).amount;
                 remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
                 totalFlow += flow; // track total input used
+            } else if (GT_Utility.areFluidsEqual(aFluids.get(i), Materials.DenseSupercriticalSteam.getGas(1), true)) {
+                if (!hasConsumedSteam) {
+                    hasConsumedSteam = true;
+                    isUsingDenseSteam = true;
+                } else if (!isUsingDenseSteam){
+                    continue;
+                }
+                flow = Math.min(aFluids.get(i).amount, remainingFlow / 1000); // Dense Steam is 10x the EU value
+                depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
+                this.storedFluid += aFluids.get(i).amount;
+                remainingFlow -= flow * 1000; // track amount we're allowed to continue depleting from hatches
+                totalFlow += flow * 1000; // track total input used
             }
         }
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
-        addOutput(GT_ModHandler.getSteam(totalFlow * 100));
+        if (isUsingDenseSteam) {
+            addOutput(Materials.DenseSuperheatedSteam.getGas(totalFlow / 1000));
+        } else {
+            addOutput(GT_ModHandler.getSteam(totalFlow * 100));
+        }
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);
             // if(totalFlow>aOptFlow){efficiency = 1.0f;}
@@ -90,7 +116,9 @@ public class GT_MTE_LargeTurbine_SCSteam extends GregtechMetaTileEntity_LargerTu
         } else {
             tEU = MathUtils.safeInt((long) tEU * (long) aBaseEff / 10000L);
         }
-
+        if (isUsingDenseSteam) {
+            return tEU;
+        }
         return tEU * 100L;
     }
 
