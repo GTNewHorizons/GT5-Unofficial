@@ -987,11 +987,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         .setMaterialList(new MaterialStack(Oxygen, 3))
         .constructMaterial();
 
-    public static Materials StableBaryonicMatter = new MaterialBuilder(569, TextureSet.SET_FLUID, "Stabilised Baryonic Matter")
+    public static Materials StableBaryonicMatter = new MaterialBuilder(569,  TextureSet.SET_FLUID, "Stabilised Baryonic Matter")
         .addFluid()
         .addCell()
-        .setRGB(20, 10, 20)
-        .setName("StableBaryonicMatter")
+        .setRGBA(100, 1, 255, 255)
+        .setTransparent(false)
+        .setName("stablebaryonicmatter")
+        .setColor(Dyes.dyeBlue)
         .constructMaterial();
 
     // spotless:on
