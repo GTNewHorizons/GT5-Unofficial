@@ -472,6 +472,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.transformer_MV_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_UHV_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_UV_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.LARGE_CRYSTALIZER;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
@@ -555,55 +556,7 @@ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Scanner;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Teleporter;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineItem;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_AssemblyLine;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_BrickedBlastFurnace;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Charcoal_Pit;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ConcreteBackfiller1;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ConcreteBackfiller2;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DieselEngine;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DistillationTower;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ExtremeDieselEngine;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer1;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer2;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer3;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_HeatExchanger;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ImplosionCompressor;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialElectromagneticSeparator;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialLaserEngraver;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IntegratedOreFactory;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Bronze;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Steel;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Titanium;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_TungstenSteel;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeChemicalReactor;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Gas;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_GasAdvanced;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_HPSteam;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Plasma;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Steam;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiCanner;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiFurnace;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiLathe;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_NanoForge;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilCracker;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill1;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill2;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill3;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill4;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrillInfinite;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OreDrillingPlant1;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OreDrillingPlant2;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OreDrillingPlant3;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OreDrillingPlant4;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PCBFactory;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PlasmaForge;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ProcessingArray;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PyrolyseOven;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_TranscendentPlasmaMixer;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_WormholeGenerator;
+import gregtech.common.tileentities.machines.multi.*;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_Hatch_DegasifierControlHatch;
@@ -1148,6 +1101,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 MULTI_LATHE_CONTROLLER.ID,
                 "multimachine.lathe",
                 "Industrial Precision Lathe").getStackForm(1));
+
+        ItemList.Machine_Large_Crystalizer.set(
+            new GT_MetaTileEntity_Crystalizer(LARGE_CRYSTALIZER.ID, "multimachine.crystalizer", "Large Crystalizer")
+                .getStackForm(1));
     }
 
     private static void registerSteamMachines() {
@@ -3303,35 +3260,35 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_NaquadahReactor(
                 NAQUADAH_REACTOR_EV.ID,
                 "basicgenerator.naquadah.tier.04",
-                new String[] { "Requires Enriched Naquadah Bolts" },
+                new String[]{"Requires Enriched Naquadah Bolts"},
                 "Naquadah Reactor Mark I",
                 4).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_II.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 NAQUADAH_REACTOR_IV.ID,
                 "basicgenerator.naquadah.tier.05",
-                new String[] { "Requires Enriched Naquadah Rods" },
+                new String[]{"Requires Enriched Naquadah Rods"},
                 "Naquadah Reactor Mark II",
                 5).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_III.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 NAQUADAH_REACTOR_LuV.ID,
                 "basicgenerator.naquadah.tier.06",
-                new String[] { "Requires Enriched Naquadah Long Rods" },
+                new String[]{"Requires Enriched Naquadah Long Rods"},
                 "Naquadah Reactor Mark III",
                 6).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_IV.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 NAQUADAH_REACTOR_ZPM.ID,
                 "basicgenerator.naquadah.tier.07",
-                new String[] { "Requires Naquadria Bolts" },
+                new String[]{"Requires Naquadria Bolts"},
                 "Naquadah Reactor Mark IV",
                 7).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_V.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 NAQUADAH_REACTOR_UV.ID,
                 "basicgenerator.naquadah.tier.08",
-                new String[] { "Requires Naquadria Rods" },
+                new String[]{"Requires Naquadria Rods"},
                 "Naquadah Reactor Mark V",
                 8).getStackForm(1L));
     }
@@ -3415,8 +3372,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                     "GT_Frame_" + GregTech_API.sGeneratedMaterials[i],
                     (GT_LanguageManager.i18nPlaceholder ? "%material"
                         : GregTech_API.sGeneratedMaterials[i] != null
-                            ? GregTech_API.sGeneratedMaterials[i].mDefaultLocalName
-                            : "")
+                        ? GregTech_API.sGeneratedMaterials[i].mDefaultLocalName
+                        : "")
                         + " Frame Box",
                     GregTech_API.sGeneratedMaterials[i]);
             }
@@ -3964,7 +3921,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     @SuppressWarnings("PointlessArithmeticExpression")
     private static void makeWires(Materials aMaterial, int aStartID, long aLossInsulated, long aLoss, long aAmperage,
-        long aVoltage, boolean aInsulatable, boolean aAutoInsulated) {
+                                  long aVoltage, boolean aInsulatable, boolean aAutoInsulated) {
         String name = GT_LanguageManager.i18nPlaceholder ? "%material" : aMaterial.mDefaultLocalName;
         GT_OreDictUnificator.registerOre(
             OrePrefixes.wireGt01,
@@ -4260,7 +4217,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void generateItemPipes(Materials aMaterial, String name, String displayName, int startID,
-        int baseInvSlots) {
+                                          int baseInvSlots) {
         GT_OreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(aMaterial),
             new GT_MetaPipeEntity_Item(
@@ -4331,7 +4288,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     @SuppressWarnings("SameParameterValue")
     private static void generateFluidPipes(Materials aMaterial, String name, int startID, int baseCapacity,
-        int heatCapacity, boolean gasProof) {
+                                           int heatCapacity, boolean gasProof) {
         generateFluidPipes(
             aMaterial,
             name,
@@ -4343,7 +4300,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void generateFluidPipes(Materials aMaterial, String name, String displayName, int startID,
-        int baseCapacity, int heatCapacity, boolean gasProof) {
+                                           int baseCapacity, int heatCapacity, boolean gasProof) {
         GT_OreDictUnificator.registerOre(
             OrePrefixes.pipeTiny.get(aMaterial),
             new GT_MetaPipeEntity_Fluid(
@@ -4403,12 +4360,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     @SuppressWarnings("SameParameterValue")
     private static void generateFluidMultiPipes(Materials aMaterial, String name, int startID, int baseCapacity,
-        int heatCapacity, boolean gasProof) {
+                                                int heatCapacity, boolean gasProof) {
         generateFluidMultiPipes(aMaterial, name, "%material", startID, baseCapacity, heatCapacity, gasProof);
     }
 
     private static void generateFluidMultiPipes(Materials aMaterial, String name, String displayName, int startID,
-        int baseCapacity, int heatCapacity, boolean gasProof) {
+                                                int baseCapacity, int heatCapacity, boolean gasProof) {
         GT_OreDictUnificator.registerOre(
             OrePrefixes.pipeQuadruple.get(aMaterial),
             new GT_MetaPipeEntity_Fluid(
