@@ -29,6 +29,8 @@ public class TecTechUITextures {
     public static final UITexture BUTTON_STANDARD_LIGHT_16x16 = UITexture
         .fullImage(MODID, "gui/button/standard_light_16x16");
     public static final UITexture BUTTON_CELESTIAL_32x32 = UITexture.fullImage(MODID, "gui/button/celestial");
+    public static final UITexture BUTTON_SPACE_32x16 = UITexture.fullImage(MODID, "gui/button/purple");
+    public static final UITexture BUTTON_SPACE_PRESSED_32x16 = UITexture.fullImage(MODID, "gui/button/purple_pressed");
     public static final UITexture BUTTON_BOXED_CHECKMARK_18x18 = UITexture
         .fullImage(MODID, "gui/button/boxed_checkmark");
     public static final UITexture BUTTON_BOXED_EXCLAMATION_POINT_18x18 = UITexture

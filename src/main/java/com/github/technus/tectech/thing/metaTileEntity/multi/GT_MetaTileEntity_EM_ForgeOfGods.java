@@ -166,7 +166,10 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final String STRUCTURE_PIECE_SECOND_RING = "second_ring";
     protected static final String STRUCTURE_PIECE_THIRD_RING = "third_ring";
-    private static final String TOOLTIP_BAR = EnumChatFormatting.BLUE + "--------------------------------------------";
+    private static final String SCANNER_INFO_BAR = EnumChatFormatting.BLUE
+        + "--------------------------------------------";
+    private static final String TOOLTIP_BAR = EnumChatFormatting.AQUA
+        + "--------------------------------------------------------------------------";
     private static final ItemStack STELLAR_FUEL = Avaritia.isModLoaded() ? getModItem(Avaritia.ID, "Resource", 1, 8)
         : GT_OreDictUnificator.get(OrePrefixes.block, Materials.CosmicNeutronium, 1);
 
@@ -177,7 +180,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         int realBudget = elementBudget >= 1000 ? elementBudget : Math.min(1000, elementBudget * 5);
         // 1000 blocks max per placement.
         int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 63, 14, 1, realBudget, env, false, true);
-        if (isUpgradeActive(26) && stackSize.stackSize > 1) {
+        if (stackSize.stackSize > 1) {
             built += survivialBuildPiece(
                 STRUCTURE_PIECE_SECOND_RING,
                 stackSize,
@@ -189,7 +192,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                 false,
                 true);
         }
-        if (isUpgradeActive(29) && stackSize.stackSize > 2) {
+        if (stackSize.stackSize > 2) {
             built += survivialBuildPiece(
                 STRUCTURE_PIECE_THIRD_RING,
                 stackSize,
@@ -542,11 +545,11 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     @Override
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        str.add(TOOLTIP_BAR);
+        str.add(SCANNER_INFO_BAR);
         str.add("Number of Rings: " + EnumChatFormatting.GOLD + ringAmount);
         str.add("Total Upgrades Unlocked: " + EnumChatFormatting.GOLD + getTotalActiveUpgrades());
         str.add("Connected Modules: " + EnumChatFormatting.GOLD + moduleHatches.size());
-        str.add(TOOLTIP_BAR);
+        str.add(SCANNER_INFO_BAR);
         return str.toArray(new String[0]);
     }
 
@@ -1730,7 +1733,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
         int WIDTH = 250;
         int HEIGHT = 250;
         int LORE_POS = 110;
-        if (currentUpgradeID == 0) {
+        if (currentUpgradeID == 0 || currentUpgradeID == 30) {
             WIDTH = 300;
             HEIGHT = 300;
             LORE_POS = 85;
@@ -1759,14 +1762,14 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     .addChild(
                         new TextWidget(translateToLocal("fog.upgrade.text." + (currentUpgradeID)))
                             .setTextAlignment(Alignment.CenterLeft)
-                            .setDefaultColor(0x9c9c9c)
+                            .setDefaultColor(EnumChatFormatting.WHITE)
                             .setSize(WIDTH - 15, LORE_POS - 30)
                             .setPos(9, 30))
                     .addChild(
                         new TextWidget(
                             EnumChatFormatting.ITALIC + translateToLocal("fog.upgrade.lore." + (currentUpgradeID)))
                                 .setTextAlignment(Alignment.Center)
-                                .setDefaultColor(0x9c9c9c)
+                                .setDefaultColor(0xbbbdbd)
                                 .setSize(WIDTH - 15, (int) (HEIGHT * 0.9) - LORE_POS)
                                 .setPos(9, LORE_POS))
                     .addChild(
@@ -1937,18 +1940,19 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
             .setSize(40, 15)
             .setBackground(() -> {
                 if (upgrades[upgradeID]) {
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED };
+                    return new IDrawable[] { TecTechUITextures.BUTTON_SPACE_PRESSED_32x16 };
                 } else {
-                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD };
+                    return new IDrawable[] { TecTechUITextures.BUTTON_SPACE_32x16 };
                 }
             })
             .addTooltip(translateToLocal("fog.upgrade.tt." + upgradeID))
             .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .addChild(
-                new TextWidget(translateToLocal("fog.upgrade.tt." + upgradeID)).setTextAlignment(Alignment.Center)
-                    .setScale(0.57f)
-                    .setMaxWidth(36)
-                    .setPos(3, 3))
+                new TextWidget(translateToLocal("fog.upgrade.tt.short." + upgradeID)).setScale(0.8f)
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.Center)
+                    .setSize(34, 9)
+                    .setPos(3, 4))
             .setPos(pos)
             .attachSyncer(
                 new FakeSyncWidget.BooleanSyncer(() -> upgrades[upgradeID], val -> upgrades[upgradeID] = val),
@@ -2186,7 +2190,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
                     EnumChatFormatting.BOLD + "§N" + translateToLocal("gt.blockmachines.multimachine.FOG.modules"))
                         .setDefaultColor(EnumChatFormatting.DARK_PURPLE)
                         .setTextAlignment(Alignment.TopCenter)
-                        .setPos(7, 444)
+                        .setPos(7, 440)
                         .setSize(280, 15))
             .widget(
                 new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.moduleinfotext"))
@@ -2253,20 +2257,145 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Material Manipulator") // Machine Type:
-            .addInfo("Controller block for the Forge of Gods") // Controller
-            .addInfo("Uses a Star to to manipulate metals")
-            .addSeparator()
-            .beginStructureBlock(1, 4, 2, false)
-            .addStructureInfo("Output bus/hatch has to be the ME variant")
-            .addStructureInfo("Dot 2 of Input Hatch is the Fuel Input Hatch")
-            .addInputHatch("Any Infinite Spacetime Casing", 1)
-            .addInputHatch("Any Infinite Spacetime Casing", 2) // Fuel
-                                                               // Input
-                                                               // Hatch
-            .addInputBus("Any Infinite Spacetime Casing", 1)
-            .addOutputBus("Any Infinite Spacetime Casing", 1)
-            .addOutputHatch("Any Infinite Spacetime Casing", 1)
+        tt.addMachineType("Stellar Forge")
+            .addInfo(EnumChatFormatting.ITALIC + "Also known as Godforge or Gorge for short.")
+            .addInfo(TOOLTIP_BAR)
+            .addInfo("Controller block for the Godforge, a massive structure harnessing the thermal,")
+            .addInfo("gravitational and kinetic energy of a stabilised neutron star for material processing.")
+            .addInfo(
+                "This multiblock can house " + EnumChatFormatting.RED
+                    + "up to 16 modules "
+                    + EnumChatFormatting.GRAY
+                    + "which utilize the star to energize materials")
+            .addInfo("to varying degrees, ranging from regular smelting to matter degeneration.")
+            .addInfo(TOOLTIP_BAR)
+            .addInfo(
+                "This multiblock has an " + EnumChatFormatting.GOLD
+                    + "extensive upgrade tree "
+                    + EnumChatFormatting.GRAY
+                    + "which influences all of its functions,")
+            .addInfo(
+                "such as " + EnumChatFormatting.GOLD
+                    + "unlocking new module types, increasing heat levels "
+                    + EnumChatFormatting.GRAY
+                    + "and "
+                    + EnumChatFormatting.GOLD
+                    + "granting")
+            .addInfo(
+                EnumChatFormatting.GOLD + "various processing speed bonuses. "
+                    + EnumChatFormatting.GRAY
+                    + "These upgrades can be unlocked by reaching")
+            .addInfo("certain milestones and/or spending materials.")
+            .addInfo(TOOLTIP_BAR)
+            .addInfo(
+                EnumChatFormatting.GREEN
+                    + "Clicking on the logo in the controller gui opens an extensive information window,")
+            .addInfo("explaining everything there is to know about this multiblock.")
+            .addInfo(TOOLTIP_BAR)
+            .beginStructureBlock(126, 29, 186, false)
+            .addStructureInfo("The structure is too complex! See schematic for details.")
+            .addStructureInfo(
+                "Total blocks needed for the structure with " + EnumChatFormatting.DARK_PURPLE
+                    + "1"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "2"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.AQUA
+                    + "3"
+                    + EnumChatFormatting.GRAY
+                    + " rings:")
+            .addStructureInfo(
+                EnumChatFormatting.DARK_PURPLE + "3943"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "7279"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.AQUA
+                    + "11005"
+                    + EnumChatFormatting.GRAY
+                    + " Transcendentally Amplified Magnetic Confinement Casing")
+            .addStructureInfo(
+                EnumChatFormatting.DARK_PURPLE + "2819"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "4831"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.AQUA
+                    + "6567"
+                    + EnumChatFormatting.GRAY
+                    + " Singularity Reinforced Stellar Shielding Casing")
+            .addStructureInfo(
+                EnumChatFormatting.DARK_PURPLE + "272"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "512"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.AQUA
+                    + "824"
+                    + EnumChatFormatting.GRAY
+                    + " Celestial Matter Guidance Casing")
+            .addStructureInfo(
+                EnumChatFormatting.DARK_PURPLE + "130"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "144"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.AQUA
+                    + "158"
+                    + EnumChatFormatting.GRAY
+                    + " Boundless Gravitationally Severed Structure Casing")
+            .addStructureInfo(
+                EnumChatFormatting.DARK_PURPLE + "9"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "54"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.AQUA
+                    + "155"
+                    + EnumChatFormatting.GRAY
+                    + " Spatially Transcendent Gravitational Lens Block")
+            .addStructureInfo(
+                EnumChatFormatting.DARK_PURPLE + "345"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "357"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.AQUA
+                    + "397"
+                    + EnumChatFormatting.DARK_PURPLE
+                    + " Remote"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "Medial"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.AQUA
+                    + "Central"
+                    + EnumChatFormatting.GRAY
+                    + " Graviton Flow Modulator")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "36" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
+            .addStructureInfo("--------------------------------------------")
+            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Hatch")
+            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Bus")
+            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Bus")
+            .addStructureInfo("--------------------------------------------")
             .toolTipFinisher(CommonValues.GODFORGE_MARK);
         return tt;
     }
@@ -2473,7 +2602,7 @@ public class GT_MetaTileEntity_EM_ForgeOfGods extends GT_MetaTileEntity_Multiblo
             }
         }
 
-        if (milestoneProgress[3] < 7) {
+        if (milestoneProgress[3] <= 7) {
             structureMilestonePercentage = totalExtensionsBuilt / 7f;
         }
         if (inversion) {
