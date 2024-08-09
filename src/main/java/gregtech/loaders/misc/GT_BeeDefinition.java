@@ -70,6 +70,8 @@ import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.text.WordUtils;
 
+import com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeType;
@@ -2489,6 +2491,43 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(NITROGEN, HYDROGEN, 15);
         tMutation.restrictTemperature(ICY);
+    }),
+    // Europium line, needed after fluorine definition
+    RAREEARTH(GT_BranchDefinition.RAREMETAL, "RareEarth", false, new Color(0x555643), new Color(0x343428),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.RAREEARTH), 0.20f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.NEODYMIUM), 0.05f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(NORMAL);
+        }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST),
+        dis -> dis.registerMutation(FLUORINE, REDSTONE, 10)),
+    NEODYMIUM(GT_BranchDefinition.RAREMETAL, "Neodymium", false, new Color(0x555555), new Color(0x4F4F4F),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.RAREEARTH), 0.15f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.NEODYMIUM), 0.15f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(HOT);
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(RAREEARTH, IRON, 10);
+            tMutation.requireResource(GregTech_API.sBlockMetal5, 0);
+        }),
+    EUROPIUM(GT_BranchDefinition.RAREMETAL, "Europium", false, new Color(0xDAA0E2), new Color(0xAB7EB1), beeSpecies -> {
+        beeSpecies.addProduct(WerkstoffMaterialPool.EuropiumIIIOxide.get(OrePrefixes.dust, 1), 0.10F);
+        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.EUROPIUM), 0.075f);
+        beeSpecies.setHumidity(EnumHumidity.NORMAL);
+        beeSpecies.setTemperature(HOT);
+        beeSpecies.setNocturnal();
+        // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
+        beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
+    }, template -> {
+        AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
+        AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
+    }, dis -> {
+        IBeeMutationCustom tMutation = dis.registerMutation(NEODYMIUM, HYDROGEN, 5, 4);
+        tMutation.requireResource(GregTech_API.sBlockMetal3, 3);
     }),
     // infused Shards line
     AIR(GT_BranchDefinition.INFUSEDSHARD, "Air", false, new Color(0xFFFF7E), new Color(0x60602F), beeSpecies -> {
