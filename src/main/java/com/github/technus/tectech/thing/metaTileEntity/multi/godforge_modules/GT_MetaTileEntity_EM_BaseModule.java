@@ -80,6 +80,8 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int VOLTAGE_WINDOW_ID = 9;
     private static final int TEXTURE_INDEX = 960;
+    protected static final String TOOLTIP_BAR = EnumChatFormatting.AQUA
+        + "--------------------------------------------------------------------------";
 
     public GT_MetaTileEntity_EM_BaseModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -417,6 +419,7 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
                 STRUCTURE_PIECE_MAIN,
                 new String[][] { { "       ", "  BBB  ", " BBBBB ", " BB~BB ", " BBBBB ", "  BBB  ", "       " },
                     { "  CCC  ", " CFFFC ", "CFFFFFC", "CFFFFFC", "CFFFFFC", " CFFFC ", "  CCC  " },
+                    { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
                     { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
                     { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
                     { "       ", "       ", "   E   ", "  EAE  ", "   E   ", "       ", "       " },
