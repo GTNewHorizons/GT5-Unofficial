@@ -1835,6 +1835,8 @@ public class RecipeLoader_02 {
             .addTo(plasmaForgeRecipes);
     }
 
+    public static float EHEEfficiencyMultiplier = 1.2f;
+
     public static void FinishLoadRecipe() {
         for (GT_Recipe plasmaFuel : RecipeMaps.plasmaFuels.getAllRecipes()) {
             FluidStack tPlasma = GT_Utility.getFluidForFilledItem(plasmaFuel.mInputs[0], true);
@@ -1842,12 +1844,12 @@ public class RecipeLoader_02 {
                 continue;
             }
             int tUnit = plasmaFuel.mSpecialValue;
-            if (tUnit > 200_000) {
-                tPlasma.amount = 1500;
+            if (tUnit > 500_000) {
+                tPlasma.amount = 25000;
+            } else if (tUnit > 300_000) {
+                tPlasma.amount = 10000;
             } else if (tUnit > 100_000) {
-                tPlasma.amount = 1000;
-            } else if (tUnit > 50_000) {
-                tPlasma.amount = 800;
+                tPlasma.amount = 2500;
             } else if (tUnit > 10_000) {
                 tPlasma.amount = 500;
             } else {
@@ -1861,8 +1863,8 @@ public class RecipeLoader_02 {
                 FluidStack output = FluidRegistry.getFluidStack(tOutName, tPlasma.amount);
                 if (output == null) output = FluidRegistry.getFluidStack("molten." + tOutName, tPlasma.amount);
                 if (output != null) {
-                    long waterAmount = (long) tUnit * 3 * tPlasma.amount / 160;
-                    long criticalSteamAmount = (long) tUnit * 3 * tPlasma.amount / 100;
+                    long waterAmount = (long) (tUnit * EHEEfficiencyMultiplier * tPlasma.amount / 160);
+                    long criticalSteamAmount = (long) (tUnit * EHEEfficiencyMultiplier * tPlasma.amount / 100);
                     MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
                         tPlasma,
                         output,
