@@ -37,12 +37,12 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
             // Innermost layer should be opaque
             enableOpaqueColorInversion();
-            renderStarLayer(0, STAR_LAYER_0, new Color(1.0f, 0.4f, 0.05f, 1.0f), 1.0f, 15);
+            renderStarLayer(0, STAR_LAYER_0, new Color(1.0f, 0.4f, 0.05f, 1.0f), 1.0f, 25);
             disableOpaqueColorInversion();
 
             enablePseudoTransparentColorInversion();
-            renderStarLayer(1, STAR_LAYER_1, new Color(1.0f, 0.4f, 0.05f, 1.0f), 0.4f, 15);
-            renderStarLayer(2, STAR_LAYER_2, new Color(1.0f, 0.4f, 0.05f, 1.0f), 0.2f, 15);
+            renderStarLayer(1, STAR_LAYER_1, new Color(1.0f, 0.4f, 0.05f, 1.0f), 0.4f, 25);
+            renderStarLayer(2, STAR_LAYER_2, new Color(1.0f, 0.4f, 0.05f, 1.0f), 0.2f, 25);
 
             GL11.glPopAttrib();
             GL11.glPopMatrix();
