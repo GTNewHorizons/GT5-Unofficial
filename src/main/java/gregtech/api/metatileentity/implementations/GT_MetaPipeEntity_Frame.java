@@ -1,30 +1,18 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.api.util.GT_Utility.calculateRecipeEU;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_ModHandler.RecipeBits;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 
 public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
 
@@ -35,27 +23,8 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
     public GT_MetaPipeEntity_Frame(int aID, String aName, String aNameRegional, Materials aMaterial) {
         super(aID, aName, aNameRegional, 0);
         mMaterial = aMaterial;
-
-        GT_OreDictUnificator.registerOre(OrePrefixes.frameGt, aMaterial, getStackForm(1));
-        if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-            GT_ModHandler.addCraftingRecipe(
-                getStackForm(2),
-                RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "SSS", "SwS", "SSS", 'S', OrePrefixes.stick.get(mMaterial) });
-        }
-
-        if (!aMaterial.contains(SubTag.NO_RECIPES)
-            && GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1) != null) {
-            // Auto generate frame box recipe in an assembler.
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 4),
-                    GT_Utility.getIntegratedCircuit(4))
-                .itemOutputs(getStackForm(1))
-                .duration(3 * SECONDS + 4 * TICKS)
-                .eut(calculateRecipeEU(aMaterial, 7))
-                .addTo(assemblerRecipes);
-        }
+        // Hide TileEntity frame in NEI, since we have the block version now that should always be used
+        codechicken.nei.api.API.hideItem(this.getStackForm(1));
     }
 
     public GT_MetaPipeEntity_Frame(String aName, Materials aMaterial) {
