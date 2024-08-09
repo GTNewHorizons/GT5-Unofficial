@@ -300,6 +300,7 @@ import static com.github.technus.tectech.thing.CustomItemList.hatch_CreativeUnce
 import static com.github.technus.tectech.thing.CustomItemList.holder_Hatch;
 import static com.github.technus.tectech.thing.CustomItemList.rack_Hatch;
 import static com.github.technus.tectech.util.CommonValues.V;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 import net.minecraft.init.Blocks;
@@ -351,6 +352,8 @@ import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DebugStructureWriter;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_OwnerDetector;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_TeslaCoil;
+
+import gregtech.api.enums.GT_Values;
 
 /**
  * Created by danie_000 on 16.11.2016.
@@ -1870,22 +1873,27 @@ public class MachineLoader implements Runnable {
             Machine_Multi_ForgeOfGods.set(
                 new GT_MetaTileEntity_EM_ForgeOfGods(15411, "multimachine.em.forge_of_gods", "Forge of the Gods")
                     .getStackForm(1L));
+            addItemTooltip(Machine_Multi_ForgeOfGods.get(1), GT_Values.AuthorCloud);
             Machine_Multi_SmeltingModule.set(
                 new GT_MetaTileEntity_EM_SmeltingModule(
                     15412,
                     "multimachine.em.smelting_module",
                     "Helioflare Power Forge").getStackForm(1L));
+            addItemTooltip(Machine_Multi_SmeltingModule.get(1), GT_Values.AuthorCloud);
             Machine_Multi_MoltenModule.set(
                 new GT_MetaTileEntity_EM_MoltenModule(15413, "multimachine.em.molten_module", "Helioflux Melting Core")
                     .getStackForm(1L));
+            addItemTooltip(Machine_Multi_MoltenModule.get(1), GT_Values.AuthorCloud);
             Machine_Multi_PlasmaModule.set(
                 new GT_MetaTileEntity_EM_PlasmaModule(
                     15414,
                     "multimachine.em.plasma_module",
                     "Heliothermal Plasma Fabricator").getStackForm(1L));
+            addItemTooltip(Machine_Multi_PlasmaModule.get(1), GT_Values.AuthorCloud);
             Machine_Multi_QuarkGluonPlasmaModule.set(
                 new GT_MetaTileEntity_EM_ExoticModule(15415, "multimachine.em.exotic_module", "Heliofusion Exoticizer")
                     .getStackForm(1L));
+            addItemTooltip(Machine_Multi_QuarkGluonPlasmaModule.get(1), GT_Values.AuthorCloud);
         }
 
         // ===================================================================================================
