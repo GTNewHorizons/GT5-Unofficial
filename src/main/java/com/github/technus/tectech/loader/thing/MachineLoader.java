@@ -3,6 +3,7 @@ package com.github.technus.tectech.loader.thing;
 import static com.github.technus.tectech.thing.CustomItemList.DATApipe;
 import static com.github.technus.tectech.thing.CustomItemList.DATApipeBlock;
 import static com.github.technus.tectech.thing.CustomItemList.LASERpipe;
+import static com.github.technus.tectech.thing.CustomItemList.LASERpipeSmart;
 import static com.github.technus.tectech.thing.CustomItemList.LASERpipeBlock;
 import static com.github.technus.tectech.thing.CustomItemList.Machine_BuckConverter_IV;
 import static com.github.technus.tectech.thing.CustomItemList.Machine_BuckConverter_LuV;
@@ -156,8 +157,11 @@ import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel7_U
 import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel7_UHV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel7_UIV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel7_UMV;
+import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel8_UMV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel7_UV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel7_UXV;
+import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel8_UXV;
+import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel9_UXV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel7_ZPM;
 import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel9001;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyMulti16_EV;
@@ -250,8 +254,11 @@ import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel7_U
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel7_UHV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel7_UIV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel7_UMV;
+import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel8_UMV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel7_UV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel7_UXV;
+import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel8_UXV;
+import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel9_UXV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel7_ZPM;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel9001;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyWirelessMulti16_EV;
@@ -294,6 +301,8 @@ import static com.github.technus.tectech.thing.CustomItemList.eM_energyWirelessT
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyWirelessTunnel5_UXV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyWirelessTunnel6_UXV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyWirelessTunnel7_UXV;
+import static com.github.technus.tectech.thing.CustomItemList.eM_energyWirelessTunnel8_UXV;
+import static com.github.technus.tectech.thing.CustomItemList.eM_energyWirelessTunnel9_UXV;
 import static com.github.technus.tectech.thing.CustomItemList.hatch_CreativeData;
 import static com.github.technus.tectech.thing.CustomItemList.hatch_CreativeMaintenance;
 import static com.github.technus.tectech.thing.CustomItemList.hatch_CreativeUncertainty;
@@ -301,6 +310,7 @@ import static com.github.technus.tectech.thing.CustomItemList.holder_Hatch;
 import static com.github.technus.tectech.thing.CustomItemList.rack_Hatch;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import gregtech.api.enums.MetaTileEntityIDs;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -345,6 +355,7 @@ import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pi
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_PipeBlock_Energy;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Energy;
+import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EnergyMirror;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_BuckConverter;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DebugPollutor;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DebugPowerGenerator;
@@ -778,6 +789,20 @@ public class MachineLoader implements Runnable {
                 "UXV 1,048,576A Wireless Energy Hatch",
                 13,
                 1048576).getStackForm(1L));
+        eM_energyWirelessTunnel8_UXV.set(
+            new GT_MetaTileEntity_Hatch_WirelessMulti(
+                MetaTileEntityIDs.WIRELESS_LASER_UXV8.ID,
+                "hatch.energywirelesstunnel8.tier.13",
+                "UXV 4,194,304A Wireless Energy Hatch",
+                13,
+                4194304).getStackForm(1L));
+        eM_energyWirelessTunnel9_UXV.set(
+            new GT_MetaTileEntity_Hatch_WirelessMulti(
+                MetaTileEntityIDs.WIRELESS_LASER_UXV9.ID,
+                "hatch.energywirelesstunnel9.tier.13",
+                "UXV 16,777,216A Wireless Energy Hatch",
+                13,
+                16777216).getStackForm(1L));
         // ===================================================================================================
         // Multi AMP Laser INPUTS
         // ===================================================================================================
@@ -1181,6 +1206,13 @@ public class MachineLoader implements Runnable {
                 "UMV 1,048,576A/t Laser Target Hatch",
                 12,
                 1048576).getStackForm(1L));
+        eM_energyTunnel8_UMV.set(
+            new GT_MetaTileEntity_Hatch_EnergyTunnel(
+                MetaTileEntityIDs.LASER_TARGET_UMV8.ID,
+                "hatch.energytunnel8.tier.12",
+                "UMV 4,194,304A/t Laser Target Hatch",
+                12,
+                4194304).getStackForm(1L));
 
         eM_energyTunnel1_UXV.set(
             new GT_MetaTileEntity_Hatch_EnergyTunnel(
@@ -1231,6 +1263,20 @@ public class MachineLoader implements Runnable {
                 "UXV 1,048,576A/t Laser Target Hatch",
                 13,
                 1048576).getStackForm(1L));
+        eM_energyTunnel8_UXV.set(
+            new GT_MetaTileEntity_Hatch_EnergyTunnel(
+                MetaTileEntityIDs.LASER_TARGET_UXV8.ID,
+                "hatch.energytunnel8.tier.13",
+                "UXV 4,194,304A/t Laser Target Hatch",
+                13,
+                4194304).getStackForm(1L));
+        eM_energyTunnel9_UXV.set(
+            new GT_MetaTileEntity_Hatch_EnergyTunnel(
+                MetaTileEntityIDs.LASER_TARGET_UXV9.ID,
+                "hatch.energytunnel9.tier.13",
+                "UXV 16,777,216A/t Laser Target Hatch",
+                13,
+                16777216).getStackForm(1L));
         eM_energyTunnel9001.set(
             new GT_MetaTileEntity_Hatch_EnergyTunnel(
                 15199,
@@ -1777,6 +1823,13 @@ public class MachineLoader implements Runnable {
                 "UMV 1,048,576A/t Laser Source Hatch",
                 12,
                 1048576).getStackForm(1L));
+        eM_dynamoTunnel8_UMV.set(
+            new GT_MetaTileEntity_Hatch_DynamoTunnel(
+                MetaTileEntityIDs.LASER_SOURCE_UMV8.ID,
+                "hatch.dynamotunnel8.tier.12",
+                "UMV 4,194,304A/t Laser Source Hatch",
+                12,
+                4194304).getStackForm(1L));
 
         eM_dynamoTunnel1_UXV.set(
             new GT_MetaTileEntity_Hatch_DynamoTunnel(
@@ -1827,6 +1880,20 @@ public class MachineLoader implements Runnable {
                 "UXV 1,048,576A/t Laser Source Hatch",
                 13,
                 1048576).getStackForm(1L));
+        eM_dynamoTunnel8_UXV.set(
+            new GT_MetaTileEntity_Hatch_DynamoTunnel(
+                MetaTileEntityIDs.LASER_SOURCE_UXV8.ID,
+                "hatch.dynamotunnel8.tier.13",
+                "UXV 4,194,304A/t Laser Source Hatch",
+                13,
+                4194304).getStackForm(1L));
+        eM_dynamoTunnel9_UXV.set(
+            new GT_MetaTileEntity_Hatch_DynamoTunnel(
+                MetaTileEntityIDs.LASER_SOURCE_UXV9.ID,
+                "hatch.dynamotunnel9.tier.13",
+                "UXV 16,777,216A/t Laser Source Hatch",
+                13,
+                16777216).getStackForm(1L));
         eM_dynamoTunnel9001.set(
             new GT_MetaTileEntity_Hatch_DynamoTunnel(
                 15299,
@@ -1976,6 +2043,8 @@ public class MachineLoader implements Runnable {
 
         LASERpipe
             .set(new GT_MetaTileEntity_Pipe_Energy(15465, "pipe.energystream", "Laser Vacuum Pipe").getStackForm(1L));
+        LASERpipeSmart
+            .set(new GT_MetaTileEntity_Pipe_EnergyMirror(15466, "pipe.energymirror", "Laser Vacuum Mirror").getStackForm(1L));
         DATApipe.set(new GT_MetaTileEntity_Pipe_Data(15470, "pipe.datastream", "Optical Fiber Cable").getStackForm(1L));
 
         LASERpipeBlock.set(
