@@ -524,7 +524,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                                     (long) (Math.max(
                                         Float.MIN_NORMAL,
                                         tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed
-                                            * (10000f / 20f)))))
+                                            * (1000f / 20f)))))
                             + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 10,
