@@ -196,7 +196,9 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
                         * (comp.heatConstant > 0 ? comp.heatConstant * overclock * overvolt * overvolt : -10f);
 
                     if (overvolt > TecTech.RANDOM.nextFloat()) {
-                        computation += comp.computation * Math.max(0, (1 + overclock * overclock) / (1 + (overclock - overvolt) * (overclock - overvolt)));
+                        computation += comp.computation * Math.max(
+                            0,
+                            (1 + overclock * overclock) / (1 + (overclock - overvolt) * (overclock - overvolt)));
                     }
                 }
             }
