@@ -111,4 +111,5 @@ dependencies {
     functionalTestImplementation('org.junit.platform:junit-platform-reporting')
 
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:DuraDisplay:1.3.2:dev")
+    runtimeOnly('com.github.GTNewHorizons:TCNEIAdditions:1.3.4:dev')
 }
