@@ -15,6 +15,9 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.api.util.GT_StructureUtility.ofSolenoidCoil;
+import static net.minecraft.util.EnumChatFormatting.RED;
+import static net.minecraft.util.EnumChatFormatting.RESET;
+import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +25,6 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -61,12 +63,12 @@ public class GT_MetaTileEntity_LargeFluidExtractor
     private static final double BASE_EU_DISCOUNT = 0.8;
 
     private static final double SPEED_PER_COIL = 0.1;
-    private static final int PARALLELS_PER_SOLENOID = 2;
-
-    private static final int TIER_UNSET = -1;
+    private static final int PARALLELS_PER_SOLENOID = 8;
+    private static final double SOLENOID_EU_PENALTY = 0.25;
+    private static final double HEATING_COIL_EU_BONUS = 0.05;
 
     // spotless:off
-    private IStructureDefinition<GT_MetaTileEntity_LargeFluidExtractor> STRUCTURE_DEFINITION = StructureDefinition
+    private static final IStructureDefinition<GT_MetaTileEntity_LargeFluidExtractor> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_LargeFluidExtractor>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
@@ -97,7 +99,7 @@ public class GT_MetaTileEntity_LargeFluidExtractor
             withChannel(
                 "glass",
                 ofGlassTiered(
-                    (byte) 4, (byte) 16, (byte) TIER_UNSET,
+                    (byte) 1, (byte) 127, (byte) 0,
                     GT_MetaTileEntity_LargeFluidExtractor::setGlassTier,
                     GT_MetaTileEntity_LargeFluidExtractor::getGlassTier,
                     2))
@@ -125,11 +127,11 @@ public class GT_MetaTileEntity_LargeFluidExtractor
         .build();
     // spotless:on
 
-    private byte mGlassTier = TIER_UNSET;
+    private byte mGlassTier = 0;
     private HeatingCoilLevel mCoilLevel = null;
     private Byte mSolenoidLevel = null;
     private int mCasingAmount;
-    private boolean mStructureBadGlassTier = false, mStructureBadCasingCount = false;
+    private boolean mBadStructure = false, mStructureBadGlassTier = false, mStructureBadCasingCount = false;
 
     public GT_MetaTileEntity_LargeFluidExtractor(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -144,18 +146,15 @@ public class GT_MetaTileEntity_LargeFluidExtractor
         return STRUCTURE_DEFINITION;
     }
 
-    private void onCasingAdded() {
-        mCasingAmount++;
-    }
-
     @Override
     public void clearHatches() {
         super.clearHatches();
 
         mCasingAmount = 0;
+        mBadStructure = false;
         mStructureBadGlassTier = false;
         mStructureBadCasingCount = false;
-        mGlassTier = TIER_UNSET;
+        mGlassTier = 0;
         mCoilLevel = null;
         mSolenoidLevel = null;
     }
@@ -163,6 +162,7 @@ public class GT_MetaTileEntity_LargeFluidExtractor
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 8, 0)) {
+            mBadStructure = true;
             return false;
         }
 
@@ -208,6 +208,10 @@ public class GT_MetaTileEntity_LargeFluidExtractor
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_LargeFluidExtractor(this.mName);
+    }
+
+    private void onCasingAdded() {
+        mCasingAmount++;
     }
 
     private byte getGlassTier() {
@@ -256,18 +260,31 @@ public class GT_MetaTileEntity_LargeFluidExtractor
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+
+        // spotless:off
         tt.addMachineType("Fluid Extractor")
             .addInfo("Controller block for the Large Fluid Extractor")
-            .addInfo(
-                String.format(
-                    "%d%% the speed of single block machines of the same voltage",
-                    (int) (BASE_SPEED_BONUS * 100)))
-            .addInfo(String.format("Only uses %d%% of the EU/t normally required", (int) (BASE_EU_DISCOUNT * 100)))
-            .addInfo(String.format("Every coil tier above Cupronickel gives +%d%% speed", (int) (SPEED_PER_COIL * 100)))
-            .addInfo(String.format("Every solenoid tier above MV gives +%d parallels", (int) (PARALLELS_PER_SOLENOID)))
+            .addInfo(String.format(
+                "%d%% the speed of single block machines of the same voltage",
+                (int) (BASE_SPEED_BONUS * 100)
+            ))
+            .addInfo(String.format(
+                "Only uses %d%% of the EU/t normally required",
+                (int) (BASE_EU_DISCOUNT * 100)
+            ))
+            .addInfo(String.format(
+                "Every coil tier above Cupronickel gives +%d%% speed and a %d%% EU/t discount",
+                (int) (SPEED_PER_COIL * 100),
+                (int) (HEATING_COIL_EU_BONUS * 100)
+            ))
+            .addInfo(String.format(
+                "Every solenoid tier gives +%d parallels and a %d%% EU/t penalty (multiplicative)",
+                (int) (PARALLELS_PER_SOLENOID),
+                (int) (SOLENOID_EU_PENALTY * 100)
+            ))
             .addInfo("The energy hatch tier is limited by the glass tier")
             .addSeparator()
-            .beginStructureBlock(7, 9, 7, false)
+            .beginStructureBlock(5, 9, 5, false)
             .addController("Front Center (Bottom Layer)")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", BASE_CASING_COUNT - MAX_HATCHES_ALLOWED, false)
             .addCasingInfoExactly("Borosilicate Glass (any)", 9 * 4, true)
@@ -280,6 +297,8 @@ public class GT_MetaTileEntity_LargeFluidExtractor
             .addEnergyHatch("Any Robust Tungstensteel Machine Casing", 1)
             .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
             .toolTipFinisher("GregTech");
+        // spotless:on
+        
         return tt;
     }
 
@@ -319,67 +338,102 @@ public class GT_MetaTileEntity_LargeFluidExtractor
     }
 
     @Override
+    public boolean supportsSingleRecipeLocking() {
+        return true;
+    }
+
+    @Override
     public String[] getInfoData() {
         var data = new ArrayList<String>();
 
         data.addAll(Arrays.asList(super.getInfoData()));
 
+        if (mBadStructure) {
+            data.add(RED + "Malformed structure." + RESET);
+        }
+
         if (mStructureBadGlassTier) {
-            data.add(
-                EnumChatFormatting.RED + "Energy hatch tier is too high for the glass tier."
-                    + EnumChatFormatting.RESET);
+            int hatchTier = 0;
+
+            for(var hatch : mEnergyHatches) {
+                if(hatch.mTier > hatchTier) hatchTier = hatch.mTier;
+            }
+
+            data.add(String.format("%sEnergy hatch tier (%d) is too high for the glass tier (%d).%s",
+                RED,
+                hatchTier,
+                mGlassTier,
+                RESET));
         }
 
         if (mStructureBadCasingCount) {
             data.add(
-                EnumChatFormatting.RED + "Not enough casings. Need "
-                    + (BASE_CASING_COUNT - MAX_HATCHES_ALLOWED)
-                    + ", but have "
-                    + mCasingAmount
-                    + "."
-                    + EnumChatFormatting.RESET);
+                String.format(
+                    "%sNot enough casings: need %d, but have %d.%s",
+                    RED,
+                    BASE_CASING_COUNT - MAX_HATCHES_ALLOWED,
+                    mCasingAmount,
+                    RESET));
         }
 
         data.add(
             String
-                .format("Max Parallels: %s%d%s", EnumChatFormatting.YELLOW, getParallels(), EnumChatFormatting.RESET));
+                .format("Max Parallels: %s%d%s", YELLOW, getParallels(), RESET));
+                
         data.add(
             String.format(
                 "Heating Coil Speed Bonus: +%s%.0f%s %%",
-                EnumChatFormatting.YELLOW,
+                YELLOW,
                 getSpeedBonus() * 100,
-                EnumChatFormatting.RESET));
+                RESET));
+
         data.add(
             String.format(
-                "Total Speed: %s%.0f%s %%",
-                EnumChatFormatting.YELLOW,
+                "Total Speed Multiplier: %s%.0f%s %%",
+                YELLOW,
                 (getSpeedBonus() + BASE_SPEED_BONUS) * 100,
-                EnumChatFormatting.RESET));
+                RESET));
+
+        data.add(
+            String.format(
+                "Total EU/t Multiplier: %s%.0f%s %%",
+                YELLOW,
+                BASE_EU_DISCOUNT * getEUMultiplier() * 100,
+                RESET));
 
         return data.toArray(new String[data.size()]);
     }
 
     public int getParallels() {
-        return Math.max(1, mSolenoidLevel == null ? 0 : (PARALLELS_PER_SOLENOID * (mSolenoidLevel - 2)));
+        return Math.max(1, mSolenoidLevel == null ? 0 : (PARALLELS_PER_SOLENOID * mSolenoidLevel));
     }
 
     public double getSpeedBonus() {
         return mCoilLevel == null ? 0 : SPEED_PER_COIL * mCoilLevel.getTier();
     }
 
-    private class LFEProcessingLogic extends ProcessingLogic {
+    public double getEUMultiplier() {
+        double heatingBonus = 1 / (1 + mCoilLevel.getTier() * HEATING_COIL_EU_BONUS);
+        double solenoidPenalty = Math.pow(1 + SOLENOID_EU_PENALTY, (double)mSolenoidLevel);
 
+        return solenoidPenalty * heatingBonus;
+    }
+
+    private class LFEProcessingLogic extends ProcessingLogic {
         @Override
         @Nonnull
         protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
-            return super.createParallelHelper(recipe).setEUtModifier((float) BASE_EU_DISCOUNT)
+            return super.createParallelHelper(recipe)
+                .setEUtModifier((float) (BASE_EU_DISCOUNT * getEUMultiplier()))
                 .setMaxParallel(getParallels());
         }
 
         @Override
         @Nonnull
         protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
-            return super.createOverclockCalculator(recipe).setSpeedBoost((float) (getSpeedBonus() + BASE_SPEED_BONUS));
+            return super.createOverclockCalculator(recipe)
+                .setSpeedBoost((float) (getSpeedBonus() + BASE_SPEED_BONUS))
+                .setEUtDiscount((float) (BASE_EU_DISCOUNT * getEUMultiplier()));
         }
     }
 }
