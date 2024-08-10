@@ -70,12 +70,12 @@ import gtPlusPlus.core.material.ALLOY;
  * 比单方块快150%！
  * 初始提供16并行，无法超频。
  * 每提升一级力场方块，获得额外的16并行，力场方块由外围和中央两部分构成，并行由外围等级控制，中央方块等级至少需要高出外围一级.
- * 机器所属区块污染小于50万时，额外获得250%加速
+ * 力场方块每提升2级，获得有损超频一次. 机器所属区块污染小于50万时，额外获得250%加速
  * 机器所属区块污染大于150万时，配方成功率将下降为90%，此后每提升10万污染，下降1%，最多下降40%，每提升50w污染，加速会下降20%，最多下降120%。
  * 每提升10w污染，机器能量消耗提高5%，没有上限. 将机器置入超净间可以免疫污染,超净间的洁净度必须锁定在100%水平才能免疫污染影响。
  * 机器位于低重力环境下时，有25%的概率获得额外一份产物并再次加速50%
  * 机器不产生任何污染
- * 外围机械方块升级到遏制场机械方块时，解锁激光仓+有损超频, 此时为256并行, 支持MAX+超频.
+ * 外围机械方块升级到遏制场机械方块时，解锁激光仓和全功能超频, 此时为256并行, 支持MAX+超频.
  *
  * @author koiNoCirculation
  */
@@ -518,24 +518,24 @@ public class GT_MetaTileEntity_Crystalizer extends
         tt.addMachineType("Crystalizer")
             .addInfo("Controller block for Large Crystalizer. Brought by Twist Space Technology.")
             .addInfo(
-                "Creating crystals with the power of force field. It's 500% faster than single block autoclave and only cost 70% of energy.")
-            .addInfo("Initially this machine can process 64 items at a time, but it cannot over clock.")
+                "Creating crystals with the power of force field. It's 150% faster than single block autoclave and only cost 70% of energy.")
+            .addInfo("Initially this machine can process 16 items at a time,Upgrading Field Containment casing can obtain extra processing power.")
             .addInfo(
-                "Upgrading Field Containment casing can obtain extra processing power. Machine can process 64 more items on every upgrade.")
+                "The Field Containment block has 2 types, center and surrounding.Machine can process 16 more items on every upgrade of surrounding.")
+            .addInfo("The tier of center block must be higher than surrounding block. Use Tectech containment field generator casing on surrounding to unlock overclocking.")
             .addInfo(
-                "Tectech containment field generator casing can unlock overclocking. And ultimate containment field generator casing can give 256 more parallelisms.")
+                "Before that, machine can overclock on every 2 tier upgrade on surrounding field containment blocks.")
             .addInfo(
-                "Though this machine can provide cleanroom environment, do not place this machine in heavy pollution.")
+                "The machine is sensitive to pollution. When the pollution is lower than 500000, it will obtain extra 250% processing speed.")
             .addInfo(
-                "When pollution is greater than 500000, there's 10% of chance voiding output. And it will increase 1% on every 100000 pollution.")
+                "When pollution is greater than 1500000, there's 10% of chance voiding output. And it will increase 1% on every 100000 pollution and up to 40%.")
             .addInfo(
-                "Recipe success rate can decrease to 60% due to pollution. And processing speed will drop to 200% faster. The energy cost will increase by 50%")
+                "The processing speed will drop 20 on every 500000 pollution. The energy cost will increase by 5% on every 100000 pollution")
             .addInfo(
-                "Putting it into cleanroom can protect it from pollution, the cleanness must be 100% to make it happen.")
-            .addInfo("When placed in low-gravity environment, there's 25% of chance getting extra output.")
-            .addInfo(
-                "Support GT Energy hatches, and when tectech containment field generator is applied, it can support laser hatches.")
-            .addInfo("The structure is too complex!")
+                "Putting it into clean-room can protect it from heavy pollution if you can't find a clean place for this machine.")
+            .addInfo("To avoid nerf brought by pollution, the cleanness must be 100%.")
+            .addInfo("When placed in low-gravity environment, there's 25% of chance getting extra output. And there's another 50% speed up.")
+             .addInfo("The structure is too complex!")
             .addInfo(BLUE_PRINT_INFO)
             .addSeparator()
             .beginStructureBlock(9, 10, 33, false)
