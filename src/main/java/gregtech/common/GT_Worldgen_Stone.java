@@ -12,7 +12,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraftforge.common.DimensionManager;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.objects.XSTR;

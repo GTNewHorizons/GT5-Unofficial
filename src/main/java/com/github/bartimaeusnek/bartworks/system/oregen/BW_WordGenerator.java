@@ -57,8 +57,8 @@ public class BW_WordGenerator implements IWorldGenerator {
         public int mX;
         public int mZ;
 
-        public WorldGenContainer(int aX, int aZ, WorldProvider aWorldProvider, World aWorld, IChunkProvider aChunkGenerator,
-            IChunkProvider aChunkProvider) {
+        public WorldGenContainer(int aX, int aZ, WorldProvider aWorldProvider, World aWorld,
+            IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
             this.mX = aX;
             this.mZ = aZ;
             this.mWorldProvider = aWorldProvider;
@@ -103,9 +103,7 @@ public class BW_WordGenerator implements IWorldGenerator {
                     for (int i = 0; i < 256 && temp; i++) {
                         tRandomWeight = random.nextInt(BW_OreLayer.sWeight);
                         for (BW_OreLayer tWorldGen : BW_OreLayer.sList) {
-                            if (!tWorldGen.isGenerationAllowed(
-                                this.mWorld,
-                                mWorldProvider.getClass())) continue;
+                            if (!tWorldGen.isGenerationAllowed(this.mWorld, mWorldProvider.getClass())) continue;
                             tRandomWeight -= tWorldGen.mWeight;
                             if (tRandomWeight <= 0) {
                                 try {
