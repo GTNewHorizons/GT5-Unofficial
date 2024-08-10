@@ -27,6 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -454,6 +455,11 @@ public class GT_HatchElementBuilder<T> {
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
+                if (!ChannelDataAccessor.hasSubChannel(trigger, "no_hatch")) {
+                    env.getChatter()
+                        .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_building_hatch"));
+                } else return PlaceResult.SKIP;
+
                 if (mShouldSkip != null) {
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
                     if (tileEntity instanceof IGregTechTileEntity
