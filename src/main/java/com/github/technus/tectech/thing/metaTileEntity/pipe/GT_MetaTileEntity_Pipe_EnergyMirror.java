@@ -10,7 +10,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
-import com.github.technus.tectech.mechanics.pipe.IActivePipe;
 import com.github.technus.tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import com.github.technus.tectech.mechanics.pipe.PipeActivityMessage;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
@@ -30,12 +29,9 @@ import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.common.GT_Client;
 
-public class GT_MetaTileEntity_Pipe_EnergyMirror extends GT_MetaTileEntity_Pipe_Energy
-    implements IConnectsToEnergyTunnel, IActivePipe {
+public class GT_MetaTileEntity_Pipe_EnergyMirror extends GT_MetaTileEntity_Pipe_Energy {
 
-    static Textures.BlockIcons.CustomIcon EMcandy, EMCandyActive;
     private static Textures.BlockIcons.CustomIcon EMpipe;
-    public byte connectionCount = 0;
     private ForgeDirection[] connectedSides = { null, null };
     private ForgeDirection chainedFrontFacing = null;
 
@@ -57,8 +53,6 @@ public class GT_MetaTileEntity_Pipe_EnergyMirror extends GT_MetaTileEntity_Pipe_
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        EMcandy = new Textures.BlockIcons.CustomIcon("iconsets/EM_CANDY");
-        EMCandyActive = new Textures.BlockIcons.CustomIcon("iconsets/EM_CANDY_ACTIVE");
         EMpipe = new Textures.BlockIcons.CustomIcon("iconsets/EM_LASERMIRROR");
         super.registerIcons(aBlockIconRegister);
     }
