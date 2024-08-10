@@ -199,6 +199,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_ADVANCED_GAS_TURBINE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_BRONZE_BOILER_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.LARGE_CRYSTALIZER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_GAS_TURBINE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_HEAT_EXCHANGER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_HP_STEAM_TURBINE_CONTROLLER;
@@ -472,7 +473,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.transformer_MV_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_UHV_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_UV_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_CRYSTALIZER;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
@@ -3260,35 +3260,35 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_NaquadahReactor(
                 NAQUADAH_REACTOR_EV.ID,
                 "basicgenerator.naquadah.tier.04",
-                new String[]{"Requires Enriched Naquadah Bolts"},
+                new String[] { "Requires Enriched Naquadah Bolts" },
                 "Naquadah Reactor Mark I",
                 4).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_II.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 NAQUADAH_REACTOR_IV.ID,
                 "basicgenerator.naquadah.tier.05",
-                new String[]{"Requires Enriched Naquadah Rods"},
+                new String[] { "Requires Enriched Naquadah Rods" },
                 "Naquadah Reactor Mark II",
                 5).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_III.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 NAQUADAH_REACTOR_LuV.ID,
                 "basicgenerator.naquadah.tier.06",
-                new String[]{"Requires Enriched Naquadah Long Rods"},
+                new String[] { "Requires Enriched Naquadah Long Rods" },
                 "Naquadah Reactor Mark III",
                 6).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_IV.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 NAQUADAH_REACTOR_ZPM.ID,
                 "basicgenerator.naquadah.tier.07",
-                new String[]{"Requires Naquadria Bolts"},
+                new String[] { "Requires Naquadria Bolts" },
                 "Naquadah Reactor Mark IV",
                 7).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_V.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 NAQUADAH_REACTOR_UV.ID,
                 "basicgenerator.naquadah.tier.08",
-                new String[]{"Requires Naquadria Rods"},
+                new String[] { "Requires Naquadria Rods" },
                 "Naquadah Reactor Mark V",
                 8).getStackForm(1L));
     }
@@ -3372,8 +3372,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                     "GT_Frame_" + GregTech_API.sGeneratedMaterials[i],
                     (GT_LanguageManager.i18nPlaceholder ? "%material"
                         : GregTech_API.sGeneratedMaterials[i] != null
-                        ? GregTech_API.sGeneratedMaterials[i].mDefaultLocalName
-                        : "")
+                            ? GregTech_API.sGeneratedMaterials[i].mDefaultLocalName
+                            : "")
                         + " Frame Box",
                     GregTech_API.sGeneratedMaterials[i]);
             }
@@ -3921,7 +3921,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     @SuppressWarnings("PointlessArithmeticExpression")
     private static void makeWires(Materials aMaterial, int aStartID, long aLossInsulated, long aLoss, long aAmperage,
-                                  long aVoltage, boolean aInsulatable, boolean aAutoInsulated) {
+        long aVoltage, boolean aInsulatable, boolean aAutoInsulated) {
         String name = GT_LanguageManager.i18nPlaceholder ? "%material" : aMaterial.mDefaultLocalName;
         GT_OreDictUnificator.registerOre(
             OrePrefixes.wireGt01,
@@ -4217,7 +4217,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void generateItemPipes(Materials aMaterial, String name, String displayName, int startID,
-                                          int baseInvSlots) {
+        int baseInvSlots) {
         GT_OreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(aMaterial),
             new GT_MetaPipeEntity_Item(
@@ -4288,7 +4288,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     @SuppressWarnings("SameParameterValue")
     private static void generateFluidPipes(Materials aMaterial, String name, int startID, int baseCapacity,
-                                           int heatCapacity, boolean gasProof) {
+        int heatCapacity, boolean gasProof) {
         generateFluidPipes(
             aMaterial,
             name,
@@ -4300,7 +4300,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void generateFluidPipes(Materials aMaterial, String name, String displayName, int startID,
-                                           int baseCapacity, int heatCapacity, boolean gasProof) {
+        int baseCapacity, int heatCapacity, boolean gasProof) {
         GT_OreDictUnificator.registerOre(
             OrePrefixes.pipeTiny.get(aMaterial),
             new GT_MetaPipeEntity_Fluid(
@@ -4360,12 +4360,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     @SuppressWarnings("SameParameterValue")
     private static void generateFluidMultiPipes(Materials aMaterial, String name, int startID, int baseCapacity,
-                                                int heatCapacity, boolean gasProof) {
+        int heatCapacity, boolean gasProof) {
         generateFluidMultiPipes(aMaterial, name, "%material", startID, baseCapacity, heatCapacity, gasProof);
     }
 
     private static void generateFluidMultiPipes(Materials aMaterial, String name, String displayName, int startID,
-                                                int baseCapacity, int heatCapacity, boolean gasProof) {
+        int baseCapacity, int heatCapacity, boolean gasProof) {
         GT_OreDictUnificator.registerOre(
             OrePrefixes.pipeQuadruple.get(aMaterial),
             new GT_MetaPipeEntity_Fluid(

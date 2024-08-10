@@ -174,6 +174,7 @@ import gregtech.common.items.ID_MetaTool_01;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Crystalizer;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 
 public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
@@ -1377,6 +1378,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public void onServerAboutToStart() {
         dimensionWisePollution.clear(); // !!! IMPORTANT for map switching...
         GT_ChunkAssociatedData.clearAll();
+        // crystalizer, depends on TecTech and GT++, then GT
+        GT_MetaTileEntity_Crystalizer.initializeRecipes();
     }
 
     public void onServerStarting() {

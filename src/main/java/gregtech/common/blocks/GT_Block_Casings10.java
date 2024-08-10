@@ -26,7 +26,6 @@ public class GT_Block_Casings10 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Containment Machine Casing ZPM");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Containment Machine Casing UV");
 
-
         ItemList.Casing_Electromagnetic_Separator.set(new ItemStack(this, 1, 0));
         ItemList.BlockQuarkContainmentCasing.set(new ItemStack(this, 1, 2));
         ItemList.Casing_Laser.set(new ItemStack(this, 1, 1));
