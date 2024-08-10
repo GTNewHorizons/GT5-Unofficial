@@ -3,8 +3,10 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
 import static com.github.technus.tectech.util.TT_Utility.getUniqueIdentifier;
+import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.OpenComputers;
+import static gregtech.api.util.GT_ModHandler.getModItem;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -196,9 +198,8 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
                         * (comp.heatConstant > 0 ? comp.heatConstant * overclock * overvolt * overvolt : -10f);
 
                     if (overvolt > TecTech.RANDOM.nextFloat()) {
-                        computation += comp.computation * Math.max(
-                            0,
-                            (1 + overclock * overclock) / (1 + (overclock - overvolt) * (overclock - overvolt)));
+                        computation += comp.computation * (1 + overclock * overclock)
+                            / (1 + (overclock - overvolt) * (overclock - overvolt));
                     }
                 }
             }
@@ -345,10 +346,10 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
         new RackComponent(ItemList.Circuit_Wetwaresupercomputer.get(1), 200, 42, -1f, 4000, true); // UV
         new RackComponent(ItemList.Circuit_Wetwaremainframe.get(1), 220, 40, -1f, 4000, true); // UHV
 
-        new RackComponent("IC2:ic2.reactorVent", 0, -1, 80f, 4000, false); // Heat Vent
-        new RackComponent("IC2:ic2.reactorVentCore", 0, -1, 120f, 6000, false); // Reactor Heat Vent
-        new RackComponent("IC2:ic2.reactorVentGold", 0, -1, 160f, 8000, false); // Overclocked Heat Vent
-        new RackComponent("IC2:ic2.reactorVentDiamond", 0, -1, 200f, 10000, false); // Advanced Heat Vent
+        new RackComponent("IC2:ic2.reactorVent", 0, -1, 40f, 2000, false); // Heat Vent
+        new RackComponent("IC2:ic2.reactorVentCore", 0, -1, 80f, 4000, false); // Reactor Heat Vent
+        new RackComponent("IC2:ic2.reactorVentGold", 0, -1, 120f, 6000, false); // Overclocked Heat Vent
+        new RackComponent("IC2:ic2.reactorVentDiamond", 0, -1, 160f, 8000, false); // Advanced Heat Vent
 
         if (NewHorizonsCoreMod.isModLoaded()) {
             // GTNH-GT5u circuits (these components causes crashes when used with the original GT5u)
@@ -371,6 +372,10 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
             new RackComponent("OpenComputers:item.oc.GraphicsCard2", 100, 44, -1f, 2000, true); // GPU T3
             new RackComponent("OpenComputers:item.oc.APU1", 120, 42, -1f, 2000, true); // APU T3
             new RackComponent("OpenComputers:item.oc.APU2", 240, 40, -1f, 2000, true); // APU Creative
+        }
+
+        if (GraviSuite.isModLoaded()) {
+            new RackComponent(getModItem(GraviSuite.ID, "itemSimpleItem", 1, 2), 0, -1, 200f, 10000, false); // CC
         }
     }
 
