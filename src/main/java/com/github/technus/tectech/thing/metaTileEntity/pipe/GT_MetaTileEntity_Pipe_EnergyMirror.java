@@ -4,12 +4,8 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.TecTech;
@@ -31,12 +27,10 @@ import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.common.GT_Client;
 
-public class GT_MetaTileEntity_Pipe_EnergyMirror extends MetaPipeEntity
+public class GT_MetaTileEntity_Pipe_EnergyMirror extends GT_MetaTileEntity_Pipe_Energy
     implements IConnectsToEnergyTunnel, IActivePipe {
 
     static Textures.BlockIcons.CustomIcon EMcandy, EMCandyActive;
@@ -48,11 +42,11 @@ public class GT_MetaTileEntity_Pipe_EnergyMirror extends MetaPipeEntity
     private boolean active;
 
     public GT_MetaTileEntity_Pipe_EnergyMirror(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 0);
+        super(aID, aName, aNameRegional);
     }
 
     public GT_MetaTileEntity_Pipe_EnergyMirror(String aName) {
-        super(aName, 0);
+        super(aName);
     }
 
     @Override
@@ -79,52 +73,12 @@ public class GT_MetaTileEntity_Pipe_EnergyMirror extends MetaPipeEntity
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-        ItemStack itemStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-        ItemStack itemStack) {
-        return false;
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound nbtTagCompound) {
-        active = nbtTagCompound.getBoolean("eActive");
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound nbtTagCompound) {
-        nbtTagCompound.setBoolean("eActive", active);
-    }
-
-    @Override
-    public boolean renderInside(ForgeDirection side) {
-        return false;
-    }
-
-    @Override
-    public byte getTileEntityBaseType() {
-        return 4;
-    }
-
-    @Override
     public String[] getDescription() {
         return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.pipe.energymirror.desc.0"),
             EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
                 + translateToLocal("gt.blockmachines.pipe.energystream.desc.1"),
             EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.2"),
             EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energymirror.desc.1") };
-    }
-
-    @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (getBaseMetaTileEntity().isClientSide()) {
-            NetworkDispatcher.INSTANCE.sendToServer(new PipeActivityMessage.PipeActivityQuery(this));
-        }
-        onPostTick(aBaseMetaTileEntity, 31);
     }
 
     @Override
@@ -195,14 +149,6 @@ public class GT_MetaTileEntity_Pipe_EnergyMirror extends MetaPipeEntity
     }
 
     public ForgeDirection getBendDirection(ForgeDirection dir) {
-        // for (ForgeDirection bendDirection : ForgeDirection.VALID_DIRECTIONS) {
-        // if ((mConnections & (1 << bendDirection.ordinal())) != 0) {
-        // if (bendDirection != dir) return bendDirection;
-        // }
-        // }
-        // int bendDirection = mConnections & ~(1 << dir.ordinal());
-        // if(bendDirection != 0) return ForgeDirection.VALID_DIRECTIONS[(int) (Math.log(bendDirection)/Math.log(2))];
-        // return null;
         for (ForgeDirection bendDir : connectedSides) {
             if (bendDir != dir) {
                 chainedFrontFacing = bendDir.getOpposite();
@@ -272,88 +218,6 @@ public class GT_MetaTileEntity_Pipe_EnergyMirror extends MetaPipeEntity
             }
         }
         return null;
-    }
-
-    @Override
-    public void setActive(boolean state) {
-        if (state != active) {
-            active = state;
-            getBaseMetaTileEntity().issueTextureUpdate();
-        }
-    }
-
-    @Override
-    public boolean getActive() {
-        return active;
-    }
-
-    @Override
-    public void markUsed() {
-        this.active = true;
-    }
-
-    @Override
-    public boolean canConnect(ForgeDirection side) {
-        return true;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        float tSpace = (1f - 0.5f) / 2;
-        float tSide0 = tSpace;
-        float tSide1 = 1f - tSpace;
-        float tSide2 = tSpace;
-        float tSide3 = 1f - tSpace;
-        float tSide4 = tSpace;
-        float tSide5 = 1f - tSpace;
-
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.DOWN) != 0) {
-            tSide0 = tSide2 = tSide4 = 0;
-            tSide3 = tSide5 = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.UP) != 0) {
-            tSide2 = tSide4 = 0;
-            tSide1 = tSide3 = tSide5 = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.NORTH) != 0) {
-            tSide0 = tSide2 = tSide4 = 0;
-            tSide1 = tSide5 = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.SOUTH) != 0) {
-            tSide0 = tSide4 = 0;
-            tSide1 = tSide3 = tSide5 = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.WEST) != 0) {
-            tSide0 = tSide2 = tSide4 = 0;
-            tSide1 = tSide3 = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.EAST) != 0) {
-            tSide0 = tSide2 = 0;
-            tSide1 = tSide3 = tSide5 = 1;
-        }
-
-        byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
-        if ((tConn & 1 << ForgeDirection.DOWN.ordinal()) != 0) {
-            tSide0 = 0f;
-        }
-        if ((tConn & 1 << ForgeDirection.UP.ordinal()) != 0) {
-            tSide1 = 1f;
-        }
-        if ((tConn & 1 << ForgeDirection.NORTH.ordinal()) != 0) {
-            tSide2 = 0f;
-        }
-        if ((tConn & 1 << ForgeDirection.SOUTH.ordinal()) != 0) {
-            tSide3 = 1f;
-        }
-        if ((tConn & 1 << ForgeDirection.WEST.ordinal()) != 0) {
-            tSide4 = 0f;
-        }
-        if ((tConn & 1 << ForgeDirection.EAST.ordinal()) != 0) {
-            tSide5 = 1f;
-        }
-
-        return AxisAlignedBB
-            .getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
     }
 
     @Override
