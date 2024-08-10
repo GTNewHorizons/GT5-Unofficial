@@ -3,8 +3,8 @@ package com.github.technus.tectech.loader.thing;
 import static com.github.technus.tectech.thing.CustomItemList.DATApipe;
 import static com.github.technus.tectech.thing.CustomItemList.DATApipeBlock;
 import static com.github.technus.tectech.thing.CustomItemList.LASERpipe;
-import static com.github.technus.tectech.thing.CustomItemList.LASERpipeSmart;
 import static com.github.technus.tectech.thing.CustomItemList.LASERpipeBlock;
+import static com.github.technus.tectech.thing.CustomItemList.LASERpipeSmart;
 import static com.github.technus.tectech.thing.CustomItemList.Machine_BuckConverter_IV;
 import static com.github.technus.tectech.thing.CustomItemList.Machine_BuckConverter_LuV;
 import static com.github.technus.tectech.thing.CustomItemList.Machine_BuckConverter_UEV;
@@ -157,13 +157,13 @@ import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel7_U
 import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel7_UHV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel7_UIV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel7_UMV;
-import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel8_UMV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel7_UV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel7_UXV;
-import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel8_UXV;
-import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel9_UXV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel7_ZPM;
+import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel8_UMV;
+import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel8_UXV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel9001;
+import static com.github.technus.tectech.thing.CustomItemList.eM_dynamoTunnel9_UXV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyMulti16_EV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyMulti16_IV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyMulti16_LuV;
@@ -254,13 +254,13 @@ import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel7_U
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel7_UHV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel7_UIV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel7_UMV;
-import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel8_UMV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel7_UV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel7_UXV;
-import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel8_UXV;
-import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel9_UXV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel7_ZPM;
+import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel8_UMV;
+import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel8_UXV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel9001;
+import static com.github.technus.tectech.thing.CustomItemList.eM_energyTunnel9_UXV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyWirelessMulti16_EV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyWirelessMulti16_IV;
 import static com.github.technus.tectech.thing.CustomItemList.eM_energyWirelessMulti16_LuV;
@@ -310,7 +310,6 @@ import static com.github.technus.tectech.thing.CustomItemList.holder_Hatch;
 import static com.github.technus.tectech.thing.CustomItemList.rack_Hatch;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import gregtech.api.enums.MetaTileEntityIDs;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -362,6 +361,8 @@ import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DebugStructureWriter;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_OwnerDetector;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_TeslaCoil;
+
+import gregtech.api.enums.MetaTileEntityIDs;
 
 /**
  * Created by danie_000 on 16.11.2016.
@@ -2043,8 +2044,9 @@ public class MachineLoader implements Runnable {
 
         LASERpipe
             .set(new GT_MetaTileEntity_Pipe_Energy(15465, "pipe.energystream", "Laser Vacuum Pipe").getStackForm(1L));
-        LASERpipeSmart
-            .set(new GT_MetaTileEntity_Pipe_EnergyMirror(15466, "pipe.energymirror", "Laser Vacuum Mirror").getStackForm(1L));
+        LASERpipeSmart.set(
+            new GT_MetaTileEntity_Pipe_EnergyMirror(15466, "pipe.energymirror", "Laser Vacuum Mirror")
+                .getStackForm(1L));
         DATApipe.set(new GT_MetaTileEntity_Pipe_Data(15470, "pipe.datastream", "Optical Fiber Cable").getStackForm(1L));
 
         LASERpipeBlock.set(

@@ -560,6 +560,21 @@ public class ResearchStationAssemblyLine implements Runnable {
             300 * 20,
             8_000_000);
 
+        // Laser Vacuum Mirror
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            CustomItemList.LASERpipe.get(1L),
+            20_000,
+            16,
+            40_000,
+            2,
+            new Object[] { CustomItemList.eM_Power.get(1L), CustomItemList.LASERpipe.get(4L),
+                GT_ModHandler.getModItem(GTPlusPlus.ID, "itemPlateDenseChromaticGlass", 1),
+                ItemList.Circuit_Chip_QPIC.get(2L), new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1L } },
+            new FluidStack[] { Materials.Grade4PurifiedWater.getFluid(4000L) },
+            CustomItemList.LASERpipeSmart.get(1L),
+            10 * 20,
+            (int) TierEU.RECIPE_UHV);
+
         // Transcendent Plasma Mixer - TPM.
         TT_recipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.eM_energyTunnel7_UV.get(1),

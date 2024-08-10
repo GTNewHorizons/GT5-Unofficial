@@ -36,12 +36,13 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.common.GT_Client;
 
-public class GT_MetaTileEntity_Pipe_EnergyMirror extends MetaPipeEntity implements IConnectsToEnergyTunnel, IActivePipe {
+public class GT_MetaTileEntity_Pipe_EnergyMirror extends MetaPipeEntity
+    implements IConnectsToEnergyTunnel, IActivePipe {
 
     static Textures.BlockIcons.CustomIcon EMcandy, EMCandyActive;
     private static Textures.BlockIcons.CustomIcon EMpipe;
     public byte connectionCount = 0;
-    private ForgeDirection[] connectedSides = {null, null};
+    private ForgeDirection[] connectedSides = { null, null };
     private ForgeDirection chainedFrontFacing = null;
 
     private boolean active;
@@ -115,8 +116,7 @@ public class GT_MetaTileEntity_Pipe_EnergyMirror extends MetaPipeEntity implemen
             EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
                 + translateToLocal("gt.blockmachines.pipe.energystream.desc.1"),
             EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.2"),
-            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energymirror.desc.1")
-        };
+            EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energymirror.desc.1") };
     }
 
     @Override
@@ -176,8 +176,8 @@ public class GT_MetaTileEntity_Pipe_EnergyMirror extends MetaPipeEntity implemen
                             && ((IConnectsToEnergyTunnel) tTileEntity).canConnect(oppositeSide)) {
                             mConnections |= 1 << side.ordinal();
                             connectionCount++;
-                        } else if (tTileEntity instanceof IGregTechTileEntity
-                            && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof IConnectsToEnergyTunnel) {
+                        } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity)
+                            .getMetaTileEntity() instanceof IConnectsToEnergyTunnel) {
                                 if (((IConnectsToEnergyTunnel) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
                                     .canConnect(oppositeSide)) {
                                     mConnections |= 1 << side.ordinal();
@@ -194,15 +194,15 @@ public class GT_MetaTileEntity_Pipe_EnergyMirror extends MetaPipeEntity implemen
         }
     }
 
-    public ForgeDirection getBendDirection(ForgeDirection dir) {       
-        //for (ForgeDirection bendDirection : ForgeDirection.VALID_DIRECTIONS) {
-        //    if ((mConnections & (1 << bendDirection.ordinal())) != 0) {
-        //        if (bendDirection != dir) return bendDirection;
-        //    }
-        //}
-        //int bendDirection = mConnections & ~(1 << dir.ordinal());
-        //if(bendDirection != 0) return ForgeDirection.VALID_DIRECTIONS[(int) (Math.log(bendDirection)/Math.log(2))];
-        //return null;
+    public ForgeDirection getBendDirection(ForgeDirection dir) {
+        // for (ForgeDirection bendDirection : ForgeDirection.VALID_DIRECTIONS) {
+        // if ((mConnections & (1 << bendDirection.ordinal())) != 0) {
+        // if (bendDirection != dir) return bendDirection;
+        // }
+        // }
+        // int bendDirection = mConnections & ~(1 << dir.ordinal());
+        // if(bendDirection != 0) return ForgeDirection.VALID_DIRECTIONS[(int) (Math.log(bendDirection)/Math.log(2))];
+        // return null;
         for (ForgeDirection bendDir : connectedSides) {
             if (bendDir != dir) {
                 chainedFrontFacing = bendDir.getOpposite();
