@@ -61,24 +61,6 @@ import gregtech.common.blocks.GT_Block_Casings2;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gtPlusPlus.core.material.ALLOY;
 
-/**
- * 晶胞发生器
- * 类型：高压釜
- * 阶段: LuV
- * 使用力场科技从溶液中析出结晶！
- * 由Twist Spece Technology出口而来
- * 比单方块快150%！
- * 初始提供16并行，无法超频。
- * 每提升一级力场方块，获得额外的16并行，力场方块由外围和中央两部分构成，并行由外围等级控制，中央方块等级至少需要高出外围一级.
- * 力场方块每提升2级，获得有损超频一次. 机器所属区块污染小于50万时，额外获得250%加速
- * 机器所属区块污染大于150万时，配方成功率将下降为90%，此后每提升10万污染，下降1%，最多下降40%，每提升50w污染，加速会下降20%，最多下降120%。
- * 每提升10w污染，机器能量消耗提高5%，没有上限. 将机器置入超净间可以免疫污染,超净间的洁净度必须锁定在100%水平才能免疫污染影响。
- * 机器位于低重力环境下时，有25%的概率获得额外一份产物并再次加速50%
- * 机器不产生任何污染
- * 外围机械方块升级到遏制场机械方块时，解锁激光仓和全功能超频, 此时为256并行, 支持MAX+超频.
- *
- * @author koiNoCirculation
- */
 public class GT_MetaTileEntity_Crystalizer extends
     GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_Crystalizer> implements ISurvivalConstructable {
 
@@ -326,7 +308,8 @@ public class GT_MetaTileEntity_Crystalizer extends
                 ItemList.Casing_ContainmentFieldHV.get(1),
                 ItemList.Casing_StableTitanium.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8),
-                ItemList.Field_Generator_EV.get(4),
+                ItemList.Field_Generator_EV.get(6),
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
                 GT_Utility.getIntegratedCircuit(24))
             .fluidInputs(Materials.SolderingAlloy.getMolten(864))
             .itemOutputs(ItemList.Casing_ContainmentFieldEV.get(1))
@@ -339,7 +322,8 @@ public class GT_MetaTileEntity_Crystalizer extends
                 ItemList.Casing_ContainmentFieldEV.get(1),
                 ItemList.Casing_RobustTungstenSteel.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 16),
-                ItemList.Field_Generator_IV.get(4),
+                ItemList.Field_Generator_IV.get(6),
+                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 8 },
                 GT_Utility.getIntegratedCircuit(24))
             .fluidInputs(new FluidStack(ALLOY.NITINOL_60.getFluid(), 1296))
             .itemOutputs(ItemList.Casing_ContainmentFieldIV.get(1))
@@ -353,8 +337,8 @@ public class GT_MetaTileEntity_Crystalizer extends
             .itemInputs(
                 ItemList.Casing_ContainmentField.get(1),
                 ItemList.Casing_Fusion.get(1),
-                ItemList.Field_Generator_ZPM.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 8 },
+                ItemList.Field_Generator_ZPM.get(8),
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 64))
             .itemOutputs(ItemList.Casing_ContainmentFieldZPM.get(1))
             .fluidInputs(
@@ -371,8 +355,8 @@ public class GT_MetaTileEntity_Crystalizer extends
             .itemInputs(
                 ItemList.Casing_ContainmentFieldZPM.get(1),
                 ItemList.Casing_Fusion2.get(1),
-                ItemList.Field_Generator_UV.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
+                ItemList.Field_Generator_UV.get(8),
+                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 8 },
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 64))
             .itemOutputs(ItemList.Casing_ContainmentFieldUV.get(1))
             .fluidInputs(
