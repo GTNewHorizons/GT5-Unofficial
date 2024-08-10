@@ -654,7 +654,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         return false;
     }
 
-    public static int getBaseOutputChange(GT_Recipe tRecipe) {
+    public static int getBaseOutputChance(GT_Recipe tRecipe) {
         int aOutputsAmount = tRecipe.mOutputs.length + tRecipe.mFluidOutputs.length;
         return 10000 / aOutputsAmount;
     }
