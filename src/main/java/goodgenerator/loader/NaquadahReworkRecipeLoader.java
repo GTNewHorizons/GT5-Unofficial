@@ -105,7 +105,6 @@ public class NaquadahReworkRecipeLoader {
                     Materials.Titanium.getDust(64),
                     Materials.Adamantium.getDust(64),
                     Materials.Gallium.getDust(64))
-                .outputChances(2500, 2500, 2500, 2500)
                 .fluidInputs(
                     Materials.Hydrogen.getGas(64000L),
                     Materials.Fluorine.getGas(64000L),
@@ -122,7 +121,6 @@ public class NaquadahReworkRecipeLoader {
                     Materials.Carbon.getDust(1),
                     GT_Utility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst))
                 .itemOutputs(inertEnrichedNaquadah.get(OrePrefixes.dust, 1), Materials.Trinium.getDust(64))
-                .outputChances(3300, 3300, 3300)
                 .fluidInputs(Materials.SulfuricAcid.getFluid(16000), Materials.Oxygen.getGas(100L))
                 .fluidOutputs(wasteLiquid.getFluidOrGas(32000))
                 .duration(10 * SECONDS)
@@ -140,7 +138,6 @@ public class NaquadahReworkRecipeLoader {
                     Materials.Barium.getDust(64),
                     Materials.Indium.getDust(64),
                     ItemList.NaquadriaSupersolid.get(1))
-                .outputChances(2500, 2500, 2500, 2500)
                 .fluidInputs(
                     Materials.PhosphoricAcid.getFluid(16000),
                     Materials.SulfuricAcid.getFluid(16000),
