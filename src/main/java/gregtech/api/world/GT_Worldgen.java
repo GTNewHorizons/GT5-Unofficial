@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.common.DimensionManager;
 
 import gregtech.api.GregTech_API;
 
@@ -93,6 +94,15 @@ public abstract class GT_Worldgen {
         return tAllowed;
     }
 
+    public boolean isGenerationAllowed(World aWorld, int aAllowedDimensionType) {
+        World allowedWorld = DimensionManager.getWorld(aAllowedDimensionType);
+        if (allowedWorld != null && allowedWorld.provider != null )
+        {
+            return isGenerationAllowed(aWorld, allowedWorld.provider.getClass());
+        } else {
+            return aWorld.provider.dimensionId == aAllowedDimensionType;
+        }
+    }
     /**
      *
      * @param aWorld                 The World Object

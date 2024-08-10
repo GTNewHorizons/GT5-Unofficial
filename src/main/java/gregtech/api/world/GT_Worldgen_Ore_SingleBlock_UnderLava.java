@@ -32,7 +32,7 @@ public class GT_Worldgen_Ore_SingleBlock_UnderLava extends GT_Worldgen_Ore {
     @Override
     public boolean executeCavegen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
         int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
-        if (isGenerationAllowed(aWorld, DimensionManager.getWorld(mDimensionType).provider.getClass())
+        if (isGenerationAllowed(aWorld, mDimensionType)
             && (mBiomeList.isEmpty() || mBiomeList.contains(aBiome))
             && (mProbability <= 1 || aRandom.nextInt(mProbability) == 0)) {
             for (int i = 0; i < mAmount; i++) {
