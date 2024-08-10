@@ -298,7 +298,7 @@ public class GT_MetaTileEntity_LargeFluidExtractor
             .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
             .toolTipFinisher("GregTech");
         // spotless:on
-        
+
         return tt;
     }
 
@@ -355,15 +355,17 @@ public class GT_MetaTileEntity_LargeFluidExtractor
         if (mStructureBadGlassTier) {
             int hatchTier = 0;
 
-            for(var hatch : mEnergyHatches) {
-                if(hatch.mTier > hatchTier) hatchTier = hatch.mTier;
+            for (var hatch : mEnergyHatches) {
+                if (hatch.mTier > hatchTier) hatchTier = hatch.mTier;
             }
 
-            data.add(String.format("%sEnergy hatch tier (%d) is too high for the glass tier (%d).%s",
-                RED,
-                hatchTier,
-                mGlassTier,
-                RESET));
+            data.add(
+                String.format(
+                    "%sEnergy hatch tier (%d) is too high for the glass tier (%d).%s",
+                    RED,
+                    hatchTier,
+                    mGlassTier,
+                    RESET));
         }
 
         if (mStructureBadCasingCount) {
@@ -376,16 +378,9 @@ public class GT_MetaTileEntity_LargeFluidExtractor
                     RESET));
         }
 
-        data.add(
-            String
-                .format("Max Parallels: %s%d%s", YELLOW, getParallels(), RESET));
-                
-        data.add(
-            String.format(
-                "Heating Coil Speed Bonus: +%s%.0f%s %%",
-                YELLOW,
-                getSpeedBonus() * 100,
-                RESET));
+        data.add(String.format("Max Parallels: %s%d%s", YELLOW, getParallels(), RESET));
+
+        data.add(String.format("Heating Coil Speed Bonus: +%s%.0f%s %%", YELLOW, getSpeedBonus() * 100, RESET));
 
         data.add(
             String.format(
@@ -414,25 +409,24 @@ public class GT_MetaTileEntity_LargeFluidExtractor
 
     public double getEUMultiplier() {
         double heatingBonus = 1 / (1 + mCoilLevel.getTier() * HEATING_COIL_EU_BONUS);
-        double solenoidPenalty = Math.pow(1 + SOLENOID_EU_PENALTY, (double)mSolenoidLevel);
+        double solenoidPenalty = Math.pow(1 + SOLENOID_EU_PENALTY, (double) mSolenoidLevel);
 
         return solenoidPenalty * heatingBonus;
     }
 
     private class LFEProcessingLogic extends ProcessingLogic {
+
         @Override
         @Nonnull
         protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
-            return super.createParallelHelper(recipe)
-                .setEUtModifier((float) (BASE_EU_DISCOUNT * getEUMultiplier()))
+            return super.createParallelHelper(recipe).setEUtModifier((float) (BASE_EU_DISCOUNT * getEUMultiplier()))
                 .setMaxParallel(getParallels());
         }
 
         @Override
         @Nonnull
         protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
-            return super.createOverclockCalculator(recipe)
-                .setSpeedBoost((float) (getSpeedBonus() + BASE_SPEED_BONUS))
+            return super.createOverclockCalculator(recipe).setSpeedBoost((float) (getSpeedBonus() + BASE_SPEED_BONUS))
                 .setEUtDiscount((float) (BASE_EU_DISCOUNT * getEUMultiplier()));
         }
     }
