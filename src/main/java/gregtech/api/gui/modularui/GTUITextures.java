@@ -173,6 +173,14 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/progressbar/boiler_steam");
     public static final UITexture PROGRESSBAR_BOILER_WATER = UITexture
         .fullImage(GregTech.ID, "gui/progressbar/boiler_water");
+    public static final SteamTexture PROGRESSBAR_BOILER_EMPTY_STEAM_R90 = SteamTexture
+        .fullImage(GregTech.ID, "gui/progressbar/boiler_empty_%s_r90");
+    public static final UITexture PROGRESSBAR_BOILER_HEAT_R90 = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/boiler_heat_r90");
+    public static final UITexture PROGRESSBAR_BOILER_STEAM_R90 = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/boiler_steam_r90");
+    public static final UITexture PROGRESSBAR_BOILER_WATER_R90 = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/boiler_water_r90");
     public static final UITexture PROGRESSBAR_CANNER = UITexture.fullImage(GregTech.ID, "gui/progressbar/canner");
     public static final UITexture PROGRESSBAR_CIRCUIT_ASSEMBLER = UITexture
         .fullImage(GregTech.ID, "gui/progressbar/circuit_assembler");
