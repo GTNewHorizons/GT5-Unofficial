@@ -39,8 +39,6 @@ import gregtech.api.util.GT_Utility;
 public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatch_DynamoMulti
     implements IConnectsToEnergyTunnel {
 
-    protected static final int CONFIG_WINDOW_ID = 10;
-
     public GT_MetaTileEntity_Hatch_DynamoTunnel(int ID, String unlocalisedName, String localisedName, int tier,
         int amps) {
         super(
@@ -277,7 +275,7 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
         final int x = getGUIWidth() / 2 - 37;
         final int y = getGUIHeight() / 5 - 7;
         builder.widget(
-            TextWidget.localised("GT5U.machines.dynamo_tunnel.amperage")
+            TextWidget.localised("GT5U.machines.laser_hatch.amperage")
                 .setPos(x, y)
                 .setSize(74, 14))
             .widget(
