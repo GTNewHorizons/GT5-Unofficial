@@ -20,6 +20,7 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.common.DimensionManager;
 
 import cpw.mods.fml.common.IWorldGenerator;
 import gregtech.api.objects.XSTR;
@@ -102,8 +103,9 @@ public class BW_WordGenerator implements IWorldGenerator {
                     for (int i = 0; i < 256 && temp; i++) {
                         tRandomWeight = random.nextInt(BW_OreLayer.sWeight);
                         for (BW_OreLayer tWorldGen : BW_OreLayer.sList) {
-                            if (!tWorldGen.isGenerationAllowed(this.mWorld, this.mDimensionType, this.mDimensionType))
-                                continue;
+                            if (!tWorldGen.isGenerationAllowed(
+                                this.mWorld,
+                                DimensionManager.getWorld(mDimensionType).provider.getClass())) continue;
                             tRandomWeight -= tWorldGen.mWeight;
                             if (tRandomWeight <= 0) {
                                 try {

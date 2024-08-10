@@ -12,6 +12,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.common.DimensionManager;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.objects.XSTR;
@@ -82,7 +83,7 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
         XSTR stoneRNG = new XSTR();
         ArrayList<ValidSeeds> stones = new ArrayList<>();
 
-        if (!isGenerationAllowed(aWorld, aDimensionType, this.mDimensionType)) {
+        if (!isGenerationAllowed(aWorld, DimensionManager.getWorld(mDimensionType).provider.getClass())) {
             return false;
         }
         if (!(this.mBiomeList.isEmpty() || this.mBiomeList.contains(aBiome))) {
