@@ -12,6 +12,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Energy;
+import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EnergyMirror;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
 
@@ -160,7 +161,7 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
             return;
         }
         final ForgeDirection front = aBaseMetaTileEntity.getFrontFacing();
-        final ForgeDirection opposite = front.getOpposite();
+        ForgeDirection opposite = front.getOpposite();
         for (short dist = 1; dist < 1000; dist++) {
 
             IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity
@@ -168,6 +169,18 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
             if (tGTTileEntity != null && tGTTileEntity.getColorization() == color) {
                 IMetaTileEntity aMetaTileEntity = tGTTileEntity.getMetaTileEntity();
                 if (aMetaTileEntity != null) {
+                    // If we hit a mirror, use the mirror's view instead
+                    if (aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_EnergyMirror tMirror) {
+
+                        tGTTileEntity = tMirror.bendAround(opposite);
+                        if (tGTTileEntity == null) {
+                            break;
+                        } else {
+                            aMetaTileEntity = tGTTileEntity.getMetaTileEntity();
+                            opposite = tMirror.getChainedFrontFacing();
+                        }
+                    }
+
                     if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyTunnel
                         && opposite == tGTTileEntity.getFrontFacing()) {
                         if (maxEUOutput() > ((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).maxEUInput()) {
