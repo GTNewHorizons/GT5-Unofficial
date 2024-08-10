@@ -393,7 +393,7 @@ public class GT_RecipeConstants {
             .validateInputCount(4, 16)
             .validateOutputCount(1, 1)
             .validateOutputFluidCount(-1, 0)
-            .validateInputFluidCount(0, 4)
+            .validateInputFluidCount(1, 4)
             .buildWithAlt();
         // noinspection SimplifyOptionalCallChains
         if (!rr.isPresent()) return Collections.emptyList();
