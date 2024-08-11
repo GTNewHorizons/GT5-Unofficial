@@ -1381,7 +1381,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         }, dis -> {
             IMutationCustom tMutation = dis.registerMutation(LUTETIUM, CHROME, 5, 4)
                 .setIsSecret();
-            tMutation.requireResource(GregTech_API.sBlockMetal1, 2);
+            tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockmachines"), 32020);
         }),
     NEUTRONIUM(GT_BranchDefinition.RADIOACTIVE, "Neutronium", false, new Color(0xFFF0F0), new Color(0xFAFAFA),
         beeSpecies -> {
@@ -2527,7 +2527,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
     }, dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(NEODYMIUM, HYDROGEN, 5, 4);
-        tMutation.requireResource(GregTech_API.sBlockMetal3, 3);
+        tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockmachines"), 32019);
     }),
     // infused Shards line
     AIR(GT_BranchDefinition.INFUSEDSHARD, "Air", false, new Color(0xFFFF7E), new Color(0x60602F), beeSpecies -> {
