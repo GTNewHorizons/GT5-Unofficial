@@ -598,9 +598,9 @@ import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_
 import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_HIPCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_IndustrialCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_NeutroniumCompressor;
+import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_HeatDetectorHatch;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
-import gregtech.common.tileentities.machines.multi.hatches.GT_MetaTileEntity_HeatDetectorHatch;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Bronze;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Steel;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_Compressor_Bronze;
