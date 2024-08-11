@@ -10,6 +10,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -433,10 +435,12 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new SlotWidget(inventoryHandler, 0).setPos(43, 25)
+            new SlotWidget(inventoryHandler, 0).setFilter(this::isItemValidFluidFilledItem)
+                .setPos(43, 25)
                 .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotIn()))
             .widget(
-                new SlotWidget(inventoryHandler, 1).setPos(43, 61)
+                new SlotWidget(inventoryHandler, 1).setAccess(true, false)
+                    .setPos(43, 61)
                     .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotOut()))
             .widget(createFuelSlot())
             .widget(createAshSlot())
@@ -472,9 +476,18 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
                     .setSize(18, 18));
     }
 
+    private boolean isItemValidFluidFilledItem(@NotNull ItemStack stack) {
+        return isFluidInputAllowed(GT_Utility.getFluidForFilledItem(stack, true));
+    }
+
     protected Widget createFuelSlot() {
-        return new SlotWidget(inventoryHandler, 2).setPos(115, 61)
+        return new SlotWidget(inventoryHandler, 2).setFilter(this::isItemValidFuel)
+            .setPos(115, 61)
             .setBackground(getFuelSlotBackground());
+    }
+
+    protected boolean isItemValidFuel(@NotNull ItemStack stack) {
+        return true;
     }
 
     protected SlotWidget createAshSlot() {

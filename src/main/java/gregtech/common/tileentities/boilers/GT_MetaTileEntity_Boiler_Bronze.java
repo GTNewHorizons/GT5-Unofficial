@@ -319,6 +319,12 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
+    protected boolean isItemValidFuel(@NotNull ItemStack stack) {
+        return (TileEntityFurnace.getItemBurnTime(stack) / 10) > 0
+            && (isItemSolidCarbonFuelItem(stack) || isItemSolidCarbonFuelBlock(stack) || isDenseSolidFuel(stack));
+    }
+
+    @Override
     public SteamVariant getSteamVariant() {
         return SteamVariant.BRONZE;
     }

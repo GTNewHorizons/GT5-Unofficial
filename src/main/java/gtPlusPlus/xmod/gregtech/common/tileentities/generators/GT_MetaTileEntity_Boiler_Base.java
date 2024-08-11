@@ -6,6 +6,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTankInfo;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -208,6 +209,11 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
         if (burnTime > 0 && this.mTemperature <= 101) {
             consumeFuel(tile, fuelStack, burnTime);
         }
+    }
+
+    @Override
+    protected boolean isItemValidFuel(@NotNull ItemStack stack) {
+        return getBurnTime(stack) > 0;
     }
 
     @Override
