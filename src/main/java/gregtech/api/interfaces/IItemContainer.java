@@ -28,7 +28,9 @@ public interface IItemContainer {
 
     IItemContainer set(ItemStack aStack);
 
-    IItemContainer hidden();
+    default IItemContainer hidden() {
+        return this;
+    }
 
     IItemContainer registerOre(Object... aOreNames);
 

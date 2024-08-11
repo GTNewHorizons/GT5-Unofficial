@@ -104,12 +104,10 @@ public class GT_MetaTileEntity_Pipe_EnergyMirror extends GT_MetaTileEntity_Pipe_
                         final ForgeDirection oppositeSide = side.getOpposite();
                         TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
                         if (tTileEntity instanceof IColoredTileEntity) {
-                            // if (aBaseMetaTileEntity.getColorization() >= 0) {
                             byte tColor = ((IColoredTileEntity) tTileEntity).getColorization();
                             if (tColor != aBaseMetaTileEntity.getColorization()) {
                                 continue;
                             }
-                            // }
                         }
                         if (tTileEntity instanceof PowerLogicHost) {
                             PowerLogic logic = ((PowerLogicHost) tTileEntity).getPowerLogic(oppositeSide);
