@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.enums.Dyes;
@@ -287,9 +288,9 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    protected SlotWidget createFuelSlot() {
+    protected Widget createFuelSlot() {
         // todo: remove this slot after some time
-        return super.createFuelSlot().setAccess(true, false);
+        return ((SlotWidget) super.createFuelSlot()).setAccess(true, false);
     }
 
     @Override

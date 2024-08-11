@@ -14,6 +14,7 @@ import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -471,8 +472,8 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
                     .setSize(18, 18));
     }
 
-    protected SlotWidget createFuelSlot() {
-        return (SlotWidget) new SlotWidget(inventoryHandler, 2).setPos(115, 61)
+    protected Widget createFuelSlot() {
+        return new SlotWidget(inventoryHandler, 2).setPos(115, 61)
             .setBackground(getFuelSlotBackground());
     }
 
