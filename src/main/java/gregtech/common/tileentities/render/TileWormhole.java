@@ -24,7 +24,7 @@ public class TileWormhole extends TileEntity {
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setInteger("dimID", dimID);
-        compound.setDouble("targetRadius",targetRadius);
+        compound.setDouble("targetRadius", targetRadius);
     }
 
     @Override
@@ -64,7 +64,6 @@ public class TileWormhole extends TileEntity {
     public Block getBlock() {
         return ModBlocks.getBlock(DimensionHelper.DimNameDisplayed[dimID]);
     }
-
 
     @Override
     public double getMaxRenderDistanceSquared() {

@@ -600,8 +600,6 @@ public class GT_MetaTileEntity_WormholeGenerator extends
     private long getTransferable(int index) {
         var dest = mLink.getDest(mSelfReference);
 
-
-
         if (dest == null || mMaxProgresstime == 0 || dest.mMaxProgresstime == 0) {
             return 0;
         }
@@ -612,7 +610,6 @@ public class GT_MetaTileEntity_WormholeGenerator extends
         if (inputHatch == null || outputHatch == null) {
             return 0;
         }
-
 
         long available = inputHatch.getEUVar();
         long empty = outputHatch.maxEUStore() - outputHatch.getEUVar();
