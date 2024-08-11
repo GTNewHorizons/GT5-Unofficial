@@ -38,6 +38,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.fluid.GT_FluidFactory;
@@ -554,8 +555,13 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sDroneRender = new GT_Block_Drone();
         GregTech_API.sBlockGlass1 = new GT_Block_Glass1();
         GregTech_API.sBlockTintedGlass = new GT_Block_TintedIndustrialGlass();
-        GregTech_API.sLaserRender = new GT_Block_Laser();
-        GregTech_API.sWormholeRender = new GT_WormholeRenderBlock();
+        if (Mods.GalacticraftCore.isModLoaded()) {
+            GregTech_API.sLaserRender = new GT_Block_Laser();
+            GregTech_API.sWormholeRender = new GT_WormholeRenderBlock();
+        } else {
+            GregTech_API.sLaserRender = null;
+            GregTech_API.sWormholeRender = null;
+        }
         // meta ID order, DO NOT CHANGE ORDER
 
         GregTech_API.sBlockMetal1 = new GT_Block_Metal(
@@ -681,11 +687,14 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GT_Log.out.println("GT_Mod: Registering the DroneRender.");
         GameRegistry.registerTileEntity(TileDrone.class, "DroneRender");
-        GT_Log.out.println("GT_Mod: Registering the LaserRender.");
-        GameRegistry.registerTileEntity(TileLaser.class, "LaserRenderer");
-        GT_Log.out.println("GT_Mod: Registering the WormholeRender.");
-        GameRegistry.registerTileEntity(TileWormhole.class, "WormholeRender");
 
+        if (Mods.GalacticraftCore.isModLoaded()) {
+            GT_Log.out.println("GT_Mod: Registering the LaserRender.");
+            GameRegistry.registerTileEntity(TileLaser.class, "LaserRenderer");
+
+            GT_Log.out.println("GT_Mod: Registering the WormholeRender.");
+            GameRegistry.registerTileEntity(TileWormhole.class, "WormholeRender");
+        }
         GT_Log.out.println("GT_Mod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
         FMLInterModComms.sendMessage(AppliedEnergistics2.ID, "whitelist-spatial", BaseMetaPipeEntity.class.getName());

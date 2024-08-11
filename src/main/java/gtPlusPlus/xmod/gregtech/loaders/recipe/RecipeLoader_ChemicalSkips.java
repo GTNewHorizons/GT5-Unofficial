@@ -28,6 +28,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
@@ -334,38 +335,40 @@ public class RecipeLoader_ChemicalSkips {
             .eut(TierEU.RECIPE_UIV)
             .metadata(QFT_FOCUS_TIER, 4)
             .addTo(quantumForceTransformerRecipes);
-        // Lategame Kevlar using Kevlar bee comb
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Bees.combs.getStackForType(CombType.KEVLAR, 24),
-                Materials.Carbon.getDust(64),
-                ItemUtils.getSimpleStack(GenericChem.mUltimatePlasticCatalyst, 0))
-            .fluidInputs(Materials.Nitrogen.getGas(1000 * 16), Materials.Hydrogen.getGas(1000 * 16))
-            .fluidOutputs(
-                MaterialsKevlar.PolyurethaneResin.getFluid(1000 * 32),
-                MaterialsKevlar.LiquidCrystalKevlar.getFluid(144 * 32),
-                MaterialsKevlar.Kevlar.getMolten(144 * 64))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_UIV)
-            .metadata(QFT_FOCUS_TIER, 4)
-            .addTo(quantumForceTransformerRecipes);
-        // Platline skip using Platline Combs (Palladium, Osmium, Iridium, Platinum)
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Bees.combs.getStackForType(CombType.PLATINUM, 32),
-                GT_Bees.combs.getStackForType(CombType.PALLADIUM, 32),
-                GT_Bees.combs.getStackForType(CombType.OSMIUM, 32),
-                GT_Bees.combs.getStackForType(CombType.IRIDIUM, 32),
-                ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0))
-            .fluidOutputs(
-                Materials.Osmium.getMolten(144 * 256),
-                Materials.Palladium.getMolten(144 * 256),
-                Materials.Iridium.getMolten(144 * 256),
-                Materials.Platinum.getMolten(144 * 256))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_FOCUS_TIER, 1)
-            .addTo(quantumForceTransformerRecipes);
+        if (Mods.Forestry.isModLoaded()) {
+            // Lategame Kevlar using Kevlar bee comb
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_Bees.combs.getStackForType(CombType.KEVLAR, 24),
+                    Materials.Carbon.getDust(64),
+                    ItemUtils.getSimpleStack(GenericChem.mUltimatePlasticCatalyst, 0))
+                .fluidInputs(Materials.Nitrogen.getGas(1000 * 16), Materials.Hydrogen.getGas(1000 * 16))
+                .fluidOutputs(
+                    MaterialsKevlar.PolyurethaneResin.getFluid(1000 * 32),
+                    MaterialsKevlar.LiquidCrystalKevlar.getFluid(144 * 32),
+                    MaterialsKevlar.Kevlar.getMolten(144 * 64))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_UIV)
+                .metadata(QFT_FOCUS_TIER, 4)
+                .addTo(quantumForceTransformerRecipes);
+            // Platline skip using Platline Combs (Palladium, Osmium, Iridium, Platinum)
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_Bees.combs.getStackForType(CombType.PLATINUM, 32),
+                    GT_Bees.combs.getStackForType(CombType.PALLADIUM, 32),
+                    GT_Bees.combs.getStackForType(CombType.OSMIUM, 32),
+                    GT_Bees.combs.getStackForType(CombType.IRIDIUM, 32),
+                    ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0))
+                .fluidOutputs(
+                    Materials.Osmium.getMolten(144 * 256),
+                    Materials.Palladium.getMolten(144 * 256),
+                    Materials.Iridium.getMolten(144 * 256),
+                    Materials.Platinum.getMolten(144 * 256))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_UV)
+                .metadata(QFT_FOCUS_TIER, 1)
+                .addTo(quantumForceTransformerRecipes);
+        }
         // Bio Cells and Mutated Solder
         GT_Values.RA.stdBuilder()
             .itemInputs(
