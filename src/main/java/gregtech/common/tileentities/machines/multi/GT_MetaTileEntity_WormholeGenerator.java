@@ -542,7 +542,6 @@ public class GT_MetaTileEntity_WormholeGenerator extends
         if (mLink.isActive()) {
             for (int i = 0; i < MAX_HATCHES; i++) {
                 if (!HATCH_MASK[i]) continue;
-
                 long optimal = mLink.mWormholeEnergy > Long.MAX_VALUE ? Long.MAX_VALUE : ((long) mLink.mWormholeEnergy);
                 if (getTransferable(i) > 0) {
                     if (mLink.mWormholeEnergy <= 0) {
@@ -600,6 +599,9 @@ public class GT_MetaTileEntity_WormholeGenerator extends
 
     private long getTransferable(int index) {
         var dest = mLink.getDest(mSelfReference);
+
+
+
         if (dest == null || mMaxProgresstime == 0 || dest.mMaxProgresstime == 0) {
             return 0;
         }
@@ -610,6 +612,7 @@ public class GT_MetaTileEntity_WormholeGenerator extends
         if (inputHatch == null || outputHatch == null) {
             return 0;
         }
+
 
         long available = inputHatch.getEUVar();
         long empty = outputHatch.maxEUStore() - outputHatch.getEUVar();
