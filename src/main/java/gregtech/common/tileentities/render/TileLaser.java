@@ -11,6 +11,7 @@ import cpw.mods.fml.relauncher.Side;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.galacticraft.core.util.Annotations;
 
+// This should either move to gt5u tiles, or get moved to GTNH-Intergalactic
 public class TileLaser extends TileEntityAdvanced {
 
     @Annotations.NetworkedField(targetSide = Side.CLIENT)

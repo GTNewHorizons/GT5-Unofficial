@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.util.Annotations;
 import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 import pers.gwyog.gtneioreplugin.util.DimensionHelper;
 
+// This should either move to gt5u tiles, or get moved to GTNH-Intergalactic
 public class TileWormhole extends TileEntityAdvanced {
 
     @Annotations.NetworkedField(targetSide = Side.CLIENT)
