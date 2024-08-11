@@ -554,7 +554,7 @@ public class RecipeLoader_Nuclear {
                 new FluidStack(ELEMENT.getInstance().NEON.getPlasma(), 144),
                 Materials.Bedrockium.getMolten(144))
             .fluidOutputs(new FluidStack(ELEMENT.STANDALONE.FORCE.getPlasma(), 1000))
-            .duration(3 * SECONDS + 4 * TICKS)
+            .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .metadata(FUSION_THRESHOLD, 100_000_000)
             .addTo(fusionRecipes);
@@ -609,10 +609,10 @@ public class RecipeLoader_Nuclear {
 
         GT_Values.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(ELEMENT.STANDALONE.ADVANCED_NITINOL.getPlasma(), 144),
+                new FluidStack(ELEMENT.STANDALONE.ADVANCED_NITINOL.getPlasma(), 72),
                 Materials.Tartarite.getMolten(2))
             .fluidOutputs(new FluidStack(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 1000))
-            .duration(16 * TICKS)
+            .duration(8 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .metadata(FUSION_THRESHOLD, 500_000_000)
             .addTo(fusionRecipes);

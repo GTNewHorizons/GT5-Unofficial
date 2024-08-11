@@ -451,6 +451,7 @@ GT5U.machines.betterjukebox.loop.tooltip=Loop mode (keep discs in input inventor
 GT5U.machines.betterjukebox.shuffle.tooltip=Shuffle mode (play random discs instead of in order)
 GT5U.machines.betterjukebox.headphonesbound=Headphones bound to jukebox
 GT5U.machines.betterjukebox.headphonesunbound=Shift-click on an electric jukebox to bind headphones
+GT5U.machines.laser_hatch.amperage=Amperage
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear

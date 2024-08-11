@@ -62,6 +62,7 @@ public enum Mods {
     EnderZoo(Names.ENDER_ZOO),
     EnhancedLootBags(Names.ENHANCED_LOOT_BAGS),
     EternalSingularity(Names.ETERNAL_SINGULARITY),
+    EtFuturumRequiem(Names.ET_FUTURUM_REQUIEM),
     ExtraBees(Names.EXTRA_BEES),
     ExtraCells2(Names.EXTRA_CELLS2),
     ExtraTrees(Names.EXTRA_TREES),
@@ -244,6 +245,7 @@ public enum Mods {
         public static final String ENDER_ZOO = "EnderZoo";
         public static final String ENHANCED_LOOT_BAGS = "enhancedlootbags";
         public static final String ETERNAL_SINGULARITY = "eternalsingularity";
+        public static final String ET_FUTURUM_REQUIEM = "etfuturum";
         public static final String EXTRA_BEES = "ExtraBees";
         public static final String EXTRA_CELLS2 = "extracells";
         public static final String EXTRA_TREES = "ExtraTrees";
