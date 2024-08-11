@@ -111,7 +111,7 @@ public class Tier {
             OrePrefixes.cableGt01.get(Materials.Naquadah),
             OrePrefixes.cableGt04.get(Materials.Naquadah),
             OrePrefixes.circuit.get(Materials.ZPM),
-            OrePrefixes.circuit.get(Materials.SuperconductorUHV)),
+            OrePrefixes.circuit.get(Materials.UV)),
         new Tier(
             SubTag.ENERGY_ELECTRICITY,
             8,
@@ -123,7 +123,7 @@ public class Tier {
             ItemList.Hull_UV,
             OrePrefixes.cableGt04.get(Materials.NaquadahAlloy),
             OrePrefixes.wireGt01.get(Materials.SuperconductorUHV),
-            OrePrefixes.circuit.get(Materials.SuperconductorUHV),
+            OrePrefixes.circuit.get(Materials.UV),
             OrePrefixes.circuit.get(Materials.UHV)),
         new Tier(
             SubTag.ENERGY_ELECTRICITY,

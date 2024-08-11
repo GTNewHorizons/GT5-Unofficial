@@ -318,7 +318,7 @@ gt.blockmachines.YottaFluidTank.cfgi.0=Tick rate (Update I/O every x ticks)
 
 # RecipeMaps
 gg.recipe.naquadah_reactor=Large Naquadah Reactor
-gg.recipe.naquadah_fuel_refine_factory=Naquadah Fuel Refine Factory
+gg.recipe.naquadah_fuel_refine_factory=Naquadah Fuel Refinery
 gg.recipe.neutron_activator=Neutron Activator
 gg.recipe.extreme_heat_exchanger=Extreme Heat Exchanger
 gg.recipe.precise_assembler=Precise Assembler
@@ -474,9 +474,9 @@ essentiaoutputhatch.chat.0=Cleared.
 #Achievement
 achievement.gt.blockmachines.nag=Large Naquadah Reactor
 achievement.gt.blockmachines.nag.desc=Pickup this item to see the recipe in NEI
-achievement.gt.blockmachines.frf=Naquadah Fuel Refine Factory
+achievement.gt.blockmachines.frf=Naquadah Fuel Refinery
 achievement.gt.blockmachines.frf.desc=Pickup this item to see the recipe in NEI
-achievement.FRF_Casing.0=Naquadah Fuel Refine Factory Casing
+achievement.FRF_Casing.0=Naquadah Fuel Refinery Casing
 achievement.FRF_Casing.0.desc=Pickup this item to see the recipe in NEI
 achievement.FRF_Coil_1.0=Field Restriction Coil
 achievement.FRF_Coil_1.0.desc=Pickup this item to see the recipe in NEI

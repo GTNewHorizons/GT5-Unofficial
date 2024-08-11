@@ -752,9 +752,6 @@ public class GT_Achievements {
                         && ThaumcraftApiHelper.isResearchComplete(player.getDisplayName(), "GT_IRON_TO_STEEL")) {
                             issueAchievement(player, "steel");
                         }
-                    // } else if (data.mPrefix == OrePrefixes.circuit && data.mMaterial.mMaterial ==
-                    // Materials.HV) {
-                    // issueAchievement(player, "stepforward");
                 }
         }
         // GT_FML_LOGGER.info(stack.getUnlocalizedName());

@@ -128,10 +128,10 @@ public class RecipeLoader {
                     gregtech.api.enums.ItemList.IndustrialApiary_Upgrade_Acceleration_8_Upgraded.get(64L),
                     gregtech.api.enums.ItemList.IndustrialApiary_Upgrade_STABILIZER.get(64L),
                     gregtech.api.enums.ItemList.Robot_Arm_UV.get(16L),
-                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L })
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L })
                 .fluidInputs(
                     FluidRegistry.getFluidStack("molten.indalloy140", 28800),
                     FluidRegistry.getFluidStack("for.honey", 20000))
@@ -370,10 +370,10 @@ public class RecipeLoader {
                     GameRegistry.findItemStack("Avaritia", "Neutronium_Compressor", 1),
                     gregtech.api.enums.ItemList.Quantum_Tank_EV.get(1),
                     GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 10, 11193), // UHV Fluid extractor
-                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L })
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L })
                 .fluidInputs(FluidRegistry.getFluidStack("molten.indalloy140", 28800))
                 .itemOutputs(TeaAcceptor.get(1))
                 .eut(2_048_000)

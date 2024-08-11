@@ -28,7 +28,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
@@ -404,13 +403,9 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
     private void addMacerationRecipe(Material aMatInfo) {
         try {
             Logger.MATERIALS("Adding Maceration recipe for " + aMatInfo.getLocalizedName() + " Ingot -> Dusts");
-            int chance = (aMatInfo.vTier * 10) / MathUtils.randInt(10, 20);
-            chance = chance <= 0 ? 1000 : 100 * chance; // comes from RA1 -> RA2 conversion
-
             RA.stdBuilder()
                 .itemInputs(aMatInfo.getIngot(1))
                 .itemOutputs(aMatInfo.getDust(1))
-                .outputChances(chance)
                 .eut(2)
                 .duration(20 * SECONDS)
                 .addTo(maceratorRecipes);

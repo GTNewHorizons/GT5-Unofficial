@@ -146,7 +146,7 @@ public class GT_MetaTileEntity_MultiCanner extends
         tt.addMachineType("Canner/Fluid Canner")
             .addInfo("Controller Block for the TurboCan Pro")
             .addInfo("Use screwdriver to switch mode")
-            .addInfo("200% the speed of single block machines of the same voltage")
+            .addInfo("100% faster than single block machines of the same voltage")
             .addInfo("Gains 8 parallels per voltage tier")
             .addInfo(EnumChatFormatting.BLUE + "It's uncanny!")
             .addInfo(AuthorFourIsTheNumber)
@@ -304,5 +304,11 @@ public class GT_MetaTileEntity_MultiCanner extends
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(GT_Utility.roundUpVoltage(this.getMaxInputVoltage()));
+        logic.setAvailableAmperage(1L);
     }
 }

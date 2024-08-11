@@ -1953,7 +1953,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(
             GT_ModHandler.getIC2Item("nanoSaber", 1L),
             bits_no_remove_buffered,
-            new Object[] { "PI ", "PI ", "CLC", 'L', OrePrefixes.battery.get(Materials.LuV), 'I',
+            new Object[] { "PI ", "PI ", "CLC", 'L', OrePrefixes.battery.get(Materials.EV), 'I',
                 OrePrefixes.plateAlloy.get("Iridium"), 'P', OrePrefixes.plate.get(Materials.Platinum), 'C',
                 OrePrefixes.circuit.get(Materials.IV) });
 
@@ -1979,7 +1979,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getModItem(GraviSuite.ID, "advNanoChestPlate", 1, GT_Values.W),
                 bits_no_remove_buffered,
-                new Object[] { "CJC", "TNT", "WPW", 'C', OrePrefixes.plateAlloy.get(Materials.HV), 'T',
+                new Object[] { "CJC", "TNT", "WPW", 'C', OrePrefixes.plateAlloy.get(Materials.Advanced), 'T',
                     OrePrefixes.plate.get(Materials.TungstenSteel), 'J',
                     GT_ModHandler.getModItem(GraviSuite.ID, "advJetpack", 1, GT_Values.W), 'N',
                     GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemArmorNanoChestplate", 1, GT_Values.W), 'W',

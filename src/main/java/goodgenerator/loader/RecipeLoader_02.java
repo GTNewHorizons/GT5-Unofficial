@@ -563,7 +563,7 @@ public class RecipeLoader_02 {
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1),
                 ItemRefer.Fluid_Storage_Core_T5.get(10),
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 8 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
                 ItemList.Electric_Pump_ZPM.get(8),
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.DraconiumAwakened, 8),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 64))
@@ -1082,6 +1082,14 @@ public class RecipeLoader_02 {
             FluidRegistry.getFluidStack("supercriticalsteam", 32000),
             8000);
 
+        MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
+            FluidRegistry.getFluidStack("molten.solarsalthot", 3200),
+            FluidRegistry.getFluidStack("molten.solarsaltcold", 3200),
+            FluidRegistry.getFluidStack("ic2distilledwater", 20000),
+            FluidRegistry.getFluidStack("ic2superheatedsteam", 3200000),
+            FluidRegistry.getFluidStack("supercriticalsteam", 32000),
+            1600);
+
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Lepidolite, 1))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
@@ -1100,7 +1108,7 @@ public class RecipeLoader_02 {
             .itemOutputs(MyMaterial.marCeM200.get(OrePrefixes.ingotHot, 19))
             .duration(4 * MINUTES + 45 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(COIL_HEAT, 4500)
+            .metadata(COIL_HEAT, 5400)
             .addTo(blastFurnaceRecipes);
 
         GT_ModHandler.addCraftingRecipe(
@@ -1180,21 +1188,6 @@ public class RecipeLoader_02 {
                 .fluidInputs(Materials.Palladium.getMolten(1152))
                 .itemOutputs(ItemRefer.Precise_Assembler.get(1))
                 .duration(1 * MINUTES + 30 * SECONDS)
-                .eut(TierEU.RECIPE_IV)
-                .addTo(assemblerRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Casing_ZPM.get(3),
-                    ItemList.Robot_Arm_EV.get(2),
-                    GT_OreDictUnificator.get(OrePrefixes.cableGt04, MyMaterial.lumiium.getBridgeMaterial(), 2),
-                    MyMaterial.marCeM200.get(OrePrefixes.plateDouble, 2),
-                    ItemRefer.HiC_T1.get(1),
-                    MyMaterial.signalium.get(OrePrefixes.bolt, 32),
-                    MyMaterial.titaniumBetaC.get(OrePrefixes.gearGtSmall, 8))
-                .fluidInputs(Materials.BlackSteel.getMolten(576))
-                .itemOutputs(ItemRefer.Precise_Electronic_Unit_T1.get(2))
-                .duration(40 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(assemblerRecipes);
 
@@ -1842,6 +1835,8 @@ public class RecipeLoader_02 {
             .addTo(plasmaForgeRecipes);
     }
 
+    public static float EHEEfficiencyMultiplier = 1.2f;
+
     public static void FinishLoadRecipe() {
         for (GT_Recipe plasmaFuel : RecipeMaps.plasmaFuels.getAllRecipes()) {
             FluidStack tPlasma = GT_Utility.getFluidForFilledItem(plasmaFuel.mInputs[0], true);
@@ -1849,12 +1844,12 @@ public class RecipeLoader_02 {
                 continue;
             }
             int tUnit = plasmaFuel.mSpecialValue;
-            if (tUnit > 200_000) {
-                tPlasma.amount = 1500;
+            if (tUnit > 500_000) {
+                tPlasma.amount = 25000;
+            } else if (tUnit > 300_000) {
+                tPlasma.amount = 10000;
             } else if (tUnit > 100_000) {
-                tPlasma.amount = 1000;
-            } else if (tUnit > 50_000) {
-                tPlasma.amount = 800;
+                tPlasma.amount = 2500;
             } else if (tUnit > 10_000) {
                 tPlasma.amount = 500;
             } else {
@@ -1868,8 +1863,8 @@ public class RecipeLoader_02 {
                 FluidStack output = FluidRegistry.getFluidStack(tOutName, tPlasma.amount);
                 if (output == null) output = FluidRegistry.getFluidStack("molten." + tOutName, tPlasma.amount);
                 if (output != null) {
-                    long waterAmount = (long) tUnit * 3 * tPlasma.amount / 160;
-                    long criticalSteamAmount = (long) tUnit * 3 * tPlasma.amount / 100;
+                    long waterAmount = (long) (tUnit * EHEEfficiencyMultiplier * tPlasma.amount / 160);
+                    long criticalSteamAmount = (long) (tUnit * EHEEfficiencyMultiplier * tPlasma.amount / 100);
                     MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
                         tPlasma,
                         output,

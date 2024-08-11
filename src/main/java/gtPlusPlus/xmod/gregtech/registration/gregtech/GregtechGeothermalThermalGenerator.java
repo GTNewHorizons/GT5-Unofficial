@@ -61,7 +61,7 @@ public class GregtechGeothermalThermalGenerator {
                 | GT_ModHandler.RecipeBits.REVERSIBLE
                 | GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
-                ItemList.Electric_Motor_IV, 'C', OrePrefixes.circuit.get(Materials.SuperconductorUHV), 'W',
+                ItemList.Electric_Motor_IV, 'C', OrePrefixes.circuit.get(Materials.UV), 'W',
                 OrePrefixes.cableGt04.get(Materials.Platinum), 'G', ALLOY.STELLITE.getGear(1) });
 
         final ItemStack INGREDIENT_1 = CI.electricPiston_LuV;

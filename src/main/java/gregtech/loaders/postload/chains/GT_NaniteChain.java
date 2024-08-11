@@ -66,7 +66,7 @@ public class GT_NaniteChain {
             .metadata(RESEARCH_ITEM, ItemList.Circuit_Crystalmainframe.get(1))
             .metadata(RESEARCH_TIME, 2 * HOURS)
             .itemInputs(
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 16 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 16 },
                 ItemList.Robot_Arm_UV.get(16),
                 ItemList.Circuit_Chip_Stemcell.get(32),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NaquadahAlloy, 32),

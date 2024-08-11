@@ -91,7 +91,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Emitter_ZPM.get(8),
                 ItemList.Robot_Arm_ZPM.get(1),
                 ItemList.Electric_Motor_ZPM.get(2),
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 2) },
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 16) },
                 CustomItemList.DATApipe.get(2))
@@ -110,7 +110,7 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_TIME, 16 * MINUTES + 40 * SECONDS)
             .itemInputs(
                 CustomItemList.Machine_Multi_Switch.get(1),
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 2 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 2 },
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1),
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 8) },
@@ -132,7 +132,7 @@ public class AssemblyLine implements Runnable {
             .itemInputs(
                 CustomItemList.Machine_Multi_Switch.get(1),
                 ItemList.Sensor_ZPM.get(8),
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
                 ItemList.Field_Generator_ZPM.get(1),
                 ItemList.Electric_Motor_ZPM.get(2),
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 4) },

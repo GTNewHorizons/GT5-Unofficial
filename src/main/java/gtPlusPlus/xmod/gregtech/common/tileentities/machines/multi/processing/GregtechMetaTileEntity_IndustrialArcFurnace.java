@@ -87,7 +87,7 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for Industrial Arc Furnace")
             .addInfo("250% faster than using single block machines of the same voltage")
-            .addInfo("Processes 8 items per voltage tier * W/L")
+            .addInfo("Processes 8 * voltage tier * W items")
             .addInfo("Right-click controller with a Screwdriver to change modes")
             .addInfo("Max Size required to process Plasma recipes")
             .addPollutionAmount(getPollutionPerSecond(null))

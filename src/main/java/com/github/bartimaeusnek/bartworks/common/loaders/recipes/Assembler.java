@@ -152,24 +152,13 @@ public class Assembler implements Runnable {
                 ItemStack converter = converters[j][i];
                 ItemStack eInput = input[j][i];
                 ItemStack eDynamo = dynamo[j][i];
-                long recipeConsumption;
-                switch (i) {
-                    case 0:
-                        recipeConsumption = TierEU.RECIPE_EV;
-                        break;
-                    case 1:
-                        recipeConsumption = TierEU.RECIPE_IV;
-                        break;
-                    case 2:
-                        recipeConsumption = TierEU.RECIPE_LuV;
-                        break;
-                    case 3:
-                        recipeConsumption = TierEU.RECIPE_ZPM;
-                        break;
-                    default:
-                        recipeConsumption = TierEU.RECIPE_EV;
-                        break;
-                }
+                long recipeConsumption = switch (i) {
+                    case 0 -> TierEU.RECIPE_EV;
+                    case 1 -> TierEU.RECIPE_IV;
+                    case 2 -> TierEU.RECIPE_LuV;
+                    case 3 -> TierEU.RECIPE_ZPM;
+                    default -> TierEU.RECIPE_EV;
+                };
 
                 int solderingAmount = Math.max(144 * i, 72) * (j + 1);
 

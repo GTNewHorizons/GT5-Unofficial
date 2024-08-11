@@ -87,6 +87,15 @@ public class Textures {
         MACHINE_CASING_TANK_14,
         MACHINE_CASING_TANK_0,
 
+        MACHINE_CASING_ITEM_PIPE_TIN,
+        MACHINE_CASING_ITEM_PIPE_BRASS,
+        MACHINE_CASING_ITEM_PIPE_ELECTRUM,
+        MACHINE_CASING_ITEM_PIPE_PLATINUM,
+        MACHINE_CASING_ITEM_PIPE_OSMIUM,
+        MACHINE_CASING_ITEM_PIPE_QUANTIUM,
+        MACHINE_CASING_ITEM_PIPE_FLUXED_ELECTRUM,
+        MACHINE_CASING_ITEM_PIPE_BLACK_PLUTONIUM,
+
         BLOCK_STEELEAF,
         BLOCK_ICHORIUM,
         BLOCK_FIRESTONE,
@@ -326,6 +335,17 @@ public class Textures {
         OVERLAY_FRONT_MULTI_CANNER_ACTIVE,
         OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW,
         OVERLAY_FRONT_MULTI_CANNER_GLOW,
+
+        LASER_PLATE,
+        MACHINE_CASING_LASER,
+        OVERLAY_FRONT_ENGRAVER,
+        OVERLAY_FRONT_ENGRAVER_ACTIVE,
+        OVERLAY_FRONT_ENGRAVER_ACTIVE_GLOW,
+        OVERLAY_FRONT_ENGRAVER_GLOW,
+        OVERLAY_FRONT_MULTI_LATHE,
+        OVERLAY_FRONT_MULTI_LATHE_ACTIVE,
+        OVERLAY_FRONT_MULTI_LATHE_ACTIVE_GLOW,
+        OVERLAY_FRONT_MULTI_LATHE_GLOW,
 
         MACHINE_CASING_RADIATIONPROOF,
         MACHINE_CASING_ADVANCEDRADIATIONPROOF,
@@ -1326,6 +1346,8 @@ public class Textures {
         OVERLAY_ME_CRAFTING_HATCH_ACTIVE,
         OVERLAY_ME_FLUID_HATCH,
         OVERLAY_ME_FLUID_HATCH_ACTIVE,
+        OVERLAY_HATCH_PH_SENSOR,
+        OVERLAY_HATCH_PH_SENSOR_GLOW,
 
         STRUCTURE_MARK,
 
@@ -1384,7 +1406,29 @@ public class Textures {
         LARGETURBINE_NEW_EMPTY6,
         LARGETURBINE_NEW_EMPTY7,
         LARGETURBINE_NEW_EMPTY8,
-        LARGETURBINE_NEW_EMPTY9,;
+        LARGETURBINE_NEW_EMPTY9,
+        INDUSTRIAL_STRENGTH_CONCRETE,
+        GLASS_PH_RESISTANT,
+        GLASS_TINTED_INDUSTRIAL_WHITE,
+        GLASS_TINTED_INDUSTRIAL_LIGHT_GRAY,
+        GLASS_TINTED_INDUSTRIAL_GRAY,
+        GLASS_TINTED_INDUSTRIAL_BLACK,
+        MACHINE_CASING_INDUSTRIAL_WATER_PLANT,
+        WATER_PLANT_CONCRETE_CASING,
+        MACHINE_CASING_FLOCCULATION,
+        MACHINE_CASING_NAQUADAH_REINFORCED_WATER_PLANT,
+        MACHINE_CASING_EXTREME_CORROSION_RESISTANT,
+        MACHINE_CASING_HIGH_PRESSURE_RESISTANT,
+        MACHINE_CASING_OZONE,
+        MACHINE_CASING_PLASMA_HEATER,
+        NAQUADRIA_REINFORCED_WATER_PLANT_CASING,
+        UV_BACKLIGHT_STERILIZER_CASING,
+        NEUTRONIUM_COATED_UV_RESISTANT_GLASS,
+        OMNI_PURPOSE_INFINITY_FUSED_GLASS,
+        GLASS_QUARK_CONTAINMENT,
+        BLOCK_QUARK_PIPE,
+        BLOCK_QUARK_RELEASE_CHAMBER,
+        BLOCK_QUARK_CONTAINMENT_CASING,;
 
         /**
          * Icon for Fresh CFoam
@@ -1695,9 +1739,10 @@ public class Textures {
          * by Default pages are null
          * page 0: 0-63 GT casing 1-4, 64-127 GT++
          * page 1: 0-15 GT casing 5, 22-26 GS dyson swarm, 48-57 GT casing 8, 63 EMT, 80-95 GT reinforced blocks, 96 casing 2 meta 6, 97 error casing
+         * page 2: 0-15 solenoid coils
          * page 8: 0-111 TecTech, 112-127 GT casing 6
          * page 12: 0-127 GlodBlock
-         * page 16: 0-15 GT glass 1, 16-31 GT casing 9, 32-47 GT glass 2, 48-63 GT casing 10
+         * page 16: 0-15 GT glass 1, 16-31 GT casing 9, 32-47 GT glass 2, 48-63 GT casing 10, 64-79 GT casing 11
          * page 42: 0-126 glee8e, 127 KekzTech LSC base
          */
         // spotless:on
@@ -1717,6 +1762,7 @@ public class Textures {
             casingTexturePages[0] = new ITexture[128];
             // adds some known pages, modders also can do it...
             GT_Utility.addTexturePage((byte) 1);
+            GT_Utility.addTexturePage((byte) 2);
             GT_Utility.addTexturePage((byte) 8);
             GT_Utility.addTexturePage((byte) 16);
             setCasingTextureForId(ERROR_TEXTURE_INDEX, ERROR_RENDERING[0]);

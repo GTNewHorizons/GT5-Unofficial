@@ -27,7 +27,7 @@ public class GT_Packet_ClientPreference extends GT_Packet_New {
 
     @Override
     public byte getPacketID() {
-        return 9;
+        return GT_PacketTypes.CLIENT_PREFERENCE.id;
     }
 
     @Override

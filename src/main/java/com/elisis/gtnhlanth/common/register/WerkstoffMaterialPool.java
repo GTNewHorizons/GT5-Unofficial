@@ -460,7 +460,7 @@ public class WerkstoffMaterialPool implements Runnable {
 
     public static final Werkstoff UraniumFiltrate = new Werkstoff(
         new short[] { 190, 240, 94 },
-        "UraniumFiltrate",
+        "Uranium Filtrate",
         subscriptNumbers("??U??"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,

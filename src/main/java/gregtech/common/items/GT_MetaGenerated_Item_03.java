@@ -22,6 +22,7 @@ import static gregtech.client.GT_TooltipHandler.Tier.UV;
 import static gregtech.client.GT_TooltipHandler.Tier.UXV;
 import static gregtech.client.GT_TooltipHandler.Tier.ZPM;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
+import static gregtech.common.items.ID_MetaItem_03.Activated_Carbon_Filter_Mesh;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Biomainframe;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Bioprocessor;
 import static gregtech.common.items.ID_MetaItem_03.Circuit_Biowarecomputer;
@@ -203,6 +204,14 @@ import static gregtech.common.items.ID_MetaItem_03.NuclearStar;
 import static gregtech.common.items.ID_MetaItem_03.Optical_Cpu_Containment_Housing;
 import static gregtech.common.items.ID_MetaItem_03.Optically_Compatible_Memory;
 import static gregtech.common.items.ID_MetaItem_03.Optically_Perfected_CPU;
+import static gregtech.common.items.ID_MetaItem_03.Quark_Catalyst_Housing;
+import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Bottom;
+import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Charm;
+import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Down;
+import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Strange;
+import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Top;
+import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Unaligned;
+import static gregtech.common.items.ID_MetaItem_03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.ID_MetaItem_03.Spinneret;
 import static gregtech.common.items.ID_MetaItem_03.Timepiece;
 import static gregtech.common.items.ID_MetaItem_03.Transdimensional_Alignment_Matrix;
@@ -617,7 +626,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Crystalmainframe.ID,
                 "Crystalprocessor Mainframe",
                 "A Super Circuit",
-                OrePrefixes.circuit.get(Materials.SuperconductorUHV),
+                OrePrefixes.circuit.get(Materials.UV),
                 SubTag.NO_UNIFICATION));
 
         // ???? Scared to remove.
@@ -645,7 +654,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Wetwaresupercomputer.ID,
                 "Wetware Supercomputer",
                 "A Super Circuit",
-                OrePrefixes.circuit.get(Materials.SuperconductorUHV),
+                OrePrefixes.circuit.get(Materials.UV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Wetwaremainframe.set(
@@ -670,7 +679,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Biowarecomputer.ID,
                 "Biowareprocessor Assembly",
                 "A Super Circuit",
-                OrePrefixes.circuit.get(Materials.SuperconductorUHV),
+                OrePrefixes.circuit.get(Materials.UV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Biowaresupercomputer.set(
@@ -722,7 +731,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 Circuit_OpticalProcessor.ID,
                 "Optical Processor",
                 "An Optical Circuit",
-                OrePrefixes.circuit.get(Materials.SuperconductorUHV),
+                OrePrefixes.circuit.get(Materials.UV),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_OpticalAssembly.set(
@@ -1102,6 +1111,62 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                     "Works across dimensions or if machine is dismantled",
                     "Removing this cover will destroy the linked card",
                     GT_Values.AuthorQuerns)));
+
+        ItemList.ActivatedCarbonFilterMesh.set(
+            addItem(
+                Activated_Carbon_Filter_Mesh.ID,
+                "Activated Carbon Filter Mesh",
+                "The most granular filter you could possibly make.",
+                SubTag.NO_UNIFICATION));
+
+        ItemList.Quark_Catalyst_Housing.set(
+            addItem(
+                Quark_Catalyst_Housing.ID,
+                "Empty Quark Release Catalyst Housing",
+                "Capable of holding Quark Release Catalysts",
+                SubTag.NO_UNIFICATION));
+        ItemList.Quark_Creation_Catalyst_Up.set(
+            addItem(
+                Quark_Creation_Catalyst_Up.ID,
+                "Up-Quark Releasing Catalyst",
+                "Can release up-quarks into environment to reshape matter",
+                SubTag.NO_UNIFICATION));
+        ItemList.Quark_Creation_Catalyst_Down.set(
+            addItem(
+                Quark_Creation_Catalyst_Down.ID,
+                "Down-Quark Releasing Catalyst",
+                "Can release down-quarks into environment to reshape matter",
+                SubTag.NO_UNIFICATION));
+        ItemList.Quark_Creation_Catalyst_Strange.set(
+            addItem(
+                Quark_Creation_Catalyst_Strange.ID,
+                "Strange-Quark Releasing Catalyst",
+                "Can release strange-quarks into environment to reshape matter",
+                SubTag.NO_UNIFICATION));
+        ItemList.Quark_Creation_Catalyst_Charm.set(
+            addItem(
+                Quark_Creation_Catalyst_Charm.ID,
+                "Charm-Quark Releasing Catalyst",
+                "Can release charm-quarks into environment to reshape matter",
+                SubTag.NO_UNIFICATION));
+        ItemList.Quark_Creation_Catalyst_Bottom.set(
+            addItem(
+                Quark_Creation_Catalyst_Bottom.ID,
+                "Bottom-Quark Releasing Catalyst",
+                "Can release top-quarks into environment to reshape matter",
+                SubTag.NO_UNIFICATION));
+        ItemList.Quark_Creation_Catalyst_Top.set(
+            addItem(
+                Quark_Creation_Catalyst_Top.ID,
+                "Top-Quark Releasing Catalyst",
+                "Can release bottom-quarks into environment to reshape matter",
+                SubTag.NO_UNIFICATION));
+        ItemList.Quark_Creation_Catalyst_Unaligned.set(
+            addItem(
+                Quark_Creation_Catalyst_Unaligned.ID,
+                "Unaligned Quark Releasing Catalyst",
+                "Needs to be realigned before use",
+                SubTag.NO_UNIFICATION));
 
         ItemList.Optical_Cpu_Containment_Housing
             .set(addItem(Optical_Cpu_Containment_Housing.ID, "Optical CPU Containment Housing", "CPU Housing", o));

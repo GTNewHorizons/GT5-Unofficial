@@ -113,6 +113,7 @@ import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.DISSOLUTION_TANK_RATIO;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gregtech.api.util.GT_RecipeConstants.WaferEngravingRecipes;
 import static gregtech.common.items.GT_MetaGenerated_Item_01.registerCauldronCleaningFor;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
@@ -209,7 +210,7 @@ public class RecipeLoader {
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 8),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 4),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.SuperconductorUHV, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 2),
                 GT_Utility.copyAmount(2, LanthItemList.BEAMLINE_PIPE),
                 GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.VanadiumGallium, 1),
                 GT_Utility.getIntegratedCircuit(16)
@@ -228,7 +229,7 @@ public class RecipeLoader {
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 8),
                 ItemList.Casing_Coil_Superconductor.get(12),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.SuperconductorUHV, 8),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 8),
                 GT_Utility.copyAmount(8, LanthItemList.BEAMLINE_PIPE),
                 GT_OreDictUnificator.get(OrePrefixes.cableGt08, Materials.NiobiumTitanium, 8),
                 GT_Utility.getIntegratedCircuit(16))
@@ -340,7 +341,7 @@ public class RecipeLoader {
                 Materials.Copper.getPlates(4),
                 WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plate, 5),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorZPM, 4),
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
                 ItemList.Emitter_ZPM.get(6),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Gold, 64),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Electrum, 6))
@@ -609,7 +610,7 @@ public class RecipeLoader {
                 .duration(60 * GT_RecipeBuilder.SECONDS)
                 .eut(1920)
                 .requiresCleanRoom()
-                .addTo(laserEngraverRecipes);
+                .addTo(WaferEngravingRecipes);
 
         }
 
@@ -748,7 +749,7 @@ public class RecipeLoader {
                     .requiresCleanRoom()
                     .duration(120 * SECONDS)
                     .eut(1920)
-                    .addTo(laserEngraverRecipes);
+                    .addTo(WaferEngravingRecipes);
 
             } else if (mask == MaskList.NOR) {
 
@@ -760,7 +761,7 @@ public class RecipeLoader {
                     .requiresCleanRoom()
                     .duration(120 * SECONDS)
                     .eut(1920)
-                    .addTo(laserEngraverRecipes);
+                    .addTo(WaferEngravingRecipes);
 
             }
 
@@ -778,7 +779,7 @@ public class RecipeLoader {
                         .requiresCleanRoom()
                         .duration(120 * SECONDS)
                         .eut(1920)
-                        .addTo(laserEngraverRecipes);
+                        .addTo(WaferEngravingRecipes);
 
                 }
             }
@@ -3665,13 +3666,9 @@ public class RecipeLoader {
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
                 for (int oreDictID : oreDict) {
-                    if ((OreDictionary.getOreName(oreDictID)
-                        .startsWith("ore")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("rawOre")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("crushed"))) {
-                        GT_Log.out.print(OreDictionary.getOreName(oreDictID));
+                    final String oreName = OreDictionary.getOreName(oreDictID);
+                    if ((oreName.startsWith("ore") || oreName.startsWith("rawOre") || oreName.startsWith("crushed"))) {
+                        GT_Log.out.print(oreName);
                         GT_Recipe tRecipe = recipe.copy();
                         boolean modified = false;
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -3813,17 +3810,15 @@ public class RecipeLoader {
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
                 for (int oreDictID : oreDict) {
-                    if (OreDictionary.getOreName(oreDictID)
-                        .startsWith("dust")
-                        && (!OreDictionary.getOreName(oreDictID)
-                            .contains(
-                                "Dephosphated")) /*
-                                                  * OreDictionary.getOreName(oreDictID).startsWith("dustPureCerium")
-                                                  * || OreDictionary.getOreName(oreDictID).startsWith(
-                                                  * "dustImpureCerium") ||
-                                                  * OreDictionary.getOreName(oreDictID).startsWith("dustSpace") ||
-                                                  * OreDictionary.getOreName(oreDictID).startsWith("dustCerium")
-                                                  */) {
+                    final String oreName = OreDictionary.getOreName(oreDictID);
+                    if (oreName.startsWith("dust")
+                        && (!oreName.contains("Dephosphated")) /*
+                                                                * oreName.startsWith("dustPureCerium")
+                                                                * || oreName.startsWith(
+                                                                * "dustImpureCerium") ||
+                                                                * oreName.startsWith("dustSpace") ||
+                                                                * oreName.startsWith("dustCerium")
+                                                                */) {
                         GT_Recipe tRecipe = recipe.copy();
                         boolean modified = false;
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -3898,10 +3893,8 @@ public class RecipeLoader {
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
                 for (int oreDictID : oreDict) {
-                    if (OreDictionary.getOreName(oreDictID)
-                        .startsWith("dust")
-                        && (!OreDictionary.getOreName(oreDictID)
-                            .contains("Dephosphated"))) {
+                    final String oreName = OreDictionary.getOreName(oreDictID);
+                    if (oreName.startsWith("dust") && (!oreName.contains("Dephosphated"))) {
                         GT_Recipe tRecipe = recipe.copy();
                         boolean modified = false;
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -3966,8 +3959,8 @@ public class RecipeLoader {
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
                 for (int oreDictID : oreDict) {
-                    if (OreDictionary.getOreName(oreDictID)
-                        .startsWith("crushed") /* && OreDictionary.getOreName(oreDictID).contains("Cerium") */) {
+                    final String oreName = OreDictionary.getOreName(oreDictID);
+                    if (oreName.startsWith("crushed") /* && oreName.contains("Cerium") */) {
                         GT_Recipe tRecipe = recipe.copy();
                         boolean modified = false;
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -4013,13 +4006,14 @@ public class RecipeLoader {
                     GT_Log.out.print(input.getDisplayName() + "\n");
                     int[] oreDict = OreDictionary.getOreIDs(input);
                     for (int oreDictID : oreDict) {
-                        String oreName = OreDictionary.getOreName(oreDictID);
-                        if (oreName.equals("dustHibonite") || oreName.equals("dustLanthaniteCe")
-                            || oreName.equals("dustZirconolite")
-                            || oreName.equals("dustYttrocerite")
-                            || oreName.equals("dustXenotime")
-                            || oreName.equals("dustBastnasite")
-                            || oreName.equals("dustFlorencite")) {
+                        final String oreName = OreDictionary.getOreName(oreDictID);
+                        if (oreName.startsWith("dust")
+                            && (oreName.equals("dustHibonite") || oreName.equals("dustLanthaniteCe")
+                                || oreName.equals("dustZirconolite")
+                                || oreName.equals("dustYttrocerite")
+                                || oreName.equals("dustXenotime")
+                                || oreName.equals("dustBastnasite")
+                                || oreName.equals("dustFlorencite"))) {
                             GT_Recipe tRecipe = recipe.copy();
                             boolean modified = false;
                             for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -4067,13 +4061,14 @@ public class RecipeLoader {
                     GT_Log.out.print(input.getDisplayName() + "\n");
                     int[] oreDict = OreDictionary.getOreIDs(input);
                     for (int oreDictID : oreDict) {
-                        String oreName = OreDictionary.getOreName(oreDictID);
-                        if (oreName.equals("dustHibonite") || oreName.equals("dustLanthaniteCe")
-                            || oreName.equals("dustZirconolite")
-                            || oreName.equals("dustYttrocerite")
-                            || oreName.equals("dustXenotime")
-                            || oreName.equals("dustBastnasite")
-                            || oreName.equals("dustFlorencite")) {
+                        final String oreName = OreDictionary.getOreName(oreDictID);
+                        if (oreName.startsWith("dust")
+                            && (oreName.equals("dustHibonite") || oreName.equals("dustLanthaniteCe")
+                                || oreName.equals("dustZirconolite")
+                                || oreName.equals("dustYttrocerite")
+                                || oreName.equals("dustXenotime")
+                                || oreName.equals("dustBastnasite")
+                                || oreName.equals("dustFlorencite"))) {
                             GT_Recipe tRecipe = recipe.copy();
                             boolean modified = false;
                             for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -4120,14 +4115,10 @@ public class RecipeLoader {
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
                 for (int oreDictID : oreDict) {
-                    if (OreDictionary.getOreName(oreDictID)
-                        .startsWith("dustImpureCerium")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("dustImpureSamarium")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("dustPureSamarium")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("dustPureCerium")) {
+                    final String oreName = OreDictionary.getOreName(oreDictID);
+                    if (oreName.startsWith("dustImpureCerium") || oreName.startsWith("dustImpureSamarium")
+                        || oreName.startsWith("dustPureSamarium")
+                        || oreName.startsWith("dustPureCerium")) {
                         GT_Recipe tRecipe = recipe.copy();
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                             if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
@@ -4173,13 +4164,14 @@ public class RecipeLoader {
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
                 for (int oreDictID : oreDict) {
-                    String oreName = OreDictionary.getOreName(oreDictID);
-                    if (oreName.equals("dustCerite") || oreName.equals("dustFluorcaphite")
-                        || oreName.equals("dustZirkelite")
-                        || oreName.equals("dustGadoliniteCe")
-                        || oreName.equals("dustGadoliniteY")
-                        || oreName.equals("dustPolycrase")
-                        || oreName.equals("dustBastnasite")) {
+                    final String oreName = OreDictionary.getOreName(oreDictID);
+                    if (oreName.startsWith("dust")
+                        && (oreName.equals("dustCerite") || oreName.equals("dustFluorcaphite")
+                            || oreName.equals("dustZirkelite")
+                            || oreName.equals("dustGadoliniteCe")
+                            || oreName.equals("dustGadoliniteY")
+                            || oreName.equals("dustPolycrase")
+                            || oreName.equals("dustBastnasite"))) {
                         GT_Recipe tRecipe = recipe.copy();
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                             if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;

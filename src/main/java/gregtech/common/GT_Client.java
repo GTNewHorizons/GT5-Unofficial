@@ -62,6 +62,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
@@ -91,11 +92,13 @@ import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.render.GT_CapeRenderer;
 import gregtech.common.render.GT_FlaskRenderer;
 import gregtech.common.render.GT_FluidDisplayStackRenderer;
+import gregtech.common.render.GT_LaserRenderer;
 import gregtech.common.render.GT_MetaGenerated_Tool_Renderer;
 import gregtech.common.render.GT_MultiTile_Renderer;
 import gregtech.common.render.GT_PollutionRenderer;
 import gregtech.common.render.GT_RenderDrone;
 import gregtech.common.render.GT_Renderer_Block;
+import gregtech.common.render.GT_WormholeRenderer;
 import gregtech.common.render.items.GT_MetaGenerated_Item_Renderer;
 import gregtech.common.tileentities.debug.GT_MetaTileEntity_AdvDebugStructureWriter;
 import gregtech.loaders.ExtraIcons;
@@ -622,6 +625,10 @@ public class GT_Client extends GT_Proxy implements Runnable {
         GT_Renderer_Block.register();
         new GT_MultiTile_Renderer();
         new GT_RenderDrone();
+        if (Mods.GalacticraftCore.isModLoaded()) {
+            new GT_LaserRenderer();
+            new GT_WormholeRenderer();
+        }
         metaGeneratedItemRenderer = new GT_MetaGenerated_Item_Renderer();
         for (GT_MetaGenerated_Item item : GT_MetaGenerated_Item.sInstances.values()) {
             metaGeneratedItemRenderer.registerItem(item);

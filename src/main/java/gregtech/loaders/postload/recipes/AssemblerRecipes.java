@@ -70,13 +70,13 @@ public class AssemblerRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     ItemList.Hull_HV.get(1L),
-                    ItemList.Component_Filter.get(2L),
+                    ItemList.Component_Filter.get(3L),
                     GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L),
-                    ItemList.Electric_Motor_HV.get(1L),
+                    ItemList.Electric_Motor_HV.get(2L),
                     GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(ItemList.Machine_Multi_Cleanroom.get(1L))
-                .fluidInputs(Materials.StainlessSteel.getMolten(864L))
+                .fluidInputs(Materials.StainlessSteel.getMolten(144L))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(assemblerRecipes);
@@ -286,7 +286,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Electric_Pump_UV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.SuperconductorUHV), 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.UV), 2),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.FluidRegulator_UV.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -1639,7 +1639,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.HV, 4),
+                GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Advanced, 4),
                 GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Diamond, 1),
                 GT_Utility.getIntegratedCircuit(2))
             .itemOutputs(ItemList.Ingot_IridiumAlloy.get(1))

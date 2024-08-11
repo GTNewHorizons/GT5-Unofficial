@@ -420,7 +420,7 @@ public class CraftingRecipes implements Runnable {
         Materials[] wireMat2 = { Materials.Kanthal, Materials.Nichrome, Materials.TungstenSteel, Materials.Naquadah,
             Materials.NaquadahAlloy, Materials.SuperconductorUHV };
         Materials[] circuits2 = { Materials.HV, Materials.EV, Materials.IV, Materials.LuV, Materials.ZPM,
-            Materials.SuperconductorUHV };
+            Materials.UV };
 
         for (int i = 3; i < GT_Values.VN.length - 1; i++) {
             // 12625

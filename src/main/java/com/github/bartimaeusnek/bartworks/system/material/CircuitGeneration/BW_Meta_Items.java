@@ -100,50 +100,50 @@ public class BW_Meta_Items {
         String tooltip = "";
         String aOreDictPrefix = OrePrefixes.circuit.toString();
         switch (aTier) {
-            case 0:
+            case 0 -> {
                 additionalOreDictData = Materials.ULV.toString();
                 tooltip = Materials.ULV.getToolTip();
-                break;
-            case 1:
+            }
+            case 1 -> {
                 additionalOreDictData = Materials.LV.toString();
                 tooltip = Materials.LV.getToolTip();
-                break;
-            case 2:
+            }
+            case 2 -> {
                 additionalOreDictData = Materials.MV.toString();
                 tooltip = Materials.MV.getToolTip();
-                break;
-            case 3:
+            }
+            case 3 -> {
                 additionalOreDictData = Materials.HV.toString();
                 tooltip = Materials.HV.getToolTip();
-                break;
-            case 4:
+            }
+            case 4 -> {
                 additionalOreDictData = Materials.EV.toString();
                 tooltip = Materials.EV.getToolTip();
-                break;
-            case 5:
+            }
+            case 5 -> {
                 additionalOreDictData = Materials.IV.toString();
                 tooltip = Materials.IV.getToolTip();
-                break;
-            case 6:
+            }
+            case 6 -> {
                 additionalOreDictData = Materials.LuV.toString();
                 tooltip = Materials.LuV.getToolTip();
-                break;
-            case 7:
+            }
+            case 7 -> {
                 additionalOreDictData = Materials.ZPM.toString();
                 tooltip = Materials.ZPM.getToolTip();
-                break;
-            case 8:
-                additionalOreDictData = Materials.SuperconductorUHV.toString();
-                tooltip = Materials.SuperconductorUHV.getToolTip();
-                break;
-            case 9:
-                additionalOreDictData = "Infinite";
-                tooltip = "An Infinite Circuit";
-                break;
-            case 10:
-                additionalOreDictData = "Bio";
-                tooltip = "A Bio Circuit";
-                break;
+            }
+            case 8 -> {
+                additionalOreDictData = Materials.UV.toString();
+                tooltip = Materials.UV.getToolTip();
+            }
+            case 9 -> {
+                additionalOreDictData = Materials.UHV.toString();
+                tooltip = Materials.UHV.getToolTip();
+            }
+            case 10 -> {
+                additionalOreDictData = Materials.UEV.toString();
+                tooltip = Materials.UEV.getToolTip();
+            }
         }
 
         ItemStack tStack = BW_Meta_Items.NEWCIRCUITS.addCircuit(aID, aName, tooltip, aTier);
