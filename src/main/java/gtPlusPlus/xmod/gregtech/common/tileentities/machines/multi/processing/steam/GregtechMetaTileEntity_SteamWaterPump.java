@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -31,8 +32,11 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -81,7 +85,7 @@ public class GregtechMetaTileEntity_SteamWaterPump
     private static final int BASE_WATER_PER_SECOND = 1_500;
     private static final int PROGRESSION_TIME_TICKS = 20;
 
-    private static final int BASE_STEAM_PER_SECOND = 400;
+    private static final int BASE_STEAM_PER_SECOND = 1_500;
 
     private int mSetTier = 1;
 
@@ -232,17 +236,17 @@ public class GregtechMetaTileEntity_SteamWaterPump
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Water Pump")
-            .addInfo("Generates water based on biome humidity")
+            .addInfo("Pumps Water based on humidity")
             .addInfo("Has 2 tiers: Bronze and Steel")
-            .addInfo("Steel tier extracts 2x water")
+            .addInfo("Steel tier extracts 2x Water")
             .addInfo(
                 EnumChatFormatting.AQUA + "Generates: "
                     + EnumChatFormatting.WHITE
-                    + " humidity * Tier * "
+                    + " humidity * tier * "
                     + BASE_WATER_PER_SECOND
                     + " L/s"
                     + EnumChatFormatting.AQUA
-                    + " of water."
+                    + " of Water."
                     + EnumChatFormatting.RESET)
             .addInfo(
                 EnumChatFormatting.RED + "Consumes: "
@@ -250,7 +254,7 @@ public class GregtechMetaTileEntity_SteamWaterPump
                     + BASE_STEAM_PER_SECOND
                     + " L/s"
                     + EnumChatFormatting.RED
-                    + " of steam."
+                    + " of Steam."
                     + EnumChatFormatting.RESET)
             .addSeparator()
             .beginStructureBlock(3, 3, 5, false)
@@ -261,12 +265,15 @@ public class GregtechMetaTileEntity_SteamWaterPump
                     + "1"
                     + EnumChatFormatting.GRAY
                     + " Any casing")
+            .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1)
             .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Bronze Frame Box")
             .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Wooden Casing")
+            .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2)
             .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Steel Frame Box")
             .addStructureInfo(EnumChatFormatting.GOLD + "10 " + EnumChatFormatting.GRAY + " Wooden Casing")
+            .addStructureInfo("")
             .toolTipFinisher(AuthorEvgenWarGold);
         return tt;
     }
@@ -351,6 +358,12 @@ public class GregtechMetaTileEntity_SteamWaterPump
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_WATER_PUMP_LOOP.resourceLocation;
     }
 
 }
