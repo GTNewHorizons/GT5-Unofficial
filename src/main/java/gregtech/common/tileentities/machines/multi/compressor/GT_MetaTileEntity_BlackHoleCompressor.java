@@ -250,14 +250,16 @@ public class GT_MetaTileEntity_BlackHoleCompressor
             @Override
             protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
 
-                for (int i = 0; i < inputItems.length; i++) {
-                    if (inputItems[i].getItem() instanceof GT_MetaGenerated_Item_01) {
-                        if (inputItems[i].getItemDamage() == 32418 && !blackholeOn) {
-                            inputItems[i].stackSize -= 1;
+                // Loop through all items and look for the Activation and Deactivation Catalysts
+                // Deactivation resets stability to 100 and catalyzing cost to 1
+                for (ItemStack inputItem : inputItems) {
+                    if (inputItem.getItem() instanceof GT_MetaGenerated_Item_01) {
+                        if (inputItem.getItemDamage() == 32418 && !blackholeOn) {
+                            inputItem.stackSize -= 1;
                             blackholeOn = true;
                             break;
-                        } else if (inputItems[i].getItemDamage() == 32419 && blackholeOn) {
-                            inputItems[i].stackSize -= 1;
+                        } else if (inputItem.getItemDamage() == 32419 && blackholeOn) {
+                            inputItem.stackSize -= 1;
                             blackholeOn = false;
                             blackHoleStability = 100;
                             catalyzingCostModifier = 1;
@@ -281,53 +283,64 @@ public class GT_MetaTileEntity_BlackHoleCompressor
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+
+                // Default speed bonus
+                setSpeedBonus(1F);
+
                 // If recipe needs a black hole and one is not open, just wait
-                if (recipe.mSpecialValue > 0 && !blackholeOn) {
-                    return CheckRecipeResultRegistry.NO_BLACK_HOLE;
+                // If the recipe doesn't require black hole, incur a 0.5x speed penalty
+                // If recipe doesn't require black hole but one is open, give 5x speed bonus
+                if (recipe.mSpecialValue > 0) {
+                    if (!blackholeOn) return CheckRecipeResultRegistry.NO_BLACK_HOLE;
+                } else {
+                    if (blackHoleStability <= 0) setSpeedBonus(2F);
+                    else if (blackholeOn) setSpeedBonus(0.2F);
                 }
                 return super.validateRecipe(recipe);
             }
 
             @Nonnull
             protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
-
                 // If recipe needs a black hole and one is active but unstable, continuously void items
-
-                if (recipe.mSpecialValue > 0 && blackHoleStability <= 0) {
+                if (blackHoleStability <= 0 && recipe.mSpecialValue > 0) {
                     return CheckRecipeResultRegistry.UNSTABLE_BLACK_HOLE;
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }.setSpeedBonus(1F / 2F);
+        };
         // .setMaxParallelSupplier(this::getMaxParallelRecipes);
-    }
-
-    @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        if (blackholeOn && blackHoleStability < 100) blackHoleStability += 0.04F;
-        return super.onRunningTick(aStack);
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
-        if (blackholeOn) {
-            FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
-            for (GT_MetaTileEntity_Hatch_Input hatch : mInputHatches) {
-                if (drain(hatch, totalCost, false)) {
-                    drain(hatch, totalCost, true);
-                    catalyzingCounter += 1;
-                    if (blackHoleStability < 100) blackHoleStability += 0.1F;
-                    if (catalyzingCounter >= 100) {
-                        catalyzingCostModifier *= 2;
-                        catalyzingCounter = 0;
+        if (aTick % 20 == 0) {
+            if (blackholeOn && blackHoleStability >= 0) {
+                float stabilityDecrease = 1F;
+                // If the machine is running, reduce stability loss by 25%
+                if (this.mProgresstime != 0) {
+                    stabilityDecrease = 0.75F;
+                }
+                // Search all hatches for catalyst fluid
+                // If found enough, drain it and reduce stability loss to 0
+                // Every 30 drains, double the cost
+                FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
+                for (GT_MetaTileEntity_Hatch_Input hatch : mInputHatches) {
+                    if (drain(hatch, totalCost, false)) {
+                        drain(hatch, totalCost, true);
+                        catalyzingCounter += 1;
+                        stabilityDecrease = 0;
+                        if (catalyzingCounter >= 30) {
+                            catalyzingCostModifier *= 2;
+                            catalyzingCounter = 0;
+                        }
                     }
                 }
+                if (blackHoleStability >= 0) blackHoleStability -= stabilityDecrease;
+                else blackHoleStability = 0;
             }
         }
-        if (blackHoleStability >= 0) blackHoleStability -= 0.05F;
-        else blackHoleStability = 0;
     }
 
     public int getMaxParallelRecipes() {
