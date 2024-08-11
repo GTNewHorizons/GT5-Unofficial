@@ -22,7 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -34,15 +33,10 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -58,6 +52,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings2;
+import gregtech.common.items.GT_MetaGenerated_Item_01;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -68,7 +63,9 @@ public class GT_MetaTileEntity_BlackHoleCompressor
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_BlackHoleCompressor> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_BlackHoleCompressor>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, (new String[][] { { "AA ", " A ", " b ", " A ", "AAA" } }))
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            (new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A A", "AAA" }, { "AAA", "AAA", "AAA" } }))
         .addElement(
             'A',
             buildHatchAdder(GT_MetaTileEntity_BlackHoleCompressor.class)
@@ -79,37 +76,14 @@ public class GT_MetaTileEntity_BlackHoleCompressor
                     onElementPass(
                         GT_MetaTileEntity_BlackHoleCompressor::onCasingAdded,
                         ofBlock(GregTech_API.sBlockCasings2, 0))))
-        .addElement(
-            'b',
-            buildHatchAdder(GT_MetaTileEntity_BlackHoleCompressor.class)
-                .adder(GT_MetaTileEntity_BlackHoleCompressor::addBlackHoleHatch)
-                .hatchClass(GT_MetaTileEntity_Hatch_Input.class)
-                .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
-                .dot(1)
-                .build())
         .build();
 
     private boolean blackholeOn = false;
-    private boolean blackholeCatalyzing = false;
     private int catalyzingCounter = 0;
     private float blackHoleStability = 100;
-    private GT_MetaTileEntity_Hatch_Input blackHoleHatch;
 
     private final FluidStack blackholeCatalyzingCost = (MaterialsUEVplus.SpaceTime).getMolten(1);
     private int catalyzingCostModifier = 1;
-    private final FluidStack blackholeCost = new FluidStack((MaterialsUEVplus.SpaceTime).getMolten(1), 16000);
-
-    private boolean addBlackHoleHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity != null) {
-            final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-                blackHoleHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
-                blackHoleHatch.updateTexture(aBaseCasingIndex);
-                return true;
-            }
-        }
-        return false;
-    }
 
     public GT_MetaTileEntity_BlackHoleCompressor(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -209,13 +183,13 @@ public class GT_MetaTileEntity_BlackHoleCompressor
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 0, 0, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 1, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 0, 0, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -255,12 +229,16 @@ public class GT_MetaTileEntity_BlackHoleCompressor
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.getBoolean("blackholeOn")) {
-            currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Active");
-            currentTip.add(
-                EnumChatFormatting.DARK_PURPLE + " Stability: "
-                    + EnumChatFormatting.BOLD
-                    + Math.round(tag.getFloat("blackHoleStability"))
-                    + "%");
+            if (tag.getFloat("blackHoleStability") > 0) {
+                currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Active");
+                currentTip.add(
+                    EnumChatFormatting.DARK_PURPLE + " Stability: "
+                        + EnumChatFormatting.BOLD
+                        + Math.round(tag.getFloat("blackHoleStability"))
+                        + "%");
+            } else {
+                currentTip.add(EnumChatFormatting.RED + "BLACK HOLE UNSTABLE");
+            }
         } else currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Offline");
     }
 
@@ -271,6 +249,23 @@ public class GT_MetaTileEntity_BlackHoleCompressor
             @NotNull
             @Override
             protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+
+                for (int i = 0; i < inputItems.length; i++) {
+                    if (inputItems[i].getItem() instanceof GT_MetaGenerated_Item_01) {
+                        if (inputItems[i].getItemDamage() == 32418 && !blackholeOn) {
+                            inputItems[i].stackSize -= 1;
+                            blackholeOn = true;
+                            break;
+                        } else if (inputItems[i].getItemDamage() == 32419 && blackholeOn) {
+                            inputItems[i].stackSize -= 1;
+                            blackholeOn = false;
+                            blackHoleStability = 100;
+                            catalyzingCostModifier = 1;
+                            break;
+                        }
+                    }
+                }
+
                 Stream<GT_Recipe> compressorRecipes = RecipeMaps.compressorRecipes.findRecipeQuery()
                     .items(inputItems)
                     .cachedRecipe(lastRecipe)
@@ -295,7 +290,9 @@ public class GT_MetaTileEntity_BlackHoleCompressor
 
             @Nonnull
             protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
+
                 // If recipe needs a black hole and one is active but unstable, continuously void items
+
                 if (recipe.mSpecialValue > 0 && blackHoleStability <= 0) {
                     return CheckRecipeResultRegistry.UNSTABLE_BLACK_HOLE;
                 }
@@ -316,73 +313,21 @@ public class GT_MetaTileEntity_BlackHoleCompressor
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (blackholeOn) {
-            if (blackholeCatalyzing && blackHoleHatch != null) {
-                FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
-                if (drain(blackHoleHatch, totalCost, false)) {
-                    drain(blackHoleHatch, totalCost, true);
+            FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
+            for (GT_MetaTileEntity_Hatch_Input hatch : mInputHatches) {
+                if (drain(hatch, totalCost, false)) {
+                    drain(hatch, totalCost, true);
+                    catalyzingCounter += 1;
                     if (blackHoleStability < 100) blackHoleStability += 0.1F;
-                }
-                if (catalyzingCounter >= 100) {
-                    catalyzingCostModifier *= 2;
-                    catalyzingCounter = 0;
-                }
-                catalyzingCounter += 1;
-            }
-            if (blackHoleStability >= 0) blackHoleStability -= 0.05F;
-            else blackHoleStability = 0;
-        }
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(
-            new ButtonWidget().setOnClick((clickData, widget) -> toggleBlackHole())
-                .setBackground(() -> {
-                    if (blackholeOn) {
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                            GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
-                    } else {
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                            GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
+                    if (catalyzingCounter >= 100) {
+                        catalyzingCostModifier *= 2;
+                        catalyzingCounter = 0;
                     }
-                })
-                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.black_hole_on"))
-                .setPos(80, 91)
-                .setSize(16, 16))
-            .widget(
-                new ButtonWidget().setOnClick((clickData, widget) -> toggleBlackHoleCatalyzation())
-                    .setBackground(() -> {
-                        if (blackholeCatalyzing) {
-                            return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                                GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
-                        } else {
-                            return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                                GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
-                        }
-                    })
-                    .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.black_hole_catalyze"))
-                    .setPos(98, 91)
-                    .setSize(16, 16));
-    }
-
-    private void toggleBlackHoleCatalyzation() {
-        blackholeCatalyzing = !blackholeCatalyzing;
-    }
-
-    public void toggleBlackHole() {
-        if (blackholeOn) {
-            blackholeOn = false;
-            blackHoleStability = 100;
-            catalyzingCostModifier = 0;
-        } else {
-            if (blackHoleHatch != null) {
-                if (drain(blackHoleHatch, blackholeCost, false)) {
-                    drain(blackHoleHatch, blackholeCost, true);
-                    blackholeOn = true;
                 }
             }
         }
+        if (blackHoleStability >= 0) blackHoleStability -= 0.05F;
+        else blackHoleStability = 0;
     }
 
     public int getMaxParallelRecipes() {

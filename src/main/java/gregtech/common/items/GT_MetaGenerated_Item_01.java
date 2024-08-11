@@ -73,6 +73,8 @@ import static gregtech.common.items.ID_MetaItem_01.Battery_SU_LV_Mercury;
 import static gregtech.common.items.ID_MetaItem_01.Battery_SU_LV_Sulfuric_Acid;
 import static gregtech.common.items.ID_MetaItem_01.Battery_SU_MV_Mercury;
 import static gregtech.common.items.ID_MetaItem_01.Battery_SU_MV_Sulfuric_Acid;
+import static gregtech.common.items.ID_MetaItem_01.Black_Hole_Closer;
+import static gregtech.common.items.ID_MetaItem_01.Black_Hole_Opener;
 import static gregtech.common.items.ID_MetaItem_01.Book_Written_01;
 import static gregtech.common.items.ID_MetaItem_01.Book_Written_02;
 import static gregtech.common.items.ID_MetaItem_01.Book_Written_03;
@@ -3123,6 +3125,20 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 EnumChatFormatting.GREEN + "Tengam Electromagnet",
                 MagnetTiers.buildMagnetTooltip(MagnetTiers.Tengam),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 40)));
+        ItemList.Black_Hole_Opener.set(
+            addItem(
+                Black_Hole_Opener.ID,
+                "Black Hole Activation Catalyst",
+                "Opens a semi-stable black hole",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ALIENIS, 32),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 64)));
+        ItemList.Black_Hole_Closer.set(
+            addItem(
+                Black_Hole_Closer.ID,
+                "Black Hole Deactivation Catalyst",
+                "Safely closes a semi-stable black hole",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ALIENIS, 32),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.PERDITIO, 64)));
         removeRecipes();
         setBurnValues();
         oredictBlacklistEntries();

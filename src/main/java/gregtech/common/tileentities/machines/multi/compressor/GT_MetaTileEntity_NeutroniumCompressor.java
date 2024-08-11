@@ -11,8 +11,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRES
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_GLOW;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -93,7 +97,7 @@ public class GT_MetaTileEntity_NeutroniumCompressor
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_HIPCompressor(this.mName);
+        return new GT_MetaTileEntity_NeutroniumCompressor(this.mName);
     }
 
     @Override
@@ -184,13 +188,13 @@ public class GT_MetaTileEntity_NeutroniumCompressor
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 0, 0, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 2, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 0, 0, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 0, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -205,7 +209,7 @@ public class GT_MetaTileEntity_NeutroniumCompressor
         mCasingAmount = 0;
         mEnergyHatches.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 0)) return false;
         if (mCasingAmount < 0) return false;
 
         // All checks passed!
@@ -312,6 +316,12 @@ public class GT_MetaTileEntity_NeutroniumCompressor
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.compressorRecipes;
+    }
+
+    @Nonnull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(RecipeMaps.compressorRecipes, RecipeMaps.neutroniumCompressorRecipes);
     }
 
     @Override
