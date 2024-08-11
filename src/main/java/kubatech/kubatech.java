@@ -63,7 +63,7 @@ import kubatech.network.LoadConfigPacket;
     acceptedMinecraftVersions = "[1.7.10]",
     dependencies = "required-after: gregtech; " + "required-after: gtnhmixins@[2.0.1,); "
         + "required-after: modularui; "
-        + "required-after: mobsinfo; "
+        + "after: mobsinfo; "
         + "after: EnderIO; "
         + "after: AWWayofTime; "
         + "after: ExtraUtilities; "

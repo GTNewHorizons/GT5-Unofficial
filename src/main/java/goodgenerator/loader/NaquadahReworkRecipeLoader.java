@@ -73,6 +73,7 @@ import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IRecipeMutableAccess;
@@ -811,14 +812,14 @@ public class NaquadahReworkRecipeLoader {
         reAdd.clear();
 
         GT_Log.out.print("Thermal Centrifuge done!\n");
-
+        final boolean checkCombs = Mods.Forestry.isModLoaded();
         // For Centrifuge
         for (GT_Recipe recipe : RecipeMaps.centrifugeRecipes.getAllRecipes()) {
             ItemStack input = null;
             if (recipe.mInputs.length > 0) input = recipe.mInputs[0];
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
-                if (input.isItemEqual(GT_Bees.combs.getStackForType(CombType.DOB))) {
+                if (checkCombs && input.isItemEqual(GT_Bees.combs.getStackForType(CombType.DOB))) {
                     GT_Recipe tRecipe = recipe.copy();
                     boolean modified = false;
                     for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -922,7 +923,7 @@ public class NaquadahReworkRecipeLoader {
             if (recipe.mInputs.length > 0) input = recipe.mInputs[0];
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
-                if (input.isItemEqual(GT_Bees.combs.getStackForType(CombType.DOB))) {
+                if (checkCombs && input.isItemEqual(GT_Bees.combs.getStackForType(CombType.DOB))) {
                     GT_Recipe tRecipe = recipe.copy();
                     boolean modified = false;
                     for (int i = 0; i < tRecipe.mOutputs.length; i++) {
