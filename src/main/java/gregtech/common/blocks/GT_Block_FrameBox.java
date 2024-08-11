@@ -112,6 +112,11 @@ public class GT_Block_FrameBox extends BlockContainer {
         return newTileEntity;
     }
 
+    // Get the material that this frame box is made of
+    public Materials getMaterial(int meta) {
+        return GregTech_API.sGeneratedMaterials[meta];
+    }
+
     @Override
     public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {
