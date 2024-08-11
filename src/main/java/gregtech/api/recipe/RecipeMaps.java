@@ -1111,6 +1111,11 @@ public final class RecipeMaps {
         .disableOptimize()
         .frontend(LargeBoilerFuelFrontend::new)
         .build();
+    public static final RecipeMap<FuelBackend> fuelBoilerFuels = RecipeMapBuilder
+        .of("gt.recipe.fuelboiler", FuelBackend::new)
+        .maxIO(1, 1, 0, 0)
+        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .build();
     public static final RecipeMap<RecipeMapBackend> nanoForgeRecipes = RecipeMapBuilder.of("gt.recipe.nanoforge")
         .maxIO(6, 2, 3, 0)
         .minInputs(2, 1)
@@ -1251,5 +1256,13 @@ public final class RecipeMaps {
                     b.copy()
                         .duration(1 * TICK)
                         .eut(TierEU.RECIPE_UEV))));
+
+        // Add fuels above 100 EU/L to the fuel boiler
+        dieselFuels.addDownstream(IRecipeMap.newRecipeMap(b ->
+            (b.getMetadataOrDefault(FUEL_VALUE, 0) >= 100) ? b.addTo(fuelBoilerFuels) : Collections.emptyList()
+        ));
+        gasTurbineFuels.addDownstream(IRecipeMap.newRecipeMap(b ->
+            (b.getMetadataOrDefault(FUEL_VALUE, 0) >= 100) ? b.addTo(fuelBoilerFuels) : Collections.emptyList()
+        ));
     }
 }

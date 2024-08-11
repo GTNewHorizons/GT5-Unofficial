@@ -2,6 +2,9 @@ package gregtech.common.tileentities.machines.multi.fuelboilers;
 
 import static gregtech.api.GregTech_API.*;
 
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GT_RecipeMapUtil;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -40,6 +43,11 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.fuelBoilerFuels;
     }
 
     protected static int getTierCasing(Block b, int meta) {
