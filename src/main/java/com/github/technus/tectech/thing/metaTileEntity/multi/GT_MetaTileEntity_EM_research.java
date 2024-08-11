@@ -470,8 +470,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.research.name")) // Machine Type: Research
-                                                                                              // Station
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.research.name" + "/" + "gt.blockmachines.multimachine.em.research.mode.Scanner=Mode: Scanner")) // Machine Type: Research
+                                                                                              // Station/Scanner
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.0")) // Controller block of
                                                                                            // the Research Station
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.1")) // Used to scan Data
