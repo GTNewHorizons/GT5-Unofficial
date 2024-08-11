@@ -59,7 +59,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.BLACK_HOLE_HATCH;
+import static gregtech.api.enums.MetaTileEntityIDs.BLACKHOLE_COMPRESSOR_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_IV;
@@ -126,6 +126,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.HEAT_DETECTOR_HATCH;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_COAL_BOILER;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_LAVA_BOILER;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_SOLAR_BOILER;
+import static gregtech.api.enums.MetaTileEntityIDs.HIP_COMPRESSOR_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.HP_STEAM_ALLOY_SMELTER;
 import static gregtech.api.enums.MetaTileEntityIDs.HP_STEAM_COMPRESSOR;
 import static gregtech.api.enums.MetaTileEntityIDs.HP_STEAM_EXTRACTOR;
@@ -276,6 +277,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_LuV;
 import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.NEUTRONIUM_COMPRESSOR_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.OIL_CRACKER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.ORE_DRILL_MKIII_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.ORE_DRILL_MKII_CONTROLLER;
@@ -559,7 +561,6 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionCompu
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer3;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_HeatExchanger;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ImplosionCompressor;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialCompressor;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialElectromagneticSeparator;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialLaserEngraver;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IntegratedOreFactory;
@@ -593,9 +594,12 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ProcessingA
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PyrolyseOven;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_TranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
+import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_BlackHoleCompressor;
+import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_HIPCompressor;
+import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_IndustrialCompressor;
+import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_NeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
-import gregtech.common.tileentities.machines.multi.hatches.GT_MetaTileEntity_BlackHoleHatch;
 import gregtech.common.tileentities.machines.multi.hatches.GT_MetaTileEntity_HeatDetectorHatch;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Bronze;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Steel;
@@ -1073,8 +1077,23 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Machine_Multi_IndustrialCompressor.set(
             new GT_MetaTileEntity_IndustrialCompressor(
                 INDUSTRIAL_COMPRESSOR_CONTROLLER.ID,
-                "multimachine.compressor",
-                "Big Compressor").getStackForm(1));
+                "multimachine.basiccompressor",
+                "Large Electric Compressor").getStackForm(1));
+        ItemList.Machine_Multi_HIPCompressor.set(
+            new GT_MetaTileEntity_HIPCompressor(
+                HIP_COMPRESSOR_CONTROLLER.ID,
+                "multimachine.hipcompressor",
+                "Hot Isostatic Pressurization Unit").getStackForm(1));
+        ItemList.Machine_Multi_NeutroniumCompressor.set(
+            new GT_MetaTileEntity_NeutroniumCompressor(
+                NEUTRONIUM_COMPRESSOR_CONTROLLER.ID,
+                "multimachine.neutroniumcompressor",
+                "Neutronium Compressor").getStackForm(1));
+        ItemList.Machine_Multi_BlackHoleCompressor.set(
+            new GT_MetaTileEntity_BlackHoleCompressor(
+                BLACKHOLE_COMPRESSOR_CONTROLLER.ID,
+                "multimachine.blackholecompressor",
+                "Semi-Stable Black Hole Containment Field").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
@@ -4169,9 +4188,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "hatch.heatdetector",
                 "Heat Detection Hatch",
                 7).getStackForm(1));
-        ItemList.Hatch_BlackHole.set(
-            new GT_MetaTileEntity_BlackHoleHatch(BLACK_HOLE_HATCH.ID, "hatch.blackhole", "Black Hole Control Hatch", 9)
-                .getStackForm(1));
         generateWiresAndPipes();
     }
 

@@ -1089,7 +1089,6 @@ public enum ItemList implements IItemContainer {
     Hatch_DataAccess_UV,
 
     Hatch_HeatDetector,
-    Hatch_BlackHole,
 
     Battery_Buffer_1by1_ULV,
     Battery_Buffer_1by1_LV,
@@ -1466,6 +1465,9 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_Canner,
     Machine_Multi_IndustrialCompressor,
+    Machine_Multi_HIPCompressor,
+    Machine_Multi_NeutroniumCompressor,
+    Machine_Multi_BlackHoleCompressor,
     Machine_Multi_IndustrialLaserEngraver,
     Laser_Plate,
     Casing_Laser,

@@ -1,4 +1,4 @@
-package gregtech.common.tileentities.machines.multi.hatches;
+package gregtech.common.tileentities.machines.multi.compressor;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -24,9 +24,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.widget.CoverCycleButtonWidget;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialCompressor;
 
-public class GT_MetaTileEntity_BlackHoleHatch extends GT_MetaTileEntity_Hatch {
+public class GT_MetaTileEntity_HeatDetectorHatch extends GT_MetaTileEntity_Hatch {
 
     protected float threshold = 0;
     protected boolean inverted = false;
@@ -35,11 +34,12 @@ public class GT_MetaTileEntity_BlackHoleHatch extends GT_MetaTileEntity_Hatch {
     private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_BLACKHOLE;
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_BLACKHOLE_GLOW;
 
-    public GT_MetaTileEntity_BlackHoleHatch(int aID, String aName, String aNameRegional, int aTier) {
+    public GT_MetaTileEntity_HeatDetectorHatch(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Controls black hole compressor.");
     }
 
-    public GT_MetaTileEntity_BlackHoleHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_HeatDetectorHatch(String aName, int aTier, String[] aDescription,
+        ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -117,10 +117,11 @@ public class GT_MetaTileEntity_BlackHoleHatch extends GT_MetaTileEntity_Hatch {
         super.saveNBTData(aNBT);
     }
 
-    GT_MetaTileEntity_IndustrialCompressor compressor;
-
-    public void linkToCompressor(GT_MetaTileEntity_IndustrialCompressor c) {
-        compressor = c;
+    /**
+     * Updates redstone output strength based on the heat of the HIP unit.
+     */
+    public void updateRedstoneOutput(float heat) {
+        isOn = (heat > threshold) ^ inverted;
     }
 
     @Override
@@ -139,7 +140,7 @@ public class GT_MetaTileEntity_BlackHoleHatch extends GT_MetaTileEntity_Hatch {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_BlackHoleHatch(mName, mTier, mDescriptionArray, mTextures);
+        return new GT_MetaTileEntity_HeatDetectorHatch(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -148,11 +149,6 @@ public class GT_MetaTileEntity_BlackHoleHatch extends GT_MetaTileEntity_Hatch {
             .addIcon(textureFont_Glow)
             .glow()
             .build() };
-    }
-
-    @Override
-    public void onDisableWorking() {
-        compressor.toggleBlackHole();
     }
 
     @Override
