@@ -351,16 +351,21 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         }
     }
 
+    protected boolean isAutomatable() {
+        return GT_Mod.gregtechproxy.mAllowSmallBoilerAutomation;
+    }
+
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return GT_Mod.gregtechproxy.mAllowSmallBoilerAutomation;
+        return isAutomatable() && aIndex == 1 || aIndex == 3;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return GT_Mod.gregtechproxy.mAllowSmallBoilerAutomation;
+        return isAutomatable() && (aIndex == 0 && isItemValidFluidFilledItem(aStack))
+            || (aIndex == 2 && isItemValidFuel(aStack));
     }
 
     @Override
