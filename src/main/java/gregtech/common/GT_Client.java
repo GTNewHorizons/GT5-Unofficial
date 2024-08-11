@@ -625,8 +625,9 @@ public class GT_Client extends GT_Proxy implements Runnable {
         GT_Renderer_Block.register();
         new GT_MultiTile_Renderer();
         new GT_RenderDrone();
+        new GT_LaserRenderer();
+
         if (Mods.GalacticraftCore.isModLoaded()) {
-            new GT_LaserRenderer();
             new GT_WormholeRenderer();
         }
         metaGeneratedItemRenderer = new GT_MetaGenerated_Item_Renderer();
