@@ -123,6 +123,7 @@ public class GT_MetaTileEntity_Pipe_EnergyMirror extends GT_MetaTileEntity_Pipe_
                         if (tTileEntity instanceof IConnectsToEnergyTunnel
                             && ((IConnectsToEnergyTunnel) tTileEntity).canConnect(oppositeSide)) {
                             mConnections |= 1 << side.ordinal();
+                            connectedSides[connectionCount] = side;
                             connectionCount++;
                         } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity)
                             .getMetaTileEntity() instanceof IConnectsToEnergyTunnel) {
