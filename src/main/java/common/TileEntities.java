@@ -12,6 +12,7 @@ import common.tileentities.TE_ThaumiumReinforcedVoidJar;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.MetaTileEntityIDs;
+import gregtech.api.enums.Mods;
 
 public class TileEntities {
 
@@ -25,10 +26,12 @@ public class TileEntities {
     public static GTMTE_TFFTHatch tfftHatch;
 
     public static void preInit() {
-        GameRegistry.registerTileEntity(TE_ThaumiumReinforcedJar.class, "kekztech_thaumiumreinforcedjar");
-        GameRegistry.registerTileEntity(TE_ThaumiumReinforcedVoidJar.class, "kekztech_thaumiumreinforcedvoidjar");
-        GameRegistry.registerTileEntity(TE_IchorJar.class, "kekztech_ichorjar");
-        GameRegistry.registerTileEntity(TE_IchorVoidJar.class, "kekztech_ichorvoidjar");
+        if (Mods.Thaumcraft.isModLoaded()) {
+            GameRegistry.registerTileEntity(TE_ThaumiumReinforcedJar.class, "kekztech_thaumiumreinforcedjar");
+            GameRegistry.registerTileEntity(TE_ThaumiumReinforcedVoidJar.class, "kekztech_thaumiumreinforcedvoidjar");
+            GameRegistry.registerTileEntity(TE_IchorJar.class, "kekztech_ichorjar");
+            GameRegistry.registerTileEntity(TE_IchorVoidJar.class, "kekztech_ichorvoidjar");
+        }
     }
 
     public static void init() {
