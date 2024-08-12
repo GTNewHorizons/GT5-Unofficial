@@ -62,7 +62,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
@@ -625,10 +624,9 @@ public class GT_Client extends GT_Proxy implements Runnable {
         GT_Renderer_Block.register();
         new GT_MultiTile_Renderer();
         new GT_RenderDrone();
+        new GT_LaserRenderer();
         new GT_WormholeRenderer();
-        if (Mods.GalacticraftCore.isModLoaded()) {
-            new GT_LaserRenderer();
-        }
+
         metaGeneratedItemRenderer = new GT_MetaGenerated_Item_Renderer();
         for (GT_MetaGenerated_Item item : GT_MetaGenerated_Item.sInstances.values()) {
             metaGeneratedItemRenderer.registerItem(item);

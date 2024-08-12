@@ -483,7 +483,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
@@ -1139,13 +1138,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "multimachine.wormhole",
                 "Miniature Wormhole Generator").getStackForm(1));
 
-        if (Mods.GalacticraftCore.isModLoaded()) {
-            ItemList.Machine_Multi_IndustrialLaserEngraver.set(
-                new GT_MetaTileEntity_IndustrialLaserEngraver(
-                    INDUSTRIAL_LASER_ENGRAVER_CONTROLLER.ID,
-                    "multimachine.engraver",
-                    "High Energy Laser Emitter").getStackForm(1));
-        }
+        ItemList.Machine_Multi_IndustrialLaserEngraver.set(
+            new GT_MetaTileEntity_IndustrialLaserEngraver(
+                INDUSTRIAL_LASER_ENGRAVER_CONTROLLER.ID,
+                "multimachine.engraver",
+                "Hyper-Intensity Laser Emitter").getStackForm(1));
 
         ItemList.Machine_Multi_Lathe.set(
             new GT_MetaTileEntity_MultiLathe(
