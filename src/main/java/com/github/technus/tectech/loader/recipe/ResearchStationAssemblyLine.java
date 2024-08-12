@@ -29,6 +29,7 @@ import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -501,7 +502,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_InductorXSMD.get(16L), ItemList.Circuit_Parts_CapacitorXSMD.get(20L),
                 ItemList.Circuit_Parts_ResistorXSMD.get(20L), ItemList.Circuit_Chip_NOR.get(32L),
                 ItemList.Circuit_Chip_Ram.get(64L),
-                GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedwireFine", 24L, 10101), // Fine
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.wireFine), 24, 10101), // Fine
                 // Lumiium
                 // Wire
                 new Object[] { OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L }, },
@@ -522,7 +523,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_TransistorXSMD.get(24L), ItemList.Circuit_Parts_ResistorXSMD.get(24L),
                 ItemList.Circuit_Parts_CapacitorXSMD.get(24L), ItemList.Circuit_Parts_DiodeXSMD.get(24L),
                 ItemList.Circuit_Chip_NOR.get(64L), ItemList.Circuit_Chip_SoC2.get(32L),
-                GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedwireFine", 32L, 10101), // Fine
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.wireFine), 32, 10101), // Fine
                 // Lumiium
                 // Wire
                 new Object[] { OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L },
@@ -683,12 +684,12 @@ public class ResearchStationAssemblyLine implements Runnable {
 
                     GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Osmiridium, 64L),
                     GT_OreDictUnificator.get("stickLongShirabon", 64),
-                    getModItem(BartWorks.ID, "gt.bwMetaGeneratedstickLong", 64L, 39),
+                    new ItemStack(WerkstoffLoader.items.get(OrePrefixes.stickLong), 64, 39),
                     getModItem(GTPlusPlus.ID, "itemRodLongQuantum", 64L),
 
                     getModItem(GTPlusPlus.ID, "itemRodLongHypogen", 64L),
                     getModItem(GTPlusPlus.ID, "itemRodLongCelestialTungsten", 64L),
-                    getModItem(BartWorks.ID, "gt.bwMetaGeneratedstickLong", 64L, 10106),
+                    new ItemStack(WerkstoffLoader.items.get(OrePrefixes.stickLong), 64, 10106),
                     getModItem(GTPlusPlus.ID, "itemRodLongAstralTitanium", 64L),
 
                     GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.SuperconductorUMVBase, 64L),

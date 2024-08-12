@@ -10,6 +10,7 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -642,7 +643,7 @@ public class BlastFurnaceRecipes implements Runnable {
         // Rh + 3Cl = RhCl3
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 1L, 78), GT_Utility.getIntegratedCircuit(2))
+            .itemInputs(new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust),1, 78), GT_Utility.getIntegratedCircuit(2))
             .itemOutputs(MaterialsKevlar.RhodiumChloride.getDust(4))
             .fluidInputs(Materials.Chlorine.getGas(3000))
             .duration(30 * SECONDS)

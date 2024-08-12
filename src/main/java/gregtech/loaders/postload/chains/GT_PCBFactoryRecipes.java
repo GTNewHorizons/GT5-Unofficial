@@ -13,6 +13,7 @@ import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -609,8 +610,7 @@ public class GT_PCBFactoryRecipes {
                     GT_Utility.getIntegratedCircuit(1),
                     GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GT_ModHandler
-                        .getModItem(BartWorks.ID, "gt.bwMetaGeneratedfoil", (long) (16 * (Math.sqrt(tier - 6))), 10106),
+                    new ItemStack(WerkstoffLoader.items.get(OrePrefixes.foil), (int) (16 * (Math.sqrt(tier - 6))), 10106),
                     GT_OreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
                     GT_ModHandler
@@ -639,8 +639,7 @@ public class GT_PCBFactoryRecipes {
                     GT_Utility.getNaniteAsCatalyst(Materials.Silver),
                     GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GT_ModHandler
-                        .getModItem(BartWorks.ID, "gt.bwMetaGeneratedfoil", (long) (16 * (Math.sqrt(tier - 6))), 10106),
+                    new ItemStack(WerkstoffLoader.items.get(OrePrefixes.foil), (int) (16 * (Math.sqrt(tier - 6))), 10106),
                     GT_OreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
                     GT_ModHandler
@@ -669,8 +668,7 @@ public class GT_PCBFactoryRecipes {
                     GT_Utility.getNaniteAsCatalyst(Materials.Gold),
                     GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GT_ModHandler
-                        .getModItem(BartWorks.ID, "gt.bwMetaGeneratedfoil", (long) (16 * (Math.sqrt(tier - 6))), 10106),
+                    new ItemStack(WerkstoffLoader.items.get(OrePrefixes.foil), (int) (16 * (Math.sqrt(tier - 6))), 10106),
                     GT_OreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
                     GT_ModHandler

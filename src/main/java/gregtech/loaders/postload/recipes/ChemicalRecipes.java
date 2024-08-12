@@ -14,6 +14,7 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -3706,7 +3707,7 @@ public class ChemicalRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 2),
-                getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 3L, 63))
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 3, 63))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(2000))
             .fluidOutputs(Materials.Hydrogen.getGas(2000))
             .duration(45 * SECONDS)
@@ -3721,7 +3722,7 @@ public class ChemicalRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 1),
-                getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 6L, 10052))
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 6, 10052))
             .fluidInputs(Materials.SiliconTetrachloride.getFluid(1000))
             .duration(20 * SECONDS)
             .eut(30)

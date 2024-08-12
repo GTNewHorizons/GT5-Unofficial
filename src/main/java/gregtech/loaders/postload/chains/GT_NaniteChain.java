@@ -14,6 +14,7 @@ import static gregtech.api.util.GT_RecipeConstants.NANO_FORGE_TIER;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -89,7 +90,7 @@ public class GT_NaniteChain {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 aUVTierLens,
-                getModItem(BartWorks.ID, "bw.werkstoffblockscasingadvanced.01", 8, 31776),
+                new ItemStack(WerkstoffLoader.BWBlockCasingsAdvanced, 8, 31776),
                 ItemList.Circuit_Chip_SoC.get(64))
             .itemOutputs(Materials.Carbon.getNanite(64))
             .fluidInputs(Materials.UUMatter.getFluid(200_000))
@@ -165,7 +166,7 @@ public class GT_NaniteChain {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 aUMVTierLens,
-                getModItem(BartWorks.ID, "gt.bwMetaGeneratedlens", 0, 36), // Magneto lens
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.lens), 0, 36), // Magneto lens
                 getModItem(GTPlusPlus.ID, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any better
                                                                        // naming
                 MaterialsUEVplus.WhiteDwarfMatter.getBlocks(8),
@@ -186,7 +187,7 @@ public class GT_NaniteChain {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 aUMVTierLens,
-                getModItem(BartWorks.ID, "gt.bwMetaGeneratedlens", 0, 36), // Magneto lens
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.lens), 0, 36), // Magneto lens
                 getModItem(GTPlusPlus.ID, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any better
                                                                        // naming
                 MaterialsUEVplus.BlackDwarfMatter.getBlocks(8),

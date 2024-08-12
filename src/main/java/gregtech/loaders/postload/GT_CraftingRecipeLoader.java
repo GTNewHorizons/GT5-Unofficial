@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -2015,7 +2016,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
             ItemList.Casing_Advanced_Rhodium_Palladium.get(1L),
             bits,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
-                GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedplate", 1L, 88), 'F',
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.plate), 1, 88), 'F',
                 OrePrefixes.frameGt.get(Materials.Chrome) });
 
         if (Forestry.isModLoaded()) {

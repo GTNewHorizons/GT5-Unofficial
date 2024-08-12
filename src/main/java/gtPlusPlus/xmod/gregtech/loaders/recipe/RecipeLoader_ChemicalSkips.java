@@ -240,8 +240,8 @@ public class RecipeLoader_ChemicalSkips {
                 Materials.Cerium.getDust(64),
                 Materials.Gadolinium.getDust(64),
                 Materials.Samarium.getDust(64),
-                getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 64L, 11002),
-                getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 64L, 11007),
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 64, 11002),
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 64, 11007),
                 ItemList.SuperconductorComposite.get(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -480,7 +480,7 @@ public class RecipeLoader_ChemicalSkips {
             .itemInputs(
                 GT_Utility.getIntegratedCircuit(10),
                 CI.getEmptyCatalyst(1),
-                getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 64L, 88),
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust),64, 88),
                 Materials.Osmiridium.getDust(64),
                 Materials.Carbon.getNanite(64))
             .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 1))

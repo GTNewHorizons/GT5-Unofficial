@@ -1,5 +1,6 @@
 package com.github.technus.tectech.loader.recipe;
 
+import static com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry.bw_realglas;
 import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
 import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getOrDefault;
 import static gregtech.api.enums.Mods.BartWorks;
@@ -9,6 +10,7 @@ import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
+import com.github.bartimaeusnek.bartworks.common.blocks.BW_Blocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -999,7 +1001,7 @@ public class Assembler implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.TungstenSteel, 4),
-                getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 2))
+                new ItemStack(bw_realglas, 2, 2))
             .itemOutputs(CustomItemList.Machine_BuckConverter_IV.get(1))
             .fluidInputs(Materials.TungstenSteel.getMolten(288))
             .duration(5 * SECONDS)
@@ -1014,7 +1016,7 @@ public class Assembler implements Runnable {
                 GT_OreDictUnificator
                     .get(OrePrefixes.plate, getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome), 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.NiobiumTitanium, 4),
-                getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 3))
+                new ItemStack(bw_realglas, 2, 3))
             .itemOutputs(CustomItemList.Machine_BuckConverter_LuV.get(1))
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("molten.rhodium-plated palladium"), 288))
             .duration(5 * SECONDS)
@@ -1028,7 +1030,7 @@ public class Assembler implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.TungstenSteel, 4),
-                getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 4))
+                new ItemStack(bw_realglas, 2, 4))
             .itemOutputs(CustomItemList.Machine_BuckConverter_ZPM.get(1))
             .fluidInputs(Materials.Iridium.getMolten(288))
             .duration(5 * SECONDS)
@@ -1042,7 +1044,7 @@ public class Assembler implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 4),
-                getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 5))
+                new ItemStack(bw_realglas, 2, 5))
             .itemOutputs(CustomItemList.Machine_BuckConverter_UV.get(1))
             .fluidInputs(Materials.Osmium.getMolten(288))
             .duration(5 * SECONDS)
@@ -1056,7 +1058,7 @@ public class Assembler implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.ElectrumFlux, 4),
-                getModItem(BartWorks.ID, "BW_GlasBlocks", 4L, 5))
+                new ItemStack(bw_realglas, 4, 5))
             .itemOutputs(CustomItemList.Machine_BuckConverter_UHV.get(1))
             .fluidInputs(Materials.Neutronium.getMolten(288))
             .duration(5 * SECONDS)
@@ -1070,7 +1072,7 @@ public class Assembler implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, getOrDefault("Bedrockium", Materials.Neutronium), 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Bedrockium, 4),
-                getModItem(BartWorks.ID, "BW_GlasBlocks", 8L, 5))
+                new ItemStack(bw_realglas, 8, 5))
             .itemOutputs(CustomItemList.Machine_BuckConverter_UEV.get(1))
             .fluidInputs(getOrDefault("Bedrockium", Materials.Neutronium).getMolten(288))
             .duration(5 * SECONDS)
@@ -1084,7 +1086,7 @@ public class Assembler implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UIV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, getOrDefault("BlackPlutonium", Materials.Neutronium), 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Draconium, 4),
-                getModItem(BartWorks.ID, "BW_GlasBlocks", 16L, 5))
+                new ItemStack(bw_realglas, 16, 5))
             .itemOutputs(CustomItemList.Machine_BuckConverter_UIV.get(1))
             .fluidInputs(getOrDefault("BlackPlutonium", Materials.Neutronium).getMolten(288))
             .duration(10 * SECONDS)

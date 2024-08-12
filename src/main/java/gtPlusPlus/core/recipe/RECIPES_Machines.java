@@ -21,6 +21,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.List;
 
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -550,8 +551,8 @@ public class RECIPES_Machines {
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(18),
                 GT_ModHandler.getModItem(GoodGenerator.ID, "supercriticalFluidTurbineCasing", 1),
-                GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedplate", 4, 10101),
-                GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedscrew", 8, 10101))
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.plate), 4, 10101),
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.screw), 8, 10101))
             .itemOutputs(GregtechItemList.Casing_Turbine_SC.get(1))
             .fluidInputs(FluidRegistry.getFluidStack("molten.adamantium alloy", 144 * 2))
             .duration(5 * SECONDS)
@@ -561,9 +562,9 @@ public class RECIPES_Machines {
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(18),
                 GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 1, 32016),
-                GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedplate", 8, 10104),
-                GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedscrew", 16, 10104),
-                GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedgearGt", 4, 10104),
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.plate), 8, 10104),
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.screw), 16, 10104),
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.gearGt), 4, 10104),
                 CI.getCircuit(7, 8))
             .itemOutputs(GregtechItemList.Large_SCSteam_Turbine.get(1))
             .fluidInputs(FluidRegistry.getFluidStack("molten.hikarium", 144 * 8))
