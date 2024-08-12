@@ -2,6 +2,7 @@ package com.github.technus.tectech.loader.recipe;
 
 import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
 import static com.google.common.math.LongMath.pow;
+import static common.Blocks.lscLapotronicEnergyUnit;
 import static goodgenerator.loader.Loaders.compactFusionCoil;
 import static goodgenerator.loader.Loaders.yottaFluidTankCell;
 import static gregtech.api.enums.Mods.Avaritia;
@@ -2934,7 +2935,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     // UV Solar panel
                     getModItem(SuperSolarPanels.ID, "PhotonicSolarPanel", 1, 0),
                     // UHV Capacitor block
-                    getModItem(KekzTech.ID, "kekztech_lapotronicenergyunit_block", 1, 5),
+                    new ItemStack(lscLapotronicEnergyUnit,1, 5),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 4),
 
                     CustomItemList.Machine_Multi_Transformer.get(16), ItemList.Wireless_Hatch_Energy_UMV.get(4),
