@@ -71,6 +71,47 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
+                    .itemInputs(ItemList.PerfectLapotronCrystal.get(1), GT_Utility.copyAmount(0, aStack))
+                    .itemOutputs(
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64))
+                    .requiresCleanRoom()
+                    .duration(360 * SECONDS)
+                    .eut(TierEU.RECIPE_LuV)
+                    .addTo(laserEngraverRecipes);
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(ItemList.CrudeLapotronCrystal.get(1), GT_Utility.copyAmount(0, aStack))
+                    .itemOutputs(ItemList.Circuit_Parts_Crystal_Chip_Master.get(64))
+                    .requiresCleanRoom()
+                    .duration(60 * SECONDS)
+                    .eut(TierEU.RECIPE_LuV)
+                    .addTo(laserEngraverRecipes);
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(ItemList.StableLapotronCrystal.get(1), GT_Utility.copyAmount(0, aStack))
+                    .itemOutputs(
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(32))
+                    .requiresCleanRoom()
+                    .duration(90 * SECONDS)
+                    .eut(TierEU.RECIPE_LuV)
+                    .addTo(laserEngraverRecipes);
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(ItemList.GoodLapotronCrystal.get(1), GT_Utility.copyAmount(0, aStack))
+                    .itemOutputs(
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(48))
+                    .requiresCleanRoom()
+                    .duration(200 * SECONDS)
+                    .eut(TierEU.RECIPE_LuV)
+                    .addTo(laserEngraverRecipes);
+
+                GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Chip_CrystalCPU.get(1L), GT_Utility.copyAmount(0, aStack))
                     .itemOutputs(ItemList.Circuit_Chip_CrystalSoC.get(1))
                     .requiresCleanRoom()

@@ -100,6 +100,13 @@ public enum ItemList implements IItemContainer {
     IC2_AdvBattery,
     IC2_EnergyCrystal,
     IC2_LapotronCrystal,
+
+    PerfectLapotronCrystal,
+    GoodLapotronCrystal,
+    StableLapotronCrystal,
+    CrudeLapotronCrystal,
+    LapotronShard,
+
     Shape_Empty,
 
     Shape_Mold_Bottle,
@@ -839,8 +846,6 @@ public enum ItemList implements IItemContainer {
     Casing_ContainmentFieldZPM,
 
     Casing_ContainmentFieldUV,
-
-    Casing_ContainmentFieldUHV,
 
     Casing_Assembler,
     Casing_Pump,

@@ -2,11 +2,15 @@ package gregtech.common.tileentities.machines.multi;
 
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.*;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,7 +18,9 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -35,17 +41,32 @@ import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsLapotronLine;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.interfaces.ICleanroom;
+import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.recipe.BasicUIPropertiesBuilder;
+import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMapBackend;
+import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
+import gregtech.api.recipe.RecipeMapBuilder;
+import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_ModHandler;
@@ -59,30 +80,55 @@ import gregtech.common.GT_Pollution;
 import gregtech.common.blocks.GT_Block_Casings10;
 import gregtech.common.blocks.GT_Block_Casings2;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
+import gregtech.nei.RecipeDisplayInfo;
 import gtPlusPlus.core.material.ALLOY;
 
-public class GT_MetaTileEntity_Crystalizer extends
-    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_Crystalizer> implements ISurvivalConstructable {
+public class GT_MetaTileEntity_Crystalizer
+    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_Crystalizer>
+    implements ISurvivalConstructable, ICleanroomReceiver {
 
-    // Structure:
+    static class CrystalizerFrontend extends RecipeMapFrontend {
 
-    // Blocks:
-    // A -> ofBlock...(tile.blockLapis, 0, ...);
-    // B -> ofBlock...(tile.cloth, 5, ...);
-    // C -> ofBlock...(tile.cloth, 6, ...);
-    // D -> ofBlock...(tile.cloth, 10, ...);
-    // E -> ofBlock...(tile.glass, 0, ...);
-    // F -> ofBlock...(tile.sponge, 0, ...);
-    // G -> ofBlock...(tile.stone, 0, ...);
+        @Override
+        public void drawDescription(RecipeDisplayInfo recipeInfo) {
+            drawEnergyInfo(recipeInfo);
+            drawSpecialInfo(recipeInfo);
+            drawMetadataInfo(recipeInfo);
+            drawRecipeOwnerInfo(recipeInfo);
+        }
 
-    // Tiles:
+        public CrystalizerFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
+            NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+            super(uiPropertiesBuilder, neiPropertiesBuilder);
+        }
+    }
 
-    // Special Tiles:
+    static class RecipeMapBackendCrystalizer extends RecipeMapBackend {
 
-    // Offsets:
-    // -1 11 -1
+        public RecipeMapBackendCrystalizer(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
+            super(propertiesBuilder);
+        }
 
-    // Normal Scan:
+        @Override
+        public void reInit() {
+
+        }
+    }
+
+    public static final RecipeMap<RecipeMapBackendCrystalizer> CRYSTALIZER_RECIPES = RecipeMapBuilder
+        .of("gregtech.crystalizertst", RecipeMapBackendCrystalizer::new)
+        .minInputs(1, 1)
+        .maxIO(6, 1, 2, 0)
+        .amperage(1)
+        .frontend(CrystalizerFrontend::new)
+        .progressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        .neiSpecialInfoFormatter(recipeInfo -> {
+            String[] lvs = { "HV", "EV", "IV", "LuV", "ZPM", "UV", "UHV" };
+            int minForceLevel = -recipeInfo.recipe.mSpecialValue / 1000;
+            return Arrays.asList(String.format("Requires %s force containment casing", lvs[minForceLevel - 1]));
+        })
+        .build();
+
     private static boolean initialized;
     private int fleldGeneratorTier = -1;
 
@@ -90,25 +136,18 @@ public class GT_MetaTileEntity_Crystalizer extends
 
     private byte glassTier = -1;
 
-    private double baseSpeedModifier = 4.0f;
-
-    private double pollutionSpeedInitialNerf = 2.5f;
-
-    private double baseEUtModifier = 0.7f;
-
-    static final int MARGIN = 1500000;
-
-    static final int POLLUTION_INITIAL_NERF = 500000;
-
-    static final double POLLUTION_PER_SPEED_DROP = 500000;
-
-    static final double POLLUTION_PER_POWER_INCREASE = 100000;
+    private double baseSpeedModifier = 1.0f;
+    private double baseEUtModifier = 1.0f;
 
     // HV 16 EV 32 IV 48 LuV 64 ZPM 72 UV 96 UHV 256
 
-    static final int PARALLELISM_INCR = 16;
-
     private static List<Pair<Block, Integer>> containment_field_blocks;
+
+    private int activeTicks;
+
+    private int maxActiveTicks;
+
+    private ICleanroom cleanroom;
 
     // spotless:off
     static final String[][] STRUCTURE = new String[][]{{
@@ -366,6 +405,168 @@ public class GT_MetaTileEntity_Crystalizer extends
             .duration(120 * SECONDS)
             .eut((int) TierEU.RECIPE_UV)
             .addTo(AssemblyLine);
+
+        // Lap-Naquadah dust
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Naquadah.getDust(2),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.LapotronDust", 7, 0))
+            .itemOutputs(MaterialsLapotronLine.LapotronNaquadahMixture.getDust(9))
+            .duration(SECONDS)
+            .eut(TierEU.LuV)
+            .addTo(RecipeMaps.mixerRecipes);
+        // Lap-Naquadria dust
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Naquadria.getDust(1),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.LapotronDust", 2, 0))
+            .itemOutputs(MaterialsLapotronLine.LapotronNaquadriaMixture.getDust(3))
+            .duration(SECONDS)
+            .eut(TierEU.ZPM)
+            .addTo(RecipeMaps.mixerRecipes);
+        // Lap-Am dust
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Americium.getDust(2),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.LapotronDust", 7, 0))
+            .itemOutputs(MaterialsLapotronLine.LapotronAmerciumMixture.getDust(9))
+            .duration(5 * SECONDS)
+            .eut(TierEU.UHV)
+            .addTo(RecipeMaps.mixerRecipes);
+        // Lap-Inf dust
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Infinity.getDust(5),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.LapotronDust", 4, 0),
+                Materials.EnrichedHolmium.getDust(5))
+            .itemOutputs(MaterialsLapotronLine.LapotronInfinityMixture.getDust(14))
+            .duration(5 * SECONDS)
+            .eut(TierEU.UEV)
+            .addTo(RecipeMaps.mixerRecipes);
+
+        // Perfect recipe 1
+        ItemStack lap = ItemList.IC2_LapotronCrystal.get(16);
+        lap.setItemDamage(26);
+        RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.LapotronDust", 1024, 0), lap)
+            .fluidInputs(Materials.VibrantAlloy.getMolten(64000))
+            .itemOutputs(ItemList.PerfectLapotronCrystal.get(1))
+            .outputChances(1140)
+            .eut(TierEU.HV)
+            .requiresLowGravity()
+            .duration(86400 * SECONDS)
+            .noOptimize()
+            .build()
+            .map(r -> {
+                r.mSpecialValue -= 1001;
+                r.mInputs[0].stackSize = 1024;
+                CRYSTALIZER_RECIPES.addRecipe(r);
+                return r;
+            });
+
+        // Perfect recipe 2
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                MaterialsLapotronLine.LapotronInfinityMixture.getDust(256),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.UEV), 4),
+                ItemList.LapotronShard.get(1))
+            .fluidInputs(Materials.Grade8PurifiedWater.getFluid(16000), ALLOY.QUANTUM.getFluidStack(1440))
+            .itemOutputs(ItemList.PerfectLapotronCrystal.get(4))
+            .outputChances(5140)
+            .eut(TierEU.UEV)
+            .duration(240 * SECONDS)
+            .noOptimize()
+            .build()
+            .map(r -> {
+                r.mSpecialValue -= 5000;
+                r.mInputs[0].stackSize = 256;
+                CRYSTALIZER_RECIPES.addRecipe(r);
+                return r;
+            });
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.LapotronShard.get(1),
+                MaterialsLapotronLine.LapotronNaquadahMixture.getDust(288),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.LuV), 8))
+            .fluidInputs(Materials.Grade5PurifiedWater.getFluid(16000), ALLOY.ARCANITE.getFluidStack(576))
+            .itemOutputs(ItemList.CrudeLapotronCrystal.get(1))
+            .outputChances(5140)
+            .eut(TierEU.LuV)
+            .duration(60 * SECONDS)
+            .noOptimize()
+            .build()
+            .map(r -> {
+                r.mSpecialValue -= 2000;
+                r.mInputs[1].stackSize = 288;
+                CRYSTALIZER_RECIPES.addRecipe(r);
+                return r;
+            });
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.LapotronShard.get(1),
+                MaterialsLapotronLine.LapotronNaquadriaMixture.getDust(288),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.ZPM), 8))
+            .fluidInputs(Materials.Grade6PurifiedWater.getFluid(16000), ALLOY.PIKYONIUM.getFluidStack(288))
+            .itemOutputs(ItemList.StableLapotronCrystal.get(1))
+            .outputChances(5140)
+            .eut(114514)
+            .duration(60 * SECONDS)
+            .noOptimize()
+            .build()
+            .map(r -> {
+                r.mSpecialValue -= 3000;
+                r.mInputs[1].stackSize = 288;
+                CRYSTALIZER_RECIPES.addRecipe(r);
+                return r;
+            });
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.LapotronShard.get(1),
+                MaterialsLapotronLine.LapotronAmerciumMixture.getDust(352),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.UHV), 4))
+            .fluidInputs(Materials.Grade7PurifiedWater.getFluid(16000), ALLOY.OCTIRON.getFluidStack(1440))
+            .itemOutputs(ItemList.GoodLapotronCrystal.get(3))
+            .outputChances(5140)
+            .eut(TierEU.UHV)
+            .duration(180 * SECONDS)
+            .noOptimize()
+            .build()
+            .map(r -> {
+                r.mSpecialValue -= 4000;
+                r.mInputs[1].stackSize = 352;
+                CRYSTALIZER_RECIPES.addRecipe(r);
+                return r;
+            });
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.CrudeLapotronCrystal.get(1))
+            .itemOutputs(ItemList.LapotronShard.get(8))
+            .eut(TierEU.LuV)
+            .duration(SECONDS * 5)
+            .addTo(RecipeMaps.hammerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.StableLapotronCrystal.get(1))
+            .itemOutputs(ItemList.LapotronShard.get(16))
+            .eut(TierEU.LuV)
+            .duration(SECONDS * 5)
+            .addTo(RecipeMaps.hammerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.GoodLapotronCrystal.get(1))
+            .itemOutputs(ItemList.LapotronShard.get(32))
+            .eut(TierEU.UHV)
+            .duration(SECONDS * 5)
+            .addTo(RecipeMaps.hammerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.PerfectLapotronCrystal.get(1))
+            .itemOutputs(ItemList.LapotronShard.get(64))
+            .eut(TierEU.UHV)
+            .duration(SECONDS * 5)
+            .addTo(RecipeMaps.hammerRecipes);
+
         initialized = true;
     }
 
@@ -396,7 +597,7 @@ public class GT_MetaTileEntity_Crystalizer extends
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.autoclaveRecipes;
+        return CRYSTALIZER_RECIPES;
     }
 
     public static byte getGlassTier(GT_MetaTileEntity_Crystalizer te) {
@@ -457,7 +658,10 @@ public class GT_MetaTileEntity_Crystalizer extends
                         GT_MetaTileEntity_Crystalizer::getFieldGeneratorTier,
                         containment_field_blocks,
                         -1,
-                        (te, tier) -> { te.fleldGeneratorTier = tier; },
+                        (te, tier) -> {
+                            te.fleldGeneratorTier = tier;
+                            te.maxActiveTicks = (7200 + (7 - tier) * 3600) * 20;
+                        },
                         (te) -> te.fleldGeneratorTier)))
             .addElement(
                 'A',
@@ -502,34 +706,25 @@ public class GT_MetaTileEntity_Crystalizer extends
         tt.addMachineType("Crystalizer")
             .addInfo("Controller block for Large Crystalizer. Brought by Twist Space Technology.")
             .addInfo(
-                "Creating crystals with the power of force field. It's 150% faster than single block autoclave and only cost 70% of energy.")
-            .addInfo("Initially this machine can process 16 items at a time,Upgrading Field Containment casing can obtain extra processing power.")
+                "Creating crystals with the power of force field, which can produce lapotron and energy chips with far lower cost.")
             .addInfo(
-                "The Field Containment block has 2 types, center and surrounding.Machine can process 16 more items on every upgrade of surrounding.")
-            .addInfo("The tier of center block must be higher than surrounding block. Use Tectech containment field generator casing on surrounding to unlock overclocking.")
+                "It can process 16 items at a time, upgrading Field Containment casing can reduce power cost and recipe time.")
             .addInfo(
-                "Before that, machine can overclock on every 2 tier upgrade on surrounding field containment blocks.")
+                "The Field Containment block has 2 types, center and surrounding. The tier of center block must be higher than surrounding block.")
             .addInfo(
-                "The machine is sensitive to pollution. When the pollution is lower than 500000, it will obtain extra 250% processing speed.")
-            .addInfo(
-                "When pollution is greater than 1500000, there's 10% of chance voiding output. And it will increase 1% on every 100000 pollution and up to 40%.")
-            .addInfo(
-                "The processing speed will drop 20 on every 500000 pollution. The energy cost will increase by 5% on every 100000 pollution")
+                "The machine is sensitive to pollution. When the pollution is greater than 500000, it will refuse to work.")
             .addInfo(
                 "Putting it into clean-room can protect it from heavy pollution if you can't find a clean place for this machine.")
-            .addInfo("To avoid nerf brought by pollution, the cleanness must be 100%.")
-            .addInfo("When placed in low-gravity environment, there's 25% of chance getting extra output. And there's another 50% speed up.")
-             .addInfo("The structure is too complex!")
+            .addInfo(
+                "All recipes are based on chances, putting the machine on space station can obtain 10% more chance of success.")
+            .addInfo(
+                "The efficiency of the machine grows as it runs. It will take at most 9 hours to get full efficiency.")
+            .addInfo("With full efficiency, extra 30% of output is produced and the chance of recipes become 100%.")
+            .addInfo("When using containment casing of higher tier, it will cost less time to become 100% efficient.")
+            .addInfo("The structure is too complex!")
             .addInfo(BLUE_PRINT_INFO)
             .addSeparator()
-            .beginStructureBlock(9, 10, 33, false)
             .addStructureInfo("This structure is too complex! See schematic for details.")
-            .addOtherStructurePart("Borosilicate Glass", "Can be UV tier or higher")
-            .addInputBus("Start of conveyor belt", 1)
-            .addOutputBus("End of conveyor belt", 2)
-            .addEnergyHatch("Second-top layer", 3)
-            .addMaintenanceHatch("Around the controller", 4)
-            .addInputHatch("Bottom left and right corners", 5)
             .toolTipFinisher(
                 EnumChatFormatting.AQUA + "koiNoCirculation"
                     + EnumChatFormatting.GRAY
@@ -596,73 +791,184 @@ public class GT_MetaTileEntity_Crystalizer extends
         return false;
     }
 
+    @Override
+    public void setCleanroom(ICleanroom cleanroom) {
+        this.cleanroom = cleanroom;
+    }
+
+    @Override
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPreTick(aBaseMetaTileEntity, aTick);
+        if (getBaseMetaTileEntity().isActive()) {
+            activeTicks = Math.min(activeTicks + 1, maxActiveTicks);
+        } else {
+            activeTicks = Math.max(activeTicks - maxActiveTicks / 6000, 0);
+        }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("activeTicks", activeTicks);
+        aNBT.setInteger("maxActiveTicks", maxActiveTicks);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        activeTicks = aNBT.getInteger("activeTicks");
+        maxActiveTicks = aNBT.getInteger("maxActiveTicks");
+    }
+
+    @Override
+    public String[] getInfoData() {
+        int mPollutionReduction = 0;
+        for (GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
+            mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
+        }
+
+        long storedEnergy = 0;
+        long maxEnergy = 0;
+        for (GT_MetaTileEntity_Hatch tHatch : getExoticAndNormalEnergyHatchList()) {
+            storedEnergy += tHatch.getBaseMetaTileEntity()
+                .getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity()
+                .getEUCapacity();
+        }
+        long voltage = getAverageInputVoltage();
+        long amps = getMaxInputAmps();
+
+        return new String[] {
+            /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(mProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s / "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s",
+            /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(storedEnergy)
+                + EnumChatFormatting.RESET
+                + " EU / "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(maxEnergy)
+                + EnumChatFormatting.RESET
+                + " EU",
+            /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                + EnumChatFormatting.RED
+                + GT_Utility.formatNumbers(getActualEnergyUsage())
+                + EnumChatFormatting.RESET
+                + " EU/t",
+            /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(voltage)
+                + EnumChatFormatting.RESET
+                + " EU/t(*"
+                + amps
+                + " A)"
+                + StatCollector.translateToLocal("GT5U.machines.tier")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + VN[GT_Utility.getTier(voltage)]
+                + EnumChatFormatting.RESET,
+            /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+                + EnumChatFormatting.RED
+                + (getIdealStatus() - getRepairStatus())
+                + EnumChatFormatting.RESET
+                + " "
+                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + mEfficiency / 100.0F
+                + EnumChatFormatting.RESET
+                + " %",
+            /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
+                + EnumChatFormatting.GREEN
+                + mPollutionReduction
+                + EnumChatFormatting.RESET
+                + " %",
+            "Field Generator Tier:" + EnumChatFormatting.GREEN + fleldGeneratorTier + EnumChatFormatting.RESET,
+            String.format("warmup: %3f%%", activeTicks * 100 / (float) maxActiveTicks) };
+    }
+
     class CrystalizerLogic extends ProcessingLogic {
 
         @NotNull
         @Override
-        protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+        protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
             int pollution = GT_Pollution.getPollution(
                 getBaseMetaTileEntity().getWorld(),
                 getBaseMetaTileEntity().getXCoord() >> 4,
                 getBaseMetaTileEntity().getZCoord() >> 4);
-            double speedModifier = 1 + baseSpeedModifier;
-            double euModifier = baseEUtModifier;
-            if (pollution > POLLUTION_INITIAL_NERF && pollution <= MARGIN) {
-                speedModifier -= pollutionSpeedInitialNerf;
-            } else if (pollution > MARGIN) {
-                speedModifier -= Math.min(
-                    speedModifier - pollutionSpeedInitialNerf
-                        - 0.2 * Math.floor((pollution - MARGIN) / POLLUTION_PER_SPEED_DROP),
-                    0.2);
-                euModifier += 0.05 * Math.floor((pollution - MARGIN) / POLLUTION_PER_POWER_INCREASE);
+            if (pollution > 500000 && (cleanroom == null || cleanroom.getCleanness() < 10000)) {
+                return SimpleCheckRecipeResult.ofFailure("too_much_pollution");
             }
+            if (recipe.mSpecialValue % 1000 == -101 && !GT_MetaTileEntity_BasicMachine
+                .isValidForLowGravity(recipe, getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
+                return SimpleCheckRecipeResult.ofFailure("high_gravity");
+            }
+            return CheckRecipeResultRegistry.SUCCESSFUL;
+        }
+
+        @NotNull
+        @Override
+        protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+            double speedModifier = baseSpeedModifier + 0.1 * fleldGeneratorTier;
+            double euModifier = baseEUtModifier - 0.05 * fleldGeneratorTier;
             GT_OverclockCalculator overclockCalculator = super.createOverclockCalculator(recipe);
-            return overclockCalculator
-                .limitOverclockCount(fleldGeneratorTier < 7 ? fleldGeneratorTier / 2 : Integer.MAX_VALUE)
-                .setSpeedBoost((float) (1.0 / (speedModifier)))
+            return overclockCalculator.setSpeedBoost((float) (1.0 / (speedModifier)))
                 .setRecipeEUt((long) (recipe.mEUt * euModifier));
         }
 
         @NotNull
         @Override
         protected GT_ParallelHelper createParallelHelper(@NotNull GT_Recipe recipe) {
-            int pollution = GT_Pollution.getPollution(
-                getBaseMetaTileEntity().getWorld(),
-                getBaseMetaTileEntity().getXCoord() >> 4,
-                getBaseMetaTileEntity().getZCoord() >> 4);
-            // float eutModifier = (float) (baseEUtModifier
-            // + (pollution >= MARGIN ? 0.1 + 0.01 * Math.floor((pollution - MARGIN) / 100000.0) : 0));
-            return new GT_ParallelHelper().setRecipe(recipe)
+            return new GT_ParallelHelper() {
+
+                @Override
+                protected void calculateItemOutputs(ItemStack[] truncatedItemOutputs) {
+                    if (recipe.mSpecialValue % 100 == -1) {
+                        // disable bonus on initial perfect lapotron recipe
+                        super.calculateItemOutputs(truncatedItemOutputs);
+                        return;
+                    }
+                    int extraChance = GT_MetaTileEntity_BasicMachine
+                        .isValidForLowGravity(recipe, getBaseMetaTileEntity().getWorld().provider.dimensionId) ? 1000
+                            : 0;
+                    if (truncatedItemOutputs.length == 0) return;
+                    ArrayList<ItemStack> itemOutputsList = new ArrayList<>();
+                    for (int i = 0; i < truncatedItemOutputs.length; i++) {
+                        if (recipe.getOutput(i) == null) continue;
+                        ItemStack origin = recipe.getOutput(i)
+                            .copy();
+                        final long itemStackSize = origin.stackSize;
+                        double originChance = recipe.getOutputChance(i) + extraChance;
+                        double chance = Math.min(
+                            13000,
+                            originChance + (13000 - originChance) * (activeTicks / (double) maxActiveTicks));
+                        double oMultiplier = 1;
+                        if (chance > 10000) oMultiplier = chance / 10000;
+                        double chancedOutputMultiplier = calculateChancedOutputMultiplier(
+                            (int) (Math.min(chance, 10000) * chanceMultiplier),
+                            currentParallel);
+                        long items = (long) Math.ceil(itemStackSize * chancedOutputMultiplier * oMultiplier);
+                        addItemsLong(itemOutputsList, origin, items);
+                    }
+                    itemOutputs = itemOutputsList.toArray(new ItemStack[0]);
+                }
+            }.setRecipe(recipe)
                 .setItemInputs(inputItems)
                 .setFluidInputs(inputFluids)
                 .setAvailableEUt(availableVoltage * availableAmperage)
                 .setMachine(machine, protectItems, protectFluids)
                 .setRecipeLocked(recipeLockableMachine, isRecipeLocked)
-                .setMaxParallel(PARALLELISM_INCR * fleldGeneratorTier)
-                // .setEUtModifier(eutModifier)
-                // .setChanceMultiplier(1.0 - voidChance)
+                .setMaxParallel(16)
                 .enableBatchMode(batchSize)
                 .setConsumption(true)
                 .setOutputCalculation(true);
-        }
-
-        @NotNull
-        @Override
-        protected CheckRecipeResult applyRecipe(@NotNull GT_Recipe recipe, @NotNull GT_ParallelHelper helper,
-            @NotNull GT_OverclockCalculator calculator, @NotNull CheckRecipeResult result) {
-            CheckRecipeResult r = super.applyRecipe(recipe, helper, calculator, result);
-            int pollution = GT_Pollution.getPollution(
-                getBaseMetaTileEntity().getWorld(),
-                getBaseMetaTileEntity().getXCoord() >> 4,
-                getBaseMetaTileEntity().getZCoord() >> 4);
-            double voidChance = pollution >= MARGIN
-                ? Math.min(0.4, 0.1 + 0.01 * Math.floor((pollution - MARGIN) / 100000.0))
-                : 0;
-            if (getBaseMetaTileEntity().getWorld().rand.nextDouble() < voidChance) {
-                outputFluids = null;
-                outputItems = null;
-            }
-            return r;
         }
     }
 }

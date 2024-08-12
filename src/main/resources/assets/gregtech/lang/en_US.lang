@@ -507,6 +507,7 @@ GT5U.gui.text.cleanroom_running=§aCleanroom running
 GT5U.gui.text.no_machine=§7No valid processing machine
 GT5U.gui.text.machine_mismatch=§7Machine doesn't match to locked recipe
 GT5U.gui.text.high_gravity=§7Recipe needs low gravity
+GT5U.gui.text.too_much_pollution=§7Please reduce pollution under 500k or put it into cleanroom.
 GT5U.gui.text.no_mining_pipe=§7Missing Mining Pipe
 GT5U.gui.text.drilling=§aDrilling
 GT5U.gui.text.deploying_pipe=§aDeploying mining pipe
