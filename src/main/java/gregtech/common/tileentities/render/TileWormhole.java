@@ -1,45 +1,37 @@
 package gregtech.common.tileentities.render;
 
-import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 
-import cpw.mods.fml.relauncher.Side;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
-import micdoodle8.mods.galacticraft.core.util.Annotations;
 import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 import pers.gwyog.gtneioreplugin.util.DimensionHelper;
 
-// This should either move to gt5u tiles, or get moved to GTNH-Intergalactic
-public class TileWormhole extends TileEntityAdvanced {
+public class TileWormhole extends TileEntity {
 
-    @Annotations.NetworkedField(targetSide = Side.CLIENT)
-    public boolean shouldRender = false;
-    @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public int dimID = 0;
 
-    @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public double targetRadius = 0;
-
-    @Override
-    public void addExtraNetworkedData(List<Object> networkedList) {
-        super.addExtraNetworkedData(networkedList);
-    }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setInteger("dimID", dimID);
+        compound.setDouble("targetRadius", targetRadius);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         dimID = compound.getInteger("dimID");
+        targetRadius = compound.getDouble("targetRadius");
     }
 
     public int getDimFromWorld(World target) {
@@ -58,23 +50,19 @@ public class TileWormhole extends TileEntityAdvanced {
         int newName = getDimFromWorld(target);
         if (target != null & dimID != newName) {
             dimID = newName;
+            this.markDirty();
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
     }
 
     public void setRadius(double target) {
         targetRadius = target;
+        this.markDirty();
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     public Block getBlock() {
         return ModBlocks.getBlock(DimensionHelper.DimNameDisplayed[dimID]);
-    }
-
-    @Override
-    public void updateEntity() {
-        super.updateEntity();
-        if (worldObj != null && worldObj.isRemote) {
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        }
     }
 
     @Override
@@ -83,17 +71,17 @@ public class TileWormhole extends TileEntityAdvanced {
     }
 
     @Override
-    public double getPacketRange() {
-        return 128;
+    public Packet getDescriptionPacket() {
+        NBTTagCompound nbttagcompound = new NBTTagCompound();
+        writeToNBT(nbttagcompound);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbttagcompound);
     }
 
     @Override
-    public int getPacketCooldown() {
-        return 20;
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+
+        readFromNBT(pkt.func_148857_g());
+        worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
     }
 
-    @Override
-    public boolean isNetworkedTile() {
-        return true;
-    }
 }
