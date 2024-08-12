@@ -524,9 +524,9 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             new int[] { 50 * 100, 20 * 100, (GT_Mod.gregtechproxy.mNerfedCombs ? 10 : 75) * 100,
                 (GT_Mod.gregtechproxy.mNerfedCombs ? 5 : 55) * 100 },
             Voltage.HV);
-        addProcessGT(CombType.SPARKELING, new Materials[] { Materials.NetherStar }, Voltage.EV);
+        addProcessGT(CombType.SPARKLING, new Materials[] { Materials.NetherStar }, Voltage.EV);
         addCentrifugeToItemStack(
-            CombType.SPARKELING,
+            CombType.SPARKLING,
             new ItemStack[] { GT_ModHandler.getModItem(MagicBees.ID, "wax", 1, 0),
                 GT_ModHandler.getModItem(MagicBees.ID, "miscResources", 2, 5),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.NetherStar, 1) },
@@ -1485,7 +1485,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             Voltage.IV,
             300);
         addCentrifugeToItemStack(
-            CombType.NEPTUN,
+            CombType.NEPTUNE,
             new ItemStack[] { ItemList.FR_Wax.get(1L),
                 GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ProteusStoneDust", 1L, 0),
                 GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.TritonStoneDust", 1L, 0) },
@@ -1573,7 +1573,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addFluidExtractorProcess(CombType.OXYGEN, Materials.Oxygen.getGas(500), Voltage.MV);
         // Organic part 2, unknown liquid
         // yes, unknowwater. It's not a typo, it's how it is spelled. Stupid game.
-        addFluidExtractorProcess(CombType.UNKNOWNWATER, FluidRegistry.getFluidStack("unknowwater", 250), Voltage.ZPM);
+        addFluidExtractorProcess(CombType.UNKNOWNLIQUID, FluidRegistry.getFluidStack("unknowwater", 250), Voltage.ZPM);
         /*
          * TODO: update this comment
          * The Centrifuge Recipes for Infused Shards and Nether/End-Shard from the Infused Shard Line are below the
