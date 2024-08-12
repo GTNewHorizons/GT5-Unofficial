@@ -26,12 +26,14 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings2;
+import gregtech.common.blocks.GT_Block_Casings8;
 
 public class GT_MetaTileEntity_IndustrialCompressor
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_IndustrialCompressor>
@@ -42,17 +44,37 @@ public class GT_MetaTileEntity_IndustrialCompressor
         .<GT_MetaTileEntity_IndustrialCompressor>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            (new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A A", "AAA" }, { "AAA", "AAA", "AAA" } }))
+            // spotless:off
+            transpose(new String[][]{
+                {"       ","  CCC  "," CCCCC "," CCCCC "," CCCCC ","  CCC  ","       "},
+                {"  BBB  "," BBBBB ","BBBBBBB","BBBBBBB","BBBBBBB"," BBBBB ","  BBB  "},
+                {"  CCC  "," B   B ","B     B","B     B","B     B"," B   B ","  CCC  "},
+                {"  CAC  "," B   B ","C     C","C     C","C     C"," B   B ","  CAC  "},
+                {"  CAC  "," B   B ","C     C","C     C","C     C"," B   B ","  CAC  "},
+                {"  CAC  "," B   B ","C     C","C     C","C     C"," B   B ","  CAC  "},
+                {"  CCC  "," B   B ","B     B","B     B","B     B"," B   B ","  CCC  "},
+                {"  B~B  "," BBBBB ","BBBBBBB","BBBBBBB","BBBBBBB"," BBBBB ","  BBB  "}
+            }))
+            //spotless:on
         .addElement(
-            'A',
-            buildHatchAdder(GT_MetaTileEntity_IndustrialCompressor.class)
-                .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
+            'C',
+            buildHatchAdder(GT_MetaTileEntity_IndustrialCompressor.class).atLeast(InputBus, OutputBus)
+                .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(5))
+                .dot(1)
+                .buildAndChain(
+                    onElementPass(
+                        GT_MetaTileEntity_IndustrialCompressor::onCasingAdded,
+                        ofBlock(GregTech_API.sBlockCasings8, 5))))
+        .addElement(
+            'B',
+            buildHatchAdder(GT_MetaTileEntity_IndustrialCompressor.class).atLeast(Maintenance, Energy)
                 .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(
                         GT_MetaTileEntity_IndustrialCompressor::onCasingAdded,
                         ofBlock(GregTech_API.sBlockCasings2, 0))))
+        .addElement('A', Glasses.chainAllGlasses())
         .build();
 
     public GT_MetaTileEntity_IndustrialCompressor(final int aID, final String aName, final String aNameRegional) {
@@ -139,13 +161,13 @@ public class GT_MetaTileEntity_IndustrialCompressor
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 1, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 7, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 7, 0, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -159,7 +181,7 @@ public class GT_MetaTileEntity_IndustrialCompressor
         mCasingAmount = 0;
         mEnergyHatches.clear();
 
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0);
+        return checkPiece(STRUCTURE_PIECE_MAIN, 3, 7, 0);
     }
 
     @Override

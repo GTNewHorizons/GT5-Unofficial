@@ -1,6 +1,12 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
 import static gregtech.api.enums.GT_Values.Ollie;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR;
@@ -9,6 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRES
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_COOLING;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_COOLING_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_GLOW;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.Arrays;
@@ -51,6 +58,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gregtech.common.blocks.GT_Block_Casings8;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -63,12 +71,35 @@ public class GT_MetaTileEntity_NeutroniumCompressor
         .<GT_MetaTileEntity_NeutroniumCompressor>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            (new String[][] { { "NNNNN", "ggggg", "LL~LL", "f   f" }, { "NNNNN", "g---g", "LNNNL", "     " },
-                { "NNNNN", "ggggg", "LLLLL", "f   f" } }))
-        .addElement('L', ofBlock(GregTech_API.sBlockCasings8, 13))
-        .addElement('N', ofBlock(GregTech_API.sBlockCasings8, 10))
-        .addElement('g', Glasses.chainAllGlasses())
-        .addElement('f', ofFrame(Materials.Naquadah))
+            // spotless:off
+            transpose(new String[][]{
+                {"  CEEEEEC  "," CE     EC ","CE       EC","E         E","E         E","E         E","E         E","E         E","CE       EC"," CE     EC ","  CEEEEEC  "},
+                {" CE     EC ","C  BBBBB  C","E BBBBBBB E"," BBCCCCCBB "," BBCBBBCBB "," BBCCCCCBB "," BBCBBBCBB "," BBCCCCCBB ","E BBBBBBB E","C  BBBBB  C"," CE     EC "},
+                {"CE       EC","E BBBBBBB E"," B       B "," D       D "," B       B "," B       B "," D       D "," B       B "," B       B ","E BDDDBDB E","CE       EC"},
+                {"E         E"," BBAAAAABB "," B       B "," D       D "," B       B "," D       D "," D       D "," B       B "," B       B "," BBDBBBDBB ","E         E"},
+                {"E         E"," BBAAAAABB "," B       B "," D       D "," B       B "," B       B "," D       D "," D       D "," D       D "," BDDBDDDDB ","E         E"},
+                {"E         E"," BBAAAAABB "," D       D "," D       D "," D       D "," B       B "," B       B "," B       B "," B       B "," BBDBBBBDB ","E         E"},
+                {"E         E"," BBAAAAABB "," B       B "," B       B "," D       D "," B       B "," B       B "," D       D "," B       B "," BBDBBDBBB ","E         E"},
+                {"E         E"," BBAAAAABB "," B       B "," D       D "," D       D "," B       B "," D       D "," D       D "," D       D "," BBBBBDDDB ","E         E"},
+                {"CE       EC","E BBBBBBB E"," B       B "," D       D "," B       B "," B       B "," D       D "," B       B "," B       B ","E BDDBBBB E","CE       EC"},
+                {" CE     EC ","C  BB~BB  C","E BBBBBBB E"," BBBBBBBBB "," BBBBBBBBB "," BBBBBBBBB "," BBBBBBBBB "," BBBBBBBBB ","E BBBBBBB E","C  BBBBB  C"," CE     EC "},
+                {"  CEEEEEC  "," CE     EC ","CE       EC","E         E","E         E","E         E","E         E","E         E","CE       EC"," CE     EC ","  CEEEEEC  "}
+            }))
+            //spotless:on
+        .addElement('A', Glasses.chainAllGlasses())
+        .addElement(
+            'B',
+            buildHatchAdder(GT_MetaTileEntity_NeutroniumCompressor.class)
+                .atLeast(InputBus, OutputBus, Maintenance, Energy)
+                .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(5))
+                .dot(1)
+                .buildAndChain(
+                    onElementPass(
+                        GT_MetaTileEntity_NeutroniumCompressor::onCasingAdded,
+                        ofBlock(GregTech_API.sBlockCasings8, 5))))
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings8, 10))
+        .addElement('D', ofBlock(GregTech_API.sBlockCasings4, 1))
+        .addElement('E', ofFrame(Materials.NaquadahAlloy))
         .build();
 
     private HeatingCoilLevel heatLevel;
@@ -173,7 +204,7 @@ public class GT_MetaTileEntity_NeutroniumCompressor
             .addInfo("Capable of compressing matter into " + EnumChatFormatting.GOLD + "singularities")
             .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
             .addSeparator()
-            .beginStructureBlock(7, 5, 7, true)
+            .beginStructureBlock(11, 11, 11, true)
             .addController("Front Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
             .addInputBus("Any Solid Steel Casing", 1)
@@ -188,13 +219,13 @@ public class GT_MetaTileEntity_NeutroniumCompressor
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 2, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 5, 9, 1);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 5, 9, 1, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -209,7 +240,7 @@ public class GT_MetaTileEntity_NeutroniumCompressor
         mCasingAmount = 0;
         mEnergyHatches.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 5, 9, 1)) return false;
         if (mCasingAmount < 0) return false;
 
         // All checks passed!

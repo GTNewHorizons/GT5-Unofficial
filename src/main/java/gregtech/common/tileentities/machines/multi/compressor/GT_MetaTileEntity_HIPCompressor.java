@@ -40,6 +40,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -48,6 +49,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.GT_Block_Casings2;
+import gregtech.common.blocks.GT_Block_Casings8;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -59,20 +61,45 @@ public class GT_MetaTileEntity_HIPCompressor extends
         .<GT_MetaTileEntity_HIPCompressor>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            (new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A A", "AAA" }, { "AAA", "AAA", "AAA" } }))
+            // spotless:off
+            transpose(new String[][]{
+                {"               ","               ","               "," CCCCCC DDDDDD ","               ","               ","               "},
+                {"               ","               ","               "," C    C D    D ","               ","               ","               "},
+                {"               ","      GGG      ","     GGGGG     "," C   GGGGG   D ","     GGGGG     ","      GGG      ","               "},
+                {"      BBB      ","     BBBBB     ","    BBBBBBB    "," C  BBBBBBB  D ","    BBBBBBB    ","     BBBBB     ","      BBB      "},
+                {"      GGG      ","     B   B     ","    BF   FB    "," C  BF   FB  D ","    BF   FB    ","     B   B     ","      GGG      "},
+                {"      GAG      ","     B   B     ","    GF   FG    "," C  GF   FG  D ","    GF   FG    ","     B   B     ","      GAG      "},
+                {"      GAG      ","     B   B     "," E  GF   FG  E ","EEE GF   FG EBE"," E  GF   FG  E ","     B   B     ","      GAG      "},
+                {"      GAG      ","     B   B     "," A  GF   FG  A ","A A GF   FG A A"," A  GF   FG  A ","     B   B     ","      GAG      "},
+                {"      GGG      ","     B   B     "," A  BF   FB  A ","A A BF   FB A A"," A  BF   FB  A ","     B   B     ","      GGG      "},
+                {"      B~B      ","     BBBBB     "," E  BBBBBBB  E ","EEE BBBBBBB EEE"," E  BBBBBBB  E ","     BBBBB     ","      BBB      "}
+            }))
+            //spotless:on
+        .addElement('A', Glasses.chainAllGlasses())
         .addElement(
-            'A',
-            buildHatchAdder(GT_MetaTileEntity_HIPCompressor.class)
-                .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
+            'B',
+            buildHatchAdder(GT_MetaTileEntity_HIPCompressor.class).atLeast(Maintenance, Energy)
                 .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(
                         GT_MetaTileEntity_HIPCompressor::onCasingAdded,
                         ofBlock(GregTech_API.sBlockCasings2, 0))))
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings2, 12))
+        .addElement('D', ofBlock(GregTech_API.sBlockCasings2, 15))
+        .addElement('E', ofBlock(GregTech_API.sBlockCasings4, 1))
         .addElement(
-            'C',
+            'F',
             ofCoil(GT_MetaTileEntity_HIPCompressor::setCoilLevel, GT_MetaTileEntity_HIPCompressor::getCoilLevel))
+        .addElement(
+            'G',
+            buildHatchAdder(GT_MetaTileEntity_HIPCompressor.class).atLeast(InputBus, OutputBus)
+                .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(5))
+                .dot(1)
+                .buildAndChain(
+                    onElementPass(
+                        GT_MetaTileEntity_HIPCompressor::onCasingAdded,
+                        ofBlock(GregTech_API.sBlockCasings8, 5))))
         .build();
 
     private HeatingCoilLevel heatLevel;
@@ -208,13 +235,13 @@ public class GT_MetaTileEntity_HIPCompressor extends
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 0, 0, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 7, 9, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 0, 0, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 9, 0, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -229,7 +256,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
         mCasingAmount = 0;
         mEnergyHatches.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 9, 0)) return false;
         if (mCasingAmount < 0) return false;
 
         // All checks passed!
