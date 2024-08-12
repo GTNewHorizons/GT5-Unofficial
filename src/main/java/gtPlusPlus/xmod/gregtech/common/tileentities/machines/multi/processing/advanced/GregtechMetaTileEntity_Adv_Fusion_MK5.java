@@ -120,7 +120,7 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK5 extends GT_MetaTileEntity_Fus
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return super.createProcessingLogic().setOverclock(2, 2);
+        return super.createProcessingLogic().enablePerfectOverclock();
     }
 
     @Override

@@ -74,6 +74,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.ID_MetaTool_01;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
@@ -857,6 +858,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
         clearRecipeMapForAllInputHatches();
         onModeChangeByScrewdriver(side, aPlayer, aX, aY, aZ);
+        mLastRecipe = null;
         resetRecipeMapForAllInputHatches();
     }
 
@@ -1606,52 +1608,52 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         mToolStacks.put(
             true + "WRENCH",
             GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(GT_MetaGenerated_Tool_01.WRENCH, 1, GOOD, Materials.Tungsten, null));
+                .getToolWithStats(ID_MetaTool_01.WRENCH.ID, 1, GOOD, Materials.Tungsten, null));
         mToolStacks.put(
             true + "CROWBAR",
             GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(GT_MetaGenerated_Tool_01.CROWBAR, 1, GOOD, Materials.Tungsten, null));
+                .getToolWithStats(ID_MetaTool_01.CROWBAR.ID, 1, GOOD, Materials.Tungsten, null));
         mToolStacks.put(
             true + "HARDHAMMER",
             GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(GT_MetaGenerated_Tool_01.HARDHAMMER, 1, GOOD, Materials.Tungsten, null));
+                .getToolWithStats(ID_MetaTool_01.HARDHAMMER.ID, 1, GOOD, Materials.Tungsten, null));
         mToolStacks.put(
             true + "SOFTHAMMER",
             GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(GT_MetaGenerated_Tool_01.SOFTMALLET, 1, GOOD, Materials.Tungsten, null));
+                .getToolWithStats(ID_MetaTool_01.SOFTMALLET.ID, 1, GOOD, Materials.Tungsten, null));
         mToolStacks.put(
             true + "SCREWDRIVER",
             GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(GT_MetaGenerated_Tool_01.SCREWDRIVER, 1, GOOD, Materials.Tungsten, null));
+                .getToolWithStats(ID_MetaTool_01.SCREWDRIVER.ID, 1, GOOD, Materials.Tungsten, null));
         mToolStacks.put(
             true + "SOLDERING_IRON_LV",
             GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(GT_MetaGenerated_Tool_01.SOLDERING_IRON_LV, 1, GOOD, Materials.Tungsten, null));
+                .getToolWithStats(ID_MetaTool_01.SOLDERING_IRON_LV.ID, 1, GOOD, Materials.Tungsten, null));
 
         mToolStacks.put(
             false + "WRENCH",
             GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(GT_MetaGenerated_Tool_01.WRENCH, 1, BAD, Materials.Tungsten, null));
+                .getToolWithStats(ID_MetaTool_01.WRENCH.ID, 1, BAD, Materials.Tungsten, null));
         mToolStacks.put(
             false + "CROWBAR",
             GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(GT_MetaGenerated_Tool_01.CROWBAR, 1, BAD, Materials.Tungsten, null));
+                .getToolWithStats(ID_MetaTool_01.CROWBAR.ID, 1, BAD, Materials.Tungsten, null));
         mToolStacks.put(
             false + "HARDHAMMER",
             GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(GT_MetaGenerated_Tool_01.HARDHAMMER, 1, BAD, Materials.Tungsten, null));
+                .getToolWithStats(ID_MetaTool_01.HARDHAMMER.ID, 1, BAD, Materials.Tungsten, null));
         mToolStacks.put(
             false + "SOFTHAMMER",
             GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(GT_MetaGenerated_Tool_01.SOFTMALLET, 1, BAD, Materials.Tungsten, null));
+                .getToolWithStats(ID_MetaTool_01.SOFTMALLET.ID, 1, BAD, Materials.Tungsten, null));
         mToolStacks.put(
             false + "SCREWDRIVER",
             GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(GT_MetaGenerated_Tool_01.SCREWDRIVER, 1, BAD, Materials.Tungsten, null));
+                .getToolWithStats(ID_MetaTool_01.SCREWDRIVER.ID, 1, BAD, Materials.Tungsten, null));
         mToolStacks.put(
             false + "SOLDERING_IRON_LV",
             GT_MetaGenerated_Tool_01.INSTANCE
-                .getToolWithStats(GT_MetaGenerated_Tool_01.SOLDERING_IRON_LV, 1, BAD, Materials.Tungsten, null));
+                .getToolWithStats(ID_MetaTool_01.SOLDERING_IRON_LV.ID, 1, BAD, Materials.Tungsten, null));
 
         ItemStack aGlassPane1 = ItemUtils.getItemStackOfAmountFromOreDict("paneGlassRed", 1);
         ItemStack aGlassPane2 = ItemUtils.getItemStackOfAmountFromOreDict("paneGlassLime", 1);

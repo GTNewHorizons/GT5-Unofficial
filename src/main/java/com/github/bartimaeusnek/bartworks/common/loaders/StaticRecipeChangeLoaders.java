@@ -13,12 +13,14 @@
 
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
+import static com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps.electricImplosionCompressorRecipes;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.ANAEROBE_GAS;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.NOBLE_GAS;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.fluids;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.molten;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Mods.TinkerConstruct;
+import static gregtech.api.enums.TickTime.TICK;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -37,7 +39,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps;
 import com.github.bartimaeusnek.bartworks.API.recipe.DynamicGTRecipe;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
@@ -50,6 +51,7 @@ import com.google.common.collect.ArrayListMultimap;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
 import gregtech.api.enums.Element;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -121,6 +123,7 @@ public class StaticRecipeChangeLoaders {
     }
 
     public static void unificationRecipeEnforcer() {
+        List<GT_Recipe> toRemove = new ArrayList<>();
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             StaticRecipeChangeLoaders.runMaterialLinker(werkstoff);
             if (werkstoff.getGenerationFeatures().enforceUnification) {
@@ -140,7 +143,7 @@ public class StaticRecipeChangeLoaders {
                             || replacement == null
                             || replacement.getItem() == null) continue;
                         for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
-                            List<GT_Recipe> toRemove = new ArrayList<>();
+                            toRemove.clear();
                             nextRecipe: for (GT_Recipe recipe : map.getAllRecipes()) {
                                 boolean removal = map.equals(RecipeMaps.fluidExtractionRecipes)
                                     || map.equals(RecipeMaps.fluidSolidifierRecipes);
@@ -556,19 +559,16 @@ public class StaticRecipeChangeLoaders {
             .stream()
             .filter(e -> e.mInputs != null)
             .forEach(
-                recipe -> BartWorksRecipeMaps.electricImplosionCompressorRecipes.addRecipe(
-                    true,
-                    Arrays.stream(recipe.mInputs)
-                        .filter(e -> !StaticRecipeChangeLoaders.checkForExplosives(e))
-                        .distinct()
-                        .toArray(ItemStack[]::new),
-                    recipe.mOutputs,
-                    null,
-                    null,
-                    null,
-                    1,
-                    (int) TierEU.RECIPE_UEV,
-                    0));
+                recipe -> GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        Arrays.stream(recipe.mInputs)
+                            .filter(e -> !StaticRecipeChangeLoaders.checkForExplosives(e))
+                            .distinct()
+                            .toArray(ItemStack[]::new))
+                    .itemOutputs(recipe.mOutputs)
+                    .duration(1 * TICK)
+                    .eut(TierEU.RECIPE_UEV)
+                    .addTo(electricImplosionCompressorRecipes));
 
         // Custom EIC recipes.
         new ElectricImplosionCompressorRecipes().run();

@@ -255,7 +255,9 @@ public class GT_TileEntity_CircuitAssemblyLine extends
         this.imprintedItemName = this.type == null ? ""
             : GT_LanguageManager.getTranslateableItemStackName(ItemStack.loadItemStackFromNBT(this.type));
         mode = aNBT.getInteger(RUNNING_MODE_KEY);
-        length = aNBT.getInteger(LENGTH_KEY);
+        if (aNBT.hasKey(LENGTH_KEY)) {
+            length = aNBT.getInteger(LENGTH_KEY);
+        }
         super.loadNBTData(aNBT);
     }
 
@@ -263,7 +265,6 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     public void setItemNBT(NBTTagCompound aNBT) {
         if (!this.type.equals(new NBTTagCompound())) aNBT.setTag(IMPRINT_KEY, this.type);
         aNBT.setInteger(RUNNING_MODE_KEY, mode);
-        aNBT.setInteger(LENGTH_KEY, length);
         super.saveNBTData(aNBT);
     }
 
@@ -605,13 +606,13 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     }
 
     @Override
-    public boolean isInputSeparationEnabled() {
-        return mode == 1 && super.isInputSeparationEnabled();
+    public boolean supportsSingleRecipeLocking() {
+        return true;
     }
 
     @Override
-    public boolean isRecipeLockingEnabled() {
-        return this.mode == 0 && this.imprintedItemName != null && !"".equals(this.imprintedItemName);
+    public boolean isInputSeparationEnabled() {
+        return mode == 1 && super.isInputSeparationEnabled();
     }
 
     @Override
@@ -620,13 +621,13 @@ public class GT_TileEntity_CircuitAssemblyLine extends
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(
-            EnumChatFormatting.GREEN
+            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                + EnumChatFormatting.WHITE
                 + StatCollector.translateToLocal("chat.cal.mode." + tag.getInteger(RUNNING_MODE_KEY)));
         if (tag.hasKey("ImprintedWith") && tag.getInteger(RUNNING_MODE_KEY) == 0) currenttip.add(
             StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
                 + EnumChatFormatting.YELLOW
                 + tag.getString("ImprintedWith"));
-
     }
 
     @Override

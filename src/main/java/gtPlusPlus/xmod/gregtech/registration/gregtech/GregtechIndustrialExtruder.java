@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Industrial_Extruder;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -18,7 +20,7 @@ public class GregtechIndustrialExtruder {
         // Industrial Presser Multiblock
         GregtechItemList.Industrial_Extruder.set(
             new GregtechMetaTileEntity_IndustrialExtruder(
-                859,
+                Industrial_Extruder.ID,
                 "industrialextruder.controller.tier.single",
                 "Industrial Extrusion Machine").getStackForm(1L));
     }

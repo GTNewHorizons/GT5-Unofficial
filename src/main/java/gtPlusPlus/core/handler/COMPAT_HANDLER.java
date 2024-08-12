@@ -84,6 +84,11 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechPollutionDevices;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechPowerSubStation;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechQuantumForceTransformer;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRTG;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneButtonPanel;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneCircuitBlock;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneLamp;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneStrengthDisplay;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRedstoneStrengthScale;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRocketFuelGenerator;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSemiFluidgenerators;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSimpleWasher;
@@ -94,6 +99,7 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechThaumcraftDevices;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechThreadedBuffers;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTieredFluidTanks;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTreeFarmerTE;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechWaterPump;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechWirelessChargers;
 
 public class COMPAT_HANDLER {
@@ -132,6 +138,7 @@ public class COMPAT_HANDLER {
         GregtechIndustrialMacerator.run();
         GregtechIndustrialWiremill.run();
         GregtechIndustrialMassFabricator.run();
+        GregtechWaterPump.run();
         GregtechIndustrialBlastSmelter.run();
         GregtechQuantumForceTransformer.run();
         GregtechPowerSubStation.run();
@@ -178,6 +185,11 @@ public class COMPAT_HANDLER {
         GregtechIndustrialRockBreaker.run();
         GregtechIndustrialChisel.run();
         GregtechIndustrialFluidHeater.run();
+        GregtechRedstoneButtonPanel.run();
+        GregtechRedstoneCircuitBlock.run();
+        GregtechRedstoneLamp.run();
+        GregtechRedstoneStrengthDisplay.run();
+        GregtechRedstoneStrengthScale.run();
     }
 
     // InterMod

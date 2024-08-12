@@ -88,17 +88,16 @@ import gregtech.api.util.GT_PlayedSound;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.blocks.GT_Item_Machines;
-import gregtech.common.entities.GT_Entity_Arrow;
-import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.render.GT_CapeRenderer;
 import gregtech.common.render.GT_FlaskRenderer;
 import gregtech.common.render.GT_FluidDisplayStackRenderer;
+import gregtech.common.render.GT_LaserRenderer;
 import gregtech.common.render.GT_MetaGenerated_Tool_Renderer;
 import gregtech.common.render.GT_MultiTile_Renderer;
 import gregtech.common.render.GT_PollutionRenderer;
 import gregtech.common.render.GT_RenderDrone;
 import gregtech.common.render.GT_Renderer_Block;
-import gregtech.common.render.GT_Renderer_Entity_Arrow;
+import gregtech.common.render.GT_WormholeRenderer;
 import gregtech.common.render.items.GT_MetaGenerated_Item_Renderer;
 import gregtech.common.tileentities.debug.GT_MetaTileEntity_AdvDebugStructureWriter;
 import gregtech.loaders.misc.GT_Bees;
@@ -624,6 +623,9 @@ public class GT_Client extends GT_Proxy implements Runnable {
          GT_Renderer_Block.register();
         new GT_MultiTile_Renderer();
         new GT_RenderDrone();
+        new GT_LaserRenderer();
+        new GT_WormholeRenderer();
+
         metaGeneratedItemRenderer = new GT_MetaGenerated_Item_Renderer();
         for (GT_MetaGenerated_Item item : GT_MetaGenerated_Item.sInstances.values()) {
             metaGeneratedItemRenderer.registerItem(item);
@@ -632,8 +634,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
             metaGeneratedItemRenderer.registerItem(GT_Bees.combs);
         }
         new GT_MetaGenerated_Tool_Renderer();
-        new GT_Renderer_Entity_Arrow(GT_Entity_Arrow.class, "arrow");
-        new GT_Renderer_Entity_Arrow(GT_Entity_Arrow_Potion.class, "arrow_potions");
         new GT_FlaskRenderer();
         new GT_FluidDisplayStackRenderer();
         MinecraftForge.EVENT_BUS.register(new NEI_GT_Config());

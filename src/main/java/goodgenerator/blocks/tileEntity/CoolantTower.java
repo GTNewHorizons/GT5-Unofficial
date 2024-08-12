@@ -40,7 +40,7 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     implements IConstructable, ISurvivalConstructable {
 
     protected IStructureDefinition<CoolantTower> multiDefinition = null;
-    private final int CASING_INDEX = 1542;
+    private static final int CASING_INDEX = 1539;
 
     public CoolantTower(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -176,7 +176,7 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { casingTexturePages[12][6], TextureFactory.builder()
+            if (aActive) return new ITexture[] { casingTexturePages[12][3], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
                 .extFacing()
                 .build(),
@@ -185,7 +185,7 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[12][6], TextureFactory.builder()
+            return new ITexture[] { casingTexturePages[12][3], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER)
                 .extFacing()
                 .build(),
@@ -195,7 +195,7 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[12][6] };
+        return new ITexture[] { casingTexturePages[12][3] };
     }
 
     @Override

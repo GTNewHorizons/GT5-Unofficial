@@ -289,8 +289,7 @@ public class GT_PreLoad {
                                     "toolHeadBuzzSaw", "turbineBlade", null, null, "wireFine", "gearGtSmall", "rotor",
                                     "stickLong", "springSmall", "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped",
                                     "gemFlawed", "gemFlawless", "gemExquisite", "gearGt" };
-                                if (mIt == 3) tags = new String[] { "crateGtDust", "crateGtIngot", "crateGtGem",
-                                    "crateGtPlate", "itemCasing", "nanite" };
+                                if (mIt == 3) tags = new String[] { "itemCasing", "nanite" };
                                 if (tags.length > prefix) tag = tags[prefix];
                                 if (GregTech_API.sGeneratedMaterials[material] != null) {
                                     tag += GregTech_API.sGeneratedMaterials[material].mName;
@@ -313,8 +312,8 @@ public class GT_PreLoad {
             "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench",
             "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow", "toolHeadBuzzSaw",
             "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "arrowGtWood",
-            "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt", "crateGtDust",
-            "crateGtIngot", "crateGtGem", "crateGtPlate", "nanite", "cellMolten", "rawOre" };
+            "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt", "nanite",
+            "cellMolten", "rawOre" };
 
         List<String> mMTTags = new ArrayList<>();
         oreTags.stream()

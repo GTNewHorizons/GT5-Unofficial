@@ -1,7 +1,5 @@
 package gregtech.mixin;
 
-import static gregtech.mixin.TargetedMod.EXTRA_UTILITIES;
-import static gregtech.mixin.TargetedMod.THAUMCRAFT;
 import static gregtech.mixin.TargetedMod.VANILLA;
 
 import java.util.ArrayList;
@@ -43,30 +41,20 @@ public enum Mixin {
             .setApplyIf(() -> ConfigHandler.enabledPatches[3])
             .setPhase(Phase.EARLY)
             .setSide(Side.BOTH)),
-    BlockStemMixin(new Builder("Stem Crop Block Accessor").addMixinClasses("minecraft.BlockStemMixin")
+    CraftingRecipeAccessorMixin(new Builder("Add accessors to crafting recipe types")
+        .addMixinClasses(
+            "minecraft.VanillaShapedRecipeMixin",
+            "minecraft.VanillaShapelessRecipeMixin",
+            "minecraft.ForgeShapedRecipeMixin",
+            "minecraft.ForgeShapelessRecipeMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
         .setPhase(Phase.EARLY)
         .setSide(Side.BOTH)),
-    // Extra utilities
-    RemoveLastMilleniumRain(new Builder("Remove rain from the Last Millenium (Extra Utilities)")
-        .addMixinClasses("xu.WorldProviderEndOfTimeMixin")
-        .addTargetedMod(EXTRA_UTILITIES)
-        .setApplyIf(() -> ConfigHandler.enabledPatches[0])
-        .setPhase(Phase.LATE)
-        .setSide(Side.BOTH)),
-    RemoveLastMilleniumCreatures(new Builder("Remove creatures from the Last Millenium (Extra Utilities)")
-        .addMixinClasses("xu.ChunkProviderEndOfTimeMixin")
-        .addTargetedMod(EXTRA_UTILITIES)
-        .setApplyIf(() -> ConfigHandler.enabledPatches[1])
-        .setPhase(Phase.LATE)
-        .setSide(Side.BOTH)),
-    // Thaumcraft
-    PatchWandPedestalVisDuplication(new Builder("Fix wand pedestal vis duplication (Thaumcraft)")
-        .addMixinClasses("thaumcraft.TileWandPedestalMixin")
-        .addTargetedMod(THAUMCRAFT)
-        .setApplyIf(() -> ConfigHandler.enabledPatches[2])
-        .setPhase(Phase.LATE)
+    BlockStemMixin(new Builder("Stem Crop Block Accessor").addMixinClasses("minecraft.BlockStemMixin")
+        .addTargetedMod(VANILLA)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.EARLY)
         .setSide(Side.BOTH));
 
     public static final Logger LOGGER = LogManager.getLogger("GregTech-Mixin");

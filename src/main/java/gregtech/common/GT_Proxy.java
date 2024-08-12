@@ -35,7 +35,6 @@ import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gregtech.api.util.GT_Util.LAST_BROKEN_TILEENTITY;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
@@ -67,7 +66,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
@@ -154,6 +152,7 @@ import gregtech.api.objects.GT_UO_DimensionList;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeCategorySetting;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_BlockMap;
 import gregtech.api.util.GT_CLS_Compat;
 import gregtech.api.util.GT_ChunkAssociatedData;
@@ -169,9 +168,9 @@ import gregtech.api.util.GT_Shaped_Recipe;
 import gregtech.api.util.GT_Shapeless_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.items.GT_MetaGenerated_Item_98;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.ID_MetaTool_01;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
@@ -1550,21 +1549,17 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     @SubscribeEvent
     public void onEntitySpawningEvent(EntityJoinWorldEvent aEvent) {
-        if ((aEvent.entity != null) && (!aEvent.entity.worldObj.isRemote)) {
-            if ((aEvent.entity instanceof EntityItem)) {
-                ((EntityItem) aEvent.entity).setEntityItemStack(
-                    GT_OreDictUnificator.get(true, ((EntityItem) aEvent.entity).getEntityItem(), true));
-            }
-            if ((this.mSkeletonsShootGTArrows > 0) && (aEvent.entity.getClass() == EntityArrow.class)
-                && (aEvent.entity.worldObj.rand.nextInt(this.mSkeletonsShootGTArrows) == 0)
-                && ((((EntityArrow) aEvent.entity).shootingEntity instanceof EntitySkeleton))) {
-                aEvent.entity.worldObj.spawnEntityInWorld(
-                    new GT_Entity_Arrow(
-                        (EntityArrow) aEvent.entity,
-                        OrePrefixes.arrowGtWood.mPrefixedItems
-                            .get(aEvent.entity.worldObj.rand.nextInt(OrePrefixes.arrowGtWood.mPrefixedItems.size()))));
-                aEvent.entity.setDead();
-            }
+        if (aEvent.entity == null) {
+            return;
+        }
+
+        if (aEvent.entity.worldObj.isRemote) {
+            return;
+        }
+
+        if ((aEvent.entity instanceof EntityItem)) {
+            ((EntityItem) aEvent.entity)
+                .setEntityItemStack(GT_OreDictUnificator.get(true, ((EntityItem) aEvent.entity).getEntityItem(), true));
         }
     }
 
@@ -2381,12 +2376,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                             aEvent.player.posX,
                             aEvent.player.posY,
                             aEvent.player.posZ,
-                            GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                GT_MetaGenerated_Tool_01.AXE,
-                                1,
-                                Materials.Flint,
-                                Materials.Wood,
-                                null)));
+                            GT_MetaGenerated_Tool_01.INSTANCE
+                                .getToolWithStats(ID_MetaTool_01.AXE.ID, 1, Materials.Flint, Materials.Wood, null)));
                 }
             }
             final boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);
@@ -2673,7 +2664,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .addTo(UniversalChemical);
+                .addTo(RecipeMaps.chemicalReactorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(aMaterial.getCells(1), GT_Utility.getIntegratedCircuit(i + 1))
@@ -2682,7 +2673,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .addTo(UniversalChemical);
+                .addTo(RecipeMaps.chemicalReactorRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.getIntegratedCircuit(i + 1))
+                .fluidInputs(new FluidStack(uncrackedFluid, 1000), Materials.Hydrogen.getGas(hydrogenAmount * 1000))
+                .fluidOutputs(new FluidStack(crackedFluids[i], 800))
+                .duration((4 + 2 * i) * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(RecipeMaps.multiblockChemicalReactorRecipes);
         }
         aMaterial.setHydroCrackedFluids(crackedFluids);
     }
@@ -2725,7 +2724,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .addTo(UniversalChemical);
+                .addTo(RecipeMaps.chemicalReactorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(aMaterial.getCells(1), GT_Utility.getIntegratedCircuit(i + 1))
@@ -2734,7 +2733,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .addTo(UniversalChemical);
+                .addTo(RecipeMaps.chemicalReactorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(aMaterial.getCells(1), GT_Utility.getIntegratedCircuit(i + 1))
@@ -2743,7 +2742,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .addTo(UniversalChemical);
+                .addTo(RecipeMaps.chemicalReactorRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.getIntegratedCircuit(i + 1))
+                .fluidInputs(new FluidStack(uncrackedFluid, 1000), GT_ModHandler.getSteam(1000))
+                .fluidOutputs(new FluidStack(crackedFluids[i], 800))
+                .duration((4 + 2 * i) * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(RecipeMaps.multiblockChemicalReactorRecipes);
         }
         aMaterial.setSteamCrackedFluids(crackedFluids);
     }

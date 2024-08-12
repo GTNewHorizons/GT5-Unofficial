@@ -12,12 +12,18 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -26,6 +32,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.SoundResource;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -39,12 +46,17 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GregtechMetaTileEntity_IndustrialPlatePress
     extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialPlatePress> implements ISurvivalConstructable {
 
-    private boolean mFormingMode = false;
     private int mCasing;
+
+    private static final int MACHINEMODE_BENDER = 0;
+    private static final int MACHINEMODE_FORMER = 1;
+
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialPlatePress> STRUCTURE_DEFINITION = null;
 
     public GregtechMetaTileEntity_IndustrialPlatePress(final int aID, final String aName, final String aNameRegional) {
@@ -147,7 +159,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return mFormingMode ? RecipeMaps.formingPressRecipes : RecipeMaps.benderRecipes;
+        return (machineMode == MACHINEMODE_FORMER) ? RecipeMaps.formingPressRecipes : RecipeMaps.benderRecipes;
     }
 
     @Nonnull
@@ -179,7 +191,8 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        if (this.mFormingMode) return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
+        if (machineMode == MACHINEMODE_FORMER)
+            return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeBending;
     }
 
@@ -189,30 +202,61 @@ public class GregtechMetaTileEntity_IndustrialPlatePress
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setBoolean("mFormingMode", mFormingMode);
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mFormingMode = aNBT.getBoolean("mFormingMode");
+        // Migrates old NBT tag to the new one
+        if (aNBT.hasKey("mFormingMode")) {
+            machineMode = aNBT.getBoolean("mFormingMode") ? MACHINEMODE_FORMER : MACHINEMODE_BENDER;
+        }
         super.loadNBTData(aNBT);
     }
 
     @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        mFormingMode = !mFormingMode;
-        if (mFormingMode) {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Forming Press Mode.");
-        } else {
-            PlayerUtils.messagePlayer(aPlayer, "Now running in Bending Mode.");
-        }
-        mLastRecipe = null;
+        setMachineMode(nextMachineMode());
+        PlayerUtils.messagePlayer(
+            aPlayer,
+            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.clear();
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_BENDING);
+        machineModeIcons.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_FORMING);
+    }
+
+    @Override
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_PLATE_PRESS.mode." + machineMode);
     }
 
     @Override
     public boolean isInputSeparationEnabled() {
         return true;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("mode", machineMode);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                + EnumChatFormatting.WHITE
+                + StatCollector
+                    .translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_PLATE_PRESS.mode." + tag.getInteger("mode"))
+                + EnumChatFormatting.RESET);
     }
 }

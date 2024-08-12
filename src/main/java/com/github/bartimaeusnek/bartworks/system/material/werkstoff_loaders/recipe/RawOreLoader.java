@@ -13,19 +13,21 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe;
 
+import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.OrePrefixes.crushed;
 import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.gem;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.rawOre;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
@@ -42,21 +44,23 @@ public class RawOreLoader implements IWerkstoffRunnable {
 
         if (werkstoff.hasItemType(rawOre)) {
 
-            GT_Values.RA.stdBuilder()
+            RA.stdBuilder()
                 .itemInputs(werkstoff.get(rawOre))
                 .itemOutputs(werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(crushed))
                 .duration(16 * TICKS)
                 .eut(10)
                 .addTo(hammerRecipes);
 
-            GT_ModHandler.addPulverisationRecipe(
-                werkstoff.get(rawOre),
-                werkstoff.get(crushed, 2),
-                werkstoff.contains(SubTag.CRYSTAL) ? werkstoff.get(gem) : werkstoff.getOreByProduct(0, dust),
-                werkstoff.getNoOfByProducts() > 0 ? 5 : 0,
-                Materials.Stone.getDust(1),
-                50,
-                true);
+            RA.stdBuilder()
+                .itemInputs(werkstoff.get(rawOre))
+                .itemOutputs(
+                    werkstoff.get(crushed, 2),
+                    werkstoff.contains(SubTag.CRYSTAL) ? werkstoff.get(gem) : werkstoff.getOreByProduct(0, dust),
+                    Materials.Stone.getDust(1))
+                .outputChances(100_00, werkstoff.getNoOfByProducts() > 0 ? 5_00 : 10_00, 50_00)
+                .eut(2)
+                .duration(20 * SECONDS)
+                .addTo(maceratorRecipes);
         }
     }
 }

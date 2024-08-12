@@ -107,6 +107,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -272,7 +273,7 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
             .addInfo("Recipe time is based on mob health.")
             .addInfo("You can additionally put a weapon inside the GUI.")
             .addInfo("It will speed up the process and apply the looting level from the weapon (maximum 4 levels).")
-            .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside does nothing!")
+            .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside the structure does nothing!")
             .addInfo("Also produces 120 Liquid XP per operation.")
             .addInfo("If the mob spawns infernal, it will drain 8 times more power.")
             .addInfo("You can prevent infernal spawns by shift clicking with a screwdriver.")
@@ -373,7 +374,7 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
     @SideOnly(Side.CLIENT)
     @Override
     public void HandleCustomPacket(CustomTileEntityPacket message) {
-        if (message.getDataBoolean()) {
+        if (message.getDataBoolean() && Mods.MobsInfo.isModLoaded()) {
             renderEntity = true;
             String mobType = message.getDataString();
             MobHandlerLoader.MobEECRecipe r = MobHandlerLoader.recipeMap.get(mobType);

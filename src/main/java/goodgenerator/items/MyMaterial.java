@@ -302,7 +302,10 @@ public class MyMaterial implements Runnable {
             .setBlastFurnace(true)
             .setProtons(200)
             .setMass(450)
-            .setRadioactive(true),
+            .setRadioactive(true)
+            .setDurOverride(180224)
+            .setSpeedOverride(100f)
+            .setQualityOverride((byte) 11),
         Werkstoff.Types.ELEMENT,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()

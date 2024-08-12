@@ -83,6 +83,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.ID_MetaTool_01;
 
 public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_Windmill>
     implements ISurvivalConstructable, IGetTitleColor {
@@ -612,7 +613,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
                     () -> this.mMachine && !this.getBaseMetaTileEntity()
                         .isActive()
                             ? GT_MetaGenerated_Tool_01.INSTANCE
-                                .getToolWithStats(GT_MetaGenerated_Tool_01.SOFTMALLET, 1, null, null, null)
+                                .getToolWithStats(ID_MetaTool_01.SOFTMALLET.ID, 1, null, null, null)
                             : null).asWidget()
                                 .setPos(66, 66))
             .widget(

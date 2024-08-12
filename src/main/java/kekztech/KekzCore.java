@@ -29,8 +29,8 @@ import gregtech.api.enums.Mods;
     version = KekzCore.VERSION,
     dependencies = "required-after:IC2;" + "required-after:gregtech;"
         + "required-after:tectech;"
-        + "required-after:Thaumcraft;"
-        + "required-after:ThaumicTinkerer;"
+        + "after:Thaumcraft;"
+        + "after:ThaumicTinkerer;"
         + "after:bartworks;"
         + "after:dreamcraft")
 public class KekzCore {
@@ -40,6 +40,9 @@ public class KekzCore {
     public static final String VERSION = GT_Version.VERSION;
 
     public static final Logger LOGGER = LogManager.getLogger(NAME);
+
+    public static boolean isThaumcraftLoaded = false;
+    public static boolean isThaumicTiinkererLoaded = false;
 
     @Mod.Instance(Mods.Names.KEKZ_TECH)
     public static KekzCore instance;
