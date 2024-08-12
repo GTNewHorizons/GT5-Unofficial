@@ -353,8 +353,6 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
         // addition
         */
         
-        GT_Log.out.print("Machineenergy: " + machineEnergy + "\n");
-        
         outputEnergy = (float) Math.pow(10, 1 + inputEnergy / Particle.getParticleFromId(outputParticle).maxSourceEnergy()) * machineEnergy;
         
 
