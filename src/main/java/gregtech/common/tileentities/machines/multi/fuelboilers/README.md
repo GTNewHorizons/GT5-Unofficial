@@ -71,3 +71,17 @@ Large boilers theoretically should generate 2-4x as much per boiler chamber, but
 upset balance too much, for now. ~~Ditto for EV small boilers~~ they're on the table now,
 with the 20% malus. Assuming, of course, that it's still not as good (or at least not much
 better) than directly burning your fuel.
+
+As for pollution - this will emit 500 pollution per L of fuel wasted. The actual fuel draw is
+(almost always) constant for each boiler, so the pollution is also constant when the boiler
+is on
+- LV: 128
+- MV: 512
+- HV: 1536
+- EV: 4096
+
+There is a short ramp-up and ramp-down when the boiler switches state. This is entirely
+visual. The boiler maintains automatic hysteresis, switching on at 20% and off at 80%.
+This can be overridden, in which case each boiler gives redstone output on how full each
+chamber is, and takes a throttle input for the fuel. Whether that's redstone, a physical
+block, or items in a hatch is TBD.

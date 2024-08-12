@@ -241,6 +241,14 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
         steam = water + heat;
     }
 
+    /**
+     * The GT large boilers produced 1000 pollution/s/tier. This one will produce 1 pollution per 1L of wasted fuel,
+     */
+    @Override
+    public int getPollutionPerSecond(ItemStack stack) {
+        return 0;
+    }
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
