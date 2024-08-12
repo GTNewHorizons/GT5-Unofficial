@@ -26,6 +26,7 @@ import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.OpenBlocks;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
@@ -112,7 +113,7 @@ public class RecipeLoader {
                 bitsd,
                 new Object[] { "RCR", "CHC", "VVV", 'R', gregtech.api.enums.ItemList.Robot_Arm_EV, 'C',
                     OrePrefixes.circuit.get(Materials.EV), 'H', gregtech.api.enums.ItemList.Hull_EV, 'V',
-                    GT_ModHandler.getModItem("OpenBlocks", "vacuumhopper", 1, new ItemStack(Blocks.hopper)) });
+                    GT_ModHandler.getModItem(OpenBlocks.ID, "vacuumhopper", 1, new ItemStack(Blocks.hopper)) });
         }
         if (registerMTE(
             ExtremeIndustrialApiary,
@@ -151,7 +152,7 @@ public class RecipeLoader {
                 ExtremeIndustrialGreenhouse.get(1),
                 bitsd,
                 new Object[] { "AZA", "BRB", "AZA", 'B', gregtech.api.enums.ItemList.Casing_CleanStainlessSteel, 'R',
-                    GT_ModHandler.getModItem("EnderIO", "blockFarmStation", 1, new ItemStack(Items.diamond_hoe)), 'A',
+                    GT_ModHandler.getModItem(EnderIO.ID, "blockFarmStation", 1, new ItemStack(Items.diamond_hoe)), 'A',
                     NewHorizonsCoreMod.isModLoaded()
                         ? GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 1, 11104) // IV World Accelerator
                         : gregtech.api.enums.ItemList.Robot_Arm_IV,

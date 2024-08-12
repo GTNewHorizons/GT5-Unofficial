@@ -201,65 +201,7 @@ public class GT_Values {
      * most of the time I don't know what kind of Data Type the "null" stands for
      */
     public static final FluidStack NF = null;
-    /**
-     * MOD ID Strings, since they are very common Parameters.
-     */
-    @Deprecated
-    public static final String MOD_ID = "gregtech";
-    @Deprecated
-    public static final String MOD_ID_IC2 = "IC2";
-    @Deprecated
-    public static final String MOD_ID_NC = "IC2NuclearControl";
-    @Deprecated
-    public static final String MOD_ID_TC = "Thaumcraft";
-    @Deprecated
-    public static final String MOD_ID_TF = "TwilightForest";
-    @Deprecated
-    public static final String MOD_ID_RC = "Railcraft";
-    @Deprecated
-    public static final String MOD_ID_TE = "ThermalExpansion";
-    @Deprecated
-    public static final String MOD_ID_AE = "appliedenergistics2";
-    @Deprecated
-    public static final String MOD_ID_TFC = "terrafirmacraft";
-    @Deprecated
-    public static final String MOD_ID_PFAA = "PFAAGeologica";
-    @Deprecated
-    public static final String MOD_ID_FR = "Forestry";
-    @Deprecated
-    public static final String MOD_ID_HaC = "harvestcraft";
-    @Deprecated
-    public static final String MOD_ID_APC = "AppleCore";
-    @Deprecated
-    public static final String MOD_ID_MaCr = "magicalcrops";
-    @Deprecated
-    public static final String MOD_ID_GaEn = "ganysend";
-    @Deprecated
-    public static final String MOD_ID_GaSu = "ganyssurface";
-    @Deprecated
-    public static final String MOD_ID_GaNe = "ganysnether";
-    @Deprecated
-    public static final String MOD_ID_BC_SILICON = "BuildCraft|Silicon";
-    @Deprecated
-    public static final String MOD_ID_BC_TRANSPORT = "BuildCraft|Transport";
-    @Deprecated
-    public static final String MOD_ID_BC_FACTORY = "BuildCraft|Factory";
-    @Deprecated
-    public static final String MOD_ID_BC_ENERGY = "BuildCraft|Energy";
-    @Deprecated
-    public static final String MOD_ID_BC_BUILDERS = "BuildCraft|Builders";
-    @Deprecated
-    public static final String MOD_ID_BC_CORE = "BuildCraft|Core";
-    @Deprecated
-    public static final String MOD_ID_GC_CORE = "GalacticraftCore";
-    @Deprecated
-    public static final String MOD_ID_GC_MARS = "GalacticraftMars";
-    @Deprecated
-    public static final String MOD_ID_GC_PLANETS = "GalacticraftPlanets";
-    @Deprecated
-    public static final String MOD_ID_DC = "dreamcraft";
-    @Deprecated
-    public static final String MOD_ID_GTPP = "miscutils";
+
     /**
      * File Paths and Resource Paths
      */

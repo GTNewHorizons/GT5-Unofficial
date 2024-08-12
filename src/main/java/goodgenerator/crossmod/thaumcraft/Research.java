@@ -172,7 +172,7 @@ public class Research {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 256),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 128))) });
         ItemStack broad = new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6);
-        if (NewHorizonsCoreMod.isModLoaded()) broad = GT_ModHandler.getModItem("dreamcraft", "item.ArcaneSlate", 1);
+        if (NewHorizonsCoreMod.isModLoaded()) broad = GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ArcaneSlate", 1);
         GregTech_API.sThaumcraftCompat.addResearch(
             "ESSENTIA_UPGRADE_BLANK",
             "Upgrade your generator",
@@ -316,7 +316,7 @@ public class Research {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 128))),
                 "research.ESSENTIA_UPGRADE_UNSTABLE.page.1", "research.ESSENTIA_UPGRADE_UNSTABLE.page.2" });
         ItemStack meatDust = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MeatRaw, 1);
-        if (NewHorizonsCoreMod.isModLoaded()) meatDust = GT_ModHandler.getModItem("dreamcraft", "GTNHBioItems", 1, 2);
+        if (NewHorizonsCoreMod.isModLoaded()) meatDust = GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "GTNHBioItems", 1, 2);
         GregTech_API.sThaumcraftCompat.addResearch(
             "ESSENTIA_UPGRADE_VICTUS",
             "Essentia: VICTUS",
@@ -515,21 +515,21 @@ public class Research {
                 "research.ESSENTIA_UPGRADE_ELECTRIC.page.1" });
 
         ItemStack nodeLinkDevice = ThaumicBases.isModLoaded()
-            ? GT_ModHandler.getModItem("thaumicbases", "nodeLinker", 1, 0)
+            ? GT_ModHandler.getModItem(ThaumicBases.ID, "nodeLinker", 1, 0)
             : new ItemStack(ConfigBlocks.blockStoneDevice, 1, 11);
         ItemStack alchemicalFurnace = ThaumicBases.isModLoaded()
-            ? GT_ModHandler.getModItem("thaumicbases", "advAlchFurnace", 1, 0)
+            ? GT_ModHandler.getModItem(ThaumicBases.ID, "advAlchFurnace", 1, 0)
             : new ItemStack(ConfigBlocks.blockStoneDevice, 1, 0);
         ItemStack nitor = ThaumicTinkerer.isModLoaded()
-            ? GT_ModHandler.getModItem("ThaumicTinkerer", "brightNitor", 1, 0)
+            ? GT_ModHandler.getModItem(ThaumicTinkerer.ID, "brightNitor", 1, 0)
             : new ItemStack(ConfigItems.itemResource, 1, 1);
-        ItemStack alchemicalBoiler = Automagy.isModLoaded() ? GT_ModHandler.getModItem("Automagy", "blockBoiler", 1, 0)
+        ItemStack alchemicalBoiler = Automagy.isModLoaded() ? GT_ModHandler.getModItem(Automagy.ID, "blockBoiler", 1, 0)
             : new ItemStack(ConfigBlocks.blockStoneDevice, 1, 1);
         ItemStack essentiaLocus = Automagy.isModLoaded()
-            ? GT_ModHandler.getModItem("Automagy", "blockEssentiaLocus", 1, 0)
+            ? GT_ModHandler.getModItem(Automagy.ID, "blockEssentiaLocus", 1, 0)
             : new ItemStack(ConfigBlocks.blockJar, 1, 1);
         ItemStack thauminiteBlock = ThaumicBases.isModLoaded()
-            ? GT_ModHandler.getModItem("thaumicbases", "thauminiteBlock", 1, 0)
+            ? GT_ModHandler.getModItem(ThaumicBases.ID, "thauminiteBlock", 1, 0)
             : new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 4);
         GregTech_API.sThaumcraftCompat
             .addResearch(
@@ -613,10 +613,10 @@ public class Research {
 
         if (ThaumicEnergistics.isModLoaded()) {
             ItemStack essentiaPump = WitchingGadgets.isModLoaded()
-                ? GT_ModHandler.getModItem("WitchingGadgets", "WG_MetalDevice", 1, 0)
+                ? GT_ModHandler.getModItem(WitchingGadgets.ID, "WG_MetalDevice", 1, 0)
                 : new ItemStack(ConfigBlocks.blockTube, 1, 4);
             ItemStack inter = ThaumicTinkerer.isModLoaded()
-                ? GT_ModHandler.getModItem("ThaumicTinkerer", "interface", 1, 0)
+                ? GT_ModHandler.getModItem(ThaumicTinkerer.ID, "interface", 1, 0)
                 : new ItemStack(ConfigItems.itemResource, 1, 15);
             GregTech_API.sThaumcraftCompat.addResearch(
                 "ESSENTIA_OUTPUT_HATCH_ME",
@@ -642,7 +642,7 @@ public class Research {
                         ItemRefer.Essentia_Output_Hatch.get(1),
                         new ItemStack[] {
                             GT_ModHandler
-                                .getModItem("thaumicenergistics", "thaumicenergistics.block.essentia.provider", 1),
+                                .getModItem(ThaumicEnergistics.ID, "thaumicenergistics.block.essentia.provider", 1),
                             new ItemStack(ConfigBlocks.blockEssentiaReservoir, 1, 0), essentiaPump, inter, },
                         ItemRefer.Essentia_Output_Hatch_ME.get(1),
                         8,

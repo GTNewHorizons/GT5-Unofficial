@@ -37,6 +37,8 @@ import gregtech.nei.dumper.MetaTileEntityDumper;
 import gregtech.nei.dumper.RecipeLockingSupportDumper;
 import gregtech.nei.dumper.VoidProtectionSupportDumper;
 
+import static gregtech.api.enums.Mods.GregTech;
+
 public class NEI_GT_Config implements IConfigureNEI {
 
     /**
@@ -105,7 +107,7 @@ public class NEI_GT_Config implements IConfigureNEI {
             RecipeMaps.ic2NuclearFakeRecipes.unlocalizedName);
         // Bronze Blast Furnace
         API.removeRecipeCatalyst(
-            GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 108),
+            GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 1, 108),
             RecipeMaps.primitiveBlastRecipes.unlocalizedName);
     }
 
