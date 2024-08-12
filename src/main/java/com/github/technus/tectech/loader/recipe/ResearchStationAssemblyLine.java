@@ -29,6 +29,11 @@ import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static kubatech.api.enums.ItemList.DEFCAwakenedSchematic;
+import static kubatech.api.enums.ItemList.DEFCChaoticSchematic;
+import static kubatech.api.enums.ItemList.DEFCDraconicSchematic;
+import static kubatech.api.enums.ItemList.DEFCWyvernSchematic;
+import static kubatech.loaders.BlockLoader.defcCasingBlock;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -1076,13 +1081,13 @@ public class ResearchStationAssemblyLine implements Runnable {
         if (BloodMagic.isModLoaded() && DraconicEvolution.isModLoaded()) {
             // Draconic Evolution Fusion Crafter Controller
             TT_recipeAdder.addResearchableAssemblylineRecipe(
-                getModItem(KubaTech.ID, "defc.casing", 1, 8),
+                new ItemStack(defcCasingBlock, 1, 8),
                 16_777_216,
                 1024,
                 2_000_000,
                 8,
                 new Object[] { getModItem(GregTech.ID, "gt.blockmachines", 1, 10783),
-                    getModItem(KubaTech.ID, "defc.casing", 1, 8),
+                    new ItemStack(defcCasingBlock, 1, 8),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsBotania.GaiaSpirit, 1L),
                     ItemList.Casing_Coil_AwakenedDraconium.get(8L), ItemList.Electric_Motor_UHV.get(8L),
                     ItemList.Robot_Arm_UHV.get(4L), new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4 },
@@ -1096,7 +1101,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 8_000_000);
             // DE Schematics Cores Tier 1
             TT_recipeAdder.addResearchableAssemblylineRecipe(
-                getModItem(KubaTech.ID, "defc.casing", 1, 9),
+                new ItemStack(defcCasingBlock,1, 9),
                 5_000_000,
                 512,
                 1_000_000,
@@ -1106,7 +1111,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Ichorium, 1L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1 }, },
                 new FluidStack[] { Materials.Sunnarium.getMolten(14400L), Materials.Void.getMolten(28800L), },
-                getModItem(KubaTech.ID, "kubaitems", 1, 38),
+                DEFCDraconicSchematic.get(1),
                 6000,
                 500_000);
 
@@ -1122,7 +1127,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 1L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1 }, },
                 new FluidStack[] { Materials.Neutronium.getMolten(14400L), Materials.Void.getMolten(57600L), },
-                getModItem(KubaTech.ID, "kubaitems", 1, 39),
+                DEFCWyvernSchematic.get(1),
                 12000,
                 2_000_000);
 
@@ -1138,7 +1143,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 1L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1L } },
                 new FluidStack[] { Materials.Infinity.getMolten(14400L), Materials.Void.getMolten(115200L), },
-                getModItem(KubaTech.ID, "kubaitems", 1, 40),
+                DEFCAwakenedSchematic.get(1),
                 24000,
                 8_000_000);
 
@@ -1154,7 +1159,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 1L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 }, },
                 new FluidStack[] { MaterialsUEVplus.SpaceTime.getMolten(14400L), Materials.Void.getMolten(230400L), },
-                getModItem(KubaTech.ID, "kubaitems", 1, 41),
+                DEFCChaoticSchematic.get(1),
                 36000,
                 32_000_000);
         }
