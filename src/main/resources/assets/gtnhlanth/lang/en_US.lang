@@ -54,7 +54,7 @@ LINAC.hint.10=Dot 4: Beamline Output Hatch
 
 Synchrotron.hint.0=676x Shielded Accelerator Casing
 Synchrotron.hint.1=90x Superconducting Coil Block
-Synchrotron.hint.2=64x Niobium Block
+Synchrotron.hint.2=64x Niobium Cavity Machine Casing
 Synchrotron.hint.3=28x Coolant Delivery Casing
 Synchrotron.hint.4=16x Borosilicate Glass (LuV+)
 Synchrotron.hint.5=4x Antenna Casing
@@ -119,6 +119,7 @@ casing.electrode.name=Electrode Casing
 casing.coolant_delivery.name=Coolant Delivery Casing
 casing.antenna_t1.name=Antenna Casing (T1)
 casing.antenna_t2.name=Antenna Casing (T2)
+casing.niobium_cavity.name=Niobium Cavity Machine Casing
 casing.focus_manipulator.name=Focus Manipulator
 casing.focus_holder.name=Focus Holder
 casing.target_receptacle.name=Target Receptacle

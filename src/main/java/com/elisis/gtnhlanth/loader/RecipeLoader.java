@@ -351,6 +351,15 @@ public class RecipeLoader {
             .duration(60 * GT_RecipeBuilder.SECONDS)
             .eut(7680)
             .addTo(AssemblyLine);
+        
+        // Niobium Cavity Casing
+        GT_Values.RA.stdBuilder()
+        	.itemInputs(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Niobium, 1), Materials.Niobium.getPlates(6))
+        	.fluidInputs(Materials.Helium.getGas(2000))
+        	.itemOutputs(new ItemStack(LanthItemList.NIOBIUM_CAVITY_CASING, 1))
+        	.duration(12 * GT_RecipeBuilder.SECONDS)
+        	.eut(7680)
+        	.addTo(assemblerRecipes);
 
         // Focus Manipulator
         GT_Values.RA.stdBuilder()
@@ -1046,6 +1055,17 @@ public class RecipeLoader {
             .duration(30 * SECONDS)
             .eut(450)
             .addTo(UniversalChemical);
+        
+        // La + 6HCl = LaCl3 + 3H
+        GT_Values.RA.stdBuilder()
+        	.itemInputs(Materials.Lanthanum.getDust(1), GT_Utility.getIntegratedCircuit(1))
+        	.fluidInputs(Materials.HydrochloricAcid.getFluid(3000))
+        	.itemOutputs(WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dust, 4))
+        	.fluidOutputs(Materials.Hydrogen.getGas(3000))
+        	.duration(10 * SECONDS)
+        	.eut(480)
+        	.addTo(UniversalChemical);
+        
 
         // Lanthanum Oxide
         GT_Values.RA.stdBuilder()
@@ -1081,7 +1101,7 @@ public class RecipeLoader {
             .fluidInputs(WerkstoffMaterialPool.BoronTrichloride.getFluidOrGas(8000))
             .fluidOutputs(FluidRegistry.getFluidStack("boricacid", 1000))
             .itemInputs(WerkstoffMaterialPool.LanthanumOxide.get(OrePrefixes.dust, 1))
-            .itemOutputs(WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.gemChipped))
+            .itemOutputs(WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.gemFlawless))
             .duration(60 * GT_RecipeBuilder.SECONDS)
             .eut(7980)
             .addTo(autoclaveRecipes);
