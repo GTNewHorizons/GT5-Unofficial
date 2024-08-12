@@ -293,7 +293,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
             IBeeMutationCustom tMutation = dis.registerMutation(APATITE, ASH, 12);
             tMutation.restrictTemperature(HOT);
-            tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockgem2"), 8);
+            GregTech_API.sGTCompleteLoad.add(() -> tMutation.requireResource(GregTech_API.sBlockGem2, 8));
         }),
     // Tea bee, Humidity: normal, Parents: Ash and Fertilizer, Mutationrate: 10%, combrate: 10%
     TEA(GT_BranchDefinition.ORGANIC, "Tea", false, new Color(0x65D13A), new Color(0x9a9679), beeSpecies -> {
@@ -314,7 +314,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setHasEffect();
     }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(PEAT, getSpecies(MAGICBEES, "Silicon"), 15);
-        tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockcasings5"), 0);
+        GregTech_API.sGTCompleteLoad.add(() -> tMutation.requireResource(GregTech_API.sBlockCasings5, 0));
     }),
 
     // gems
@@ -600,7 +600,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             beeSpecies.setHasEffect();
         }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST), dis -> {
             IBeeMutationCustom tMutation = dis.registerMutation(GLOWSTONE, GOLD, 5);
-            tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockcasings"), 15);
+            GregTech_API.sGTCompleteLoad.add(() -> tMutation.requireResource(GregTech_API.sBlockCasings1, 15));
         }),
     CHROME(GT_BranchDefinition.RAREMETAL, "Chrome", true, new Color(0xEBA1EB), new Color(0xF2C3F2), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
@@ -1260,7 +1260,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectDrunkard);
     }, dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(ESSENTIA, THAUMINITE, 5);
-        tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockcasings5"), 8);
+        GregTech_API.sGTCompleteLoad.add(() -> tMutation.requireResource(GregTech_API.sBlockCasings5, 8));
     }),
 
     // radioctive
@@ -1381,7 +1381,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         }, dis -> {
             IMutationCustom tMutation = dis.registerMutation(LUTETIUM, CHROME, 5, 4)
                 .setIsSecret();
-            tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockmachines"), 32020);
+        GregTech_API.sGTCompleteLoad.add(() -> tMutation.requireResource(GregTech_API.sBlockMachines, 32020));
         }),
     NEUTRONIUM(GT_BranchDefinition.RADIOACTIVE, "Neutronium", false, new Color(0xFFF0F0), new Color(0xFAFAFA),
         beeSpecies -> {
@@ -2527,7 +2527,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
     }, dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(NEODYMIUM, HYDROGEN, 5, 4);
-        tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockmachines"), 32019);
+        // Compact fusion reactor mark 1 controller
+        GregTech_API.sGTCompleteLoad.add(() -> tMutation.requireResource(GregTech_API.sBlockMachines, 32019));
     }),
     // infused Shards line
     AIR(GT_BranchDefinition.INFUSEDSHARD, "Air", false, new Color(0xFFFF7E), new Color(0x60602F), beeSpecies -> {
@@ -2599,7 +2600,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             beeSpecies.setHasEffect();
         }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
             IBeeMutationCustom tMutation = dis.registerMutation(CHAOS, FIRE, 15);
-            tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockgem3"), 3);
+        GregTech_API.sGTCompleteLoad.add(() -> tMutation.requireResource(GregTech_API.sBlockGem3, 3));
         }),
     ENDSHARD(GT_BranchDefinition.INFUSEDSHARD, "Endshard", false, new Color(0x2E2E41), new Color(0x232129),
         beeSpecies -> {
@@ -2610,7 +2611,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
             IBeeMutationCustom tMutation = dis.registerMutation(NETHERSHARD, ENDDUST, 15);
             tMutation.restrictTemperature(ICY);
-            tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockgem1"), 7);
+            GregTech_API.sGTCompleteLoad.add(() -> tMutation.requireResource(GregTech_API.sBlockGem1, 7));
         }),
     // Organic branch 2.0
     UNKNOWNWATER(GT_BranchDefinition.ORGANIC, "UnknownWater", false, new Color(0x4333A5), new Color(0x36ABFF),
