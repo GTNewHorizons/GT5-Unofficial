@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -22,11 +23,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.elisis.gtnhlanth.common.register.LanthItemList;
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.casing.GT_Block_CasingsTT;
@@ -42,6 +45,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsLapotronLine;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -149,6 +153,8 @@ public class GT_MetaTileEntity_Crystalizer
 
     private ICleanroom cleanroom;
 
+    boolean enableChance;
+
     // spotless:off
     static final String[][] STRUCTURE = new String[][]{{
         "         ",
@@ -161,8 +167,8 @@ public class GT_MetaTileEntity_Crystalizer
         "         ",
         "         ",
         "         ",
-        "   G~G   ",
-        "   GGG   "
+        "   H~H   ",
+        "   HHH   "
     },{
         "         ",
         "         ",
@@ -174,8 +180,8 @@ public class GT_MetaTileEntity_Crystalizer
         "         ",
         "         ",
         "         ",
-        "   GGG   ",
-        "   GGG   "
+        "   HHH   ",
+        "   HHH   "
     },{
         "         ",
         "         ",
@@ -187,82 +193,82 @@ public class GT_MetaTileEntity_Crystalizer
         "         ",
         "         ",
         "         ",
-        "    F    ",
+        "    B    ",
         "  GGGGG  "
     },{
         "         ",
         "         ",
-        "    E    ",
-        "   EEE   ",
-        "   EEE   ",
-        "   EEE   ",
-        "    E    ",
-        "    F    ",
-        "    F    ",
-        "    F    ",
+        "    A    ",
+        "   AAA   ",
+        "   AAA   ",
+        "   AAA   ",
+        "    A    ",
+        "    B    ",
+        "    B    ",
+        "    B    ",
         "         ",
         " GGGGGGG "
     },{
         "         ",
-        "   EEE   ",
-        "  EE EE  ",
-        "  E  CE  ",
-        "  E C E  ",
-        "  EC  E  ",
-        "  EE EE  ",
-        "   EEE   ",
+        "   AAA   ",
+        "  AACAA  ",
+        "  A C A  ",
+        "  A C A  ",
+        "  A C A  ",
+        "  AACAA  ",
+        "   AAA   ",
         "   CCC   ",
         "         ",
         "         ",
         "GGGGGGGGG"
     },{
+        "   AAA   ",
+        "  ACCCA  ",
+        "  A   A  ",
+        " A     A ",
+        " A     A ",
+        " A     A ",
+        "  A   A  ",
+        "  ACCCA  ",
+        "  CAAAC  ",
+        "   FFF   ",
         "   EEE   ",
-        "  E C E  ",
-        "  EC CE  ",
-        " EC    E ",
-        " E     E ",
-        " E    CE ",
-        "  EC CE  ",
-        "  E   E  ",
-        "  CEEEC  ",
-        "    B    ",
-        "   DDD   ",
         "GGGGGGGGG"
     },{
-        "   EEE   ",
-        "  ECCCE  ",
-        " E     E ",
-        " E     E ",
-        " EC A CE ",
-        " E     E ",
-        " E     E ",
-        " FE C EF ",
-        " FCEEECF ",
-        " F BBB F ",
-        "F  DDD  F",
+        "   AAA   ",
+        "  ACCCA  ",
+        " AC   CA ",
+        " AC   CA ",
+        " AC D CA ",
+        " AC   CA ",
+        " AC   CA ",
+        " BACCCAB ",
+        " BCAAACB ",
+        " B FFF B ",
+        "B  EEE  B",
         "GGGGGGGGG"
     },{
+        "   AAA   ",
+        "  ACCCA  ",
+        "  A   A  ",
+        " A     A ",
+        " A     A ",
+        " A     A ",
+        "  A   A  ",
+        "  ACCCA  ",
+        "  CAAAC  ",
+        "   FFF   ",
         "   EEE   ",
-        "  E C E  ",
-        "  EC CE  ",
-        " E    CE ",
-        " E     E ",
-        " EC    E ",
-        "  EC CE  ",
-        "  E   E  ",
-        "  CEEEC  ",
-        "    B    ",
-        "   DDD   ",
         "GGGGGGGGG"
     },{
         "         ",
-        "   EEE   ",
-        "  EE EE  ",
-        "  EC  E  ",
-        "  E C E  ",
-        "  E  CE  ",
-        "  EE EE  ",
-        "   EEE   ",
+        "   AAA   ",
+        "  AACAA  ",
+        "  A C A  ",
+        "  A C A  ",
+        "  A C A  ",
+        "  AACAA  ",
+        "   AAA   ",
         "   CCC   ",
         "         ",
         "         ",
@@ -270,14 +276,14 @@ public class GT_MetaTileEntity_Crystalizer
     },{
         "         ",
         "         ",
-        "    E    ",
-        "   EEE   ",
-        "   EEE   ",
-        "   EEE   ",
-        "    E    ",
-        "    F    ",
-        "    F    ",
-        "    F    ",
+        "    A    ",
+        "   AAA   ",
+        "   AAA   ",
+        "   AAA   ",
+        "    A    ",
+        "    B    ",
+        "    B    ",
+        "    B    ",
         "         ",
         " GGGGGGG "
     },{
@@ -291,11 +297,21 @@ public class GT_MetaTileEntity_Crystalizer
         "         ",
         "         ",
         "         ",
-        "    F    ",
+        "    B    ",
         "  GGGGG  "
     }};
     // spotless:on
     static IStructureDefinition<GT_MetaTileEntity_Crystalizer> DEF = null;
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if(enableChance) {
+            GT_Utility.sendChatToPlayer(aPlayer, "Enabled certain mode, output chance is 100% but slower.");
+        } else {
+            GT_Utility.sendChatToPlayer(aPlayer, "Enabled chance mode, keep machine running and get bonus.");
+        }
+        enableChance = !enableChance;
+    }
 
     public static void initializeRecipes() {
         if (initialized) return;
@@ -335,13 +351,34 @@ public class GT_MetaTileEntity_Crystalizer
             new Object[] { "XOX", "OVO", "XOX", 'X', ItemList.Field_Generator_HV.get(1), 'O',
                 Materials.StainlessSteel.getPlates(1), 'V',
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Machine_Large_Crystalizer.get(1),
-            new Object[] { "XVX", "GOG", "XGX", 'X',
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.LuV), 1), 'O',
-                ItemList.Machine_EV_Autoclave.get(1), 'V', ItemList.Field_Generator_EV.get(4), 'G',
-                new ItemStack(ItemBlock.getItemFromBlock(Blocks.glass), 1) });
 
+        RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.Machine_EV_Autoclave.get(1))
+            .metadata(RESEARCH_TIME, 12 * HOURS)
+            .itemInputs(
+                ItemList.Casing_LuV.get(1),
+                ItemList.Machine_EV_Autoclave.get(2),
+                ItemList.Machine_IV_Autoclave.get(2),
+                GT_Utility.copyAmount(2, LanthItemList.DISSOLUTION_TANK),
+                ItemList.Casing_ContainmentFieldIV.get(1),
+                ItemList.Casing_ContainmentFieldIV.get(1),
+                ItemList.Casing_ContainmentFieldIV.get(1),
+                ItemList.Casing_ContainmentFieldIV.get(1),
+                new ItemStack(ItemBlock.getItemFromBlock(Blocks.glass), 32),
+                GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Osmiridium, 32),
+                ItemList.Electric_Pump_LuV.get(16),
+                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 32))
+            .fluidInputs(
+                Materials.SolderingAlloy.getMolten(9216),
+                ALLOY.HELICOPTER.getFluidStack(9216),
+                ALLOY.ZERON_100.getFluidStack(9216))
+            .itemOutputs(ItemList.Machine_Large_Crystalizer.get(1))
+            .eut(TierEU.ZPM)
+            .duration(600)
+            .addTo(AssemblyLine);
+
+        //EV
         RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_ContainmentFieldHV.get(1),
@@ -352,10 +389,11 @@ public class GT_MetaTileEntity_Crystalizer
                 GT_Utility.getIntegratedCircuit(24))
             .fluidInputs(Materials.SolderingAlloy.getMolten(864))
             .itemOutputs(ItemList.Casing_ContainmentFieldEV.get(1))
-            .duration(400)
+            .duration(30* SECONDS)
             .eut(TierEU.EV)
             .addTo(RecipeMaps.assemblerRecipes);
 
+        //IV
         RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_ContainmentFieldEV.get(1),
@@ -366,10 +404,30 @@ public class GT_MetaTileEntity_Crystalizer
                 GT_Utility.getIntegratedCircuit(24))
             .fluidInputs(new FluidStack(ALLOY.NITINOL_60.getFluid(), 1296))
             .itemOutputs(ItemList.Casing_ContainmentFieldIV.get(1))
-            .duration(800)
+            .duration(30 * SECONDS)
             .eut(TierEU.IV)
             .addTo(RecipeMaps.assemblerRecipes);
 
+        //LuV
+        GT_Values.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.Casing_ContainmentFieldIV.get(1))
+            .metadata(RESEARCH_TIME, 4 * HOURS)
+            .itemInputs(
+                ItemList.Casing_Advanced_Rhodium_Palladium.get(1),
+                ItemList.Casing_ContainmentFieldIV.get(1),
+                ItemList.Field_Generator_LuV.get(8),
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 64))
+            .itemOutputs(ItemList.Casing_ContainmentField.get(1))
+            .fluidInputs(
+                Materials.SolderingAlloy.getMolten(2304),
+                new FluidStack(ALLOY.HELICOPTER.getFluid(), 2304),
+                new FluidStack(ALLOY.ZERON_100.getFluid(), 1296))
+            .duration(30 * SECONDS)
+            .eut((int) TierEU.RECIPE_ZPM)
+            .addTo(AssemblyLine);
+
+        //ZPM
         GT_Values.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Casing_ContainmentField.get(1))
             .metadata(RESEARCH_TIME, 4 * HOURS)
@@ -377,34 +435,36 @@ public class GT_MetaTileEntity_Crystalizer
                 ItemList.Casing_ContainmentField.get(1),
                 ItemList.Casing_Fusion.get(1),
                 ItemList.Field_Generator_ZPM.get(8),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 8 },
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 64))
             .itemOutputs(ItemList.Casing_ContainmentFieldZPM.get(1))
             .fluidInputs(
                 Materials.SolderingAlloy.getMolten(2304),
                 new FluidStack(ALLOY.HELICOPTER.getFluid(), 2304),
                 new FluidStack(ALLOY.PIKYONIUM.getFluid(), 1296))
-            .duration(60 * SECONDS)
-            .eut((int) TierEU.RECIPE_ZPM)
+            .duration(30 * SECONDS)
+            .eut((int) TierEU.RECIPE_UV)
             .addTo(AssemblyLine);
 
+        //UV
         GT_Values.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.Casing_ContainmentFieldZPM.get(1))
+            .metadata(RESEARCH_ITEM, ItemList.Casing_ContainmentField.get(1))
             .metadata(RESEARCH_TIME, 4 * HOURS)
             .itemInputs(
                 ItemList.Casing_ContainmentFieldZPM.get(1),
                 ItemList.Casing_Fusion2.get(1),
                 ItemList.Field_Generator_UV.get(8),
-                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 8 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 8 },
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 64))
             .itemOutputs(ItemList.Casing_ContainmentFieldUV.get(1))
             .fluidInputs(
                 Materials.SolderingAlloy.getMolten(4608),
                 new FluidStack(ALLOY.HELICOPTER.getFluid(), 4608),
                 new FluidStack(ALLOY.PIKYONIUM.getFluid(), 2304))
-            .duration(120 * SECONDS)
-            .eut((int) TierEU.RECIPE_UV)
+            .duration(30 * SECONDS)
+            .eut((int) TierEU.RECIPE_UHV)
             .addTo(AssemblyLine);
+
 
         // Lap-Naquadah dust
         GT_Values.RA.stdBuilder()
@@ -473,8 +533,8 @@ public class GT_MetaTileEntity_Crystalizer
             .fluidInputs(Materials.Grade8PurifiedWater.getFluid(16000), ALLOY.QUANTUM.getFluidStack(1440))
             .itemOutputs(ItemList.PerfectLapotronCrystal.get(4))
             .outputChances(5140)
-            .eut(TierEU.UEV)
-            .duration(240 * SECONDS)
+            .eut(TierEU.UV * 2)
+            .duration(30 * SECONDS)
             .noOptimize()
             .build()
             .map(r -> {
@@ -489,9 +549,9 @@ public class GT_MetaTileEntity_Crystalizer
                 MaterialsLapotronLine.LapotronNaquadahMixture.getDust(288),
                 GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.LuV), 8))
             .fluidInputs(Materials.Grade5PurifiedWater.getFluid(16000), ALLOY.ARCANITE.getFluidStack(576))
-            .itemOutputs(ItemList.CrudeLapotronCrystal.get(1))
+            .itemOutputs(ItemList.CrudeLapotronCrystal.get(2))
             .outputChances(5140)
-            .eut(TierEU.LuV)
+            .eut(TierEU.EV * 2)
             .duration(60 * SECONDS)
             .noOptimize()
             .build()
@@ -507,10 +567,10 @@ public class GT_MetaTileEntity_Crystalizer
                 ItemList.LapotronShard.get(1),
                 MaterialsLapotronLine.LapotronNaquadriaMixture.getDust(288),
                 GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.ZPM), 8))
-            .fluidInputs(Materials.Grade6PurifiedWater.getFluid(16000), ALLOY.PIKYONIUM.getFluidStack(288))
-            .itemOutputs(ItemList.StableLapotronCrystal.get(1))
+            .fluidInputs(Materials.Grade6PurifiedWater.getFluid(16000), ALLOY.HELICOPTER.getFluidStack(288))
+            .itemOutputs(ItemList.StableLapotronCrystal.get(2))
             .outputChances(5140)
-            .eut(114514)
+            .eut(14314)
             .duration(60 * SECONDS)
             .noOptimize()
             .build()
@@ -529,8 +589,8 @@ public class GT_MetaTileEntity_Crystalizer
             .fluidInputs(Materials.Grade7PurifiedWater.getFluid(16000), ALLOY.OCTIRON.getFluidStack(1440))
             .itemOutputs(ItemList.GoodLapotronCrystal.get(3))
             .outputChances(5140)
-            .eut(TierEU.UHV)
-            .duration(180 * SECONDS)
+            .eut(TierEU.ZPM * 2)
+            .duration(30 * SECONDS)
             .noOptimize()
             .build()
             .map(r -> {
@@ -621,7 +681,7 @@ public class GT_MetaTileEntity_Crystalizer
         return StructureDefinition.<GT_MetaTileEntity_Crystalizer>builder()
             .addShape("main", STRUCTURE)
             .addElement(
-                'G', // basement, tungsten steel
+                'H', // basement, tungsten steel
                 GT_HatchElementBuilder.<GT_MetaTileEntity_Crystalizer>builder()
                     .atLeast(
                         GT_HatchElement.Maintenance,
@@ -633,23 +693,24 @@ public class GT_MetaTileEntity_Crystalizer
                     .dot(1)
                     .casingIndex(((GT_Block_Casings_Abstract) GregTech_API.sBlockCasings4).getTextureIndex(0))
                     .buildAndChain(GregTech_API.sBlockCasings4, 0))
+            .addElement('G', StructureUtility.ofBlock(GregTech_API.sBlockCasings4, 0))
             .addElement(
-                'F',
+                'B',
                 StructureUtility.ofBlock(
                     Block.getBlockFromItem(
-                        ALLOY.ARCANITE.getFrameBox(1)
+                        ALLOY.HELICOPTER.getFrameBox(1)
                             .getItem()),
                     0)) // framebox
             .addElement( // glass
-                'E',
+                'A',
                 StructureUtility.withChannel(
                     "glass",
                     BorosilicateGlass.ofBoroGlass(
                         (byte) -1,
                         GT_MetaTileEntity_Crystalizer::setGlassTier,
                         GT_MetaTileEntity_Crystalizer::getGlassTier)))
-            .addElement('B', StructureUtility.ofBlock(Block.getBlockFromItem(ItemList.Casing_Vent.getItem()), 11))
-            .addElement('D', StructureUtility.ofBlock(Block.getBlockFromItem(ItemList.Casing_AcidHazard.getItem()), 6))
+            .addElement('F', StructureUtility.ofBlock(Block.getBlockFromItem(ItemList.Casing_Vent.getItem()), 11))
+            .addElement('E', StructureUtility.ofBlock(Block.getBlockFromItem(ItemList.Casing_AcidHazard.getItem()), 6))
             .addElement(
                 'C',
                 StructureUtility.withChannel(
@@ -664,7 +725,7 @@ public class GT_MetaTileEntity_Crystalizer
                         },
                         (te) -> te.fleldGeneratorTier)))
             .addElement(
-                'A',
+                'D',
                 StructureUtility.withChannel(
                     "field_center",
                     StructureUtility.ofBlocksTiered(
@@ -721,6 +782,9 @@ public class GT_MetaTileEntity_Crystalizer
                 "The efficiency of the machine grows as it runs. It will take at most 9 hours to get full efficiency.")
             .addInfo("With full efficiency, extra 30% of output is produced and the chance of recipes become 100%.")
             .addInfo("When using containment casing of higher tier, it will cost less time to become 100% efficient.")
+            .addInfo("Right click controller with a screwdriver to enable certainty mode.")
+            .addInfo(
+                "Can process recipes without chance with a 250% lower speed with that. Upgrading fienld casing can reduce penalty.")
             .addInfo("The structure is too complex!")
             .addInfo(BLUE_PRINT_INFO)
             .addSeparator()
@@ -811,6 +875,7 @@ public class GT_MetaTileEntity_Crystalizer
         super.saveNBTData(aNBT);
         aNBT.setInteger("activeTicks", activeTicks);
         aNBT.setInteger("maxActiveTicks", maxActiveTicks);
+        aNBT.setBoolean("enableChance", enableChance);
     }
 
     @Override
@@ -818,6 +883,7 @@ public class GT_MetaTileEntity_Crystalizer
         super.loadNBTData(aNBT);
         activeTicks = aNBT.getInteger("activeTicks");
         maxActiveTicks = aNBT.getInteger("maxActiveTicks");
+        enableChance = aNBT.getBoolean("enableChance");
     }
 
     @Override
@@ -910,13 +976,19 @@ public class GT_MetaTileEntity_Crystalizer
                 .isValidForLowGravity(recipe, getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
                 return SimpleCheckRecipeResult.ofFailure("high_gravity");
             }
+            if (recipe.mSpecialValue / 1000 > fleldGeneratorTier) {
+                return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue / 1000);
+            }
             return CheckRecipeResultRegistry.SUCCESSFUL;
         }
 
         @NotNull
         @Override
         protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
-            double speedModifier = baseSpeedModifier + 0.1 * fleldGeneratorTier;
+            double speedModifier = baseSpeedModifier + 0.075 * fleldGeneratorTier;
+            if (!enableChance) {
+                speedModifier = speedModifier / 3.5;
+            }
             double euModifier = baseEUtModifier - 0.05 * fleldGeneratorTier;
             GT_OverclockCalculator overclockCalculator = super.createOverclockCalculator(recipe);
             return overclockCalculator.setSpeedBoost((float) (1.0 / (speedModifier)))
@@ -935,6 +1007,7 @@ public class GT_MetaTileEntity_Crystalizer
                         super.calculateItemOutputs(truncatedItemOutputs);
                         return;
                     }
+                    int chanceLimit = 10500 + fleldGeneratorTier * 500;
                     int extraChance = GT_MetaTileEntity_BasicMachine
                         .isValidForLowGravity(recipe, getBaseMetaTileEntity().getWorld().provider.dimensionId) ? 1000
                             : 0;
@@ -946,16 +1019,27 @@ public class GT_MetaTileEntity_Crystalizer
                             .copy();
                         final long itemStackSize = origin.stackSize;
                         double originChance = recipe.getOutputChance(i) + extraChance;
-                        double chance = Math.min(
-                            13000,
-                            originChance + (13000 - originChance) * (activeTicks / (double) maxActiveTicks));
-                        double oMultiplier = 1;
-                        if (chance > 10000) oMultiplier = chance / 10000;
+                        double chance;
+                        if (enableChance) {
+                            chance = Math.min(
+                                chanceLimit,
+                                originChance + (chanceLimit - originChance) * (activeTicks / (double) maxActiveTicks));
+                        } else {
+                            chance = 10000;
+                        }
                         double chancedOutputMultiplier = calculateChancedOutputMultiplier(
                             (int) (Math.min(chance, 10000) * chanceMultiplier),
                             currentParallel);
-                        long items = (long) Math.ceil(itemStackSize * chancedOutputMultiplier * oMultiplier);
+                        long items = (long) Math.ceil(itemStackSize * chancedOutputMultiplier);
                         addItemsLong(itemOutputsList, origin, items);
+                        if (chance > 10000) {
+                            // extra output
+                            chancedOutputMultiplier = calculateChancedOutputMultiplier(
+                                (int) ((chance - 10000) * chanceMultiplier),
+                                currentParallel);
+                            items = (long) Math.ceil(itemStackSize * chancedOutputMultiplier);
+                            addItemsLong(itemOutputsList, origin, items);
+                        }
                     }
                     itemOutputs = itemOutputsList.toArray(new ItemStack[0]);
                 }

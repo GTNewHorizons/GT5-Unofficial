@@ -78,7 +78,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Circuit_Parts_Crystal_Chip_Master.get(64),
                         ItemList.Circuit_Parts_Crystal_Chip_Master.get(64))
                     .requiresCleanRoom()
-                    .duration(360 * SECONDS)
+                    .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(laserEngraverRecipes);
 
@@ -86,7 +86,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .itemInputs(ItemList.CrudeLapotronCrystal.get(1), GT_Utility.copyAmount(0, aStack))
                     .itemOutputs(ItemList.Circuit_Parts_Crystal_Chip_Master.get(64))
                     .requiresCleanRoom()
-                    .duration(60 * SECONDS)
+                    .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(laserEngraverRecipes);
 
@@ -96,7 +96,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Circuit_Parts_Crystal_Chip_Master.get(64),
                         ItemList.Circuit_Parts_Crystal_Chip_Master.get(32))
                     .requiresCleanRoom()
-                    .duration(90 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(laserEngraverRecipes);
 
@@ -107,7 +107,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Circuit_Parts_Crystal_Chip_Master.get(64),
                         ItemList.Circuit_Parts_Crystal_Chip_Master.get(48))
                     .requiresCleanRoom()
-                    .duration(200 * SECONDS)
+                    .duration(45 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(laserEngraverRecipes);
 
