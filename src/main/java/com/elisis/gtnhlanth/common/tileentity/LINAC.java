@@ -33,7 +33,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import forestry.core.fluids.Fluids;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TickTime;
@@ -338,17 +337,26 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
                                                  // weigh the former by the latter
 
         long voltage = this.getMaxInputVoltage();
-        voltageFactor = calculateVoltageFactor(voltage);
+        //voltageFactor = calculateVoltageFactor(voltage);
 
-        machineEnergy = Math.max(-((60) / this.length) * voltageFactor + 60_000, 2000); // Minimum of 2000keV
+        //machineEnergy = Math.max(-((60) / this.length) * voltageFactor + 60_000, 2000); // Minimum of 2000keV
+        
+        machineEnergy = (float) Math.max(length / 4 * Math.pow(voltage, 1.0 / 3.0), 50); // Minimum of 50keV
 
         inputEnergy = this.getInputInformation()
             .getEnergy();
+        /*
         outputEnergy = Math.min(
             (1 + inputEnergy / Particle.getParticleFromId(outputParticle)
                 .maxSourceEnergy()) * machineEnergy,
             120_000); // TODO more complex calculation than just
         // addition
+        */
+        
+        GT_Log.out.print("Machineenergy: " + machineEnergy + "\n");
+        
+        outputEnergy = (float) Math.pow(10, 1 + inputEnergy / Particle.getParticleFromId(outputParticle).maxSourceEnergy()) * machineEnergy;
+        
 
         inputRate = this.getInputInformation()
             .getRate();
@@ -560,11 +568,12 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
         return factor;
     }
 
+    /*
     private static float calculateVoltageFactor(long voltage) {
 
         float factor = (float) Math.pow(1.00009, -(0.1 * voltage - 114000));
         return factor;
-    }
+    }*/
 
     @Override
     public String[] getStructureDescription(ItemStack arg0) {
