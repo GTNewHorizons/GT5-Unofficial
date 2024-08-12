@@ -1,19 +1,18 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
-import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
@@ -643,7 +642,9 @@ public class BlastFurnaceRecipes implements Runnable {
         // Rh + 3Cl = RhCl3
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust),1, 78), GT_Utility.getIntegratedCircuit(2))
+            .itemInputs(
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 1, 78),
+                GT_Utility.getIntegratedCircuit(2))
             .itemOutputs(MaterialsKevlar.RhodiumChloride.getDust(4))
             .fluidInputs(Materials.Chlorine.getGas(3000))
             .duration(30 * SECONDS)

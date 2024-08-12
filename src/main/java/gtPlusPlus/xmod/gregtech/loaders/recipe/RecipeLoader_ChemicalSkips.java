@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.GoodGenerator;
@@ -480,7 +479,7 @@ public class RecipeLoader_ChemicalSkips {
             .itemInputs(
                 GT_Utility.getIntegratedCircuit(10),
                 CI.getEmptyCatalyst(1),
-                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust),64, 88),
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 64, 88),
                 Materials.Osmiridium.getDust(64),
                 Materials.Carbon.getNanite(64))
             .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 1))

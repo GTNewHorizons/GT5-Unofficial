@@ -4,7 +4,6 @@ import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemC
 import static com.google.common.math.LongMath.pow;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.AvaritiaAddons;
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.BloodMagic;
 import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.EternalSingularity;
@@ -29,12 +28,12 @@ import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.rwtema.extrautils.ExtraUtils;

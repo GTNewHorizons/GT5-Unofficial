@@ -1,6 +1,5 @@
 package gregtech.loaders.postload.chains;
 
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.metadata.PCBFactoryUpgrade.BIO;
@@ -13,11 +12,12 @@ import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -610,7 +610,10 @@ public class GT_PCBFactoryRecipes {
                     GT_Utility.getIntegratedCircuit(1),
                     GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    new ItemStack(WerkstoffLoader.items.get(OrePrefixes.foil), (int) (16 * (Math.sqrt(tier - 6))), 10106),
+                    new ItemStack(
+                        WerkstoffLoader.items.get(OrePrefixes.foil),
+                        (int) (16 * (Math.sqrt(tier - 6))),
+                        10106),
                     GT_OreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
                     GT_ModHandler
@@ -639,7 +642,10 @@ public class GT_PCBFactoryRecipes {
                     GT_Utility.getNaniteAsCatalyst(Materials.Silver),
                     GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    new ItemStack(WerkstoffLoader.items.get(OrePrefixes.foil), (int) (16 * (Math.sqrt(tier - 6))), 10106),
+                    new ItemStack(
+                        WerkstoffLoader.items.get(OrePrefixes.foil),
+                        (int) (16 * (Math.sqrt(tier - 6))),
+                        10106),
                     GT_OreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
                     GT_ModHandler
@@ -668,7 +674,10 @@ public class GT_PCBFactoryRecipes {
                     GT_Utility.getNaniteAsCatalyst(Materials.Gold),
                     GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    new ItemStack(WerkstoffLoader.items.get(OrePrefixes.foil), (int) (16 * (Math.sqrt(tier - 6))), 10106),
+                    new ItemStack(
+                        WerkstoffLoader.items.get(OrePrefixes.foil),
+                        (int) (16 * (Math.sqrt(tier - 6))),
+                        10106),
                     GT_OreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
                     GT_ModHandler

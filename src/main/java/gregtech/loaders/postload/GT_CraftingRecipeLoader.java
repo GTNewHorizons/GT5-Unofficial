@@ -1,6 +1,5 @@
 package gregtech.loaders.postload;
 
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
@@ -11,10 +10,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
 import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;

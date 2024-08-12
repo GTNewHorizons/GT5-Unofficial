@@ -1,6 +1,5 @@
 package gregtech.loaders.postload.chains;
 
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -14,11 +13,12 @@ import static gregtech.api.util.GT_RecipeConstants.NANO_FORGE_TIER;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;

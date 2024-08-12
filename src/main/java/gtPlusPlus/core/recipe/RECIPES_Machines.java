@@ -1,6 +1,5 @@
 package gtPlusPlus.core.recipe;
 
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.GregTech;
@@ -21,7 +20,6 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.List;
 
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -29,6 +27,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.google.common.collect.ImmutableList;
