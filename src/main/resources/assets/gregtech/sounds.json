@@ -70,5 +70,58 @@
         "stream": false
       }
     ]
+  },
+  "machines.PurificationPlantLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "PurificationPlantLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.PurificationPhLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "PurificationPhLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.PurificationCoagulationLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "PurificationCoagulationLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.PurificationOzonationLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "PurificationOzonationLoop",
+        "stream": false,
+        "licensing": {
+          "sound_url": "https://freesound.org/people/MattJ99/sounds/66787/",
+          "sound_name": "bubbling02.wav",
+          "author_url": "https://freesound.org/people/MattJ99/",
+          "author_name": "MattJ99",
+          "license_url": "http://creativecommons.org/licenses/by/3.0/",
+          "license_name": "Attribution 3.0"
+        }
+      }
+    ]
+  },
+  "machines.PurificationPlasmaLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "PurificationPlasmaLoop",
+        "stream": false
+      }
+    ]
   }
 }

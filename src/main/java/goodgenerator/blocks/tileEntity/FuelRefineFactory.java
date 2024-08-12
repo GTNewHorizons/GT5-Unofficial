@@ -191,10 +191,10 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
             .addInfo(BLUE_PRINT_INFO)
             .addSeparator()
             .beginStructureBlock(3, 15, 15, false)
-            .addInputHatch("The casings adjoin the field restriction glass.")
-            .addInputBus("The casings adjoin the field restriction glass.", 1)
-            .addOutputHatch("The casings adjoin the field restriction glass.", 1)
-            .addEnergyHatch("The casings adjoin the field restriction glass.", 1)
+            .addInputHatch("The casings adjacent to field restriction glass.")
+            .addInputBus("The casings adjacent to field restriction glass.", 1)
+            .addOutputHatch("The casings adjacent to field restriction glass.", 1)
+            .addEnergyHatch("The casings adjacent to field restriction glass.", 1)
             .toolTipFinisher("Good Generator");
         return tt;
     }

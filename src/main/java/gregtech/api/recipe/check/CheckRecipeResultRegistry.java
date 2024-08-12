@@ -165,5 +165,6 @@ public final class CheckRecipeResultRegistry {
         register(new ResultInsufficientMachineTier(0));
         register(new ResultInsufficientStartupPower(0));
         register(new ResultInsufficientStartupPowerBigInt(BigInteger.ZERO));
+        register(new ResultMissingItem());
     }
 }

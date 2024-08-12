@@ -407,7 +407,7 @@ public class RECIPES_GREGTECH {
                     CI.getTertiaryTieredFluid(j - 2, 144 * 16),
                     CI.getAlternativeTieredFluid(j, 144 * 16))
                 .itemOutputs(aGemCasings[aCasingSlot++])
-                .eut(GT_Values.V[j])
+                .eut(GT_Values.VP[j])
                 .duration(2 * MINUTES)
                 .addTo(AssemblyLine);
         }
@@ -442,7 +442,7 @@ public class RECIPES_GREGTECH {
                     CI.getAlternativeTieredFluid(j, 144 * 16),
                     CI.getTertiaryTieredFluid(j - 1, 144 * 16))
                 .itemOutputs(aGemBatteries[aCasingSlot++])
-                .eut(GT_Values.V[j])
+                .eut(GT_Values.VP[j])
                 .duration(2 * MINUTES)
                 .addTo(AssemblyLine);
         }
@@ -506,7 +506,7 @@ public class RECIPES_GREGTECH {
                         CI.getAlternativeTieredFluid(h - 1, 144 * 4 * 8),
                         CI.getAlternativeTieredFluid(h - 2, 144 * 4 * 8))
                     .itemOutputs(aChargeOutputs[aCurrSlot])
-                    .eut(GT_Values.V[h])
+                    .eut(GT_Values.VP[h])
                     .duration((aCurrSlot + 1) * HOURS)
                     .addTo(AssemblyLine);
                 aCurrSlot++;
@@ -549,8 +549,8 @@ public class RECIPES_GREGTECH {
                 GregtechItemList.Industrial_AlloyBlastSmelter.get(64L, new Object() {}),
                 ItemList.UV_Coil.get(16L, new Object() {}),
                 ItemList.Conveyor_Module_UV.get(4L, new Object() {}),
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 8 },
-                new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 16 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 8 },
+                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 16 },
                 ItemList.Circuit_Chip_PPIC.get(16, new Object() {}),
                 ALLOY.PIKYONIUM.getPlate(16),
                 ALLOY.CINOBITE.getScrew(32))
@@ -1196,7 +1196,7 @@ public class RECIPES_GREGTECH {
                 .itemOutputs(aPackOutput[aAS])
                 .fluidInputs(CI.getTieredFluid(i, (144 * 4)))
                 .duration(30 * i * SECONDS)
-                .eut(GT_Values.V[i])
+                .eut(GT_Values.VP[i])
                 .addTo(assemblerRecipes);
         }
 
@@ -1644,9 +1644,9 @@ public class RECIPES_GREGTECH {
                 Particle.getBaseParticle(Particle.STRANGE),
                 Particle.getBaseParticle(Particle.TOP),
                 Particle.getBaseParticle(Particle.BOTTOM))
-            .outputChances(50, 50, 50, 50, 50, 50)
+            .outputChances(100, 100, 100, 100, 100, 100)
             .fluidInputs(FluidUtils.getFluidStack("plasma.hydrogen", 100))
-            .duration(45 * MINUTES)
+            .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(cyclotronRecipes);
         // Lepton Smash

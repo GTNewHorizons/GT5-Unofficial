@@ -13,6 +13,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.elisis.gtnhlanth.common.item.MaskList;
+import com.elisis.gtnhlanth.common.item.PhotolithographicMask;
+import com.elisis.gtnhlanth.common.register.LanthItemList;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -21,6 +25,8 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
+import gregtech.common.items.GT_MetaGenerated_Item_03;
+import gregtech.common.items.ID_MetaItem_03;
 
 // this class is intended to be import-static-ed on every recipe script
 // so take care to not put unrelated stuff here!
@@ -238,6 +244,152 @@ public class GT_RecipeConstants {
     });
 
     /**
+     * Adds an engraver recipe that might use purified water. Still added to the regular recipemap if it ends up not
+     * needing it.
+     */
+    public static final IRecipeMap WaferEngravingRecipes = IRecipeMap.newRecipeMap(builder -> {
+        // spotless:off
+        enum Wafer{
+            Naquadah,
+            Europium,
+            Americium,
+            // Beamline masks
+            MaskT1,
+            MaskT2,
+            MaskT3,
+        }
+        // spotless:on
+        // Find the wafer used
+        Wafer wafer = null;
+        PhotolithographicMask t1Item = (PhotolithographicMask) LanthItemList.maskMap.get(MaskList.BLANK1);
+        PhotolithographicMask t2Item = (PhotolithographicMask) LanthItemList.maskMap.get(MaskList.BLANK2);
+        PhotolithographicMask t3Item = (PhotolithographicMask) LanthItemList.maskMap.get(MaskList.BLANK3);
+        for (ItemStack input : builder.getItemInputsBasic()) {
+            if (input.getItem() instanceof GT_MetaGenerated_Item_03) {
+                int meta = input.getItemDamage() - 32000;
+                // Check if this input item is indicating a wafer recipe we want to modify
+                if (meta == ID_MetaItem_03.Circuit_Silicon_Wafer3.ID) wafer = Wafer.Naquadah;
+                else if (meta == ID_MetaItem_03.Circuit_Silicon_Wafer4.ID) wafer = Wafer.Europium;
+                else if (meta == ID_MetaItem_03.Circuit_Silicon_Wafer5.ID) wafer = Wafer.Americium;
+            }
+
+            // Now look for beamline masks
+            if (input.getItem() instanceof PhotolithographicMask mask) {
+                String spectrum = mask.getDescSpectrum();
+                if (spectrum.equals(t1Item.getDescSpectrum())) wafer = Wafer.MaskT1;
+                else if (spectrum.equals(t2Item.getDescSpectrum())) wafer = Wafer.MaskT2;
+                else if (spectrum.equals(t3Item.getDescSpectrum())) wafer = Wafer.MaskT3;
+            }
+
+            // Found a wafer, stop checking inputs
+            if (wafer != null) break;
+        }
+
+        int recipeTime = builder.duration;
+        // Bonus for using purified water of a higher tier than necessary
+        int halfBoostedRecipeTime = (int) (recipeTime * 0.75);
+        int boostedRecipeTime = (int) (recipeTime * 0.5);
+
+        // If this recipe does not use a wafer, exit without modifying it.
+        if (wafer == null) return builder.addTo(RecipeMaps.laserEngraverRecipes);
+        switch (wafer) {
+            case Naquadah -> {
+                ArrayList<ItemStack> items = new ArrayList<>(Arrays.asList(builder.getItemInputsBasic()));
+                ItemStack[] itemInputs = items.toArray(new ItemStack[] {});
+                // Naquadah wafers can use grade 1-2 purified water for a bonus, otherwise use distilled so we don't
+                // have to
+                // deal with circuits
+                return GT_Utility.concat(
+                    builder.copy()
+                        .itemInputs(itemInputs)
+                        .fluidInputs(GT_ModHandler.getDistilledWater(100L))
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .itemInputs(itemInputs)
+                        .fluidInputs(Materials.Grade1PurifiedWater.getFluid(100L))
+                        .duration(halfBoostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .itemInputs(itemInputs)
+                        .fluidInputs(Materials.Grade2PurifiedWater.getFluid(100L))
+                        .duration(boostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes));
+            }
+            case Europium -> {
+                // Require purified water for europium wafers, at least grade 3
+                return GT_Utility.concat(
+                    builder.copy()
+                        .fluidInputs(Materials.Grade3PurifiedWater.getFluid(100L))
+                        .duration(recipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade4PurifiedWater.getFluid(100L))
+                        .duration(boostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes));
+            }
+            case Americium -> {
+                // Require purified water for americium wafers, at least grade 5
+                return GT_Utility.concat(
+                    builder.copy()
+                        .fluidInputs(Materials.Grade5PurifiedWater.getFluid(100L))
+                        .duration(recipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade6PurifiedWater.getFluid(100L))
+                        .duration(boostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes));
+            }
+            // Masks require much more purified water because they can make many wafers at once
+            case MaskT1 -> {
+                // T1 masks require grade 1, 2 or 3 purified water
+                return GT_Utility.concat(
+                    builder.copy()
+                        .fluidInputs(Materials.Grade1PurifiedWater.getFluid(32000L))
+                        .duration(recipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade2PurifiedWater.getFluid(32000L))
+                        .duration(halfBoostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade3PurifiedWater.getFluid(32000L))
+                        .duration(boostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes));
+            }
+            case MaskT2 -> {
+                // T2 masks require grade 4 or 5 purified water
+                return GT_Utility.concat(
+                    builder.copy()
+                        .fluidInputs(Materials.Grade4PurifiedWater.getFluid(32000L))
+                        .duration(recipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade5PurifiedWater.getFluid(32000L))
+                        .duration(boostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes));
+            }
+            case MaskT3 -> {
+                // T3 masks require grade 6, 7 or 8 purified water
+                return GT_Utility.concat(
+                    builder.copy()
+                        .fluidInputs(Materials.Grade6PurifiedWater.getFluid(32000L))
+                        .duration(recipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade7PurifiedWater.getFluid(32000L))
+                        .duration(halfBoostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes),
+                    builder.copy()
+                        .fluidInputs(Materials.Grade8PurifiedWater.getFluid(32000L))
+                        .duration(boostedRecipeTime)
+                        .addTo(RecipeMaps.laserEngraverRecipes));
+            }
+        }
+
+        throw new RuntimeException("Unreachable code reached in Laser Engraver Recipe Transformer");
+    });
+
+    /**
      * The one and only :tm: assline recipe adder.
      * Uses {@link #RESEARCH_ITEM} metadata as research item, and {@link #RESEARCH_TIME} metadata as research time, unit
      * in ticks.
@@ -247,7 +399,7 @@ public class GT_RecipeConstants {
             .validateInputCount(4, 16)
             .validateOutputCount(1, 1)
             .validateOutputFluidCount(-1, 0)
-            .validateInputFluidCount(0, 4)
+            .validateInputFluidCount(1, 4)
             .buildWithAlt();
         // noinspection SimplifyOptionalCallChains
         if (!rr.isPresent()) return Collections.emptyList();

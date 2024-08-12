@@ -3,8 +3,6 @@ package gregtech.test;
 import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.ItemList.Circuit_Parts_Crystal_Chip_Master;
 import static gregtech.api.enums.ItemList.IC2_LapotronCrystal;
-import static gregtech.api.enums.Materials.Advanced;
-import static gregtech.api.enums.Materials.BlueTopaz;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.OrePrefixes.circuit;
 import static gregtech.api.enums.OrePrefixes.lens;
@@ -32,6 +30,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.util.GT_Recipe;
@@ -55,14 +54,14 @@ class GTRecipeTest {
             .addTo(recipeMap);
 
         RA.stdBuilder()
-            .itemInputs(new ItemStack(lapis_block, 1), get(circuit, Advanced, 1))
+            .itemInputs(new ItemStack(lapis_block, 1), get(circuit, Materials.HV, 1))
             .itemOutputs(IC2_LapotronCrystal.get(1))
             .duration(0)
             .eut(0)
             .addTo(recipeMap);
 
         lapotronChipRecipe = RA.stdBuilder()
-            .itemInputs(IC2_LapotronCrystal.getWildcard(1), copyAmount(0, get(lens, BlueTopaz, 1)))
+            .itemInputs(IC2_LapotronCrystal.getWildcard(1), copyAmount(0, get(lens, Materials.BlueTopaz, 1)))
             .itemOutputs(Circuit_Parts_Crystal_Chip_Master.get(3))
             .duration(0)
             .eut(0)
@@ -118,7 +117,7 @@ class GTRecipeTest {
     @Test
     void findWithExactSameInputs() {
         GT_Recipe recipe = recipeMap.findRecipeQuery()
-            .items(new ItemStack(lapis_block, 1), get(circuit, Advanced, 1))
+            .items(new ItemStack(lapis_block, 1), get(circuit, Materials.HV, 1))
             .find();
         assertNotNull(recipe);
 
@@ -136,7 +135,7 @@ class GTRecipeTest {
         assertNotNull(chestRecipe);
 
         GT_Recipe lapotronChipRecipe = recipeMap.findRecipeQuery()
-            .items(IC2_LapotronCrystal.getWildcard(1), copyAmount(0, get(lens, BlueTopaz, 1)))
+            .items(IC2_LapotronCrystal.getWildcard(1), copyAmount(0, get(lens, Materials.BlueTopaz, 1)))
             .find();
         assertNotNull(lapotronChipRecipe);
     }
@@ -158,7 +157,7 @@ class GTRecipeTest {
         tag.setFloat("charge", 123456);
         lapisBlock.stackTagCompound = tag;
         GT_Recipe recipe = recipeMap.findRecipeQuery()
-            .items(lapisBlock, get(circuit, Advanced, 1))
+            .items(lapisBlock, get(circuit, Materials.HV, 1))
             .find();
         assertNotNull(recipe);
 

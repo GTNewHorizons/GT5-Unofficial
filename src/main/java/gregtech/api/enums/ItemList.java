@@ -1154,7 +1154,16 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_ImplosionCompressor,
     Machine_Multi_VacuumFreezer,
     Machine_Multi_Furnace,
-
+    Machine_Multi_PurificationPlant,
+    Machine_Multi_PurificationUnitClarifier,
+    Machine_Multi_PurificationUnitFlocculator,
+    Machine_Multi_PurificationUnitPhAdjustment,
+    Machine_Multi_PurificationUnitOzonation,
+    Machine_Multi_PurificationUnitPlasmaHeater,
+    Machine_Multi_PurificationUnitUVTreatment,
+    Machine_Multi_PurificationUnitDegasifier,
+    Machine_Multi_PurificationUnitParticleExtractor,
+    Hatch_DegasifierControl,
     Machine_LV_AlloySmelter,
     Machine_MV_AlloySmelter,
     Machine_HV_AlloySmelter,
@@ -2041,7 +2050,42 @@ public enum ItemList implements IItemContainer {
     TierdDrone1,
     TierdDrone2,
     Hatch_DroneDownLink,
-    Casing_Shielded_Accelerator;
+    Casing_Shielded_Accelerator,
+    WormholeGenerator,
+    Hatch_pHSensor,
+    Hatch_LensHousing,
+    Hatch_LensIndicator,
+    ActivatedCarbonFilterMesh,
+    BlockIndustrialStrengthConcrete,
+    GlassPHResistant,
+    GlassTintedIndustrialWhite,
+    GlassTintedIndustrialLightGray,
+    GlassTintedIndustrialGray,
+    GlassTintedIndustrialBlack,
+    BlockIndustrialWaterPlantCasing,
+    BlockSterileWaterPlantCasing,
+    BlockFlocculationCasing,
+    BlockNaquadahReinforcedWaterPlantCasing,
+    BlockExtremeCorrosionResistantCasing,
+    BlockHighPressureResistantCasing,
+    BlockOzoneCasing,
+    BlockPlasmaHeatingCasing,
+    BlockNaquadriaReinforcedWaterPlantCasing,
+    GlassUVResistant,
+    BlockUltraVioletLaserEmitter,
+    Quark_Catalyst_Housing,
+    Quark_Creation_Catalyst_Up,
+    Quark_Creation_Catalyst_Down,
+    Quark_Creation_Catalyst_Strange,
+    Quark_Creation_Catalyst_Charm,
+    Quark_Creation_Catalyst_Bottom,
+    Quark_Creation_Catalyst_Top,
+    Quark_Creation_Catalyst_Unaligned,
+    GlassOmniPurposeInfinityFused,
+    GlassQuarkContainment,
+    BlockQuarkPipe,
+    BlockQuarkReleaseChamber,
+    BlockQuarkContainmentCasing;
 
     public static final ItemList[] DYE_ONLY_ITEMS = { Color_00, Color_01, Color_02, Color_03, Color_04, Color_05,
         Color_06, Color_07, Color_08, Color_09, Color_10, Color_11, Color_12, Color_13, Color_14, Color_15 },
@@ -2104,6 +2148,12 @@ public enum ItemList implements IItemContainer {
     public IItemContainer set(ItemStack aStack) {
         mHasNotBeenSet = false;
         mStack = GT_Utility.copyAmount(1, aStack);
+        return this;
+    }
+
+    @Override
+    public IItemContainer hidden() {
+        codechicken.nei.api.API.hideItem(get(1L));
         return this;
     }
 

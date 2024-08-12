@@ -1,27 +1,21 @@
 package gregtech.common.tileentities.render;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 
-import cpw.mods.fml.relauncher.Side;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
-import micdoodle8.mods.galacticraft.core.util.Annotations;
+public class TileLaser extends TileEntity {
 
-public class TileLaser extends TileEntityAdvanced {
-
-    @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public boolean shouldRender = false;
-    @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public float red = 0, green = 0, blue = 0;
-    @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public float counter = 0F;
-    @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public boolean realism = false;
-    @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public double rotAxisX = 0, rotAxisY = 0, rotAxisZ = 0, rotationAngle = 0;
 
     @Override
@@ -54,11 +48,13 @@ public class TileLaser extends TileEntityAdvanced {
         this.red = red;
         this.green = green;
         this.blue = blue;
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     public void setRotationFields(ForgeDirection direction, Rotation rotation, Flip flip) {
         setRotationAngle(rotation, flip);
         setRotationAxis(direction);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     private void setRotationAngle(Rotation rotation, Flip flip) {
@@ -69,16 +65,19 @@ public class TileLaser extends TileEntityAdvanced {
             case COUNTER_CLOCKWISE -> rotationAngle = -90 * invert;
             case UPSIDE_DOWN -> rotationAngle = 180;
         }
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     public void setRotationAxis(ForgeDirection direction) {
         rotAxisX = direction.offsetX;
         rotAxisY = direction.offsetY;
         rotAxisZ = direction.offsetZ;
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     public void setShouldRender(boolean shouldRender) {
         this.shouldRender = shouldRender;
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     public Boolean getShouldRender() {
@@ -98,27 +97,20 @@ public class TileLaser extends TileEntityAdvanced {
     }
 
     @Override
-    public AxisAlignedBB getRenderBoundingBox() {
-        return INFINITE_EXTENT_AABB;
+    public Packet getDescriptionPacket() {
+        NBTTagCompound nbttagcompound = new NBTTagCompound();
+        writeToNBT(nbttagcompound);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbttagcompound);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        readFromNBT(pkt.func_148857_g());
+        worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
     }
 
     @Override
     public double getMaxRenderDistanceSquared() {
-        return 65536;
-    }
-
-    @Override
-    public double getPacketRange() {
-        return 128;
-    }
-
-    @Override
-    public int getPacketCooldown() {
-        return 20;
-    }
-
-    @Override
-    public boolean isNetworkedTile() {
-        return true;
+        return 4096;
     }
 }

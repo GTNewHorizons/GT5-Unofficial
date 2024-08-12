@@ -75,7 +75,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1),
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium, 6),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 16),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 16),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 2))
@@ -89,7 +89,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 CustomItemList.eM_Power.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 8),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 1),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 2))
             .itemOutputs(CustomItemList.eM_Computer_Casing.get(1))
             .fluidInputs(Materials.Aluminium.getMolten(1296))
@@ -996,7 +996,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Transformer_LuV_IV.get(1),
                 getItemContainer("Display").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.TungstenSteel, 4),
                 getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 2))
@@ -1010,7 +1010,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Transformer_ZPM_LuV.get(1),
                 getItemContainer("Display").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
                 GT_OreDictUnificator
                     .get(OrePrefixes.plate, getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome), 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.NiobiumTitanium, 4),
@@ -1025,7 +1025,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Transformer_UV_ZPM.get(1),
                 getItemContainer("Display").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.TungstenSteel, 4),
                 getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 4))
@@ -1039,7 +1039,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Transformer_MAX_UV.get(1),
                 getItemContainer("Display").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.SuperconductorUHV, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 4),
                 getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 5))
@@ -1053,7 +1053,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 getItemContainer("Transformer_UEV_UHV").get(1),
                 getItemContainer("Display").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.ElectrumFlux, 4),
                 getModItem(BartWorks.ID, "BW_GlasBlocks", 4L, 5))
@@ -1067,7 +1067,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 getItemContainer("Transformer_UIV_UEV").get(1),
                 getItemContainer("Display").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, getOrDefault("Bedrockium", Materials.Neutronium), 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Bedrockium, 4),
                 getModItem(BartWorks.ID, "BW_GlasBlocks", 8L, 5))
@@ -1081,7 +1081,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 getItemContainer("Transformer_UMV_UIV").get(1),
                 getItemContainer("Display").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Optical, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UIV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.plate, getOrDefault("BlackPlutonium", Materials.Neutronium), 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Draconium, 4),
                 getModItem(BartWorks.ID, "BW_GlasBlocks", 16L, 5))
@@ -1206,20 +1206,8 @@ public class Assembler implements Runnable {
 
             }
 
-            // Laser Dynamo IV-UXV 1024/t
+            // Laser Dynamo LuV-UXV 1024/t
             {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_IV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 2),
-                        ItemList.Emitter_IV.get(2),
-                        ItemList.Electric_Pump_IV.get(2),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.TungstenSteel, 4),
-                        GT_Utility.getIntegratedCircuit(2))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel2_IV.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
-                    .eut(TierEU.RECIPE_IV)
-                    .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Hull_LuV.get(1),
@@ -1319,32 +1307,8 @@ public class Assembler implements Runnable {
 
             }
 
-            // Laser Dynamo IV-UXV 4096/t
+            // Laser Dynamo ZPM-UXV 4096/t
             {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_IV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4),
-                        ItemList.Emitter_IV.get(4),
-                        ItemList.Electric_Pump_IV.get(4),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 4),
-                        GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel3_IV.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_IV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_LuV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4),
-                        ItemList.Emitter_LuV.get(4),
-                        ItemList.Electric_Pump_LuV.get(4),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.VanadiumGallium, 4),
-                        GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel3_LuV.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_LuV)
-                    .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Hull_ZPM.get(1),
@@ -1432,44 +1396,8 @@ public class Assembler implements Runnable {
 
             }
 
-            // Laser Dynamo IV-UXV 16384/t
+            // Laser Dynamo UV-UXV 16384/t
             {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_IV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8),
-                        ItemList.Emitter_IV.get(8),
-                        ItemList.Electric_Pump_IV.get(8),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 8),
-                        GT_Utility.getIntegratedCircuit(4))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel4_IV.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut(TierEU.RECIPE_IV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_LuV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8),
-                        ItemList.Emitter_LuV.get(8),
-                        ItemList.Electric_Pump_LuV.get(8),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.VanadiumGallium, 8),
-                        GT_Utility.getIntegratedCircuit(4))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel4_LuV.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut(TierEU.RECIPE_LuV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_ZPM.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8),
-                        ItemList.Emitter_ZPM.get(8),
-                        ItemList.Electric_Pump_ZPM.get(8),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 8),
-                        GT_Utility.getIntegratedCircuit(4))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel4_ZPM.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut(TierEU.RECIPE_ZPM)
-                    .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Hull_UV.get(1),
@@ -1545,56 +1473,8 @@ public class Assembler implements Runnable {
 
             }
 
-            // Laser Dynamo IV-UXV 65536/t
+            // Laser Dynamo UHV-UXV 65536/t
             {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_IV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16),
-                        ItemList.Emitter_IV.get(16),
-                        ItemList.Electric_Pump_IV.get(16),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.TungstenSteel, 8),
-                        GT_Utility.getIntegratedCircuit(5))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel5_IV.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_IV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_LuV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16),
-                        ItemList.Emitter_LuV.get(16),
-                        ItemList.Electric_Pump_LuV.get(16),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.VanadiumGallium, 8),
-                        GT_Utility.getIntegratedCircuit(5))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel5_LuV.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_LuV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_ZPM.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16),
-                        ItemList.Emitter_ZPM.get(16),
-                        ItemList.Electric_Pump_ZPM.get(16),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 8),
-                        GT_Utility.getIntegratedCircuit(5))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel5_ZPM.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_ZPM)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_UV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16),
-                        ItemList.Emitter_UV.get(16),
-                        ItemList.Electric_Pump_UV.get(16),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.NaquadahAlloy, 8),
-                        GT_Utility.getIntegratedCircuit(5))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel5_UV.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut(500000)
-                    .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Hull_MAX.get(1),
@@ -1658,68 +1538,8 @@ public class Assembler implements Runnable {
 
             }
 
-            // Laser Dynamo IV-UXV 262144/t
+            // Laser Dynamo UEV-UXV 262144/t
             {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_IV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32),
-                        ItemList.Emitter_IV.get(32),
-                        ItemList.Electric_Pump_IV.get(32),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.TungstenSteel, 16),
-                        GT_Utility.getIntegratedCircuit(6))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel6_IV.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut(TierEU.RECIPE_IV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_LuV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32),
-                        ItemList.Emitter_LuV.get(32),
-                        ItemList.Electric_Pump_LuV.get(32),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.VanadiumGallium, 16),
-                        GT_Utility.getIntegratedCircuit(6))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel6_LuV.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut(TierEU.RECIPE_LuV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_ZPM.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32),
-                        ItemList.Emitter_ZPM.get(32),
-                        ItemList.Electric_Pump_ZPM.get(32),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 16),
-                        GT_Utility.getIntegratedCircuit(6))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel6_ZPM.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut(TierEU.RECIPE_ZPM)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_UV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32),
-                        ItemList.Emitter_UV.get(32),
-                        ItemList.Electric_Pump_UV.get(32),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.NaquadahAlloy, 16),
-                        GT_Utility.getIntegratedCircuit(6))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel6_UV.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut(500000)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_MAX.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32),
-                        ItemList.Emitter_UHV.get(32),
-                        ItemList.Electric_Pump_UHV.get(32),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Bedrockium, 16),
-                        GT_Utility.getIntegratedCircuit(6))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel6_UHV.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut(2000000)
-                    .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
                         getItemContainer("Hull_UEV").get(1),
@@ -1771,80 +1591,8 @@ public class Assembler implements Runnable {
 
             }
 
-            // Laser Dynamo IV-UXV 1048576/t
+            // Laser Dynamo UIV-UXV 1048576/t
             {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_IV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
-                        ItemList.Emitter_IV.get(64),
-                        ItemList.Electric_Pump_IV.get(64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.TungstenSteel, 16),
-                        GT_Utility.getIntegratedCircuit(7))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel7_IV.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_IV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_LuV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
-                        ItemList.Emitter_LuV.get(64),
-                        ItemList.Electric_Pump_LuV.get(64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.VanadiumGallium, 16),
-                        GT_Utility.getIntegratedCircuit(7))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel7_LuV.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_LuV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_ZPM.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
-                        ItemList.Emitter_ZPM.get(64),
-                        ItemList.Electric_Pump_ZPM.get(64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 16),
-                        GT_Utility.getIntegratedCircuit(7))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel7_ZPM.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_ZPM)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_UV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
-                        ItemList.Emitter_UV.get(64),
-                        ItemList.Electric_Pump_UV.get(64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.NaquadahAlloy, 16),
-                        GT_Utility.getIntegratedCircuit(7))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel7_UV.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut(500000)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_MAX.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
-                        ItemList.Emitter_UHV.get(64),
-                        ItemList.Electric_Pump_UHV.get(64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Bedrockium, 16),
-                        GT_Utility.getIntegratedCircuit(7))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel7_UHV.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut(2000000)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        getItemContainer("Hull_UEV").get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
-                        ItemList.Emitter_UEV.get(64),
-                        ItemList.Electric_Pump_UEV.get(64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Draconium, 16),
-                        GT_Utility.getIntegratedCircuit(7))
-                    .itemOutputs(CustomItemList.eM_dynamoTunnel7_UEV.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut(8000000)
-                    .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
                         getItemContainer("Hull_UIV").get(1),
@@ -2000,20 +1748,8 @@ public class Assembler implements Runnable {
 
             }
 
-            // Laser Target IV-UXV 1024/t
+            // Laser Target LuV-UXV 1024/t
             {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_IV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 2),
-                        ItemList.Sensor_IV.get(2),
-                        ItemList.Electric_Pump_IV.get(2),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.TungstenSteel, 4),
-                        GT_Utility.getIntegratedCircuit(2))
-                    .itemOutputs(CustomItemList.eM_energyTunnel2_IV.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
-                    .eut(TierEU.RECIPE_IV)
-                    .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Hull_LuV.get(1),
@@ -2113,32 +1849,8 @@ public class Assembler implements Runnable {
 
             }
 
-            // Laser Target IV-UXV 4096/t
+            // Laser Target ZPM-UXV 4096/t
             {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_IV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4),
-                        ItemList.Sensor_IV.get(4),
-                        ItemList.Electric_Pump_IV.get(4),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 4),
-                        GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(CustomItemList.eM_energyTunnel3_IV.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_IV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_LuV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4),
-                        ItemList.Sensor_LuV.get(4),
-                        ItemList.Electric_Pump_LuV.get(4),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.VanadiumGallium, 4),
-                        GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(CustomItemList.eM_energyTunnel3_LuV.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_LuV)
-                    .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Hull_ZPM.get(1),
@@ -2226,44 +1938,8 @@ public class Assembler implements Runnable {
 
             }
 
-            // Laser Target IV-UXV 16384/t
+            // Laser Target UV-UXV 16384/t
             {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_IV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8),
-                        ItemList.Sensor_IV.get(8),
-                        ItemList.Electric_Pump_IV.get(8),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 8),
-                        GT_Utility.getIntegratedCircuit(4))
-                    .itemOutputs(CustomItemList.eM_energyTunnel4_IV.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut(TierEU.RECIPE_IV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_LuV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8),
-                        ItemList.Sensor_LuV.get(8),
-                        ItemList.Electric_Pump_LuV.get(8),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.VanadiumGallium, 8),
-                        GT_Utility.getIntegratedCircuit(4))
-                    .itemOutputs(CustomItemList.eM_energyTunnel4_LuV.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut(TierEU.RECIPE_LuV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_ZPM.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8),
-                        ItemList.Sensor_ZPM.get(8),
-                        ItemList.Electric_Pump_ZPM.get(8),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 8),
-                        GT_Utility.getIntegratedCircuit(4))
-                    .itemOutputs(CustomItemList.eM_energyTunnel4_ZPM.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
-                    .eut(TierEU.RECIPE_ZPM)
-                    .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Hull_UV.get(1),
@@ -2339,56 +2015,8 @@ public class Assembler implements Runnable {
 
             }
 
-            // Laser Target IV-UXV 65536/t
+            // Laser Target UHV-UXV 65536/t
             {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_IV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16),
-                        ItemList.Sensor_IV.get(16),
-                        ItemList.Electric_Pump_IV.get(16),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.TungstenSteel, 8),
-                        GT_Utility.getIntegratedCircuit(5))
-                    .itemOutputs(CustomItemList.eM_energyTunnel5_IV.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_IV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_LuV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16),
-                        ItemList.Sensor_LuV.get(16),
-                        ItemList.Electric_Pump_LuV.get(16),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.VanadiumGallium, 8),
-                        GT_Utility.getIntegratedCircuit(5))
-                    .itemOutputs(CustomItemList.eM_energyTunnel5_LuV.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_LuV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_ZPM.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16),
-                        ItemList.Sensor_ZPM.get(16),
-                        ItemList.Electric_Pump_ZPM.get(16),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 8),
-                        GT_Utility.getIntegratedCircuit(5))
-                    .itemOutputs(CustomItemList.eM_energyTunnel5_ZPM.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_ZPM)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_UV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16),
-                        ItemList.Sensor_UV.get(16),
-                        ItemList.Electric_Pump_UV.get(16),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.NaquadahAlloy, 8),
-                        GT_Utility.getIntegratedCircuit(5))
-                    .itemOutputs(CustomItemList.eM_energyTunnel5_UV.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
-                    .eut(500000)
-                    .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Hull_MAX.get(1),
@@ -2452,68 +2080,8 @@ public class Assembler implements Runnable {
 
             }
 
-            // Laser Target IV-UXV 262144/t
+            // Laser Target UEV-UXV 262144/t
             {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_IV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32),
-                        ItemList.Sensor_IV.get(32),
-                        ItemList.Electric_Pump_IV.get(32),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.TungstenSteel, 16),
-                        GT_Utility.getIntegratedCircuit(6))
-                    .itemOutputs(CustomItemList.eM_energyTunnel6_IV.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut(TierEU.RECIPE_IV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_LuV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32),
-                        ItemList.Sensor_LuV.get(32),
-                        ItemList.Electric_Pump_LuV.get(32),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.VanadiumGallium, 16),
-                        GT_Utility.getIntegratedCircuit(6))
-                    .itemOutputs(CustomItemList.eM_energyTunnel6_LuV.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut(TierEU.RECIPE_LuV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_ZPM.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32),
-                        ItemList.Sensor_ZPM.get(32),
-                        ItemList.Electric_Pump_ZPM.get(32),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 16),
-                        GT_Utility.getIntegratedCircuit(6))
-                    .itemOutputs(CustomItemList.eM_energyTunnel6_ZPM.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut(TierEU.RECIPE_ZPM)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_UV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32),
-                        ItemList.Sensor_UV.get(32),
-                        ItemList.Electric_Pump_UV.get(32),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.NaquadahAlloy, 16),
-                        GT_Utility.getIntegratedCircuit(6))
-                    .itemOutputs(CustomItemList.eM_energyTunnel6_UV.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut(500000)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_MAX.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32),
-                        ItemList.Sensor_UHV.get(32),
-                        ItemList.Electric_Pump_UHV.get(32),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Bedrockium, 16),
-                        GT_Utility.getIntegratedCircuit(6))
-                    .itemOutputs(CustomItemList.eM_energyTunnel6_UHV.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
-                    .eut(2000000)
-                    .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
                         getItemContainer("Hull_UEV").get(1),
@@ -2565,80 +2133,8 @@ public class Assembler implements Runnable {
 
             }
 
-            // Laser Target IV-UXV 1048576/t
+            // Laser Target UIV-UXV 1048576/t
             {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_IV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
-                        ItemList.Sensor_IV.get(64),
-                        ItemList.Electric_Pump_IV.get(64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.TungstenSteel, 16),
-                        GT_Utility.getIntegratedCircuit(7))
-                    .itemOutputs(CustomItemList.eM_energyTunnel7_IV.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_IV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_LuV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
-                        ItemList.Sensor_LuV.get(64),
-                        ItemList.Electric_Pump_LuV.get(64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.VanadiumGallium, 16),
-                        GT_Utility.getIntegratedCircuit(7))
-                    .itemOutputs(CustomItemList.eM_energyTunnel7_LuV.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_LuV)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_ZPM.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
-                        ItemList.Sensor_ZPM.get(64),
-                        ItemList.Electric_Pump_ZPM.get(64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 16),
-                        GT_Utility.getIntegratedCircuit(7))
-                    .itemOutputs(CustomItemList.eM_energyTunnel7_ZPM.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_ZPM)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_UV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
-                        ItemList.Sensor_UV.get(64),
-                        ItemList.Electric_Pump_UV.get(64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.NaquadahAlloy, 16),
-                        GT_Utility.getIntegratedCircuit(7))
-                    .itemOutputs(CustomItemList.eM_energyTunnel7_UV.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut(500000)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        ItemList.Hull_MAX.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
-                        ItemList.Sensor_UHV.get(64),
-                        ItemList.Electric_Pump_UHV.get(64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Bedrockium, 16),
-                        GT_Utility.getIntegratedCircuit(7))
-                    .itemOutputs(CustomItemList.eM_energyTunnel7_UHV.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut(2000000)
-                    .addTo(assemblerRecipes);
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        getItemContainer("Hull_UEV").get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
-                        ItemList.Sensor_UEV.get(64),
-                        ItemList.Electric_Pump_UEV.get(64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Draconium, 16),
-                        GT_Utility.getIntegratedCircuit(7))
-                    .itemOutputs(CustomItemList.eM_energyTunnel7_UEV.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
-                    .eut(8000000)
-                    .addTo(assemblerRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
                         getItemContainer("Hull_UIV").get(1),
@@ -2772,7 +2268,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.teslaComponent.getWithDamage(4, 0),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Gold, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
@@ -2784,7 +2280,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.teslaComponent.getWithDamage(4, 0),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Gold, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
@@ -2796,7 +2292,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.teslaComponent.getWithDamage(4, 0),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Gold, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
@@ -2809,7 +2305,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.teslaComponent.getWithDamage(4, 1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tungsten, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
@@ -2821,7 +2317,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.teslaComponent.getWithDamage(4, 1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tungsten, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
@@ -2833,7 +2329,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.teslaComponent.getWithDamage(4, 1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tungsten, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 2),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 8))
@@ -3327,7 +2823,7 @@ public class Assembler implements Runnable {
                 GT_ModHandler.getIC2Item("teslaCoil", 1),
                 CustomItemList.tM_TeslaSecondary.get(4),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4),
                 ItemList.Upgrade_Overclocker.get(4))
             .itemOutputs(CustomItemList.Machine_Multi_TeslaCoil.get(1))
             .fluidInputs(Materials.Silver.getMolten(576))
@@ -3339,7 +2835,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Machine_HV_Microwave.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 16),
                 ItemList.Upgrade_Overclocker.get(4))
             .itemOutputs(CustomItemList.Machine_Multi_Microwave.get(1))
@@ -3365,7 +2861,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.Machine_Multi_Transformer.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 64),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 64),
                 CustomItemList.DATApipe.get(4))
@@ -3420,7 +2916,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.eM_Computer_Casing.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 1),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 64),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 64),
                 GT_OreDictUnificator
@@ -3436,7 +2932,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 CustomItemList.eM_Computer_Casing.get(1),
                 ItemList.Hatch_Input_Bus_LuV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1),
                 CustomItemList.DATApipe.get(2))
             .itemOutputs(CustomItemList.dataIn_Hatch.get(1))
             .fluidInputs(Materials.Iridium.getMolten(1296))
@@ -3449,7 +2945,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 CustomItemList.eM_Computer_Casing.get(1),
                 ItemList.Hatch_Output_Bus_LuV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1),
                 CustomItemList.DATApipe.get(2))
             .itemOutputs(CustomItemList.dataOut_Hatch.get(1))
             .fluidInputs(Materials.Iridium.getMolten(1296))
@@ -3462,7 +2958,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 CustomItemList.eM_Computer_Bus.get(1),
                 ItemList.Hatch_Input_Bus_ZPM.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
                 CustomItemList.DATApipe.get(4))
             .itemOutputs(CustomItemList.rack_Hatch.get(1))
             .fluidInputs(Materials.Iridium.getMolten(1296))
@@ -3474,7 +2970,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.eM_Computer_Casing.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 1),
                 CustomItemList.DATApipe.get(16),
                 ItemList.Cover_Screen.get(1),
                 new ItemStack(Blocks.stone_button, 16),
@@ -3489,7 +2985,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.eM_Computer_Casing.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 1),
                 CustomItemList.DATApipe.get(32),
                 ItemList.Cover_Screen.get(1),
                 new ItemStack(Blocks.stone_button, 16),

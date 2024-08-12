@@ -45,7 +45,7 @@ public class GT_Packet_WirelessRedstoneCover extends GT_Packet_TileEntityCover {
 
     @Override
     public byte getPacketID() {
-        return 10;
+        return GT_PacketTypes.WIRELESS_REDSTONE_COVER.id;
     }
 
     @Override

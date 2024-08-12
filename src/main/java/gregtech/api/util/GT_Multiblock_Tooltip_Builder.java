@@ -697,7 +697,7 @@ public class GT_Multiblock_Tooltip_Builder {
      *
      * @param mod Name of the mod that adds this multiblock machine
      */
-    public void toolTipFinisher(String mod) {
+    public GT_Multiblock_Tooltip_Builder toolTipFinisher(String mod) {
         iLines.add(
             TT_hold + " "
                 + EnumChatFormatting.BOLD
@@ -718,6 +718,7 @@ public class GT_Multiblock_Tooltip_Builder {
                 .stream()
                 .map(e -> TT_dots[e.getKey() - 1] + COLON + String.join(SEPARATOR, e.getValue())))
             .toArray(String[]::new);
+        return this;
     }
 
     public String[] getInformation() {

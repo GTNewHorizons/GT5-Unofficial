@@ -70,13 +70,13 @@ public class AssemblerRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     ItemList.Hull_HV.get(1L),
-                    ItemList.Component_Filter.get(2L),
+                    ItemList.Component_Filter.get(3L),
                     GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L),
-                    ItemList.Electric_Motor_HV.get(1L),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
+                    ItemList.Electric_Motor_HV.get(2L),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(ItemList.Machine_Multi_Cleanroom.get(1L))
-                .fluidInputs(Materials.StainlessSteel.getMolten(864L))
+                .fluidInputs(Materials.StainlessSteel.getMolten(144L))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(assemblerRecipes);
@@ -85,7 +85,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Cover_Shutter.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.FluidFilter.get(1L))
             .duration(40 * SECONDS)
@@ -125,7 +125,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.TungstenSteel, 16),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Data), 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.EV), 4),
                 ItemList.Electric_Motor_IV.get(16),
                 ItemList.Emitter_EV.get(4),
                 ItemList.Duct_Tape.get(64),
@@ -216,7 +216,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Electric_Pump_LV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Basic), 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.LV), 2),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.FluidRegulator_LV.get(1))
             .duration(20 * SECONDS)
@@ -226,7 +226,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Electric_Pump_MV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.MV), 2),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.FluidRegulator_MV.get(1))
             .duration(17 * SECONDS + 10 * TICKS)
@@ -236,7 +236,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Electric_Pump_HV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Advanced), 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.HV), 2),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.FluidRegulator_HV.get(1))
             .duration(15 * SECONDS)
@@ -246,7 +246,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Electric_Pump_EV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Data), 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.EV), 2),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.FluidRegulator_EV.get(1))
             .duration(12 * SECONDS + 10 * TICKS)
@@ -256,7 +256,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Electric_Pump_IV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Elite), 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.IV), 2),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.FluidRegulator_IV.get(1))
             .duration(10 * SECONDS)
@@ -266,7 +266,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Electric_Pump_LuV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Master), 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.LuV), 2),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.FluidRegulator_LuV.get(1))
             .duration(7 * SECONDS + 10 * TICKS)
@@ -276,7 +276,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Electric_Pump_ZPM.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Ultimate), 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.ZPM), 2),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.FluidRegulator_ZPM.get(1))
             .duration(5 * SECONDS)
@@ -286,7 +286,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Electric_Pump_UV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.SuperconductorUHV), 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.UV), 2),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.FluidRegulator_UV.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -296,7 +296,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Steam_Valve_LV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Basic), 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.LV), 2),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Steam_Regulator_LV.get(1))
             .duration(20 * SECONDS)
@@ -306,7 +306,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Steam_Valve_MV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.MV), 2),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Steam_Regulator_MV.get(1))
             .duration(17 * SECONDS + 10 * TICKS)
@@ -316,7 +316,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Steam_Valve_HV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Advanced), 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.HV), 2),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Steam_Regulator_HV.get(1))
             .duration(15 * SECONDS)
@@ -326,7 +326,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Steam_Valve_EV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Data), 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.EV), 2),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Steam_Regulator_EV.get(1))
             .duration(12 * SECONDS + 10 * TICKS)
@@ -336,7 +336,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Steam_Valve_IV.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Elite), 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.IV), 2),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Steam_Regulator_IV.get(1))
             .duration(10 * SECONDS)
@@ -401,7 +401,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate.get(Materials.Steel), 4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Basic), 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.LV), 4),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Schematic.get(1L))
             .duration(30 * SECONDS)
@@ -411,7 +411,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate.get(Materials.Aluminium), 3),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.MV), 2),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Schematic.get(1L))
             .duration(15 * SECONDS)
@@ -421,7 +421,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate.get(Materials.StainlessSteel), 2),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Advanced), 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.HV), 1),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Schematic.get(1L))
             .duration(7 * SECONDS + 10 * TICKS)
@@ -6664,7 +6664,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.BorosilicateGlass, 16),
                 GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2),
                 GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Polytetrafluoroethylene, 4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4),
                 ItemList.Shape_Extruder_Wire.get(16))
             .itemOutputs(ItemList.Spinneret.get(1))
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
@@ -6771,7 +6771,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 getModItem(IC2NuclearControl.ID, "ItemSensorLocationCard", 1L, 0),
                 GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.MV), 2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -6782,7 +6782,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 getModItem(IC2NuclearControl.ID, "Item55ReactorCard", 1L, 0),
                 GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.MV), 2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);

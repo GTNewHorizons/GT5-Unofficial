@@ -222,9 +222,7 @@
       "requiredMods": [
         "IC2",
         "gregtech",
-        "tectech",
-        "Thaumcraft",
-        "ThaumicTinkerer"
+        "tectech"
       ],
       "dependencies": [
         "IC2",
