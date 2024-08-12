@@ -179,6 +179,9 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Particle Accelerator")
             .addInfo("Controller block for the LINAC")
+            .addInfo("Accelerates charged particles to higher energies")
+            .addInfo("Increasing length increases output energy, but decreases focus")
+            .addInfo("Use a lower temperature coolant to improve focus")
             // .addInfo("Extendable, with a minimum length of 18 blocks")
             .addInfo(DescTextLocalization.BLUEPRINT_INFO)
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
