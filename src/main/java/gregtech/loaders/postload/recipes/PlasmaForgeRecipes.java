@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static goodgenerator.loader.Loaders.huiCircuit;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -13,6 +14,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.TierEU;
+import net.minecraft.item.ItemStack;
 
 public class PlasmaForgeRecipes implements Runnable {
 
@@ -38,7 +40,7 @@ public class PlasmaForgeRecipes implements Runnable {
             .itemInputs(
                 getModItem(GTPlusPlus.ID, "particleBase", 1, 24),
                 getModItem(NewHorizonsCoreMod.ID, "item.ChromaticLens", 0),
-                getModItem(GoodGenerator.ID, "huiCircuit", 0, 4))
+                new ItemStack(huiCircuit, 0, 4))
             .fluidInputs(MaterialsUEVplus.ExcitedDTRC.getFluid(92), Materials.Duranium.getMolten(144))
             .itemOutputs(getModItem(GTPlusPlus.ID, "MU-metaitem.01", 1, 32105))
             .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(46))

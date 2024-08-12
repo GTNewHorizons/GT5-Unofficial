@@ -2,6 +2,8 @@ package com.github.technus.tectech.loader.recipe;
 
 import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
 import static com.google.common.math.LongMath.pow;
+import static goodgenerator.loader.Loaders.compactFusionCoil;
+import static goodgenerator.loader.Loaders.yottaFluidTankCell;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.AvaritiaAddons;
 import static gregtech.api.enums.Mods.BartWorks;
@@ -1046,7 +1048,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { ItemList.Energy_Module.get(16), new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 16L },
                 new Object[] { OrePrefixes.circuit.get(Materials.UHV), 8L }, ELEMENT.STANDALONE.RHUGNOR.getPlate(8),
                 ItemList.Emitter_UEV.get(1), ItemList.Sensor_UEV.get(1),
-                getModItem(GoodGenerator.ID, "compactFusionCoil", 1, 2) },
+                new ItemStack(compactFusionCoil, 1, 2) },
             new FluidStack[] { ELEMENT.getInstance().NEPTUNIUM.getFluidStack(2304),
                 ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(2304), ALLOY.ABYSSAL.getFluidStack(2304),
                 ELEMENT.STANDALONE.DRAGON_METAL.getFluidStack(2304) },
@@ -2481,7 +2483,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (absoluteTier + 1) * 8, // amperage
                     new Object[] { baseCasing,
                         // T7 Yotta cell.
-                        getModItem(GoodGenerator.ID, "yottaFluidTankCells", tier, (5 + set)),
+                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
                         // quantum tank V (max tier)
                         ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
                         // Inf chest
@@ -2505,7 +2507,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (absoluteTier + 1) * 8, // amperage
                     new Object[] { baseCasing,
                         // T7 Yotta cell.
-                        getModItem(GoodGenerator.ID, "yottaFluidTankCells", tier, (5 + set)),
+                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
                         // quantum tank V (max tier)
                         ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
                         // Inf chest
@@ -2529,7 +2531,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (absoluteTier + 1) * 8, // amperage
                     new Object[] { baseCasing,
                         // T7 Yotta cell.
-                        getModItem(GoodGenerator.ID, "yottaFluidTankCells", tier, (5 + set)),
+                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
                         // quantum tank V (max tier)
                         ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
                         // Inf chest
@@ -2557,7 +2559,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (absoluteTier + 1) * 8, // amperage
                     new Object[] { baseCasing,
                         // T8 Yotta cell.
-                        getModItem(GoodGenerator.ID, "yottaFluidTankCells", tier, (5 + set)),
+                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
                         // quantum tank V (max tier)
                         ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
                         // Inf chest
@@ -2582,7 +2584,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (absoluteTier + 1) * 8, // amperage
                     new Object[] { baseCasing,
                         // T8 Yotta cell.
-                        getModItem(GoodGenerator.ID, "yottaFluidTankCells", tier, (5 + set)),
+                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
                         // quantum tank V (max tier)
                         ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
                         // Inf chest
@@ -2607,7 +2609,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (absoluteTier + 1) * 8, // amperage
                     new Object[] { baseCasing,
                         // T8 Yotta cell.
-                        getModItem(GoodGenerator.ID, "yottaFluidTankCells", tier, (5 + set)),
+                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
                         // quantum tank V (max tier)
                         ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
                         // Inf chest
@@ -2635,7 +2637,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (absoluteTier + 1) * 8, // amperage
                     new Object[] { baseCasing,
                         // T9 Yotta cell.
-                        getModItem(GoodGenerator.ID, "yottaFluidTankCells", tier, (5 + set)),
+                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
                         // quantum tank V (max tier)
                         ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
                         // Inf chest
@@ -2660,7 +2662,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (absoluteTier + 1) * 8, // amperage
                     new Object[] { baseCasing,
                         // T9 Yotta cell.
-                        getModItem(GoodGenerator.ID, "yottaFluidTankCells", tier, (5 + set)),
+                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
                         // quantum tank V (max tier)
                         ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
                         // Inf chest
@@ -2686,7 +2688,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (absoluteTier + 1) * 8, // amperage
                     new Object[] { baseCasing,
                         // T9 Yotta cell.
-                        getModItem(GoodGenerator.ID, "yottaFluidTankCells", tier, (5 + set)),
+                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
                         // quantum tank V (max tier)
                         ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
                         // Inf chest
@@ -2728,15 +2730,15 @@ public class ResearchStationAssemblyLine implements Runnable {
                 getModItem(GregTech.ID, "gt.blockmachines", 2, 965),
                 getModItem(GregTech.ID, "gt.blockmachines", 3, 965) };
 
-            final ItemStack[] fusionCoils = new ItemStack[] { getModItem(GoodGenerator.ID, "compactFusionCoil", 1, 1),
-                getModItem(GoodGenerator.ID, "compactFusionCoil", 2, 1),
-                getModItem(GoodGenerator.ID, "compactFusionCoil", 3, 1),
-                getModItem(GoodGenerator.ID, "compactFusionCoil", 1, 2),
-                getModItem(GoodGenerator.ID, "compactFusionCoil", 2, 2),
-                getModItem(GoodGenerator.ID, "compactFusionCoil", 3, 2),
-                getModItem(GoodGenerator.ID, "compactFusionCoil", 1, 3),
-                getModItem(GoodGenerator.ID, "compactFusionCoil", 2, 3),
-                getModItem(GoodGenerator.ID, "compactFusionCoil", 3, 3) };
+            final ItemStack[] fusionCoils = new ItemStack[] { new ItemStack(compactFusionCoil, 1, 1),
+                new ItemStack(compactFusionCoil, 2, 1),
+                new ItemStack(compactFusionCoil, 3, 1),
+                new ItemStack(compactFusionCoil, 1, 2),
+                new ItemStack(compactFusionCoil, 2, 2),
+                new ItemStack(compactFusionCoil, 3, 2),
+                new ItemStack(compactFusionCoil, 1, 3),
+                new ItemStack(compactFusionCoil, 2, 3),
+                new ItemStack(compactFusionCoil, 3, 3) };
 
             final ItemStack[] researchStuff = new ItemStack[] { baseCasing,
                 CustomItemList.TimeAccelerationFieldGeneratorTier0.get(1),
@@ -3126,7 +3128,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 compPerSecond,
                 researchEuPerTick,
                 researchAmperage,
-                new Object[] { energyHatches[i], getModItem(GoodGenerator.ID, "compactFusionCoil", 1),
+                new Object[] { energyHatches[i], new ItemStack(compactFusionCoil, 1),
                     ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
                     CustomItemList.eM_Power.get(2),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, MaterialsUEVplus.SpaceTime, 2),
@@ -3148,7 +3150,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 compPerSecond * 4,
                 researchEuPerTick,
                 researchAmperage * 2,
-                new Object[] { energyHatches_4A[i], getModItem(GoodGenerator.ID, "compactFusionCoil", 1, 1),
+                new Object[] { energyHatches_4A[i], new ItemStack(compactFusionCoil, 1, 1),
                     ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
                     CustomItemList.eM_Power.get(4),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, MaterialsUEVplus.SpaceTime, 4),
@@ -3172,7 +3174,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 compPerSecond * 16,
                 researchEuPerTick,
                 researchAmperage * 4,
-                new Object[] { energyHatches_16A[i], getModItem(GoodGenerator.ID, "compactFusionCoil", 1, 2),
+                new Object[] { energyHatches_16A[i], new ItemStack(compactFusionCoil, 1, 2),
                     ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
                     CustomItemList.eM_Power.get(16),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, MaterialsUEVplus.SpaceTime, 16),
@@ -3196,7 +3198,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 compPerSecond * 64,
                 researchEuPerTick,
                 researchAmperage * 8,
-                new Object[] { energyHatches_64A[i], getModItem(GoodGenerator.ID, "compactFusionCoil", 1, 3),
+                new Object[] { energyHatches_64A[i], new ItemStack(compactFusionCoil, 1, 3),
                     ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
                     CustomItemList.eM_Power.get(64),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, MaterialsUEVplus.SpaceTime, 64),
@@ -3220,7 +3222,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 compPerSecond * 64,
                 researchEuPerTick * 4,
                 researchAmperage * 16,
-                new Object[] { laserTargets_UXV[i], getModItem(GoodGenerator.ID, "compactFusionCoil", 1, 4),
+                new Object[] { laserTargets_UXV[i], new ItemStack(compactFusionCoil, 1, 4),
                     // Dyson Swarm Module Deployment Unit Superconducting Magnet
                     getModItem(GalaxySpace.ID, "dysonswarmparts", 1, 4),
                     CustomItemList.Machine_Multi_Transformer.get(1), CustomItemList.eM_Power.get(64),
@@ -3359,7 +3361,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 compPerSecond,
                 researchEuPerTick,
                 researchAmperage,
-                new Object[] { dynamoHatches[i], getModItem(GoodGenerator.ID, "compactFusionCoil", 1),
+                new Object[] { dynamoHatches[i], new ItemStack(compactFusionCoil, 1),
                     ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
                     CustomItemList.eM_Power.get(2),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, MaterialsUEVplus.SpaceTime, 2),

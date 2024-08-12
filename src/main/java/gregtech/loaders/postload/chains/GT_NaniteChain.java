@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.chains;
 
+import static goodgenerator.loader.Loaders.huiCircuit;
 import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GoodGenerator;
@@ -171,7 +172,7 @@ public class GT_NaniteChain {
                                                                        // naming
                 MaterialsUEVplus.WhiteDwarfMatter.getBlocks(8),
                 getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
-                getModItem(GoodGenerator.ID, "huiCircuit", 1, 4) // Paradox circuit
+                new ItemStack(huiCircuit,  1, 4) // Paradox circuit
             )
             .itemOutputs(MaterialsUEVplus.WhiteDwarfMatter.getNanite(4))
             .fluidInputs(
@@ -192,7 +193,7 @@ public class GT_NaniteChain {
                                                                        // naming
                 MaterialsUEVplus.BlackDwarfMatter.getBlocks(8),
                 getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
-                getModItem(GoodGenerator.ID, "huiCircuit", 1, 4) // Paradox circuit
+                new ItemStack(huiCircuit, 1, 4) // Paradox circuit
             )
             .itemOutputs(MaterialsUEVplus.BlackDwarfMatter.getNanite(4))
             .fluidInputs(
@@ -213,7 +214,7 @@ public class GT_NaniteChain {
                 MaterialsUEVplus.Universium.getBlocks(8),
                 ItemList.Optically_Perfected_CPU.get(16),
                 ItemList.Optically_Compatible_Memory.get(16),
-                getModItem(GoodGenerator.ID, "huiCircuit", 1, 4) // Paradox circuit
+                new ItemStack(huiCircuit, 1, 4) // Paradox circuit
             )
             .itemOutputs(MaterialsUEVplus.Universium.getNanite(2))
             .fluidInputs(
