@@ -18,8 +18,6 @@ import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.KekzTech;
-import static gregtech.api.enums.Mods.KubaTech;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.SGCraft;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
@@ -1101,7 +1099,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 8_000_000);
             // DE Schematics Cores Tier 1
             TT_recipeAdder.addResearchableAssemblylineRecipe(
-                new ItemStack(defcCasingBlock,1, 9),
+                new ItemStack(defcCasingBlock, 1, 9),
                 5_000_000,
                 512,
                 1_000_000,
@@ -2940,7 +2938,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     // UV Solar panel
                     getModItem(SuperSolarPanels.ID, "PhotonicSolarPanel", 1, 0),
                     // UHV Capacitor block
-                    new ItemStack(lscLapotronicEnergyUnit,1, 5),
+                    new ItemStack(lscLapotronicEnergyUnit, 1, 5),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 4),
 
                     CustomItemList.Machine_Multi_Transformer.get(16), ItemList.Wireless_Hatch_Energy_UMV.get(4),
