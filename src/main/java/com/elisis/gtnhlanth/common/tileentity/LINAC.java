@@ -17,6 +17,14 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.elisis.gtnhlanth.common.beamline.BeamInformation;
 import com.elisis.gtnhlanth.common.beamline.BeamLinePacket;
 import com.elisis.gtnhlanth.common.beamline.Particle;
@@ -42,18 +50,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> implements ISurvivalConstructable {
 
@@ -189,7 +189,9 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
         // Valid coolant list
         for (String fluidName : BeamlineRecipeLoader.coolantMap.keySet()) {
 
-        	tt.addInfo("- " + FluidRegistry.getFluid(fluidName).getLocalizedName(null));
+            tt.addInfo(
+                "- " + FluidRegistry.getFluid(fluidName)
+                    .getLocalizedName(null));
 
         }
 
@@ -337,24 +339,27 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
                                                  // weigh the former by the latter
 
         long voltage = this.getMaxInputVoltage();
-        //voltageFactor = calculateVoltageFactor(voltage);
+        // voltageFactor = calculateVoltageFactor(voltage);
 
-        //machineEnergy = Math.max(-((60) / this.length) * voltageFactor + 60_000, 2000); // Minimum of 2000keV
-        
+        // machineEnergy = Math.max(-((60) / this.length) * voltageFactor + 60_000, 2000); // Minimum of 2000keV
+
         machineEnergy = (float) Math.max(length / 4 * Math.pow(voltage, 1.0 / 3.0), 50); // Minimum of 50keV
 
         inputEnergy = this.getInputInformation()
             .getEnergy();
         /*
-        outputEnergy = Math.min(
-            (1 + inputEnergy / Particle.getParticleFromId(outputParticle)
-                .maxSourceEnergy()) * machineEnergy,
-            120_000); // TODO more complex calculation than just
-        // addition
-        */
-        
-        outputEnergy = (float) Math.pow(10, 1 + inputEnergy / Particle.getParticleFromId(outputParticle).maxSourceEnergy()) * machineEnergy;
-        
+         * outputEnergy = Math.min(
+         * (1 + inputEnergy / Particle.getParticleFromId(outputParticle)
+         * .maxSourceEnergy()) * machineEnergy,
+         * 120_000); // TODO more complex calculation than just
+         * // addition
+         */
+
+        outputEnergy = (float) Math.pow(
+            10,
+            1 + inputEnergy / Particle.getParticleFromId(outputParticle)
+                .maxSourceEnergy())
+            * machineEnergy;
 
         inputRate = this.getInputInformation()
             .getRate();
@@ -369,13 +374,13 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
 
         primFluid.amount -= fluidConsumed;
 
-        Fluid fluidOutput = BeamlineRecipeLoader.coolantMap.get(primFluid.getFluid().getName());
-        
+        Fluid fluidOutput = BeamlineRecipeLoader.coolantMap.get(
+            primFluid.getFluid()
+                .getName());
+
         if (Objects.isNull(fluidOutput)) return false;
-        
-        FluidStack fluidOutputStack = new FluidStack(
-            fluidOutput,
-            fluidConsumed);
+
+        FluidStack fluidOutputStack = new FluidStack(fluidOutput, fluidConsumed);
 
         if (Objects.isNull(fluidOutputStack)) return false;
 
@@ -567,11 +572,11 @@ public class LINAC extends GT_MetaTileEntity_EnhancedMultiBlockBase<LINAC> imple
     }
 
     /*
-    private static float calculateVoltageFactor(long voltage) {
-
-        float factor = (float) Math.pow(1.00009, -(0.1 * voltage - 114000));
-        return factor;
-    }*/
+     * private static float calculateVoltageFactor(long voltage) {
+     * float factor = (float) Math.pow(1.00009, -(0.1 * voltage - 114000));
+     * return factor;
+     * }
+     */
 
     @Override
     public String[] getStructureDescription(ItemStack arg0) {

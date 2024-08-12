@@ -74,7 +74,7 @@ public final class LanthItemList {
     // public static final Block ANTENNA_CASING_T1 = new Casing("antenna_t1");
     public static final Block ANTENNA_CASING_T1 = new AntennaCasing(1);
     public static final Block ANTENNA_CASING_T2 = new AntennaCasing(2);
-    
+
     public static final Block NIOBIUM_CAVITY_CASING = new Casing("niobium_cavity");
 
     public static final Block FOCUS_MANIPULATION_CASING = new Casing("focus_manipulator");
@@ -142,7 +142,7 @@ public final class LanthItemList {
         GameRegistry.registerBlock(ANTENNA_CASING_T1, ANTENNA_CASING_T1.getUnlocalizedName());
 
         GameRegistry.registerBlock(ANTENNA_CASING_T2, ANTENNA_CASING_T2.getUnlocalizedName());
-        
+
         GameRegistry.registerBlock(NIOBIUM_CAVITY_CASING, NIOBIUM_CAVITY_CASING.getUnlocalizedName());
 
         GameRegistry.registerBlock(FOCUS_MANIPULATION_CASING, FOCUS_MANIPULATION_CASING.getUnlocalizedName());

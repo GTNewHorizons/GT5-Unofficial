@@ -351,15 +351,17 @@ public class RecipeLoader {
             .duration(60 * GT_RecipeBuilder.SECONDS)
             .eut(7680)
             .addTo(AssemblyLine);
-        
+
         // Niobium Cavity Casing
         GT_Values.RA.stdBuilder()
-        	.itemInputs(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Niobium, 1), Materials.Niobium.getPlates(6))
-        	.fluidInputs(Materials.Helium.getGas(2000))
-        	.itemOutputs(new ItemStack(LanthItemList.NIOBIUM_CAVITY_CASING, 1))
-        	.duration(12 * GT_RecipeBuilder.SECONDS)
-        	.eut(7680)
-        	.addTo(assemblerRecipes);
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Niobium, 1),
+                Materials.Niobium.getPlates(6))
+            .fluidInputs(Materials.Helium.getGas(2000))
+            .itemOutputs(new ItemStack(LanthItemList.NIOBIUM_CAVITY_CASING, 1))
+            .duration(12 * GT_RecipeBuilder.SECONDS)
+            .eut(7680)
+            .addTo(assemblerRecipes);
 
         // Focus Manipulator
         GT_Values.RA.stdBuilder()
@@ -539,23 +541,24 @@ public class RecipeLoader {
             .duration(15 * GT_RecipeBuilder.SECONDS)
             .eut(1920)
             .addTo(multiblockChemicalReactorRecipes);
-        
+
         /*
+         * GT_Values.RA.stdBuilder()
+         * .fluidInputs(Materials.Nitrogen.getPlasma(4000), Materials.Silane.getFluid(2000))
+         * .fluidOutputs(WerkstoffMaterialPool.NitrogenPlasmaSilaneMix.getFluidOrGas(6000))
+         * .duration(20 * GT_RecipeBuilder.SECONDS)
+         * .eut(7680)
+         * .addTo(mixerNonCellRecipes);
+         */
+
         GT_Values.RA.stdBuilder()
-        	.fluidInputs(Materials.Nitrogen.getPlasma(4000), Materials.Silane.getFluid(2000))
-        	.fluidOutputs(WerkstoffMaterialPool.NitrogenPlasmaSilaneMix.getFluidOrGas(6000))
-        	.duration(20 * GT_RecipeBuilder.SECONDS)
-        	.eut(7680)
-        	.addTo(mixerNonCellRecipes);*/
-        
-        GT_Values.RA.stdBuilder()
-        	.fluidInputs(Materials.Nitrogen.getPlasma(4000))
-        	.itemInputs(Materials.Silane.getCells(2))
-        	.fluidOutputs(WerkstoffMaterialPool.NitrogenPlasmaSilaneMix.getFluidOrGas(6000))
-        	.duration(20 * GT_RecipeBuilder.SECONDS)
-        	.eut(7680)
-        	.noOptimize()
-        	.addTo(mixerRecipes);
+            .fluidInputs(Materials.Nitrogen.getPlasma(4000))
+            .itemInputs(Materials.Silane.getCells(2))
+            .fluidOutputs(WerkstoffMaterialPool.NitrogenPlasmaSilaneMix.getFluidOrGas(6000))
+            .duration(20 * GT_RecipeBuilder.SECONDS)
+            .eut(7680)
+            .noOptimize()
+            .addTo(mixerRecipes);
 
         // NB: http://www.smfl.rit.edu/pdf/process/process_nitride_etch_paper.pdf
         // Reactive Ion Etchant
@@ -695,7 +698,8 @@ public class RecipeLoader {
                         .duration(60 * GT_RecipeBuilder.SECONDS)
                         .eut(mask.getEngraverEUt())
                         .requiresCleanRoom()
-                        .addTo(UniversalChemical); // This is incredibly boring and doesn't make much sense, fix at some point. Maybe engrave again from precursor?
+                        .addTo(UniversalChemical); // This is incredibly boring and doesn't make much sense, fix at some
+                                                   // point. Maybe engrave again from precursor?
 
                 } else if (mask == MaskList.HPIC) {
                     GT_Values.RA.stdBuilder()
@@ -746,7 +750,7 @@ public class RecipeLoader {
                         .duration(60 * GT_RecipeBuilder.SECONDS)
                         .eut(mask.getEngraverEUt())
                         .requiresCleanRoom()
-                        .addTo(UniversalChemical); 
+                        .addTo(UniversalChemical);
 
                     GT_Values.RA.stdBuilder()
                         .itemInputs(new ItemStack(LanthItemList.maskMap.get(MaskList.NCPU)), ItemList.QuantumEye.get(2))
@@ -1055,17 +1059,16 @@ public class RecipeLoader {
             .duration(30 * SECONDS)
             .eut(450)
             .addTo(UniversalChemical);
-        
+
         // La + 6HCl = LaCl3 + 3H
         GT_Values.RA.stdBuilder()
-        	.itemInputs(Materials.Lanthanum.getDust(1), GT_Utility.getIntegratedCircuit(1))
-        	.fluidInputs(Materials.HydrochloricAcid.getFluid(3000))
-        	.itemOutputs(WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dust, 4))
-        	.fluidOutputs(Materials.Hydrogen.getGas(3000))
-        	.duration(10 * SECONDS)
-        	.eut(480)
-        	.addTo(UniversalChemical);
-        
+            .itemInputs(Materials.Lanthanum.getDust(1), GT_Utility.getIntegratedCircuit(1))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(3000))
+            .itemOutputs(WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dust, 4))
+            .fluidOutputs(Materials.Hydrogen.getGas(3000))
+            .duration(10 * SECONDS)
+            .eut(480)
+            .addTo(UniversalChemical);
 
         // Lanthanum Oxide
         GT_Values.RA.stdBuilder()

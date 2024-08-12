@@ -21,25 +21,31 @@ public enum MaskList {
         ItemList.Circuit_Wafer_ILC.get(1)),
     RAM("ram", "Random Access Memory", 200, "", BLANK1, Dyes.dyeCyan, TierEU.RECIPE_MV, 2e-3f, 4e-3f, 40, 2,
         ItemList.Circuit_Wafer_Ram.get(1), ItemList.Circuit_Silicon_Wafer),
-    NAND("nand", "NAND", 200, "", BLANK2, Dyes._NULL, TierEU.RECIPE_HV, 7e-3f, 12e-3f, 40, 1, ItemList.Circuit_Wafer_NAND.get(1),
-        ItemList.Circuit_Silicon_Wafer), // NAND uses only Ender Pearl lens, don't ask me why
-    NOR("nor", "NOR", 100, "", BLANK2, Dyes._NULL, TierEU.RECIPE_LuV, 8e-3f, 10e-3f, 40, 1, ItemList.Circuit_Wafer_NOR.get(1),
-        ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2), // Same as above, but with ender eye
+    NAND("nand", "NAND", 200, "", BLANK2, Dyes._NULL, TierEU.RECIPE_HV, 7e-3f, 12e-3f, 40, 1,
+        ItemList.Circuit_Wafer_NAND.get(1), ItemList.Circuit_Silicon_Wafer), // NAND uses only Ender Pearl lens, don't
+                                                                             // ask me why
+    NOR("nor", "NOR", 100, "", BLANK2, Dyes._NULL, TierEU.RECIPE_LuV, 8e-3f, 10e-3f, 40, 1,
+        ItemList.Circuit_Wafer_NOR.get(1), ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2), // Same as
+                                                                                                             // above,
+                                                                                                             // but with
+                                                                                                             // ender
+                                                                                                             // eye
     CPU("cpu", "Central Processing Unit", 10, "", BLANK2, Dyes.dyeWhite, TierEU.RECIPE_MV, 6e-3f, 12e-3f, 45, 2,
         ItemList.Circuit_Wafer_CPU.get(1)),
-    SOC("soc", "SoC", 150, "", BLANK2, Dyes.dyeYellow, TierEU.RECIPE_EV, 3e-3f, 10e-3f, 45, 2, ItemList.Circuit_Wafer_SoC.get(1),
-        ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2),
+    SOC("soc", "SoC", 150, "", BLANK2, Dyes.dyeYellow, TierEU.RECIPE_EV, 3e-3f, 10e-3f, 45, 2,
+        ItemList.Circuit_Wafer_SoC.get(1), ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2),
     ASOC("asoc", "Advanced SoC", 120, "", BLANK2, Dyes.dyeGreen, TierEU.RECIPE_EV, 100e-3f, 200e-3f, 50, 2,
         ItemList.Circuit_Wafer_SoC2.get(1), ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2),
-    PIC("pic", "Power IC", 100, "", BLANK2, Dyes.dyeBlue, TierEU.RECIPE_HV, 5e-3f, 10e-3f, 50, 4, ItemList.Circuit_Wafer_PIC.get(1),
-        ItemList.Circuit_Silicon_Wafer),
-    HPIC("hpic", "High Power IC", 80, "", BLANK3, null, TierEU.RECIPE_IV, 100e-3f, 200e-3f, 50, 6, ItemList.Circuit_Wafer_HPIC.get(1),
-        ItemList.Circuit_Silicon_Wafer), // Different, made in chemical reactor. Figure out something for
+    PIC("pic", "Power IC", 100, "", BLANK2, Dyes.dyeBlue, TierEU.RECIPE_HV, 5e-3f, 10e-3f, 50, 4,
+        ItemList.Circuit_Wafer_PIC.get(1), ItemList.Circuit_Silicon_Wafer),
+    HPIC("hpic", "High Power IC", 80, "", BLANK3, null, TierEU.RECIPE_IV, 100e-3f, 200e-3f, 50, 6,
+        ItemList.Circuit_Wafer_HPIC.get(1), ItemList.Circuit_Silicon_Wafer), // Different, made in chemical reactor.
+                                                                             // Figure out something for
     // this later?
-    NCPU("ncpu", "NanoCPU", 60, "", BLANK2, null, TierEU.RECIPE_EV, 5e-3f, 10e-3f, 50, 4, ItemList.Circuit_Wafer_NanoCPU.get(1),
-        ItemList.Circuit_Silicon_Wafer), // Same as above
-    QBIT("qbit", "QBit", 50, "", BLANK2, null, TierEU.RECIPE_EV, 3e-3f, 10e-3f, 50, 4, ItemList.Circuit_Wafer_QuantumCPU.get(1),
-        ItemList.Circuit_Silicon_Wafer), // ^
+    NCPU("ncpu", "NanoCPU", 60, "", BLANK2, null, TierEU.RECIPE_EV, 5e-3f, 10e-3f, 50, 4,
+        ItemList.Circuit_Wafer_NanoCPU.get(1), ItemList.Circuit_Silicon_Wafer), // Same as above
+    QBIT("qbit", "QBit", 50, "", BLANK2, null, TierEU.RECIPE_EV, 3e-3f, 10e-3f, 50, 4,
+        ItemList.Circuit_Wafer_QuantumCPU.get(1), ItemList.Circuit_Silicon_Wafer), // ^
     UHPIC("uhpic", "Ultra High Power IC", 60, "", BLANK3, null, TierEU.RECIPE_LuV, 200e-3f, 400e-3f, 50, 8,
         ItemList.Circuit_Wafer_UHPIC.get(1), ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2), // You
                                                                                                                // get
@@ -52,14 +58,15 @@ public enum MaskList {
     // the latter uses a different base mask
     LPIC("lpic", "Low Power IC", 150, "", BLANK1, Dyes.dyeYellow, TierEU.RECIPE_MV, 2e-3f, 4e-3f, 30, 2,
         ItemList.Circuit_Wafer_LPIC.get(1)), // Same as above, except for yellow
-    NPIC("npic", "Nano Power IC", 70, "", BLANK3, Dyes.dyeRed, TierEU.RECIPE_LuV, 1, 100000, 50, 4, ItemList.Circuit_Wafer_NPIC.get(1),
-        ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2, ItemList.Circuit_Silicon_Wafer3), // Same
+    NPIC("npic", "Nano Power IC", 70, "", BLANK3, Dyes.dyeRed, TierEU.RECIPE_LuV, 1, 100000, 50, 4,
+        ItemList.Circuit_Wafer_NPIC.get(1), ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2,
+        ItemList.Circuit_Silicon_Wafer3), // Same
     PPIC("ppic", "PPIC", 50, "", BLANK3, null, TierEU.RECIPE_ZPM, 10, 15, 50, 6, ItemList.Circuit_Wafer_PPIC.get(1),
         ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2, ItemList.Circuit_Silicon_Wafer3), // CR
                                                                                                            // recipe
-    QPIC("qpic", "QPIC", 50, "", BLANK3, Dyes.dyeBlue, TierEU.RECIPE_UV, 5, 9, 50, 6, ItemList.Circuit_Wafer_QPIC.get(1),
-        ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2, ItemList.Circuit_Silicon_Wafer3,
-        ItemList.Circuit_Silicon_Wafer4); // Different base mask to PIC
+    QPIC("qpic", "QPIC", 50, "", BLANK3, Dyes.dyeBlue, TierEU.RECIPE_UV, 5, 9, 50, 6,
+        ItemList.Circuit_Wafer_QPIC.get(1), ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2,
+        ItemList.Circuit_Silicon_Wafer3, ItemList.Circuit_Silicon_Wafer4); // Different base mask to PIC
 
     String name;
     String englishName;
@@ -69,7 +76,7 @@ public enum MaskList {
 
     MaskList precursor;
     Dyes lensColour;
-    
+
     long engraverEUt;
 
     float minEnergy;
@@ -123,9 +130,9 @@ public enum MaskList {
     public Dyes getLensColour() {
         return this.lensColour;
     }
-    
+
     public long getEngraverEUt() {
-    	return this.engraverEUt;
+        return this.engraverEUt;
     }
 
     public float getMinEnergy() {

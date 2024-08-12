@@ -35,19 +35,22 @@ public class BeamlineRecipeLoader {
          */
 
         coolantMap.put(
-        		Materials.LiquidNitrogen.getGas(1L)
-                .getFluid().getName(),
+            Materials.LiquidNitrogen.getGas(1L)
+                .getFluid()
+                .getName(),
             Materials.Nitrogen.getGas(1L)
                 .getFluid());
         coolantMap.put(
-        		Materials.LiquidOxygen.getGas(1L)
-                .getFluid().getName(),
+            Materials.LiquidOxygen.getGas(1L)
+                .getFluid()
+                .getName(),
             Materials.Oxygen.getGas(1L)
                 .getFluid());
         coolantMap.put("ic2coolant", FluidRegistry.getFluid("ic2hotcoolant"));
         coolantMap.put(
             Materials.SuperCoolant.getFluid(1L)
-                .getFluid().getName(),
+                .getFluid()
+                .getName(),
             Materials.Water.getFluid(1L)
                 .getFluid());
 

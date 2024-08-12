@@ -53,7 +53,7 @@ public class ShieldedAccGlass extends Block {
             GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
         }
     }
-    
+
     @Override
     public float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
         return Blocks.glass.getBlockHardness(aWorld, aX, aY, aZ);

@@ -18,8 +18,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import gregtech.api.util.GT_Log;
-import net.minecraftforge.fluids.Fluid;
 
 @Mod(
     modid = Tags.MODID,
