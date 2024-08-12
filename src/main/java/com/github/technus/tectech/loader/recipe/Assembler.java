@@ -3,14 +3,11 @@ package com.github.technus.tectech.loader.recipe;
 import static com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry.bw_realglas;
 import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
 import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getOrDefault;
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
-import com.github.bartimaeusnek.bartworks.common.blocks.BW_Blocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;

@@ -6,7 +6,6 @@ import static goodgenerator.loader.Loaders.compactFusionCoil;
 import static goodgenerator.loader.Loaders.yottaFluidTankCell;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.AvaritiaAddons;
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.BloodMagic;
 import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.EternalSingularity;
@@ -15,7 +14,6 @@ import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GTPlusPlusEverglades;
 import static gregtech.api.enums.Mods.GalaxySpace;
-import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
@@ -31,12 +29,12 @@ import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.rwtema.extrautils.ExtraUtils;
@@ -1047,8 +1045,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             8,
             new Object[] { ItemList.Energy_Module.get(16), new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 16L },
                 new Object[] { OrePrefixes.circuit.get(Materials.UHV), 8L }, ELEMENT.STANDALONE.RHUGNOR.getPlate(8),
-                ItemList.Emitter_UEV.get(1), ItemList.Sensor_UEV.get(1),
-                new ItemStack(compactFusionCoil, 1, 2) },
+                ItemList.Emitter_UEV.get(1), ItemList.Sensor_UEV.get(1), new ItemStack(compactFusionCoil, 1, 2) },
             new FluidStack[] { ELEMENT.getInstance().NEPTUNIUM.getFluidStack(2304),
                 ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(2304), ALLOY.ABYSSAL.getFluidStack(2304),
                 ELEMENT.STANDALONE.DRAGON_METAL.getFluidStack(2304) },
@@ -2731,14 +2728,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 getModItem(GregTech.ID, "gt.blockmachines", 3, 965) };
 
             final ItemStack[] fusionCoils = new ItemStack[] { new ItemStack(compactFusionCoil, 1, 1),
-                new ItemStack(compactFusionCoil, 2, 1),
-                new ItemStack(compactFusionCoil, 3, 1),
-                new ItemStack(compactFusionCoil, 1, 2),
-                new ItemStack(compactFusionCoil, 2, 2),
-                new ItemStack(compactFusionCoil, 3, 2),
-                new ItemStack(compactFusionCoil, 1, 3),
-                new ItemStack(compactFusionCoil, 2, 3),
-                new ItemStack(compactFusionCoil, 3, 3) };
+                new ItemStack(compactFusionCoil, 2, 1), new ItemStack(compactFusionCoil, 3, 1),
+                new ItemStack(compactFusionCoil, 1, 2), new ItemStack(compactFusionCoil, 2, 2),
+                new ItemStack(compactFusionCoil, 3, 2), new ItemStack(compactFusionCoil, 1, 3),
+                new ItemStack(compactFusionCoil, 2, 3), new ItemStack(compactFusionCoil, 3, 3) };
 
             final ItemStack[] researchStuff = new ItemStack[] { baseCasing,
                 CustomItemList.TimeAccelerationFieldGeneratorTier0.get(1),

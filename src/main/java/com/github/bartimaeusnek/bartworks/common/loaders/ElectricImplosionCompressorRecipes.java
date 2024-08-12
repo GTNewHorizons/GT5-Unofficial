@@ -10,13 +10,14 @@ import static goodgenerator.loader.Loaders.highDensityUraniumNugget;
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.OpenComputers;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.enums.Mods.UniversalSingularities;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
+import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -25,7 +26,6 @@ import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.item.ItemStack;
 
 public class ElectricImplosionCompressorRecipes implements Runnable {
 

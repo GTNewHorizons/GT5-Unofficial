@@ -1,10 +1,8 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static goodgenerator.loader.Loaders.advancedRadiationProtectionPlate;
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.GalaxySpace;
-import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
@@ -481,7 +479,7 @@ public class RecipeLoader_ChemicalSkips {
             .itemInputs(
                 GT_Utility.getIntegratedCircuit(10),
                 CI.getEmptyCatalyst(1),
-                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust),64, 88),
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 64, 88),
                 Materials.Osmiridium.getDust(64),
                 Materials.Carbon.getNanite(64))
             .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 1))
@@ -679,8 +677,7 @@ public class RecipeLoader_ChemicalSkips {
             new ItemStack[] { GregtechItemList.ForceFieldGlass.get(1), Materials.Carbon.getNanite(4),
                 ItemList.Emitter_UV.get(4),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 8),
-                GregtechItemList.Laser_Lens_Special.get(1),
-                new ItemStack(advancedRadiationProtectionPlate, 2) },
+                GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 2) },
             new FluidStack[] { Materials.Thulium.getMolten(144 * 10), MaterialsUEVplus.ExcitedDTCC.getFluid(5000),
                 new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 500),
                 new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 500) },
@@ -697,8 +694,8 @@ public class RecipeLoader_ChemicalSkips {
             new ItemStack[] { GregtechItemList.ForceFieldGlass.get(2), Materials.Carbon.getNanite(8),
                 ItemList.Emitter_UEV.get(4),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUEV, 8),
-                GregtechItemList.Laser_Lens_Special.get(1),
-                new ItemStack(advancedRadiationProtectionPlate, 4), ItemList.StableAdhesive.get(4) },
+                GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 4),
+                ItemList.StableAdhesive.get(4) },
             new FluidStack[] { Materials.Thulium.getMolten(144 * 12), MaterialsUEVplus.ExcitedDTPC.getFluid(5000),
                 new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 2500),
                 new FluidStack(ELEMENT.getInstance().FERMIUM.getPlasma(), 2500) },
@@ -715,8 +712,7 @@ public class RecipeLoader_ChemicalSkips {
             new ItemStack[] { GregtechItemList.ForceFieldGlass.get(4), Materials.Carbon.getNanite(16),
                 ItemList.Emitter_UIV.get(4),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 8),
-                GregtechItemList.Laser_Lens_Special.get(1),
-                new ItemStack(advancedRadiationProtectionPlate, 8),
+                GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 8),
                 ItemList.SuperconductorComposite.get(4) },
             new FluidStack[] { Materials.Thulium.getMolten(144 * 15), MaterialsUEVplus.ExcitedDTRC.getFluid(5000),
                 new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 1000 * 10),
@@ -733,8 +729,7 @@ public class RecipeLoader_ChemicalSkips {
             new ItemStack[] { GregtechItemList.ForceFieldGlass.get(8), Materials.Carbon.getNanite(32),
                 ItemList.Emitter_UMV.get(4),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 8),
-                GregtechItemList.Laser_Lens_Special.get(1),
-                new ItemStack(advancedRadiationProtectionPlate, 16),
+                GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 16),
                 ItemList.NaquadriaSupersolid.get(4) },
             new FluidStack[] { Materials.Thulium.getMolten(144 * 20), MaterialsUEVplus.ExcitedDTEC.getFluid(5000),
                 new FluidStack(ELEMENT.getInstance().NEPTUNIUM.getPlasma(), 2000 * 10),

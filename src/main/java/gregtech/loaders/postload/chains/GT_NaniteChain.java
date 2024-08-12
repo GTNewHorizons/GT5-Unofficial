@@ -1,9 +1,7 @@
 package gregtech.loaders.postload.chains;
 
 import static goodgenerator.loader.Loaders.huiCircuit;
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.nanoForgeRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
@@ -15,11 +13,12 @@ import static gregtech.api.util.GT_RecipeConstants.NANO_FORGE_TIER;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -172,7 +171,7 @@ public class GT_NaniteChain {
                                                                        // naming
                 MaterialsUEVplus.WhiteDwarfMatter.getBlocks(8),
                 getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
-                new ItemStack(huiCircuit,  1, 4) // Paradox circuit
+                new ItemStack(huiCircuit, 1, 4) // Paradox circuit
             )
             .itemOutputs(MaterialsUEVplus.WhiteDwarfMatter.getNanite(4))
             .fluidInputs(
