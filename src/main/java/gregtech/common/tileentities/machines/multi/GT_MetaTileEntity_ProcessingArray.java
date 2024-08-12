@@ -231,8 +231,8 @@ public class GT_MetaTileEntity_ProcessingArray extends
             setTierAndMult();
         }
         if (mLastRecipeMap == null) return SimpleCheckRecipeResult.ofFailure("no_machine");
-        if (mLockedToSingleRecipe && mSingleRecipeCheck != null) {
-            if (mSingleRecipeCheck.getRecipeMap() != mLastRecipeMap) {
+        if (mLockedToSingleRecipe && mSingleRecipeSave != null) {
+            if (mSingleRecipeSave.getRecipeMap() != mLastRecipeMap) {
                 return SimpleCheckRecipeResult.ofFailure("machine_mismatch");
             }
         }

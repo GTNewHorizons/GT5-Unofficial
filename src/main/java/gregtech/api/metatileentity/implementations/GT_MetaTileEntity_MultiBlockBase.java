@@ -80,7 +80,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.SingleRecipeCheck;
+import gregtech.api.recipe.check.SingleRecipeSave;
 import gregtech.api.util.GT_ClientPreference;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Log;
@@ -143,7 +143,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
     protected static final String VOIDING_MODE_NBT_KEY = "voidingMode";
     protected static final String BATCH_MODE_NBT_KEY = "batchMode";
-    protected SingleRecipeCheck mSingleRecipeCheck = null;
+    protected SingleRecipeSave mSingleRecipeSave = null;
 
     public ArrayList<GT_MetaTileEntity_Hatch_Input> mInputHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Output> mOutputHatches = new ArrayList<>();
@@ -205,14 +205,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (supportsSingleRecipeLocking()) {
-            mLockedToSingleRecipe = !mLockedToSingleRecipe;
+            setRecipeLocking(!mLockedToSingleRecipe);
             if (mLockedToSingleRecipe) {
                 GT_Utility.sendChatToPlayer(
                     aPlayer,
                     GT_Utility.trans("223", "Single recipe locking enabled. Will lock to next recipe."));
             } else {
                 GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("220", "Single recipe locking disabled."));
-                mSingleRecipeCheck = null;
             }
         }
     }
@@ -268,8 +267,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         if (supportsSingleRecipeLocking()) {
             aNBT.setBoolean("mLockedToSingleRecipe", mLockedToSingleRecipe);
-            if (mLockedToSingleRecipe && mSingleRecipeCheck != null)
-                aNBT.setTag("mSingleRecipeCheck", mSingleRecipeCheck.writeToNBT());
+            if (mLockedToSingleRecipe && mSingleRecipeSave != null)
+                aNBT.setTag("mSingleRecipeSave", mSingleRecipeSave.writeToNBT());
         }
 
         if (mOutputItems != null) {
@@ -312,12 +311,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = aNBT.getBoolean("mLockedToSingleRecipe");
-            if (mLockedToSingleRecipe && aNBT.hasKey("mSingleRecipeCheck", Constants.NBT.TAG_COMPOUND)) {
-                SingleRecipeCheck c = loadSingleRecipeChecker(aNBT.getCompoundTag("mSingleRecipeCheck"));
-                if (c != null) mSingleRecipeCheck = c;
-                // the old recipe is gone. we disable the machine to prevent making garbage in case of shared inputs
-                // maybe use a better way to inform player in the future.
-                else getBaseMetaTileEntity().disableWorking();
+            if (mLockedToSingleRecipe && aNBT.hasKey("mSingleRecipeSave", Constants.NBT.TAG_COMPOUND)) {
+                SingleRecipeSave save = loadSingleRecipeSave(aNBT.getCompoundTag("mSingleRecipeSave"));
+                if (save != null) mSingleRecipeSave = save;
+                else stopMachine(ShutDownReasonRegistry.RECIPE_LOCK_ERROR);
             }
         }
         batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
@@ -353,8 +350,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         } else fixAllIssues();
     }
 
-    protected SingleRecipeCheck loadSingleRecipeChecker(NBTTagCompound aNBT) {
-        return SingleRecipeCheck.tryLoad(getRecipeMap(), aNBT);
+    protected SingleRecipeSave loadSingleRecipeSave(NBTTagCompound aNBT) {
+        return SingleRecipeSave.tryLoad(getRecipeMap(), aNBT);
     }
 
     @Override
@@ -767,10 +764,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected void setupProcessingLogic(ProcessingLogic logic) {
         logic.clear();
         logic.setMachine(this);
-        logic.setRecipeMapSupplier(this::getRecipeMap);
         logic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
         logic.setBatchSize(isBatchModeEnabled() ? getMaxBatchSize() : 1);
         logic.setRecipeLocking(this, isRecipeLockingEnabled());
+        if (isRecipeLockingEnabled() && getSingleRecipeSave() != null) {
+            logic.setRecipeMapSupplier(() -> getSingleRecipeSave().getSingletonRecipeMap());
+        } else {
+            logic.setRecipeMapSupplier(this::getRecipeMap);
+        }
         setProcessingLogicPower(logic);
     }
 
@@ -2356,18 +2357,18 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public void setRecipeLocking(boolean enabled) {
         mLockedToSingleRecipe = enabled;
         if (!enabled) {
-            setSingleRecipeCheck(null);
+            setSingleRecipeSave(null);
         }
     }
 
     @Override
-    public void setSingleRecipeCheck(SingleRecipeCheck recipeCheck) {
-        mSingleRecipeCheck = recipeCheck;
+    public void setSingleRecipeSave(SingleRecipeSave recipeSave) {
+        mSingleRecipeSave = recipeSave;
     }
 
     @Override
-    public SingleRecipeCheck getSingleRecipeCheck() {
-        return mSingleRecipeCheck;
+    public SingleRecipeSave getSingleRecipeSave() {
+        return mSingleRecipeSave;
     }
 
     @Override

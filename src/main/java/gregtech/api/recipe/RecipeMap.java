@@ -55,17 +55,19 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     /**
      * Use {@link RecipeMapBuilder} to instantiate.
      */
-    RecipeMap(String unlocalizedName, B backend, RecipeMapFrontend frontend) {
+    RecipeMap(String unlocalizedName, B backend, RecipeMapFrontend frontend, boolean registerCategoryAndRecipeMap) {
         this.unlocalizedName = unlocalizedName;
         this.backend = backend;
         this.frontend = frontend;
-        this.defaultRecipeCategory = new RecipeCategory(this);
+        this.defaultRecipeCategory = new RecipeCategory(this, registerCategoryAndRecipeMap);
         backend.setRecipeMap(this);
-        if (ALL_RECIPE_MAPS.containsKey(unlocalizedName)) {
-            throw new IllegalArgumentException(
-                "Cannot register recipemap with duplicated unlocalized name: " + unlocalizedName);
+        if (registerCategoryAndRecipeMap) {
+            if (ALL_RECIPE_MAPS.containsKey(unlocalizedName)) {
+                throw new IllegalArgumentException(
+                    "Cannot register recipemap with duplicated unlocalized name: " + unlocalizedName);
+            }
+            ALL_RECIPE_MAPS.put(unlocalizedName, this);
         }
-        ALL_RECIPE_MAPS.put(unlocalizedName, this);
     }
 
     public B getBackend() {

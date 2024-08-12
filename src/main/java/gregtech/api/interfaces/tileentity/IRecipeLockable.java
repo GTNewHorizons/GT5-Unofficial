@@ -1,6 +1,6 @@
 package gregtech.api.interfaces.tileentity;
 
-import gregtech.api.recipe.check.SingleRecipeCheck;
+import gregtech.api.recipe.check.SingleRecipeSave;
 
 /**
  * Machines implementing this interface can have logic to lock to a single recipe.
@@ -23,9 +23,9 @@ public interface IRecipeLockable extends RecipeMapWorkable {
         return false;
     }
 
-    default SingleRecipeCheck getSingleRecipeCheck() {
+    default SingleRecipeSave getSingleRecipeSave() {
         return null;
     }
 
-    default void setSingleRecipeCheck(SingleRecipeCheck recipeCheck) {}
+    default void setSingleRecipeSave(SingleRecipeSave recipeCheck) {}
 }

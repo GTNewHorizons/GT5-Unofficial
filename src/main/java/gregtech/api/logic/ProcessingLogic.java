@@ -13,7 +13,7 @@ import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.SingleRecipeCheck;
+import gregtech.api.recipe.check.SingleRecipeSave;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
@@ -106,25 +106,20 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
             inputFluids = new FluidStack[0];
         }
 
-        if (isRecipeLocked && recipeLockableMachine != null && recipeLockableMachine.getSingleRecipeCheck() != null) {
-            // Recipe checker is already built, we'll use it
-            SingleRecipeCheck singleRecipeCheck = recipeLockableMachine.getSingleRecipeCheck();
-            // Validate recipe here, otherwise machine will show "not enough output space"
-            // even if recipe cannot be found
-            if (singleRecipeCheck.checkRecipeInputs(false, 1, inputItems, inputFluids) == 0) {
-                return CheckRecipeResultRegistry.NO_RECIPE;
-            }
-
-            return validateAndCalculateRecipe(
-                recipeLockableMachine.getSingleRecipeCheck()
-                    .getRecipe()).checkRecipeResult;
-        }
         Stream<GT_Recipe> matchedRecipes = findRecipeMatches(recipeMap);
         Iterable<GT_Recipe> recipeIterable = matchedRecipes::iterator;
         CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NO_RECIPE;
         for (GT_Recipe matchedRecipe : recipeIterable) {
             CalculationResult foundResult = validateAndCalculateRecipe(matchedRecipe);
             if (foundResult.successfullyConsumedInputs) {
+                if (isRecipeLocked && recipeLockableMachine != null
+                    && recipeLockableMachine.getSingleRecipeSave() == null) {
+                    // Recipe is not saved, we save it here
+                    SingleRecipeSave newSave = SingleRecipeSave.builder(recipeMap)
+                        .setRecipe(matchedRecipe)
+                        .build();
+                    recipeLockableMachine.setSingleRecipeSave(newSave);
+                }
                 // Successfully found and set recipe, so return it
                 return foundResult.checkRecipeResult;
             }
@@ -192,7 +187,6 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
             .setFluidInputs(inputFluids)
             .setAvailableEUt(availableVoltage * availableAmperage)
             .setMachine(machine, protectItems, protectFluids)
-            .setRecipeLocked(recipeLockableMachine, isRecipeLocked)
             .setMaxParallel(maxParallel)
             .setEUtModifier(euModifier)
             .enableBatchMode(batchSize)

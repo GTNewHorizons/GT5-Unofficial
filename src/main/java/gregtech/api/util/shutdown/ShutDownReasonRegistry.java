@@ -75,6 +75,11 @@ public class ShutDownReasonRegistry {
     @Nonnull
     public static final ShutDownReason NO_MACHINE_PART = SimpleShutDownReason.ofNormal("no_machine_part");
     /**
+     * Locked recipe not found.
+     */
+    @Nonnull
+    public static final ShutDownReason RECIPE_LOCK_ERROR = SimpleShutDownReason.ofNormal("recipe_lock_error");
+    /**
      * Default unknown state.
      */
     @Nonnull

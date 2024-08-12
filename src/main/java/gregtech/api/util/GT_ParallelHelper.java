@@ -16,10 +16,8 @@ import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.objects.XSTR;
-import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.SingleRecipeCheck;
 
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class GT_ParallelHelper {
@@ -29,14 +27,6 @@ public class GT_ParallelHelper {
      * Machine used for calculation
      */
     private IVoidable machine;
-    /**
-     * Machine used for single recipe locking calculation
-     */
-    private IRecipeLockable singleRecipeMachine;
-    /**
-     * Is locked to a single recipe?
-     */
-    private boolean isRecipeLocked;
     /**
      * Recipe used when trying to calculate parallels
      */
@@ -188,8 +178,6 @@ public class GT_ParallelHelper {
 
     @Nonnull
     public GT_ParallelHelper setRecipeLocked(IRecipeLockable singleRecipeMachine, boolean isRecipeLocked) {
-        this.singleRecipeMachine = singleRecipeMachine;
-        this.isRecipeLocked = isRecipeLocked;
         return this;
     }
 
@@ -487,21 +475,6 @@ public class GT_ParallelHelper {
             .copyOfRange(recipe.mFluidOutputs, 0, Math.min(machine.getFluidOutputLimit(), recipe.mFluidOutputs.length))
             : new FluidStack[0];
 
-        SingleRecipeCheck recipeCheck = null;
-        SingleRecipeCheck.Builder tSingleRecipeCheckBuilder = null;
-        if (isRecipeLocked && singleRecipeMachine != null) {
-            recipeCheck = singleRecipeMachine.getSingleRecipeCheck();
-            if (recipeCheck == null) {
-                // Machine is configured to lock to a single recipe, but haven't built the recipe checker yet.
-                // Build the checker on next successful recipe.
-                RecipeMap<?> recipeMap = singleRecipeMachine.getRecipeMap();
-                if (recipeMap != null) {
-                    tSingleRecipeCheckBuilder = SingleRecipeCheck.builder(recipeMap)
-                        .setBefore(itemInputs, fluidInputs);
-                }
-            }
-        }
-
         // Let's look at how many parallels we can get with void protection
         if (protectExcessItem || protectExcessFluid) {
             if (machine == null && !muteMode) {
@@ -535,26 +508,12 @@ public class GT_ParallelHelper {
         // determine normal parallel
         int actualMaxParallel = tRecipeEUt > 0 ? (int) Math.min(maxParallelBeforeBatchMode, availableEUt / tRecipeEUt)
             : maxParallelBeforeBatchMode;
-        if (recipeCheck != null) {
-            currentParallel = recipeCheck.checkRecipeInputs(true, actualMaxParallel, itemInputs, fluidInputs);
-        } else {
-            currentParallel = (int) maxParallelCalculator.calculate(recipe, actualMaxParallel, fluidInputs, itemInputs);
-            if (currentParallel > 0) {
-                if (tSingleRecipeCheckBuilder != null) {
-                    // If recipe checker is not built yet, build and set it
-                    inputConsumer.consume(recipe, 1, fluidInputs, itemInputs);
-                    SingleRecipeCheck builtCheck = tSingleRecipeCheckBuilder.setAfter(itemInputs, fluidInputs)
-                        .setRecipe(recipe)
-                        .build();
-                    singleRecipeMachine.setSingleRecipeCheck(builtCheck);
-                    inputConsumer.consume(recipe, currentParallel - 1, fluidInputs, itemInputs);
-                } else {
-                    inputConsumer.consume(recipe, currentParallel, fluidInputs, itemInputs);
-                }
-            }
-        }
 
-        if (currentParallel <= 0) {
+        currentParallel = (int) maxParallelCalculator.calculate(recipe, actualMaxParallel, fluidInputs, itemInputs);
+
+        if (currentParallel > 0) {
+            inputConsumer.consume(recipe, currentParallel, fluidInputs, itemInputs);
+        } else {
             result = CheckRecipeResultRegistry.INTERNAL_ERROR;
             return;
         }
@@ -573,13 +532,8 @@ public class GT_ParallelHelper {
                 Math.min(
                     currentParallel * Math.min(batchMultiplierMax - 1, batchModifier - 1),
                     maxParallel - currentParallel));
-            if (recipeCheck != null) {
-                tExtraParallels = recipeCheck.checkRecipeInputs(true, maxExtraParallels, itemInputs, fluidInputs);
-            } else {
-                tExtraParallels = (int) maxParallelCalculator
-                    .calculate(recipe, maxExtraParallels, fluidInputs, itemInputs);
-                inputConsumer.consume(recipe, tExtraParallels, fluidInputs, itemInputs);
-            }
+            tExtraParallels = (int) maxParallelCalculator.calculate(recipe, maxExtraParallels, fluidInputs, itemInputs);
+            inputConsumer.consume(recipe, tExtraParallels, fluidInputs, itemInputs);
             durationMultiplier = 1.0f + (float) tExtraParallels / currentParallel;
             currentParallel += tExtraParallels;
         }
