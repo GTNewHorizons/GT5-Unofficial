@@ -577,12 +577,12 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // Transcendent Plasma Mixer - TPM.
         TT_recipeAdder.addResearchableAssemblylineRecipe(
-            CustomItemList.eM_energyTunnel7_UV.get(1),
+            CustomItemList.eM_energyTunnel6_UEV.get(1),
             32_000_000,
             4096,
             (int) TierEU.RECIPE_UIV,
             1,
-            new Object[] { CustomItemList.eM_energyTunnel7_UV.get(32),
+            new Object[] { CustomItemList.eM_energyTunnel6_UEV.get(4),
                 new Object[] { OrePrefixes.circuit.get(Materials.UMV), 32L }, ItemList.Electric_Pump_UIV.get(16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.TranscendentMetal, 64),
 
