@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
@@ -15,15 +16,36 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_GLOW;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
+import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaOilCracker;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GT_Recipe;
 import gregtech.common.blocks.GT_Block_Casings4;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -49,6 +71,11 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings2;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.List;
 
 public class GT_MetaTileEntity_MultiAutoclave extends
     GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_MultiAutoclave> implements ISurvivalConstructable {
@@ -61,7 +88,7 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         super(aName);
     }
 
-    private HeatingCoilLevel mHeatingCapacity = HeatingCoilLevel.None;
+    private HeatingCoilLevel heatLevel;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
@@ -71,7 +98,7 @@ public class GT_MetaTileEntity_MultiAutoclave extends
     private static Integer getItemPipeTierFromMeta(Block block, Integer metaID) {
         if (block != GregTech_API.sBlockCasings11) return -1;
         if (metaID < 0 || metaID > 7) return -1;
-        return metaID;
+        return metaID + 1;
     }
 
     private void setItemPipeTier(int tier) {
@@ -85,7 +112,7 @@ public class GT_MetaTileEntity_MultiAutoclave extends
     private static Integer getFluidTierFromMeta(Block block, Integer metaID) {
         if (block != GregTech_API.sBlockCasings2) return -1;
         if (metaID < 12 || metaID > 15) return -1;
-        return metaID - 12;
+        return metaID - 11;
     }
 
     private void setFluidPipeTier(int tier) {
@@ -97,11 +124,15 @@ public class GT_MetaTileEntity_MultiAutoclave extends
     }
 
     public HeatingCoilLevel getCoilLevel() {
-        return mHeatingCapacity;
+        return this.heatLevel;
     }
 
     public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        mHeatingCapacity = aCoilLevel;
+        this.heatLevel = aCoilLevel;
+    }
+
+    public Integer getCoilTier() {
+        return (int) this.getCoilLevel().getTier() + 1;
     }
 
     private static final IStructureDefinition<GT_MetaTileEntity_MultiAutoclave> STRUCTURE_DEFINITION = StructureDefinition
@@ -139,6 +170,18 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         .addElement(
             'D',
             ofBlocksTiered(
+                GT_MetaTileEntity_MultiAutoclave::getFluidTierFromMeta,
+                ImmutableList.of(
+                    Pair.of(GregTech_API.sBlockCasings2, 12),
+                    Pair.of(GregTech_API.sBlockCasings2, 13),
+                    Pair.of(GregTech_API.sBlockCasings2, 14),
+                    Pair.of(GregTech_API.sBlockCasings2, 15)),
+                -2,
+                GT_MetaTileEntity_MultiAutoclave::setFluidPipeTier,
+                GT_MetaTileEntity_MultiAutoclave::getFluidPipeTier))
+        .addElement(
+            'E',
+            ofBlocksTiered(
                 GT_MetaTileEntity_MultiAutoclave::getItemPipeTierFromMeta,
                 ImmutableList.of(
                     Pair.of(GregTech_API.sBlockCasings11, 0),
@@ -153,20 +196,10 @@ public class GT_MetaTileEntity_MultiAutoclave extends
                 GT_MetaTileEntity_MultiAutoclave::setItemPipeTier,
                 GT_MetaTileEntity_MultiAutoclave::getItemPipeTier))
         .addElement(
-            'E',
-            ofBlocksTiered(
-                GT_MetaTileEntity_MultiAutoclave::getFluidTierFromMeta,
-                ImmutableList.of(
-                    Pair.of(GregTech_API.sBlockCasings2, 12),
-                    Pair.of(GregTech_API.sBlockCasings2, 13),
-                    Pair.of(GregTech_API.sBlockCasings2, 14),
-                    Pair.of(GregTech_API.sBlockCasings2, 15)),
-                -2,
-                GT_MetaTileEntity_MultiAutoclave::setFluidPipeTier,
-                GT_MetaTileEntity_MultiAutoclave::getFluidPipeTier))
-        .addElement(
             'F',
-            ofCoil(GT_MetaTileEntity_MultiAutoclave::setCoilLevel, GT_MetaTileEntity_MultiAutoclave::getCoilLevel))
+            withChannel(
+                "coil",
+                ofCoil(GT_MetaTileEntity_MultiAutoclave::setCoilLevel, GT_MetaTileEntity_MultiAutoclave::getCoilLevel)))
         .build();
 
     @Override
@@ -206,12 +239,17 @@ public class GT_MetaTileEntity_MultiAutoclave extends
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        fluidPipeTier = -2;
+        itemPipeTier = -2;
         mCasingAmount = 0;
         mEnergyHatches.clear();
+        setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) return false;
         // if (mCasingAmount < 8) return false;
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         return this.mMaintenanceHatches.size() == 1
+            && fluidPipeTier >= 0
+            && itemPipeTier >= 0
             && mEnergyHatches.size() >= 1
             && mMufflerHatches.size() == 1;
     }
@@ -279,14 +317,47 @@ public class GT_MetaTileEntity_MultiAutoclave extends
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic()
-            .setSpeedBonus(1F / 2F)
-            .setEuModifier(0.8F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic() {
+
+            @Override
+            @Nonnull
+            public CheckRecipeResult process() {
+                euModifier = (float) 1 / (fluidPipeTier);
+                speedBoost = 1F / getCoilTier() + 1;
+                return super.process();
+            }
+        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     public int getMaxParallelRecipes() {
-        return 16;
+        return itemPipeTier * 2;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+                                int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("fluidPipeTier", getFluidPipeTier());
+        tag.setInteger("itemPipeTier", getItemPipeTier());
+        tag.setInteger("coilTier", getCoilTier());
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.machines.oreprocessor1"));
+        currenttip.add( "Fluid Pipe Tier: "
+            + EnumChatFormatting.WHITE
+            + tag.getInteger("fluidPipeTier"));
+        currenttip.add( "Item Pipe Tier: "
+            + EnumChatFormatting.WHITE
+            + tag.getInteger("itemPipeTier"));
+        currenttip.add( "Heating Coil Level: "
+            + EnumChatFormatting.WHITE
+            + tag.getInteger("coilTier"));
     }
 
     @Override
