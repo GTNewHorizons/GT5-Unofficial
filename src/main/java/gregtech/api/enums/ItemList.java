@@ -107,6 +107,7 @@ public enum ItemList implements IItemContainer {
     CrudeLapotronCrystal,
     LapotronShard,
 
+    PerfectRuby,
     Shape_Empty,
 
     Shape_Mold_Bottle,

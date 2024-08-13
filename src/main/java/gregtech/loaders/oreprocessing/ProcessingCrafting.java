@@ -346,6 +346,15 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .addTo(WaferEngravingRecipes);
 
                 GT_Values.RA.stdBuilder()
+                    .itemInputs(ItemList.PerfectRuby.get(1))
+                    .itemOutputs(ItemList.Circuit_Parts_Crystal_Chip_Elite.get(64),
+                        ItemList.Circuit_Parts_Crystal_Chip_Elite.get(64))
+                    .requiresCleanRoom()
+                    .duration(45 * SECONDS)
+                    .eut(TierEU.RECIPE_LuV)
+                    .addTo(WaferEngravingRecipes);
+
+                GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer5.get(1), GT_Utility.copyAmount(0, aStack))
                     .itemOutputs(ItemList.Circuit_Wafer_NPIC.get(4))
                     .requiresCleanRoom()

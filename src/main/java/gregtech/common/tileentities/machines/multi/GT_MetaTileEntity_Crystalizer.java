@@ -570,6 +570,27 @@ public class GT_MetaTileEntity_Crystalizer
                 CRYSTALIZER_RECIPES.addRecipe(r);
                 return r;
             });
+
+        //Perfect Ruby
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Ruby.getDust(128),
+                Materials.Redstone.getDust(64),
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.LuV), 4),
+                ItemList.LapotronShard.get(1))
+            .fluidInputs(Materials.Grade3PurifiedWater.getFluid(16000), ALLOY.ARCANITE.getFluidStack(720), Materials.EnergeticAlloy.getMolten(9216))
+            .itemOutputs(ItemList.PerfectRuby.get(1))
+            .eut(TierEU.LuV)
+            .duration(45 * SECONDS)
+            .noOptimize()
+            .build()
+            .map(r -> {
+                r.mSpecialValue -= 3000;
+                r.mInputs[0].stackSize = 128;
+                CRYSTALIZER_RECIPES.addRecipe(r);
+                return r;
+            });
+
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.LapotronShard.get(1),
