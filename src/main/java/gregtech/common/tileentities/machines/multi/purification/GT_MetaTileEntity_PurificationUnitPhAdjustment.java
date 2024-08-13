@@ -555,6 +555,8 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
+        // Do not form without positioned hatches
+        if (acidInputHatch == null || alkalineInputBus == null) return false;
         return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 
