@@ -3257,7 +3257,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // 4M UXV Target
         TT_recipeAdder.addResearchableAssemblylineRecipe(
-            CustomItemList.eM_energyTunnel7_UXV.get(1),
+            CustomItemList.eM_energyTunnel8_UMV.get(1),
             totalComputation * 64,
             compPerSecond * 64,
             researchEuPerTick * 4,
