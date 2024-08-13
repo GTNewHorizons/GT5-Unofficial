@@ -429,6 +429,7 @@ public class GT_PreLoad {
         // GT_Values.oreveinMaxSize = tMainConfig.get(aTextGeneral, "oreveinMaxSize_64",64).getInt(64);
         GT_Values.ticksBetweenSounds = tMainConfig.get("machines", "TicksBetweenSounds", 30)
             .getInt(30);
+        GT_Values.blacklistedTileEntiyClassNamesForWA = tMainConfig.getStringList("blacklistedTileEntiyClassNamesForWA","machines", GT_Values.blacklistedTileEntiyClassNamesForWA, "class names to be blacklisted from the world accelerator");
         GT_Values.cleanroomGlass = (float) tMainConfig.get("machines", "ReinforcedGlassPercentageForCleanroom", 5D)
             .getDouble(5D);
         GT_Values.enableChunkloaders = tMainConfig.get("machines", "enableChunkloaders", true)

@@ -462,6 +462,14 @@ import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UMV;
 import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UXV;
 import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.WORLD_ACCELERATOR_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.WORLD_ACCELERATOR_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.WORLD_ACCELERATOR_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.WORLD_ACCELERATOR_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.WORLD_ACCELERATOR_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.WORLD_ACCELERATOR_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.WORLD_ACCELERATOR_UV;
+import static gregtech.api.enums.MetaTileEntityIDs.WORLD_ACCELERATOR_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.WORMHOLE_GENERATOR_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_EV_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_HV_MV;
@@ -475,6 +483,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
+import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.GT_Mod;
@@ -1491,6 +1500,58 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "basicmachine.mobrep.tier.08",
                 "Advanced Monster Repellator VII",
                 8).getStackForm(1L));
+    }
+
+    private void registerWorldAccelerator() {
+        ItemList.AcceleratorLV.set(
+            new GT_MetaTileEntity_WorldAccelerator(
+                WORLD_ACCELERATOR_LV.ID,
+                "basicmachine.accelerator.tier.01",
+                "Basic World Accelerator",
+                1).getStackForm(1L));
+        ItemList.AcceleratorMV.set(
+            new GT_MetaTileEntity_WorldAccelerator(
+                WORLD_ACCELERATOR_MV.ID,
+                "basicmachine.accelerator.tier.02",
+                "Advanced World Accelerator",
+                2).getStackForm(1L));
+        ItemList.AcceleratorHV.set(
+            new GT_MetaTileEntity_WorldAccelerator(
+                WORLD_ACCELERATOR_HV.ID,
+                "basicmachine.accelerator.tier.03",
+                "Advanced World Accelerator II",
+                3).getStackForm(1L));
+        ItemList.AcceleratorEV.set(
+            new GT_MetaTileEntity_WorldAccelerator(
+                WORLD_ACCELERATOR_EV.ID,
+                "basicmachine.accelerator.tier.04",
+                "Advanced World Accelerator III",
+                4).getStackForm(1L));
+        ItemList.AcceleratorIV.set(
+            new GT_MetaTileEntity_WorldAccelerator(
+                WORLD_ACCELERATOR_IV.ID,
+                "basicmachine.accelerator.tier.05",
+                "Advanced World Accelerator IV",
+                5).getStackForm(1L));
+        ItemList.AcceleratorLuV.set(
+            new GT_MetaTileEntity_WorldAccelerator(
+                WORLD_ACCELERATOR_LuV.ID,
+                "basicmachine.accelerator.tier.06",
+                "Elite World Accelerator",
+                6).getStackForm(1L));
+        ItemList.AcceleratorZPM.set(
+            new GT_MetaTileEntity_WorldAccelerator(
+                WORLD_ACCELERATOR_ZPM.ID,
+                "basicmachine.accelerator.tier.07",
+                "Elite World Accelerator II",
+                7).getStackForm(1L));
+        ItemList.AcceleratorUV.set(
+            new GT_MetaTileEntity_WorldAccelerator(
+                WORLD_ACCELERATOR_UV.ID,
+                "basicmachine.accelerator.tier.08",
+                "Ultimate Time Anomaly",
+                8).getStackForm(1L));
+
     }
 
     private static void registerAdvancedSeismicProspector() {
@@ -4201,6 +4262,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         registerMagicEnergyConverters();
         registerPlasmaGenerators();
         registerMultiblockControllers();
+        registerWorldAccelerator();
 
         ItemList.AdvDebugStructureWriter.set(
             new GT_MetaTileEntity_AdvDebugStructureWriter(
