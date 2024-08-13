@@ -513,7 +513,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
             // If pH is 0 or 14, stop the machine
             if (Math.abs(this.currentpHValue) < 0.001 || Math.abs(this.currentpHValue - 14.0f) < 0.001) {
-                stopMachine(new SimpleShutDownReason("critical_ph_value", false));
+                stopMachine(SimpleShutDownReason.ofNormal("critical_ph_value"));
             }
         }
     }
