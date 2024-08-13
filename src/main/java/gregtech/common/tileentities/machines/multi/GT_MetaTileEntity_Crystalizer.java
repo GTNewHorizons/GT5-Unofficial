@@ -4,7 +4,8 @@ import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.CRYSTALIZER_FRONT_OVERLAY_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.CRYSTALIZER_FRONT_OVERLAY_INACTIVE;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.*;
@@ -31,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.elisis.gtnhlanth.common.register.LanthItemList;
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
+import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.casing.GT_Block_CasingsTT;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -96,9 +98,9 @@ public class GT_MetaTileEntity_Crystalizer
         @Override
         public void drawDescription(RecipeDisplayInfo recipeInfo) {
             drawEnergyInfo(recipeInfo);
+            drawDurationInfo(recipeInfo);
             drawSpecialInfo(recipeInfo);
             drawMetadataInfo(recipeInfo);
-            drawRecipeOwnerInfo(recipeInfo);
         }
 
         public CrystalizerFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
@@ -129,7 +131,13 @@ public class GT_MetaTileEntity_Crystalizer
         .neiSpecialInfoFormatter(recipeInfo -> {
             String[] lvs = { "HV", "EV", "IV", "LuV", "ZPM", "UV", "UHV" };
             int minForceLevel = -recipeInfo.recipe.mSpecialValue / 1000;
-            return Arrays.asList(String.format("Requires %s force containment casing", lvs[minForceLevel - 1]));
+            boolean lowg = recipeInfo.recipe.mSpecialValue % 1000 == -101;
+            ArrayList<String> strings = new ArrayList<>();
+            strings.add(String.format("Requires %s force containment casing", lvs[minForceLevel - 1]));
+            if (lowg) {
+                strings.add("Requires low gravity");
+            }
+            return strings;
         })
         .build();
 
@@ -305,7 +313,7 @@ public class GT_MetaTileEntity_Crystalizer
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if(enableChance) {
+        if (enableChance) {
             GT_Utility.sendChatToPlayer(aPlayer, "Enabled certain mode, output chance is 100% but slower.");
         } else {
             GT_Utility.sendChatToPlayer(aPlayer, "Enabled chance mode, keep machine running and get bonus.");
@@ -365,7 +373,7 @@ public class GT_MetaTileEntity_Crystalizer
                 ItemList.Casing_ContainmentFieldIV.get(1),
                 ItemList.Casing_ContainmentFieldIV.get(1),
                 new ItemStack(ItemBlock.getItemFromBlock(Blocks.glass), 32),
-                GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Osmiridium, 32),
+                GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Europium, 32),
                 ItemList.Electric_Pump_LuV.get(16),
                 new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 32))
@@ -378,7 +386,7 @@ public class GT_MetaTileEntity_Crystalizer
             .duration(600)
             .addTo(AssemblyLine);
 
-        //EV
+        // EV
         RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_ContainmentFieldHV.get(1),
@@ -389,11 +397,11 @@ public class GT_MetaTileEntity_Crystalizer
                 GT_Utility.getIntegratedCircuit(24))
             .fluidInputs(Materials.SolderingAlloy.getMolten(864))
             .itemOutputs(ItemList.Casing_ContainmentFieldEV.get(1))
-            .duration(30* SECONDS)
+            .duration(30 * SECONDS)
             .eut(TierEU.EV)
             .addTo(RecipeMaps.assemblerRecipes);
 
-        //IV
+        // IV
         RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_ContainmentFieldEV.get(1),
@@ -408,7 +416,7 @@ public class GT_MetaTileEntity_Crystalizer
             .eut(TierEU.IV)
             .addTo(RecipeMaps.assemblerRecipes);
 
-        //LuV
+        // LuV
         GT_Values.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Casing_ContainmentFieldIV.get(1))
             .metadata(RESEARCH_TIME, 4 * HOURS)
@@ -427,7 +435,7 @@ public class GT_MetaTileEntity_Crystalizer
             .eut((int) TierEU.RECIPE_ZPM)
             .addTo(AssemblyLine);
 
-        //ZPM
+        // ZPM
         GT_Values.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Casing_ContainmentField.get(1))
             .metadata(RESEARCH_TIME, 4 * HOURS)
@@ -446,9 +454,9 @@ public class GT_MetaTileEntity_Crystalizer
             .eut((int) TierEU.RECIPE_UV)
             .addTo(AssemblyLine);
 
-        //UV
+        // UV
         GT_Values.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.Casing_ContainmentField.get(1))
+            .metadata(RESEARCH_ITEM, ItemList.Casing_ContainmentFieldZPM.get(1))
             .metadata(RESEARCH_TIME, 4 * HOURS)
             .itemInputs(
                 ItemList.Casing_ContainmentFieldZPM.get(1),
@@ -465,6 +473,25 @@ public class GT_MetaTileEntity_Crystalizer
             .eut((int) TierEU.RECIPE_UHV)
             .addTo(AssemblyLine);
 
+        // UEV+
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            CustomItemList.eM_Ultimate_Containment_Field.get(1),
+            16777216,
+            2048,
+            (int) TierEU.UEV,
+            4,
+            new ItemStack[] { CustomItemList.eM_Containment_Field.get(4), ItemList.Field_Generator_UEV.get(64),
+                ItemList.Field_Generator_UEV.get(16), ItemList.Field_Generator_UIV.get(16), ItemList.Tesseract.get(32),
+                ItemList.EnergisedTesseract.get(32),
+                GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 32),
+                GT_OreDictUnificator.get(OrePrefixes.stickLong, MaterialsUEVplus.TranscendentMetal, 32),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUIV, 16) },
+            new FluidStack[] { Materials.Infinity.getMolten(4608),
+                new FluidStack(FluidRegistry.getFluid("molten.celestialtungsten"), 36864),
+                new FluidStack(FluidRegistry.getFluid("molten.mutatedlivingsolder"), 36864), },
+            CustomItemList.eM_Ultimate_Containment_Field.get(1),
+            30 * SECONDS,
+            (int) TierEU.UIV);
 
         // Lap-Naquadah dust
         GT_Values.RA.stdBuilder()
@@ -616,14 +643,14 @@ public class GT_MetaTileEntity_Crystalizer
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.GoodLapotronCrystal.get(1))
             .itemOutputs(ItemList.LapotronShard.get(32))
-            .eut(TierEU.UHV)
+            .eut(TierEU.LuV)
             .duration(SECONDS * 5)
             .addTo(RecipeMaps.hammerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.PerfectLapotronCrystal.get(1))
             .itemOutputs(ItemList.LapotronShard.get(64))
-            .eut(TierEU.UHV)
+            .eut(TierEU.LuV)
             .duration(SECONDS * 5)
             .addTo(RecipeMaps.hammerRecipes);
 
@@ -689,7 +716,7 @@ public class GT_MetaTileEntity_Crystalizer
                         GT_HatchElement.OutputBus,
                         GT_HatchElement.InputHatch,
                         GT_HatchElement.OutputHatch,
-                        GT_HatchElement.Energy.or(GT_HatchElement.ExoticEnergy))
+                        GT_HatchElement.Energy)
                     .dot(1)
                     .casingIndex(((GT_Block_Casings_Abstract) GregTech_API.sBlockCasings4).getTextureIndex(0))
                     .buildAndChain(GregTech_API.sBlockCasings4, 0))
@@ -783,8 +810,7 @@ public class GT_MetaTileEntity_Crystalizer
             .addInfo("With full efficiency, extra 30% of output is produced and the chance of recipes become 100%.")
             .addInfo("When using containment casing of higher tier, it will cost less time to become 100% efficient.")
             .addInfo("Right click controller with a screwdriver to enable certainty mode.")
-            .addInfo(
-                "Can process recipes without chance with a 250% lower speed with that. Upgrading fienld casing can reduce penalty.")
+            .addInfo("Can process recipes without chance with lower speed. Upgrading field casing can reduce penalty.")
             .addInfo("The structure is too complex!")
             .addInfo(BLUE_PRINT_INFO)
             .addSeparator()
@@ -986,12 +1012,16 @@ public class GT_MetaTileEntity_Crystalizer
         @Override
         protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
             double speedModifier = baseSpeedModifier + 0.075 * fleldGeneratorTier;
+            int minForceLevel = -recipe.mSpecialValue / 1000;
             if (!enableChance) {
-                speedModifier = speedModifier / 3.5;
+                speedModifier = (0.5 + speedModifier * 10000.0 / recipe.getOutputChance(0))
+                    * (1 - 0.05 * (fleldGeneratorTier - minForceLevel));
+            } else {
+                speedModifier = 1 - 0.05 * (fleldGeneratorTier - minForceLevel);
             }
             double euModifier = baseEUtModifier - 0.05 * fleldGeneratorTier;
             GT_OverclockCalculator overclockCalculator = super.createOverclockCalculator(recipe);
-            return overclockCalculator.setSpeedBoost((float) (1.0 / (speedModifier)))
+            return overclockCalculator.setSpeedBoost((float) (speedModifier))
                 .setRecipeEUt((long) (recipe.mEUt * euModifier));
         }
 
