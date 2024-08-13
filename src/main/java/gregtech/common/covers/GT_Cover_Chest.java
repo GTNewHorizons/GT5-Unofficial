@@ -91,7 +91,7 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
     @Override
     protected int getTickRateImpl(ForgeDirection side, int aCoverID, ChestInventory aCoverVariable,
         ICoverable aTileEntity) {
-        return aCoverVariable.initial ? 1 : 0;
+        return aCoverVariable.firstTick ? 1 : 0;
     }
 
     @Override
@@ -116,7 +116,7 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
             }
             return newData;
         }
-        aCoverVariable.initial = false;
+        aCoverVariable.firstTick = false;
         return super.doCoverThingsImpl(side, aInputRedstone, aCoverID, aCoverVariable, aTileEntity, aTimer);
     }
 
@@ -190,7 +190,7 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
     public static class ChestInventory implements ISerializableObject {
 
         final LimitingItemStackHandler items;
-        boolean initial;
+        boolean firstTick;
 
         public ChestInventory(int slots, int stackSize) {
             items = new LimitingItemStackHandler(slots, stackSize);
@@ -212,7 +212,7 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
         public void loadDataFromNBT(NBTBase aNBT) {
             if (!(aNBT instanceof NBTTagCompound)) return;
             items.deserializeNBT((NBTTagCompound) aNBT);
-            initial = true;
+            firstTick = true;
         }
 
         @NotNull
