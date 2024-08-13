@@ -463,6 +463,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UMV;
 import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UXV;
 import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.WORMHOLE_GENERATOR_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_EV_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_HV_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_IV_EV;
@@ -604,6 +605,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ProcessingA
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PyrolyseOven;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_TranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_WormholeGenerator;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_Hatch_DegasifierControlHatch;
@@ -1132,11 +1134,17 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_MultiCanner(MULTI_CANNER_CONTROLLER.ID, "multimachine.canner", "TurboCan Pro")
                 .getStackForm(1));
 
+        ItemList.WormholeGenerator.set(
+            new GT_MetaTileEntity_WormholeGenerator(
+                WORMHOLE_GENERATOR_CONTROLLER.ID,
+                "multimachine.wormhole",
+                "Miniature Wormhole Generator").getStackForm(1));
+
         ItemList.Machine_Multi_IndustrialLaserEngraver.set(
             new GT_MetaTileEntity_IndustrialLaserEngraver(
                 INDUSTRIAL_LASER_ENGRAVER_CONTROLLER.ID,
                 "multimachine.engraver",
-                "High Energy Laser Emitter").getStackForm(1));
+                "Hyper-Intensity Laser Emitter").getStackForm(1));
 
         ItemList.Machine_Multi_Lathe.set(
             new GT_MetaTileEntity_MultiLathe(

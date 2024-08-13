@@ -314,7 +314,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
             .addCasingInfoMinColored(
                 "Frost Proof Machine Casing",
                 EnumChatFormatting.GRAY,
-                800,
+                700,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
@@ -469,7 +469,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
             // Structure is Tier 2
             this.mTier = 2;
         }
-        return this.mMaintenanceHatches.size() == 1 && this.mCasingFrostProof >= 800;
+        return this.mMaintenanceHatches.size() == 1 && this.mCasingFrostProof >= 700;
     }
 
     @Override

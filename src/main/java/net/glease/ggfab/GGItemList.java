@@ -54,6 +54,12 @@ public enum GGItemList implements IItemContainer {
     }
 
     @Override
+    public IItemContainer hidden() {
+        codechicken.nei.api.API.hideItem(get(1L));
+        return this;
+    }
+
+    @Override
     public IItemContainer set(ItemStack aStack) {
         mHasNotBeenSet = false;
         mStack = GT_Utility.copyAmount(1, aStack);

@@ -416,6 +416,12 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
         return true;
     }
 
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(GT_Utility.roundUpVoltage(this.getMaxInputVoltage()));
+        logic.setAvailableAmperage(1L);
+    }
+
     private void findMagnet() {
         magnetTier = null;
         if (mMagHatch != null) {

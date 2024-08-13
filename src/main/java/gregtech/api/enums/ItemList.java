@@ -2041,6 +2041,8 @@ public enum ItemList implements IItemContainer {
     TierdDrone1,
     TierdDrone2,
     Hatch_DroneDownLink,
+    Casing_Shielded_Accelerator,
+    WormholeGenerator,
     Hatch_pHSensor,
     Hatch_LensHousing,
     Hatch_LensIndicator,
@@ -2070,7 +2072,6 @@ public enum ItemList implements IItemContainer {
     Quark_Creation_Catalyst_Bottom,
     Quark_Creation_Catalyst_Top,
     Quark_Creation_Catalyst_Unaligned,
-    Casing_Shielded_Accelerator,
     GlassOmniPurposeInfinityFused,
     GlassQuarkContainment,
     BlockQuarkPipe,
@@ -2138,6 +2139,12 @@ public enum ItemList implements IItemContainer {
     public IItemContainer set(ItemStack aStack) {
         mHasNotBeenSet = false;
         mStack = GT_Utility.copyAmount(1, aStack);
+        return this;
+    }
+
+    @Override
+    public IItemContainer hidden() {
+        codechicken.nei.api.API.hideItem(get(1L));
         return this;
     }
 
