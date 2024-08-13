@@ -23,7 +23,6 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
-import gregtech.api.enums.SteamVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -83,11 +82,6 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
             rTextures[4][i] = texFrontActive;
         }
         return rTextures;
-    }
-
-    @Override
-    public int maxProgresstime() {
-        return 500;
     }
 
     @Override
@@ -324,8 +318,4 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
             && (isItemSolidCarbonFuelItem(stack) || isItemSolidCarbonFuelBlock(stack) || isDenseSolidFuel(stack));
     }
 
-    @Override
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.BRONZE;
-    }
 }
