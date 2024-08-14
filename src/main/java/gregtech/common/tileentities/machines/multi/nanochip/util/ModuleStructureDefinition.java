@@ -1,4 +1,4 @@
-package gregtech.common.tileentities.machines.multi.nanochip.modules;
+package gregtech.common.tileentities.machines.multi.nanochip.util;
 
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 

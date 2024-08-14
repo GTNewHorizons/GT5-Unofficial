@@ -35,6 +35,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor;
 
 public class GT_MetaTileEntity_NanochipAssemblyComplex
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_NanochipAssemblyComplex>
@@ -53,9 +54,9 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
         { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
         { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
-        { "     AAA     ", "     A~A     ", "     AAA     ", "BBBBBBBBBBBBB" },
-        { "     AAA     ", "     A A     ", "     AAA     ", "BBBBBBBBBBBBB" },
-        { "     AAA     ", "     AAA     ", "     AAA     ", "BBBBBBBBBBBBB" },
+        { "     VVV     ", "     V~V     ", "     VVV     ", "BBBBBBBBBBBBB" },
+        { "     VVV     ", "     V V     ", "     VVV     ", "BBBBBBBBBBBBB" },
+        { "     VVV     ", "     VVV     ", "     VVV     ", "BBBBBBBBBBBBB" },
         { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
         { "             ", "             ", " AIA     AIA ", "BBBBBBBBBBBBB" },
         { "             ", "             ", " AAA     AAA ", "BBBBBBBBBBBBB" },
@@ -65,14 +66,29 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
     public static final IStructureDefinition<GT_MetaTileEntity_NanochipAssemblyComplex> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_NanochipAssemblyComplex>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addElement('A', ofBlock(GregTech_API.sBlockCasings4, 0))
+        // Either a casing block or an ignored hatch
+        .addElement(
+            'A',
+            GT_HatchElementBuilder.<GT_MetaTileEntity_NanochipAssemblyComplex>builder()
+                .atLeast(AssemblyHatchElement.IgnoredHatch)
+                .casingIndex(CASING_INDEX_BASE)
+                .dot(3)
+                .buildAndChain(ofBlock(GregTech_API.sBlockCasings4, 0)))
         .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 10))
+        // Vacuum conveyor hatches that the main controller cares about go in specific slots
+        .addElement(
+            'V',
+            GT_HatchElementBuilder.<GT_MetaTileEntity_NanochipAssemblyComplex>builder()
+                .atLeast(AssemblyHatchElement.VacuumConveyorHatch)
+                .casingIndex(CASING_INDEX_BASE)
+                .dot(2)
+                .buildAndChain(ofBlock(GregTech_API.sBlockCasings4, 0)))
         .addElement(
             'I',
             GT_HatchElementBuilder.<GT_MetaTileEntity_NanochipAssemblyComplex>builder()
-                .atLeast(AssemblyModuleElement.AssemblyModule)
+                .atLeast(AssemblyHatchElement.AssemblyModule)
                 .casingIndex(CASING_INDEX_BASE)
-                .dot(2)
+                .dot(1)
                 // Base casing or assembly module
                 .buildAndChain(GregTech_API.sBlockCasings4, 0))
         .build();
@@ -80,6 +96,7 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
     public static final int MODULE_CONNECT_INTERVAL = 20;
 
     private final ArrayList<GT_MetaTileEntity_NanochipAssemblyModuleBase<?>> modules = new ArrayList<>();
+    private final ArrayList<GT_MetaTileEntity_Hatch_VacuumConveyor> vacuumConveyors = new ArrayList<>();
 
     public GT_MetaTileEntity_NanochipAssemblyComplex(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -162,13 +179,6 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48] };
     }
 
-    /**
-     * Add an assembly module to the module list
-     *
-     * @param aTileEntity      Project module
-     * @param aBaseCasingIndex Index of the casing texture it should take
-     * @return True if input entity is a valid module and could be added, else false
-     */
     public boolean addModuleToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;
@@ -181,6 +191,27 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
             return modules.add((GT_MetaTileEntity_NanochipAssemblyModuleBase<?>) aMetaTileEntity);
         }
         return false;
+    }
+
+    public boolean addConveyorToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) {
+            return false;
+        }
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) {
+            return false;
+        }
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_VacuumConveyor) {
+            return vacuumConveyors.add((GT_MetaTileEntity_Hatch_VacuumConveyor) aMetaTileEntity);
+        }
+        return false;
+    }
+
+    public boolean ignoreAndAcceptHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        // Note: This is probably not a good idea to accept any meta tile entity, lol
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        return aMetaTileEntity != null;
     }
 
     private void disconnectAll() {
@@ -234,7 +265,7 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
     }
 
     // Hatch adder for modules
-    public enum AssemblyModuleElement implements IHatchElement<GT_MetaTileEntity_NanochipAssemblyComplex> {
+    public enum AssemblyHatchElement implements IHatchElement<GT_MetaTileEntity_NanochipAssemblyComplex> {
 
         AssemblyModule(GT_MetaTileEntity_NanochipAssemblyComplex::addModuleToMachineList,
             GT_MetaTileEntity_NanochipAssemblyComplex.class) {
@@ -243,13 +274,31 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
             public long count(GT_MetaTileEntity_NanochipAssemblyComplex tileEntity) {
                 return tileEntity.modules.size();
             }
+        },
+        VacuumConveyorHatch(GT_MetaTileEntity_NanochipAssemblyComplex::addConveyorToMachineList,
+            GT_MetaTileEntity_NanochipAssemblyComplex.class) {
+
+            @Override
+            public long count(GT_MetaTileEntity_NanochipAssemblyComplex tileEntity) {
+                return tileEntity.vacuumConveyors.size();
+            }
+        },
+        // Hatches are allowed in the module base slots, but the assembly complex ignores these for its base operation,
+        // so we need a custom adder to not add them to our hatch lists
+        IgnoredHatch(GT_MetaTileEntity_NanochipAssemblyComplex::ignoreAndAcceptHatch,
+            GT_MetaTileEntity_NanochipAssemblyComplex.class) {
+
+            @Override
+            public long count(GT_MetaTileEntity_NanochipAssemblyComplex tileEntity) {
+                return 0;
+            }
         };
 
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGT_HatchAdder<GT_MetaTileEntity_NanochipAssemblyComplex> adder;
 
         @SafeVarargs
-        AssemblyModuleElement(IGT_HatchAdder<GT_MetaTileEntity_NanochipAssemblyComplex> adder,
+        AssemblyHatchElement(IGT_HatchAdder<GT_MetaTileEntity_NanochipAssemblyComplex> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
