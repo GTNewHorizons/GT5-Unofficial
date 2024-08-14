@@ -5,7 +5,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 
 public class GT_MetaTileEntity_Hatch_VacuumConveyor_Input extends GT_MetaTileEntity_Hatch_VacuumConveyor
@@ -53,10 +52,6 @@ public class GT_MetaTileEntity_Hatch_VacuumConveyor_Input extends GT_MetaTileEnt
     @Override
     public IConnectsToVacuumConveyor getNext(IConnectsToVacuumConveyor source) {
         return null;
-    }
-
-    public void acceptInputs(CircuitComponentPacket packetIn) {
-        this.contents.acceptMore(packetIn);
     }
 
     @Override
