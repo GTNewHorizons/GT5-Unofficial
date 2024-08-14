@@ -272,6 +272,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.MULTI_CANNER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.MULTI_LATHE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.MULTI_SMELTER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.NANOCHIP_ASSEMBLY_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.NANOCHIP_MODULE_ASSEMBLY_MATRIX;
 import static gregtech.api.enums.MetaTileEntityIDs.NANO_FORGE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_IV;
@@ -608,6 +609,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_WormholeGen
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
 import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_NanochipAssemblyComplex;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.AssemblyMatrix;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_Hatch_DegasifierControlHatch;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_LensHousing;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_LensIndicator;
@@ -1156,6 +1158,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 NANOCHIP_ASSEMBLY_CONTROLLER.ID,
                 "multimachine.nanochipassemblycomplex",
                 "Nanochip Assembly Complex").getStackForm(1));
+        ItemList.NanoChipModule_AssemblyMatrix.set(
+            new AssemblyMatrix(
+                NANOCHIP_MODULE_ASSEMBLY_MATRIX.ID,
+                "multimachine.nanochipmodule.assemblymatrix",
+                "Nanochip Assembly Matrix Module").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
