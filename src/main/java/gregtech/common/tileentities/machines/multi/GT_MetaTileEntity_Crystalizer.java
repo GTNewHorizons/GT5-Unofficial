@@ -887,9 +887,6 @@ public class GT_MetaTileEntity_Crystalizer
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         boolean checkPiece = checkPiece("main", 4, 10, 0);
-        if (mExoticEnergyHatches.size() > 0 && fleldGeneratorTier < 7) {
-            return false;
-        }
         return checkPiece && fleldGeneratorTier2 > fleldGeneratorTier;
     }
 
