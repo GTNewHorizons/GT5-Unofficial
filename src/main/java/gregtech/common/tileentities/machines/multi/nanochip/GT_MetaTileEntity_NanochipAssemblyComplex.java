@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +14,8 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -26,6 +29,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -72,6 +77,8 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
                 .buildAndChain(GregTech_API.sBlockCasings4, 0))
         .build();
 
+    public static final int MODULE_CONNECT_INTERVAL = 20;
+
     private final ArrayList<GT_MetaTileEntity_NanochipAssemblyModuleBase<?>> modules = new ArrayList<>();
 
     public GT_MetaTileEntity_NanochipAssemblyComplex(int aID, String aName, String aNameRegional) {
@@ -110,6 +117,7 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         fixAllIssues();
+        modules.clear();
         return checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z);
     }
 
@@ -173,6 +181,56 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
             return modules.add((GT_MetaTileEntity_NanochipAssemblyModuleBase<?>) aMetaTileEntity);
         }
         return false;
+    }
+
+    private void disconnectAll() {
+        for (GT_MetaTileEntity_NanochipAssemblyModuleBase<?> module : modules) {
+            module.disconnect();
+        }
+    }
+
+    /**
+     * Callback that will be invoked when the controller is removed
+     */
+    @Override
+    public void onRemoval() {
+        // On destroying the controller block, all modules should be disconnected
+        disconnectAll();
+        super.onRemoval();
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            // If the complex is turned on, periodically reconnect modules.
+            // This code can be extended to only connect modules based on tiers of the complex or other
+            // conditions such as energy tier.
+            if (isAllowedToWork()) {
+                if (aTick % MODULE_CONNECT_INTERVAL == 0) {
+                    for (GT_MetaTileEntity_NanochipAssemblyModuleBase<?> module : modules) {
+                        module.connect();
+                    }
+                }
+            } else {
+                // If the complex is turned off or unformed, disconnect all modules
+                disconnectAll();
+            }
+        }
+    }
+
+    @Override
+    public @NotNull CheckRecipeResult checkProcessing() {
+        // Always keep the machine running, it doesn't run recipes directly.
+        if (isAllowedToWork()) {
+            mEfficiencyIncrease = 10000;
+            mMaxProgresstime = 1 * SECONDS;
+            return CheckRecipeResultRegistry.SUCCESSFUL;
+        }
+
+        mEfficiencyIncrease = 0;
+        mMaxProgresstime = 0;
+        return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     // Hatch adder for modules
