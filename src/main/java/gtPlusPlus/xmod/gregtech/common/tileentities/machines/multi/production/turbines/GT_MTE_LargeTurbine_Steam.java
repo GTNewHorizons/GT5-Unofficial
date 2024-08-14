@@ -142,12 +142,13 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
                     if (!hasConsumedSteam) {
                         hasConsumedSteam = true;
                         isUsingDenseSteam = true;
-                    } else if (!isUsingDenseSteam){
+                    } else if (!isUsingDenseSteam) {
                         continue;
                     }
                     steamInHatch = aFluids.get(i).amount;
                     remainingDenseFlow = (float) remainingFlow / 1000; // Dense Steam is 1000x the EU value
-                    denseFlow = Math.min(steamInHatch, remainingDenseFlow); // try to use up w/o exceeding remainingDenseFlow
+                    denseFlow = Math.min(steamInHatch, remainingDenseFlow); // try to use up w/o exceeding
+                                                                            // remainingDenseFlow
                     depleteInput(new FluidStack(aFluids.get(i), (int) denseFlow)); // deplete that amount
                     this.storedFluid += aFluids.get(i).amount;
                     remainingFlow -= denseFlow * 1000; // track amount we're allowed to continue depleting from hatches
