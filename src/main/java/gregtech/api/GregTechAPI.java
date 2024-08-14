@@ -477,4 +477,18 @@ public class GregTechAPI {
         if (teCreators[meta] == null) return null;
         return teCreators[meta].apply(meta);
     }
+
+    /**
+     * Get the texture index of a casing block and meta.
+     *
+     * @param block Block to check, must extend GT_Block_Casings_Abstract
+     * @param meta  Meta of the block to check
+     * @return A valid texture index
+     */
+    public static int getCasingTextureIndex(Block block, int meta) {
+        if (block instanceof GT_Block_Casings_Abstract gtBlock) {
+            return gtBlock.getTextureIndex(meta);
+        }
+        throw new IllegalArgumentException("Passed non-gt casing block to getCasingTextureIndex");
+    }
 }
