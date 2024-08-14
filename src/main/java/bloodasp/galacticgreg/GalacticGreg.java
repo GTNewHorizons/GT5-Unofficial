@@ -28,7 +28,7 @@ import gregtech.api.world.GT_Worldgen;
     modid = GalacticGreg.MODID,
     name = GalacticGreg.MODNAME,
     version = GalacticGreg.VERSION,
-    dependencies = "required-after:GalacticraftCore; required-after:gregtech@5.09.32.30;",
+    dependencies = "after:GalacticraftCore; required-after:gregtech@5.09.32.30;",
     acceptableRemoteVersions = "*")
 public class GalacticGreg {
 

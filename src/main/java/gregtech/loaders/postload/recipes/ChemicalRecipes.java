@@ -5610,6 +5610,14 @@ public class ChemicalRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(24))
+            .fluidInputs(Materials.Methanol.getFluid(1000), Materials.Butane.getGas(1000))
+            .fluidOutputs(Materials.MTBEMixtureAlt.getGas(1000))
+            .duration(20 * TICKS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(24))
             .fluidInputs(
                 Materials.Naquadria.getMolten(4608),
                 Materials.ElectrumFlux.getMolten(4608),

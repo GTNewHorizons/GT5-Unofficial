@@ -138,6 +138,7 @@ import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
@@ -3579,7 +3580,8 @@ public class GT_Utility {
     private static int addForestryLeavesInfo(ArrayList<String> tList, TileEntity tTileEntity) {
         int rEUAmount = 0;
         try {
-            if (tTileEntity instanceof forestry.arboriculture.tiles.TileLeaves tileLeaves) {
+            if (Mods.Forestry.isModLoaded()
+                && tTileEntity instanceof forestry.arboriculture.tiles.TileLeaves tileLeaves) {
                 final forestry.api.arboriculture.ITree tree = tileLeaves.getTree();
                 if (tree != null) {
                     rEUAmount += 1000;

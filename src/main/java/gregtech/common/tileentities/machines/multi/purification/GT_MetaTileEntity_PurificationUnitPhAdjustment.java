@@ -55,6 +55,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.shutdown.SimpleShutDownReason;
 
 public class GT_MetaTileEntity_PurificationUnitPhAdjustment
     extends GT_MetaTileEntity_PurificationUnitBase<GT_MetaTileEntity_PurificationUnitPhAdjustment>
@@ -349,6 +350,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
                     + "of 7.0 pH at the end of the cycle, the recipe always succeeds.")
             .addInfo("Otherwise, the recipe always fails.")
             .addInfo("Use a pH Sensor Hatch to read the current pH value.")
+            .addInfo("For safety, the machine will shut down if the pH goes below 0 or exceeds 14.")
             .addSeparator()
             .addInfo(
                 "Every " + EnumChatFormatting.RED
@@ -508,6 +510,11 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
             // Round to 2 decimals
             this.currentpHValue = Math.round(this.currentpHValue * 100.0f) / 100.0f;
+
+            // If pH is 0 or 14, stop the machine
+            if (Math.abs(this.currentpHValue) < 0.001 || Math.abs(this.currentpHValue - 14.0f) < 0.001) {
+                stopMachine(SimpleShutDownReason.ofNormal("critical_ph_value"));
+            }
         }
     }
 
@@ -548,6 +555,8 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
+        // Do not form without positioned hatches
+        if (acidInputHatch == null || alkalineInputBus == null) return false;
         return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 

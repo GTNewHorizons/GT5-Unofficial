@@ -71,6 +71,7 @@ import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import ic2.api.item.IKineticRotor;
@@ -274,9 +275,11 @@ public class ItemRegistry {
         bitmask = GregTech_API.sMachineIDs.getOrDefault(GregTech_API.sBlockMetal9, 0) | 1 << 3 | 1 << 4 | 1 << 8;
         GregTech_API.registerMachineBlock(GregTech_API.sBlockMetal9, bitmask);
 
-        // Also infinity
-        bitmask = GregTech_API.sMachineIDs.getOrDefault(LudicrousBlocks.resource_block, 0) | 1 << 1;
-        GregTech_API.registerMachineBlock(LudicrousBlocks.resource_block, bitmask);
+        if (Mods.Avaritia.isModLoaded()) {
+            // Also infinity
+            bitmask = GregTech_API.sMachineIDs.getOrDefault(LudicrousBlocks.resource_block, 0) | 1 << 1;
+            GregTech_API.registerMachineBlock(LudicrousBlocks.resource_block, bitmask);
+        }
 
         ItemRegistry.THTR = new GT_TileEntity_THTR(
             ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 5,

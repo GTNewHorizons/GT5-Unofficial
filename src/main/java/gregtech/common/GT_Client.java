@@ -626,6 +626,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
         new GT_RenderDrone();
         new GT_LaserRenderer();
         new GT_WormholeRenderer();
+
         metaGeneratedItemRenderer = new GT_MetaGenerated_Item_Renderer();
         for (GT_MetaGenerated_Item item : GT_MetaGenerated_Item.sInstances.values()) {
             metaGeneratedItemRenderer.registerItem(item);

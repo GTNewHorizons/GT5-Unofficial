@@ -62,6 +62,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.GT_Assemblyline_Server;
 import gregtech.api.util.GT_Forestry_Compat;
@@ -358,6 +359,9 @@ public class GT_Mod implements IGT_Mod {
         if (Mods.HoloInventory.isModLoaded()) {
             HoloInventory.init();
         }
+
+        LHECoolantRegistry.registerBaseCoolants();
+
         GregTech_API.sLoadFinished = true;
         GT_Log.out.println("GT_Mod: Load-Phase finished!");
         GT_Log.ore.println("GT_Mod: Load-Phase finished!");

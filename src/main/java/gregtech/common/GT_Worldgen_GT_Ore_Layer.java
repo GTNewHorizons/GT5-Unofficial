@@ -5,12 +5,16 @@ import static gregtech.api.enums.GT_Values.oreveinPlacerOres;
 import static gregtech.api.enums.GT_Values.oreveinPlacerOresMultiplier;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProviderEnd;
+import net.minecraft.world.WorldProviderHell;
+import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import gregtech.api.GregTech_API;
@@ -47,6 +51,8 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
 
     public final boolean mMoon = false, mMars = false, mAsteroid = false;
     public final String aTextWorldgen = "worldgen.";
+
+    public Class[] mAllowedProviders;
 
     @Deprecated
     public GT_Worldgen_GT_Ore_Layer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity,
@@ -104,6 +110,20 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         if (this.mEnabled) {
             sWeight += this.mWeight;
         }
+
+        List<Class> allowedProviders = new ArrayList<>();
+        if (this.mNether) {
+            allowedProviders.add(WorldProviderHell.class);
+        }
+
+        if (this.mOverworld) {
+            allowedProviders.add(WorldProviderSurface.class);
+        }
+
+        if (this.mEnd) {
+            allowedProviders.add(WorldProviderEnd.class);
+        }
+        mAllowedProviders = allowedProviders.toArray(new Class[allowedProviders.size()]);
     }
 
     @Override
@@ -114,11 +134,8 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
             // Return a special empty orevein
             return ORE_PLACED;
         }
-        if (!isGenerationAllowed(
-            aWorld,
-            aDimensionType,
-            ((aDimensionType == -1) && (this.mNether)) || ((aDimensionType == 0) && (this.mOverworld))
-                || ((aDimensionType == 1) && (this.mEnd)) ? aDimensionType : ~aDimensionType)) {
+
+        if (!isGenerationAllowed(aWorld, mAllowedProviders)) {
             // The following code can be used for debugging, but it spams in logs
             // if (debugOrevein) { GT_Log.out.println( "Wrong dimension" ); }
             return WRONG_DIMENSION;
