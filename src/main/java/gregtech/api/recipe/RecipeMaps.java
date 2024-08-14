@@ -1317,4 +1317,15 @@ public final class RecipeMaps {
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .build();
+
+    public static final RecipeMap<RecipeMapBackend> nanochipAssemblyMatrixRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.assemblymatrix")
+        .maxIO(9, 1, 4, 0)
+        .minInputs(0, 0)
+        .build();
+
+    static {
+        // Add transformer from circuit assembler recipes to nanochip assembly matrix recipe
+        RecipeMaps.circuitAssemblerRecipes.addDownstream(AssemblyMatrix.recipeTransformer);
+    }
 }
