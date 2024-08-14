@@ -1669,6 +1669,6 @@ public final class RecipeMaps {
 
     static {
         // Add transformer from circuit assembler recipes to nanochip assembly matrix recipe
-        RecipeMaps.circuitAssemblerRecipes.addDownstream(AssemblyMatrix.recipeTransformer);
+        RecipeMaps.circuitAssemblerRecipes.addDownstream(assemblyMatrixRecipeTransformer);
     }
 }
