@@ -588,7 +588,6 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiCanner
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiFurnace;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiLathe;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_NanoForge;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_NanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilCracker;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill1;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill2;
@@ -608,6 +607,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreez
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_WormholeGenerator;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
+import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_NanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_Hatch_DegasifierControlHatch;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_LensHousing;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_LensIndicator;
