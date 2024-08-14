@@ -21,6 +21,8 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
     protected static final int BASE_STRUCTURE_OFFSET_Y = 0;
     protected static final int BASE_STRUCTURE_OFFSET_Z = 0;
 
+    private boolean isConnected = false;
+
     public static <B> StructureDefinition.Builder<B> addBaseStructure(StructureDefinition.Builder<B> structure) {
         return structure.addShape(STRUCTURE_PIECE_BASE, base_structure)
             .addElement('V', ofBlock(GregTech_API.sBlockCasings4, 0));
@@ -50,6 +52,18 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
             BASE_STRUCTURE_OFFSET_X,
             BASE_STRUCTURE_OFFSET_Y,
             BASE_STRUCTURE_OFFSET_Z);
+    }
+
+    public void connect() {
+        isConnected = true;
+    }
+
+    public void disconnect() {
+        isConnected = false;
+    }
+
+    public boolean isConnected() {
+        return this.isConnected;
     }
 
     @Override
