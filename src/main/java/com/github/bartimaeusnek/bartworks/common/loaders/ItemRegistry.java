@@ -565,7 +565,7 @@ public class ItemRegistry {
 
         if (GalactiGreg.isModLoaded()) {
             ItemRegistry.voidminer[2] = new GT_TileEntity_VoidMiners.VMUV(
-                VoidMinerI.ID,
+                VoidMinerIII.ID,
                 "VoidMiner3",
                 "Void Miner III").getStackForm(1L);
             ItemRegistry.voidminer[1] = new GT_TileEntity_VoidMiners.VMZPM(
@@ -573,7 +573,7 @@ public class ItemRegistry {
                 "VoidMiner2",
                 "Void Miner II").getStackForm(1L);
             ItemRegistry.voidminer[0] = new GT_TileEntity_VoidMiners.VMLUV(
-                VoidMinerIII.ID,
+                VoidMinerI.ID,
                 "VoidMiner1",
                 "Void Miner I").getStackForm(1L);
         }
