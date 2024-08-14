@@ -6,7 +6,14 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.amplifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.circuitAssemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.fermentingRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
@@ -2288,6 +2295,806 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Extended Mega Ultimate Transformer",
                 13,
                 "MAX -> UXV (Use Soft Mallet to invert)").getStackForm(1L));
+    }
+
+    private void registerChemicalBath() {
+        ItemList.ChemicalBathLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_LuV.ID,
+                "basicmachine.chemicalbath.tier.06",
+                "Elite Chemical Bath",
+                6,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalBathZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_ZPM.ID,
+                "basicmachine.chemicalbath.tier.07",
+                "Elite Chemical Bath II",
+                7,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalBathUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_UV.ID,
+                "basicmachine.chemicalbath.tier.08",
+                "Ultimate Chemical Dunktron",
+                8,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalBathUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_UHV.ID,
+                "basicmachine.chemicalbath.tier.09",
+                "Epic Chemical Dunktron",
+                9,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalBathUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_UEV.ID,
+                "basicmachine.chemicalbath.tier.10",
+                "Epic Chemical Dunktron II",
+                10,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalBathUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_UIV.ID,
+                "basicmachine.chemicalbath.tier.11",
+                "Epic Chemical Dunktron III",
+                11,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalBathUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_UMV.ID,
+                "basicmachine.chemicalbath.tier.12",
+                "Epic Chemical Dunktron IV",
+                12,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+    }
+
+    private void registerChemicalReactor() {
+
+        ItemList.ChemicalReactorLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_LuV.ID,
+                "basicmachine.chemicalreactor.tier.06",
+                "Elite Chemical Reactor",
+                6,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalReactorZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_ZPM.ID,
+                "basicmachine.chemicalreactor.tier.07",
+                "Elite Chemical Reactor II",
+                7,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalReactorUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_UV.ID,
+                "basicmachine.chemicalreactor.tier.08",
+                "Ultimate Chemical Perforer",
+                8,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalReactorUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_UHV.ID,
+                "basicmachine.chemicalreactor.tier.09",
+                "Epic Chemical Performer",
+                9,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalReactorUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_UEV.ID,
+                "basicmachine.chemicalreactor.tier.10",
+                "Epic Chemical Performer II",
+                10,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalReactorUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_UIV.ID,
+                "basicmachine.chemicalreactor.tier.11",
+                "Epic Chemical Performer III",
+                11,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalReactorUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_UMV.ID,
+                "basicmachine.chemicalreactor.tier.12",
+                "Epic Chemical Performer IV",
+                12,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerFermenter() {
+        ItemList.FermenterLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_LuV.ID,
+                "basicmachine.fermenter.tier.06",
+                "Elite Fermenter",
+                6,
+                MachineType.FERMENTER.tooltipDescription(),
+                fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.FermenterZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_ZPM.ID,
+                "basicmachine.fermenter.tier.07",
+                "Elite Fermenter II",
+                7,
+                MachineType.FERMENTER.tooltipDescription(),
+                fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.FermenterUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_UV.ID,
+                "basicmachine.fermenter.tier.08",
+                "Ultimate Fermentation Hastener",
+                8,
+                MachineType.FERMENTER.tooltipDescription(),
+                fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.FermenterUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_UHV.ID,
+                "basicmachine.fermenter.tier.09",
+                "Epic Fermentation Hastener",
+                9,
+                MachineType.FERMENTER.tooltipDescription(),
+                fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.FermenterUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_UEV.ID,
+                "basicmachine.fermenter.tier.10",
+                "Epic Fermentation Hastener II",
+                10,
+                MachineType.FERMENTER.tooltipDescription(),
+                fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.FermenterUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_UIV.ID,
+                "basicmachine.fermenter.tier.11",
+                "Epic Fermentation Hastener III",
+                11,
+                MachineType.FERMENTER.tooltipDescription(),
+                fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.FermenterUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_UMV.ID,
+                "basicmachine.fermenter.tier.12",
+                "Epic Fermentation Hastener IV",
+                12,
+                MachineType.FERMENTER.tooltipDescription(),
+                fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+    }
+
+    private void registerFluidCanner() {
+        ItemList.FluidCannerLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_LuV.ID,
+                "basicmachine.fluidcanner.tier.06",
+                "Elite Fluid Canner",
+                6,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.FluidCannerZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_ZPM.ID,
+                "basicmachine.fluidcanner.tier.07",
+                "Elite Fluid Canner II",
+                7,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.FluidCannerUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_UV.ID,
+                "basicmachine.fluidcanner.tier.08",
+                "Ultimate Liquid Can Actuator",
+                8,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.FluidCannerUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_UHV.ID,
+                "basicmachine.fluidcanner.tier.09",
+                "Epic Liquid Can Actuator",
+                9,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.FluidCannerUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_UEV.ID,
+                "basicmachine.fluidcanner.tier.10",
+                "Epic Liquid Can Actuator II",
+                10,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.FluidCannerUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_UIV.ID,
+                "basicmachine.fluidcanner.tier.11",
+                "Epic Liquid Can Actuator III",
+                11,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.FluidCannerUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_UMV.ID,
+                "basicmachine.fluidcanner.tier.12",
+                "Epic Liquid Can Actuator IV",
+                12,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+    }
+
+    private void registerFluidExtractor() {
+        ItemList.FluidExtractorLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_LuV.ID,
+                "basicmachine.fluidextractor.tier.06",
+                "Elite Fluid Extractor",
+                6,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.FluidExtractorZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_ZPM.ID,
+                "basicmachine.fluidextractor.tier.07",
+                "Elite Fluid Extractor II",
+                7,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.FluidExtractorUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_UV.ID,
+                "basicmachine.fluidextractor.tier.08",
+                "Ultimate Liquefying Sucker",
+                8,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.FluidExtractorUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_UHV.ID,
+                "basicmachine.fluidextractor.tier.09",
+                "Epic Liquefying Sucker",
+                9,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.FluidExtractorUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_UEV.ID,
+                "basicmachine.fluidextractor.tier.10",
+                "Epic Liquefying Sucker II",
+                10,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.FluidExtractorUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_UIV.ID,
+                "basicmachine.fluidextractor.tier.11",
+                "Epic Liquefying Sucker III",
+                11,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.FluidExtractorUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_UMV.ID,
+                "basicmachine.fluidextractor.tier.12",
+                "Epic Liquefying Sucker IV",
+                12,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+    }
+
+    private void registerFluidHeater() {
+        ItemList.FluidHeaterLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_LuV.ID,
+                "basicmachine.fluidheater.tier.06",
+                "Elite Fluid Heater",
+                6,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.FluidHeaterZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_ZPM.ID,
+                "basicmachine.fluidheater.tier.07",
+                "Elite Fluid Heater II",
+                7,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.FluidHeaterUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_UV.ID,
+                "basicmachine.fluidheater.tier.08",
+                "Ultimate Heat Infuser",
+                8,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.FluidHeaterUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_UHV.ID,
+                "basicmachine.fluidheater.tier.09",
+                "Epic Heat Infuser",
+                9,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.FluidHeaterUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_UEV.ID,
+                "basicmachine.fluidheater.tier.10",
+                "Epic Heat Infuser II",
+                10,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.FluidHeaterUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_UIV.ID,
+                "basicmachine.fluidheater.tier.11",
+                "Epic Heat Infuser III",
+                11,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.FluidHeaterUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_UMV.ID,
+                "basicmachine.fluidheater.tier.12",
+                "Epic Heat Infuser IV",
+                12,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+    }
+
+    private void registerMixer() {
+        ItemList.MixerLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_LuV.ID,
+                "basicmachine.mixer.tier.06",
+                "Elite Mixer",
+                6,
+                MachineType.MIXER.tooltipDescription(),
+                mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.MixerZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_ZPM.ID,
+                "basicmachine.mixer.tier.07",
+                "Elite Mixer II",
+                7,
+                MachineType.MIXER.tooltipDescription(),
+                mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.MixerUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_UV.ID,
+                "basicmachine.mixer.tier.08",
+                "Ultimate Matter Organizer",
+                8,
+                MachineType.MIXER.tooltipDescription(),
+                mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.MixerUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_UHV.ID,
+                "basicmachine.mixer.tier.09",
+                "Epic Matter Organizer",
+                9,
+                MachineType.MIXER.tooltipDescription(),
+                mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.MixerUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_UEV.ID,
+                "basicmachine.mixer.tier.10",
+                "Epic Matter Organizer II",
+                10,
+                MachineType.MIXER.tooltipDescription(),
+                mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.MixerUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_UIV.ID,
+                "basicmachine.mixer.tier.11",
+                "Epic Matter Organizer III",
+                11,
+                MachineType.MIXER.tooltipDescription(),
+                mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.MixerUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_UMV.ID,
+                "basicmachine.mixer.tier.12",
+                "Epic Matter Organizer IV",
+                12,
+                MachineType.MIXER.tooltipDescription(),
+                mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
     }
 
     private static void registerDynamoHatch() {
