@@ -55,8 +55,8 @@ public class GT_MetaTileEntity_Hatch_VacuumConveyor_Input extends GT_MetaTileEnt
         return null;
     }
 
-    public void setContents(CircuitComponentPacket packetIn) {
-        this.contents = packetIn;
+    public void acceptInputs(CircuitComponentPacket packetIn) {
+        this.contents.acceptMore(packetIn);
     }
 
     @Override
