@@ -354,7 +354,9 @@ public class GT_RecipeBuilder {
                 if (eut <= GT_Values.V[i]) {
                     if (eut > GT_Values.VP[i]) {
                         GT_Log.err.println(
-                            "EUt > Practical Voltage detected. EUt: " + eut + ", Practical Voltage: " + GT_Values.VP[i]);
+                            "EUt > Practical Voltage detected. EUt: " + eut
+                                + ", Practical Voltage: "
+                                + GT_Values.VP[i]);
                         new IllegalArgumentException().printStackTrace(GT_Log.err);
                     }
                 } else break;
