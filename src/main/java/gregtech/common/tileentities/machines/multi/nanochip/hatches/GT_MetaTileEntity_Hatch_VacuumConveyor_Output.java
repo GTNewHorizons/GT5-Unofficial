@@ -2,13 +2,13 @@ package gregtech.common.tileentities.machines.multi.nanochip.hatches;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
 import com.github.technus.tectech.util.TT_Utility;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_VacuumConveyorPipe;
 import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 
 public class GT_MetaTileEntity_Hatch_VacuumConveyor_Output extends GT_MetaTileEntity_Hatch_VacuumConveyor {
@@ -54,7 +54,7 @@ public class GT_MetaTileEntity_Hatch_VacuumConveyor_Output extends GT_MetaTileEn
         int range = 0;
         while ((next = current.getNext(source)) != null && range++ < 1000) {
             if (next instanceof GT_MetaTileEntity_Hatch_VacuumConveyor_Input) {
-                ((GT_MetaTileEntity_Hatch_VacuumConveyor_Input) next).setContents(contents);
+                ((GT_MetaTileEntity_Hatch_VacuumConveyor_Input) next).acceptInputs(contents);
                 break;
             }
             source = current;
@@ -75,9 +75,8 @@ public class GT_MetaTileEntity_Hatch_VacuumConveyor_Output extends GT_MetaTileEn
             return null;
         }
         IMetaTileEntity meta = next.getMetaTileEntity();
-        // TODO: Use correct pipe type
-        if (meta instanceof GT_MetaTileEntity_Pipe_Data) {
-            ((GT_MetaTileEntity_Pipe_Data) meta).markUsed();
+        if (meta instanceof GT_MetaTileEntity_VacuumConveyorPipe) {
+            ((GT_MetaTileEntity_VacuumConveyorPipe) meta).markUsed();
             return (IConnectsToVacuumConveyor) meta;
         } else if (meta instanceof GT_MetaTileEntity_Hatch_VacuumConveyor_Input
             && ((GT_MetaTileEntity_Hatch_VacuumConveyor_Input) meta).getColorization() == color
