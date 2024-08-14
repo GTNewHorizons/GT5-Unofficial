@@ -6,6 +6,13 @@ import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_SEISMIC_PROSPECTOR_E
 import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_SEISMIC_PROSPECTOR_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_SEISMIC_PROSPECTOR_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_SEISMIC_PROSPECTOR_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_UEV;
+import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_UHV;
+import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_UIV;
+import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_UMV;
+import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_UV;
+import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.ASSEMBLING_LINE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.AUTOMATABLE_DATA_ACCESS_HATCH;
 import static gregtech.api.enums.MetaTileEntityIDs.AUTO_MAINTENANCE_HATCH;
@@ -321,6 +328,8 @@ import static gregtech.api.enums.MetaTileEntityIDs.PCB_FACTORY_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_UV;
+import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.PROCESSING_ARRAY_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_HV;
@@ -487,7 +496,11 @@ import static gregtech.api.enums.MetaTileEntityIDs.transformer_UV_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 
+import gregtech.api.enums.MachineType;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -1191,6 +1204,120 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "bronzemachine.alloysmelter",
                 "Steam Alloy Smelter").getStackForm(1L));
 
+    }
+
+    private static void registerAlloySmelters(){
+        ItemList.AlloySmelterLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_LuV.ID,
+                "basicmachine.alloysmelter.tier.06",
+                "Elite Alloy Smelter",
+                6,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
+
+        ItemList.AlloySmelterZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_ZPM.ID,
+                "basicmachine.alloysmelter.tier.07",
+                "Elite Alloy Smelter II",
+                7,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
+
+        ItemList.AlloySmelterUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_UV.ID,
+                "basicmachine.alloysmelter.tier.08",
+                "Ultimate Alloy Integrator",
+                8,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
+
+        ItemList.AlloySmelterUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_UHV.ID,
+                "basicmachine.alloysmelter.tier.09",
+                "Epic Alloy Integrator",
+                9,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
+
+        ItemList.AlloySmelterUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_UEV.ID,
+                "basicmachine.alloysmelter.tier.10",
+                "Epic Alloy Integrator II",
+                10,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
+
+        ItemList.AlloySmelterUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_UIV.ID,
+                "basicmachine.alloysmelter.tier.11",
+                "Epic Alloy Integrator III",
+                11,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
+
+        ItemList.AlloySmelterUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_UMV.ID,
+                "basicmachine.alloysmelter.tier.12",
+                "Epic Alloy Integrator IV",
+                12,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
     }
 
     private static void registerHPSteamMachines() {
@@ -3512,6 +3639,20 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "basicgenerator.plasmagenerator.tier.07",
                 "Plasma Generator Mark III",
                 6).getStackForm(1L));
+
+        ItemList.Generator_Plasma_ZPMV.set(
+            new GT_MetaTileEntity_PlasmaGenerator(
+                PLASMA_GENERATOR_ZPM.ID,
+                "basicgenerator.plasmagenerator.tier.08",
+                "Plasma Generator Mark IV",
+                7).getStackForm(1L));
+
+        ItemList.Generator_Plasma_UV.set(
+            new GT_MetaTileEntity_PlasmaGenerator(
+                PLASMA_GENERATOR_UV.ID,
+                "basicgenerator.plasmagenerator.tier.09",
+                "Ultimate Pocket Sun",
+                8).getStackForm(1L));
     }
 
     private static void generateWiresAndPipes() {
@@ -4308,6 +4449,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         registerPlasmaGenerators();
         registerMultiblockControllers();
         registerWorldAccelerator();
+        registerAlloySmelters();
 
         ItemList.AdvDebugStructureWriter.set(
             new GT_MetaTileEntity_AdvDebugStructureWriter(
