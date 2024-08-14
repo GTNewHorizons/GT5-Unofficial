@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -176,6 +177,23 @@ public class GT_MTE_LargeTurbine_SCSteam extends GregtechMetaTileEntity_LargerTu
     @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 8;
+    }
+
+    @Override
+    public boolean isLooseMode() {
+        return looseFit;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("turbineFitting", looseFit);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        looseFit = aNBT.getBoolean("turbineFitting");
     }
 
     @Override
