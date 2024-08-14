@@ -47,7 +47,7 @@ dependencies {
     api('com.github.GTNewHorizons:Yamcl:0.6.0:dev')
 
     compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.10.1:dev')
-    compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.3.2-GTNH:dev")
+    compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.4.1-GTNH:dev")
     compileOnlyApi("com.github.GTNewHorizons:Navigator:1.0.6:dev")
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Infernal-Mobs:1.8.1-GTNH:dev")
