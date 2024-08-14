@@ -266,7 +266,8 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
             if (waterAmount < 0) return false;
             int steamToOutput;
             if (depleteInput(GT_ModHandler.getDistilledWater(waterAmount))) {
-                if (tRunningRecipe.mFluidInputs[0].getUnlocalizedName().contains("plasma")) {
+                if (tRunningRecipe.mFluidInputs[0].getUnlocalizedName()
+                    .contains("plasma")) {
                     steamToOutput = waterAmount * 160 / 1000;
                 } else {
                     steamToOutput = waterAmount * 160;
