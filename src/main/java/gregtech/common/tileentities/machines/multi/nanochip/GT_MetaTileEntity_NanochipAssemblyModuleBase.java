@@ -44,6 +44,7 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
     // Only checks the base structure piece
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        fixAllIssues();
         return checkPiece(
             STRUCTURE_PIECE_BASE,
             BASE_STRUCTURE_OFFSET_X,

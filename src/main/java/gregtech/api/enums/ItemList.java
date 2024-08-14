@@ -1539,6 +1539,7 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_NanochipAssemblyComplex,
     Machine_Multi_Autoclave,
     Casing_Autoclave,
+    NanoChipModule_AssemblyMatrix,
 
     Machine_LV_Miner,
     Machine_MV_Miner,
