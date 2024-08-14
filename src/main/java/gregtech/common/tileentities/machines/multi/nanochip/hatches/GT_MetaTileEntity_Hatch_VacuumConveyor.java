@@ -5,8 +5,13 @@ import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileE
 import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.EM_D_SIDES;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -15,6 +20,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 
@@ -51,6 +57,11 @@ public abstract class GT_MetaTileEntity_Hatch_VacuumConveyor extends GT_MetaTile
                 EM_D_SIDES,
                 Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
             new GT_RenderedTexture(EM_D_CONN) };
+    }
+
+    public void unifyPacket(CircuitComponentPacket packet) {
+        if (contents == null) contents = packet;
+        else contents.unifyWith(packet);
     }
 
     public abstract void moveAround(IGregTechTileEntity aBaseMetaTileEntity);
@@ -109,5 +120,22 @@ public abstract class GT_MetaTileEntity_Hatch_VacuumConveyor extends GT_MetaTile
     @Override
     public byte getColorization() {
         return getBaseMetaTileEntity().getColorization();
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        info.add("Contents: ");
+        if (contents != null) {
+            // TODO: Would be neat to get a gui that displays these in item form I suppose (using some fake items or
+            // something)
+            Map<CircuitComponent, Long> components = contents.getComponents();
+            for (Map.Entry<CircuitComponent, Long> component : components.entrySet()) {
+                info.add(
+                    EnumChatFormatting.YELLOW + component.getKey()
+                        .getLocalizedName() + ": " + EnumChatFormatting.WHITE + component.getValue());
+            }
+        }
+        return info.toArray(new String[] {});
     }
 }

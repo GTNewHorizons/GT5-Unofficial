@@ -1,16 +1,21 @@
 package gregtech.common.tileentities.machines.multi.nanochip;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -30,13 +35,23 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Output;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ComponentConversionMap;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ItemStackWithSourceBus;
+import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
 
 public class GT_MetaTileEntity_NanochipAssemblyComplex
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_NanochipAssemblyComplex>
@@ -80,7 +95,7 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         .addElement(
             'V',
             GT_HatchElementBuilder.<GT_MetaTileEntity_NanochipAssemblyComplex>builder()
-                .atLeast(AssemblyHatchElement.VacuumConveyorHatch)
+                .atLeastList(Arrays.asList(AssemblyHatchElement.VacuumConveyorHatch, InputBus, OutputBus))
                 .casingIndex(CASING_INDEX_BASE)
                 .dot(2)
                 .buildAndChain(ofBlock(GregTech_API.sBlockCasings4, 0)))
@@ -97,7 +112,8 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
     public static final int MODULE_CONNECT_INTERVAL = 20;
 
     private final ArrayList<GT_MetaTileEntity_NanochipAssemblyModuleBase<?>> modules = new ArrayList<>();
-    private final ArrayList<GT_MetaTileEntity_Hatch_VacuumConveyor> vacuumConveyors = new ArrayList<>();
+
+    private final VacuumConveyorHatchMap vacuumConveyors = new VacuumConveyorHatchMap();
 
     public GT_MetaTileEntity_NanochipAssemblyComplex(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -136,6 +152,7 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         fixAllIssues();
         modules.clear();
+        vacuumConveyors.clear();
         return checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z);
     }
 
@@ -204,7 +221,7 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_VacuumConveyor hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            return vacuumConveyors.add(hatch);
+            return vacuumConveyors.addHatch(hatch);
         }
         return false;
     }
@@ -219,12 +236,6 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         return false;
     }
 
-    private void disconnectAll() {
-        for (GT_MetaTileEntity_NanochipAssemblyModuleBase<?> module : modules) {
-            module.disconnect();
-        }
-    }
-
     /**
      * Callback that will be invoked when the controller is removed
      */
@@ -233,6 +244,93 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         // On destroying the controller block, all modules should be disconnected
         disconnectAll();
         super.onRemoval();
+    }
+
+    private void disconnectAll() {
+        for (GT_MetaTileEntity_NanochipAssemblyModuleBase<?> module : modules) {
+            module.disconnect();
+        }
+    }
+
+    private ArrayList<ItemStackWithSourceBus> getStoredInputsWithBus() {
+        // We need to replicate some behaviour of getStoredInputs() here to avoid duplicating items with stocking
+        // buses, but we cannot call getStoredInputs() directly because the specific hatch the ItemStack is coming
+        // from matters for routing the created circuit components
+
+        ArrayList<ItemStackWithSourceBus> inputs = new ArrayList<>();
+        Map<GT_Utility.ItemId, ItemStackWithSourceBus> inputsFromME = new HashMap<>();
+        for (GT_MetaTileEntity_Hatch_InputBus bus : filterValidMTEs(this.mInputBusses)) {
+            // Ignore crafting input buses
+            if (bus instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
+                continue;
+            }
+
+            // Same as the original implementation of getStoredInputs(), but keep track of the bus we found the input
+            // in.
+            IGregTechTileEntity te = bus.getBaseMetaTileEntity();
+            boolean isMEBus = bus instanceof GT_MetaTileEntity_Hatch_InputBus_ME;
+            for (int i = te.getSizeInventory() - 1; i >= 0; i--) {
+                ItemStack stack = te.getStackInSlot(i);
+                if (stack != null) {
+                    if (isMEBus) {
+                        // Prevent the same item from different ME buses from being recognized
+                        inputsFromME.put(GT_Utility.ItemId.createNoCopy(stack), new ItemStackWithSourceBus(stack, bus));
+                    } else {
+                        inputs.add(new ItemStackWithSourceBus(stack, bus));
+                    }
+                }
+            }
+        }
+        // Now add all values from the ME input map
+        inputs.addAll(inputsFromME.values());
+        return inputs;
+    }
+
+    // Route circuit components to a set of hatches. Returns true if the components were routed successfully and the
+    // stack
+    // should be consumed
+    private boolean routeToHatches(List<GT_MetaTileEntity_Hatch_VacuumConveyor> hatches, byte color,
+        CircuitComponent component, int amount) {
+        // If no hatches were passed, we can't route
+        if (hatches == null) return false;
+        // Find the first hatch that can be used for routing
+        for (GT_MetaTileEntity_Hatch_VacuumConveyor hatch : filterValidMTEs(hatches)) {
+            // Hatch must be an output
+            if (hatch instanceof GT_MetaTileEntity_Hatch_VacuumConveyor_Output outputHatch) {
+                // Ensure that the color matches the expected color, since hatches can be recolored in between rebuilds
+                // of the hatch map
+                if (outputHatch.getBaseMetaTileEntity()
+                    .getColorization() != color) continue;
+                // Now we can route our components to this hatch
+                CircuitComponentPacket packet = new CircuitComponentPacket(component, amount);
+                // Merge with the already existing hatch contents
+                outputHatch.unifyPacket(packet);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void processCircuitInputs() {
+        ArrayList<ItemStackWithSourceBus> inputs = getStoredInputsWithBus();
+        // For each stack in the input, try to find a matching circuit component and if so send it to the correct hatch
+        for (ItemStackWithSourceBus stack : inputs) {
+            CircuitComponent component = ComponentConversionMap.find(stack.stack);
+            // Skip if this was not a valid circuit component
+            if (component == null) continue;
+            // Find destination hatch. Note that we already know that this bus is a valid MTE, see
+            // getStoredInputsWithBus
+            byte busColor = stack.bus.getBaseMetaTileEntity()
+                .getColorization();
+            ArrayList<GT_MetaTileEntity_Hatch_VacuumConveyor> destinationHatches = vacuumConveyors
+                .findColoredHatches(busColor);
+            // Try to route to the set of destination hatches
+            boolean routed = routeToHatches(destinationHatches, busColor, component, stack.stack.stackSize);
+            // If successful, consume the input
+            if (routed) {
+                this.depleteInput(stack.stack);
+            }
+        }
     }
 
     @Override
@@ -261,6 +359,10 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         if (isAllowedToWork()) {
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = 1 * SECONDS;
+
+            // Inside checkProcessing we can safely consume inputs from hatches
+            processCircuitInputs();
+
             return CheckRecipeResultRegistry.SUCCESSFUL;
         }
 
