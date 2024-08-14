@@ -29,6 +29,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -187,8 +188,8 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_NanochipAssemblyModuleBase<?>) {
-            return modules.add((GT_MetaTileEntity_NanochipAssemblyModuleBase<?>) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_NanochipAssemblyModuleBase<?>module) {
+            return modules.add(module);
         }
         return false;
     }
@@ -201,17 +202,21 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_VacuumConveyor) {
-            return vacuumConveyors.add((GT_MetaTileEntity_Hatch_VacuumConveyor) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_VacuumConveyor hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            return vacuumConveyors.add(hatch);
         }
         return false;
     }
 
     public boolean ignoreAndAcceptHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
-        // Note: This is probably not a good idea to accept any meta tile entity, lol
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        return aMetaTileEntity != null;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            return true;
+        }
+        return false;
     }
 
     private void disconnectAll() {
