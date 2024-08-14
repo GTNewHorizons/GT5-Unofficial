@@ -16,6 +16,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -131,4 +132,6 @@ public class AssemblyMatrix extends GT_MetaTileEntity_NanochipAssemblyModuleBase
         }
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48] };
     }
+
+    public static final IRecipeMap recipeTransformer = IRecipeMap.newRecipeMap(builder -> { return null; });
 }
