@@ -40,13 +40,11 @@ import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TierEU;
-import gregtech.api.fluid.GTFluidFactory;
-import gregtech.api.items.BlockLongDistancePipe;
-import gregtech.api.items.GTGenericItem;
-import gregtech.api.items.ItemBreederCell;
-import gregtech.api.items.ItemCoolantCellIC;
-import gregtech.api.items.ItemRadioactiveCellIC;
+import gregtech.api.fluid.GT_FluidFactory;
+import gregtech.api.items.GT_Block_LongDistancePipe;
+import gregtech.api.items.GT_BreederCell_Item;
+import gregtech.api.items.GT_Generic_Item;
+import gregtech.api.items.GT_RadioactiveCellIC_Item;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GTLog;
@@ -171,6 +169,7 @@ public class LoaderGTBlockFluid implements Runnable {
         new MetaGeneratedTool01();
         new ItemFluidDisplay();
         new ItemWirelessHeadphones();
+        new GT_CircuitComponent_FakeItem();
 
         // Tiered recipe materials actually appear to be set in MTEBasicMachineWithRecipe, making these
         // unused

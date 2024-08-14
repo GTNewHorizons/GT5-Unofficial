@@ -134,8 +134,8 @@ public abstract class GT_MetaTileEntity_Hatch_VacuumConveyor extends GT_MetaTile
         if (contents != null) {
             // TODO: Would be neat to get a gui that displays these in item form I suppose (using some fake items or
             // something)
-            Map<CircuitComponent, Long> components = contents.getComponents();
-            for (Map.Entry<CircuitComponent, Long> component : components.entrySet()) {
+            Map<CircuitComponent, Integer> components = contents.getComponents();
+            for (Map.Entry<CircuitComponent, Integer> component : components.entrySet()) {
                 info.add(
                     EnumChatFormatting.YELLOW + component.getKey()
                         .getLocalizedName() + ": " + EnumChatFormatting.WHITE + component.getValue());
