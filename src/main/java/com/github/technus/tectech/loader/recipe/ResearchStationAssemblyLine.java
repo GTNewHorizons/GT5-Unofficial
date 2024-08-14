@@ -18,8 +18,6 @@ import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.KekzTech;
-import static gregtech.api.enums.Mods.KubaTech;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.SGCraft;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
@@ -35,6 +33,8 @@ import static kubatech.api.enums.ItemList.DEFCDraconicSchematic;
 import static kubatech.api.enums.ItemList.DEFCWyvernSchematic;
 import static kubatech.loaders.BlockLoader.defcCasingBlock;
 
+import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -721,7 +721,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 32_000_000,
                 1,
                 new Object[] { ItemList.Casing_Dim_Bridge.get(4),
-                    getModItem(GregTech.ID, "gt.blockmachines", 16L, 12730),
+                    ItemRegistry.megaMachines[0],
                     getItemContainer("Hatch_Energy_UEV").get(4L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUEV, 6),
                     ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -1101,7 +1101,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 8_000_000);
             // DE Schematics Cores Tier 1
             TT_recipeAdder.addResearchableAssemblylineRecipe(
-                new ItemStack(defcCasingBlock,1, 9),
+                new ItemStack(defcCasingBlock, 1, 9),
                 5_000_000,
                 512,
                 1_000_000,
@@ -2402,11 +2402,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier0.get(1),
                     CustomItemList.StabilisationFieldGeneratorTier0.get(1),
 
-                    CustomItemList.Machine_Multi_Computer.get(64),
-                    // Ultimate Time Anomaly.
-                    getModItem(GregTech.ID, "gt.blockmachines", 64, 11107), ItemList.Quantum_Chest_IV.get(64),
+                    CustomItemList.Machine_Multi_Computer.get(64), ItemList.AcceleratorUV.get(1),
+                    ItemList.Quantum_Chest_IV.get(64),
                     // Void miner III.
-                    getModItem(GregTech.ID, "gt.blockmachines", 64, 12739),
+                    GT_Utility.copyAmount(64, ItemRegistry.voidminer[2]),
 
                     ItemList.Field_Generator_UMV.get(16), ItemList.Robot_Arm_UMV.get(16), ItemList.ZPM4.get(4),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
@@ -2785,8 +2784,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         getModItem(GalaxySpace.ID, "dysonswarmparts", (absoluteTier + 1) * 4, 2),
                         // Dyson Swarm Energy Receiver Dish Block
                         getModItem(GalaxySpace.ID, "dysonswarmparts", (absoluteTier + 1) * 4, 1),
-                        // Ultimate Time Anomaly.
-                        getModItem(GregTech.ID, "gt.blockmachines", (absoluteTier + 1) * 4, 11107),
+                        ItemList.AcceleratorUV.get((absoluteTier + 1) * 4),
 
                         ItemList.Energy_Module.get(absoluteTier + 1), GT_OreDictUnificator
                             .get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, (absoluteTier + 1) * 4),
@@ -2898,8 +2896,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         // EOH Reinforced Temporal casings
         {
             TT_recipeAdder.addResearchableAssemblylineRecipe(
-                // Ultimate Time Anomaly.
-                getModItem(GregTech.ID, "gt.blockmachines", 1, 11107),
+                ItemList.AcceleratorUV.get(1),
                 256_000_000, // total comp
                 16_384, // comp/s
                 (int) TierEU.RECIPE_MAX, // eu/t
@@ -2916,7 +2913,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     // UV Solar panel
                     getModItem(SuperSolarPanels.ID, "PhotonicSolarPanel", 1, 0),
                     // Ultimate Time Anomaly.
-                    getModItem(GregTech.ID, "gt.blockmachines", 4, 11107),
+                    ItemList.AcceleratorUV.get(4),
                     // Gravitation Engine.
                     getModItem(GraviSuite.ID, "itemSimpleItem", 64, 3), ItemList.EnergisedTesseract.get(1) },
 
@@ -2940,7 +2937,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     // UV Solar panel
                     getModItem(SuperSolarPanels.ID, "PhotonicSolarPanel", 1, 0),
                     // UHV Capacitor block
-                    new ItemStack(lscLapotronicEnergyUnit,1, 5),
+                    new ItemStack(lscLapotronicEnergyUnit, 1, 5),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 4),
 
                     CustomItemList.Machine_Multi_Transformer.get(16), ItemList.Wireless_Hatch_Energy_UMV.get(4),

@@ -153,10 +153,7 @@ public class RecipeLoader {
                 bitsd,
                 new Object[] { "AZA", "BRB", "AZA", 'B', gregtech.api.enums.ItemList.Casing_CleanStainlessSteel, 'R',
                     GT_ModHandler.getModItem(EnderIO.ID, "blockFarmStation", 1, new ItemStack(Items.diamond_hoe)), 'A',
-                    NewHorizonsCoreMod.isModLoaded()
-                        ? GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 1, 11104) // IV World Accelerator
-                        : gregtech.api.enums.ItemList.Robot_Arm_IV,
-                    'Z', OrePrefixes.circuit.get(Materials.ZPM) });
+                    gregtech.api.enums.ItemList.AcceleratorIV.get(1), 'Z', OrePrefixes.circuit.get(Materials.ZPM) });
 
             // Vanilla should always be loaded
             GT_MetaTileEntity_ExtremeIndustrialGreenhouse.addFertilizerItem(new ItemStack(Items.dye, 1, 15));
