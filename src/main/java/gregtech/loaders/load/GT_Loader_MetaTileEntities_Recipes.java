@@ -6736,7 +6736,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { "CMV", " X ", 'M', ItemList.Hull_UV, 'V', ItemList.Conveyor_Module_UV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.UV) });
         GT_ModHandler.addCraftingRecipe(
-            ItemList.Automation_ChestBuffer_MAX.get(1L),
+            ItemList.Automation_ChestBuffer_UHV.get(1L),
             bits,
             new Object[] { "CMV", " X ", 'M', ItemList.Hull_MAX, 'V', ItemList.Conveyor_Module_UHV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.UHV) });
@@ -6972,7 +6972,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_MAX.get(1L),
             bits,
-            new Object[] { "DMV", 'M', ItemList.Automation_ChestBuffer_MAX, 'V', ItemList.Conveyor_Module_UHV, 'D',
+            new Object[] { "DMV", 'M', ItemList.Automation_ChestBuffer_UHV, 'V', ItemList.Conveyor_Module_UHV, 'D',
                 ItemList.Tool_DataOrb });
 
         GT_ModHandler.addCraftingRecipe(

@@ -917,7 +917,7 @@ public enum ItemList implements IItemContainer {
     Automation_ChestBuffer_LuV,
     Automation_ChestBuffer_ZPM,
     Automation_ChestBuffer_UV,
-    Automation_ChestBuffer_MAX,
+    Automation_ChestBuffer_UHV,
 
     Automation_SuperBuffer_ULV,
     Automation_SuperBuffer_LV,
@@ -2513,7 +2513,6 @@ public enum ItemList implements IItemContainer {
     WiremillUMV,
     PumpLuV,
     PumpZPM,
-    Automation_ChestBuffer_UHV,
     Automation_ChestBuffer_UEV,
     Automation_ChestBuffer_UIV,
     Automation_ChestBuffer_UMV,

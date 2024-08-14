@@ -10,7 +10,10 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_WetTransformer;
+import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_TurboCharger;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTransformerHiAmp;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.GT_Mod;
@@ -1228,6 +1231,54 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "basicmachine.rockbreaker.tier.05",
                 "Cryogenic Magma Solidifier R-8200",
                 5).getStackForm(1L));
+        ItemList.RockBreakerLuV.set(
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_LuV.ID,
+                "rockbreaker.tier.06",
+                "Cryogenic Magma Solidifier R-9200",
+                6).getStackForm(1L));
+
+        ItemList.RockBreakerZPM.set(
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_ZPM.ID,
+                "rockbreaker.tier.07",
+                "Cryogenic Magma Solidifier R-10200",
+                7).getStackForm(1L));
+
+        ItemList.RockBreakerUV.set(
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_UV.ID,
+                "rockbreaker.tier.08",
+                "Cryogenic Magma Solidifier R-11200",
+                8).getStackForm(1L));
+
+        ItemList.RockBreakerUHV.set(
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_UHV.ID,
+                "rockbreaker.tier.09",
+                "Cryogenic Magma Solidifier R-12200",
+                9).getStackForm(1L));
+
+        ItemList.RockBreakerUEV.set(
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_UEV.ID,
+                "rockbreaker.tier.10",
+                "Cryogenic Magma Solidifier R-13200",
+                10).getStackForm(1L));
+
+        ItemList.RockBreakerUIV.set(
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_UIV.ID,
+                "rockbreaker.tier.11",
+                "Cryogenic Magma Solidifier R-14200",
+                11).getStackForm(1L));
+
+        ItemList.RockBreakerUMV.set(
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_UMV.ID,
+                "rockbreaker.tier.12",
+                "Cryogenic Magma Solidifier R-15200",
+                12).getStackForm(1L));
     }
 
     private static void registerIndustrialApiary() {
@@ -1632,12 +1683,33 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "automation.chestbuffer.tier.08",
                 "Ultimate Voltage Chest Buffer",
                 8).getStackForm(1L));
-        ItemList.Automation_ChestBuffer_MAX.set(
+        ItemList.Automation_ChestBuffer_UHV.set(
             new GT_MetaTileEntity_ChestBuffer(
                 CHEST_BUFFER_UHV.ID,
                 "automation.chestbuffer.tier.09",
                 "Highly Ultimate Voltage Chest Buffer",
                 9).getStackForm(1L));
+
+        ItemList.Automation_ChestBuffer_UEV.set(
+            new GT_MetaTileEntity_ChestBuffer(
+                CHEST_BUFFER_UEV.ID,
+                "automation.chestbuffer.tier.10",
+                "Ultra High Voltage Chest Buffer",
+                10).getStackForm(1L));
+
+        ItemList.Automation_ChestBuffer_UIV.set(
+            new GT_MetaTileEntity_ChestBuffer(
+                CHEST_BUFFER_UIV.ID,
+                "automation.chestbuffer.tier.11",
+                "UIV Voltage Chest Buffer",
+                11).getStackForm(1L));
+
+        ItemList.Automation_ChestBuffer_UMV.set(
+            new GT_MetaTileEntity_ChestBuffer(
+                CHEST_BUFFER_UMV.ID,
+                "automation.chestbuffer.tier.12",
+                "UMV Voltage Chest Buffer",
+                12).getStackForm(1L));
     }
 
     private static void registerItemFilter() {
@@ -2343,6 +2415,21 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Input_UHV.set(
             new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UHV.ID, "hatch.input.tier.09", "Input Hatch (UHV)", 9)
                 .getStackForm(1L));
+        ItemList.Hatch_Input_UEV.set(
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UEV.ID, "hatch.input.tier.10", "Input Hatch (UEV)", 10)
+                .getStackForm(1L));
+        ItemList.Hatch_Input_UIV.set(
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UIV.ID, "hatch.input.tier.11", "Input Hatch (UIV)", 11)
+                .getStackForm(1L));
+        ItemList.Hatch_Input_UMV.set(
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UMV.ID, "hatch.input.tier.12", "Input Hatch (UMV)", 12)
+                .getStackForm(1L));
+        ItemList.Hatch_Input_UXV.set(
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UXV.ID, "hatch.input.tier.13", "Input Hatch (UXV)", 13)
+                .getStackForm(1L));
+        ItemList.Hatch_Input_MAX.set(
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_MAX.ID, "hatch.input.tier.14", "Input Hatch (MAX)", 14)
+                .getStackForm(1L));
     }
 
     private static void registerQuadrupleInputHatch() {
@@ -2456,6 +2543,36 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Output_UHV.set(
             new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UHV.ID, "hatch.output.tier.09", "Output Hatch (UHV)", 9)
                 .getStackForm(1L));
+        ItemList.Hatch_Output_UEV.set(
+            new GT_MetaTileEntity_Hatch_Output(
+                OUTPUT_HATCH_UEV.ID,
+                "hatch.output.tier.10",
+                "Output Hatch (UEV)",
+                10).getStackForm(1L));
+        ItemList.Hatch_Output_UIV.set(
+            new GT_MetaTileEntity_Hatch_Output(
+                OUTPUT_HATCH_UIV.ID,
+                "hatch.output.tier.11",
+                "Output Hatch (UIV)",
+                11).getStackForm(1L));
+        ItemList.Hatch_Output_UMV.set(
+            new GT_MetaTileEntity_Hatch_Output(
+                OUTPUT_HATCH_UMV.ID,
+                "hatch.output.tier.12",
+                "Output Hatch (UMV)",
+                12).getStackForm(1L));
+        ItemList.Hatch_Output_UXV.set(
+            new GT_MetaTileEntity_Hatch_Output(
+                OUTPUT_HATCH_UXV.ID,
+                "hatch.output.tier.13",
+                "Output Hatch (UXV)",
+                13).getStackForm(1L));
+        ItemList.Hatch_Output_MAX.set(
+            new GT_MetaTileEntity_Hatch_Output(
+                OUTPUT_HATCH_MAX.ID,
+                "hatch.output.tier.14",
+                "Output Hatch (MAX)",
+                14).getStackForm(1L));
     }
 
     private static void registerQuantumTank() {
@@ -3346,6 +3463,253 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 13,
                 "",
                 4).getStackForm(1L));
+    }
+
+    private void registerWetTransformer() {
+        ItemList.WetTransformer_LV_ULV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_LV_ULV.ID,
+                "wettransformer.tier.00",
+                "Ultra Low Voltage Power Transformer",
+                0,
+                "LV -> ULV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_MV_LV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_MV_LV.ID,
+                "wetransformer.tier.01",
+                "Low Voltage Power Transformer",
+                1,
+                "MV -> LV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_HV_MV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_HV_MV.ID,
+                "wettransformer.tier.02",
+                "Medium Voltage Power Transformer",
+                2,
+                "HV -> MV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_EV_HV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_EV_HV.ID,
+                "wettransformer.tier.03",
+                "High Voltage Power Transformer",
+                3,
+                "EV -> HV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_IV_EV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_IV_EV.ID,
+                "wettransformer.tier.04",
+                "Extreme Power Transformer",
+                4,
+                "IV -> EV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_LuV_IV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_LuV_IV.ID,
+                "wettransformer.tier.05",
+                "Insane Power Transformer",
+                5,
+                "LuV -> IV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_ZPM_LuV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_ZPM_LuV.ID,
+                "wettransformer.tier.06",
+                "Ludicrous Power Transformer",
+                6,
+                "ZPM -> LuV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_UV_ZPM.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_UV_ZPM.ID,
+                "wettransformer.tier.07",
+                "ZPM Voltage Power Transformer",
+                7,
+                "UV -> ZPM (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_UHV_UV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_UHV_UV.ID,
+                "wettransformer.tier.08",
+                "Ultimate Power Transformer",
+                8,
+                "UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_UEV_UHV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_UEV_UHV.ID,
+                "wettransformer.tier.09",
+                "Highly Ultimate Power Transformer",
+                9,
+                "UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_UIV_UEV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_UIV_UEV.ID,
+                "wettransformer.tier.10",
+                "Extremely Ultimate Power Transformer",
+                10,
+                "UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_UMV_UIV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_UMV_UIV.ID,
+                "wettransformer.tier.11",
+                "Insanely Ultimate Power Transformer",
+                11,
+                "UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_UXV_UMV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_UXV_UMV.ID,
+                "wettransformer.tier.12",
+                "Mega Ultimate Power Transformer",
+                12,
+                "UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_MAX_UXV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_MAX_UXV.ID,
+                "wettransformer.tier.13",
+                "Extended Mega Ultimate Power Transformer",
+                13,
+                "MAX -> UXV (Use Soft Mallet to invert)").getStackForm(1L));
+    }
+
+    private void registerHighAmpTransformer() {
+        ItemList.Transformer_HA_UEV_UHV.set(
+            new GregtechMetaTransformerHiAmp(
+                HIGH_AMP_TRANSFORMER_UEV_UHV.ID,
+                "transformer.ha.tier.09",
+                "Highly Ultimate Hi-Amp Transformer",
+                9,
+                "UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
+        ItemList.Transformer_HA_UIV_UEV.set(
+            new GregtechMetaTransformerHiAmp(
+                HIGH_AMP_TRANSFORMER_UIV_UEV.ID,
+                "transformer.ha.tier.10",
+                "Extremely Ultimate Hi-Amp Transformer",
+                10,
+                "UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
+        ItemList.Transformer_HA_UMV_UIV.set(
+            new GregtechMetaTransformerHiAmp(
+                HIGH_AMP_TRANSFORMER_UMV_UIV.ID,
+                "transformer.ha.tier.11",
+                "Insanely Ultimate Hi-Amp Transformer",
+                11,
+                "UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
+        ItemList.Transformer_HA_UXV_UMV.set(
+            new GregtechMetaTransformerHiAmp(
+                HIGH_AMP_TRANSFORMER_UXV_UMV.ID,
+                "transformer.ha.tier.12",
+                "Mega Ultimate Hi-Amp Transformer",
+                12,
+                "UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
+        ItemList.Transformer_HA_MAX_UXV.set(
+            new GregtechMetaTransformerHiAmp(
+                HIGH_AMP_TRANSFORMER_MAX_UXV.ID,
+                "transformer.ha.tier.13",
+                "Extended Mega Ultimate Hi-Amp Transformer",
+                13,
+                "MAX -> UXV (Use Soft Mallet to invert)").getStackForm(1L));
+
+
+    }
+
+    private void registerTurboCharger4By4() {
+        ItemList.Battery_TurboCharger_4by4_ULV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_ULV.ID,
+                "batteryturbocharger.16.tier.00",
+                "Ultra Low Voltage Turbo Charger",
+                0,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_LV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_LV.ID,
+                "batteryturbocharger.16.tier.01",
+                "Low Voltage Turbo Charger",
+                1,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_MV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_MV.ID,
+                "batteryturbocharger.16.tier.02",
+                "Medium Voltage Turbo Charger",
+                2,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_HV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_HV.ID,
+                "batteryturbocharger.16.tier.03",
+                "High Voltage Turbo Charger",
+                3,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_EV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_EV.ID,
+                "batteryturbocharger.16.tier.04",
+                "Extreme Voltage Turbo Charger",
+                4,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_IV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_IV.ID,
+                "batteryturbocharger.16.tier.05",
+                "Insane Voltage Turbo Charger",
+                5,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_LuV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_LuV.ID,
+                "batteryturbocharger.16.tier.06",
+                "Ludicrous Voltage Turbo Charger",
+                6,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_ZPM.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_ZPM.ID,
+                "batteryturbocharger.16.tier.07",
+                "ZPM Voltage Turbo Charger",
+                7,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_UV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_UV.ID,
+                "batteryturbocharger.16.tier.08",
+                "Ultimate Voltage Turbo Charger",
+                8,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_UHV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_UHV.ID,
+                "batteryturbocharger.16.tier.09",
+                "Highly Ultimate Voltage Turbo Charger",
+                9,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
     }
 
     private static void registerWirelessEnergyHatch() {
@@ -4553,6 +4917,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         registerAlloySmelter();
         registerMatterAmplifier();
         registerAssemblingMachine();
+        registerWetTransformer();
+        registerHighAmpTransformer();
 
         ItemList.AdvDebugStructureWriter.set(
             new GT_MetaTileEntity_AdvDebugStructureWriter(
