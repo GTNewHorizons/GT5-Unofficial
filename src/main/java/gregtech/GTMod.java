@@ -567,6 +567,10 @@ public class GTMod {
 
         achievements = new GTAchievements();
 
+        // Load circuit component map
+        // TODO: maybe find a better place for this
+        ComponentConversionMap.load();
+
         GTRecipe.GTppRecipeHelper = true;
         GTLog.out.println("GTMod: Loading finished, de-allocating temporary Init Variables.");
         GregTechAPI.sBeforeGTPreload = null;
