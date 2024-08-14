@@ -1335,4 +1335,15 @@ public final class RecipeMaps {
             builder -> builder.setDisplayStack(ItemList.Machine_Multi_ExoFoundry.get(1))
                 .setHeight(100))
         .build();
+
+    public static final RecipeMap<RecipeMapBackend> nanochipAssemblyMatrixRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.assemblymatrix")
+        .maxIO(9, 1, 4, 0)
+        .minInputs(0, 0)
+        .build();
+
+    static {
+        // Add transformer from circuit assembler recipes to nanochip assembly matrix recipe
+        RecipeMaps.circuitAssemblerRecipes.addDownstream(AssemblyMatrix.recipeTransformer);
+    }
 }
