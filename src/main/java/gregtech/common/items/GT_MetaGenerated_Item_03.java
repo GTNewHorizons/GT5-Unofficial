@@ -1343,7 +1343,8 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
             .set(addItem(CrudeLapotronCrystal.ID, EnumChatFormatting.WHITE + "Crude Lapotron Crystal", ""));
         ItemList.LapotronShard.set(addItem(LapotronShard.ID, EnumChatFormatting.WHITE + "Lapotron Shard", ""));
 
-        ItemList.PerfectRuby.set(addItem(ID_MetaItem_03.PerfectRuby.ID, EnumChatFormatting.RED + "Perfect Ruby Crystal", ""));
+        ItemList.PerfectRuby
+            .set(addItem(ID_MetaItem_03.PerfectRuby.ID, EnumChatFormatting.RED + "Perfect Ruby Crystal", ""));
 
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();

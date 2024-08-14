@@ -236,8 +236,7 @@ public enum ID_MetaItem_03 {
     StableLapotronCrystal(761),
     CrudeLapotronCrystal(762),
     LapotronShard(763),
-
-    PerfectRuby(763);
+    PerfectRuby(764);
 
     public final int ID;
 

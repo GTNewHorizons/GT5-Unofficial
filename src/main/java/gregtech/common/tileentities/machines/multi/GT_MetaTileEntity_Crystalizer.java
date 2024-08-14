@@ -150,9 +150,6 @@ public class GT_MetaTileEntity_Crystalizer
 
     private double baseSpeedModifier = 1.0f;
     private double baseEUtModifier = 1.0f;
-
-    // HV 16 EV 32 IV 48 LuV 64 ZPM 72 UV 96 UHV 256
-
     private static List<Pair<Block, Integer>> containment_field_blocks;
 
     private int activeTicks;
@@ -161,7 +158,7 @@ public class GT_MetaTileEntity_Crystalizer
 
     private ICleanroom cleanroom;
 
-    boolean enableChance;
+    boolean enableChance = false;
 
     // spotless:off
     static final String[][] STRUCTURE = new String[][]{{
@@ -530,7 +527,6 @@ public class GT_MetaTileEntity_Crystalizer
             .duration(5 * SECONDS)
             .eut(TierEU.UEV)
             .addTo(RecipeMaps.mixerRecipes);
-
         // Perfect recipe 1
         ItemStack lap = ItemList.IC2_LapotronCrystal.get(16);
         lap.setItemDamage(26);
@@ -557,7 +553,10 @@ public class GT_MetaTileEntity_Crystalizer
                 MaterialsLapotronLine.LapotronInfinityMixture.getDust(256),
                 GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.UEV), 4),
                 ItemList.LapotronShard.get(1))
-            .fluidInputs(Materials.Grade8PurifiedWater.getFluid(16000), ALLOY.QUANTUM.getFluidStack(1440))
+            .fluidInputs(
+                Materials.Grade8PurifiedWater.getFluid(16000),
+                Materials.VibrantAlloy.getMolten(4608),
+                ALLOY.QUANTUM.getFluidStack(1440))
             .itemOutputs(ItemList.PerfectLapotronCrystal.get(4))
             .outputChances(5140)
             .eut(TierEU.UV * 2)
@@ -571,14 +570,16 @@ public class GT_MetaTileEntity_Crystalizer
                 return r;
             });
 
-        //Perfect Ruby
+        // Perfect Ruby
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 Materials.Ruby.getDust(128),
                 Materials.Redstone.getDust(64),
-                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.LuV), 4),
-                ItemList.LapotronShard.get(1))
-            .fluidInputs(Materials.Grade3PurifiedWater.getFluid(16000), ALLOY.ARCANITE.getFluidStack(720), Materials.EnergeticAlloy.getMolten(9216))
+                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.LuV), 4))
+            .fluidInputs(
+                Materials.Grade3PurifiedWater.getFluid(16000),
+                ALLOY.ARCANITE.getFluidStack(720),
+                Materials.EnergeticAlloy.getMolten(9216))
             .itemOutputs(ItemList.PerfectRuby.get(1))
             .eut(TierEU.LuV)
             .duration(45 * SECONDS)
@@ -596,7 +597,10 @@ public class GT_MetaTileEntity_Crystalizer
                 ItemList.LapotronShard.get(1),
                 MaterialsLapotronLine.LapotronNaquadahMixture.getDust(288),
                 GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.LuV), 8))
-            .fluidInputs(Materials.Grade5PurifiedWater.getFluid(16000), ALLOY.ARCANITE.getFluidStack(576))
+            .fluidInputs(
+                Materials.VibrantAlloy.getMolten(2304),
+                Materials.Grade5PurifiedWater.getFluid(16000),
+                ALLOY.ARCANITE.getFluidStack(576))
             .itemOutputs(ItemList.CrudeLapotronCrystal.get(2))
             .outputChances(5140)
             .eut(TierEU.EV * 2)
@@ -615,7 +619,10 @@ public class GT_MetaTileEntity_Crystalizer
                 ItemList.LapotronShard.get(1),
                 MaterialsLapotronLine.LapotronNaquadriaMixture.getDust(288),
                 GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.ZPM), 8))
-            .fluidInputs(Materials.Grade6PurifiedWater.getFluid(16000), ALLOY.HELICOPTER.getFluidStack(288))
+            .fluidInputs(
+                        Materials.VibrantAlloy.getMolten(2304),
+                        Materials.Grade6PurifiedWater.getFluid(16000),
+                        ALLOY.HELICOPTER.getFluidStack(288))
             .itemOutputs(ItemList.StableLapotronCrystal.get(2))
             .outputChances(5140)
             .eut(14314)
@@ -634,7 +641,10 @@ public class GT_MetaTileEntity_Crystalizer
                 ItemList.LapotronShard.get(1),
                 MaterialsLapotronLine.LapotronAmerciumMixture.getDust(352),
                 GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.UHV), 4))
-            .fluidInputs(Materials.Grade7PurifiedWater.getFluid(16000), ALLOY.OCTIRON.getFluidStack(1440))
+            .fluidInputs(
+                Materials.VibrantAlloy.getMolten(4608),
+                Materials.Grade7PurifiedWater.getFluid(16000),
+                ALLOY.OCTIRON.getFluidStack(1440))
             .itemOutputs(ItemList.GoodLapotronCrystal.get(3))
             .outputChances(5140)
             .eut(TierEU.ZPM * 2)
@@ -1032,11 +1042,11 @@ public class GT_MetaTileEntity_Crystalizer
         @NotNull
         @Override
         protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
-            double speedModifier = baseSpeedModifier + 0.075 * fleldGeneratorTier;
+            double speedModifier = baseSpeedModifier;
             int minForceLevel = -recipe.mSpecialValue / 1000;
             if (!enableChance) {
-                speedModifier = (0.5 + speedModifier * 10000.0 / recipe.getOutputChance(0))
-                    * (1 - 0.05 * (fleldGeneratorTier - minForceLevel));
+                speedModifier = (speedModifier * 10000.0 / recipe.getOutputChance(0))
+                    * (2 - 0.2 * (fleldGeneratorTier - minForceLevel));
             } else {
                 speedModifier = 1 - 0.05 * (fleldGeneratorTier - minForceLevel);
             }
