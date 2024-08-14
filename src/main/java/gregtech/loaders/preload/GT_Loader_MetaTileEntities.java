@@ -1,502 +1,11 @@
 package gregtech.loaders.preload;
 
-import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_DATA_ACCESS_HATCH;
-import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_DEBUG_STRUCTURE_WRITTER;
-import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_SEISMIC_PROSPECTOR_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_SEISMIC_PROSPECTOR_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_SEISMIC_PROSPECTOR_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_SEISMIC_PROSPECTOR_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.ASSEMBLING_LINE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.AUTOMATABLE_DATA_ACCESS_HATCH;
-import static gregtech.api.enums.MetaTileEntityIDs.AUTO_MAINTENANCE_HATCH;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.BRICKED_BLAST_FURNACE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.CHARCOAL_PILE_IGNITER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.CLEANROOM_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.COMBUSTION_ENGINE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.COMBUSTION_GENERATOR_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.COMBUSTION_GENERATOR_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.COMBUSTION_GENERATOR_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.CONCRETE_BACKFILLER_II_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.CONCRETE_BACKFILLER_I_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.CRAFTING_INPUT_ME;
-import static gregtech.api.enums.MetaTileEntityIDs.CRAFTING_INPUT_ME_BUS;
-import static gregtech.api.enums.MetaTileEntityIDs.CRAFTING_INPUT_SLAVE;
-import static gregtech.api.enums.MetaTileEntityIDs.DATA_ACCESS_HATCH;
-import static gregtech.api.enums.MetaTileEntityIDs.DISTILLATION_TOWER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.DTPF_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.DroneDownLink;
-import static gregtech.api.enums.MetaTileEntityIDs.Drone_Centre;
-import static gregtech.api.enums.MetaTileEntityIDs.EBF_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.EXTREME_COMBUSTION_ENGINE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.FUSION_CONTROLLER_MKI;
-import static gregtech.api.enums.MetaTileEntityIDs.FUSION_CONTROLLER_MKII;
-import static gregtech.api.enums.MetaTileEntityIDs.FUSION_CONTROLLER_MKIII;
-import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.HATCH_DEGASIFIER_CONTROL;
-import static gregtech.api.enums.MetaTileEntityIDs.HATCH_LENS_HOUSING;
-import static gregtech.api.enums.MetaTileEntityIDs.HATCH_LENS_INDICATOR;
-import static gregtech.api.enums.MetaTileEntityIDs.HATCH_PH_SENSOR;
-import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_COAL_BOILER;
-import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_LAVA_BOILER;
-import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_SOLAR_BOILER;
-import static gregtech.api.enums.MetaTileEntityIDs.HP_STEAM_ALLOY_SMELTER;
-import static gregtech.api.enums.MetaTileEntityIDs.HP_STEAM_COMPRESSOR;
-import static gregtech.api.enums.MetaTileEntityIDs.HP_STEAM_EXTRACTOR;
-import static gregtech.api.enums.MetaTileEntityIDs.HP_STEAM_FORGE_HAMMER;
-import static gregtech.api.enums.MetaTileEntityIDs.HP_STEAM_FURNACE;
-import static gregtech.api.enums.MetaTileEntityIDs.HP_STEAM_MACERATOR;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_BRICKED_BRONZE;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_BRONZE;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_STEEL;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_WROUGHT_IRON;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.IMPLOSION_COMPRESSOR_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_APIARY;
-import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_LASER_ENGRAVER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_ME;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_ME_ADVANCED;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_ME;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_ME_ADVANCED;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.INTEGRATED_ORE_FACTORY_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_ADVANCED_GAS_TURBINE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_BRONZE_BOILER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_GAS_TURBINE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_HEAT_EXCHANGER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_HP_STEAM_TURBINE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_PLASMA_TURBINE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_STEAM_TURBINE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_STEEL_BOILER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_TITANIUM_BOILER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_TUNGSTENSTEEL_BOILER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LCR_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LIGHTNING_ROD_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.LIGHTNING_ROD_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.LIGHTNING_ROD_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LONG_DISTANCE_PIPELINE_FLUID;
-import static gregtech.api.enums.MetaTileEntityIDs.LONG_DISTANCE_PIPELINE_ITEM;
-import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_ABSORBER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_ABSORBER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_ABSORBER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_ABSORBER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_CONVERTER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_CONVERTER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_CONVERTER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.MAG_HATCH;
-import static gregtech.api.enums.MetaTileEntityIDs.MAINTENANCE_HATCH;
-import static gregtech.api.enums.MetaTileEntityIDs.MASS_FABRICATOR_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.MASS_FABRICATOR_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.MASS_FABRICATOR_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.MASS_FABRICATOR_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.MASS_FABRICATOR_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.MINER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.MINER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.MINER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.MONSTER_REPELLATOR_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.MONSTER_REPELLATOR_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.MONSTER_REPELLATOR_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.MONSTER_REPELLATOR_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.MONSTER_REPELLATOR_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.MONSTER_REPELLATOR_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.MONSTER_REPELLATOR_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.MONSTER_REPELLATOR_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.MULTIBLOCK_PUMP_INFINITE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.MULTIBLOCK_PUMP_MKI_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.MULTILOCK_PUMP_MKIII_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.MULTILOCK_PUMP_MKII_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.MULTILOCK_PUMP_MKIV_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.MULTI_CANNER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.MULTI_LATHE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.MULTI_SMELTER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.NANO_FORGE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.OIL_CRACKER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.ORE_DRILL_MKIII_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.ORE_DRILL_MKII_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.ORE_DRILL_MKIV_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.ORE_DRILL_MKI_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_ME;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_ME;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.PCB_FACTORY_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.PROCESSING_ARRAY_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.PUMP_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.PUMP_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.PUMP_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.PUMP_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.PUMP_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_PLANT_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_CLARIFIER;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_DEGASIFIER;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_FLOCCULATOR;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_OZONATION;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_PARTICLE_EXTRACTOR;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_PH_ADJUSTMENT;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_PLASMA_HEATER;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_UV_TREATMENT;
-import static gregtech.api.enums.MetaTileEntityIDs.PYROLYSE_OVEN_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_CHEST_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_CHEST_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_CHEST_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_CHEST_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_CHEST_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_TANK_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_TANK_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_TANK_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_TANK_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_TANK_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.REPLICATOR_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.REPLICATOR_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.REPLICATOR_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.REPLICATOR_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.REPLICATOR_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.ROCK_BREAKER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.ROCK_BREAKER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.ROCK_BREAKER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.ROCK_BREAKER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.ROCK_BREAKER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.SCANNER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.SCANNER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.SCANNER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.SCANNER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.SCANNER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.SIMPLE_SOLAR_BOILER;
-import static gregtech.api.enums.MetaTileEntityIDs.SMALL_COAL_BOILER;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_ALLOY_SMELTER;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_COMPRESSOR;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_EXTRACTOR;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_FORGE_HAMMER;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_FURNACE;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_MACERATOR;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_TURBINE_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_TURBINE_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_TURBINE_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_CHEST_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_CHEST_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_CHEST_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_CHEST_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_CHEST_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_TANK_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_TANK_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_TANK_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_TANK_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_TANK_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.TELEPORTER;
-import static gregtech.api.enums.MetaTileEntityIDs.TRANSCENDENT_PLASMA_MIXER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.VACUUM_FREEZER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.WORLD_ACCELERATOR_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.WORLD_ACCELERATOR_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.WORLD_ACCELERATOR_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.WORLD_ACCELERATOR_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.WORLD_ACCELERATOR_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.WORLD_ACCELERATOR_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.WORLD_ACCELERATOR_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.WORLD_ACCELERATOR_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.WORMHOLE_GENERATOR_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_EV_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_HV_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_IV_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_LV_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_LuV_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_MV_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_UHV_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_UV_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
+import static gregtech.api.recipe.RecipeMaps.amplifierRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
@@ -1206,7 +715,233 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     }
 
-    private static void registerAlloySmelters(){
+    private static void registerAssemblingMachine(){
+        ItemList.AssemblingMachineLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLING_MACHINE_LuV.ID,
+                "basicmachine.assembler.tier.06",
+                "Elite Assembling Machine",
+                6,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.AssemblingMachineZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLING_MACHINE_ZPM.ID,
+                "basicmachine.assembler.tier.07",
+                "Elite Assembling Machine II",
+                7,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.AssemblingMachineUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLING_MACHINE_UV.ID,
+                "basicmachine.assembler.tier.08",
+                "Ultimate Assembly Constructor",
+                8,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.AssemblingMachineUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLING_MACHINE_UHV.ID,
+                "basicmachine.assembler.tier.09",
+                "Epic Assembly Constructor",
+                9,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.AssemblingMachineUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLING_MACHINE_UEV.ID,
+                "basicmachine.assembler.tier.10",
+                "Epic Assembly Constructor II",
+                10,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.AssemblingMachineUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLING_MACHINE_UIV.ID,
+                "basicmachine.assembler.tier.11",
+                "Epic Assembly Constructor III",
+                11,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.AssemblingMachineUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLING_MACHINE_UMV.ID,
+                "basicmachine.assembler.tier.12",
+                "Epic Assembly Constructor IV",
+                12,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+    }
+    private static void registerMatterAmplifier(){
+        ItemList.AmplifabricatorLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_LuV.ID,
+                "basicmachine.amplifab.tier.06",
+                "Elite Amplifabricator",
+                6,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+
+        ItemList.AmplifabricatorZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_ZPM.ID,
+                "basicmachine.amplifab.tier.07",
+                "Elite Amplifabricator II",
+                7,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+
+        ItemList.AmplifabricatorUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_UV.ID,
+                "basicmachine.amplifab.tier.08",
+                "Ultimate Amplicreator",
+                8,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+
+        ItemList.AmplifabricatorUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_UHV.ID,
+                "basicmachine.amplifab.tier.09",
+                "Epic Amplicreator",
+                9,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+
+        ItemList.AmplifabricatorUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_UEV.ID,
+                "basicmachine.amplifab.tier.10",
+                "Epic Amplicreator II",
+                10,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+
+        ItemList.AmplifabricatorUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_UIV.ID,
+                "basicmachine.amplifab.tier.11",
+                "Epic Amplicreator III",
+                11,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+
+        ItemList.AmplifabricatorUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_UMV.ID,
+                "basicmachine.amplifab.tier.12",
+                "Epic Amplicreator IV",
+                12,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+    }
+    private static void registerAlloySmelter(){
         ItemList.AlloySmelterLuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 ALLOY_SMELTER_LuV.ID,
@@ -1394,6 +1129,42 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Machine_IV_Scanner.set(
             new GT_MetaTileEntity_Scanner(SCANNER_IV.ID, "basicmachine.scanner.tier.05", "Advanced Scanner IV", 5)
                 .getStackForm(1L));
+        ItemList.ScannerLuV.set(
+            new GT_MetaTileEntity_Scanner(SCANNER_LuV.ID, "basicmachine.scanner.tier.06", "Elite Scanner", 6)
+                .getStackForm(1L));
+        ItemList.ScannerZPM.set(
+            new GT_MetaTileEntity_Scanner(SCANNER_ZPM.ID, "basicmachine.scanner.tier.07", "Elite Scanner II", 7)
+                .getStackForm(1L));
+        ItemList.ScannerUV.set(
+            new GT_MetaTileEntity_Scanner(
+                SCANNER_UV.ID,
+                "basicmachine.scanner.tier.08",
+                "Ultimate Electron Microscope",
+                8).getStackForm(1L));
+        ItemList.ScannerUHV.set(
+            new GT_MetaTileEntity_Scanner(
+                SCANNER_UHV.ID,
+                "basicmachine.scanner.tier.09",
+                "Epic Electron Microscope",
+                9).getStackForm(1L));
+        ItemList.ScannerUEV.set(
+            new GT_MetaTileEntity_Scanner(
+                SCANNER_UEV.ID,
+                "basicmachine.scanner.tier.10",
+                "Epic Electron Microscope II",
+                10).getStackForm(1L));
+        ItemList.ScannerUIV.set(
+            new GT_MetaTileEntity_Scanner(
+                SCANNER_UIV.ID,
+                "basicmachine.scanner.tier.11",
+                "Epic Electron Microscope III",
+                11).getStackForm(1L));
+        ItemList.ScannerUMV.set(
+            new GT_MetaTileEntity_Scanner(
+                SCANNER_UMV.ID,
+                "basicmachine.scanner.tier.12",
+                "Epic Electron Microscope IV",
+                12).getStackForm(1L));
     }
 
     private static void registerPackager() {
@@ -1549,6 +1320,46 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Machine_IV_Brewery.set(
             new GT_MetaTileEntity_PotionBrewer(BREWERY_IV.ID, "basicmachine.brewery.tier.05", "Advanced Brewery IV", 5)
                 .getStackForm(1L));
+
+        ItemList.BreweryLuV.set(
+            new GT_MetaTileEntity_PotionBrewer(BREWERY_LuV.ID, "basicmachine.brewery.tier.06", "Elite Brewery", 6)
+                .getStackForm(1L));
+        ItemList.BreweryZPM.set(
+            new GT_MetaTileEntity_PotionBrewer(
+                BREWERY_ZPM.ID,
+                "basicmachine.brewery.tier.07",
+                "Elite Brewery II",
+                7).getStackForm(1L));
+        ItemList.BreweryUV.set(
+            new GT_MetaTileEntity_PotionBrewer(
+                BREWERY_UV.ID,
+                "basicmachine.brewery.tier.08",
+                "Ultimate Brew Rusher",
+                8).getStackForm(1L));
+        ItemList.BreweryUHV.set(
+            new GT_MetaTileEntity_PotionBrewer(
+                BREWERY_UHV.ID,
+                "basicmachine.brewery.tier.09",
+                "Epic Brew Rusher",
+                9).getStackForm(1L));
+        ItemList.BreweryUEV.set(
+            new GT_MetaTileEntity_PotionBrewer(
+                BREWERY_UEV.ID,
+                "basicmachine.brewery.tier.10",
+                "Epic Brew Rusher II",
+                10).getStackForm(1L));
+        ItemList.BreweryUIV.set(
+            new GT_MetaTileEntity_PotionBrewer(
+                BREWERY_UIV.ID,
+                "basicmachine.brewery.tier.11",
+                "Epic Brew Rusher III",
+                11).getStackForm(1L));
+        ItemList.BreweryUMV.set(
+            new GT_MetaTileEntity_PotionBrewer(
+                BREWERY_UMV.ID,
+                "basicmachine.brewery.tier.12",
+                "Epic Brew Rusher IV",
+                12).getStackForm(1L));
     }
 
     private static void registerMiner() {
@@ -1574,6 +1385,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 .getStackForm(1L));
         ItemList.Pump_IV.set(
             new GT_MetaTileEntity_Pump(PUMP_IV.ID, "basicmachine.pump.tier.05", "Advanced Pump IV", 5)
+                .getStackForm(1L));
+        ItemList.PumpLuV.set(
+            new GT_MetaTileEntity_Pump(PUMP_LuV.ID, "basicmachine.pump.tier.06", "Lake Dislocator", 6)
+                .getStackForm(1L));
+        ItemList.PumpZPM.set(
+            new GT_MetaTileEntity_Pump(PUMP_ZPM.ID, "basicmachine.pump.tier.07", "Ocean Transposer", 7)
                 .getStackForm(1L));
     }
 
@@ -2358,6 +2175,45 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Ultimate Transformer",
                 8,
                 "UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
+        ItemList.Transformer_UEV_UHV.set(
+            new GT_MetaTileEntity_Transformer(
+                TRANSFORMER_UEV_UHV.ID,
+                "transformer.tier.09",
+                "Highly Ultimate Transformer",
+                9,
+                "UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.Transformer_UIV_UEV.set(
+            new GT_MetaTileEntity_Transformer(
+                TRANSFORMER_UIV_UEV.ID,
+                "transformer.tier.10",
+                "Extremely Ultimate Transformer",
+                10,
+                "UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.Transformer_UMV_UIV.set(
+            new GT_MetaTileEntity_Transformer(
+                TRANSFORMER_UMV_UIV.ID,
+                "transformer.tier.11",
+                "Insanely Ultimate Transformer",
+                11,
+                "UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.Transformer_UXV_UMV.set(
+            new GT_MetaTileEntity_Transformer(
+                TRANSFORMER_UXV_UMV.ID,
+                "transformer.tier.12",
+                "Mega Ultimate Transformer",
+                12,
+                "UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.Transformer_MAX_UXV.set(
+            new GT_MetaTileEntity_Transformer(
+                TRANSFORMER_MAX_UXV.ID,
+                "transformer.tier.13",
+                "Extended Mega Ultimate Transformer",
+                13,
+                "MAX -> UXV (Use Soft Mallet to invert)").getStackForm(1L));
     }
 
     private static void registerDynamoHatch() {
@@ -4449,7 +4305,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         registerPlasmaGenerators();
         registerMultiblockControllers();
         registerWorldAccelerator();
-        registerAlloySmelters();
+        registerAlloySmelter();
+        registerMatterAmplifier();
+        registerAssemblingMachine();
 
         ItemList.AdvDebugStructureWriter.set(
             new GT_MetaTileEntity_AdvDebugStructureWriter(
