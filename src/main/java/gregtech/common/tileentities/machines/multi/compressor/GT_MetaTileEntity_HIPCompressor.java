@@ -17,13 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
-import com.github.bartimaeusnek.bartworks.util.MathUtils;
-import gregtech.api.interfaces.IHatchElement;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.util.IGT_HatchAdder;
-import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_pHSensor;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,9 +26,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
+import com.github.bartimaeusnek.bartworks.util.MathUtils;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -43,18 +35,20 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.IGT_HatchAdder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.GT_Block_Casings2;
 import gregtech.common.blocks.GT_Block_Casings8;
@@ -86,7 +80,8 @@ public class GT_MetaTileEntity_HIPCompressor extends
         .addElement('A', Glasses.chainAllGlasses())
         .addElement(
             'B',
-            buildHatchAdder(GT_MetaTileEntity_HIPCompressor.class).atLeast(Maintenance, Energy, SpecialHatchElement.HeatSensor)
+            buildHatchAdder(GT_MetaTileEntity_HIPCompressor.class)
+                .atLeast(Maintenance, Energy, SpecialHatchElement.HeatSensor)
                 .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
                 .dot(1)
                 .buildAndChain(
@@ -109,7 +104,6 @@ public class GT_MetaTileEntity_HIPCompressor extends
                         GT_MetaTileEntity_HIPCompressor::onCasingAdded,
                         ofBlock(GregTech_API.sBlockCasings8, 5))))
         .build();
-
 
     private final ArrayList<GT_MetaTileEntity_HeatSensor> sensorHatches = new ArrayList<>();
 
@@ -233,7 +227,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
             .addInfo("Read the current heat using Heat Sensor Hatches")
             .addInfo("More advanced coils allow better heat control - the unit will take longer to overheat")
             .addInfo("Unit heats by 5% x 0.90 ^ (Coil Tier - 1) every second while running")
-            .addInfo("Unit cools by an 2% every second while not running")
+            .addInfo("Unit cools by 2% every second while not running")
             .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
             .addSeparator()
             .beginStructureBlock(7, 5, 7, true)
@@ -348,23 +342,23 @@ public class GT_MetaTileEntity_HIPCompressor extends
 
         if (aTick % 20 == 0) {
 
-            //Default to cooling by 2%
+            // Default to cooling by 2%
             float heatMod = -2;
 
             // If the machine is running, heat by 5% x 0.90 ^ (Coil Tier)
-            //Cupronickel is 0, so base will be 5% increase
+            // Cupronickel is 0, so base will be 5% increase
             if (this.maxProgresstime() != 0) {
                 heatMod = (float) (5 * Math.pow(0.9, coilTier));
             }
 
-            heat = MathUtils.clamp(heat + heatMod,0 ,100);
+            heat = MathUtils.clamp(heat + heatMod, 0, 100);
 
             if ((cooling && heat <= 0) || (!cooling && heat >= 100)) {
                 cooling = !cooling;
             }
         }
 
-        //Update all the sensors
+        // Update all the sensors
         for (GT_MetaTileEntity_HeatSensor hatch : sensorHatches) {
             hatch.updateRedstoneOutput(heat);
         }
@@ -436,12 +430,10 @@ public class GT_MetaTileEntity_HIPCompressor extends
 
     private enum SpecialHatchElement implements IHatchElement<GT_MetaTileEntity_HIPCompressor> {
 
-        HeatSensor(GT_MetaTileEntity_HIPCompressor::addSensorHatchToMachineList,
-            GT_MetaTileEntity_HeatSensor.class) {
+        HeatSensor(GT_MetaTileEntity_HIPCompressor::addSensorHatchToMachineList, GT_MetaTileEntity_HeatSensor.class) {
 
             @Override
-            public long count(
-                GT_MetaTileEntity_HIPCompressor gtMetaTileEntityHIPCompressor) {
+            public long count(GT_MetaTileEntity_HIPCompressor gtMetaTileEntityHIPCompressor) {
                 return gtMetaTileEntityHIPCompressor.sensorHatches.size();
             }
         };
@@ -451,7 +443,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
 
         @SafeVarargs
         SpecialHatchElement(IGT_HatchAdder<GT_MetaTileEntity_HIPCompressor> adder,
-                            Class<? extends IMetaTileEntity>... mteClasses) {
+            Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }

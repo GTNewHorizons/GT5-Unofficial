@@ -4267,11 +4267,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Automatable Data Access Hatch",
                 8).getStackForm(1L));
         ItemList.Hatch_HeatSensor.set(
-            new GT_MetaTileEntity_HeatSensor(
-                HEAT_DETECTOR_HATCH.ID,
-                "hatch.heatsensor",
-                "Heat Sensor Hatch",
-                7).getStackForm(1));
+            new GT_MetaTileEntity_HeatSensor(HEAT_DETECTOR_HATCH.ID, "hatch.heatsensor", "Heat Sensor Hatch", 7)
+                .getStackForm(1));
         ItemList.Hatch_pHSensor.set(
             new GT_MetaTileEntity_pHSensor(HATCH_PH_SENSOR.ID, "hatch.phsensor", "pH Sensor Hatch", 7).getStackForm(1));
         ItemList.Hatch_LensHousing.set(

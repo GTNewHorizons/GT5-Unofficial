@@ -38,8 +38,7 @@ public class GT_MetaTileEntity_HeatSensor extends GT_MetaTileEntity_Hatch {
         super(aID, aName, aNameRegional, aTier, 0, "Reads heat from HIP Unit.");
     }
 
-    public GT_MetaTileEntity_HeatSensor(String aName, int aTier, String[] aDescription,
-                                        ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_HeatSensor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -99,7 +98,8 @@ public class GT_MetaTileEntity_HeatSensor extends GT_MetaTileEntity_Hatch {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Reads heat of Hot Isostatic Pressurization Unit.", "Right click to open the GUI and change settings." };
+        return new String[] { "Reads heat of Hot Isostatic Pressurization Unit.",
+            "Right click to open the GUI and change settings." };
     }
 
     @Override
