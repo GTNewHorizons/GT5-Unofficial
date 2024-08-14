@@ -6,11 +6,13 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.amplifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.circuitAssemblerRecipes;
 
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_WetTransformer;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_TurboCharger;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTransformerHiAmp;
@@ -3465,6 +3467,103 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 4).getStackForm(1L));
     }
 
+    private void registerCircuitAssembler() {
+        ItemList.CircuitAssemblerUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_UHV.ID,
+                "basicmachine.circuitassembler.tier.09",
+                "Ultimate Circuit Assembling Machine",
+                9,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.CircuitAssemblerUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_UEV.ID,
+                "basicmachine.circuitassembler.tier.10",
+                "Ultimate Circuit Assembling Machine II",
+                10,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.CircuitAssemblerUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_UIV.ID,
+                "basicmachine.circuitassembler.tier.11",
+                "Ultimate Circuit Assembling Machine III",
+                11,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.CircuitAssemblerUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_UMV.ID,
+                "basicmachine.circuitassembler.tier.12",
+                "Ultimate Circuit Assembling Machine IV",
+                12,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.CircuitAssemblerUXV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_UXV.ID,
+                "basicmachine.circuitassembler.tier.13",
+                "Ultimate Circuit Assembling Machine V",
+                13,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.CircuitAssemblerMAX.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_MAX.ID,
+                "basicmachine.circuitassembler.tier.14",
+                "MAX Circuit Assembling Machine",
+                14,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+    }
     private void registerWetTransformer() {
         ItemList.WetTransformer_LV_ULV.set(
             new GT_MetaTileEntity_WetTransformer(
