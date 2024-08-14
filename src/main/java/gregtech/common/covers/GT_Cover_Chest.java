@@ -82,13 +82,6 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
     }
 
     @Override
-    protected void onBaseTEDestroyedImpl(ForgeDirection side, int aCoverID, ChestInventory aCoverVariable,
-        ICoverable aTileEntity) {
-        if (aTileEntity.getWorld().isRemote) return;
-        aCoverVariable.dropAll(aTileEntity, ForgeDirection.UNKNOWN);
-    }
-
-    @Override
     protected int getTickRateImpl(ForgeDirection side, int aCoverID, ChestInventory aCoverVariable,
         ICoverable aTileEntity) {
         return aCoverVariable.firstTick ? 1 : 0;
@@ -168,7 +161,7 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
 
             builder.setPos(
                 (p, t) -> Alignment.Center
-                    .getAlignedPos(new Size(t.getPos().x, p.height), new Size(getGUIWidth(), getGUIHeight())));
+                    .getAlignedPos(new Size(t.getPos().x == 0 ? p.width : t.getPos().x, p.height), new Size(getGUIWidth(), getGUIHeight())));
         }
     }
 
