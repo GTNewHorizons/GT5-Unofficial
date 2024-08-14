@@ -522,6 +522,16 @@ public class GTPostLoad {
         }
     }
 
+    public static void makeWaterFilter() {
+        RecipeMaps.waterOnly.add(
+            GT_RecipeBuilder.builder()
+                .fluidInputs(Materials.Water.getFluid(1))
+                .duration(0)
+                .eut(0)
+                .build()
+                .get());
+    }
+
     public static void identifyAnySteam() {
         final String[] steamCandidates = { "steam", "ic2steam" };
         final String[] superHeatedSteamCandidates = { "ic2superheatedsteam" };

@@ -55,6 +55,11 @@ doubles output, the next 100C doubles it again, etc. This means that the output 
 (heat / 25) * 32 EU/t * 2^tier. For example, an LV boiler running on light fuel is
 50/25*32*2^1 = 128 EU/t. A HOG EV boiler is 500/25*32*2^4 = 10240 EU/t
 
+bHeat = euL / 5
+bHeat / 25 * 32 * 2^tier = EU/t
+EU/t / euL = L/t
+L/t = (2^(tier + 5) / 125)
+
 Given these numbers, it seems that heat capacity should be:
 - LV: 150C, throttles light fuel to 150C for a 140% oil adv.
 - MV: 200C, +50C
@@ -72,12 +77,12 @@ upset balance too much, for now. ~~Ditto for EV small boilers~~ they're on the t
 with the 20% malus. Assuming, of course, that it's still not as good (or at least not much
 better) than directly burning your fuel.
 
-As for pollution - this will emit 500 pollution per L of fuel wasted. The actual fuel draw is
+As for pollution - this will emit 250 pollution per L of fuel wasted. The actual fuel draw is
 (almost always) constant for each boiler, so the pollution is also constant when the boiler
 is on
-- LV: 128
-- MV: 512
-- HV: 1536
+- LV: 512
+- MV: 1024
+- HV: 2048
 - EV: 4096
 
 There is a short ramp-up and ramp-down when the boiler switches state. This is entirely

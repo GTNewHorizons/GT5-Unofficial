@@ -38,21 +38,18 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 
+/**
+ * TODO: add throttling.
+ */
 public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvivalConstructable {
-
-    private int tierWall = -1;
-    private int tierPipe = -1;
-    private int tierHotplate = -1;
-    private int tierFirebox = -1;
-    private int water, heat, steam = 0;
-    private float waterMax = 10000;
-    private float heatMax = 10000;
-    private float steamMax = waterMax + heatMax;
 
     // There's only one piece to this structure... for now >:)
     // TODO: multiple boiler chambers + superheater
@@ -83,7 +80,10 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
         .addElement(
             'E',
             GT_StructureUtility.<LargeFiretube>buildHatchAdder()
-                .atLeast(InputHatch)
+                .atLeast(
+                    InputHatch.withAdder(
+                        (thiz, gtTE, baseCasingIndex) -> thiz
+                            .addHatchWithRecipeMap(gtTE, baseCasingIndex, thiz.getRecipeMap())))
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
                 .build())
@@ -91,7 +91,10 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
         .addElement(
             'W',
             GT_StructureUtility.<LargeFiretube>buildHatchAdder()
-                .atLeast(InputHatch)
+                .atLeast(
+                    InputHatch.withAdder(
+                        (thiz, gtTE, baseCasingIndex) -> thiz
+                            .addHatchWithRecipeMap(gtTE, baseCasingIndex, RecipeMaps.waterOnly)))
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
                 .build())
@@ -129,36 +132,36 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
             StructureUtility.ofBlocksTiered(
                 FueledBoiler::getTierCasing,
                 ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                -1,
-                (t, m) -> t.tierWall = m,
-                t -> t.tierWall))
+                0,
+                (t, m) -> t.tier = m,
+                t -> t.tier))
         // Pipe casing
         .addElement(
             'P',
             StructureUtility.ofBlocksTiered(
                 FueledBoiler::getTierPipe,
                 ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
-                -1,
-                (t, m) -> t.tierPipe = m,
-                t -> t.tierPipe))
+                0,
+                (t, m) -> t.tier = m,
+                t -> t.tier))
         // Hotplate - every other tier
         .addElement(
             'H',
             StructureUtility.ofBlocksTiered(
                 FueledBoiler::getTierHotplate,
                 ImmutableList.of(Pair.of(sBlockMetal1, 3)),
-                -1,
-                (t, m) -> t.tierHotplate = m,
-                t -> t.tierHotplate))
+                0,
+                (t, m) -> t.tier = m,
+                t -> t.tier))
         // Firebox
         .addElement(
             'T',
             StructureUtility.ofBlocksTiered(
                 FueledBoiler::getTierFirebox,
                 ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
-                -1,
-                (t, m) -> t.tierFirebox = m,
-                t -> t.tierFirebox))
+                0,
+                (t, m) -> t.tier = m,
+                t -> t.tier))
         .build();
 
     public LargeFiretube(int id, String name, String localizedName) {
@@ -167,24 +170,6 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
 
     protected LargeFiretube(String name) {
         super(name);
-    }
-
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        // Validate structure
-        return checkPiece(MAIN_PIECE_NAME, X_OFFSET, Y_OFFSET, Z_OFFSET);
-
-        // TODO: check for glass amount
-    }
-
-    @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(MAIN_PIECE_NAME, stackSize, hintsOnly, X_OFFSET, Y_OFFSET, Z_OFFSET);
-    }
-
-    @Override
-    public IStructureDefinition<LargeFiretube> getStructureDefinition() {
-        return STRUCTURE_DEFINITION;
     }
 
     @Override
@@ -200,9 +185,15 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
         return tt;
     }
 
+    /**
+     * 1024/s, doubling every tier.
+     */
     @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new LargeFiretube(this.mName);
+    public int getPollutionPerSecond(ItemStack stack) {
+        if (isBurning) {
+            return 1 << (9 + tier);
+        }
+        return 0;
     }
 
     @Override
@@ -234,19 +225,31 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity thiz, long tick) {
-        super.onPostTick(thiz, tick);
-        water = (int) ((Math.sin(tick / 20D) + 1) * waterMax / 2);
-        heat = (int) ((Math.cos(tick / 20D) + 1) * heatMax / 2);
-        steam = water + heat;
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        // Validate structure
+        return checkPiece(MAIN_PIECE_NAME, X_OFFSET, Y_OFFSET, Z_OFFSET);
+
+        // TODO: check for glass amount
     }
 
-    /**
-     * The GT large boilers produced 1000 pollution/s/tier. This one will produce 1 pollution per 1L of wasted fuel,
-     */
     @Override
-    public int getPollutionPerSecond(ItemStack stack) {
-        return 0;
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(MAIN_PIECE_NAME, stackSize, hintsOnly, X_OFFSET, Y_OFFSET, Z_OFFSET);
+    }
+
+    @Override
+    public IStructureDefinition<LargeFiretube> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new LargeFiretube(this.mName);
+    }
+
+    @Override
+    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {
+        // We set these manually
     }
 
     @Override
@@ -291,7 +294,7 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
                                 .setDirection(ProgressBar.Direction.RIGHT)
                                 .setTexture(
                                     GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM_R90
-                                        .get(tierPipe == 1 ? SteamVariant.BRONZE : SteamVariant.STEEL),
+                                        .get(tier == 1 ? SteamVariant.BRONZE : SteamVariant.STEEL),
                                     GT_UITextures.PROGRESSBAR_BOILER_WATER_R90,
                                     54)
                                 .setPos(pBarOffset, 0)
@@ -301,11 +304,11 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
                 .widget(
                     new MultiChildWidget().addChild(new TextWidget("Heat"))
                         .addChild(
-                            new ProgressBar().setProgress(() -> heat / heatMax)
+                            new ProgressBar().setProgress(() -> heatBoost / heatMax)
                                 .setDirection(ProgressBar.Direction.RIGHT)
                                 .setTexture(
                                     GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM_R90
-                                        .get(tierPipe == 1 ? SteamVariant.BRONZE : SteamVariant.STEEL),
+                                        .get(tier == 1 ? SteamVariant.BRONZE : SteamVariant.STEEL),
                                     GT_UITextures.PROGRESSBAR_BOILER_HEAT_R90,
                                     54)
                                 .setPos(pBarOffset, 0)
@@ -319,7 +322,7 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
                                 .setDirection(ProgressBar.Direction.RIGHT)
                                 .setTexture(
                                     GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM_R90
-                                        .get(tierPipe == 1 ? SteamVariant.BRONZE : SteamVariant.STEEL),
+                                        .get(tier == 1 ? SteamVariant.BRONZE : SteamVariant.STEEL),
                                     GT_UITextures.PROGRESSBAR_BOILER_STEAM_R90,
                                     54)
                                 .setPos(pBarOffset, 0)
@@ -331,4 +334,15 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
 
         return b.build();
     };
+
+    private boolean addHatchWithRecipeMap(IGregTechTileEntity te, int baseCasingIndex, RecipeMap<?> map) {
+        if (te == null) return false;
+        final IMetaTileEntity mte = te.getMetaTileEntity();
+        if (mte instanceof final GT_MetaTileEntity_Hatch_Input hatch) {
+            hatch.updateTexture(baseCasingIndex);
+            hatch.mRecipeMap = map;
+            return mInputHatches.add(hatch);
+        }
+        return false;
+    }
 }

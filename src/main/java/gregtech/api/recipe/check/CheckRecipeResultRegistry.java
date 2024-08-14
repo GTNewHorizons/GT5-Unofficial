@@ -77,6 +77,11 @@ public final class CheckRecipeResultRegistry {
     @Nonnull
     public static final CheckRecipeResult NO_FUEL_FOUND = SimpleCheckRecipeResult.ofFailure("no_fuel");
     /**
+     * Missing water.
+     */
+    @Nonnull
+    public static final CheckRecipeResult MISSING_WATER = SimpleCheckRecipeResult.ofFailure("no_water");
+    /**
      * Cannot find valid turbine.
      */
     @Nonnull
