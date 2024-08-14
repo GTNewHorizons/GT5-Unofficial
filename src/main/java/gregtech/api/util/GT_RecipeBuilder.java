@@ -23,6 +23,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Contract;
 
 import gregtech.GT_Mod;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeCategory;
@@ -38,6 +39,7 @@ public class GT_RecipeBuilder {
     private static final boolean DEBUG_MODE_NULL;
     private static boolean PANIC_MODE_NULL;
     private static final boolean DEBUG_MODE_INVALID;
+    private static final boolean DEBUG_MODE_FULL_ENERGY;
     private static final boolean PANIC_MODE_INVALID;
     private static final boolean DEBUG_MODE_COLLISION;
     private static final boolean PANIC_MODE_COLLISION;
@@ -70,6 +72,7 @@ public class GT_RecipeBuilder {
         DEBUG_MODE_NULL = debugAll || Boolean.getBoolean("gt.recipebuilder.debug.null");
         DEBUG_MODE_INVALID = debugAll || Boolean.getBoolean("gt.recipebuilder.debug.invalid");
         DEBUG_MODE_COLLISION = debugAll || Boolean.getBoolean("gt.recipebuilder.debug.collision");
+        DEBUG_MODE_FULL_ENERGY = debugAll;
 
         final boolean panicAll = Boolean.getBoolean("gt.recipebuilder.panic");
         PANIC_MODE_NULL = panicAll || Boolean.getBoolean("gt.recipebuilder.panic.null");
@@ -345,13 +348,24 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder eut(int eut) {
+        if (DEBUG_MODE_FULL_ENERGY) {
+            // Ignores ULV voltage
+            for (int i = 1; i < GT_Values.VP.length; i++) {
+                if (eut <= GT_Values.V[i]) {
+                    if (eut > GT_Values.VP[i]) {
+                        GT_Log.err.println(
+                            "EUt > Partial Voltage detected. EUt: " + eut + ", Partial Voltage: " + GT_Values.VP[i]);
+                        new IllegalArgumentException().printStackTrace(GT_Log.err);
+                    }
+                } else break;
+            }
+        }
         this.eut = eut;
         return this;
     }
 
     public GT_RecipeBuilder eut(long eut) {
-        this.eut = (int) eut;
-        return this;
+        return eut((int) eut);
     }
 
     /**
