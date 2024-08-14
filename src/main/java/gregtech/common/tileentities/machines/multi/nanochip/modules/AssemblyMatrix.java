@@ -22,6 +22,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_NanochipAssemblyModuleBase;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 
 public class AssemblyMatrix extends GT_MetaTileEntity_NanochipAssemblyModuleBase<AssemblyMatrix> {
 
