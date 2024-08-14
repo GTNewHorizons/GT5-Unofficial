@@ -3,7 +3,10 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.t
 import java.util.ArrayList;
 
 import gregtech.api.enums.Materials;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -19,6 +22,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 public class GT_MTE_LargeTurbine_SCSteam extends GregtechMetaTileEntity_LargerTurbineBase {
 
     private boolean hasConsumedSteam;
+    private boolean looseFit = false;
     private boolean isUsingDenseSteam;
 
     public GT_MTE_LargeTurbine_SCSteam(int aID, String aName, String aNameRegional) {
@@ -61,6 +65,20 @@ public class GT_MTE_LargeTurbine_SCSteam extends GregtechMetaTileEntity_LargerTu
 
     @Override
     long fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers) {
+        if (looseFit & isUsingDenseSteam) {
+            aOptFlow *= 4;
+            final double flowMultiplier = Math.pow(1.1f, ((aBaseEff - 7500) / 10000F) * 20f);
+            if (aBaseEff > 10000) {
+                aOptFlow *= flowMultiplier;
+                aBaseEff = 7500;
+            } else if (aBaseEff > 7500) {
+                aOptFlow *= flowMultiplier;
+                aBaseEff *= 0.75f;
+            } else {
+                aBaseEff *= 0.75f;
+            }
+        }
+
         int tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
@@ -130,6 +148,28 @@ public class GT_MTE_LargeTurbine_SCSteam extends GregtechMetaTileEntity_LargerTu
             return tEU;
         }
         return tEU * 100L;
+    }
+
+    @Override
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        // Using a screwdriver to change modes should allow for any combination of Slow/Fast and Tight/Loose Mode
+        // Whenever there's a mode switch, there will be two messages on the player chat
+        // The two messages specify which two modes the turbine is on after the change
+        // (Tight/Loose changes on every action, Slow/Fast changes every other action, all pairs are cycled this way)
+        if (side == getBaseMetaTileEntity().getFrontFacing()) {
+            looseFit ^= true;
+            GT_Utility.sendChatToPlayer(
+                aPlayer,
+                looseFit ? "Fitting is Loose (Higher Flow)" : "Fitting is Tight (Higher Efficiency)");
+        }
+
+        if (looseFit) {
+            super.onModeChangeByScrewdriver(side, aPlayer, aX, aY, aZ);
+        } else if (mFastMode) {
+            PlayerUtils.messagePlayer(aPlayer, "Running in Fast (48x) Mode.");
+        } else {
+            PlayerUtils.messagePlayer(aPlayer, "Running in Slow (16x) Mode.");
+        }
     }
 
     @Override
