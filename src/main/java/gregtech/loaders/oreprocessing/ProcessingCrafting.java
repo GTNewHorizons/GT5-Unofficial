@@ -359,7 +359,9 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .itemInputs(ItemList.PerfectRuby.get(1), GT_Utility.copyAmount(0, aStack))
                     .itemOutputs(
                         GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedEnergyChip", 64, 0),
-                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedEnergyChip", 64, 0))
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedEnergyChip", 64, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedEnergyChip", 64, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedEnergyChip", 8, 0))
                     .requiresCleanRoom()
                     .duration(45 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)

@@ -122,7 +122,7 @@ public class GT_MetaTileEntity_Crystalizer
     }
 
     public static final RecipeMap<RecipeMapBackendCrystalizer> CRYSTALIZER_RECIPES = RecipeMapBuilder
-        .of("gregtech.crystalizertst", RecipeMapBackendCrystalizer::new)
+        .of("gt.recipe.crystalizertst", RecipeMapBackendCrystalizer::new)
         .minInputs(1, 1)
         .maxIO(6, 1, 2, 0)
         .amperage(1)
@@ -137,6 +137,7 @@ public class GT_MetaTileEntity_Crystalizer
             if (lowg) {
                 strings.add("Requires low gravity");
             }
+            strings.add("Costs far more time under certainty mode.");
             return strings;
         })
         .build();
@@ -620,9 +621,9 @@ public class GT_MetaTileEntity_Crystalizer
                 MaterialsLapotronLine.LapotronNaquadriaMixture.getDust(288),
                 GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.ZPM), 8))
             .fluidInputs(
-                        Materials.VibrantAlloy.getMolten(2304),
-                        Materials.Grade6PurifiedWater.getFluid(16000),
-                        ALLOY.HELICOPTER.getFluidStack(288))
+                Materials.VibrantAlloy.getMolten(2304),
+                Materials.Grade6PurifiedWater.getFluid(16000),
+                ALLOY.HELICOPTER.getFluidStack(288))
             .itemOutputs(ItemList.StableLapotronCrystal.get(2))
             .outputChances(5140)
             .eut(14314)
