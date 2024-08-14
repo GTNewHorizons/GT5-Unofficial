@@ -124,7 +124,7 @@ public class GT_MetaTileEntity_Crystalizer
     public static final RecipeMap<RecipeMapBackendCrystalizer> CRYSTALIZER_RECIPES = RecipeMapBuilder
         .of("gt.recipe.crystalizertst", RecipeMapBackendCrystalizer::new)
         .minInputs(1, 1)
-        .maxIO(6, 1, 2, 0)
+        .maxIO(6, 1, 3, 0)
         .amperage(1)
         .frontend(CrystalizerFrontend::new)
         .progressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE)
