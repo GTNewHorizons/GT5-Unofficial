@@ -40,26 +40,22 @@ public class VacuumConveyorHatchMap {
         return putWithColorUnchecked(color, hatch);
     }
 
-    /*
-     * This method is probably not worth the added complexity, since the map gets rebuilt on every structure check
-     * anyway
-     * public void ensureConsistency() {
-     * // For each valid color, check all entries in the map by that color to ensure they still have their color
-     * for (byte color = 0; color < 16; ++color) {
-     * ArrayList<GT_MetaTileEntity_Hatch_VacuumConveyor> hatches = findColoredHatches(color);
-     * final byte finalColor = color;
-     * hatches.removeIf(hatch -> {
-     * byte realColor = hatch.getColorization();
-     * // If color doesn't match the real color, put it in the correct entry and remove it from this list
-     * if (finalColor != realColor) {
-     * putWithColorUnchecked(realColor, hatch);
-     * return true;
-     * }
-     * return false;
-     * });
-     * }
-     * }
-     */
+    public void fixConsistency() {
+        // For each valid color, check all entries in the map by that color to ensure they still have their color
+        for (byte color = 0; color < 16; ++color) {
+            ArrayList<GT_MetaTileEntity_Hatch_VacuumConveyor> hatches = findColoredHatches(color);
+            final byte finalColor = color;
+            hatches.removeIf(hatch -> {
+                byte realColor = hatch.getColorization();
+                // If color doesn't match the real color, put it in the correct entry and remove it from this list
+                if (finalColor != realColor) {
+                    putWithColorUnchecked(realColor, hatch);
+                    return true;
+                }
+                return false;
+            });
+        }
+    }
 
     public ArrayList<GT_MetaTileEntity_Hatch_VacuumConveyor> findColoredHatches(byte color) {
         return conveyorsByColor.get(color);

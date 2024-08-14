@@ -118,6 +118,11 @@ public abstract class GT_MetaTileEntity_Hatch_VacuumConveyor extends GT_MetaTile
     }
 
     @Override
+    public boolean isGivingInformation() {
+        return true;
+    }
+
+    @Override
     public byte getColorization() {
         return getBaseMetaTileEntity().getColorization();
     }
