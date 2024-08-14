@@ -26,7 +26,6 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
 
     public boolean achievement = false;
     private boolean looseFit = false;
-    private boolean hasConsumedSteam;
     private boolean isUsingDenseSteam;
 
 
@@ -87,6 +86,9 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
         long tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
+        float denseFlow = 0;
+        float steamFlowForNextSteam = 0;
+        int steamInHatch = 0;
 
         // Variable required outside of loop for
         // multi-hatch scenarios.
@@ -94,8 +96,9 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
 
         int remainingFlow = MathUtils.safeInt((long) (realOptFlow * 1.25f)); // Allowed to use up to
         // 125% of optimal flow.
+        float remainingDenseFlow = 0;
 
-        hasConsumedSteam = false;
+        boolean hasConsumedSteam = false;
 
         storedFluid = 0;
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
@@ -136,11 +139,14 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
                     } else if (!isUsingDenseSteam){
                         continue;
                     }
-                    flow = Math.min(aFluids.get(i).amount, remainingFlow / 1000 + 1); // Dense Steam is 1000x the EU value
-                    depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
+                    steamInHatch = aFluids.get(i).amount;
+                    remainingDenseFlow = (float) remainingFlow / 1000; // Dense Steam is 1000x the EU value
+                    denseFlow = Math.min(steamInHatch, remainingDenseFlow); // try to use up w/o exceeding remainingDenseFlow
+                    depleteInput(new FluidStack(aFluids.get(i), (int) denseFlow)); // deplete that amount
                     this.storedFluid += aFluids.get(i).amount;
-                    remainingFlow -= flow * 1000; // track amount we're allowed to continue depleting from hatches
-                    totalFlow += flow * 1000; // track total input used
+                    remainingFlow -= denseFlow * 1000; // track amount we're allowed to continue depleting from hatches
+                    totalFlow += denseFlow * 1000; // track total input used
+                    steamFlowForNextSteam += denseFlow;
                 }
                 case "fluid.steam", "ic2.fluidSteam", "fluid.mfr.steam.still.name" ->
                     depleteInput(new FluidStack(aFluids.get(i), aFluids.get(i).amount));
@@ -149,7 +155,7 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
         if (isUsingDenseSteam) {
-            addOutput(Materials.DenseSteam.getGas(totalFlow / 1000));
+            addOutput(Materials.DenseSteam.getGas((long) steamFlowForNextSteam));
         } else {
             addOutput(GT_ModHandler.getSteam(totalFlow));
         }
