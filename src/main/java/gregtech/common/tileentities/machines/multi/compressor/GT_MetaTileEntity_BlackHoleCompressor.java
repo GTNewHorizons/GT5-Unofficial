@@ -218,6 +218,7 @@ public class GT_MetaTileEntity_BlackHoleCompressor
             .addInfo("Requires increasingly more spacetime to maintain!")
             .addInfo("Once the black hole becomes unstable, it will void all inputs for recipes which require it")
             .addInfo("Insert a Black Hole Deactivation Catalyst to close the black hole")
+            .addInfo("Recipes which do not require the black hole are sped up dramatically if one is open")
             .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
             .addSeparator()
             .beginStructureBlock(35, 33, 35, false)
