@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.t
 
 import java.util.ArrayList;
 
+import gtPlusPlus.core.lib.CORE;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -176,7 +177,7 @@ public class GT_MTE_LargeTurbine_SCSteam extends GregtechMetaTileEntity_LargerTu
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
-        return 8;
+        return (looseFit && CORE.RANDOM.nextInt(4) == 0) ? 0 : 1;
     }
 
     @Override
