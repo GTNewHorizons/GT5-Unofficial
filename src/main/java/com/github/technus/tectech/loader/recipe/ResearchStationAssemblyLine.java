@@ -199,13 +199,13 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ItemList.Electric_Pump_UHV.get(1L) },
                     new FluidStack[] { new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000),
                         new FluidStack(solderIndalloy, 40 * 144) },
-                    ItemList.Hatch_Energy_MAX.get(1L),
+                    ItemList.Hatch_Energy_UHV.get(1L),
                     1000,
                     2000000);
 
                 // Energy Hatch UEV
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
-                    ItemList.Hatch_Energy_MAX.get(1L),
+                    ItemList.Hatch_Energy_UHV.get(1L),
                     48000,
                     32,
                     100000,
@@ -320,13 +320,13 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ItemList.Electric_Pump_UHV.get(1L) },
                     new FluidStack[] { new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000),
                         new FluidStack(solderIndalloy, 40 * 144) },
-                    ItemList.Hatch_Dynamo_MAX.get(1L),
+                    ItemList.Hatch_Dynamo_UHV.get(1L),
                     1000,
                     2000000);
 
                 // Dynamo Hatch UEV
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
-                    ItemList.Hatch_Dynamo_MAX.get(1L),
+                    ItemList.Hatch_Dynamo_UHV.get(1L),
                     96000,
                     64,
                     200000,
@@ -3011,7 +3011,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         ItemStack[] energyHatches = { ItemList.Hatch_Energy_ULV.get(1), ItemList.Hatch_Energy_LV.get(1),
             ItemList.Hatch_Energy_MV.get(1), ItemList.Hatch_Energy_HV.get(1), ItemList.Hatch_Energy_EV.get(1),
             ItemList.Hatch_Energy_IV.get(1), ItemList.Hatch_Energy_LuV.get(1), ItemList.Hatch_Energy_ZPM.get(1),
-            ItemList.Hatch_Energy_UV.get(1), ItemList.Hatch_Energy_MAX.get(1),
+            ItemList.Hatch_Energy_UV.get(1), ItemList.Hatch_Energy_UHV.get(1),
             getItemContainer("Hatch_Energy_UEV").get(1L), getItemContainer("Hatch_Energy_UIV").get(1L),
             getItemContainer("Hatch_Energy_UMV").get(1L), getItemContainer("Hatch_Energy_UXV").get(1L) };
 
@@ -3045,7 +3045,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         ItemStack[] dynamoHatches = { ItemList.Hatch_Dynamo_ULV.get(1), ItemList.Hatch_Dynamo_LV.get(1),
             ItemList.Hatch_Dynamo_MV.get(1), ItemList.Hatch_Dynamo_HV.get(1), ItemList.Hatch_Dynamo_EV.get(1),
             ItemList.Hatch_Dynamo_IV.get(1), ItemList.Hatch_Dynamo_LuV.get(1), ItemList.Hatch_Dynamo_ZPM.get(1),
-            ItemList.Hatch_Dynamo_UV.get(1), ItemList.Hatch_Dynamo_MAX.get(1),
+            ItemList.Hatch_Dynamo_UV.get(1), ItemList.Hatch_Dynamo_UHV.get(1),
             getItemContainer("Hatch_Dynamo_UEV").get(1L), getItemContainer("Hatch_Dynamo_UIV").get(1L),
             getItemContainer("Hatch_Dynamo_UMV").get(1L), getItemContainer("Hatch_Dynamo_UXV").get(1L) };
 

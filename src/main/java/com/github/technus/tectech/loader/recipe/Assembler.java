@@ -286,7 +286,7 @@ public class Assembler implements Runnable {
                 // Dynamo UHV 4A
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
-                        ItemList.Hatch_Dynamo_MAX.get(1),
+                        ItemList.Hatch_Dynamo_UHV.get(1),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 2),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UHV.get(1))
@@ -669,7 +669,7 @@ public class Assembler implements Runnable {
                 // Energy Hatch UHV 4A
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
-                        ItemList.Hatch_Energy_MAX.get(1),
+                        ItemList.Hatch_Energy_UHV.get(1),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 2),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UHV.get(1))

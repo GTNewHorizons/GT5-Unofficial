@@ -2244,8 +2244,23 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Dynamo_UV.set(
             new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UV.ID, "hatch.dynamo.tier.08", "UV Dynamo Hatch", 8)
                 .getStackForm(1L));
-        ItemList.Hatch_Dynamo_MAX.set(
+        ItemList.Hatch_Dynamo_UHV.set(
             new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UHV.ID, "hatch.dynamo.tier.09", "UHV Dynamo Hatch", 9)
+                .getStackForm(1L));
+        ItemList.Hatch_Dynamo_UEV.set(
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UEV.ID, "hatch.dynamo.tier.10", "UEV Dynamo Hatch", 10)
+                .getStackForm(1L));
+
+        ItemList.Hatch_Dynamo_UIV.set(
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UIV.ID, "hatch.dynamo.tier.11", "UIV Dynamo Hatch", 11)
+                .getStackForm(1L));
+
+        ItemList.Hatch_Dynamo_UMV.set(
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UMV.ID, "hatch.dynamo.tier.12", "UMV Dynamo Hatch", 12)
+                .getStackForm(1L));
+
+        ItemList.Hatch_Dynamo_UXV.set(
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UXV.ID, "hatch.dynamo.tier.13", "UXV Dynamo Hatch", 13)
                 .getStackForm(1L));
     }
 
@@ -2277,8 +2292,23 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Energy_UV.set(
             new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UV.ID, "hatch.energy.tier.08", "UV Energy Hatch", 8)
                 .getStackForm(1L));
-        ItemList.Hatch_Energy_MAX.set(
+        ItemList.Hatch_Energy_UHV.set(
             new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UHV.ID, "hatch.energy.tier.09", "UHV Energy Hatch", 9)
+                .getStackForm(1L));
+        ItemList.Hatch_Energy_UEV.set(
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UEV.ID, "hatch.energy.tier.10", "UEV Energy Hatch", 10)
+                .getStackForm(1L));
+
+        ItemList.Hatch_Energy_UIV.set(
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UIV.ID, "hatch.energy.tier.11", "UIV Energy Hatch", 11)
+                .getStackForm(1L));
+
+        ItemList.Hatch_Energy_UMV.set(
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UMV.ID, "hatch.energy.tier.12", "UMV Energy Hatch", 12)
+                .getStackForm(1L));
+
+        ItemList.Hatch_Energy_UXV.set(
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UXV.ID, "hatch.energy.tier.13", "UXV Energy Hatch", 13)
                 .getStackForm(1L));
     }
 
@@ -2761,12 +2791,57 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 8,
                 "",
                 1).getStackForm(1L));
-        ItemList.Battery_Buffer_1by1_MAX.set(
+        ItemList.Battery_Buffer_1by1_UHV.set(
             new GT_MetaTileEntity_BasicBatteryBuffer(
                 BATTERY_BUFFER_1_BY_1_UHV.ID,
                 "batterybuffer.01.tier.09",
                 "Highly Ultimate Voltage Battery Buffer",
                 9,
+                "",
+                1).getStackForm(1L));
+
+        ItemList.Battery_Buffer_1by1_UEV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_1_BY_1_UEV.ID,
+                "batterybuffer.01.tier.10",
+                "Extremely Ultimate Battery Buffer",
+                10,
+                "",
+                1).getStackForm(1L));
+
+        ItemList.Battery_Buffer_1by1_UIV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_1_BY_1_UIV.ID,
+                "batterybuffer.01.tier.11",
+                "Insanely Ultimate Battery Buffer",
+                11,
+                "",
+                1).getStackForm(1L));
+
+        ItemList.Battery_Buffer_1by1_UMV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_1_BY_1_UMV.ID,
+                "batterybuffer.01.tier.12",
+                "Mega Ultimate Battery Buffer",
+                12,
+                "",
+                1).getStackForm(1L));
+
+        ItemList.Battery_Buffer_1by1_UXV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_1_BY_1_UXV.ID,
+                "batterybuffer.01.tier.13",
+                "Extended Mega Ultimate Battery Buffer",
+                13,
+                "",
+                1).getStackForm(1L));
+
+        ItemList.Battery_Buffer_1by1_MAXV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_1_BY_1_MAX.ID,
+                "batterybuffer.01.tier.14",
+                "Maximum Battery Buffer",
+                14,
                 "",
                 1).getStackForm(1L));
     }
@@ -2844,12 +2919,57 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 8,
                 "",
                 4).getStackForm(1L));
-        ItemList.Battery_Buffer_2by2_MAX.set(
+        ItemList.Battery_Buffer_2by2_UHV.set(
             new GT_MetaTileEntity_BasicBatteryBuffer(
                 BATTERY_BUFFER_2_BY_2_UHV.ID,
                 "batterybuffer.04.tier.09",
                 "Highly Ultimate Voltage Battery Buffer",
                 9,
+                "",
+                4).getStackForm(1L));
+
+        ItemList.Battery_Buffer_2by2_UEV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_2_BY_2_UEV.ID,
+                "batterybuffer.04.tier.10",
+                "Extremely Ultimate Battery Buffer",
+                10,
+                "",
+                4).getStackForm(1L));
+
+        ItemList.Battery_Buffer_2by2_UIV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_2_BY_2_UIV.ID,
+                "batterybuffer.04.tier.11",
+                "Insanely Ultimate Battery Buffer",
+                11,
+                "",
+                4).getStackForm(1L));
+
+        ItemList.Battery_Buffer_2by2_UMV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_2_BY_2_UMV.ID,
+                "batterybuffer.04.tier.12",
+                "Mega Ultimate Battery Buffer",
+                12,
+                "",
+                4).getStackForm(1L));
+
+        ItemList.Battery_Buffer_2by2_UXV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_2_BY_2_UXV.ID,
+                "batterybuffer.04.tier.13",
+                "Extended Mega Ultimate Battery Buffer",
+                13,
+                "",
+                4).getStackForm(1L));
+
+        ItemList.Battery_Buffer_2by2_MAXV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_2_BY_2_MAX.ID,
+                "batterybuffer.04.tier.14",
+                "Maximum Battery Buffer",
+                14,
                 "",
                 4).getStackForm(1L));
     }
@@ -2927,12 +3047,57 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 8,
                 "",
                 9).getStackForm(1L));
-        ItemList.Battery_Buffer_3by3_MAX.set(
+        ItemList.Battery_Buffer_3by3_UHV.set(
             new GT_MetaTileEntity_BasicBatteryBuffer(
                 BATTERY_BUFFER_3_BY_3_UHV.ID,
                 "batterybuffer.09.tier.09",
                 "Highly Ultimate Voltage Battery Buffer",
                 9,
+                "",
+                9).getStackForm(1L));
+
+        ItemList.Battery_Buffer_3by3_UEV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_3_BY_3_UEV.ID,
+                "batterybuffer.09.tier.10",
+                "Extremely Ultimate Battery Buffer",
+                10,
+                "",
+                9).getStackForm(1L));
+
+        ItemList.Battery_Buffer_3by3_UIV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_3_BY_3_UIV.ID,
+                "batterybuffer.09.tier.11",
+                "Insanely Ultimate Battery Buffer",
+                11,
+                "",
+                9).getStackForm(1L));
+
+        ItemList.Battery_Buffer_3by3_UMV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_3_BY_3_UMV.ID,
+                "batterybuffer.09.tier.12",
+                "Mega Ultimate Battery Buffer",
+                12,
+                "",
+                9).getStackForm(1L));
+
+        ItemList.Battery_Buffer_3by3_UXV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_3_BY_3_UXV.ID,
+                "batterybuffer.09.tier.13",
+                "Extended Mega Ultimate Battery Buffer",
+                13,
+                "",
+                9).getStackForm(1L));
+
+        ItemList.Battery_Buffer_3by3_MAXV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_3_BY_3_MAX.ID,
+                "batterybuffer.09.tier.14",
+                "Maximum Battery Buffer",
+                14,
                 "",
                 9).getStackForm(1L));
     }
@@ -3010,12 +3175,56 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 8,
                 "",
                 16).getStackForm(1L));
-        ItemList.Battery_Buffer_4by4_MAX.set(
+        ItemList.Battery_Buffer_4by4_UHV.set(
             new GT_MetaTileEntity_BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_UHV.ID,
                 "batterybuffer.16.tier.09",
                 "Highly Ultimate Voltage Battery Buffer",
                 9,
+                "",
+                16).getStackForm(1L));
+        ItemList.Battery_Buffer_4by4_UEV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_4_BY_4_UEV.ID,
+                "batterybuffer.16.tier.10",
+                "Extremely Ultimate Battery Buffer",
+                10,
+                "",
+                16).getStackForm(1L));
+
+        ItemList.Battery_Buffer_4by4_UIV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_4_BY_4_UIV.ID,
+                "batterybuffer.16.tier.11",
+                "Insanely Ultimate Battery Buffer",
+                11,
+                "",
+                16).getStackForm(1L));
+
+        ItemList.Battery_Buffer_4by4_UMV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_4_BY_4_UMV.ID,
+                "batterybuffer.16.tier.12",
+                "Mega Ultimate Battery Buffer",
+                12,
+                "",
+                16).getStackForm(1L));
+
+        ItemList.Battery_Buffer_4by4_UXV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_4_BY_4_UXV.ID,
+                "batterybuffer.16.tier.13",
+                "Extended Mega Ultimate Battery Buffer",
+                13,
+                "",
+                16).getStackForm(1L));
+
+        ItemList.Battery_Buffer_4by4_MAXV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_4_BY_4_MAX.ID,
+                "batterybuffer.16.tier.14",
+                "Maximum Battery Buffer",
+                14,
                 "",
                 16).getStackForm(1L));
     }
@@ -3093,13 +3302,49 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 8,
                 "Each battery gives 8A in/4A out (min 4A/2A)",
                 4).getStackForm(1L));
-        ItemList.Battery_Charger_4by4_MAX.set(
+        ItemList.Battery_Charger_4by4_UHV.set(
             new GT_MetaTileEntity_Charger(
                 BATTERY_CHARGER_4_BY_4_UHV.ID,
                 "batterycharger.16.tier.09",
                 "Highly Ultimate Voltage Battery Charger",
                 9,
                 "Each battery gives 8A in/4A out (min 4A/2A)",
+                4).getStackForm(1L));
+
+        ItemList.Battery_Charger_4by4_UEV.set(
+            new GT_MetaTileEntity_Charger(
+                BATTERY_CHARGER_4_4_UEV.ID,
+                "batterycharger.16.tier.10",
+                "Extremely Ultimate Battery Charger",
+                10,
+                "",
+                4).getStackForm(1L));
+
+        ItemList.Battery_Charger_4by4_UIV.set(
+            new GT_MetaTileEntity_Charger(
+                BATTERY_CHARGER_4_4_UIV.ID,
+                "batterycharger.16.tier.11",
+                "Insanely Ultimate Battery Charger",
+                11,
+                "",
+                4).getStackForm(1L));
+
+        ItemList.Battery_Charger_4by4_UMV.set(
+            new GT_MetaTileEntity_Charger(
+                BATTERY_CHARGER_4_4_UMV.ID,
+                "batterycharger.16.tier.12",
+                "Mega Ultimate Battery Charger",
+                12,
+                "",
+                4).getStackForm(1L));
+
+        ItemList.Battery_Charger_4by4_UXV.set(
+            new GT_MetaTileEntity_Charger(
+                BATTERY_CHARGER_4_4_UXV.ID,
+                "batterycharger.16.tier.13",
+                "Extended Mega Ultimate Battery Charger",
+                13,
+                "",
                 4).getStackForm(1L));
     }
 

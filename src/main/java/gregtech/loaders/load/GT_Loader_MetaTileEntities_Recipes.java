@@ -5539,7 +5539,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_UV, 'W',
                 OrePrefixes.wireGt01.get(Materials.NaquadahAlloy), 'T', OreDictNames.craftingChest });
         GT_ModHandler.addCraftingRecipe(
-            ItemList.Battery_Buffer_1by1_MAX.get(1L),
+            ItemList.Battery_Buffer_1by1_UHV.get(1L),
             bitsd,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MAX, 'W',
                 OrePrefixes.wireGt01.get(Materials.SuperconductorUHV), 'T', OreDictNames.craftingChest });
@@ -5590,7 +5590,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_UV, 'W',
                 OrePrefixes.wireGt04.get(Materials.NaquadahAlloy), 'T', OreDictNames.craftingChest });
         GT_ModHandler.addCraftingRecipe(
-            ItemList.Battery_Buffer_2by2_MAX.get(1L),
+            ItemList.Battery_Buffer_2by2_UHV.get(1L),
             bitsd,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MAX, 'W',
                 OrePrefixes.wireGt04.get(Materials.SuperconductorUHV), 'T', OreDictNames.craftingChest });
@@ -5641,7 +5641,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_UV, 'W',
                 OrePrefixes.wireGt08.get(Materials.NaquadahAlloy), 'T', OreDictNames.craftingChest });
         GT_ModHandler.addCraftingRecipe(
-            ItemList.Battery_Buffer_3by3_MAX.get(1L),
+            ItemList.Battery_Buffer_3by3_UHV.get(1L),
             bitsd,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MAX, 'W',
                 OrePrefixes.wireGt08.get(Materials.SuperconductorUHV), 'T', OreDictNames.craftingChest });
@@ -5692,7 +5692,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_UV, 'W',
                 OrePrefixes.wireGt16.get(Materials.NaquadahAlloy), 'T', OreDictNames.craftingChest });
         GT_ModHandler.addCraftingRecipe(
-            ItemList.Battery_Buffer_4by4_MAX.get(1L),
+            ItemList.Battery_Buffer_4by4_UHV.get(1L),
             bitsd,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MAX, 'W',
                 OrePrefixes.wireGt16.get(Materials.SuperconductorUHV), 'T', OreDictNames.craftingChest });
@@ -5752,7 +5752,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 OrePrefixes.wireGt16.get(Materials.NaquadahAlloy), 'T', OreDictNames.craftingChest, 'B', ItemList.ZPM2,
                 'C', OrePrefixes.circuit.get(Materials.UV) });
         GT_ModHandler.addCraftingRecipe(
-            ItemList.Battery_Charger_4by4_MAX.get(1L),
+            ItemList.Battery_Charger_4by4_UHV.get(1L),
             bitsd,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_MAX, 'W',
                 OrePrefixes.wireGt16.get(Materials.SuperconductorUHV), 'T', OreDictNames.craftingChest, 'B',
@@ -5797,7 +5797,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addCraftingRecipe(
             ItemList.Locker_MAX.get(1L),
             bitsd,
-            new Object[] { "T", "M", 'M', ItemList.Battery_Buffer_2by2_MAX, 'T', OreDictNames.craftingChest });
+            new Object[] { "T", "M", 'M', ItemList.Battery_Buffer_2by2_UHV, 'T', OreDictNames.craftingChest });
 
         GT_ModHandler.addCraftingRecipe(
             ItemList.Machine_LV_Scanner.get(1L),

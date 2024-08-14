@@ -972,7 +972,7 @@ public enum ItemList implements IItemContainer {
     Hatch_Dynamo_LuV,
     Hatch_Dynamo_ZPM,
     Hatch_Dynamo_UV,
-    Hatch_Dynamo_MAX,
+    Hatch_Dynamo_UHV,
 
     Hatch_Energy_ULV,
     Hatch_Energy_LV,
@@ -983,7 +983,7 @@ public enum ItemList implements IItemContainer {
     Hatch_Energy_LuV,
     Hatch_Energy_ZPM,
     Hatch_Energy_UV,
-    Hatch_Energy_MAX,
+    Hatch_Energy_UHV,
 
     Wireless_Hatch_Energy_ULV,
     Wireless_Hatch_Energy_LV,
@@ -1097,7 +1097,7 @@ public enum ItemList implements IItemContainer {
     Battery_Buffer_1by1_LuV,
     Battery_Buffer_1by1_ZPM,
     Battery_Buffer_1by1_UV,
-    Battery_Buffer_1by1_MAX,
+    Battery_Buffer_1by1_UHV,
 
     Battery_Buffer_2by2_ULV,
     Battery_Buffer_2by2_LV,
@@ -1108,7 +1108,7 @@ public enum ItemList implements IItemContainer {
     Battery_Buffer_2by2_LuV,
     Battery_Buffer_2by2_ZPM,
     Battery_Buffer_2by2_UV,
-    Battery_Buffer_2by2_MAX,
+    Battery_Buffer_2by2_UHV,
 
     Battery_Buffer_3by3_ULV,
     Battery_Buffer_3by3_LV,
@@ -1119,7 +1119,7 @@ public enum ItemList implements IItemContainer {
     Battery_Buffer_3by3_LuV,
     Battery_Buffer_3by3_ZPM,
     Battery_Buffer_3by3_UV,
-    Battery_Buffer_3by3_MAX,
+    Battery_Buffer_3by3_UHV,
 
     Battery_Buffer_4by4_ULV,
     Battery_Buffer_4by4_LV,
@@ -1130,7 +1130,7 @@ public enum ItemList implements IItemContainer {
     Battery_Buffer_4by4_LuV,
     Battery_Buffer_4by4_ZPM,
     Battery_Buffer_4by4_UV,
-    Battery_Buffer_4by4_MAX,
+    Battery_Buffer_4by4_UHV,
 
     Locker_ULV,
     Locker_LV,
@@ -1749,7 +1749,7 @@ public enum ItemList implements IItemContainer {
     Battery_Charger_4by4_LuV,
     Battery_Charger_4by4_ZPM,
     Battery_Charger_4by4_UV,
-    Battery_Charger_4by4_MAX,
+    Battery_Charger_4by4_UHV,
 
     MicroTransmitter_HV,
     MicroTransmitter_EV,
@@ -2534,9 +2534,9 @@ public enum ItemList implements IItemContainer {
         MACHINE_HULLS = { Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV,
             Hull_MAX },
         HATCHES_DYNAMO = { Hatch_Dynamo_ULV, Hatch_Dynamo_LV, Hatch_Dynamo_MV, Hatch_Dynamo_HV, Hatch_Dynamo_EV,
-            Hatch_Dynamo_IV, Hatch_Dynamo_LuV, Hatch_Dynamo_ZPM, Hatch_Dynamo_UV, Hatch_Dynamo_MAX },
+            Hatch_Dynamo_IV, Hatch_Dynamo_LuV, Hatch_Dynamo_ZPM, Hatch_Dynamo_UV, Hatch_Dynamo_UHV},
         HATCHES_ENERGY = { Hatch_Energy_ULV, Hatch_Energy_LV, Hatch_Energy_MV, Hatch_Energy_HV, Hatch_Energy_EV,
-            Hatch_Energy_IV, Hatch_Energy_LuV, Hatch_Energy_ZPM, Hatch_Energy_UV, Hatch_Energy_MAX },
+            Hatch_Energy_IV, Hatch_Energy_LuV, Hatch_Energy_ZPM, Hatch_Energy_UV, Hatch_Energy_UHV},
         HATCHES_INPUT = { Hatch_Input_ULV, Hatch_Input_LV, Hatch_Input_MV, Hatch_Input_HV, Hatch_Input_EV,
             Hatch_Input_IV, Hatch_Input_LuV, Hatch_Input_ZPM, Hatch_Input_UV, Hatch_Input_UHV},
         HATCHES_INPUT_BUS = { Hatch_Input_Bus_ULV, Hatch_Input_Bus_LV, Hatch_Input_Bus_MV, Hatch_Input_Bus_HV,
