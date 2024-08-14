@@ -304,6 +304,7 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
                     // If the color did not match, we found an inconsistency in the hatch map, so fix it instead
                     // of waiting for the next structure check
                     vacuumConveyors.fixConsistency();
+                    continue;
                 }
                 // Now we can route our components to this hatch
                 CircuitComponentPacket packet = new CircuitComponentPacket(component, amount);
