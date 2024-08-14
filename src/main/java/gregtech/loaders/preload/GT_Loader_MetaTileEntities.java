@@ -608,12 +608,12 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ProcessingA
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PyrolyseOven;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_TranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_WormholeGenerator;
 import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_BlackHoleCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_HIPCompressor;
-import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_HeatDetectorHatch;
+import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_HeatSensor;
 import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_IndustrialCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.GT_MetaTileEntity_NeutroniumCompressor;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_WormholeGenerator;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_Hatch_DegasifierControlHatch;
@@ -4266,11 +4266,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "hatch.dataaccess.auto",
                 "Automatable Data Access Hatch",
                 8).getStackForm(1L));
-        ItemList.Hatch_HeatDetector.set(
-            new GT_MetaTileEntity_HeatDetectorHatch(
+        ItemList.Hatch_HeatSensor.set(
+            new GT_MetaTileEntity_HeatSensor(
                 HEAT_DETECTOR_HATCH.ID,
-                "hatch.heatdetector",
-                "Heat Detection Hatch",
+                "hatch.heatsensor",
+                "Heat Sensor Hatch",
                 7).getStackForm(1));
         ItemList.Hatch_pHSensor.set(
             new GT_MetaTileEntity_pHSensor(HATCH_PH_SENSOR.ID, "hatch.phsensor", "pH Sensor Hatch", 7).getStackForm(1));

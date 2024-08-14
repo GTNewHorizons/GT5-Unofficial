@@ -13,9 +13,17 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRES
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+import com.github.bartimaeusnek.bartworks.util.MathUtils;
+import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.util.IGT_HatchAdder;
+import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_pHSensor;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -78,7 +86,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
         .addElement('A', Glasses.chainAllGlasses())
         .addElement(
             'B',
-            buildHatchAdder(GT_MetaTileEntity_HIPCompressor.class).atLeast(Maintenance, Energy)
+            buildHatchAdder(GT_MetaTileEntity_HIPCompressor.class).atLeast(Maintenance, Energy, SpecialHatchElement.HeatSensor)
                 .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
                 .dot(1)
                 .buildAndChain(
@@ -102,10 +110,13 @@ public class GT_MetaTileEntity_HIPCompressor extends
                         ofBlock(GregTech_API.sBlockCasings8, 5))))
         .build();
 
-    private HeatingCoilLevel heatLevel;
-    private int coolingCounter = 0;
 
-    private int heat = 0;
+    private final ArrayList<GT_MetaTileEntity_HeatSensor> sensorHatches = new ArrayList<>();
+
+    private HeatingCoilLevel heatLevel;
+    private int coilTier = 0;
+
+    private float heat = 0;
     private boolean cooling = false;
 
     public GT_MetaTileEntity_HIPCompressor(final int aID, final String aName, final String aNameRegional) {
@@ -200,7 +211,8 @@ public class GT_MetaTileEntity_HIPCompressor extends
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Compressor")
             .addInfo("Controller Block for the Hot Isostatic Pressurization Unit")
-            .addInfo("HIP Unit goes through heating cycles while running")
+            .addInfo("HIP Unit heats up while running")
+            .addInfo("When it reaches maximum heat, it will need to cool down")
             .addInfo(
                 "During the " + EnumChatFormatting.RED
                     + "heating"
@@ -218,6 +230,10 @@ public class GT_MetaTileEntity_HIPCompressor extends
                     + EnumChatFormatting.GRAY
                     + " HIP")
             .addInfo("If the machine reaches maximum heat during these recipes, recipe will be voided!")
+            .addInfo("Read the current heat using Heat Sensor Hatches")
+            .addInfo("More advanced coils allow better heat control - the unit will take longer to overheat")
+            .addInfo("Unit heats by 5% x 0.90 ^ (Coil Tier - 1) every second while running")
+            .addInfo("Unit cools by an 2% every second while not running")
             .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
             .addSeparator()
             .beginStructureBlock(7, 5, 7, true)
@@ -270,10 +286,26 @@ public class GT_MetaTileEntity_HIPCompressor extends
     }
 
     @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setFloat("heat", heat);
+        aNBT.setBoolean("cooling", cooling);
+        aNBT.setInteger("coilTier", coilTier);
+        super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        if (aNBT.hasKey("heat")) heat = aNBT.getFloat("heat");
+        if (aNBT.hasKey("cooling")) cooling = aNBT.getBoolean("cooling");
+        if (aNBT.hasKey("coilTier")) coilTier = aNBT.getInteger("coilTier");
+        super.loadNBTData(aNBT);
+    }
+
+    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("heat", heat);
+        tag.setInteger("heat", Math.round(heat));
         tag.setBoolean("cooling", cooling);
     }
 
@@ -298,27 +330,7 @@ public class GT_MetaTileEntity_HIPCompressor extends
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                Stream<GT_Recipe> compressorRecipes = RecipeMaps.compressorRecipes.findRecipeQuery()
-                    .items(inputItems)
-                    .cachedRecipe(lastRecipe)
-                    .findAll();
-                /*
-                 * if (neutroniumEnabled) {
-                 * Stream<GT_Recipe> neutroniumRecipes = RecipeMaps.neutroniumCompressorRecipes.findRecipeQuery()
-                 * .items(inputItems)
-                 * .cachedRecipe(lastRecipe)
-                 * .findAll();
-                 * compressorRecipes = Stream.concat(compressorRecipes, neutroniumRecipes);
-                 * }
-                 */
-                return compressorRecipes;
-            }
-        }.setSpeedBonus(1F / 2F);
+        return new ProcessingLogic().setSpeedBonus(1F / 2F);
         // .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
@@ -326,12 +338,6 @@ public class GT_MetaTileEntity_HIPCompressor extends
     public boolean onRunningTick(ItemStack aStack) {
         if (cooling) {
             stopMachine(SimpleShutDownReason.ofCritical("overheated"));
-        } else {
-            heat = heat + 1;
-            if (heat >= 100) {
-                heat = 100;
-                cooling = true;
-            }
         }
         return super.onRunningTick(aStack);
     }
@@ -340,19 +346,28 @@ public class GT_MetaTileEntity_HIPCompressor extends
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
-        if (aBaseMetaTileEntity.isServerSide()) {
-            // Updates every 10 sec
-            if (mUpdate <= -150) mUpdate = 50;
+        if (aTick % 20 == 0) {
+
+            //Default to cooling by 2%
+            float heatMod = -2;
+
+            // If the machine is running, heat by 5% x 0.90 ^ (Coil Tier)
+            //Cupronickel is 0, so base will be 5% increase
+            if (this.maxProgresstime() != 0) {
+                heatMod = (float) (5 * Math.pow(0.9, coilTier));
+            }
+
+            heat = MathUtils.clamp(heat + heatMod,0 ,100);
+
+            if ((cooling && heat <= 0) || (!cooling && heat >= 100)) {
+                cooling = !cooling;
+            }
         }
 
-        if (coolingCounter >= 4) {
-            coolingCounter = 0;
-            heat -= 1;
-            if (heat <= 0) {
-                heat = 0;
-                cooling = false;
-            }
-        } else coolingCounter += 1;
+        //Update all the sensors
+        for (GT_MetaTileEntity_HeatSensor hatch : sensorHatches) {
+            hatch.updateRedstoneOutput(heat);
+        }
 
     }
 
@@ -406,5 +421,48 @@ public class GT_MetaTileEntity_HIPCompressor extends
 
     public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
         heatLevel = aCoilLevel;
+        coilTier = aCoilLevel.getTier();
+    }
+
+    public boolean addSensorHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_HeatSensor) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return this.sensorHatches.add((GT_MetaTileEntity_HeatSensor) aMetaTileEntity);
+        }
+        return false;
+    }
+
+    private enum SpecialHatchElement implements IHatchElement<GT_MetaTileEntity_HIPCompressor> {
+
+        HeatSensor(GT_MetaTileEntity_HIPCompressor::addSensorHatchToMachineList,
+            GT_MetaTileEntity_HeatSensor.class) {
+
+            @Override
+            public long count(
+                GT_MetaTileEntity_HIPCompressor gtMetaTileEntityHIPCompressor) {
+                return gtMetaTileEntityHIPCompressor.sensorHatches.size();
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGT_HatchAdder<GT_MetaTileEntity_HIPCompressor> adder;
+
+        @SafeVarargs
+        SpecialHatchElement(IGT_HatchAdder<GT_MetaTileEntity_HIPCompressor> adder,
+                            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        public IGT_HatchAdder<? super GT_MetaTileEntity_HIPCompressor> adder() {
+            return adder;
+        }
     }
 }

@@ -324,11 +324,6 @@ public class GT_MetaTileEntity_NeutroniumCompressor
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
-        if (aBaseMetaTileEntity.isServerSide()) {
-            // Updates every 10 sec
-            if (mUpdate <= -150) mUpdate = 50;
-        }
-
         if (coolingCounter >= 4) {
             coolingCounter = 0;
             heat -= 1;

@@ -371,7 +371,7 @@ public class GT_MetaTileEntity_BlackHoleCompressor
             if (blackholeOn && blackHoleStability >= 0) {
                 float stabilityDecrease = 1F;
                 // If the machine is running, reduce stability loss by 25%
-                if (this.mProgresstime != 0) {
+                if (this.maxProgresstime() != 0) {
                     stabilityDecrease = 0.75F;
                 }
                 // Search all hatches for catalyst fluid

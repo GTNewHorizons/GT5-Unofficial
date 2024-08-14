@@ -25,7 +25,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.widget.CoverCycleButtonWidget;
 
-public class GT_MetaTileEntity_HeatDetectorHatch extends GT_MetaTileEntity_Hatch {
+public class GT_MetaTileEntity_HeatSensor extends GT_MetaTileEntity_Hatch {
 
     protected float threshold = 0;
     protected boolean inverted = false;
@@ -34,12 +34,12 @@ public class GT_MetaTileEntity_HeatDetectorHatch extends GT_MetaTileEntity_Hatch
     private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_BLACKHOLE;
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_BLACKHOLE_GLOW;
 
-    public GT_MetaTileEntity_HeatDetectorHatch(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Controls black hole compressor.");
+    public GT_MetaTileEntity_HeatSensor(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, 0, "Reads heat from HIP Unit.");
     }
 
-    public GT_MetaTileEntity_HeatDetectorHatch(String aName, int aTier, String[] aDescription,
-        ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_HeatSensor(String aName, int aTier, String[] aDescription,
+                                        ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -99,8 +99,7 @@ public class GT_MetaTileEntity_HeatDetectorHatch extends GT_MetaTileEntity_Hatch
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Can be installed in the Semi-Stable Black Hole Containment Module.",
-            "Used to control opening and closing of black hole", "Right click to open the GUI and change settings." };
+        return new String[] { "Reads heat of Hot Isostatic Pressurization Unit.", "Right click to open the GUI and change settings." };
     }
 
     @Override
@@ -140,7 +139,7 @@ public class GT_MetaTileEntity_HeatDetectorHatch extends GT_MetaTileEntity_Hatch
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_HeatDetectorHatch(mName, mTier, mDescriptionArray, mTextures);
+        return new GT_MetaTileEntity_HeatSensor(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -174,7 +173,7 @@ public class GT_MetaTileEntity_HeatDetectorHatch extends GT_MetaTileEntity_Hatch
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(28, 12))
             .widget(
-                new NumericWidget().setBounds(0, 14.0)
+                new NumericWidget().setBounds(0, 100)
                     .setGetter(() -> (double) threshold)
                     .setSetter((value) -> threshold = (float) value)
                     .setScrollValues(0.1, 0.01, 1.0)
@@ -186,7 +185,7 @@ public class GT_MetaTileEntity_HeatDetectorHatch extends GT_MetaTileEntity_Hatch
                     .setPos(10, 28)
                     .setSize(77, 12))
             .widget(
-                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.ph_sensor"))
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.heat_sensor"))
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(90, 30));
