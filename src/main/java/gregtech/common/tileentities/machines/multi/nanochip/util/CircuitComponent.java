@@ -7,21 +7,23 @@ import gregtech.api.items.GT_CircuitComponent_FakeItem;
 
 public enum CircuitComponent {
 
-    Wire(0, "gt.circuitcomponent.wire"),
-    SMDTransistor(1, "gt.circuitcomponent.smd.transistor"),
-    SMDInductor(2, "gt.circuitcomponent.smd.inductor"),
-    SMDCapacitor(3, "gt.circuitcomponent.smd.capacitor"),
-    SMDDiode(4, "gt.circuitcomponent.smd.diode");
+    // When adding to this list, PLEASE only add to the end! The ordinals are used as item ids for the fake items!
+    Wire("gt.circuitcomponent.wire"),
+    SMDTransistor("gt.circuitcomponent.smd.transistor"),
+    SMDInductor("gt.circuitcomponent.smd.inductor"),
+    SMDCapacitor("gt.circuitcomponent.smd.capacitor"),
+    SMDDiode("gt.circuitcomponent.smd.diode");
 
-    public final int id;
     public final String unlocalizedName;
     // ItemStack of a fake item representing this component
     public final ItemStack stack;
 
-    CircuitComponent(int id, String unlocalizedName) {
-        this.id = id;
+    CircuitComponent(String unlocalizedName) {
         this.unlocalizedName = unlocalizedName;
-        this.stack = new ItemStack(new GT_CircuitComponent_FakeItem(), 1, id);
+        // Create ItemStack that represents this component. We will use this for recipe checking.
+        this.stack = new ItemStack(GT_CircuitComponent_FakeItem.INSTANCE, 1, this.ordinal());
+        // Hide this stack in NEI
+        codechicken.nei.api.API.hideItem(this.stack);
     }
 
     public String getLocalizedName() {
