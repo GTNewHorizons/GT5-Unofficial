@@ -52,7 +52,7 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         { "     AAA     ", "     A A     ", "     AAA     ", "BBBBBBBBBBBBB" },
         { "     AAA     ", "     AAA     ", "     AAA     ", "BBBBBBBBBBBBB" },
         { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
-        { "             ", "             ", " AAA     AAA ", "BBBBBBBBBBBBB" },
+        { "             ", "             ", " AIA     AIA ", "BBBBBBBBBBBBB" },
         { "             ", "             ", " AAA     AAA ", "BBBBBBBBBBBBB" },
         { "             ", "             ", " AAA     AAA ", "BBBBBBBBBBBBB" },
         { "             ", "             ", "             ", "BBBBBBBBBBBBB" } };
@@ -109,6 +109,7 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        fixAllIssues();
         return checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z);
     }
 
@@ -204,6 +205,12 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         public IGT_HatchAdder<? super GT_MetaTileEntity_NanochipAssemblyComplex> adder() {
             return adder;
         }
+    }
+
+    @Override
+    public boolean doRandomMaintenanceDamage() {
+        // Does not get have maintenance issues
+        return true;
     }
 
     @Override
