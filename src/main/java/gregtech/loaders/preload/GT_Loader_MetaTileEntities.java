@@ -125,6 +125,8 @@ import static gregtech.api.enums.MetaTileEntityIDs.HATCH_DEGASIFIER_CONTROL;
 import static gregtech.api.enums.MetaTileEntityIDs.HATCH_LENS_HOUSING;
 import static gregtech.api.enums.MetaTileEntityIDs.HATCH_LENS_INDICATOR;
 import static gregtech.api.enums.MetaTileEntityIDs.HATCH_PH_SENSOR;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_VACUUM_CONVEYOR_INPUT;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_VACUUM_CONVEYOR_OUTPUT;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_COAL_BOILER;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_LAVA_BOILER;
 import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_SOLAR_BOILER;
@@ -423,6 +425,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.VACUUM_CONVEYOR_PIPE;
 import static gregtech.api.enums.MetaTileEntityIDs.VACUUM_FREEZER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_HV;
@@ -510,6 +513,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Wireless_Ha
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.client.GT_TooltipHandler;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_ChestBuffer;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_Filter;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_ItemDistributor;
@@ -609,6 +613,9 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_WormholeGen
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
 import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_NanochipAssemblyComplex;
+import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_VacuumConveyorPipe;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Input;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Output;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.AssemblyMatrix;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_Hatch_DegasifierControlHatch;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_LensHousing;
@@ -4262,6 +4269,24 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "hatch.lensindicator",
                 "Lens Indicator Hatch",
                 8).getStackForm(1L));
+        ItemList.Hatch_VacuumConveyor_Input.set(
+            new GT_MetaTileEntity_Hatch_VacuumConveyor_Input(
+                HATCH_VACUUM_CONVEYOR_INPUT.ID,
+                "hatch.vacuumconveyor.input",
+                "Vacuum Conveyor Input Hatch",
+                GT_TooltipHandler.Tier.UEV.ordinal()).getStackForm(1));
+        ItemList.Hatch_VacuumConveyor_Output.set(
+            new GT_MetaTileEntity_Hatch_VacuumConveyor_Output(
+                HATCH_VACUUM_CONVEYOR_OUTPUT.ID,
+                "hatch.vacuumconveyor.output",
+                "Vacuum Conveyor Output Hatch",
+                GT_TooltipHandler.Tier.UEV.ordinal()).getStackForm(1));
+        ItemList.VacuumConveyorPipe.set(
+            new GT_MetaTileEntity_VacuumConveyorPipe(
+                VACUUM_CONVEYOR_PIPE.ID,
+                "pipe.vacuumconveyor",
+                "Vacuum Conveyor Pipe").getStackForm(1));
+
         generateWiresAndPipes();
     }
 
