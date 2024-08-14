@@ -300,7 +300,11 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
                 // Ensure that the color matches the expected color, since hatches can be recolored in between rebuilds
                 // of the hatch map
                 if (outputHatch.getBaseMetaTileEntity()
-                    .getColorization() != color) continue;
+                    .getColorization() != color) {
+                    // If the color did not match, we found an inconsistency in the hatch map, so fix it instead
+                    // of waiting for the next structure check
+                    vacuumConveyors.fixConsistency();
+                }
                 // Now we can route our components to this hatch
                 CircuitComponentPacket packet = new CircuitComponentPacket(component, amount);
                 // Merge with the already existing hatch contents
