@@ -6190,19 +6190,19 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 ItemList.Neutron_Reflector });
 
         GT_ModHandler.addCraftingRecipe(
-            ItemList.Generator_Plasma_IV.get(1L),
+            ItemList.Generator_Plasma_EV.get(1L),
             bitsd,
             new Object[] { "UCU", "FMF", aTextWireCoil, 'M', ItemList.Hull_LuV, 'F', ItemList.Field_Generator_HV, 'C',
                 OrePrefixes.circuit.get(Materials.IV), 'W', OrePrefixes.cableGt04.get(Materials.Tungsten), 'U',
                 OrePrefixes.stick.get(Materials.Plutonium241) });
         GT_ModHandler.addCraftingRecipe(
-            ItemList.Generator_Plasma_LuV.get(1L),
+            ItemList.Generator_Plasma_IV.get(1L),
             bitsd,
             new Object[] { "UCU", "FMF", aTextWireCoil, 'M', ItemList.Hull_ZPM, 'F', ItemList.Field_Generator_EV, 'C',
                 OrePrefixes.circuit.get(Materials.LuV), 'W', OrePrefixes.wireGt04.get(Materials.VanadiumGallium), 'U',
                 OrePrefixes.stick.get(Materials.Europium) });
         GT_ModHandler.addCraftingRecipe(
-            ItemList.Generator_Plasma_ZPMV.get(1L),
+            ItemList.Generator_Plasma_LuV.get(1L),
             bitsd,
             new Object[] { "UCU", "FMF", aTextWireCoil, 'M', ItemList.Hull_UV, 'F', ItemList.Field_Generator_IV, 'C',
                 OrePrefixes.circuit.get(Materials.ZPM), 'W', OrePrefixes.wireGt04.get(Materials.Naquadah), 'U',

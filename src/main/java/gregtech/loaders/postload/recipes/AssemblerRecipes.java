@@ -3983,7 +3983,7 @@ public class AssemblerRecipes implements Runnable {
         {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Hull_MAX.get(1), ItemList.Super_Tank_MV.get(1), GT_Utility.getIntegratedCircuit(1))
-                .itemOutputs(ItemList.Hatch_Input_MAX.get(1))
+                .itemOutputs(ItemList.Hatch_Input_UHV.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(16 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
@@ -4278,7 +4278,7 @@ public class AssemblerRecipes implements Runnable {
         {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Hull_MAX.get(1), ItemList.Super_Tank_MV.get(1), GT_Utility.getIntegratedCircuit(2))
-                .itemOutputs(ItemList.Hatch_Output_MAX.get(1))
+                .itemOutputs(ItemList.Hatch_Output_UHV.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(16 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)

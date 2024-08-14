@@ -141,11 +141,16 @@ import static gregtech.api.enums.MetaTileEntityIDs.HULL_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.HULL_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.HULL_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.HULL_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.HULL_MAX;
 import static gregtech.api.enums.MetaTileEntityIDs.HULL_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.HULL_STEEL;
+import static gregtech.api.enums.MetaTileEntityIDs.HULL_UEV;
 import static gregtech.api.enums.MetaTileEntityIDs.HULL_UHV;
+import static gregtech.api.enums.MetaTileEntityIDs.HULL_UIV;
 import static gregtech.api.enums.MetaTileEntityIDs.HULL_ULV;
+import static gregtech.api.enums.MetaTileEntityIDs.HULL_UMV;
 import static gregtech.api.enums.MetaTileEntityIDs.HULL_UV;
+import static gregtech.api.enums.MetaTileEntityIDs.HULL_UXV;
 import static gregtech.api.enums.MetaTileEntityIDs.HULL_WROUGHT_IRON;
 import static gregtech.api.enums.MetaTileEntityIDs.HULL_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.IMPLOSION_COMPRESSOR_CONTROLLER;
@@ -313,9 +318,9 @@ import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.PCB_FACTORY_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.PROCESSING_ARRAY_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_HV;
@@ -2120,6 +2125,46 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hull_MAX.set(
             new GT_MetaTileEntity_BasicHull(HULL_UHV.ID, "hull.tier.09", "UHV Machine Hull", 9, imagination)
                 .getStackForm(1L));
+
+        ItemList.Hull_UEV.set(
+            new GT_MetaTileEntity_BasicHull(
+                HULL_UEV.ID,
+                "hull.tier.10",
+                "UEV Machine Hull",
+                10,
+                GT_Loader_MetaTileEntities.imagination).getStackForm(1L));
+
+        ItemList.Hull_UIV.set(
+            new GT_MetaTileEntity_BasicHull(
+                HULL_UIV.ID,
+                "hull.tier.11",
+                "UIV Machine Hull",
+                11,
+                GT_Loader_MetaTileEntities.imagination).getStackForm(1L));
+
+        ItemList.Hull_UMV.set(
+            new GT_MetaTileEntity_BasicHull(
+                HULL_UMV.ID,
+                "hull.tier.12",
+                "UMV Machine Hull",
+                12,
+                GT_Loader_MetaTileEntities.imagination).getStackForm(1L));
+
+        ItemList.Hull_UXV.set(
+            new GT_MetaTileEntity_BasicHull(
+                HULL_UXV.ID,
+                "hull.tier.13",
+                "UXV Machine Hull",
+                13,
+                GT_Loader_MetaTileEntities.imagination).getStackForm(1L));
+
+        ItemList.Hull_MAXV.set(
+            new GT_MetaTileEntity_BasicHull(
+                HULL_MAX.ID,
+                "hull.tier.14",
+                "MAX Machine Hull",
+                14,
+                GT_Loader_MetaTileEntities.imagination).getStackForm(1L));
     }
 
     private static void registerTransformer() {
@@ -2282,7 +2327,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Input_UV.set(
             new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UV.ID, "hatch.input.tier.08", "Input Hatch (UV)", 8)
                 .getStackForm(1L));
-        ItemList.Hatch_Input_MAX.set(
+        ItemList.Hatch_Input_UHV.set(
             new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UHV.ID, "hatch.input.tier.09", "Input Hatch (UHV)", 9)
                 .getStackForm(1L));
     }
@@ -2395,7 +2440,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Output_UV.set(
             new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UV.ID, "hatch.output.tier.08", "Output Hatch (UV)", 8)
                 .getStackForm(1L));
-        ItemList.Hatch_Output_MAX.set(
+        ItemList.Hatch_Output_UHV.set(
             new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UHV.ID, "hatch.output.tier.09", "Output Hatch (UHV)", 9)
                 .getStackForm(1L));
     }
@@ -3449,21 +3494,21 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void registerPlasmaGenerators() {
-        ItemList.Generator_Plasma_IV.set(
+        ItemList.Generator_Plasma_EV.set(
             new GT_MetaTileEntity_PlasmaGenerator(
-                PLASMA_GENERATOR_IV.ID,
+                PLASMA_GENERATOR_EV.ID,
                 "basicgenerator.plasmagenerator.tier.05",
                 "Plasma Generator Mark I",
                 4).getStackForm(1L));
-        ItemList.Generator_Plasma_LuV.set(
+        ItemList.Generator_Plasma_IV.set(
             new GT_MetaTileEntity_PlasmaGenerator(
-                PLASMA_GENERATOR_LuV.ID,
+                PLASMA_GENERATOR_IV.ID,
                 "basicgenerator.plasmagenerator.tier.06",
                 "Plasma Generator Mark II",
                 5).getStackForm(1L));
-        ItemList.Generator_Plasma_ZPMV.set(
+        ItemList.Generator_Plasma_LuV.set(
             new GT_MetaTileEntity_PlasmaGenerator(
-                PLASMA_GENERATOR_ZPM.ID,
+                PLASMA_GENERATOR_LuV.ID,
                 "basicgenerator.plasmagenerator.tier.07",
                 "Plasma Generator Mark III",
                 6).getStackForm(1L));
