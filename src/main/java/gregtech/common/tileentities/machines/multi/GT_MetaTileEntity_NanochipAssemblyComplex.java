@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
@@ -10,7 +11,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -23,6 +27,33 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_NanochipAssemblyComplex>
     implements ISurvivalConstructable {
 
+    public static final String STRUCTURE_PIECE_MAIN = "main";
+    public static final int STRUCTURE_OFFSET_X = 6;
+    public static final int STRUCTURE_OFFSET_Y = 1;
+    public static final int STRUCTURE_OFFSET_Z = 6;
+
+    public static final String[][] structure = new String[][] {
+        { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
+        { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
+        { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
+        { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
+        { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
+        { "     AAA     ", "     ACA     ", "     AAA     ", "BBBBBBBBBBBBB" },
+        { "     AAA     ", "     A A     ", "     AAA     ", "BBBBBBBBBBBBB" },
+        { "     AAA     ", "     AAA     ", "     AAA     ", "BBBBBBBBBBBBB" },
+        { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
+        { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
+        { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
+        { " A    A    A ", " A    A    A ", " A    A    A ", "BBBBBBBBBBBBB" },
+        { " A    A    A ", " A    A    A ", " A    A    A ", "BBBBBBBBBBBBB" } };
+
+    public static final IStructureDefinition<GT_MetaTileEntity_NanochipAssemblyComplex> STRUCTURE_DEFINITION = StructureDefinition
+        .<GT_MetaTileEntity_NanochipAssemblyComplex>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings4, 0))
+        .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 10))
+        .build();
+
     public GT_MetaTileEntity_NanochipAssemblyComplex(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -32,13 +63,38 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
     }
 
     @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
+    public void construct(ItemStack trigger, boolean hintsOnly) {
+        buildPiece(
+            STRUCTURE_PIECE_MAIN,
+            trigger,
+            hintsOnly,
+            STRUCTURE_OFFSET_X,
+            STRUCTURE_OFFSET_Y,
+            STRUCTURE_OFFSET_Z);
+    }
 
+    @Override
+    public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
+        return survivialBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            trigger,
+            STRUCTURE_OFFSET_X,
+            STRUCTURE_OFFSET_Y,
+            STRUCTURE_OFFSET_Z,
+            elementBudget,
+            env,
+            false,
+            true);
+    }
+
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        return checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z);
     }
 
     @Override
     public IStructureDefinition<GT_MetaTileEntity_NanochipAssemblyComplex> getStructureDefinition() {
-        return null;
+        return STRUCTURE_DEFINITION;
     }
 
     @Override
@@ -79,11 +135,6 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return true;
     }
 
