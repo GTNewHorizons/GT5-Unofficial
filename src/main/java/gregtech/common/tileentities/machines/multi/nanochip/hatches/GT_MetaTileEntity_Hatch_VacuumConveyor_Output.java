@@ -2,8 +2,6 @@ package gregtech.common.tileentities.machines.multi.nanochip.hatches;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.github.technus.tectech.util.TT_Utility;
-
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -15,7 +13,6 @@ public class GT_MetaTileEntity_Hatch_VacuumConveyor_Output extends GT_MetaTileEn
 
     public GT_MetaTileEntity_Hatch_VacuumConveyor_Output(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, new String[] {});
-        TT_Utility.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_Hatch_VacuumConveyor_Output(String aName, int aTier, String[] aDescription,
@@ -54,13 +51,14 @@ public class GT_MetaTileEntity_Hatch_VacuumConveyor_Output extends GT_MetaTileEn
         int range = 0;
         while ((next = current.getNext(source)) != null && range++ < 1000) {
             if (next instanceof GT_MetaTileEntity_Hatch_VacuumConveyor_Input) {
-                ((GT_MetaTileEntity_Hatch_VacuumConveyor_Input) next).acceptInputs(contents);
+                ((GT_MetaTileEntity_Hatch_VacuumConveyor_Input) next).unifyPacket(contents);
+                // Only clear contents if we actually moved the packet
+                contents = null;
                 break;
             }
             source = current;
             current = next;
         }
-        contents = null;
     }
 
     @Override
