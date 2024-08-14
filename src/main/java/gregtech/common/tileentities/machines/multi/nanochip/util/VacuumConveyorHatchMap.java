@@ -44,6 +44,7 @@ public class VacuumConveyorHatchMap {
         // For each valid color, check all entries in the map by that color to ensure they still have their color
         for (byte color = 0; color < 16; ++color) {
             ArrayList<GT_MetaTileEntity_Hatch_VacuumConveyor> hatches = findColoredHatches(color);
+            if (hatches == null) continue;
             final byte finalColor = color;
             hatches.removeIf(hatch -> {
                 byte realColor = hatch.getColorization();
