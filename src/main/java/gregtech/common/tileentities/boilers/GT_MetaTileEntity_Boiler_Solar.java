@@ -15,13 +15,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -277,25 +276,13 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    protected IDrawable[] getFuelSlotBackground() {
-        return new IDrawable[] { GT_UITextures.TRANSPARENT };
-    }
-
-    @Override
-    protected IDrawable[] getAshSlotBackground() {
-        return new IDrawable[] { GT_UITextures.TRANSPARENT };
-    }
-
-    @Override
-    protected SlotWidget createFuelSlot() {
-        // todo: remove this slot after some time
-        return super.createFuelSlot().setAccess(true, false);
+    protected Widget createFuelSlot() {
+        return null;
     }
 
     @Override
     protected SlotWidget createAshSlot() {
-        // todo: remove this slot after some time
-        return super.createAshSlot().setAccess(true, false);
+        return null;
     }
 
     @Override
