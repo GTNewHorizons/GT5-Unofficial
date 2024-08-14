@@ -483,7 +483,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
-import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.GT_Mod;
@@ -563,6 +562,7 @@ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Replicator;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_RockBreaker;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Scanner;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Teleporter;
+import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineItem;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_AssemblyLine;

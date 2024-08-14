@@ -1,7 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;

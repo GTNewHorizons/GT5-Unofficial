@@ -172,7 +172,8 @@ public class Research {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 256),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 128))) });
         ItemStack broad = new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6);
-        if (NewHorizonsCoreMod.isModLoaded()) broad = GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ArcaneSlate", 1);
+        if (NewHorizonsCoreMod.isModLoaded())
+            broad = GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ArcaneSlate", 1);
         GregTech_API.sThaumcraftCompat.addResearch(
             "ESSENTIA_UPGRADE_BLANK",
             "Upgrade your generator",
@@ -316,7 +317,8 @@ public class Research {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.TELUM, 128))),
                 "research.ESSENTIA_UPGRADE_UNSTABLE.page.1", "research.ESSENTIA_UPGRADE_UNSTABLE.page.2" });
         ItemStack meatDust = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MeatRaw, 1);
-        if (NewHorizonsCoreMod.isModLoaded()) meatDust = GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "GTNHBioItems", 1, 2);
+        if (NewHorizonsCoreMod.isModLoaded())
+            meatDust = GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "GTNHBioItems", 1, 2);
         GregTech_API.sThaumcraftCompat.addResearch(
             "ESSENTIA_UPGRADE_VICTUS",
             "Essentia: VICTUS",
