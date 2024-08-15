@@ -9,6 +9,7 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.LNG_BASIC_OUTPUT;
 import static gregtech.api.util.GT_RecipeConstants.NFR_COIL_TIER;
+import static gtPlusPlus.core.material.ELEMENT.STANDALONE.CHRONOMATIC_GLASS;
 
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -75,7 +76,7 @@ public class FuelRecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 8),
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "itemDustChromaticGlass", 9),
+                CHRONOMATIC_GLASS.getDust(9),
                 ItemRefer.High_Density_Uranium.get(2),
                 ItemRefer.High_Density_Plutonium.get(1))
             .fluidInputs(

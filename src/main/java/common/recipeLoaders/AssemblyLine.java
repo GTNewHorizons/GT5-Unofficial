@@ -13,6 +13,7 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
+import static gtPlusPlus.core.material.ELEMENT.STANDALONE.HYPOGEN;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -113,7 +114,7 @@ public class AssemblyLine implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 6),
                 GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 3),
                 ItemList.EnergisedTesseract.get(1),
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "itemRotorHypogen", 6),
+                HYPOGEN.getRotor(6),
                 ItemList.Field_Generator_UHV.get(16),
                 ItemList.Field_Generator_UEV.get(4),
                 new ItemStack(huiCircuit, 4, 3),

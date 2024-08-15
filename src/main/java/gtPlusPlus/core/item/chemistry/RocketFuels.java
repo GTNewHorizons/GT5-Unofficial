@@ -538,8 +538,7 @@ public class RocketFuels extends ItemPackage {
             }
         }
 
-        Formaldehyde = FluidUtils
-            .generateFluidNonMolten("Formaldehyde", "Formaldehyde", 185, new short[] { 150, 75, 150, 100 }, null, null);
+        Formaldehyde = FluidUtils.generateFluidNonMolten("Formaldehyde", "Formaldehyde", 185, new short[] { 150, 75, 150, 100 }, null, null);
 
         Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide = FluidUtils.generateFluidNonMolten(
             "RocketFuelMixA",

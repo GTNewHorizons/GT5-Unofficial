@@ -12,6 +12,7 @@ import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
 import static gregtech.api.util.GT_RecipeConstants.NANO_FORGE_TIER;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
+import static gtPlusPlus.core.block.ModBlocks.blockCompressedObsidian;
 
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
@@ -128,7 +129,7 @@ public class GT_NaniteChain {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 aUEVTierLens,
-                getModItem(GTPlusPlus.ID, "blockCompressedObsidian", 8, 7), // Double compressed glowstone blocks (yes,
+                new ItemStack(blockCompressedObsidian, 8, 7), // Double compressed glowstone blocks (yes,
                                                                             // it's not obsidian)
                 ItemList.Circuit_Chip_SoC2.get(64))
             .itemOutputs(Materials.Glowstone.getNanite(64))

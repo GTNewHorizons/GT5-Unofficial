@@ -2,6 +2,8 @@ package common.recipeLoaders;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gtPlusPlus.core.material.ELEMENT.STANDALONE.DRAGON_METAL;
+import static gtPlusPlus.core.material.ELEMENT.STANDALONE.HYPOGEN;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -61,8 +63,8 @@ public class ResearchableAssemblyLine implements Runnable {
             32,
             new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 4),
                 GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.TranscendentMetal, 24),
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "itemPlateDoubleHypogen", 32),
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "itemPlateDoubleHypogen", 32),
+                HYPOGEN.getPlateDouble(32),
+                HYPOGEN.getPlateDouble(32),
                 new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
                 new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
                 new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
@@ -88,8 +90,8 @@ public class ResearchableAssemblyLine implements Runnable {
             64,
             new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 4),
                 GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.SpaceTime, 24),
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "itemPlateDoubleDragonblood", 32),
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "itemPlateDoubleDragonblood", 32),
+                DRAGON_METAL.getPlateDouble(32),
+                DRAGON_METAL.getPlateDouble(32),
                 new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },
                 new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },
                 new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },

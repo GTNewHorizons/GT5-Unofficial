@@ -8,6 +8,9 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
+import static gtPlusPlus.core.material.ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN;
+import static gtPlusPlus.core.material.ELEMENT.STANDALONE.CHRONOMATIC_GLASS;
+import static gtPlusPlus.core.material.ELEMENT.STANDALONE.HYPOGEN;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +81,7 @@ public class GT_PCBFactoryRecipes {
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "blockFrameGtCelestialTungsten", 1),
+                CELESTIAL_TUNGSTEN.getFrameBox(1),
                 Materials.get("Quantum")
                     .getPlates(6))
             .itemOutputs(ItemList.RadiationProofPhotolithographicFrameworkCasing.get(1))
@@ -87,7 +90,7 @@ public class GT_PCBFactoryRecipes {
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "blockFrameGtHypogen", 1),
+                HYPOGEN.getFrameBox(1),
                 GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Infinity, 2),
                 Materials.Thulium.getPlates(6))
             .itemOutputs(ItemList.InfinityCooledCasing.get(1))
@@ -616,8 +619,7 @@ public class GT_PCBFactoryRecipes {
                         10106),
                     GT_OreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
-                    GT_ModHandler
-                        .getModItem(GTPlusPlus.ID, "itemFoilChromaticGlass", (long) (16 * (Math.sqrt(tier - 6)))))
+                    CHRONOMATIC_GLASS.getFoil((int)(16 * (Math.sqrt(tier - 6)))))
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
                     Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),
@@ -648,8 +650,7 @@ public class GT_PCBFactoryRecipes {
                         10106),
                     GT_OreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
-                    GT_ModHandler
-                        .getModItem(GTPlusPlus.ID, "itemFoilChromaticGlass", (long) (16 * (Math.sqrt(tier - 6)))))
+                    CHRONOMATIC_GLASS.getFoil((int)(16 * (Math.sqrt(tier - 6)))))
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
                     Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),
@@ -680,8 +681,7 @@ public class GT_PCBFactoryRecipes {
                         10106),
                     GT_OreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
-                    GT_ModHandler
-                        .getModItem(GTPlusPlus.ID, "itemFoilChromaticGlass", (long) (16 * (Math.sqrt(tier - 6)))))
+                    CHRONOMATIC_GLASS.getFoil((int)(16 * (Math.sqrt(tier - 6)))))
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
                     Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),

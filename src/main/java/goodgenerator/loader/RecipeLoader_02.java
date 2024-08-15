@@ -1514,9 +1514,9 @@ public class RecipeLoader_02 {
         // Compact MK4 Fusion Coil
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "gtplusplus.blockcasings.3", 3, 13),
+                GregtechItemList.Casing_Fusion_Internal.get(3),
                 ItemRefer.HiC_T5.get(1),
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "item.itemBufferCore4", 1))
+                CI.getEnergyCore(4, 1))
             .itemOutputs(ItemRefer.Compact_Fusion_Coil_T3.get(1))
             .fluidInputs(
                 FluidRegistry.getFluidStack("molten.energycrystal", 1152),

@@ -27,6 +27,7 @@ import static gregtech.api.util.GT_RecipeBuilder.QUARTER_INGOT;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.solderingMats;
+import static gtPlusPlus.core.material.ALLOY.INCONEL_690;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -6659,7 +6660,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 ItemList.Electric_Pump_EV.get(4),
                 ItemList.Field_Generator_EV.get(4),
-                getModItem(GTPlusPlus.ID, "itemPlateInconel690", 4),
+                INCONEL_690.getPlate(4),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Titanium, 16),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.BorosilicateGlass, 16),
                 GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2),
