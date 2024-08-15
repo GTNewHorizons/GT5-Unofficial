@@ -14,5 +14,5 @@ jobs:
         uses: actions/checkout@v4
       - name: Detect scala presence
         shell: bash
-        run: ! grep -E -r 'import scala.' src/main/java
+        run: ! grep -E -r 'import scala\.' src/main/java
 
