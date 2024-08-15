@@ -41,6 +41,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
+import goodgenerator.loader.Loaders;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.GT_Values;
@@ -175,7 +176,7 @@ public class GT_MetaTileEntity_Crystalizer
         "         ",
         "   H~H   ",
         "   HHH   "
-    },{
+    }, {
         "         ",
         "         ",
         "         ",
@@ -188,7 +189,7 @@ public class GT_MetaTileEntity_Crystalizer
         "         ",
         "   HHH   ",
         "   HHH   "
-    },{
+    }, {
         "         ",
         "         ",
         "         ",
@@ -201,7 +202,7 @@ public class GT_MetaTileEntity_Crystalizer
         "         ",
         "    B    ",
         "  GGGGG  "
-    },{
+    }, {
         "         ",
         "         ",
         "    A    ",
@@ -214,7 +215,7 @@ public class GT_MetaTileEntity_Crystalizer
         "    B    ",
         "         ",
         " GGGGGGG "
-    },{
+    }, {
         "         ",
         "   AAA   ",
         "  AACAA  ",
@@ -227,7 +228,7 @@ public class GT_MetaTileEntity_Crystalizer
         "         ",
         "         ",
         "GGGGGGGGG"
-    },{
+    }, {
         "   AAA   ",
         "  ACCCA  ",
         "  A   A  ",
@@ -240,7 +241,7 @@ public class GT_MetaTileEntity_Crystalizer
         "   FFF   ",
         "   EEE   ",
         "GGGGGGGGG"
-    },{
+    }, {
         "   AAA   ",
         "  ACCCA  ",
         " AC   CA ",
@@ -253,7 +254,7 @@ public class GT_MetaTileEntity_Crystalizer
         " B FFF B ",
         "B  EEE  B",
         "GGGGGGGGG"
-    },{
+    }, {
         "   AAA   ",
         "  ACCCA  ",
         "  A   A  ",
@@ -266,7 +267,7 @@ public class GT_MetaTileEntity_Crystalizer
         "   FFF   ",
         "   EEE   ",
         "GGGGGGGGG"
-    },{
+    }, {
         "         ",
         "   AAA   ",
         "  AACAA  ",
@@ -279,7 +280,7 @@ public class GT_MetaTileEntity_Crystalizer
         "         ",
         "         ",
         "GGGGGGGGG"
-    },{
+    }, {
         "         ",
         "         ",
         "    A    ",
@@ -292,7 +293,7 @@ public class GT_MetaTileEntity_Crystalizer
         "    B    ",
         "         ",
         " GGGGGGG "
-    },{
+    }, {
         "         ",
         "         ",
         "         ",
@@ -469,6 +470,25 @@ public class GT_MetaTileEntity_Crystalizer
                 new FluidStack(ALLOY.PIKYONIUM.getFluid(), 2304))
             .duration(30 * SECONDS)
             .eut((int) TierEU.RECIPE_UHV)
+            .addTo(AssemblyLine);
+
+        // UHV
+        GT_Values.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.Casing_ContainmentFieldUV.get(1))
+            .metadata(RESEARCH_TIME, 4 * HOURS)
+            .itemInputs(
+                CustomItemList.eM_Hollow.get(4),
+                ItemList.Field_Generator_UHV.get(8),
+                ItemList.Field_Generator_UV.get(16),
+                ItemList.Field_Generator_ZPM.get(64),
+                new ItemStack(Loaders.radiationProtectionPlate, 16),
+                CustomItemList.eM_Power.get(4),
+                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 6 },
+                new Object[] { OrePrefixes.wireGt04.get(Materials.SuperconductorUHV), 2 })
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("molten.mutatedlivingsolder"), 4608))
+            .itemOutputs(CustomItemList.eM_Containment_Field.get(4))
+            .duration(60)
+            .eut(TierEU.UHV)
             .addTo(AssemblyLine);
 
         // UEV+
