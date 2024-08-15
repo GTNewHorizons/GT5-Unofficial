@@ -1,7 +1,6 @@
 package gregtech.api.recipe;
 
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NEICustomDiagrams;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
@@ -85,6 +84,7 @@ import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
+import gtPlusPlus.core.item.ModItems;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
 
@@ -673,8 +673,8 @@ public final class RecipeMaps {
                     .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount / 2))
                     .setDuration(aDuration * 2 / 3);
             }
-            ItemStack cactusCoke = GT_ModHandler.getModItem(GTPlusPlus.ID, "itemCactusCoke", aCoalAmount * 2L);
-            ItemStack sugarCoke = GT_ModHandler.getModItem(GTPlusPlus.ID, "itemSugarCoke", aCoalAmount * 2L);
+            ItemStack cactusCoke = new ItemStack(ModItems.itemCactusCoke, aCoalAmount * 2);
+            ItemStack sugarCoke = new ItemStack(ModItems.itemSugarCoke, aCoalAmount * 2);
             coll.derive()
                 .setInputs(aInput1, aInput2, cactusCoke)
                 .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2))
