@@ -36,9 +36,9 @@ public class Crafting implements Runnable {
         // SOFC Controller mk2
         final Object[] mk2_recipe = { "CCC", "PHP", "FBL", 'C', OrePrefixes.circuit.get(Materials.LuV), 'P',
             ItemList.Electric_Pump_IV.get(1L), 'H', ItemList.Hull_IV.get(1L), 'F',
-            GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.ZPM, 1), 'B',
+            GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Ultimate, 1), 'B',
             Util.getStackofAmountFromOreDict("wireGt04SuperconductorEV", 1), 'L',
-            GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.ZPM, 1) };
+            GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 1) };
         GT_ModHandler.addCraftingRecipe(TileEntities.sofc2.getStackForm(1), mk2_recipe);
 
         // LSC Controller

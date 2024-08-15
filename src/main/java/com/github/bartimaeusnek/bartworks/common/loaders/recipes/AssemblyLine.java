@@ -34,7 +34,7 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_TIME, 1 * HOURS)
             .itemInputs(
                 ItemList.Pump_IV.get(16),
-                GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.ZPM, 32L),
+                GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 32L),
                 GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.HSSE, 16L),
                 GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.HSSE, 16L),
                 ItemList.Field_Generator_LuV.get(8))
