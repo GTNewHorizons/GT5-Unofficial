@@ -14,17 +14,14 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import gregtech.api.util.GT_Recipe;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -321,7 +318,8 @@ public class GT_PostLoad {
                 .ignoreCollision()
                 .noOptimize()
                 .fake()
-                .build().get();
+                .build()
+                .get();
 
             massFabFakeRecipes.add(GT_MetaTileEntity_Massfabricator.nonUUARecipe);
 
@@ -337,7 +335,8 @@ public class GT_PostLoad {
             .ignoreCollision()
             .noOptimize()
             .fake()
-            .build().get();
+            .build()
+            .get();
 
         massFabFakeRecipes.add(GT_MetaTileEntity_Massfabricator.uuaRecipe);
 
