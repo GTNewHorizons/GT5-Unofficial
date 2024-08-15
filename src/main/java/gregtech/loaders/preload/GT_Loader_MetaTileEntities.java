@@ -3408,7 +3408,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void generateWiresAndPipes() {
-
         for (int meta = 0; meta < GregTech_API.sGeneratedMaterials.length; meta++) {
             Materials material = GregTech_API.sGeneratedMaterials[meta];
             if (((GregTech_API.sGeneratedMaterials[meta] != null)
