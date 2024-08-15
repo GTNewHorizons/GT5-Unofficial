@@ -15,6 +15,7 @@ import static gtPlusPlus.core.material.MISC_MATERIALS.CALCIUM_CHLORIDE;
 import static gtPlusPlus.core.material.MISC_MATERIALS.SODIUM_NITRATE;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.item.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -3747,8 +3748,9 @@ public class ChemicalRecipes implements Runnable {
         // 4CH2O + C2H4O =NaOH= C5H12O4 + CO
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                getModItem(GTPlusPlus.ID, "Formaldehyde", 4),
+            .itemInputs(  // very poor way of looking for it, but getModItem on GT++ within GT5U jar is prohibited now,
+                // and i don't feel like reworking GT++ cell registration for now
+                GameRegistry.findItemStack(GTPlusPlus.ID, "Formaldehyde", 4),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1))
             .itemOutputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.Pentaerythritol, 21),
