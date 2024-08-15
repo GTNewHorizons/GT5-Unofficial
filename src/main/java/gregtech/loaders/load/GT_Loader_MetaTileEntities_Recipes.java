@@ -6640,8 +6640,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             | GT_ModHandler.RecipeBits.REVERSIBLE
             | GT_ModHandler.RecipeBits.BUFFERED;
 
-        boolean bEC = !GT_Mod.gregtechproxy.mHardcoreCables;
-
         if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
             GT_ModHandler.addCraftingRecipe(
                 GT_ModHandler.getIC2Item("copperCableItem", 2L),

@@ -543,7 +543,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     private final DateFormat mDateFormat = DateFormat.getInstance();
     public final BlockingQueue<String> mBufferedPlayerActivity = new LinkedBlockingQueue<>();
     public final GT_BlockMap<Boolean> mCTMBlockCache = new GT_BlockMap<>();
-    public boolean mHardcoreCables = false;
     public boolean mDisableVanillaOres = true;
     public boolean mHardMachineCasings = true;
     public boolean mAllowSmallBoilerAutomation = false;
