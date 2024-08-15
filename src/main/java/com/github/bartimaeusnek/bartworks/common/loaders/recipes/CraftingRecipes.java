@@ -1,5 +1,33 @@
 package com.github.bartimaeusnek.bartworks.common.loaders.recipes;
 
+import static gregtech.api.enums.MetaTileEntityIDs.BioLab_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.BioLab_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.BioLab_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.BioLab_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.BioLab_MAX;
+import static gregtech.api.enums.MetaTileEntityIDs.BioLab_UEV;
+import static gregtech.api.enums.MetaTileEntityIDs.BioLab_UHV;
+import static gregtech.api.enums.MetaTileEntityIDs.BioLab_UIV;
+import static gregtech.api.enums.MetaTileEntityIDs.BioLab_UMV;
+import static gregtech.api.enums.MetaTileEntityIDs.BioLab_UV;
+import static gregtech.api.enums.MetaTileEntityIDs.BioLab_UXV;
+import static gregtech.api.enums.MetaTileEntityIDs.BioLab_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.BioVat;
+import static gregtech.api.enums.MetaTileEntityIDs.LESU;
+import static gregtech.api.enums.MetaTileEntityIDs.ManualTrafo;
+import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_MAX;
+import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_UEV;
+import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_UHV;
+import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_UIV;
+import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_UMV;
+import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_UV;
+import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_UXV;
+import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.Windmill;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 
 import net.minecraft.init.Blocks;
@@ -68,7 +96,7 @@ public class CraftingRecipes implements Runnable {
             ItemList.Machine_EV_ChemicalReactor.get(1L) };
 
         GT_ModHandler.addCraftingRecipe(
-            new GT_TileEntity_LESU(ConfigHandler.IDOffset, "LESU", "L.E.S.U.").getStackForm(1L),
+            new GT_TileEntity_LESU(LESU.ID, "LESU", "L.E.S.U.").getStackForm(1L),
             RecipeLoader.BITSD,
             new Object[] { "CDC", "SBS", "CFC", 'C', "circuitAdvanced", 'D', ItemList.Cover_Screen.get(1L), 'S',
                 GT_OreDictUnificator.get(OrePrefixes.cableGt12, Materials.Platinum, 1L), 'B',
@@ -241,7 +269,7 @@ public class CraftingRecipes implements Runnable {
 
         GT_ModHandler.addCraftingRecipe(
             new GT_TileEntity_ManualTrafo(
-                ConfigHandler.IDOffset + GT_Values.VN.length * 6 + 1,
+                ManualTrafo.ID,
                 "bw.manualtrafo",
                 StatCollector.translateToLocal("tile.manutrafo.name")).getStackForm(1L),
             RecipeLoader.BITSD,
@@ -251,7 +279,7 @@ public class CraftingRecipes implements Runnable {
 
         GT_ModHandler.addCraftingRecipe(
             new GT_TileEntity_Windmill(
-                ConfigHandler.IDOffset + GT_Values.VN.length * 6 + 2,
+                Windmill.ID,
                 "bw.windmill",
                 StatCollector.translateToLocal("tile.bw.windmill.name")).getStackForm(1L),
             RecipeLoader.BITSD,
@@ -399,10 +427,8 @@ public class CraftingRecipes implements Runnable {
                 ItemList.Sensor_LuV.get(1L), 'P', WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 1), });
 
         GT_ModHandler.addCraftingRecipe(
-            new GT_TileEntity_BioVat(
-                ConfigHandler.IDOffset + GT_Values.VN.length * 7,
-                "bw.biovat",
-                StatCollector.translateToLocal("tile.biovat.name")).getStackForm(1L),
+            new GT_TileEntity_BioVat(BioVat.ID, "bw.biovat", StatCollector.translateToLocal("tile.biovat.name"))
+                .getStackForm(1L),
             RecipeLoader.BITSD,
             new Object[] { "GCG", "KHK", "GCG", 'G', new ItemStack(ItemRegistry.bw_glasses[0], 1, 1), 'C',
                 "circuit" + Materials.EV, 'K', GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Silver, 1L),
@@ -422,15 +448,20 @@ public class CraftingRecipes implements Runnable {
         Materials[] circuits2 = { Materials.HV, Materials.EV, Materials.IV, Materials.LuV, Materials.ZPM,
             Materials.UV };
 
+        int[] BioLab = new int[] { BioLab_HV.ID, BioLab_EV.ID, BioLab_IV.ID, BioLab_LuV.ID, BioLab_ZPM.ID, BioLab_UV.ID,
+            BioLab_UHV.ID, BioLab_UEV.ID, BioLab_UIV.ID, BioLab_UMV.ID, BioLab_UXV.ID, BioLab_MAX.ID };
+        int[] RadioHatch = new int[] { RadioHatch_HV.ID, RadioHatch_EV.ID, RadioHatch_IV.ID, RadioHatch_LuV.ID,
+            RadioHatch_ZPM.ID, RadioHatch_UV.ID, RadioHatch_UHV.ID, RadioHatch_UEV.ID, RadioHatch_UIV.ID,
+            RadioHatch_UMV.ID, RadioHatch_UXV.ID, RadioHatch_MAX.ID };
+
         for (int i = 3; i < GT_Values.VN.length - 1; i++) {
-            // 12625
             BioLab2[i - 3] = new GT_MetaTileEntity_BioLab(
-                ConfigHandler.IDOffset + GT_Values.VN.length * 6 + i,
+                BioLab[i - 3],
                 "bw.biolab" + GT_Values.VN[i],
                 GT_Values.VN[i] + " " + StatCollector.translateToLocal("tile.biolab.name"),
                 i).getStackForm(1L);
             RadioHatch2[i - 3] = new GT_MetaTileEntity_RadioHatch(
-                ConfigHandler.IDOffset + GT_Values.VN.length * 7 - 2 + i,
+                RadioHatch[i - 3],
                 "bw.radiohatch" + GT_Values.VN[i],
                 GT_Values.VN[i] + " " + StatCollector.translateToLocal("tile.radiohatch.name"),
                 i).getStackForm(1L);

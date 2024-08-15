@@ -351,15 +351,12 @@ public class GT_RecipeBuilder {
         if (DEBUG_MODE_FULL_ENERGY) {
             // Ignores ULV voltage
             for (int i = 1; i < GT_Values.VP.length; i++) {
-                if (eut <= GT_Values.V[i]) {
-                    if (eut > GT_Values.VP[i]) {
-                        GT_Log.err.println(
-                            "EUt > Practical Voltage detected. EUt: " + eut
-                                + ", Practical Voltage: "
-                                + GT_Values.VP[i]);
-                        new IllegalArgumentException().printStackTrace(GT_Log.err);
-                    }
-                } else break;
+                if (eut <= GT_Values.V[i] && eut > GT_Values.VP[i]) {
+                    GT_Log.err.println(
+                        "EUt > Practical Voltage detected. EUt: " + eut + ", Practical Voltage: " + GT_Values.VP[i]);
+                    new IllegalArgumentException().printStackTrace(GT_Log.err);
+                    break;
+                }
             }
         }
         this.eut = eut;
