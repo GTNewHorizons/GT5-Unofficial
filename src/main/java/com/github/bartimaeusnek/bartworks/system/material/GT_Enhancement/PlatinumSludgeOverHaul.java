@@ -57,7 +57,6 @@ import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Sodiumformate;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Sodiumsulfate;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.ZincSulfate;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.OrePrefixes.cell;
@@ -1081,10 +1080,12 @@ public class PlatinumSludgeOverHaul {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        if (stack.getItem() == HELICOPTER.getDust(1).getItem()) {
+        if (stack.getItem() == HELICOPTER.getDust(1)
+            .getItem()) {
             return true;
         }
-        if (stack.getItem() == WHITE_METAL.getDust(1).getItem()) {
+        if (stack.getItem() == WHITE_METAL.getDust(1)
+            .getItem()) {
             return true;
         }
         if (GalaxySpace.isModLoaded()) {

@@ -2,7 +2,6 @@ package gtPlusPlus.core.recipe;
 
 import static goodgenerator.loader.Loaders.supercriticalFluidTurbineCasing;
 import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.RemoteIO;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -20,7 +19,6 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.List;
 
-import goodgenerator.loader.Loaders;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -33,6 +31,7 @@ import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.google.common.collect.ImmutableList;
 
+import goodgenerator.loader.Loaders;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;

@@ -4,7 +4,6 @@ import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.naquadahFuelRefin
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.naquadahReactorFuels;
 import static goodgenerator.main.GG_Config_Loader.NaquadahFuelTime;
 import static goodgenerator.main.GG_Config_Loader.NaquadahFuelVoltage;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.LNG_BASIC_OUTPUT;
@@ -22,7 +21,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.material.ELEMENT;
 

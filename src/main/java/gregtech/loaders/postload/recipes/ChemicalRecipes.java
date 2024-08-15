@@ -15,8 +15,6 @@ import static gtPlusPlus.core.material.MISC_MATERIALS.CALCIUM_CHLORIDE;
 import static gtPlusPlus.core.material.MISC_MATERIALS.SODIUM_NITRATE;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.item.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -26,6 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -35,6 +34,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.item.ModItems;
 
 public class ChemicalRecipes implements Runnable {
 
@@ -3748,7 +3748,7 @@ public class ChemicalRecipes implements Runnable {
         // 4CH2O + C2H4O =NaOH= C5H12O4 + CO
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(  // very poor way of looking for it, but getModItem on GT++ within GT5U jar is prohibited now,
+            .itemInputs( // very poor way of looking for it, but getModItem on GT++ within GT5U jar is prohibited now,
                 // and i don't feel like reworking GT++ cell registration for now
                 GameRegistry.findItemStack(GTPlusPlus.ID, "Formaldehyde", 4),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1))
@@ -3795,9 +3795,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(
                 MaterialsKevlar.CobaltIINitrate.getDust(9),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 6))
-            .itemOutputs(
-                MaterialsKevlar.CobaltIIHydroxide.getDust(5),
-                SODIUM_NITRATE.getDust(10))
+            .itemOutputs(MaterialsKevlar.CobaltIIHydroxide.getDust(5), SODIUM_NITRATE.getDust(10))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(UniversalChemical);

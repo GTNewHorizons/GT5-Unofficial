@@ -4,7 +4,6 @@ import static goodgenerator.loader.Loaders.huiCircuit;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.UniversalSingularities;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;

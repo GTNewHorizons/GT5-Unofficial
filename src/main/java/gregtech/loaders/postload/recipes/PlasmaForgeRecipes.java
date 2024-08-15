@@ -1,15 +1,12 @@
 package gregtech.loaders.postload.recipes;
 
 import static goodgenerator.loader.Loaders.huiCircuit;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.plasmaForgeRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 
-import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
@@ -17,6 +14,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.TierEU;
+import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class PlasmaForgeRecipes implements Runnable {
 

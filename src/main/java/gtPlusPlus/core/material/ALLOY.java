@@ -31,7 +31,8 @@ public final class ALLOY {
         "⬟ ⯂ ⬢ ⬣ ⯃ ⯄",
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().AER, 5),
-        new MaterialStack(ELEMENT.getInstance().IGNIS, 5), new MaterialStack(ELEMENT.getInstance().TERRA, 5),
+        new MaterialStack(ELEMENT.getInstance().IGNIS, 5),
+        new MaterialStack(ELEMENT.getInstance().TERRA, 5),
         new MaterialStack(ELEMENT.getInstance().AQUA, 5));
 
     public static final Material BLOODSTEEL = new Material(
@@ -44,7 +45,8 @@ public final class ALLOY {
         100, // Neutrons
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack(ALLOY.STEEL, 5), new MaterialStack(ELEMENT.getInstance().IGNIS, 5));
+        new MaterialStack(ALLOY.STEEL, 5),
+        new MaterialStack(ELEMENT.getInstance().IGNIS, 5));
 
     public static final Material STABALLOY = new Material(
         "Staballoy", // Material Name
@@ -109,7 +111,8 @@ public final class ALLOY {
         -1,
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack(ELEMENT.getInstance().LEAD, 40), new MaterialStack(ALLOY.BRONZE, 40),
+        new MaterialStack(ELEMENT.getInstance().LEAD, 40),
+        new MaterialStack(ALLOY.BRONZE, 40),
         new MaterialStack(ELEMENT.getInstance().TIN, 20));
 
     /*
@@ -130,7 +133,8 @@ public final class ALLOY {
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().NICKEL, 3),
         new MaterialStack(ELEMENT.getInstance().CHROMIUM, 7),
-        new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 10), new MaterialStack(INVAR, 10),
+        new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 10),
+        new MaterialStack(INVAR, 10),
         new MaterialStack(NICHROME, 13));
 
     public static final Material INCONEL_690 = new Material(
@@ -145,7 +149,8 @@ public final class ALLOY {
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().CHROMIUM, 5),
         new MaterialStack(ELEMENT.getInstance().NIOBIUM, 10),
-        new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 10), new MaterialStack(NICHROME, 15));
+        new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 10),
+        new MaterialStack(NICHROME, 15));
 
     public static final Material INCONEL_792 = new Material(
         "Inconel-792", // Material Name
@@ -159,7 +164,8 @@ public final class ALLOY {
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().NICKEL, 20),
         new MaterialStack(ELEMENT.getInstance().NIOBIUM, 10),
-        new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 20), new MaterialStack(NICHROME, 10));
+        new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 20),
+        new MaterialStack(NICHROME, 10));
 
     public static final Material NITINOL_60 = new Material(
         "Nitinol 60", // Material Name
@@ -185,8 +191,10 @@ public final class ALLOY {
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().CHROMIUM, 26),
-        new MaterialStack(ELEMENT.getInstance().NICKEL, 6), new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 4),
-        new MaterialStack(ELEMENT.getInstance().COPPER, 20), new MaterialStack(ELEMENT.getInstance().TUNGSTEN, 4),
+        new MaterialStack(ELEMENT.getInstance().NICKEL, 6),
+        new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 4),
+        new MaterialStack(ELEMENT.getInstance().COPPER, 20),
+        new MaterialStack(ELEMENT.getInstance().TUNGSTEN, 4),
         new MaterialStack(ALLOY.STEEL, 40));
 
     public static final Material MARAGING250 = new Material(
@@ -201,7 +209,8 @@ public final class ALLOY {
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ALLOY.STEEL, 64),
         new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 4),
-        new MaterialStack(ELEMENT.getInstance().TITANIUM, 4), new MaterialStack(ELEMENT.getInstance().NICKEL, 16),
+        new MaterialStack(ELEMENT.getInstance().TITANIUM, 4),
+        new MaterialStack(ELEMENT.getInstance().NICKEL, 16),
         new MaterialStack(ELEMENT.getInstance().COBALT, 8));
 
     public static final Material MARAGING300 = new Material(
@@ -214,8 +223,10 @@ public final class ALLOY {
         -1,
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack(ALLOY.STEEL, 64), new MaterialStack(ELEMENT.getInstance().TITANIUM, 4),
-        new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 4), new MaterialStack(ELEMENT.getInstance().NICKEL, 16),
+        new MaterialStack(ALLOY.STEEL, 64),
+        new MaterialStack(ELEMENT.getInstance().TITANIUM, 4),
+        new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 4),
+        new MaterialStack(ELEMENT.getInstance().NICKEL, 16),
         new MaterialStack(ELEMENT.getInstance().COBALT, 8));
 
     public static final Material MARAGING350 = new Material(
@@ -228,8 +239,10 @@ public final class ALLOY {
         -1,
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack(ALLOY.STEEL, 64), new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 4),
-        new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 4), new MaterialStack(ELEMENT.getInstance().NICKEL, 16),
+        new MaterialStack(ALLOY.STEEL, 64),
+        new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 4),
+        new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 4),
+        new MaterialStack(ELEMENT.getInstance().NICKEL, 16),
         new MaterialStack(ELEMENT.getInstance().COBALT, 8));
 
     public static final Material AQUATIC_STEEL = new Material(
@@ -242,9 +255,12 @@ public final class ALLOY {
         -1,
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack(ALLOY.STEEL, 60), new MaterialStack(ELEMENT.getInstance().CARBON, 10),
-        new MaterialStack(ELEMENT.getInstance().MANGANESE, 5), new MaterialStack(ELEMENT.getInstance().SILICON, 10),
-        new MaterialStack(ELEMENT.getInstance().PHOSPHORUS, 5), new MaterialStack(ELEMENT.getInstance().SULFUR, 5),
+        new MaterialStack(ALLOY.STEEL, 60),
+        new MaterialStack(ELEMENT.getInstance().CARBON, 10),
+        new MaterialStack(ELEMENT.getInstance().MANGANESE, 5),
+        new MaterialStack(ELEMENT.getInstance().SILICON, 10),
+        new MaterialStack(ELEMENT.getInstance().PHOSPHORUS, 5),
+        new MaterialStack(ELEMENT.getInstance().SULFUR, 5),
         new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 5));
 
     public static final Material STELLITE = new Material(
@@ -288,7 +304,8 @@ public final class ALLOY {
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().IRON, 06),
-        new MaterialStack(ELEMENT.getInstance().COBALT, 2), new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 24),
+        new MaterialStack(ELEMENT.getInstance().COBALT, 2),
+        new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 24),
         new MaterialStack(ELEMENT.getInstance().CHROMIUM, 6),
         new MaterialStack(ELEMENT.getInstance().NICKEL, 62));
 
@@ -303,7 +320,8 @@ public final class ALLOY {
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().IRON, 18),
-        new MaterialStack(ELEMENT.getInstance().MANGANESE, 2), new MaterialStack(ELEMENT.getInstance().SILICON, 2),
+        new MaterialStack(ELEMENT.getInstance().MANGANESE, 2),
+        new MaterialStack(ELEMENT.getInstance().SILICON, 2),
         new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 8),
         new MaterialStack(ELEMENT.getInstance().CHROMIUM, 22),
         new MaterialStack(ELEMENT.getInstance().NICKEL, 48));
@@ -320,7 +338,8 @@ public final class ALLOY {
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().YTTRIUM, 8),
         new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 16),
-        new MaterialStack(ELEMENT.getInstance().CHROMIUM, 8), new MaterialStack(ELEMENT.getInstance().TITANIUM, 8),
+        new MaterialStack(ELEMENT.getInstance().CHROMIUM, 8),
+        new MaterialStack(ELEMENT.getInstance().TITANIUM, 8),
         new MaterialStack(ELEMENT.getInstance().NICKEL, 60));
 
     public static final Material HASTELLOY_C276 = new Material(
@@ -335,7 +354,8 @@ public final class ALLOY {
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().COBALT, 2),
         new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 16),
-        new MaterialStack(ELEMENT.getInstance().TUNGSTEN, 2), new MaterialStack(ELEMENT.getInstance().COPPER, 2),
+        new MaterialStack(ELEMENT.getInstance().TUNGSTEN, 2),
+        new MaterialStack(ELEMENT.getInstance().COPPER, 2),
         new MaterialStack(ELEMENT.getInstance().CHROMIUM, 14),
         new MaterialStack(ELEMENT.getInstance().NICKEL, 64));
 
@@ -350,7 +370,8 @@ public final class ALLOY {
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().IRON, 40),
-        new MaterialStack(ELEMENT.getInstance().COPPER, 4), new MaterialStack(ELEMENT.getInstance().CHROMIUM, 20),
+        new MaterialStack(ELEMENT.getInstance().COPPER, 4),
+        new MaterialStack(ELEMENT.getInstance().CHROMIUM, 20),
         new MaterialStack(ELEMENT.getInstance().NICKEL, 36));
 
     public static final Material INCOLOY_DS = new Material(
@@ -364,7 +385,8 @@ public final class ALLOY {
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().IRON, 46),
-        new MaterialStack(ELEMENT.getInstance().COBALT, 18), new MaterialStack(ELEMENT.getInstance().CHROMIUM, 18),
+        new MaterialStack(ELEMENT.getInstance().COBALT, 18),
+        new MaterialStack(ELEMENT.getInstance().CHROMIUM, 18),
         new MaterialStack(ELEMENT.getInstance().NICKEL, 18));
 
     public static final Material INCOLOY_MA956 = new Material(
@@ -472,7 +494,8 @@ public final class ALLOY {
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().THORIUM232, 40),
-        new MaterialStack(ENERGYCRYSTAL, 40), new MaterialStack(ELEMENT.getInstance().ORDO, 10),
+        new MaterialStack(ENERGYCRYSTAL, 40),
+        new MaterialStack(ELEMENT.getInstance().ORDO, 10),
         new MaterialStack(ELEMENT.getInstance().PERDITIO, 10));
 
     public static final Material LEAGRISIUM = new Material(
@@ -485,10 +508,12 @@ public final class ALLOY {
         128, // Neutrons
         true, // Uses Blast furnace?
         new MaterialStack(ELEMENT.getInstance().TITANIUM, 18),
-        new MaterialStack(ELEMENT.getInstance().CARBON, 18), new MaterialStack(ELEMENT.getInstance().POTASSIUM, 18),
-        new MaterialStack(ELEMENT.getInstance().LITHIUM, 18), new MaterialStack(ELEMENT.getInstance().SULFUR, 18),
+        new MaterialStack(ELEMENT.getInstance().CARBON, 18),
+        new MaterialStack(ELEMENT.getInstance().POTASSIUM, 18),
+        new MaterialStack(ELEMENT.getInstance().LITHIUM, 18),
+        new MaterialStack(ELEMENT.getInstance().SULFUR, 18),
         new MaterialStack(ELEMENT.getInstance().HYDROGEN, 10)); // Material Stacks with Percentage of
-                                                                      // required elements.
+                                                                // required elements.
 
     public static final Material EGLIN_STEEL_BASE = new Material(
         "Eglin Steel Base Compound", // Material Name
@@ -500,7 +525,8 @@ public final class ALLOY {
         -1,
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack(ELEMENT.getInstance().IRON, 12), new MaterialStack(KANTHAL, 3),
+        new MaterialStack(ELEMENT.getInstance().IRON, 12),
+        new MaterialStack(KANTHAL, 3),
         new MaterialStack(INVAR, 15));
 
     public static final Material EGLIN_STEEL = new Material(
@@ -514,7 +540,8 @@ public final class ALLOY {
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ALLOY.EGLIN_STEEL_BASE, 10),
-        new MaterialStack(ELEMENT.getInstance().SULFUR, 1), new MaterialStack(ELEMENT.getInstance().SILICON, 4),
+        new MaterialStack(ELEMENT.getInstance().SULFUR, 1),
+        new MaterialStack(ELEMENT.getInstance().SILICON, 4),
         new MaterialStack(ELEMENT.getInstance().CARBON, 1));
 
     public static final Material HG1223 = new Material(
@@ -527,8 +554,10 @@ public final class ALLOY {
         -1,
         false, // Uses Blast furnace?
         new MaterialStack(ELEMENT.getInstance().MERCURY, 1),
-        new MaterialStack(ELEMENT.getInstance().BARIUM, 2), new MaterialStack(ELEMENT.getInstance().CALCIUM, 2),
-        new MaterialStack(ELEMENT.getInstance().COPPER, 3), new MaterialStack(ELEMENT.getInstance().OXYGEN, 8));
+        new MaterialStack(ELEMENT.getInstance().BARIUM, 2),
+        new MaterialStack(ELEMENT.getInstance().CALCIUM, 2),
+        new MaterialStack(ELEMENT.getInstance().COPPER, 3),
+        new MaterialStack(ELEMENT.getInstance().OXYGEN, 8));
 
     public static final Material HS188A = new Material(
         "HS188-A", // Material Name
@@ -540,11 +569,14 @@ public final class ALLOY {
         -1, // Neutrons
         true, // Uses Blast furnace?
         new MaterialStack(ELEMENT.getInstance().COBALT, 20),
-        new MaterialStack(ELEMENT.getInstance().HAFNIUM, 20), new MaterialStack(TALONITE, 16),
-        new MaterialStack(ELEMENT.getInstance().RHENIUM, 10), new MaterialStack(NIOBIUM_CARBIDE, 10),
-        new MaterialStack(HASTELLOY_X, 8), new MaterialStack(TUNGSTENSTEEL, 8),
+        new MaterialStack(ELEMENT.getInstance().HAFNIUM, 20),
+        new MaterialStack(TALONITE, 16),
+        new MaterialStack(ELEMENT.getInstance().RHENIUM, 10),
+        new MaterialStack(NIOBIUM_CARBIDE, 10),
+        new MaterialStack(HASTELLOY_X, 8),
+        new MaterialStack(TUNGSTENSTEEL, 8),
         new MaterialStack(ZIRCONIUM_CARBIDE, 8)); // Material Stacks with Percentage of required
-                                                         // elements.
+                                                  // elements.
 
     /**
      * Stargate Materials - #D2FFA9 210, 255, 170
@@ -595,8 +627,10 @@ public final class ALLOY {
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().TRINIUM_REFINED, 30),
-        new MaterialStack(ALLOY.MARAGING350, 40), new MaterialStack(ALLOY.TUNGSTENSTEEL, 20),
-        new MaterialStack(ALLOY.OSMIRIDIUM, 10), new MaterialStack(ELEMENT.getInstance().STRONTIUM, 10));
+        new MaterialStack(ALLOY.MARAGING350, 40),
+        new MaterialStack(ALLOY.TUNGSTENSTEEL, 20),
+        new MaterialStack(ALLOY.OSMIRIDIUM, 10),
+        new MaterialStack(ELEMENT.getInstance().STRONTIUM, 10));
 
     /*
      * Witchery Material
@@ -613,7 +647,8 @@ public final class ALLOY {
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().NICKEL, 35),
-        new MaterialStack(ELEMENT.getInstance().THAUMIUM, 30), new MaterialStack(ELEMENT.getInstance().IRON, 35));
+        new MaterialStack(ELEMENT.getInstance().THAUMIUM, 30),
+        new MaterialStack(ELEMENT.getInstance().IRON, 35));
 
     /*
      * Top Tier Alloys
@@ -630,7 +665,8 @@ public final class ALLOY {
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().HELIUM, 20),
-        new MaterialStack(ELEMENT.getInstance().LITHIUM, 20), new MaterialStack(ELEMENT.getInstance().COBALT, 20),
+        new MaterialStack(ELEMENT.getInstance().LITHIUM, 20),
+        new MaterialStack(ELEMENT.getInstance().COBALT, 20),
         new MaterialStack(ELEMENT.getInstance().PLATINUM, 20),
         new MaterialStack(ELEMENT.getInstance().ERBIUM, 20));
 
@@ -646,9 +682,12 @@ public final class ALLOY {
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ALLOY.HASTELLOY_N, 8),
-        new MaterialStack(ELEMENT.getInstance().NAQUADAH, 4), new MaterialStack(ELEMENT.getInstance().SAMARIUM, 2),
-        new MaterialStack(ELEMENT.getInstance().TUNGSTEN, 4), new MaterialStack(ELEMENT.getInstance().ARGON, 2),
-        new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 6), new MaterialStack(ELEMENT.getInstance().NICKEL, 8),
+        new MaterialStack(ELEMENT.getInstance().NAQUADAH, 4),
+        new MaterialStack(ELEMENT.getInstance().SAMARIUM, 2),
+        new MaterialStack(ELEMENT.getInstance().TUNGSTEN, 4),
+        new MaterialStack(ELEMENT.getInstance().ARGON, 2),
+        new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 6),
+        new MaterialStack(ELEMENT.getInstance().NICKEL, 8),
         new MaterialStack(ELEMENT.getInstance().CARBON, 2));
 
     // Cinobi Alloy
@@ -665,8 +704,10 @@ public final class ALLOY {
         new MaterialStack(ALLOY.ZERON_100, 16),
         new MaterialStack(ELEMENT.getInstance().NAQUADRIA, 7),
         new MaterialStack(ELEMENT.getInstance().GADOLINIUM, 5),
-        new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 3), new MaterialStack(ELEMENT.getInstance().MERCURY, 2),
-        new MaterialStack(ELEMENT.getInstance().TIN, 2), new MaterialStack(ELEMENT.getInstance().TITANIUM, 12),
+        new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 3),
+        new MaterialStack(ELEMENT.getInstance().MERCURY, 2),
+        new MaterialStack(ELEMENT.getInstance().TIN, 2),
+        new MaterialStack(ELEMENT.getInstance().TITANIUM, 12),
         new MaterialStack(ALLOY.OSMIRIDIUM, 6));
 
     // Piky Alloy
@@ -680,10 +721,13 @@ public final class ALLOY {
         -1,
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack(ALLOY.INCONEL_792, 16), new MaterialStack(ALLOY.EGLIN_STEEL, 10),
+        new MaterialStack(ALLOY.INCONEL_792, 16),
+        new MaterialStack(ALLOY.EGLIN_STEEL, 10),
         new MaterialStack(ELEMENT.getInstance().NAQUADAH_ENRICHED, 8),
-        new MaterialStack(ELEMENT.getInstance().CERIUM, 6), new MaterialStack(ELEMENT.getInstance().ANTIMONY, 4),
-        new MaterialStack(ELEMENT.getInstance().PLATINUM, 4), new MaterialStack(ELEMENT.getInstance().YTTERBIUM, 2),
+        new MaterialStack(ELEMENT.getInstance().CERIUM, 6),
+        new MaterialStack(ELEMENT.getInstance().ANTIMONY, 4),
+        new MaterialStack(ELEMENT.getInstance().PLATINUM, 4),
+        new MaterialStack(ELEMENT.getInstance().YTTERBIUM, 2),
         new MaterialStack(ALLOY.TUNGSTENSTEEL, 8));
 
     // Piky Alloy
@@ -698,9 +742,12 @@ public final class ALLOY {
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ALLOY.STAINLESS_STEEL, 10),
-        new MaterialStack(ALLOY.TUNGSTEN_CARBIDE, 10), new MaterialStack(ALLOY.NICHROME, 10),
-        new MaterialStack(ALLOY.BRONZE, 10), new MaterialStack(ALLOY.INCOLOY_MA956, 10),
-        new MaterialStack(ELEMENT.getInstance().IODINE, 2), new MaterialStack(ELEMENT.getInstance().RADON, 2),
+        new MaterialStack(ALLOY.TUNGSTEN_CARBIDE, 10),
+        new MaterialStack(ALLOY.NICHROME, 10),
+        new MaterialStack(ALLOY.BRONZE, 10),
+        new MaterialStack(ALLOY.INCOLOY_MA956, 10),
+        new MaterialStack(ELEMENT.getInstance().IODINE, 2),
+        new MaterialStack(ELEMENT.getInstance().RADON, 2),
         new MaterialStack(ELEMENT.getInstance().GERMANIUM, 2));
 
     // Alkalus Alloy
@@ -715,7 +762,8 @@ public final class ALLOY {
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ALLOY.EGLIN_STEEL, 40),
-        new MaterialStack(ELEMENT.getInstance().INDIUM, 10), new MaterialStack(ELEMENT.getInstance().CHROMIUM, 20),
+        new MaterialStack(ELEMENT.getInstance().INDIUM, 10),
+        new MaterialStack(ELEMENT.getInstance().CHROMIUM, 20),
         new MaterialStack(ELEMENT.getInstance().DYSPROSIUM, 5),
         new MaterialStack(ELEMENT.getInstance().RHENIUM, 5));
 
@@ -731,7 +779,8 @@ public final class ALLOY {
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ALLOY.NITINOL_60, 2),
-        new MaterialStack(ELEMENT.getInstance().OSMIUM, 12), new MaterialStack(ELEMENT.getInstance().RUTHENIUM, 12),
+        new MaterialStack(ELEMENT.getInstance().OSMIUM, 12),
+        new MaterialStack(ELEMENT.getInstance().RUTHENIUM, 12),
         new MaterialStack(ELEMENT.getInstance().THALLIUM, 6));
 
     // Titansteel
@@ -746,7 +795,8 @@ public final class ALLOY {
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ALLOY.TUNGSTEN_TITANIUM_CARBIDE, 3),
-        new MaterialStack(ELEMENT.getInstance().IGNIS, 1), new MaterialStack(ELEMENT.getInstance().TERRA, 1),
+        new MaterialStack(ELEMENT.getInstance().IGNIS, 1),
+        new MaterialStack(ELEMENT.getInstance().TERRA, 1),
         new MaterialStack(ELEMENT.getInstance().PERDITIO, 1));
 
     public static final Material OCTIRON = new Material(
@@ -759,8 +809,10 @@ public final class ALLOY {
         -1,
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack(ARCANITE, 30), new MaterialStack(TITANSTEEL, 30),
-        new MaterialStack(ENERGYCRYSTAL, 5), new MaterialStack(STEEL_BLACK, 10),
+        new MaterialStack(ARCANITE, 30),
+        new MaterialStack(TITANSTEEL, 30),
+        new MaterialStack(ENERGYCRYSTAL, 5),
+        new MaterialStack(STEEL_BLACK, 10),
         new MaterialStack(ELEMENT.getInstance().THAUMIUM, 25));
 
     public static final Material BLACK_TITANIUM = new Material(
@@ -775,10 +827,12 @@ public final class ALLOY {
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().TITANIUM, 55),
         new MaterialStack(ELEMENT.getInstance().LANTHANUM, 12),
-        new MaterialStack(ELEMENT.getInstance().TUNGSTEN, 8), new MaterialStack(ELEMENT.getInstance().COBALT, 6),
+        new MaterialStack(ELEMENT.getInstance().TUNGSTEN, 8),
+        new MaterialStack(ELEMENT.getInstance().COBALT, 6),
         new MaterialStack(ELEMENT.getInstance().MANGANESE, 4),
         new MaterialStack(ELEMENT.getInstance().PHOSPHORUS, 4),
-        new MaterialStack(ELEMENT.getInstance().PALLADIUM, 4), new MaterialStack(ELEMENT.getInstance().NIOBIUM, 2),
+        new MaterialStack(ELEMENT.getInstance().PALLADIUM, 4),
+        new MaterialStack(ELEMENT.getInstance().NIOBIUM, 2),
         new MaterialStack(ELEMENT.getInstance().ARGON, 5));
 
     public static final Material BABBIT_ALLOY = new Material(
@@ -792,7 +846,8 @@ public final class ALLOY {
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().TIN, 10),
-        new MaterialStack(ELEMENT.getInstance().LEAD, 72), new MaterialStack(ELEMENT.getInstance().ANTIMONY, 16),
+        new MaterialStack(ELEMENT.getInstance().LEAD, 72),
+        new MaterialStack(ELEMENT.getInstance().ANTIMONY, 16),
         new MaterialStack(ELEMENT.getInstance().ARSENIC, 2));
 
     public static final Material INDALLOY_140 = new Material(
@@ -806,8 +861,10 @@ public final class ALLOY {
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(ELEMENT.getInstance().BISMUTH, 47),
-        new MaterialStack(ELEMENT.getInstance().LEAD, 25), new MaterialStack(ELEMENT.getInstance().TIN, 13),
-        new MaterialStack(ELEMENT.getInstance().CADMIUM, 10), new MaterialStack(ELEMENT.getInstance().INDIUM, 5));
+        new MaterialStack(ELEMENT.getInstance().LEAD, 25),
+        new MaterialStack(ELEMENT.getInstance().TIN, 13),
+        new MaterialStack(ELEMENT.getInstance().CADMIUM, 10),
+        new MaterialStack(ELEMENT.getInstance().INDIUM, 5));
 
     // Quantum
     public static final Material QUANTUM = new Material(
@@ -820,9 +877,12 @@ public final class ALLOY {
         200, // Neutrons
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack(ALLOY.STELLITE, 15), new MaterialStack(ALLOY.ENERGYCRYSTAL, 5),
-        new MaterialStack(ALLOY.SILICON_CARBIDE, 5), new MaterialStack(ELEMENT.getInstance().GALLIUM, 5),
+        new MaterialStack(ALLOY.STELLITE, 15),
+        new MaterialStack(ALLOY.ENERGYCRYSTAL, 5),
+        new MaterialStack(ALLOY.SILICON_CARBIDE, 5),
+        new MaterialStack(ELEMENT.getInstance().GALLIUM, 5),
         new MaterialStack(ELEMENT.getInstance().AMERICIUM, 5),
-        new MaterialStack(ELEMENT.getInstance().PALLADIUM, 5), new MaterialStack(ELEMENT.getInstance().BISMUTH, 5),
+        new MaterialStack(ELEMENT.getInstance().PALLADIUM, 5),
+        new MaterialStack(ELEMENT.getInstance().BISMUTH, 5),
         new MaterialStack(ELEMENT.getInstance().GERMANIUM, 5));
 }

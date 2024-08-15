@@ -2,7 +2,6 @@ package goodgenerator.loader;
 
 import static goodgenerator.util.DescTextLocalization.addText;
 
-import gregtech.api.enums.MetaTileEntityIDs;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -54,6 +53,7 @@ import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.MaterialFix;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;

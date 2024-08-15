@@ -1,6 +1,5 @@
 package gregtech.loaders.postload.chains;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.metadata.PCBFactoryUpgrade.BIO;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -31,7 +30,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryUpgradeKey;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_PCBFactoryManager;
 import gregtech.api.util.GT_Utility;
@@ -619,7 +617,7 @@ public class GT_PCBFactoryRecipes {
                         10106),
                     GT_OreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
-                    CHRONOMATIC_GLASS.getFoil((int)(16 * (Math.sqrt(tier - 6)))))
+                    CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
                     Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),
@@ -650,7 +648,7 @@ public class GT_PCBFactoryRecipes {
                         10106),
                     GT_OreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
-                    CHRONOMATIC_GLASS.getFoil((int)(16 * (Math.sqrt(tier - 6)))))
+                    CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
                     Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),
@@ -681,7 +679,7 @@ public class GT_PCBFactoryRecipes {
                         10106),
                     GT_OreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
-                    CHRONOMATIC_GLASS.getFoil((int)(16 * (Math.sqrt(tier - 6)))))
+                    CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
                     Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),

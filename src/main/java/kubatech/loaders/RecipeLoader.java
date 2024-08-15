@@ -29,7 +29,6 @@ import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.OpenBlocks;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
@@ -75,8 +74,6 @@ import static kubatech.api.enums.ItemList.WhiteTeaLeaf;
 import static kubatech.api.enums.ItemList.YellowTea;
 import static kubatech.api.enums.ItemList.YellowTeaLeaf;
 
-import java.lang.reflect.InvocationTargetException;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -87,7 +84,6 @@ import forestry.plugins.PluginCore;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.core.Ic2Items;
@@ -103,25 +99,21 @@ public class RecipeLoader {
         | GT_ModHandler.RecipeBits.BUFFERED
         | GT_ModHandler.RecipeBits.DISMANTLEABLE;
 
-    public static void registerMTEs(){
+    public static void registerMTEs() {
         if (EnderIO.isModLoaded()) {
             ExtremeEntityCrusher.set(
                 new GT_MetaTileEntity_ExtremeEntityCrusher(
                     ExtremeEntityCrusherController.ID,
                     "multimachine.entitycrusher",
-                    "Extreme Entity Crusher"
-                ).getStackForm(1)
-            );
+                    "Extreme Entity Crusher").getStackForm(1));
         }
 
-        if (Forestry.isModLoaded()){
+        if (Forestry.isModLoaded()) {
             ExtremeIndustrialApiary.set(
                 new GT_MetaTileEntity_MegaIndustrialApiary(
                     ExtremeIndustrialApiaryController.ID,
                     "multimachine.extremeapiary",
-                    "Industrial Apicultural Acclimatiser and Drone Domestication Station"
-                ).getStackForm(1)
-            );
+                    "Industrial Apicultural Acclimatiser and Drone Domestication Station").getStackForm(1));
         }
 
         ExtremeIndustrialGreenhouse.set(
@@ -135,13 +127,13 @@ public class RecipeLoader {
                 new GT_MetaTileEntity_DEFusionCrafter(
                     DraconicEvolutionFusionCrafterController.ID,
                     "multimachine.defusioncrafter",
-                    "Draconic Evolution Fusion Crafter").getStackForm(1)
-            );
+                    "Draconic Evolution Fusion Crafter").getStackForm(1));
         }
     }
+
     public static void addRecipes() {
 
-        if (EnderIO.isModLoaded()){
+        if (EnderIO.isModLoaded()) {
             GT_ModHandler.addCraftingRecipe(
                 ItemList.ExtremeEntityCrusher.get(1),
                 bitsd,
@@ -150,7 +142,7 @@ public class RecipeLoader {
                     GT_ModHandler.getModItem(OpenBlocks.ID, "vacuumhopper", 1, new ItemStack(Blocks.hopper)) });
         }
 
-        if (Forestry.isModLoaded()){
+        if (Forestry.isModLoaded()) {
             GT_Values.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, gregtech.api.enums.ItemList.Machine_IndustrialApiary.get(1))
                 .metadata(RESEARCH_TIME, 8 * MINUTES + 20 * SECONDS)
@@ -171,7 +163,8 @@ public class RecipeLoader {
                 .duration(5 * MINUTES)
                 .addTo(AssemblyLine);
 
-            GT_MetaTileEntity_ExtremeIndustrialGreenhouse.addFertilizerItem(PluginCore.items.fertilizerCompound.getItemStack(1));
+            GT_MetaTileEntity_ExtremeIndustrialGreenhouse
+                .addFertilizerItem(PluginCore.items.fertilizerCompound.getItemStack(1));
         }
 
         GT_ModHandler.addCraftingRecipe(
@@ -186,14 +179,12 @@ public class RecipeLoader {
         // IC2 should always be loaded
         GT_MetaTileEntity_ExtremeIndustrialGreenhouse.addFertilizerItem(Ic2Items.fertilizer);
 
-
         if (DraconicEvolution.isModLoaded()) {
             // Controller recipe added in TecTech
             DEFCRecipes.addRecipes();
         }
         RegisterTeaLine();
     }
-
 
     private static boolean lateRecipesInitialized = false;
 

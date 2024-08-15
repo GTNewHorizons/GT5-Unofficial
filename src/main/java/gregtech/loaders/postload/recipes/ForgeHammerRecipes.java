@@ -1,13 +1,11 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -19,6 +17,7 @@ import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class ForgeHammerRecipes implements Runnable {
 

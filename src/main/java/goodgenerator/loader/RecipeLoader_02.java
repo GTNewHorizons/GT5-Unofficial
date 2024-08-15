@@ -6,7 +6,6 @@ import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.preciseAssemblerR
 import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Avaritia;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -1513,10 +1512,7 @@ public class RecipeLoader_02 {
 
         // Compact MK4 Fusion Coil
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.Casing_Fusion_Internal.get(3),
-                ItemRefer.HiC_T5.get(1),
-                CI.getEnergyCore(4, 1))
+            .itemInputs(GregtechItemList.Casing_Fusion_Internal.get(3), ItemRefer.HiC_T5.get(1), CI.getEnergyCore(4, 1))
             .itemOutputs(ItemRefer.Compact_Fusion_Coil_T3.get(1))
             .fluidInputs(
                 FluidRegistry.getFluidStack("molten.energycrystal", 1152),
