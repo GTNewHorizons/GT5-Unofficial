@@ -78,6 +78,6 @@ public class GTNHLanthanides {
 
         BotRecipes.removeRecipes();
         RecipeLoader.removeCeriumSources();
-        
+
     }
 }
