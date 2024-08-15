@@ -20,6 +20,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.List;
 
+import goodgenerator.loader.Loaders;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -560,7 +561,7 @@ public class RECIPES_Machines {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(18),
-                GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 1, 32016),
+                GT_Utility.copyAmount(1, Loaders.SCTurbine),
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.plate), 8, 10104),
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.screw), 16, 10104),
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.gearGt), 4, 10104),

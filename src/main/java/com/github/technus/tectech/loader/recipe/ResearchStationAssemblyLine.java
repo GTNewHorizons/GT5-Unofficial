@@ -31,6 +31,7 @@ import static kubatech.api.enums.ItemList.DEFCAwakenedSchematic;
 import static kubatech.api.enums.ItemList.DEFCChaoticSchematic;
 import static kubatech.api.enums.ItemList.DEFCDraconicSchematic;
 import static kubatech.api.enums.ItemList.DEFCWyvernSchematic;
+import static kubatech.api.enums.ItemList.DraconicEvolutionFusionCrafter;
 import static kubatech.loaders.BlockLoader.defcCasingBlock;
 
 import net.minecraft.item.ItemStack;
@@ -1085,7 +1086,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 1024,
                 2_000_000,
                 8,
-                new Object[] { getModItem(GregTech.ID, "gt.blockmachines", 1, 10783),
+                new Object[] { ItemList.AssemblingMachineUHV.get(1),
                     new ItemStack(defcCasingBlock, 1, 8),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsBotania.GaiaSpirit, 1L),
                     ItemList.Casing_Coil_AwakenedDraconium.get(8L), ItemList.Electric_Motor_UHV.get(8L),
@@ -1095,7 +1096,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     getModItem(BloodMagic.ID, "bloodMagicBaseItems", 8, 28), },
                 new FluidStack[] { new FluidStack(solderIndalloy, 2880), Materials.Void.getMolten(2880L),
                     Materials.DraconiumAwakened.getMolten(1440), },
-                getModItem(GregTech.ID, "gt.blockmachines", 1, 5001),
+                DraconicEvolutionFusionCrafter.get(1),
                 1500,
                 8_000_000);
             // DE Schematics Cores Tier 1
@@ -2727,9 +2728,9 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.FusionComputer_ZPMV.get(2), ItemList.FusionComputer_ZPMV.get(3),
                 ItemList.FusionComputer_UV.get(1), ItemList.FusionComputer_UV.get(2), ItemList.FusionComputer_UV.get(3),
                 // MK4 Fusion Computer.
-                getModItem(GregTech.ID, "gt.blockmachines", 1, 965),
-                getModItem(GregTech.ID, "gt.blockmachines", 2, 965),
-                getModItem(GregTech.ID, "gt.blockmachines", 3, 965) };
+                GregtechItemList.FusionComputer_UV2.get(1),
+                GregtechItemList.FusionComputer_UV2.get(2),
+                GregtechItemList.FusionComputer_UV2.get(3)};
 
             final ItemStack[] fusionCoils = new ItemStack[] { new ItemStack(compactFusionCoil, 1, 1),
                 new ItemStack(compactFusionCoil, 2, 1), new ItemStack(compactFusionCoil, 3, 1),

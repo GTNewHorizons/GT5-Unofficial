@@ -20,6 +20,7 @@
 
 package kubatech.loaders;
 
+import static gregtech.api.enums.ItemList.FluidExtractorUHV;
 import static gregtech.api.enums.MetaTileEntityIDs.DraconicEvolutionFusionCrafterController;
 import static gregtech.api.enums.MetaTileEntityIDs.ExtremeEntityCrusherController;
 import static gregtech.api.enums.MetaTileEntityIDs.ExtremeIndustrialApiaryController;
@@ -347,7 +348,7 @@ public class RecipeLoader {
                     LegendaryUltimateTea.get(0),
                     GameRegistry.findItemStack("Avaritia", "Neutronium_Compressor", 1),
                     gregtech.api.enums.ItemList.Quantum_Tank_EV.get(1),
-                    GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 10, 11193), // UHV Fluid extractor
+                    FluidExtractorUHV.get(10),
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
