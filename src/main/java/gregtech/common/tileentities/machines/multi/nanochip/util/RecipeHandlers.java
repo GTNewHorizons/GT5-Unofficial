@@ -12,7 +12,7 @@ public class RecipeHandlers {
 
     public static final IRecipeMap assemblyMatrixRecipeTransformer = IRecipeMap.newRecipeMap(builder -> {
         // Quick test to see if the fake items work fine
-        ItemStack testInput = CircuitComponent.SMDCapacitor.stack;
+        ItemStack testInput = CircuitComponent.SMDCapacitor.getStackForm(1);
         ArrayList<ItemStack> itemInputs = new ArrayList<>(Arrays.asList(builder.getItemInputsBasic()));
         itemInputs.add(testInput);
 
