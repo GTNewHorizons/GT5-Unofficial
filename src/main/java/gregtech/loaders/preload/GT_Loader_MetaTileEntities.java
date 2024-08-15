@@ -10044,7 +10044,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         registerCuttingMachine();
         registerDistillery();
         registerElectricFurnace();
-        registerElectricFurnace();
         registerElectromagneticSeparator();
         registerExtractor();
         registerExtruder();
