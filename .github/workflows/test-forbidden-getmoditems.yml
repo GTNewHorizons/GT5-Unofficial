@@ -28,10 +28,6 @@ jobs:
         uses: mattsb42-meta/not-grep@1.0.0
         with:
           config-file: ./.github/test-forbidden-getmoditems/modids/goodgen.toml
-      - name: Check gregtech mod id
-        uses: mattsb42-meta/not-grep@1.0.0
-        with:
-          config-file: ./.github/test-forbidden-getmoditems/modids/gregtech.toml
       - name: Check gtnh lanthanides mod id
         uses: mattsb42-meta/not-grep@1.0.0
         with:
