@@ -1081,6 +1081,10 @@ gt.blockmachines.pipe.energystream.desc.1=Bright Vacuum!!!
 gt.blockmachines.pipe.energystream.desc.2=Must be painted to work
 gt.blockmachines.pipe.energystream.desc.3=Do not split or turn
 
+gt.blockmachines.pipe.energymirror.name=Laser Vacuum Mirror
+gt.blockmachines.pipe.energymirror.desc.0=Laser reflection device.
+gt.blockmachines.pipe.energymirror.desc.1=Can turn but not split
+
 gt.blockmachines.pipe.datastream.name=Optical Fiber Cable
 gt.blockmachines.pipe.datastream.desc.0=Advanced data transmission
 gt.blockmachines.pipe.datastream.desc.1=Don't stare at the beam!
@@ -1174,6 +1178,8 @@ GT5U.gui.text.insufficient_power_no_val=§7Insufficient power
 GT5U.gui.text.missing_upgrades=§7Missing upgrades
 GT5U.gui.text.waiting_for_inputs=§7Waiting for inputs
 GT5U.gui.text.computation_loss=§4Shut down due to computation loss.
+GT5U.gui.text.researching_item=§fResearching: §b%s
+GT5U.gui.text.research_progress=§fComputation: %d/%d (%s%%)
 
 # RecipeMaps
 gt.recipe.eyeofharmony=Eye of Harmony

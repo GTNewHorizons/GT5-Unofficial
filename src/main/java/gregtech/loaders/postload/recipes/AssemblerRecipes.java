@@ -5,7 +5,6 @@ import static gregtech.api.enums.Mods.AvaritiaAddons;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
 import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.GalaxySpace;
@@ -27,6 +26,7 @@ import static gregtech.api.util.GT_RecipeBuilder.QUARTER_INGOT;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.solderingMats;
+import static gtPlusPlus.core.material.ALLOY.INCONEL_690;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -70,13 +70,13 @@ public class AssemblerRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     ItemList.Hull_HV.get(1L),
-                    ItemList.Component_Filter.get(2L),
+                    ItemList.Component_Filter.get(3L),
                     GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L),
-                    ItemList.Electric_Motor_HV.get(1L),
+                    ItemList.Electric_Motor_HV.get(2L),
                     GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(ItemList.Machine_Multi_Cleanroom.get(1L))
-                .fluidInputs(Materials.StainlessSteel.getMolten(864L))
+                .fluidInputs(Materials.StainlessSteel.getMolten(144L))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(assemblerRecipes);
@@ -3983,7 +3983,7 @@ public class AssemblerRecipes implements Runnable {
         {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Hull_MAX.get(1), ItemList.Super_Tank_MV.get(1), GT_Utility.getIntegratedCircuit(1))
-                .itemOutputs(ItemList.Hatch_Input_MAX.get(1))
+                .itemOutputs(ItemList.Hatch_Input_UHV.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(16 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
@@ -4278,7 +4278,7 @@ public class AssemblerRecipes implements Runnable {
         {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Hull_MAX.get(1), ItemList.Super_Tank_MV.get(1), GT_Utility.getIntegratedCircuit(2))
-                .itemOutputs(ItemList.Hatch_Output_MAX.get(1))
+                .itemOutputs(ItemList.Hatch_Output_UHV.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(16 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
@@ -6659,7 +6659,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 ItemList.Electric_Pump_EV.get(4),
                 ItemList.Field_Generator_EV.get(4),
-                getModItem(GTPlusPlus.ID, "itemPlateInconel690", 4),
+                INCONEL_690.getPlate(4),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Titanium, 16),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.BorosilicateGlass, 16),
                 GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2),

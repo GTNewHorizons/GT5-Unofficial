@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import gregtech.api.net.GT_PacketTypes;
 import gregtech.api.net.GT_Packet_New;
 import io.netty.buffer.ByteBuf;
 
@@ -56,6 +57,6 @@ public class GT_Packet_Ores extends GT_Packet_New {
 
     @Override
     public byte getPacketID() {
-        return 3;
+        return GT_PacketTypes.ORES.id;
     }
 }

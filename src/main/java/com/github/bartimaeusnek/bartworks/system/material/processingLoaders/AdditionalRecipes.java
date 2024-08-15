@@ -13,6 +13,7 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.processingLoaders;
 
+import static com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps.bacterialVatRecipes;
 import static com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps.bioLabRecipes;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.OrePrefixes.bolt;
@@ -73,7 +74,6 @@ import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_Meta_Items;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.BioCulture;
 import com.github.bartimaeusnek.bartworks.util.BioDNA;
 import com.github.bartimaeusnek.bartworks.util.BioData;
@@ -87,7 +87,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 
@@ -116,11 +115,12 @@ public class AdditionalRecipes {
                         .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 1000))
                         .special(BioItemList.mBioLabParts[0])
                         .duration(25 * SECONDS)
-                        .eut(BW_Util.getMachineVoltageFromTier(3 + DNA.getTier()))
+                        .eut(GT_Values.VP[3 + DNA.getTier()])
                         .ignoreCollision()
                         .fake()
                         .addTo(bioLabRecipes);
                 }
+
             }
 
             for (ItemStack stack : BioItemList.getAllDNASampleFlasks()) {
@@ -142,7 +142,7 @@ public class AdditionalRecipes {
                         .fluidInputs(dnaFluid)
                         .special(BioItemList.mBioLabParts[1])
                         .duration(25 * SECONDS)
-                        .eut(BW_Util.getMachineVoltageFromTier(4 + DNA.getTier()))
+                        .eut(GT_Values.VP[4 + DNA.getTier()])
                         .ignoreCollision()
                         .fake()
                         .addTo(bioLabRecipes);
@@ -167,7 +167,7 @@ public class AdditionalRecipes {
                         .fluidInputs(dnaFluid)
                         .special(BioItemList.mBioLabParts[2])
                         .duration(25 * SECONDS)
-                        .eut(BW_Util.getMachineVoltageFromTier(4 + DNA.getTier()))
+                        .eut(GT_Values.VP[4 + DNA.getTier()])
                         .ignoreCollision()
                         .fake()
                         .addTo(bioLabRecipes);
@@ -226,21 +226,15 @@ public class AdditionalRecipes {
             for (FluidStack fluidStack : easyFluids) {
                 for (BioCulture bioCulture : BioCulture.BIO_CULTURE_ARRAY_LIST) {
                     if (bioCulture.isBreedable() && bioCulture.getTier() == 0) {
-                        BartWorksRecipeMaps.bacterialVatRecipes.addRecipe(
-                            // boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
-                            // int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration,
-                            // int aEUt, int aSpecialValue
-                            new GT_Recipe(
-                                true,
-                                new ItemStack[] { GT_Utility.getIntegratedCircuit(1), new ItemStack(Items.sugar, 64) },
-                                null,
-                                BioItemList.getPetriDish(bioCulture),
-                                null,
-                                new FluidStack[] { fluidStack },
-                                new FluidStack[] { new FluidStack(bioCulture.getFluid(), 10) },
-                                1000,
-                                (int) TierEU.RECIPE_HV,
-                                BW_Util.STANDART));
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.getIntegratedCircuit(1), new ItemStack(Items.sugar, 64))
+                            .special(BioItemList.getPetriDish(bioCulture))
+                            .fluidInputs(fluidStack)
+                            .fluidOutputs(new FluidStack(bioCulture.getFluid(), 10))
+                            .duration(50 * SECONDS)
+                            .eut(TierEU.RECIPE_MV)
+                            .addTo(bacterialVatRecipes);
+
                         GT_Values.RA.stdBuilder()
                             .itemInputs(
                                 BioItemList.getPetriDish(null),

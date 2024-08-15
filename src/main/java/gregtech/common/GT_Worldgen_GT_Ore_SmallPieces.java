@@ -3,9 +3,13 @@ package gregtech.common;
 import static gregtech.api.enums.GT_Values.debugSmallOres;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProviderEnd;
+import net.minecraft.world.WorldProviderHell;
+import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import gregtech.api.GregTech_API;
@@ -28,6 +32,8 @@ public class GT_Worldgen_GT_Ore_SmallPieces extends GT_Worldgen {
     public final String aTextWorldgen = "worldgen.";
     public static ArrayList<GT_Worldgen_GT_Ore_SmallPieces> sList = new ArrayList<>();
 
+    public Class[] mAllowedProviders;
+
     // TODO CHECK IF INSTANTIATION IS CORRECT
     public GT_Worldgen_GT_Ore_SmallPieces(String aName, boolean aDefault, int aMinY, int aMaxY, int aAmount,
         boolean aOverworld, boolean aNether, boolean aEnd, Materials aPrimary) {
@@ -45,6 +51,20 @@ public class GT_Worldgen_GT_Ore_SmallPieces extends GT_Worldgen {
             .get(aTextWorldgen + this.mWorldGenName, "Ore", aPrimary.mMetaItemSubID));
         this.mBiome = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "BiomeName", "None");
         sList.add(this);
+
+        List<Class> allowedProviders = new ArrayList<>();
+        if (this.mNether) {
+            allowedProviders.add(WorldProviderHell.class);
+        }
+
+        if (this.mOverworld) {
+            allowedProviders.add(WorldProviderSurface.class);
+        }
+
+        if (this.mEnd) {
+            allowedProviders.add(WorldProviderEnd.class);
+        }
+        mAllowedProviders = allowedProviders.toArray(new Class[allowedProviders.size()]);
     }
 
     public GT_Worldgen_GT_Ore_SmallPieces(String aName, boolean aDefault, int aMinY, int aMaxY, int aAmount,
@@ -64,6 +84,20 @@ public class GT_Worldgen_GT_Ore_SmallPieces extends GT_Worldgen {
             .get(aTextWorldgen + this.mWorldGenName, "Ore", aPrimary.mMetaItemSubID));
         this.mBiome = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "BiomeName", "None");
         sList.add(this);
+
+        List<Class> allowedProviders = new ArrayList<>();
+        if (this.mNether) {
+            allowedProviders.add(WorldProviderHell.class);
+        }
+
+        if (this.mOverworld) {
+            allowedProviders.add(WorldProviderSurface.class);
+        }
+
+        if (this.mEnd) {
+            allowedProviders.add(WorldProviderEnd.class);
+        }
+        mAllowedProviders = allowedProviders.toArray(new Class[allowedProviders.size()]);
     }
 
     @Override
@@ -72,11 +106,7 @@ public class GT_Worldgen_GT_Ore_SmallPieces extends GT_Worldgen {
         if (!this.mBiome.equals("None") && !(this.mBiome.equals(aBiome))) {
             return false; // Not the correct biome for ore mix
         }
-        if (!isGenerationAllowed(
-            aWorld,
-            aDimensionType,
-            ((aDimensionType == -1) && (this.mNether)) || ((aDimensionType == 0) && (this.mOverworld))
-                || ((aDimensionType == 1) && (this.mEnd)) ? aDimensionType : ~aDimensionType)) {
+        if (!isGenerationAllowed(aWorld, mAllowedProviders)) {
             return false;
         }
         int count = 0;

@@ -18,6 +18,7 @@ import java.util.Random;
 
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 
@@ -40,7 +41,7 @@ public class BW_WordGenerator implements IWorldGenerator {
         new BW_WordGenerator.WorldGenContainer(
             aX * 16,
             aZ * 16,
-            aWorld.provider.dimensionId,
+            aWorld.provider,
             aWorld,
             aChunkGenerator,
             aChunkProvider).run();
@@ -49,18 +50,18 @@ public class BW_WordGenerator implements IWorldGenerator {
     public static class WorldGenContainer implements Runnable {
 
         public static HashSet<ChunkCoordIntPair> mGenerated = new HashSet<>(2000);
-        public final int mDimensionType;
+        public final WorldProvider mWorldProvider;
         public final World mWorld;
         public final IChunkProvider mChunkGenerator;
         public final IChunkProvider mChunkProvider;
         public int mX;
         public int mZ;
 
-        public WorldGenContainer(int aX, int aZ, int aDimensionType, World aWorld, IChunkProvider aChunkGenerator,
-            IChunkProvider aChunkProvider) {
+        public WorldGenContainer(int aX, int aZ, WorldProvider aWorldProvider, World aWorld,
+            IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
             this.mX = aX;
             this.mZ = aZ;
-            this.mDimensionType = aDimensionType;
+            this.mWorldProvider = aWorldProvider;
             this.mWorld = aWorld;
             this.mChunkGenerator = aChunkGenerator;
             this.mChunkProvider = aChunkProvider;
@@ -102,8 +103,7 @@ public class BW_WordGenerator implements IWorldGenerator {
                     for (int i = 0; i < 256 && temp; i++) {
                         tRandomWeight = random.nextInt(BW_OreLayer.sWeight);
                         for (BW_OreLayer tWorldGen : BW_OreLayer.sList) {
-                            if (!tWorldGen.isGenerationAllowed(this.mWorld, this.mDimensionType, this.mDimensionType))
-                                continue;
+                            if (!tWorldGen.isGenerationAllowed(this.mWorld, mWorldProvider.getClass())) continue;
                             tRandomWeight -= tWorldGen.mWeight;
                             if (tRandomWeight <= 0) {
                                 try {
@@ -114,7 +114,7 @@ public class BW_WordGenerator implements IWorldGenerator {
                                             this.mWorld,
                                             random,
                                             "",
-                                            this.mDimensionType,
+                                            this.mWorldProvider.dimensionId,
                                             xCenter,
                                             zCenter,
                                             this.mChunkGenerator,

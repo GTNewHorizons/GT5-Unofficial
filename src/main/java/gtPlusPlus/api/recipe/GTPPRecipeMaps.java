@@ -51,7 +51,7 @@ public class GTPPRecipeMaps {
         .minInputs(1, 0)
         .progressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.tier"))
-        .frontend(LargeNEIFrontend::new)
+        .frontend(QuantumForceTransformerFrontend::new)
         .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> chemicalDehydratorRecipes = RecipeMapBuilder

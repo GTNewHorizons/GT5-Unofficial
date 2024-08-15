@@ -172,11 +172,11 @@ public class GT_Loader_OreDictionary implements Runnable {
         GT_OreDictUnificator
             .registerOre(OrePrefixes.battery, Materials.LV, GT_ModHandler.getIC2Item("chargedReBattery", 1L, 32767));
         GT_OreDictUnificator
-            .registerOre(OrePrefixes.battery, Materials.HV, GT_ModHandler.getIC2Item("advBattery", 1L, 32767));
+            .registerOre(OrePrefixes.battery, Materials.MV, GT_ModHandler.getIC2Item("advBattery", 1L, 32767));
         GT_OreDictUnificator
-            .registerOre(OrePrefixes.battery, Materials.EV, GT_ModHandler.getIC2Item("energyCrystal", 1L, 32767));
+            .registerOre(OrePrefixes.battery, Materials.HV, GT_ModHandler.getIC2Item("energyCrystal", 1L, 32767));
         GT_OreDictUnificator
-            .registerOre(OrePrefixes.battery, Materials.IV, GT_ModHandler.getIC2Item("lapotronCrystal", 1L, 32767));
+            .registerOre(OrePrefixes.battery, Materials.EV, GT_ModHandler.getIC2Item("lapotronCrystal", 1L, 32767));
 
         GT_OreDictUnificator
             .registerOre(OreDictNames.craftingWireCopper, GT_ModHandler.getIC2Item("insulatedCopperCableItem", 1L));

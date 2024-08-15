@@ -237,7 +237,7 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
 
     @Override
     public byte getPacketID() {
-        return 18;
+        return GT_PacketTypes.MULTI_TILE_ENTITY.id;
     }
 
     public void clearData() {
