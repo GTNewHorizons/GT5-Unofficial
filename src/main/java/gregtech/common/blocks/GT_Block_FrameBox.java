@@ -243,6 +243,13 @@ public class GT_Block_FrameBox extends BlockContainer {
     }
 
     @Override
+    public boolean onBlockEventReceived(World aWorld, int aX, int aY, int aZ, int aData1, int aData2) {
+        super.onBlockEventReceived(aWorld, aX, aY, aZ, aData1, aData2);
+        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        return tTileEntity != null && tTileEntity.receiveClientEvent(aData1, aData2);
+    }
+
+    @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         // Find temporary TE if there was one
         final IGregTechTileEntity tempTe = mTemporaryTileEntity.get();
