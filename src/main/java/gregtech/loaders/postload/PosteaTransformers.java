@@ -1,12 +1,16 @@
 package gregtech.loaders.postload;
 
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
 
@@ -46,6 +50,22 @@ public class PosteaTransformers implements Runnable {
 
             // If this frame has no covers, simply return a block and delete the TileEntity
             return new BlockInfo(GregTech_API.sBlockFrames, indexInMaterialList);
+        });
+
+        ItemStackReplacementManager.addItemReplacement("gregtech:gt.blockmachines", (tag) -> {
+            // Get item meta id and see if this is a frame box, this works pretty much identically to the TE transformer
+            int id = tag.getInteger("Damage");
+            int indexInMaterialList = id - 4096;
+            // Not a frame box
+            if (indexInMaterialList < 0 || indexInMaterialList >= GregTech_API.sGeneratedMaterials.length) {
+                return tag;
+            }
+            Item frameItem = GameRegistry.findItem(Mods.GregTech, "gt.blockframes");
+            int itemId = Item.getIdFromItem(frameItem);
+            // Change this item into the correct frame item (make sure to keep amount)
+            tag.setInteger("id", itemId);
+            tag.setInteger("Damage", indexInMaterialList);
+            return tag;
         });
     }
 }
