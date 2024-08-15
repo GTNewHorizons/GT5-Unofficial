@@ -1,11 +1,11 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator.sapling_Rainforest;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -25,7 +25,7 @@ public class CompressorRecipes implements Runnable {
     @Override
     public void run() {
         GT_Values.RA.stdBuilder()
-            .itemInputs(getModItem(GTPlusPlus.ID, "blockRainforestOakSapling", 8, 0))
+            .itemInputs(new ItemStack(sapling_Rainforest, 8))
             .itemOutputs(ItemList.IC2_Plantball.get(1))
             .duration(15 * SECONDS)
             .eut(2)

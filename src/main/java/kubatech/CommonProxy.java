@@ -70,6 +70,7 @@ public class CommonProxy {
     }
 
     public void postInit(FMLPostInitializationEvent event) {
+        RecipeLoader.registerMTEs();
         RecipeLoader.addRecipes();
         EIGBucketLoader.LoadEIGBuckets();
         if (Thaumcraft.isModLoaded()) TCLoader.init();
