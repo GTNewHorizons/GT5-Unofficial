@@ -488,7 +488,7 @@ public final class ORES {
     // Radiobarite
     // Radium, Barium, Barite?
     public static final Material RADIOBARITE = new Material(
-        "Barite (Rd)", // Material Name
+        "Barite (Ra)", // Material Name
         MaterialState.ORE, // State
         TextureSet.SET_FLINT, // Texture Set
         new short[] { 205, 205, 205, 0 }, // Material Colour

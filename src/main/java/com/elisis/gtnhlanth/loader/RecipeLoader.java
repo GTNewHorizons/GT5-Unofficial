@@ -81,6 +81,8 @@ import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.Thulium
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumChlorideConcentrate;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumExtractingNanoResin;
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumOreConcentrate;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.OrePrefixes.blockCasingAdvanced;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
@@ -281,7 +283,7 @@ public class RecipeLoader {
             .eut(7680)
             .addTo(assemblerRecipes);
 
-        ItemStack insulator = GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorSheet", 1);
+        ItemStack insulator = GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorSheet", 1);
 
         // Coolant Delivery Casing
 
@@ -658,7 +660,7 @@ public class RecipeLoader {
             .itemInputs(
                 new ItemStack(LanthItemList.MASKED_MASK),
                 MyMaterial.lithiumChloride.get(OrePrefixes.dust, 2),
-                GT_ModHandler.getModItem("dreamcraft", "item.PotassiumHydroxideDust", 4))
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PotassiumHydroxideDust", 4))
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK2)))
             .duration(80 * GT_RecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -978,7 +980,7 @@ public class RecipeLoader {
         // IODINE-START
         // SeaweedAsh
         GT_ModHandler.addSmeltingRecipe(
-            GT_ModHandler.getModItem("harvestcraft", "seaweedItem", 1),
+            GT_ModHandler.getModItem(PamsHarvestCraft.ID, "seaweedItem", 1),
             WerkstoffMaterialPool.SeaweedAsh.get(OrePrefixes.dustSmall, 1));
 
         // SeaweedConcentrate
@@ -1015,7 +1017,7 @@ public class RecipeLoader {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 Materials.Pyrolusite.getDust(6),
-                GT_ModHandler.getModItem("dreamcraft", "item.PotassiumHydroxideDust", 6),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PotassiumHydroxideDust", 6),
                 WerkstoffMaterialPool.PotassiumChlorate.get(OrePrefixes.dust, 5))
             .itemOutputs(
                 WerkstoffMaterialPool.PotassiumPermanganate.get(OrePrefixes.dust, 12),
@@ -1038,7 +1040,7 @@ public class RecipeLoader {
         // 6KOH + 6Cl = KClO3 + 5KCl + 3H2O
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem("dreamcraft", "item.PotassiumHydroxideDust", 18),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PotassiumHydroxideDust", 18),
                 GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(
                 Materials.RockSalt.getDust(10),
@@ -2264,7 +2266,7 @@ public class RecipeLoader {
         // Lanthanum
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Lanthanum.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(MyMaterial.P507.getFluidOrGas(4000))
@@ -2276,7 +2278,7 @@ public class RecipeLoader {
         // Praseodymium
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Praseodymium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(MyMaterial.P507.getFluidOrGas(4000))
@@ -2288,7 +2290,7 @@ public class RecipeLoader {
         // Cerium
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Cerium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(MyMaterial.P507.getFluidOrGas(4000))
@@ -2300,7 +2302,7 @@ public class RecipeLoader {
         // Neodymium
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Neodymium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(MyMaterial.P507.getFluidOrGas(4000))
@@ -2312,7 +2314,7 @@ public class RecipeLoader {
         // Promethium
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Promethium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(MyMaterial.P507.getFluidOrGas(4000))
@@ -2324,7 +2326,7 @@ public class RecipeLoader {
         // Sm
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Samarium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(MyMaterial.P507.getFluidOrGas(4000))
@@ -2336,7 +2338,7 @@ public class RecipeLoader {
         // Europium
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Europium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(MyMaterial.P507.getFluidOrGas(4000))
@@ -2348,7 +2350,7 @@ public class RecipeLoader {
         // Gadolinium
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Gadolinium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(MyMaterial.P507.getFluidOrGas(4000))
@@ -2360,7 +2362,7 @@ public class RecipeLoader {
         // Terbium
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Terbium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(MyMaterial.P507.getFluidOrGas(4000))
@@ -2372,7 +2374,7 @@ public class RecipeLoader {
         // Dysprosium
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Dysprosium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(MyMaterial.P507.getFluidOrGas(4000))
@@ -2384,7 +2386,7 @@ public class RecipeLoader {
         // Holmium
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Holmium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(MyMaterial.P507.getFluidOrGas(4000))
@@ -2396,7 +2398,7 @@ public class RecipeLoader {
         // Erbium
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Erbium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(MyMaterial.P507.getFluidOrGas(4000))
@@ -2408,7 +2410,7 @@ public class RecipeLoader {
         // Thulium
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Thulium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(MyMaterial.P507.getFluidOrGas(4000))
@@ -2420,7 +2422,7 @@ public class RecipeLoader {
         // Ytterbium
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Ytterbium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(MyMaterial.P507.getFluidOrGas(4000))
@@ -2432,7 +2434,7 @@ public class RecipeLoader {
         // Lutetium
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem("dreamcraft", "item.MysteriousCrystalLens", 0),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Lutetium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(MyMaterial.P507.getFluidOrGas(4000))
@@ -3706,13 +3708,9 @@ public class RecipeLoader {
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
                 for (int oreDictID : oreDict) {
-                    if ((OreDictionary.getOreName(oreDictID)
-                        .startsWith("ore")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("rawOre")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("crushed"))) {
-                        GT_Log.out.print(OreDictionary.getOreName(oreDictID));
+                    final String oreName = OreDictionary.getOreName(oreDictID);
+                    if ((oreName.startsWith("ore") || oreName.startsWith("rawOre") || oreName.startsWith("crushed"))) {
+                        GT_Log.out.print(oreName);
                         GT_Recipe tRecipe = recipe.copy();
                         boolean modified = false;
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -3854,17 +3852,15 @@ public class RecipeLoader {
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
                 for (int oreDictID : oreDict) {
-                    if (OreDictionary.getOreName(oreDictID)
-                        .startsWith("dust")
-                        && (!OreDictionary.getOreName(oreDictID)
-                            .contains(
-                                "Dephosphated")) /*
-                                                  * OreDictionary.getOreName(oreDictID).startsWith("dustPureCerium")
-                                                  * || OreDictionary.getOreName(oreDictID).startsWith(
-                                                  * "dustImpureCerium") ||
-                                                  * OreDictionary.getOreName(oreDictID).startsWith("dustSpace") ||
-                                                  * OreDictionary.getOreName(oreDictID).startsWith("dustCerium")
-                                                  */) {
+                    final String oreName = OreDictionary.getOreName(oreDictID);
+                    if (oreName.startsWith("dust")
+                        && (!oreName.contains("Dephosphated")) /*
+                                                                * oreName.startsWith("dustPureCerium")
+                                                                * || oreName.startsWith(
+                                                                * "dustImpureCerium") ||
+                                                                * oreName.startsWith("dustSpace") ||
+                                                                * oreName.startsWith("dustCerium")
+                                                                */) {
                         GT_Recipe tRecipe = recipe.copy();
                         boolean modified = false;
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -3939,10 +3935,8 @@ public class RecipeLoader {
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
                 for (int oreDictID : oreDict) {
-                    if (OreDictionary.getOreName(oreDictID)
-                        .startsWith("dust")
-                        && (!OreDictionary.getOreName(oreDictID)
-                            .contains("Dephosphated"))) {
+                    final String oreName = OreDictionary.getOreName(oreDictID);
+                    if (oreName.startsWith("dust") && (!oreName.contains("Dephosphated"))) {
                         GT_Recipe tRecipe = recipe.copy();
                         boolean modified = false;
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -4007,8 +4001,8 @@ public class RecipeLoader {
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
                 for (int oreDictID : oreDict) {
-                    if (OreDictionary.getOreName(oreDictID)
-                        .startsWith("crushed") /* && OreDictionary.getOreName(oreDictID).contains("Cerium") */) {
+                    final String oreName = OreDictionary.getOreName(oreDictID);
+                    if (oreName.startsWith("crushed") /* && oreName.contains("Cerium") */) {
                         GT_Recipe tRecipe = recipe.copy();
                         boolean modified = false;
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -4054,13 +4048,14 @@ public class RecipeLoader {
                     GT_Log.out.print(input.getDisplayName() + "\n");
                     int[] oreDict = OreDictionary.getOreIDs(input);
                     for (int oreDictID : oreDict) {
-                        String oreName = OreDictionary.getOreName(oreDictID);
-                        if (oreName.equals("dustHibonite") || oreName.equals("dustLanthaniteCe")
-                            || oreName.equals("dustZirconolite")
-                            || oreName.equals("dustYttrocerite")
-                            || oreName.equals("dustXenotime")
-                            || oreName.equals("dustBastnasite")
-                            || oreName.equals("dustFlorencite")) {
+                        final String oreName = OreDictionary.getOreName(oreDictID);
+                        if (oreName.startsWith("dust")
+                            && (oreName.equals("dustHibonite") || oreName.equals("dustLanthaniteCe")
+                                || oreName.equals("dustZirconolite")
+                                || oreName.equals("dustYttrocerite")
+                                || oreName.equals("dustXenotime")
+                                || oreName.equals("dustBastnasite")
+                                || oreName.equals("dustFlorencite"))) {
                             GT_Recipe tRecipe = recipe.copy();
                             boolean modified = false;
                             for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -4108,13 +4103,14 @@ public class RecipeLoader {
                     GT_Log.out.print(input.getDisplayName() + "\n");
                     int[] oreDict = OreDictionary.getOreIDs(input);
                     for (int oreDictID : oreDict) {
-                        String oreName = OreDictionary.getOreName(oreDictID);
-                        if (oreName.equals("dustHibonite") || oreName.equals("dustLanthaniteCe")
-                            || oreName.equals("dustZirconolite")
-                            || oreName.equals("dustYttrocerite")
-                            || oreName.equals("dustXenotime")
-                            || oreName.equals("dustBastnasite")
-                            || oreName.equals("dustFlorencite")) {
+                        final String oreName = OreDictionary.getOreName(oreDictID);
+                        if (oreName.startsWith("dust")
+                            && (oreName.equals("dustHibonite") || oreName.equals("dustLanthaniteCe")
+                                || oreName.equals("dustZirconolite")
+                                || oreName.equals("dustYttrocerite")
+                                || oreName.equals("dustXenotime")
+                                || oreName.equals("dustBastnasite")
+                                || oreName.equals("dustFlorencite"))) {
                             GT_Recipe tRecipe = recipe.copy();
                             boolean modified = false;
                             for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -4161,14 +4157,10 @@ public class RecipeLoader {
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
                 for (int oreDictID : oreDict) {
-                    if (OreDictionary.getOreName(oreDictID)
-                        .startsWith("dustImpureCerium")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("dustImpureSamarium")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("dustPureSamarium")
-                        || OreDictionary.getOreName(oreDictID)
-                            .startsWith("dustPureCerium")) {
+                    final String oreName = OreDictionary.getOreName(oreDictID);
+                    if (oreName.startsWith("dustImpureCerium") || oreName.startsWith("dustImpureSamarium")
+                        || oreName.startsWith("dustPureSamarium")
+                        || oreName.startsWith("dustPureCerium")) {
                         GT_Recipe tRecipe = recipe.copy();
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                             if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
@@ -4214,13 +4206,14 @@ public class RecipeLoader {
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
                 for (int oreDictID : oreDict) {
-                    String oreName = OreDictionary.getOreName(oreDictID);
-                    if (oreName.equals("dustCerite") || oreName.equals("dustFluorcaphite")
-                        || oreName.equals("dustZirkelite")
-                        || oreName.equals("dustGadoliniteCe")
-                        || oreName.equals("dustGadoliniteY")
-                        || oreName.equals("dustPolycrase")
-                        || oreName.equals("dustBastnasite")) {
+                    final String oreName = OreDictionary.getOreName(oreDictID);
+                    if (oreName.startsWith("dust")
+                        && (oreName.equals("dustCerite") || oreName.equals("dustFluorcaphite")
+                            || oreName.equals("dustZirkelite")
+                            || oreName.equals("dustGadoliniteCe")
+                            || oreName.equals("dustGadoliniteY")
+                            || oreName.equals("dustPolycrase")
+                            || oreName.equals("dustBastnasite"))) {
                         GT_Recipe tRecipe = recipe.copy();
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                             if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;

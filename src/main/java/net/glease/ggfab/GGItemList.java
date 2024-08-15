@@ -27,6 +27,7 @@ public enum GGItemList implements IItemContainer {
     One_Use_craftingToolHardHammer,
     One_Use_craftingToolSoftHammer,
     One_Use_craftingToolScrewdriver,
+    One_Use_craftingToolSaw,
     Shape_One_Use_craftingToolFile,
     Shape_One_Use_craftingToolWrench,
     Shape_One_Use_craftingToolCrowbar,
@@ -34,6 +35,7 @@ public enum GGItemList implements IItemContainer {
     Shape_One_Use_craftingToolHardHammer,
     Shape_One_Use_craftingToolSoftHammer,
     Shape_One_Use_craftingToolScrewdriver,
+    Shape_One_Use_craftingToolSaw,
     // ordered section ends
     // endregion
     //
@@ -50,6 +52,12 @@ public enum GGItemList implements IItemContainer {
         }
         ItemStack aStack = new ItemStack(aItem, 1, 0);
         mStack = GT_Utility.copyAmount(1, aStack);
+        return this;
+    }
+
+    @Override
+    public IItemContainer hidden() {
+        codechicken.nei.api.API.hideItem(get(1L));
         return this;
     }
 

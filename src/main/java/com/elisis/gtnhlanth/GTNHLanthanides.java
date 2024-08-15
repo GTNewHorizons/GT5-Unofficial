@@ -69,7 +69,6 @@ public class GTNHLanthanides {
         BeamlineRecipeLoader.load();
 
         BotRecipes.addGTRecipe();
-        // RecipeLoader.loadZylonRecipes();
         proxy.postInit(e);
 
     }
@@ -79,6 +78,7 @@ public class GTNHLanthanides {
 
         BotRecipes.removeRecipes();
         RecipeLoader.removeCeriumSources();
-
+        BotRecipes.removeRecipes();
+        RecipeLoader.removeCeriumSources();
     }
 }
