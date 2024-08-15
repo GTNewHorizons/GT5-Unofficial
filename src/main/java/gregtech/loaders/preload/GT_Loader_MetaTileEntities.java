@@ -111,11 +111,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.BENDING_MACHINE_LuV;
 import static gregtech.api.enums.MetaTileEntityIDs.BENDING_MACHINE_UEV;
 import static gregtech.api.enums.MetaTileEntityIDs.BENDING_MACHINE_UHV;
@@ -123,6 +118,11 @@ import static gregtech.api.enums.MetaTileEntityIDs.BENDING_MACHINE_UIV;
 import static gregtech.api.enums.MetaTileEntityIDs.BENDING_MACHINE_UMV;
 import static gregtech.api.enums.MetaTileEntityIDs.BENDING_MACHINE_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.BENDING_MACHINE_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_IV;
@@ -10106,7 +10106,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         registerElectrolyzer();
         registerCircuitAssembler();
         registerTurboCharger4By4();
-		registerBetterJukebox();
+        registerBetterJukebox();
 
         ItemList.AdvDebugStructureWriter.set(
             new GT_MetaTileEntity_AdvDebugStructureWriter(

@@ -2519,7 +2519,7 @@ public enum ItemList implements IItemContainer {
     Automation_ChestBuffer_UIV,
     Automation_ChestBuffer_UMV,
     Automation_ChestBuffer_UXV,
-	BetterJukebox_LV,
+    BetterJukebox_LV,
     BetterJukebox_MV,
     BetterJukebox_HV,
     BetterJukebox_EV,
