@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -16,41 +17,30 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.recipe.IRecipeLookUp;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMapBuilder;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
 /**
  * Saves the last recipe on a machine with recipe lock enabled.
  */
-public class SingleRecipeSave {
+public class SingleRecipeSave implements IRecipeLookUp {
 
     @Nonnull
     private final GT_Recipe recipe;
     @Nonnull
     private final RecipeMap<?> recipeMap;
-    @Nonnull
-    private final RecipeMap<?> singletonRecipeMap;
 
-    private SingleRecipeSave(@Nonnull GT_Recipe recipe, @Nonnull RecipeMap<?> recipeMap,
-        @Nonnull RecipeMap<?> singletonRecipeMap) {
+    private SingleRecipeSave(@Nonnull GT_Recipe recipe, @Nonnull RecipeMap<?> recipeMap) {
         this.recipe = recipe;
         this.recipeMap = recipeMap;
-        this.singletonRecipeMap = singletonRecipeMap;
     }
 
     @Nonnull
     public GT_Recipe getRecipe() {
         return recipe;
-    }
-
-    /**
-     * Method to get a recipeMap containing the saved recipe.
-     */
-    @Nonnull
-    public RecipeMap<?> getSingletonRecipeMap() {
-        return singletonRecipeMap;
     }
 
     @Nonnull
@@ -166,11 +156,37 @@ public class SingleRecipeSave {
         return new Builder(Objects.requireNonNull(recipeMap));
     }
 
+    @Override
+    public int getAmperage() {
+        return recipeMap.getFrontend()
+            .getUIProperties().amperage;
+    }
+
+    @Override
+    public Stream<GT_Recipe> matchRecipeStream(ItemStack[] rawItems, FluidStack[] fluids,
+        @Nullable ItemStack specialSlot, @Nullable GT_Recipe cachedRecipe, boolean notUnificated,
+        boolean dontCheckStackSizes, boolean forCollisionCheck) {
+        ItemStack[] items;
+        // Unification happens here in case the item input isn't already unificated.
+        if (notUnificated) {
+            items = GT_OreDictUnificator.getStackArray(true, (Object[]) rawItems);
+        } else {
+            items = rawItems;
+        }
+        return Stream.of(recipe)
+            .filter(
+                recipe -> recipeMap.getBackend()
+                    .filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
+            .map(
+                recipe -> recipeMap.getBackend()
+                    .modifyFoundRecipe(recipe, items, fluids, specialSlot))
+            .filter(Objects::nonNull);
+    }
+
     public static class Builder {
 
         private final RecipeMap<?> recipeMap;
         private GT_Recipe recipe;
-        private RecipeMap<?> singletonRecipeMap;
 
         private Builder(@Nonnull RecipeMap<?> recipeMap) {
             this.recipeMap = recipeMap;
@@ -181,21 +197,11 @@ public class SingleRecipeSave {
             return this;
         }
 
-        private void buildSingletonRecipeMap() {
-            singletonRecipeMap = RecipeMapBuilder.of("singletonRecipeMap")
-                .frontend((uiPropertiesBuilder, neiPropertiesBuilder) -> recipeMap.getFrontend())
-                .disableRegisterNEI()
-                .disableCategoryAndRecipeMapRegistry()
-                .build();
-            singletonRecipeMap.add(recipe);
-        }
-
         public SingleRecipeSave build() {
             if (recipe == null) {
                 throw new IllegalStateException("recipe is not set");
             }
-            buildSingletonRecipeMap();
-            return new SingleRecipeSave(recipe, recipeMap, singletonRecipeMap);
+            return new SingleRecipeSave(recipe, recipeMap);
         }
     }
 }

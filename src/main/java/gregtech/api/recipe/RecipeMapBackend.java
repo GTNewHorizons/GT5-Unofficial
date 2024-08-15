@@ -335,7 +335,7 @@ public class RecipeMapBackend {
      * Modifies successfully found recipe. Make sure not to mutate the found recipe but use copy!
      */
     @Nullable
-    protected GT_Recipe modifyFoundRecipe(GT_Recipe recipe, ItemStack[] items, FluidStack[] fluids,
+    public GT_Recipe modifyFoundRecipe(GT_Recipe recipe, ItemStack[] items, FluidStack[] fluids,
         @Nullable ItemStack specialSlot) {
         return recipe;
     }
@@ -446,7 +446,7 @@ public class RecipeMapBackend {
      * <p>
      * Note that this won't be called if {@link #doesOverwriteFindRecipe} is true.
      */
-    protected boolean filterFindRecipe(GT_Recipe recipe, ItemStack[] items, FluidStack[] fluids,
+    public boolean filterFindRecipe(GT_Recipe recipe, ItemStack[] items, FluidStack[] fluids,
         @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
         if (recipe.mEnabled && !recipe.mFakeRecipe
             && recipe.isRecipeInputEqual(false, dontCheckStackSizes, fluids, items)) {

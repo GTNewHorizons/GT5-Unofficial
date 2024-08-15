@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,7 +36,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 @FieldsAreNonnullByDefault
-public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
+public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap, IRecipeLookUp {
 
     /**
      * All the recipemap instances. key=unlocalized name, value=instance.
@@ -55,19 +56,17 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     /**
      * Use {@link RecipeMapBuilder} to instantiate.
      */
-    RecipeMap(String unlocalizedName, B backend, RecipeMapFrontend frontend, boolean registerCategoryAndRecipeMap) {
+    RecipeMap(String unlocalizedName, B backend, RecipeMapFrontend frontend) {
         this.unlocalizedName = unlocalizedName;
         this.backend = backend;
         this.frontend = frontend;
-        this.defaultRecipeCategory = new RecipeCategory(this, registerCategoryAndRecipeMap);
+        this.defaultRecipeCategory = new RecipeCategory(this);
         backend.setRecipeMap(this);
-        if (registerCategoryAndRecipeMap) {
-            if (ALL_RECIPE_MAPS.containsKey(unlocalizedName)) {
-                throw new IllegalArgumentException(
-                    "Cannot register recipemap with duplicated unlocalized name: " + unlocalizedName);
-            }
-            ALL_RECIPE_MAPS.put(unlocalizedName, this);
+        if (ALL_RECIPE_MAPS.containsKey(unlocalizedName)) {
+            throw new IllegalArgumentException(
+                "Cannot register recipemap with duplicated unlocalized name: " + unlocalizedName);
         }
+        ALL_RECIPE_MAPS.put(unlocalizedName, this);
     }
 
     public B getBackend() {
@@ -269,6 +268,19 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
             .find();
     }
 
+    @Override
+    public Stream<GT_Recipe> matchRecipeStream(ItemStack[] rawItems, FluidStack[] fluids,
+        @Nullable ItemStack specialSlot, @Nullable GT_Recipe cachedRecipe, boolean notUnificated,
+        boolean dontCheckStackSizes, boolean forCollisionCheck) {
+        return backend.matchRecipeStream(
+            rawItems,
+            fluids,
+            specialSlot,
+            cachedRecipe,
+            notUnificated,
+            dontCheckStackSizes,
+            forCollisionCheck);
+    }
     // endregion
 
     @Override

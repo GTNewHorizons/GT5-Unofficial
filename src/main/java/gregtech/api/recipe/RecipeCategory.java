@@ -39,32 +39,21 @@ public final class RecipeCategory {
      * @param handlerInfoCreator Supplier of handler info for the NEI handler this category belongs to.
      */
     public RecipeCategory(String unlocalizedName, RecipeMap<?> recipeMap,
-        @Nullable UnaryOperator<HandlerInfo.Builder> handlerInfoCreator, boolean registerCategory) {
+        @Nullable UnaryOperator<HandlerInfo.Builder> handlerInfoCreator) {
         this.unlocalizedName = unlocalizedName;
         this.recipeMap = recipeMap;
         this.ownerMod = Loader.instance()
             .activeModContainer();
         this.handlerInfoCreator = handlerInfoCreator;
-        if (registerCategory) {
-            if (ALL_RECIPE_CATEGORIES.containsKey(unlocalizedName)) {
-                throw new IllegalArgumentException(
-                    "Cannot register recipe category with duplicated unlocalized name: " + unlocalizedName);
-            }
-            ALL_RECIPE_CATEGORIES.put(unlocalizedName, this);
+        if (ALL_RECIPE_CATEGORIES.containsKey(unlocalizedName)) {
+            throw new IllegalArgumentException(
+                "Cannot register recipe category with duplicated unlocalized name: " + unlocalizedName);
         }
+        ALL_RECIPE_CATEGORIES.put(unlocalizedName, this);
     }
 
-    public RecipeCategory(String unlocalizedName, RecipeMap<?> recipeMap,
-        @Nullable UnaryOperator<HandlerInfo.Builder> handlerInfoCreator) {
-        this(unlocalizedName, recipeMap, handlerInfoCreator, true);
-    }
-
-    RecipeCategory(RecipeMap<?> recipeMap, boolean registerCategory) {
-        this(
-            recipeMap.unlocalizedName,
-            recipeMap,
-            recipeMap.getFrontend().neiProperties.handlerInfoCreator,
-            registerCategory);
+    RecipeCategory(RecipeMap<?> recipeMap) {
+        this(recipeMap.unlocalizedName, recipeMap, recipeMap.getFrontend().neiProperties.handlerInfoCreator);
     }
 
     @Override

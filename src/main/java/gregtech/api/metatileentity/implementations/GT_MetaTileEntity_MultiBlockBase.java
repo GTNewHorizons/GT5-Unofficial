@@ -768,7 +768,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         logic.setBatchSize(isBatchModeEnabled() ? getMaxBatchSize() : 1);
         logic.setRecipeLocking(this, isRecipeLockingEnabled());
         if (isRecipeLockingEnabled() && getSingleRecipeSave() != null) {
-            logic.setRecipeMapSupplier(() -> getSingleRecipeSave().getSingletonRecipeMap());
+            logic.setRecipeMapSupplier(null);
         } else {
             logic.setRecipeMapSupplier(this::getRecipeMap);
         }

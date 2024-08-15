@@ -21,7 +21,7 @@ public class AssemblerBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected GT_Recipe modifyFoundRecipe(GT_Recipe recipe, ItemStack[] items, FluidStack[] fluids,
+    public GT_Recipe modifyFoundRecipe(GT_Recipe recipe, ItemStack[] items, FluidStack[] fluids,
         @Nullable ItemStack specialSlot) {
         for (ItemStack item : items) {
             if (ItemList.Paper_Printed_Pages.isStackEqual(item, false, true)) {

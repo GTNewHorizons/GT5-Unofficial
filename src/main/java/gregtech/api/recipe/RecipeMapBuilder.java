@@ -57,7 +57,6 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     private final BasicUIPropertiesBuilder uiPropertiesBuilder;
     private final NEIRecipePropertiesBuilder neiPropertiesBuilder = NEIRecipeProperties.builder();
     private RecipeMapFrontend.FrontendCreator frontendCreator = RecipeMapFrontend::new;
-    private boolean registerCategoryAndRecipeMap = true;
 
     /**
      * Constructs builder object for {@link RecipeMap} with given backend logic. For custom frontend,
@@ -503,7 +502,6 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     public RecipeMapBuilder<B> disableCategoryAndRecipeMapRegistry() {
-        this.registerCategoryAndRecipeMap = false;
         return this;
     }
 
@@ -516,8 +514,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
         return new RecipeMap<>(
             unlocalizedName,
             backendCreator.create(backendPropertiesBuilder),
-            frontendCreator.create(uiPropertiesBuilder, neiPropertiesBuilder),
-            registerCategoryAndRecipeMap);
+            frontendCreator.create(uiPropertiesBuilder, neiPropertiesBuilder));
     }
 
     private static <T> Function<? super T, ? extends T> withIdentityReturn(Consumer<T> func) {

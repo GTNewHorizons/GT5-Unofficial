@@ -20,7 +20,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
  *
  * <pre>
  * {@code
- *     GT_Recipe recipe = recipeMap.findRecipeQuery()
+ *     GT_Recipe recipe = recipeLookUp.findRecipeQuery()
  *         .items(inputItems)
  *         .fluids(inputFluids)
  *         .find();
@@ -35,7 +35,7 @@ public final class FindRecipeQuery {
 
     private static final Predicate<GT_Recipe> ALWAYS = r -> true;
 
-    private final RecipeMap<?> recipeMap;
+    private final IRecipeLookUp recipeLookUp;
 
     @Nullable
     private ItemStack[] items;
@@ -51,8 +51,8 @@ public final class FindRecipeQuery {
     private boolean dontCheckStackSizes;
     private boolean forCollisionCheck;
 
-    FindRecipeQuery(RecipeMap<?> recipeMap) {
-        this.recipeMap = recipeMap;
+    FindRecipeQuery(IRecipeLookUp recipeLookUp) {
+        this.recipeLookUp = recipeLookUp;
     }
 
     // region executors
@@ -77,7 +77,7 @@ public final class FindRecipeQuery {
             fluids = new FluidStack[0];
         }
 
-        return recipeMap.getBackend()
+        return recipeLookUp
             .matchRecipeStream(
                 items,
                 fluids,
@@ -86,7 +86,7 @@ public final class FindRecipeQuery {
                 notUnificated,
                 dontCheckStackSizes,
                 forCollisionCheck)
-            .filter(recipe -> voltage * recipeMap.getAmperage() >= recipe.mEUt && filter.test(recipe));
+            .filter(recipe -> voltage * recipeLookUp.getAmperage() >= recipe.mEUt && filter.test(recipe));
     }
 
     /**

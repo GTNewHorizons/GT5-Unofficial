@@ -167,6 +167,16 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     @Nonnull
     protected Stream<GT_Recipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
         if (map == null) {
+            if (isRecipeLocked && recipeLockableMachine.getSingleRecipeSave() != null) {
+                // map is set to null to trigger this.
+                return recipeLockableMachine.getSingleRecipeSave()
+                    .findRecipeQuery()
+                    .items(inputItems)
+                    .fluids(inputFluids)
+                    .specialSlot(specialSlotItem)
+                    .cachedRecipe(lastRecipe)
+                    .findAll();
+            }
             return Stream.empty();
         }
         return map.findRecipeQuery()

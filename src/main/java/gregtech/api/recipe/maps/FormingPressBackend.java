@@ -27,7 +27,7 @@ public class FormingPressBackend extends RecipeMapBackend {
     }
 
     @Override
-    protected GT_Recipe modifyFoundRecipe(GT_Recipe recipe, ItemStack[] items, FluidStack[] fluids,
+    public GT_Recipe modifyFoundRecipe(GT_Recipe recipe, ItemStack[] items, FluidStack[] fluids,
         @Nullable ItemStack specialSlot) {
         for (ItemStack mold : items) {
             if (ItemList.Shape_Mold_Credit.isStackEqual(mold, false, true)) {
