@@ -222,7 +222,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     32,
                     100000,
                     4,
-                    new Object[] { getItemContainer("Hull_UEV").get(1L),
+                    new Object[] { ItemList.Hull_UEV.get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 2L),
                         ItemList.Circuit_Chip_QPIC.get(4L), new Object[] { OrePrefixes.circuit.get(Materials.UEV), 2L },
                         ItemList.UHV_Coil.get(4L), ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -230,18 +230,18 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ItemList.Electric_Pump_UEV.get(1L) },
                     new FluidStack[] { new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000),
                         new FluidStack(solderUEV, 20 * 144), Materials.UUMatter.getFluid(8000L) },
-                    getItemContainer("Hatch_Energy_UEV").get(1L),
+                    ItemList.Hatch_Energy_UEV.get(1L),
                     1000,
                     8000000);
 
                 // Energy Hatch UIV
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
-                    getItemContainer("Hatch_Energy_UEV").get(1L),
+                    ItemList.Hatch_Energy_UEV.get(1L),
                     96_000,
                     64,
                     200_000,
                     8,
-                    new Object[] { getItemContainer("Hull_UIV").get(1L),
+                    new Object[] { ItemList.Hull_UIV.get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUIV, 2L),
                         ItemList.Circuit_Chip_QPIC.get(4L), new Object[] { OrePrefixes.circuit.get(Materials.UIV), 2L },
                         ItemList.UHV_Coil.get(8L), ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -250,18 +250,18 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Electric_Pump_UIV.get(1L) },
                     new FluidStack[] { Materials.SuperCoolant.getFluid(16_000L), new FluidStack(solderUEV, 20 * 144),
                         Materials.UUMatter.getFluid(16_000L) },
-                    getItemContainer("Hatch_Energy_UIV").get(1L),
+                    ItemList.Hatch_Energy_UIV.get(1L),
                     1000,
                     32_000_000);
 
                 // Energy Hatch UMV
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
-                    getItemContainer("Hatch_Energy_UIV").get(1L),
+                    ItemList.Hatch_Energy_UIV.get(1L),
                     192000,
                     128,
                     400000,
                     16,
-                    new Object[] { getItemContainer("Hull_UMV").get(1L),
+                    new Object[] { ItemList.Hull_UMV.get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUMV, 2L),
                         ItemList.Circuit_Chip_QPIC.get(4L),
                         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 2), ItemList.UHV_Coil.get(16L),
@@ -272,18 +272,18 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Electric_Pump_UMV.get(1L) },
                     new FluidStack[] { Materials.SuperCoolant.getFluid(32_000L), new FluidStack(solderUEV, 40 * 144),
                         Materials.UUMatter.getFluid(32000L) },
-                    getItemContainer("Hatch_Energy_UMV").get(1L),
+                    ItemList.Hatch_Energy_UMV.get(1L),
                     1000,
                     128_000_000);
 
                 // Energy Hatch UXV
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
-                    getItemContainer("Hatch_Energy_UMV").get(1L),
+                    ItemList.Hatch_Energy_UMV.get(1L),
                     384000,
                     256,
                     800000,
                     32,
-                    new Object[] { getItemContainer("Hull_UXV").get(1L),
+                    new Object[] { ItemList.Hull_UXV.get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUMV, 4L),
                         ItemList.Circuit_Chip_QPIC.get(16L),
                         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 2), ItemList.UHV_Coil.get(32L),
@@ -295,7 +295,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ItemList.Electric_Pump_UXV.get(1L) },
                     new FluidStack[] { Materials.SuperCoolant.getFluid(64_000L), new FluidStack(solderUEV, 80 * 144),
                         Materials.UUMatter.getFluid(64000L) },
-                    getItemContainer("Hatch_Energy_UXV").get(1L),
+                    ItemList.Hatch_Energy_UXV.get(1L),
                     1000,
                     512_000_000);
             }
@@ -343,7 +343,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     64,
                     200000,
                     8,
-                    new Object[] { getItemContainer("Hull_UEV").get(1L),
+                    new Object[] { ItemList.Hull_UEV.get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorUEVBase, 8L),
                         ItemList.Circuit_Chip_QPIC.get(4L), new Object[] { OrePrefixes.circuit.get(Materials.UEV), 2L },
                         ItemList.UHV_Coil.get(4L), ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -351,18 +351,18 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ItemList.Electric_Pump_UEV.get(1L) },
                     new FluidStack[] { new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000),
                         new FluidStack(solderUEV, 20 * 144), Materials.UUMatter.getFluid(8000L) },
-                    getItemContainer("Hatch_Dynamo_UEV").get(1L),
+                    ItemList.Hatch_Dynamo_UEV.get(1L),
                     1000,
                     8000000);
 
                 // Dynamo Hatch UIV
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
-                    getItemContainer("Hatch_Dynamo_UEV").get(1L),
+                    ItemList.Hatch_Dynamo_UEV.get(1L),
                     192_000,
                     128,
                     400_000,
                     16,
-                    new Object[] { getItemContainer("Hull_UIV").get(1L),
+                    new Object[] { ItemList.Hull_UIV.get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorUIVBase, 8L),
                         ItemList.Circuit_Chip_QPIC.get(4L), new Object[] { OrePrefixes.circuit.get(Materials.UIV), 2L },
                         ItemList.UHV_Coil.get(8L), ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -371,18 +371,18 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Electric_Pump_UIV.get(1L) },
                     new FluidStack[] { Materials.SuperCoolant.getFluid(16_000L), new FluidStack(solderUEV, 20 * 144),
                         Materials.UUMatter.getFluid(16_000L) },
-                    getItemContainer("Hatch_Dynamo_UIV").get(1L),
+                    ItemList.Hatch_Dynamo_UIV.get(1L),
                     1000,
                     32_000_000);
 
                 // Dynamo Hatch UMV
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
-                    getItemContainer("Hatch_Dynamo_UIV").get(1L),
+                    ItemList.Hatch_Dynamo_UIV.get(1L),
                     384000,
                     256,
                     800000,
                     32,
-                    new Object[] { getItemContainer("Hull_UMV").get(1L),
+                    new Object[] { ItemList.Hull_UMV.get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorUMVBase, 8L),
                         ItemList.Circuit_Chip_QPIC.get(4L),
                         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 2), ItemList.UHV_Coil.get(16L),
@@ -393,18 +393,18 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Electric_Pump_UMV.get(1L) },
                     new FluidStack[] { Materials.SuperCoolant.getFluid(32_000L), new FluidStack(solderUEV, 40 * 144),
                         Materials.UUMatter.getFluid(32000L) },
-                    getItemContainer("Hatch_Dynamo_UMV").get(1L),
+                    ItemList.Hatch_Dynamo_UMV.get(1L),
                     1000,
                     128_000_000);
 
                 // Dynamo Hatch UXV
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
-                    getItemContainer("Hatch_Dynamo_UMV").get(1L),
+                    ItemList.Hatch_Dynamo_UMV.get(1L),
                     384000,
                     256,
                     800000,
                     32,
-                    new Object[] { getItemContainer("Hull_UXV").get(1L),
+                    new Object[] { ItemList.Hull_UXV.get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorUMVBase, 16L),
                         ItemList.Circuit_Chip_QPIC.get(16L),
                         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 2), ItemList.UHV_Coil.get(32L),
@@ -416,7 +416,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ItemList.Electric_Pump_UXV.get(1L) },
                     new FluidStack[] { Materials.SuperCoolant.getFluid(64_000L), new FluidStack(solderUEV, 80 * 144),
                         Materials.UUMatter.getFluid(64000L) },
-                    getItemContainer("Hatch_Dynamo_UXV").get(1L),
+                    ItemList.Hatch_Dynamo_UXV.get(1L),
                     1000,
                     512_000_000);
             }
@@ -730,7 +730,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 32_000_000,
                 1,
                 new Object[] { ItemList.Casing_Dim_Bridge.get(4), ItemRegistry.megaMachines[0],
-                    getItemContainer("Hatch_Energy_UEV").get(4L),
+                    ItemList.Hatch_Energy_UEV.get(4L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUEV, 6),
                     ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
                     ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -2991,9 +2991,8 @@ public class ResearchStationAssemblyLine implements Runnable {
         ItemStack[] energyHatches = { ItemList.Hatch_Energy_ULV.get(1), ItemList.Hatch_Energy_LV.get(1),
             ItemList.Hatch_Energy_MV.get(1), ItemList.Hatch_Energy_HV.get(1), ItemList.Hatch_Energy_EV.get(1),
             ItemList.Hatch_Energy_IV.get(1), ItemList.Hatch_Energy_LuV.get(1), ItemList.Hatch_Energy_ZPM.get(1),
-            ItemList.Hatch_Energy_UV.get(1), ItemList.Hatch_Energy_UHV.get(1),
-            getItemContainer("Hatch_Energy_UEV").get(1L), getItemContainer("Hatch_Energy_UIV").get(1L),
-            getItemContainer("Hatch_Energy_UMV").get(1L), getItemContainer("Hatch_Energy_UXV").get(1L) };
+            ItemList.Hatch_Energy_UV.get(1), ItemList.Hatch_Energy_UHV.get(1), ItemList.Hatch_Energy_UEV.get(1L),
+            ItemList.Hatch_Energy_UIV.get(1L), ItemList.Hatch_Energy_UMV.get(1L), ItemList.Hatch_Energy_UXV.get(1L) };
 
         ItemStack[] energyHatches_4A = { CustomItemList.eM_energyMulti4_EV.get(1),
             CustomItemList.eM_energyMulti4_IV.get(1), CustomItemList.eM_energyMulti4_LuV.get(1),
@@ -3025,9 +3024,8 @@ public class ResearchStationAssemblyLine implements Runnable {
         ItemStack[] dynamoHatches = { ItemList.Hatch_Dynamo_ULV.get(1), ItemList.Hatch_Dynamo_LV.get(1),
             ItemList.Hatch_Dynamo_MV.get(1), ItemList.Hatch_Dynamo_HV.get(1), ItemList.Hatch_Dynamo_EV.get(1),
             ItemList.Hatch_Dynamo_IV.get(1), ItemList.Hatch_Dynamo_LuV.get(1), ItemList.Hatch_Dynamo_ZPM.get(1),
-            ItemList.Hatch_Dynamo_UV.get(1), ItemList.Hatch_Dynamo_UHV.get(1),
-            getItemContainer("Hatch_Dynamo_UEV").get(1L), getItemContainer("Hatch_Dynamo_UIV").get(1L),
-            getItemContainer("Hatch_Dynamo_UMV").get(1L), getItemContainer("Hatch_Dynamo_UXV").get(1L) };
+            ItemList.Hatch_Dynamo_UV.get(1), ItemList.Hatch_Dynamo_UHV.get(1), ItemList.Hatch_Dynamo_UEV.get(1L),
+            ItemList.Hatch_Dynamo_UIV.get(1L), ItemList.Hatch_Dynamo_UMV.get(1L), ItemList.Hatch_Dynamo_UXV.get(1L) };
 
         Object[] circuitsTierPlusTwo = { new Object[] { OrePrefixes.circuit.get(Materials.MV), 1L },
             new Object[] { OrePrefixes.circuit.get(Materials.HV), 1L },
@@ -3224,8 +3222,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             compPerSecond * 48,
             researchEuPerTick * 3,
             researchAmperage * 16,
-            new Object[] { getItemContainer("Hull_UMV").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
+            new Object[] { ItemList.Hull_UMV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
                 GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Emitter_UMV.get(64),
                 ItemList.Emitter_UMV.get(64), ItemList.Electric_Pump_UMV.get(64), ItemList.Electric_Pump_UMV.get(64),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Quantium, 32) },
@@ -3241,8 +3238,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             compPerSecond * 64,
             researchEuPerTick * 4,
             researchAmperage * 16,
-            new Object[] { getItemContainer("Hull_UXV").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
+            new Object[] { ItemList.Hull_UXV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
                 GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Sensor_UXV.get(64),
                 ItemList.Sensor_UXV.get(64), ItemList.Electric_Pump_UXV.get(64), ItemList.Electric_Pump_UXV.get(64),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 32) },
@@ -3258,8 +3254,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             compPerSecond * 64,
             researchEuPerTick * 4,
             researchAmperage * 16,
-            new Object[] { getItemContainer("Hull_UXV").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
+            new Object[] { ItemList.Hull_UXV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
                 GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
                 GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
                 GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Sensor_UXV.get(64),
@@ -3279,8 +3274,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             compPerSecond * 48,
             researchEuPerTick * 3,
             researchAmperage * 16,
-            new Object[] { getItemContainer("Hull_UMV").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
+            new Object[] { ItemList.Hull_UMV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
                 GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Sensor_UMV.get(64),
                 ItemList.Sensor_UMV.get(64), ItemList.Electric_Pump_UMV.get(64), ItemList.Electric_Pump_UMV.get(64),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Quantium, 32) },
@@ -3296,8 +3290,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             compPerSecond * 64,
             researchEuPerTick * 4,
             researchAmperage * 16,
-            new Object[] { getItemContainer("Hull_UXV").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
+            new Object[] { ItemList.Hull_UXV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
                 GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Sensor_UXV.get(64),
                 ItemList.Sensor_UXV.get(64), ItemList.Electric_Pump_UXV.get(64), ItemList.Electric_Pump_UXV.get(64),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 32) },
@@ -3313,8 +3306,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             compPerSecond * 64,
             researchEuPerTick * 4,
             researchAmperage * 16,
-            new Object[] { getItemContainer("Hull_UXV").get(1),
-                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
+            new Object[] { ItemList.Hull_UXV.get(1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
                 GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
                 GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
                 GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64), ItemList.Emitter_UXV.get(64),
