@@ -254,7 +254,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                     GT_OreDictUnificator.get(dust, Materials.Stone, 1L))
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(
-                    Materials.SodiumPersulfate.getFluid(GT_Mod.gregtechproxy.mDisableOldChemicalRecipes ? 1000L : 100L))
+                    Materials.SodiumPersulfate.getFluid(100L))
                 .duration(40 * SECONDS)
                 .eut(8)
                 .addTo(chemicalBathRecipes);

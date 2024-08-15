@@ -561,8 +561,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean mIgnoreTcon = true;
     public boolean mAchievements = true;
     public boolean mArcSmeltIntoAnnealed = true;
-    public boolean mMagneticraftRecipes = false;
-    public boolean mImmersiveEngineeringRecipes = false;
     private boolean isFirstServerWorldTick = true;
     private boolean isFirstWorldTick = true;
     private boolean mOreDictActivated = false;
@@ -614,21 +612,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean enableUndergroundGravelGen = true;
     public boolean enableUndergroundDirtGen = true;
     public int mTicksUntilNextCraftSound = 0;
-    public double mMagneticraftBonusOutputPercent = 0d;
     private World mUniverse = null;
-    public boolean mTEMachineRecipes = false;
     public boolean mEnableAllMaterials = false;
     public boolean mEnableCleanroom = true;
     public boolean mLowGravProcessing = false;
     public boolean mAprilFool = false;
     public boolean mCropNeedBlock = true;
-    @Deprecated
-    public boolean mDisableOldChemicalRecipes = false;
     public boolean mAMHInteraction = true;
     public boolean mForceFreeFace = true;
     public boolean mBrickedBlastFurnace = true;
-    @Deprecated
-    public boolean mEasierIVPlusCables = false;
     public boolean mMixedOreOnlyYieldsTwoThirdsOfPureOre = false;
     public boolean mRichOreYieldMultiplier = true;
     public boolean mNetherOreYieldMultiplier = true;
