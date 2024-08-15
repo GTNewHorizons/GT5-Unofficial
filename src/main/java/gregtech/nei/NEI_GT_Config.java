@@ -105,10 +105,6 @@ public class NEI_GT_Config implements IConfigureNEI {
         API.addRecipeCatalyst(
             GT_ModHandler.getIC2Item("nuclearReactor", 1, null),
             RecipeMaps.ic2NuclearFakeRecipes.unlocalizedName);
-        // Bronze Blast Furnace
-        API.removeRecipeCatalyst(
-            GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 1, 108),
-            RecipeMaps.primitiveBlastRecipes.unlocalizedName);
     }
 
     private void registerItemEntries() {
