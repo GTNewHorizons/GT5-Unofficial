@@ -6640,25 +6640,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             | GT_ModHandler.RecipeBits.REVERSIBLE
             | GT_ModHandler.RecipeBits.BUFFERED;
 
-        if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
-            GT_ModHandler.addCraftingRecipe(
-                GT_ModHandler.getIC2Item("copperCableItem", 2L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "xP", 'P', OrePrefixes.plate.get(Materials.AnyCopper) });
-            GT_ModHandler.addCraftingRecipe(
-                GT_ModHandler.getIC2Item("goldCableItem", 4L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "xP", 'P', OrePrefixes.plate.get(Materials.Gold) });
-            GT_ModHandler.addCraftingRecipe(
-                GT_ModHandler.getIC2Item("ironCableItem", 3L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "xP", 'P', OrePrefixes.plate.get(Materials.AnyIron) });
-            GT_ModHandler.addCraftingRecipe(
-                GT_ModHandler.getIC2Item("tinCableItem", 3L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "xP", 'P', OrePrefixes.plate.get(Materials.Tin) });
-        }
-
         // high pressure fluid pipes
         GT_Values.RA.stdBuilder()
             .itemInputs(

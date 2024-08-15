@@ -2522,43 +2522,6 @@ public class AssemblerRecipes implements Runnable {
             .eut(20)
             .addTo(assemblerRecipes);
 
-        if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_ModHandler.getIC2Item("tinCableItem", 1),
-                    GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1))
-                .itemOutputs(GT_ModHandler.getIC2Item("insulatedTinCableItem", 1))
-                .duration(1 * SECONDS)
-                .eut(20)
-                .addTo(assemblerRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_ModHandler.getIC2Item("copperCableItem", 1),
-                    GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1))
-                .itemOutputs(GT_ModHandler.getIC2Item("insulatedCopperCableItem", 1))
-                .duration(1 * SECONDS)
-                .eut(20)
-                .addTo(assemblerRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_ModHandler.getIC2Item("goldCableItem", 1),
-                    GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 2))
-                .itemOutputs(GT_ModHandler.getIC2Item("insulatedGoldCableItem", 1))
-                .duration(2 * SECONDS)
-                .eut(20)
-                .addTo(assemblerRecipes);
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_ModHandler.getIC2Item("ironCableItem", 1),
-                    GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 3))
-                .itemOutputs(GT_ModHandler.getIC2Item("insulatedIronCableItem", 1))
-                .duration(3 * SECONDS)
-                .eut(20)
-                .addTo(assemblerRecipes);
-        }
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.Wood, 1),

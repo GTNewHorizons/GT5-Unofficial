@@ -559,7 +559,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean mHungerEffect = true;
     public boolean mOnline = true;
     public boolean mIgnoreTcon = true;
-    public boolean mDisableIC2Cables = false;
     public boolean mAchievements = true;
     public boolean mArcSmeltIntoAnnealed = true;
     public boolean mMagneticraftRecipes = false;
@@ -2053,20 +2052,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                                         OrePrefixes.ingot,
                                                         Materials.Brass,
                                                         new ItemStack(aEvent.Ore.getItem(), 1, 2));
-                                                    if (!mDisableIC2Cables) {
-                                                        GT_Values.RA.stdBuilder()
-                                                            .itemInputs(GT_ModHandler.getIC2Item("copperCableItem", 3L))
-                                                            .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 1, 8))
-                                                            .duration(20 * SECONDS)
-                                                            .eut(1)
-                                                            .addTo(wiremillRecipes);
-                                                        GT_Values.RA.stdBuilder()
-                                                            .itemInputs(GT_ModHandler.getIC2Item("ironCableItem", 6L))
-                                                            .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 1, 9))
-                                                            .duration(20 * SECONDS)
-                                                            .eut(2)
-                                                            .addTo(wiremillRecipes);
-                                                    }
 
                                                     GT_Values.RA.stdBuilder()
                                                         .itemInputs(new ItemStack(aEvent.Ore.getItem(), 1, 3))
