@@ -560,6 +560,8 @@ public class GT_MetaTileEntity_PurificationUnitPlasmaHeater
         casingCount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
         if (casingCount < MIN_CASING) return false;
+        // Do not form without positioned hatches
+        if (plasmaInputHatch == null || coolantInputHatch == null) return false;
         return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 

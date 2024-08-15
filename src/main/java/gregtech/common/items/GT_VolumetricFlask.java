@@ -343,11 +343,10 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
                     new VanillaButtonWidget().setDisplayString("Confirm")
                         .setOnClick((clickData, widget) -> {
                             capacityWidget.onRemoveFocus();
-                            if (!widget.isClient()) {
-                                widget.getWindow()
-                                    .tryClose();
-                            }
+                            widget.getWindow()
+                                .tryClose();
                         })
+                        .setSynced(false, false)
                         .setPos(8, 26)
                         .setSize(48, 20));
 

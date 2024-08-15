@@ -1,7 +1,5 @@
 package gregtech.loaders.postload.chains;
 
-import static gregtech.api.enums.Mods.BartWorks;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.metadata.PCBFactoryUpgrade.BIO;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -9,6 +7,9 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
+import static gtPlusPlus.core.material.ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN;
+import static gtPlusPlus.core.material.ELEMENT.STANDALONE.CHRONOMATIC_GLASS;
+import static gtPlusPlus.core.material.ELEMENT.STANDALONE.HYPOGEN;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -27,7 +30,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryUpgradeKey;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_PCBFactoryManager;
 import gregtech.api.util.GT_Utility;
@@ -77,7 +79,7 @@ public class GT_PCBFactoryRecipes {
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "blockFrameGtCelestialTungsten", 1),
+                CELESTIAL_TUNGSTEN.getFrameBox(1),
                 Materials.get("Quantum")
                     .getPlates(6))
             .itemOutputs(ItemList.RadiationProofPhotolithographicFrameworkCasing.get(1))
@@ -86,7 +88,7 @@ public class GT_PCBFactoryRecipes {
             .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "blockFrameGtHypogen", 1),
+                HYPOGEN.getFrameBox(1),
                 GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Infinity, 2),
                 Materials.Thulium.getPlates(6))
             .itemOutputs(ItemList.InfinityCooledCasing.get(1))
@@ -609,12 +611,13 @@ public class GT_PCBFactoryRecipes {
                     GT_Utility.getIntegratedCircuit(1),
                     GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GT_ModHandler
-                        .getModItem(BartWorks.ID, "gt.bwMetaGeneratedfoil", (long) (16 * (Math.sqrt(tier - 6))), 10106),
+                    new ItemStack(
+                        WerkstoffLoader.items.get(OrePrefixes.foil),
+                        (int) (16 * (Math.sqrt(tier - 6))),
+                        10106),
                     GT_OreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
-                    GT_ModHandler
-                        .getModItem(GTPlusPlus.ID, "itemFoilChromaticGlass", (long) (16 * (Math.sqrt(tier - 6)))))
+                    CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
                     Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),
@@ -639,12 +642,13 @@ public class GT_PCBFactoryRecipes {
                     GT_Utility.getNaniteAsCatalyst(Materials.Silver),
                     GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GT_ModHandler
-                        .getModItem(BartWorks.ID, "gt.bwMetaGeneratedfoil", (long) (16 * (Math.sqrt(tier - 6))), 10106),
+                    new ItemStack(
+                        WerkstoffLoader.items.get(OrePrefixes.foil),
+                        (int) (16 * (Math.sqrt(tier - 6))),
+                        10106),
                     GT_OreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
-                    GT_ModHandler
-                        .getModItem(GTPlusPlus.ID, "itemFoilChromaticGlass", (long) (16 * (Math.sqrt(tier - 6)))))
+                    CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
                     Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),
@@ -669,12 +673,13 @@ public class GT_PCBFactoryRecipes {
                     GT_Utility.getNaniteAsCatalyst(Materials.Gold),
                     GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GT_ModHandler
-                        .getModItem(BartWorks.ID, "gt.bwMetaGeneratedfoil", (long) (16 * (Math.sqrt(tier - 6))), 10106),
+                    new ItemStack(
+                        WerkstoffLoader.items.get(OrePrefixes.foil),
+                        (int) (16 * (Math.sqrt(tier - 6))),
+                        10106),
                     GT_OreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
-                    GT_ModHandler
-                        .getModItem(GTPlusPlus.ID, "itemFoilChromaticGlass", (long) (16 * (Math.sqrt(tier - 6)))))
+                    CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
                     Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),

@@ -1,6 +1,6 @@
 package com.github.technus.tectech.mechanics.tesla;
 
-import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove;
+import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemoveScheduled;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -60,7 +60,7 @@ public class TeslaCoverConnection implements ITeslaConnectableSimple {
         if (!IGT.isDead()) {
             output = IGT.injectEnergyUnits(ForgeDirection.UP, teslaVoltageInjected, 1L) > 0L;
         } else {
-            teslaSimpleNodeSetRemove(this);
+            teslaSimpleNodeSetRemoveScheduled(this);
         }
 
         return output;
