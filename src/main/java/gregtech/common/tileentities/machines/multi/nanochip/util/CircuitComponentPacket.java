@@ -29,8 +29,9 @@ public class CircuitComponentPacket {
     public List<ItemStack> getItemRepresentations() {
         ArrayList<ItemStack> stacks = new ArrayList<>();
         for (Map.Entry<CircuitComponent, Integer> entry : components.entrySet()) {
-            ItemStack componentStack = entry.getKey().stack.copy();
-            componentStack.stackSize = entry.getValue();
+            ItemStack componentStack = entry.getKey()
+                .getFakeStack(entry.getValue())
+                .copy();
             stacks.add(componentStack);
         }
         return stacks;
