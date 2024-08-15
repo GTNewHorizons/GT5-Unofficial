@@ -17,10 +17,7 @@ public class GT_CircuitComponent_FakeItem extends GT_Generic_Item {
 
     @Override
     public String getUnlocalizedName(ItemStack aStack) {
-        // To get the name of a circuit component stack, use meta id to find the enum value by ordingal
-        int meta = aStack.getItemDamage();
-        // If this throws an IndexOutOfBounds exception, there is a bug
-        CircuitComponent component = CircuitComponent.values()[meta];
+        CircuitComponent component = CircuitComponent.getFromFakeStack(aStack);
         return component.unlocalizedName;
     }
 }
