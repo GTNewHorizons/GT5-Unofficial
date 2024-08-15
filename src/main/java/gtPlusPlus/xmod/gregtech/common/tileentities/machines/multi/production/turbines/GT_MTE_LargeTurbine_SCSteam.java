@@ -69,16 +69,11 @@ public class GT_MTE_LargeTurbine_SCSteam extends GregtechMetaTileEntity_LargerTu
     long fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers) {
         if (looseFit & isUsingDenseSteam) {
             aOptFlow *= 4;
-            final double flowMultiplier = Math.pow(1.1f, ((aBaseEff - 7500) / 10000F) * 20f);
+            final double flowMultiplier = Math.pow(1.1f, ((aBaseEff - 7500) / 10000F) * 10f);
             if (aBaseEff > 10000) {
                 aOptFlow *= flowMultiplier;
-                aBaseEff = 7500;
-            } else if (aBaseEff > 7500) {
-                aOptFlow *= flowMultiplier;
-                aBaseEff *= 0.75f;
-            } else {
-                aBaseEff *= 0.75f;
             }
+            aBaseEff *= 0.75f;
         }
 
         int tEU = 0;
