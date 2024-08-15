@@ -13,6 +13,7 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import gtPlusPlus.core.item.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -3745,6 +3746,7 @@ public class ChemicalRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
+                new ItemStack()
                 getModItem(GTPlusPlus.ID, "Formaldehyde", 4),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1))
             .itemOutputs(

@@ -728,7 +728,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UIV), 20L }, ItemList.Field_Generator_UEV.get(4),
                     getModItem(EternalSingularity.ID, "eternal_singularity", 4L),
-                    getModItem(GTPlusPlus.ID, "MU-metaitem.01", 1L, 32105),
+                    GregtechItemList.Laser_Lens_Special.get(1),
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 64L),
                     ItemList.Electric_Pump_UEV.get(4), ItemList.ZPM3.get(1),
                     getModItem(IndustrialCraft2.ID, "blockMachine2", 1, 0) },
