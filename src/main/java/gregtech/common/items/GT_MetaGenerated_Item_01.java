@@ -48,391 +48,16 @@ import static gregtech.client.GT_TooltipHandler.Tier.LV;
 import static gregtech.client.GT_TooltipHandler.Tier.LuV;
 import static gregtech.client.GT_TooltipHandler.Tier.MAX;
 import static gregtech.client.GT_TooltipHandler.Tier.MV;
+import static gregtech.client.GT_TooltipHandler.Tier.UEV;
+import static gregtech.client.GT_TooltipHandler.Tier.UHV;
+import static gregtech.client.GT_TooltipHandler.Tier.UIV;
 import static gregtech.client.GT_TooltipHandler.Tier.ULV;
 import static gregtech.client.GT_TooltipHandler.Tier.UMV;
 import static gregtech.client.GT_TooltipHandler.Tier.UV;
 import static gregtech.client.GT_TooltipHandler.Tier.UXV;
 import static gregtech.client.GT_TooltipHandler.Tier.ZPM;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
-import static gregtech.common.items.ID_MetaItem_01.Battery_Hull_HV;
-import static gregtech.common.items.ID_MetaItem_01.Battery_Hull_LV;
-import static gregtech.common.items.ID_MetaItem_01.Battery_Hull_MV;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_HV_Cadmium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_HV_Lithium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_HV_Sodium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_LV_Cadmium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_LV_Lithium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_LV_Sodium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_MV_Cadmium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_MV_Lithium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_MV_Sodium;
-import static gregtech.common.items.ID_MetaItem_01.Battery_RE_ULV_Tantalum;
-import static gregtech.common.items.ID_MetaItem_01.Battery_SU_HV_Mercury;
-import static gregtech.common.items.ID_MetaItem_01.Battery_SU_HV_Sulfuric_Acid;
-import static gregtech.common.items.ID_MetaItem_01.Battery_SU_LV_Mercury;
-import static gregtech.common.items.ID_MetaItem_01.Battery_SU_LV_Sulfuric_Acid;
-import static gregtech.common.items.ID_MetaItem_01.Battery_SU_MV_Mercury;
-import static gregtech.common.items.ID_MetaItem_01.Battery_SU_MV_Sulfuric_Acid;
-import static gregtech.common.items.ID_MetaItem_01.Book_Written_01;
-import static gregtech.common.items.ID_MetaItem_01.Book_Written_02;
-import static gregtech.common.items.ID_MetaItem_01.Book_Written_03;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Advanced;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Basic;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Board_Advanced;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Board_Basic;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Board_Elite;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Data;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Elite;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Good;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Master;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Advanced;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Crystal_Chip_Elite;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Crystal_Chip_Master;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Crystal_Chip_Wetware;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Wiring_Advanced;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Wiring_Basic;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Parts_Wiring_Elite;
-import static gregtech.common.items.ID_MetaItem_01.Circuit_Primitive;
-import static gregtech.common.items.ID_MetaItem_01.Component_Filter;
-import static gregtech.common.items.ID_MetaItem_01.Component_Grinder_Diamond;
-import static gregtech.common.items.ID_MetaItem_01.Component_Grinder_Tungsten;
-import static gregtech.common.items.ID_MetaItem_01.Component_Minecraft_Wheels_Iron;
-import static gregtech.common.items.ID_MetaItem_01.Component_Minecraft_Wheels_Steel;
-import static gregtech.common.items.ID_MetaItem_01.Component_Sawblade_Diamond;
-import static gregtech.common.items.ID_MetaItem_01.Compressed_Fireclay;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_EV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_HV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_IV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_LV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_MAX;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_MV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UEV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UHV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UIV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UMV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_UXV;
-import static gregtech.common.items.ID_MetaItem_01.Conveyor_Module_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Cover_ActivityDetector;
-import static gregtech.common.items.ID_MetaItem_01.Cover_Controller;
-import static gregtech.common.items.ID_MetaItem_01.Cover_Crafting;
-import static gregtech.common.items.ID_MetaItem_01.Cover_Drain;
-import static gregtech.common.items.ID_MetaItem_01.Cover_EnergyDetector;
-import static gregtech.common.items.ID_MetaItem_01.Cover_FLuidStorageMonitor;
-import static gregtech.common.items.ID_MetaItem_01.Cover_FluidDetector;
-import static gregtech.common.items.ID_MetaItem_01.Cover_FluidLimiter;
-import static gregtech.common.items.ID_MetaItem_01.Cover_ItemDetector;
-import static gregtech.common.items.ID_MetaItem_01.Cover_NeedsMaintenance;
-import static gregtech.common.items.ID_MetaItem_01.Cover_PlayerDetector;
-import static gregtech.common.items.ID_MetaItem_01.Cover_RedstoneReceiverExternal;
-import static gregtech.common.items.ID_MetaItem_01.Cover_RedstoneReceiverInternal;
-import static gregtech.common.items.ID_MetaItem_01.Cover_RedstoneTransmitterExternal;
-import static gregtech.common.items.ID_MetaItem_01.Cover_RedstoneTransmitterInternal;
-import static gregtech.common.items.ID_MetaItem_01.Cover_Screen;
-import static gregtech.common.items.ID_MetaItem_01.Cover_Shutter;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_8V;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_EV;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_HV;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_IV;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_LV;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_MV;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_UV;
-import static gregtech.common.items.ID_MetaItem_01.Cover_SolarPanel_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Crate_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Duct_Tape;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_EV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_HV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_IV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_LV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_MAX;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_MV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UEV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UHV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UIV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UMV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_UXV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Motor_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_EV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_HV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_IV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_LV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_MAX;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_MV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UEV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UHV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UIV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UMV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_UXV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Piston_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_EV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_HV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_IV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_LV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_MAX;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_MV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UEV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UHV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UIV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UMV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_UXV;
-import static gregtech.common.items.ID_MetaItem_01.Electric_Pump_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Iron;
-import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Neodymium;
-import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Samarium;
-import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Steel;
-import static gregtech.common.items.ID_MetaItem_01.Electromagnet_Tengam;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_EV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_HV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_IV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_LV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_MAX;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_MV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_UEV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_UHV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_UIV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_UMV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_UV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_UXV;
-import static gregtech.common.items.ID_MetaItem_01.Emitter_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Empty_Board_Basic;
-import static gregtech.common.items.ID_MetaItem_01.Empty_Board_Elite;
-import static gregtech.common.items.ID_MetaItem_01.EnergisedTesseract;
-import static gregtech.common.items.ID_MetaItem_01.Energy_Cluster;
-import static gregtech.common.items.ID_MetaItem_01.Energy_Lapotronic_Orb;
-import static gregtech.common.items.ID_MetaItem_01.Energy_Lapotronic_orb_2;
-import static gregtech.common.items.ID_MetaItem_01.Energy_Module;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_EV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_HV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_IV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_LV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_MAX;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_MV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UEV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UHV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UIV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UMV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_UXV;
-import static gregtech.common.items.ID_MetaItem_01.Field_Generator_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Firebrick;
-import static gregtech.common.items.ID_MetaItem_01.FluidFilter;
-import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_EV;
-import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_HV;
-import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_IV;
-import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_LV;
-import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_LuV;
-import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_MV;
-import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_UV;
-import static gregtech.common.items.ID_MetaItem_01.FluidRegulator_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Fuel_Can_Plastic_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Fuel_Can_Plastic_Filled;
-import static gregtech.common.items.ID_MetaItem_01.GigaChad;
-import static gregtech.common.items.ID_MetaItem_01.Gravistar;
-import static gregtech.common.items.ID_MetaItem_01.Ingot_Heavy1;
-import static gregtech.common.items.ID_MetaItem_01.Ingot_Heavy2;
-import static gregtech.common.items.ID_MetaItem_01.Ingot_Heavy3;
-import static gregtech.common.items.ID_MetaItem_01.Ingot_Iridium_Alloy;
-import static gregtech.common.items.ID_MetaItem_01.ItemFilter_Export;
-import static gregtech.common.items.ID_MetaItem_01.ItemFilter_Import;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Aluminium;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Chrome;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Iridium;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Neutronium;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Osmium;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_StainlessSteel;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Steel;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_Titanium;
-import static gregtech.common.items.ID_MetaItem_01.Large_Fluid_Cell_TungstenSteel;
-import static gregtech.common.items.ID_MetaItem_01.McGuffium_239;
-import static gregtech.common.items.ID_MetaItem_01.NC_SensorKit;
-import static gregtech.common.items.ID_MetaItem_01.NaquadriaSupersolid;
-import static gregtech.common.items.ID_MetaItem_01.Paper_Magic_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Paper_Magic_Page;
-import static gregtech.common.items.ID_MetaItem_01.Paper_Magic_Pages;
-import static gregtech.common.items.ID_MetaItem_01.Paper_Printed_Pages;
-import static gregtech.common.items.ID_MetaItem_01.Paper_Punch_Card_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Paper_Punch_Card_Encoded;
-import static gregtech.common.items.ID_MetaItem_01.QuantumEye;
-import static gregtech.common.items.ID_MetaItem_01.QuantumStar;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_EV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_HV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_IV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_LV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_MAX;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_MV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UEV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UHV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UIV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UMV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_UXV;
-import static gregtech.common.items.ID_MetaItem_01.Robot_Arm_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Schematic;
-import static gregtech.common.items.ID_MetaItem_01.Schematic_1by1;
-import static gregtech.common.items.ID_MetaItem_01.Schematic_2by2;
-import static gregtech.common.items.ID_MetaItem_01.Schematic_3by3;
-import static gregtech.common.items.ID_MetaItem_01.Schematic_Crafting;
-import static gregtech.common.items.ID_MetaItem_01.Schematic_Dust;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_EV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_HV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_IV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_LV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_LuV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_MAX;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_MV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_UEV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_UHV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_UIV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_UMV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_UV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_UXV;
-import static gregtech.common.items.ID_MetaItem_01.Sensor_ZPM;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Axe;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Block;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Bolt;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Bottle;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Casing;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Cell;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_File;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Gear;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Hammer;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Hoe;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Ingot;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pickaxe;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pipe_Huge;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pipe_Large;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pipe_Medium;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pipe_Small;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Pipe_Tiny;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Plate;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Ring;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Rod;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Rotor;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Saw;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Shovel;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Small_Gear;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Sword;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Tool_Head_Drill;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Turbine_Blade;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Extruder_Wire;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Anvil;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Arrow;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Baguette;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Ball;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Block;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Bolt;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Bottle;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Bread;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Bun;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Casing;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Credit;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Cylinder;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Gear;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Gear_Small;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Ingot;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Name;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Nugget;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Pipe_Huge;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Pipe_Large;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Pipe_Medium;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Pipe_Small;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Pipe_Tiny;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Plate;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Ring;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Rod;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Rod_Long;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Rotor;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Round;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Screw;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Tool_Head_Drill;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Mold_Turbine_Blade;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Slicer_Flat;
-import static gregtech.common.items.ID_MetaItem_01.Shape_Slicer_Stripes;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_0;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_1;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_10;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_11;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_12;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_13;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_14;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_15;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_2;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_3;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_4;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_5;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_6;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_7;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_8;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_9;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Remover;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Remover_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_0;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_1;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_10;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_11;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_12;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_13;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_14;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_15;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_2;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_3;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_4;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_5;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_6;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_7;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_8;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_9;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Color_Used_Remover;
-import static gregtech.common.items.ID_MetaItem_01.Spray_Empty;
-import static gregtech.common.items.ID_MetaItem_01.StableAdhesive;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Regulator_EV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Regulator_HV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Regulator_IV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Regulator_LV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Regulator_MV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_EV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_HV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_IV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_LV;
-import static gregtech.common.items.ID_MetaItem_01.Steam_Valve_MV;
-import static gregtech.common.items.ID_MetaItem_01.SuperconductorComposite;
-import static gregtech.common.items.ID_MetaItem_01.Tesseract;
-import static gregtech.common.items.ID_MetaItem_01.Thermos_Can_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Cheat;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Cover_Copy_Paste;
-import static gregtech.common.items.ID_MetaItem_01.Tool_DataOrb;
-import static gregtech.common.items.ID_MetaItem_01.Tool_DataStick;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Full;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Invar_Used;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Platinum_Empty;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Platinum_Full;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Lighter_Platinum_Used;
-import static gregtech.common.items.ID_MetaItem_01.Tool_MatchBox_Full;
-import static gregtech.common.items.ID_MetaItem_01.Tool_MatchBox_Used;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Matches;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Scanner;
-import static gregtech.common.items.ID_MetaItem_01.Tool_Sonictron;
-import static gregtech.common.items.ID_MetaItem_01.Upgrade_Lock;
-import static gregtech.common.items.ID_MetaItem_01.Upgrade_Muffler;
-import static gregtech.common.items.ID_MetaItem_01.ZPM2;
-import static gregtech.common.items.ID_MetaItem_01.ZPM3;
-import static gregtech.common.items.ID_MetaItem_01.ZPM4;
-import static gregtech.common.items.ID_MetaItem_01.ZPM5;
-import static gregtech.common.items.ID_MetaItem_01.ZPM6;
+import static gregtech.common.items.ID_MetaItem_01.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -3120,6 +2745,199 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 EnumChatFormatting.GREEN + "Tengam Electromagnet",
                 MagnetTiers.buildMagnetTooltip(MagnetTiers.Tengam),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 40)));
+
+        // Empty battery hulls
+        ItemList.BatteryHull_EV.set(
+            addItem(
+                BatteryHull_EV.ID,
+                "Small Sunnarium Battery (Empty)",
+                "An empty EV Battery Container",
+                new ItemData(Materials.BlueSteel, OrePrefixes.plate.mMaterialAmount * 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 8L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 8L)));
+        ItemList.BatteryHull_IV.set(
+            addItem(
+                BatteryHull_IV.ID,
+                "Medium Sunnarium Battery (Empty)",
+                "An empty IV Battery Container",
+                new ItemData(Materials.RoseGold, OrePrefixes.plate.mMaterialAmount * 6L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 16L)));
+        ItemList.BatteryHull_LuV.set(
+            addItem(
+                BatteryHull_LuV.ID,
+                "Large Sunnarium Battery (Empty)",
+                "An empty LuV Battery Container",
+                new ItemData(Materials.RedSteel, OrePrefixes.plate.mMaterialAmount * 18L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 32L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 32L)));
+        ItemList.BatteryHull_ZPM.set(
+            addItem(
+                BatteryHull_ZPM.ID,
+                "Medium Naquadria Battery (Empty)",
+                "An empty ZPM Energy Storage",
+                new ItemData(Materials.Europium, OrePrefixes.plate.mMaterialAmount * 6L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 64L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 64L)));
+        ItemList.BatteryHull_UV.set(
+            addItem(
+                BatteryHull_UV.ID,
+                "Large Naquadria Battery (Empty)",
+                "An empty UV Energy Storage",
+                new ItemData(Materials.Americium, OrePrefixes.plate.mMaterialAmount * 18L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 128L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 128L)));
+        ItemList.BatteryHull_UHV.set(
+            addItem(
+                BatteryHull_UHV.ID,
+                "Small Neutronium Battery (Empty)",
+                "An empty UHV Energy Storage",
+                new ItemData(Materials.Naquadah, OrePrefixes.plate.mMaterialAmount * 24L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 256L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 256L)));
+        ItemList.BatteryHull_UEV.set(
+            addItem(
+                BatteryHull_UEV.ID,
+                "Medium Neutronium Battery (Empty)",
+                "An empty UEV Energy Storage",
+                new ItemData(Materials.NaquadahEnriched, OrePrefixes.plate.mMaterialAmount * 36L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 512L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 512L)));
+        ItemList.BatteryHull_UIV.set(
+            addItem(
+                BatteryHull_UIV.ID,
+                "Large Neutronium Battery (Empty)",
+                "An empty UIV Energy Storage",
+                new ItemData(Materials.NaquadahAlloy, OrePrefixes.plate.mMaterialAmount * 48L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1024L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1024L)));
+        ItemList.BatteryHull_UMV.set(
+            addItem(
+                BatteryHull_UMV.ID,
+                "Medium Plasma Battery (Empty)",
+                "An empty UMV Energy Storage",
+                new ItemData(Materials.Neutronium, OrePrefixes.plate.mMaterialAmount * 56L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2048L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2048L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2048L)));
+        ItemList.BatteryHull_UxV.set(
+            addItem(
+                BatteryHull_UxV.ID,
+                "Large Plasma Battery (Empty)",
+                "An empty UXV Energy Storage",
+                new ItemData(Materials.DraconiumAwakened, OrePrefixes.plate.mMaterialAmount * 64L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4096L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4096L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 4096L)));
+
+        ItemList.BatteryHull_EV_Full.set(
+            addItem(
+                BatteryHull_EV_Full.ID,
+                "Small Sunnarium Battery",
+                "Reusable",
+                "batteryEV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_IV_Full.set(
+            addItem(
+                BatteryHull_IV_Full.ID,
+                "Medium Sunnarium Battery",
+                "Reusable",
+                "batteryIV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_LuV_Full.set(
+            addItem(
+                BatteryHull_LuV_Full.ID,
+                "Large Sunnarium Battery",
+                "Reusable",
+                "batteryLuV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_ZPM_Full.set(
+            addItem(
+                BatteryHull_ZPM_Full.ID,
+                "Medium Naquadria Battery",
+                "Reusable",
+                "batteryZPM",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UV_Full.set(
+            addItem(
+                BatteryHull_UV_Full.ID,
+                "Large Naquadria Battery",
+                "Reusable",
+                "batteryUV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UHV_Full.set(
+            addItem(
+                BatteryHull_UHV_Full.ID,
+                "Small Neutronium Battery",
+                "Reusable",
+                "batteryUHV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UEV_Full.set(
+            addItem(
+                BatteryHull_UEV_Full.ID,
+                "Medium Neutronium Battery",
+                "Reusable",
+                "batteryUEV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UIV_Full.set(
+            addItem(
+                BatteryHull_UIV_Full.ID,
+                "Large Neutronium Battery",
+                "Reusable",
+                "batteryUIV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UMV_Full.set(
+            addItem(
+                BatteryHull_UMV_Full.ID,
+                "Medium Infinity Battery",
+                "Reusable",
+                "batteryUMV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UxV_Full.set(
+            addItem(
+                BatteryHull_UxV_Full.ID,
+                "Large Infinity Battery",
+                "Reusable",
+                "batteryUXV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
         removeRecipes();
         setBurnValues();
         oredictBlacklistEntries();
@@ -4054,6 +3872,86 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlueSteel, 2L))
+            .itemOutputs(ItemList.BatteryHull_EV.get(1L))
+            .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(144L)).duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV).addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Platinum, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RoseGold, 6L))
+            .itemOutputs(ItemList.BatteryHull_IV.get(1L))
+            .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(288L)).duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_EV).addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedSteel, 18L))
+            .itemOutputs(ItemList.BatteryHull_LuV.get(1L))
+            .fluidInputs(Materials.Polybenzimidazole.getMolten(144L)).duration(15 * SECONDS).eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 6L))
+            .itemOutputs(ItemList.BatteryHull_ZPM.get(1L))
+            .fluidInputs(Materials.Polybenzimidazole.getMolten(288L)).duration(10 * SECONDS).eut(TierEU.RECIPE_LuV)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.ElectrumFlux, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 18L))
+            .itemOutputs(ItemList.BatteryHull_UV.get(1L))
+            .fluidInputs(Materials.Polybenzimidazole.getMolten(576L)).duration(15 * SECONDS).eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.ElectrumFlux, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Naquadah, 24L))
+            .itemOutputs(ItemList.BatteryHull_UHV.get(1L))
+            .fluidInputs(Materials.Polybenzimidazole.getMolten(1152L)).duration(5 * SECONDS).eut(500000)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.ElectrumFlux, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahEnriched, 36L))
+            .itemOutputs(ItemList.BatteryHull_UEV.get(1L))
+            .fluidInputs(Materials.Polybenzimidazole.getMolten(2304L)).duration(10 * SECONDS).eut(2000000)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cableGt08, Materials.ElectrumFlux, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 48L))
+            .itemOutputs(ItemList.BatteryHull_UIV.get(1L))
+            .fluidInputs(Materials.Polybenzimidazole.getMolten(4608L)).duration(15 * SECONDS).eut(2000000)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 56L))
+            .itemOutputs(ItemList.BatteryHull_UMV.get(1L))
+            .fluidInputs(Materials.Polybenzimidazole.getMolten(9216L)).duration(30 * SECONDS).eut(2000000)
+            .addTo(assemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 64L))
+            .itemOutputs(ItemList.BatteryHull_UxV.get(1L))
+            .fluidInputs(Materials.Polybenzimidazole.getMolten(18432L)).duration(60 * SECONDS).eut(2000000)
+            .addTo(assemblerRecipes);
     }
 
     private void cannerRecipes() {
@@ -4128,6 +4026,87 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .itemOutputs(ItemList.Battery_RE_HV_Sodium.get(1L))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(2)
+            .addTo(cannerRecipes);
+        // Recipes to actually fill the empty hulls with content
+        // IV 2048
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 4L),
+                ItemList.BatteryHull_EV.get(1L))
+            .itemOutputs(ItemList.BatteryHull_EV_Full.get(1L)).duration(5 * SECONDS).eut(TierEU.RECIPE_HV)
+            .addTo(cannerRecipes);
+        // EV 8192
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 16L),
+                ItemList.BatteryHull_IV.get(1L))
+            .itemOutputs(ItemList.BatteryHull_IV_Full.get(1L)).duration(7 * SECONDS + 10 * TICKS).eut(1024)
+            .addTo(cannerRecipes);
+        // LuV 32768
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 32L),
+                ItemList.BatteryHull_LuV.get(1L))
+            .itemOutputs(ItemList.BatteryHull_LuV_Full.get(1L)).duration(10 * SECONDS).eut(TierEU.RECIPE_EV)
+            .addTo(cannerRecipes);
+        // ZPM 131072
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 16L),
+                ItemList.BatteryHull_ZPM.get(1L))
+            .itemOutputs(ItemList.BatteryHull_ZPM_Full.get(1L)).duration(12 * SECONDS + 10 * TICKS).eut(4096)
+            .addTo(cannerRecipes);
+        // UV 524288
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 32L),
+                ItemList.BatteryHull_UV.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UV_Full.get(1L)).duration(15 * SECONDS).eut(7860)
+            .addTo(cannerRecipes);
+        // UHV 2097152
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 16L),
+                ItemList.BatteryHull_UHV.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UHV_Full.get(1L)).duration(17 * SECONDS + 10 * TICKS).eut(15720)
+            .addTo(cannerRecipes);
+        // UEV 8388608
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 32L),
+                ItemList.BatteryHull_UEV.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UEV_Full.get(1L)).duration(20 * SECONDS).eut(31440)
+            .addTo(cannerRecipes);
+        // UIV 33554432
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 64L),
+                ItemList.BatteryHull_UIV.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UIV_Full.get(1L)).duration(22 * SECONDS + 10 * TICKS).eut(62880)
+            .addTo(cannerRecipes);
+        // UMV 134217728
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 4L),
+                ItemList.BatteryHull_UMV.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UMV_Full.get(1L)).duration(25 * SECONDS).eut(125760)
+            .addTo(cannerRecipes);
+        // UxV 536870912
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 8L),
+                ItemList.BatteryHull_UxV.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UxV_Full.get(1L)).duration(30 * SECONDS).eut(251520)
             .addTo(cannerRecipes);
     }
 
@@ -4238,6 +4217,37 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .itemOutputs(ItemList.Battery_Hull_HV.get(1L))
             .duration(15 * SECONDS)
             .eut(2)
+            .addTo(extractorRecipes);
+
+        GT_Values.RA.stdBuilder().itemInputs(ItemList.BatteryHull_EV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_EV.get(1L)).duration(15 * SECONDS).eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(ItemList.BatteryHull_IV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_IV.get(1L)).duration(15 * SECONDS).eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(ItemList.BatteryHull_LuV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_LuV.get(1L)).duration(15 * SECONDS).eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(ItemList.BatteryHull_ZPM_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_ZPM.get(1L)).duration(15 * SECONDS).eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(ItemList.BatteryHull_UV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UV.get(1L)).duration(15 * SECONDS).eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(ItemList.BatteryHull_UHV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UHV.get(1L)).duration(15 * SECONDS).eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(ItemList.BatteryHull_UEV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UEV.get(1L)).duration(15 * SECONDS).eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(ItemList.BatteryHull_UIV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UIV.get(1L)).duration(15 * SECONDS).eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(ItemList.BatteryHull_UMV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UMV.get(1L)).duration(15 * SECONDS).eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(ItemList.BatteryHull_UxV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UxV.get(1L)).duration(15 * SECONDS).eut(2)
             .addTo(extractorRecipes);
     }
 
@@ -4884,6 +4894,16 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         setElectricStats(32000 + Tool_Cover_Copy_Paste.ID, 400000L, GT_Values.V[2], 2L, -1L, false);
         setElectricStats(32000 + Tool_Cheat.ID, -2000000000L, 1000000000L, -1L, -3L, false);
         setElectricStats(32000 + Tool_Scanner.ID, 400000L, GT_Values.V[2], 2L, -1L, false);
+        setElectricStats(32000 + BatteryHull_EV_Full.ID, 6400000L, GT_Values.V[4], 4L, -3L, true);
+        setElectricStats(32000 + BatteryHull_IV_Full.ID, 25600000L, GT_Values.V[5], 5L, -3L, true);
+        setElectricStats(32000 + BatteryHull_LuV_Full.ID, 102400000L, GT_Values.V[6], 6L, -3L, true);
+        setElectricStats(32000 + BatteryHull_ZPM_Full.ID, 409600000L, GT_Values.V[7], 7L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UV_Full.ID, 1638400000L, GT_Values.V[8], 8L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UHV_Full.ID, 6553600000L, GT_Values.V[9], 9L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UEV_Full.ID, 26214400000L, GT_Values.V[10], 10L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UIV_Full.ID, 104857600000L, GT_Values.V[11], 11L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UMV_Full.ID, 419430400000L, GT_Values.V[12], 12L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UxV_Full.ID, 1677721600000L, GT_Values.V[13], 13L, -3L, true);
     }
 
     private void registerTieredTooltips() {
@@ -4920,6 +4940,16 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         registerTieredTooltip(ItemList.Circuit_Data.get(1), EV);
         registerTieredTooltip(ItemList.Circuit_Elite.get(1), IV);
         registerTieredTooltip(ItemList.Circuit_Master.get(1), LuV);
+        registerTieredTooltip(ItemList.BatteryHull_EV_Full.get(1), EV);
+        registerTieredTooltip(ItemList.BatteryHull_IV_Full.get(1), IV);
+        registerTieredTooltip(ItemList.BatteryHull_LuV_Full.get(1), LuV);
+        registerTieredTooltip(ItemList.BatteryHull_ZPM_Full.get(1), ZPM);
+        registerTieredTooltip(ItemList.BatteryHull_UV_Full.get(1), UV);
+        registerTieredTooltip(ItemList.BatteryHull_UHV_Full.get(1), UHV);
+        registerTieredTooltip(ItemList.BatteryHull_UEV_Full.get(1), UEV);
+        registerTieredTooltip(ItemList.BatteryHull_UIV_Full.get(1), UIV);
+        registerTieredTooltip(ItemList.BatteryHull_UMV_Full.get(1), UMV);
+        registerTieredTooltip(ItemList.BatteryHull_UxV_Full.get(1), UXV);
 
     }
 }
