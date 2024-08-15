@@ -10,10 +10,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -27,8 +30,10 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
@@ -219,6 +224,25 @@ public class GT_Block_FrameBox extends BlockContainer {
     }
 
     @Override
+    public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
+        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity
+            && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() != null) {
+            ((IGregTechTileEntity) tTileEntity).onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
+            return;
+        }
+        super.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
+    }
+
+    @Override
+    public float getPlayerRelativeBlockHardness(EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
+        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        return tTileEntity instanceof BaseMetaTileEntity && ((BaseMetaTileEntity) tTileEntity).privateAccess()
+            && !((BaseMetaTileEntity) tTileEntity).playerOwnsThis(aPlayer, true) ? -1.0F
+                : super.getPlayerRelativeBlockHardness(aPlayer, aWorld, aX, aY, aZ);
+    }
+
+    @Override
     public void onNeighborChange(IBlockAccess aWorld, int aX, int aY, int aZ, int aTileX, int aTileY, int aTileZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if ((tTileEntity instanceof BaseTileEntity)) {
@@ -235,11 +259,119 @@ public class GT_Block_FrameBox extends BlockContainer {
     }
 
     @Override
-    public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
-        super.onBlockAdded(aWorld, aX, aY, aZ);
-        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
-            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
+        List<AxisAlignedBB> outputAABB, Entity collider) {
+        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity
+            && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() != null) {
+            ((IGregTechTileEntity) tTileEntity)
+                .addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
+            return;
         }
+        super.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
+        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity
+            && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() != null) {
+            return ((IGregTechTileEntity) tTileEntity).getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+        }
+        return super.getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getSelectedBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
+        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity
+            && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() != null) {
+            return ((IGregTechTileEntity) tTileEntity).getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+        }
+        return super.getSelectedBoundingBoxFromPool(aWorld, aX, aY, aZ);
+    }
+
+    @Override
+    public boolean isSideSolid(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection side) {
+        if (aWorld.getBlockMetadata(aX, aY, aZ) == 0) {
+            return true;
+        }
+        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tTileEntity != null) {
+            if (tTileEntity instanceof BaseMetaTileEntity) {
+                return true;
+            }
+            if (tTileEntity instanceof BaseMetaPipeEntity
+                && (((BaseMetaPipeEntity) tTileEntity).mConnections & 0xFFFFFFC0) != 0) {
+                return true;
+            }
+            return tTileEntity instanceof ICoverable && ((ICoverable) tTileEntity).getCoverIDAtSide(side) != 0;
+        }
+        return false;
+    }
+
+    @Override // THIS
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int aX, int aY, int aZ) {
+        final TileEntity tTileEntity = blockAccess.getTileEntity(aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity
+            && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() != null)) {
+            final AxisAlignedBB bbb = ((IGregTechTileEntity) tTileEntity)
+                .getCollisionBoundingBoxFromPool(((IGregTechTileEntity) tTileEntity).getWorld(), 0, 0, 0);
+            minX = bbb.minX; // This essentially sets block bounds
+            minY = bbb.minY;
+            minZ = bbb.minZ;
+            maxX = bbb.maxX;
+            maxY = bbb.maxY;
+            maxZ = bbb.maxZ;
+            return;
+        }
+        super.setBlockBoundsBasedOnState(blockAccess, aX, aY, aZ);
+    }
+
+    @Override
+    public void setBlockBoundsForItemRender() {
+        super.setBlockBounds(0, 0, 0, 1, 1, 1);
+    }
+
+    @Override
+    public int getFlammability(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection face) {
+        return 0;
+    }
+
+    @Override
+    public int getFireSpreadSpeed(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection face) {
+        return 0;
+    }
+
+    @Override
+    public boolean isFireSource(World aWorld, int aX, int aY, int aZ, ForgeDirection side) {
+        return false;
+    }
+
+    @Override
+    public boolean isFlammable(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection face) {
+        return false;
+    }
+
+    @Override
+    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess aWorld, int aX, int aY, int aZ) {
+        return false;
+    }
+
+    @Override
+    public boolean canBeReplacedByLeaves(IBlockAccess aWorld, int aX, int aY, int aZ) {
+        return false;
+    }
+
+    @Override
+    public boolean isNormalCube(IBlockAccess aWorld, int aX, int aY, int aZ) {
+        return false;
+    }
+
+    @Override
+    public boolean hasTileEntity(int aMeta) {
+        return true;
     }
 
     @Override
