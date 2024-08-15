@@ -15,18 +15,19 @@ public enum CircuitComponent {
     SMDDiode("gt.circuitcomponent.smd.diode");
 
     public final String unlocalizedName;
-    // ItemStack of a fake item representing this component
-    public final ItemStack stack;
 
     CircuitComponent(String unlocalizedName) {
         this.unlocalizedName = unlocalizedName;
-        // Create ItemStack that represents this component. We will use this for recipe checking.
-        this.stack = new ItemStack(GT_CircuitComponent_FakeItem.INSTANCE, 1, this.ordinal());
         // Hide this stack in NEI
-        codechicken.nei.api.API.hideItem(this.stack);
+        codechicken.nei.api.API.hideItem(getStackForm(1));
     }
 
     public String getLocalizedName() {
         return StatCollector.translateToLocal(unlocalizedName);
+    }
+
+    // ItemStack of a fake item, only for display and recipe checking purposes
+    public ItemStack getStackForm(int amount) {
+        return new ItemStack(GT_CircuitComponent_FakeItem.INSTANCE, amount, this.ordinal());
     }
 }
