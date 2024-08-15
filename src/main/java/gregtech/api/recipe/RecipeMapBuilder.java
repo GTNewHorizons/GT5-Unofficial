@@ -501,10 +501,6 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
         return this;
     }
 
-    public RecipeMapBuilder<B> disableCategoryAndRecipeMapRegistry() {
-        return this;
-    }
-
     /**
      * Builds new recipemap.
      *
