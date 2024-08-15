@@ -1,7 +1,5 @@
 package gregtech.nei;
 
-import static gregtech.api.enums.Mods.GregTech;
-
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;

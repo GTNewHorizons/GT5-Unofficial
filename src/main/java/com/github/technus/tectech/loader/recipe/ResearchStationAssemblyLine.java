@@ -1086,8 +1086,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 1024,
                 2_000_000,
                 8,
-                new Object[] { ItemList.AssemblingMachineUHV.get(1),
-                    new ItemStack(defcCasingBlock, 1, 8),
+                new Object[] { ItemList.AssemblingMachineUHV.get(1), new ItemStack(defcCasingBlock, 1, 8),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsBotania.GaiaSpirit, 1L),
                     ItemList.Casing_Coil_AwakenedDraconium.get(8L), ItemList.Electric_Motor_UHV.get(8L),
                     ItemList.Robot_Arm_UHV.get(4L), new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4 },
@@ -2728,9 +2727,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.FusionComputer_ZPMV.get(2), ItemList.FusionComputer_ZPMV.get(3),
                 ItemList.FusionComputer_UV.get(1), ItemList.FusionComputer_UV.get(2), ItemList.FusionComputer_UV.get(3),
                 // MK4 Fusion Computer.
-                GregtechItemList.FusionComputer_UV2.get(1),
-                GregtechItemList.FusionComputer_UV2.get(2),
-                GregtechItemList.FusionComputer_UV2.get(3)};
+                GregtechItemList.FusionComputer_UV2.get(1), GregtechItemList.FusionComputer_UV2.get(2),
+                GregtechItemList.FusionComputer_UV2.get(3) };
 
             final ItemStack[] fusionCoils = new ItemStack[] { new ItemStack(compactFusionCoil, 1, 1),
                 new ItemStack(compactFusionCoil, 2, 1), new ItemStack(compactFusionCoil, 3, 1),
