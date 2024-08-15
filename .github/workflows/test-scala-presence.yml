@@ -15,5 +15,5 @@ jobs:
       - name: Detect scala presence
         shell: bash
         run: |
-          !grep -E -r 'import scala\.' src/main/java
+          ! grep -E -r 'import scala\.' src/main/java
 
