@@ -13,24 +13,6 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import org.apache.commons.lang3.ArrayUtils;
-
-import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
-
-import gregtech.api.enums.GT_Values;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
-import gregtech.api.util.GT_Utility;
-
 import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_MAX;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_MAX;
@@ -41,6 +23,23 @@ import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_MAX;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_MAX;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_ULV;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.apache.commons.lang3.ArrayUtils;
+
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
+
+import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
+import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
 

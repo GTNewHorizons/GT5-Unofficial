@@ -1,5 +1,7 @@
 package gregtech.nei;
 
+import static gregtech.api.enums.Mods.GregTech;
+
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
@@ -36,8 +38,6 @@ import gregtech.nei.dumper.MetaItemDumper;
 import gregtech.nei.dumper.MetaTileEntityDumper;
 import gregtech.nei.dumper.RecipeLockingSupportDumper;
 import gregtech.nei.dumper.VoidProtectionSupportDumper;
-
-import static gregtech.api.enums.Mods.GregTech;
 
 public class NEI_GT_Config implements IConfigureNEI {
 

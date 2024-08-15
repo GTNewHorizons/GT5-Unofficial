@@ -24,7 +24,6 @@ import com.github.bartimaeusnek.bartworks.API.API_ConfigValues;
 
 public class ConfigHandler {
 
-
     public static Configuration c;
 
     public static int megaMachinesMax = 256;

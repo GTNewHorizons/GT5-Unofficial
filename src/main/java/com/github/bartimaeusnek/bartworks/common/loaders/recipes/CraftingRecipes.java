@@ -427,10 +427,8 @@ public class CraftingRecipes implements Runnable {
                 ItemList.Sensor_LuV.get(1L), 'P', WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 1), });
 
         GT_ModHandler.addCraftingRecipe(
-            new GT_TileEntity_BioVat(
-                BioVat.ID,
-                "bw.biovat",
-                StatCollector.translateToLocal("tile.biovat.name")).getStackForm(1L),
+            new GT_TileEntity_BioVat(BioVat.ID, "bw.biovat", StatCollector.translateToLocal("tile.biovat.name"))
+                .getStackForm(1L),
             RecipeLoader.BITSD,
             new Object[] { "GCG", "KHK", "GCG", 'G', new ItemStack(ItemRegistry.bw_glasses[0], 1, 1), 'C',
                 "circuit" + Materials.EV, 'K', GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Silver, 1L),
@@ -450,17 +448,20 @@ public class CraftingRecipes implements Runnable {
         Materials[] circuits2 = { Materials.HV, Materials.EV, Materials.IV, Materials.LuV, Materials.ZPM,
             Materials.UV };
 
-        int[] BioLab = new int[]{ BioLab_HV.ID, BioLab_EV.ID, BioLab_IV.ID, BioLab_LuV.ID, BioLab_ZPM.ID, BioLab_UV.ID, BioLab_UHV.ID, BioLab_UEV.ID, BioLab_UIV.ID, BioLab_UMV.ID, BioLab_UXV.ID, BioLab_MAX.ID };
-        int[] RadioHatch = new int[]{ RadioHatch_HV.ID, RadioHatch_EV.ID, RadioHatch_IV.ID, RadioHatch_LuV.ID, RadioHatch_ZPM.ID, RadioHatch_UV.ID, RadioHatch_UHV.ID, RadioHatch_UEV.ID, RadioHatch_UIV.ID, RadioHatch_UMV.ID, RadioHatch_UXV.ID, RadioHatch_MAX.ID };
+        int[] BioLab = new int[] { BioLab_HV.ID, BioLab_EV.ID, BioLab_IV.ID, BioLab_LuV.ID, BioLab_ZPM.ID, BioLab_UV.ID,
+            BioLab_UHV.ID, BioLab_UEV.ID, BioLab_UIV.ID, BioLab_UMV.ID, BioLab_UXV.ID, BioLab_MAX.ID };
+        int[] RadioHatch = new int[] { RadioHatch_HV.ID, RadioHatch_EV.ID, RadioHatch_IV.ID, RadioHatch_LuV.ID,
+            RadioHatch_ZPM.ID, RadioHatch_UV.ID, RadioHatch_UHV.ID, RadioHatch_UEV.ID, RadioHatch_UIV.ID,
+            RadioHatch_UMV.ID, RadioHatch_UXV.ID, RadioHatch_MAX.ID };
 
         for (int i = 3; i < GT_Values.VN.length - 1; i++) {
             BioLab2[i - 3] = new GT_MetaTileEntity_BioLab(
-                BioLab[i-3],
+                BioLab[i - 3],
                 "bw.biolab" + GT_Values.VN[i],
                 GT_Values.VN[i] + " " + StatCollector.translateToLocal("tile.biolab.name"),
                 i).getStackForm(1L);
             RadioHatch2[i - 3] = new GT_MetaTileEntity_RadioHatch(
-                RadioHatch[i-3],
+                RadioHatch[i - 3],
                 "bw.radiohatch" + GT_Values.VN[i],
                 GT_Values.VN[i] + " " + StatCollector.translateToLocal("tile.radiohatch.name"),
                 i).getStackForm(1L);

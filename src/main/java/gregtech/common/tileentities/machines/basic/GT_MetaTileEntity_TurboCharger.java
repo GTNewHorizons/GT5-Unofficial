@@ -1,5 +1,8 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static gregtech.api.enums.GT_Values.V;
+
+import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -9,9 +12,6 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.item.ItemStack;
-
-import static gregtech.api.enums.GT_Values.V;
 
 /**
  * Created by danie_000 on 15.10.2016.
@@ -19,12 +19,12 @@ import static gregtech.api.enums.GT_Values.V;
 public class GT_MetaTileEntity_TurboCharger extends GT_MetaTileEntity_Charger {
 
     public GT_MetaTileEntity_TurboCharger(int aID, String aName, String aNameRegional, int aTier, String aDescription,
-                                          int aSlotCount) {
+        int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aDescription, aSlotCount);
     }
 
     public GT_MetaTileEntity_TurboCharger(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-                                          int aSlotCount) {
+        int aSlotCount) {
         super(aName, aTier, aDescription, aTextures, aSlotCount);
     }
 
@@ -95,7 +95,7 @@ public class GT_MetaTileEntity_TurboCharger extends GT_MetaTileEntity_Charger {
                     if (mMetaTileEntity.dechargerSlotCount() > 0
                         && mBaseMetaTileEntity.getStoredEU() < mBaseMetaTileEntity.getEUCapacity()) {
                         for (int i = mMetaTileEntity.dechargerSlotStartIndex(),
-                             k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
+                            k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
                             if (mMetaTileEntity.mInventory[i] != null
                                 && mBaseMetaTileEntity.getStoredEU() < mBaseMetaTileEntity.getEUCapacity()) {
                                 // CODE
@@ -120,18 +120,19 @@ public class GT_MetaTileEntity_TurboCharger extends GT_MetaTileEntity_Charger {
                     }
                     if (mMetaTileEntity.rechargerSlotCount() > 0 && mBaseMetaTileEntity.getStoredEU() > 0) {
                         for (int i = mMetaTileEntity.rechargerSlotStartIndex(),
-                             k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
+                            k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
                             if (mBaseMetaTileEntity.getStoredEU() > 0 && mMetaTileEntity.mInventory[i] != null) {
                                 // CODE
-                                mBaseMetaTileEntity.decreaseStoredEU(
-                                    GT_ModHandler.chargeElectricItem(
-                                        mMetaTileEntity.mInventory[i],
-                                        GT_Utility.safeInt(
-                                            Math.min(V[mTier] * 120, mBaseMetaTileEntity.getStoredEU())),
-                                        (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getOutputTier()),
-                                        true,
-                                        false),
-                                    true);
+                                mBaseMetaTileEntity
+                                    .decreaseStoredEU(
+                                        GT_ModHandler.chargeElectricItem(
+                                            mMetaTileEntity.mInventory[i],
+                                            GT_Utility
+                                                .safeInt(Math.min(V[mTier] * 120, mBaseMetaTileEntity.getStoredEU())),
+                                            (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getOutputTier()),
+                                            true,
+                                            false),
+                                        true);
                                 if (mMetaTileEntity.mInventory[i].stackSize <= 0) {
                                     mMetaTileEntity.mInventory[i] = null;
                                 }

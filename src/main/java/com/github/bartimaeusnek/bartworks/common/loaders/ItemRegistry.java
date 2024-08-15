@@ -22,6 +22,36 @@ import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorMV;
 import static gregtech.api.enums.MetaTileEntityIDs.CircuitAssemblyLine;
 import static gregtech.api.enums.MetaTileEntityIDs.CompressedFluidHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.DeepEarthHeatingPump;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_MAX;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UEV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UHV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UIV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_ULV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UMV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UXV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_MAX;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UEV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UHV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UIV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_ULV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UMV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UXV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_IV;
@@ -67,36 +97,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_UMV;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_UXV;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.ElectricImplosionCompressor;
 import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_HV;
@@ -132,6 +132,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter96A_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter96A_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter96A_LuV;
 import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter96A_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserPipe;
 import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch128A_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch128A_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch128A_LuV;
@@ -164,7 +165,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch96A_E
 import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch96A_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch96A_LuV;
 import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch96A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserPipe;
 import static gregtech.api.enums.MetaTileEntityIDs.MegaBlastFurnace;
 import static gregtech.api.enums.MetaTileEntityIDs.MegaChemicalReactor;
 import static gregtech.api.enums.MetaTileEntityIDs.MegaDistillationTower;
@@ -176,7 +176,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerII;
 import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerIII;
 import static gregtech.api.enums.Mods.GalactiGreg;
 
-import gregtech.api.enums.MetaTileEntityIDs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -231,6 +230,7 @@ import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -421,7 +421,11 @@ public class ItemRegistry {
         GameRegistry.registerItem(ItemRegistry.ROCKCUTTER_HV, ItemRegistry.ROCKCUTTER_HV.getUnlocalizedName());
         GameRegistry.registerItem(ItemRegistry.TAB, "tabIconGT2");
 
-        new CreativeScanner(MetaTileEntityIDs.CreativeScanner.ID, "Creative Debug Scanner", "Creative Debug Scanner", 14);
+        new CreativeScanner(
+            MetaTileEntityIDs.CreativeScanner.ID,
+            "Creative Debug Scanner",
+            "Creative Debug Scanner",
+            14);
         ItemRegistry.eic = new GT_TileEntity_ElectricImplosionCompressor(
             ElectricImplosionCompressor.ID,
             "ElectricImplosionCompressor",
@@ -459,12 +463,26 @@ public class ItemRegistry {
         GT_OreDictUnificator
             .registerOre(OrePrefixes.block, Materials.NickelZincFerrite, new ItemStack(ItemRegistry.BW_BLOCKS[2]));
 
-        int[] Diode2A = new int[]{Diode2A_ULV.ID, Diode2A_LV.ID, Diode2A_MV.ID, Diode2A_HV.ID, Diode2A_EV.ID, Diode2A_IV.ID, Diode2A_LuV.ID, Diode2A_ZPM.ID, Diode2A_UV.ID, Diode2A_UHV.ID, Diode2A_UEV.ID, Diode2A_UIV.ID, Diode2A_UMV.ID, Diode2A_UXV.ID, Diode2A_MAX.ID};
-        int[] Diode4A = new int[]{Diode4A_ULV.ID, Diode4A_LV.ID, Diode4A_MV.ID, Diode4A_HV.ID, Diode4A_EV.ID, Diode4A_IV.ID, Diode4A_LuV.ID, Diode4A_ZPM.ID, Diode4A_UV.ID, Diode4A_UHV.ID, Diode4A_UEV.ID, Diode4A_UIV.ID, Diode4A_UMV.ID, Diode4A_UXV.ID, Diode4A_MAX.ID};
-        int[] Diode8A = new int[]{Diode8A_ULV.ID, Diode8A_LV.ID, Diode8A_MV.ID, Diode8A_HV.ID, Diode8A_EV.ID, Diode8A_IV.ID, Diode8A_LuV.ID, Diode8A_ZPM.ID, Diode8A_UV.ID, Diode8A_UHV.ID, Diode8A_UEV.ID, Diode8A_UIV.ID, Diode8A_UMV.ID, Diode8A_UXV.ID, Diode8A_MAX.ID};
-        int[] Diode12A = new int[]{Diode12A_ULV.ID, Diode12A_LV.ID, Diode12A_MV.ID, Diode12A_HV.ID, Diode12A_EV.ID, Diode12A_IV.ID, Diode12A_LuV.ID, Diode12A_ZPM.ID, Diode12A_UV.ID, Diode12A_UHV.ID, Diode12A_UEV.ID, Diode12A_UIV.ID, Diode12A_UMV.ID, Diode12A_UXV.ID, Diode12A_MAX.ID};
-        int[] Diode16A = new int[]{Diode16A_ULV.ID, Diode16A_LV.ID, Diode16A_MV.ID, Diode16A_HV.ID, Diode16A_EV.ID, Diode16A_IV.ID, Diode16A_LuV.ID, Diode16A_ZPM.ID, Diode16A_UV.ID, Diode16A_UHV.ID, Diode16A_UEV.ID, Diode16A_UIV.ID, Diode16A_UMV.ID, Diode16A_UXV.ID, Diode16A_MAX.ID};
-        int[] EnergyDistributors = new int[]{EnergyDistributor_ULV.ID, EnergyDistributor_LV.ID, EnergyDistributor_MV.ID, EnergyDistributor_HV.ID, EnergyDistributor_EV.ID, EnergyDistributor_IV.ID, EnergyDistributor_LuV.ID, EnergyDistributor_ZPM.ID, EnergyDistributor_UV.ID, EnergyDistributor_UHV.ID, EnergyDistributor_UEV.ID, EnergyDistributor_UIV.ID, EnergyDistributor_UMV.ID, EnergyDistributor_UXV.ID, EnergyDistributor_MAX.ID};
+        int[] Diode2A = new int[] { Diode2A_ULV.ID, Diode2A_LV.ID, Diode2A_MV.ID, Diode2A_HV.ID, Diode2A_EV.ID,
+            Diode2A_IV.ID, Diode2A_LuV.ID, Diode2A_ZPM.ID, Diode2A_UV.ID, Diode2A_UHV.ID, Diode2A_UEV.ID,
+            Diode2A_UIV.ID, Diode2A_UMV.ID, Diode2A_UXV.ID, Diode2A_MAX.ID };
+        int[] Diode4A = new int[] { Diode4A_ULV.ID, Diode4A_LV.ID, Diode4A_MV.ID, Diode4A_HV.ID, Diode4A_EV.ID,
+            Diode4A_IV.ID, Diode4A_LuV.ID, Diode4A_ZPM.ID, Diode4A_UV.ID, Diode4A_UHV.ID, Diode4A_UEV.ID,
+            Diode4A_UIV.ID, Diode4A_UMV.ID, Diode4A_UXV.ID, Diode4A_MAX.ID };
+        int[] Diode8A = new int[] { Diode8A_ULV.ID, Diode8A_LV.ID, Diode8A_MV.ID, Diode8A_HV.ID, Diode8A_EV.ID,
+            Diode8A_IV.ID, Diode8A_LuV.ID, Diode8A_ZPM.ID, Diode8A_UV.ID, Diode8A_UHV.ID, Diode8A_UEV.ID,
+            Diode8A_UIV.ID, Diode8A_UMV.ID, Diode8A_UXV.ID, Diode8A_MAX.ID };
+        int[] Diode12A = new int[] { Diode12A_ULV.ID, Diode12A_LV.ID, Diode12A_MV.ID, Diode12A_HV.ID, Diode12A_EV.ID,
+            Diode12A_IV.ID, Diode12A_LuV.ID, Diode12A_ZPM.ID, Diode12A_UV.ID, Diode12A_UHV.ID, Diode12A_UEV.ID,
+            Diode12A_UIV.ID, Diode12A_UMV.ID, Diode12A_UXV.ID, Diode12A_MAX.ID };
+        int[] Diode16A = new int[] { Diode16A_ULV.ID, Diode16A_LV.ID, Diode16A_MV.ID, Diode16A_HV.ID, Diode16A_EV.ID,
+            Diode16A_IV.ID, Diode16A_LuV.ID, Diode16A_ZPM.ID, Diode16A_UV.ID, Diode16A_UHV.ID, Diode16A_UEV.ID,
+            Diode16A_UIV.ID, Diode16A_UMV.ID, Diode16A_UXV.ID, Diode16A_MAX.ID };
+        int[] EnergyDistributors = new int[] { EnergyDistributor_ULV.ID, EnergyDistributor_LV.ID,
+            EnergyDistributor_MV.ID, EnergyDistributor_HV.ID, EnergyDistributor_EV.ID, EnergyDistributor_IV.ID,
+            EnergyDistributor_LuV.ID, EnergyDistributor_ZPM.ID, EnergyDistributor_UV.ID, EnergyDistributor_UHV.ID,
+            EnergyDistributor_UEV.ID, EnergyDistributor_UIV.ID, EnergyDistributor_UMV.ID, EnergyDistributor_UXV.ID,
+            EnergyDistributor_MAX.ID };
 
         for (int i = 0; i < GT_Values.VN.length - 1; i++) {
             ItemRegistry.diode2A[i] = new GT_MetaTileEntity_Diode(
@@ -521,11 +539,8 @@ public class ItemRegistry {
             StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GT_Values.VN[1],
             +1).getStackForm(1L);
 
-        ItemRegistry.dehp = new GT_TileEntity_DEHP(
-            DeepEarthHeatingPump.ID,
-            1,
-            "DEHP",
-            "Deep Earth Heating Pump").getStackForm(1L);
+        ItemRegistry.dehp = new GT_TileEntity_DEHP(DeepEarthHeatingPump.ID, 1, "DEHP", "Deep Earth Heating Pump")
+            .getStackForm(1L);
         ItemRegistry.megaMachines[0] = new GT_TileEntity_MegaBlastFurnace(
             MegaBlastFurnace.ID,
             "MegaBlastFurnace",
@@ -572,21 +587,24 @@ public class ItemRegistry {
                 VoidMinerII.ID,
                 "VoidMiner2",
                 "Void Miner II").getStackForm(1L);
-            ItemRegistry.voidminer[0] = new GT_TileEntity_VoidMiners.VMLUV(
-                VoidMinerI.ID,
-                "VoidMiner1",
-                "Void Miner I").getStackForm(1L);
+            ItemRegistry.voidminer[0] = new GT_TileEntity_VoidMiners.VMLUV(VoidMinerI.ID, "VoidMiner1", "Void Miner I")
+                .getStackForm(1L);
         }
         TecTechPipeEnergyLowPower = new TT_MetaTileEntity_Pipe_Energy_LowPower(
             LowPowerLaserPipe.ID,
             "pipe.lowpowerlaser",
             "Low Power Laser Pipe").getStackForm(1L);
 
-        int[] LowPowerLaserConverter32A = new int[]{ LowPowerLaserConverter32A_EV.ID, LowPowerLaserConverter32A_IV.ID, LowPowerLaserConverter32A_LuV.ID, LowPowerLaserConverter32A_ZPM.ID };
-        int[] LowPowerLaserConverter64A = new int[]{ LowPowerLaserConverter64A_EV.ID, LowPowerLaserConverter64A_IV.ID, LowPowerLaserConverter64A_LuV.ID, LowPowerLaserConverter64A_ZPM.ID };
-        int[] LowPowerLaserConverter96A = new int[]{ LowPowerLaserConverter96A_EV.ID, LowPowerLaserConverter96A_IV.ID, LowPowerLaserConverter96A_LuV.ID, LowPowerLaserConverter96A_ZPM.ID };
-        int[] LowPowerLaserConverter128A = new int[]{ LowPowerLaserConverter128A_EV.ID, LowPowerLaserConverter128A_IV.ID, LowPowerLaserConverter128A_LuV.ID, LowPowerLaserConverter128A_ZPM.ID };
-        int[][] LowPowerLaserConverter = new int[][]{LowPowerLaserConverter32A, LowPowerLaserConverter64A, LowPowerLaserConverter96A, LowPowerLaserConverter128A};
+        int[] LowPowerLaserConverter32A = new int[] { LowPowerLaserConverter32A_EV.ID, LowPowerLaserConverter32A_IV.ID,
+            LowPowerLaserConverter32A_LuV.ID, LowPowerLaserConverter32A_ZPM.ID };
+        int[] LowPowerLaserConverter64A = new int[] { LowPowerLaserConverter64A_EV.ID, LowPowerLaserConverter64A_IV.ID,
+            LowPowerLaserConverter64A_LuV.ID, LowPowerLaserConverter64A_ZPM.ID };
+        int[] LowPowerLaserConverter96A = new int[] { LowPowerLaserConverter96A_EV.ID, LowPowerLaserConverter96A_IV.ID,
+            LowPowerLaserConverter96A_LuV.ID, LowPowerLaserConverter96A_ZPM.ID };
+        int[] LowPowerLaserConverter128A = new int[] { LowPowerLaserConverter128A_EV.ID,
+            LowPowerLaserConverter128A_IV.ID, LowPowerLaserConverter128A_LuV.ID, LowPowerLaserConverter128A_ZPM.ID };
+        int[][] LowPowerLaserConverter = new int[][] { LowPowerLaserConverter32A, LowPowerLaserConverter64A,
+            LowPowerLaserConverter96A, LowPowerLaserConverter128A };
 
         for (int amps = 32; amps <= 128; amps += 32) {
             for (int tier = 4; tier < 8; tier++) {
@@ -599,11 +617,17 @@ public class ItemRegistry {
             }
         }
 
-        int[] LowPowerLaserTargetHatch32A = new int[]{ LowPowerLaserTargetHatch32A_EV.ID, LowPowerLaserTargetHatch32A_IV.ID, LowPowerLaserTargetHatch32A_LuV.ID, LowPowerLaserTargetHatch32A_ZPM.ID };
-        int[] LowPowerLaserTargetHatch64A = new int[]{ LowPowerLaserTargetHatch64A_EV.ID, LowPowerLaserTargetHatch64A_IV.ID, LowPowerLaserTargetHatch64A_LuV.ID, LowPowerLaserTargetHatch64A_ZPM.ID };
-        int[] LowPowerLaserTargetHatch96A = new int[]{ LowPowerLaserTargetHatch96A_EV.ID, LowPowerLaserTargetHatch96A_IV.ID, LowPowerLaserTargetHatch96A_LuV.ID, LowPowerLaserTargetHatch96A_ZPM.ID };
-        int[] LowPowerLaserTargetHatch128A = new int[]{ LowPowerLaserTargetHatch128A_EV.ID, LowPowerLaserTargetHatch128A_IV.ID, LowPowerLaserTargetHatch128A_LuV.ID, LowPowerLaserTargetHatch128A_ZPM.ID };
-        int[][]LowPowerLaserTargetHatch = new int[][]{LowPowerLaserTargetHatch32A, LowPowerLaserTargetHatch64A, LowPowerLaserTargetHatch96A, LowPowerLaserTargetHatch128A};
+        int[] LowPowerLaserTargetHatch32A = new int[] { LowPowerLaserTargetHatch32A_EV.ID,
+            LowPowerLaserTargetHatch32A_IV.ID, LowPowerLaserTargetHatch32A_LuV.ID, LowPowerLaserTargetHatch32A_ZPM.ID };
+        int[] LowPowerLaserTargetHatch64A = new int[] { LowPowerLaserTargetHatch64A_EV.ID,
+            LowPowerLaserTargetHatch64A_IV.ID, LowPowerLaserTargetHatch64A_LuV.ID, LowPowerLaserTargetHatch64A_ZPM.ID };
+        int[] LowPowerLaserTargetHatch96A = new int[] { LowPowerLaserTargetHatch96A_EV.ID,
+            LowPowerLaserTargetHatch96A_IV.ID, LowPowerLaserTargetHatch96A_LuV.ID, LowPowerLaserTargetHatch96A_ZPM.ID };
+        int[] LowPowerLaserTargetHatch128A = new int[] { LowPowerLaserTargetHatch128A_EV.ID,
+            LowPowerLaserTargetHatch128A_IV.ID, LowPowerLaserTargetHatch128A_LuV.ID,
+            LowPowerLaserTargetHatch128A_ZPM.ID };
+        int[][] LowPowerLaserTargetHatch = new int[][] { LowPowerLaserTargetHatch32A, LowPowerLaserTargetHatch64A,
+            LowPowerLaserTargetHatch96A, LowPowerLaserTargetHatch128A };
         for (int amps = 32; amps <= 128; amps += 32) {
             for (int tier = 4; tier < 8; tier++) {
                 TecTechLaserAdditions[1][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserHatch(
@@ -615,11 +639,17 @@ public class ItemRegistry {
             }
         }
 
-        int[] LowPowerLaserSourceHatch32A = new int[]{ LowPowerLaserSourceHatch32A_EV.ID, LowPowerLaserSourceHatch32A_IV.ID, LowPowerLaserSourceHatch32A_LuV.ID, LowPowerLaserSourceHatch32A_ZPM.ID };
-        int[] LowPowerLaserSourceHatch64A = new int[]{ LowPowerLaserSourceHatch64A_EV.ID, LowPowerLaserSourceHatch64A_IV.ID, LowPowerLaserSourceHatch64A_LuV.ID, LowPowerLaserSourceHatch64A_ZPM.ID };
-        int[] LowPowerLaserSourceHatch96A = new int[]{ LowPowerLaserSourceHatch96A_EV.ID, LowPowerLaserSourceHatch96A_IV.ID, LowPowerLaserSourceHatch96A_LuV.ID, LowPowerLaserSourceHatch96A_ZPM.ID };
-        int[] LowPowerLaserSourceHatch128A = new int[]{ LowPowerLaserSourceHatch128A_EV.ID, LowPowerLaserSourceHatch128A_IV.ID, LowPowerLaserSourceHatch128A_LuV.ID, LowPowerLaserSourceHatch128A_ZPM.ID };
-        int[][] LowPowerLaserSourceHatch = new int[][]{LowPowerLaserSourceHatch32A, LowPowerLaserSourceHatch64A, LowPowerLaserSourceHatch96A, LowPowerLaserSourceHatch128A};
+        int[] LowPowerLaserSourceHatch32A = new int[] { LowPowerLaserSourceHatch32A_EV.ID,
+            LowPowerLaserSourceHatch32A_IV.ID, LowPowerLaserSourceHatch32A_LuV.ID, LowPowerLaserSourceHatch32A_ZPM.ID };
+        int[] LowPowerLaserSourceHatch64A = new int[] { LowPowerLaserSourceHatch64A_EV.ID,
+            LowPowerLaserSourceHatch64A_IV.ID, LowPowerLaserSourceHatch64A_LuV.ID, LowPowerLaserSourceHatch64A_ZPM.ID };
+        int[] LowPowerLaserSourceHatch96A = new int[] { LowPowerLaserSourceHatch96A_EV.ID,
+            LowPowerLaserSourceHatch96A_IV.ID, LowPowerLaserSourceHatch96A_LuV.ID, LowPowerLaserSourceHatch96A_ZPM.ID };
+        int[] LowPowerLaserSourceHatch128A = new int[] { LowPowerLaserSourceHatch128A_EV.ID,
+            LowPowerLaserSourceHatch128A_IV.ID, LowPowerLaserSourceHatch128A_LuV.ID,
+            LowPowerLaserSourceHatch128A_ZPM.ID };
+        int[][] LowPowerLaserSourceHatch = new int[][] { LowPowerLaserSourceHatch32A, LowPowerLaserSourceHatch64A,
+            LowPowerLaserSourceHatch96A, LowPowerLaserSourceHatch128A };
         for (int amps = 32; amps <= 128; amps += 32) {
             for (int tier = 4; tier < 8; tier++) {
                 TecTechLaserAdditions[2][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserDynamo(

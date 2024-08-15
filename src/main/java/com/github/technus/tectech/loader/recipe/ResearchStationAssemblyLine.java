@@ -33,13 +33,12 @@ import static kubatech.api.enums.ItemList.DEFCDraconicSchematic;
 import static kubatech.api.enums.ItemList.DEFCWyvernSchematic;
 import static kubatech.loaders.BlockLoader.defcCasingBlock;
 
-import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
@@ -57,6 +56,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -720,8 +720,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 4096,
                 32_000_000,
                 1,
-                new Object[] { ItemList.Casing_Dim_Bridge.get(4),
-                    ItemRegistry.megaMachines[0],
+                new Object[] { ItemList.Casing_Dim_Bridge.get(4), ItemRegistry.megaMachines[0],
                     getItemContainer("Hatch_Energy_UEV").get(4L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUEV, 6),
                     ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
