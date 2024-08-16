@@ -34,6 +34,158 @@ public class ExtractorRecipes implements Runnable {
             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L));
 
         addExtractionRecipe(ItemList.Cell_Air.get(1L), ItemList.Cell_Empty.get(1L));
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Battery_SU_LV_SulfuricAcid.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_LV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Battery_SU_LV_Mercury.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_LV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Battery_SU_MV_SulfuricAcid.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_MV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Battery_SU_MV_Mercury.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_MV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Battery_SU_HV_SulfuricAcid.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_HV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Battery_SU_HV_Mercury.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_HV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_LV_Cadmium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_LV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_LV_Lithium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_LV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_LV_Sodium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_LV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_MV_Cadmium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_MV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_MV_Lithium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_MV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_MV_Sodium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_MV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_HV_Cadmium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_HV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_HV_Lithium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_HV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Battery_RE_HV_Sodium.get(1L))
+            .itemOutputs(ItemList.Battery_Hull_HV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.BatteryHull_EV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_EV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.BatteryHull_IV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_IV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.BatteryHull_LuV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_LuV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.BatteryHull_ZPM_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_ZPM.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.BatteryHull_UV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.BatteryHull_UHV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UHV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.BatteryHull_UEV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UEV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.BatteryHull_UIV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UIV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.BatteryHull_UMV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UMV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.BatteryHull_UxV_Full.get(1L))
+            .itemOutputs(ItemList.BatteryHull_UxV.get(1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
     }
 
     public void addExtractionRecipe(ItemStack input, ItemStack output) {
