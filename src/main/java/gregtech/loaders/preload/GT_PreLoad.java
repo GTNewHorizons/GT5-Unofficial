@@ -516,8 +516,6 @@ public class GT_PreLoad {
             .getBoolean(false);
         GT_Mod.gregtechproxy.mHungerEffect = tMainConfig.get(GT_Mod.aTextGeneral, "AFK_Hunger", false)
             .getBoolean(false);
-        GT_Mod.gregtechproxy.mHardRock = tMainConfig.get(GT_Mod.aTextGeneral, "harderstone", false)
-            .getBoolean(false);
         GT_Mod.gregtechproxy.mInventoryUnification = tMainConfig.get(GT_Mod.aTextGeneral, "InventoryUnification", true)
             .getBoolean(true);
         GT_Mod.gregtechproxy.mGTBees = tMainConfig.get(GT_Mod.aTextGeneral, "GTBees", true)
