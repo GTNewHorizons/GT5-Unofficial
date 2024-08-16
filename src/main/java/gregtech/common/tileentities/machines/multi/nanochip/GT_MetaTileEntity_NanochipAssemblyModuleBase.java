@@ -31,9 +31,12 @@ import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Input;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Output;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCInputConsumer;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
 
 public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
@@ -182,7 +185,7 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
      * Find all inputs stored in the vacuum conveyor inputs.
      * Clears inputFakeItems and then adds all fake items to this hatch. Note that different stacks with the same id
      * are merged into one entry in this list, which makes lookup and parallel calculation a bit easier.
-     * 
+     *
      * @return Info about which hatches contained the items, and a full list of item inputs indexed by id to make
      *         parallel
      *         calculation easier
@@ -221,7 +224,7 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
 
     /**
      * Find the color hatch that we want to use for output of the given recipe.
-     * 
+     *
      * @param recipe     The recipe that we are going to run
      * @param itemColors The colors the hatch each ItemStack in the recipe input can be found in
      * @return The color that the output needs to end up in. If no hatch with this color exists, the module will report
@@ -236,7 +239,7 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
 
     /**
      * Try to find a recipe in the recipe map using the given stored inputs
-     * 
+     *
      * @return A recipe if one was found, null otherwise
      */
     protected GT_Recipe findRecipe(ArrayList<ItemStack> inputs) {
@@ -266,6 +269,11 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
         // Reset output color
         outputColor = -1;
         currentParallel = 0;
+
+        if (!isConnected) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
         // First step in recipe checking is finding all inputs we have to deal with.
         // As a result of this process, we also get the colors of the hatch each item is found in, which
         // we will use for routing the outputs
@@ -304,6 +312,26 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
         }
 
         return result;
+    }
+
+    protected GT_MetaTileEntity_Hatch_VacuumConveyor_Output findOutputHatch(byte color) {
+        return vacuumConveyorOutputs.findAnyColoredHatch(color);
+    }
+
+    @Override
+    public boolean addOutput(ItemStack aStack) {
+        // We need to override this because outputs are produced in vacuum conveyor outputs, not as real items
+        if (GT_Utility.isStackInvalid(aStack)) return false;
+        GT_MetaTileEntity_Hatch_VacuumConveyor_Output hatch = findOutputHatch(this.outputColor);
+        if (hatch == null) {
+            stopMachine(SimpleShutDownReason.ofCritical("Colored output hatch disappeared mid-recipe."));
+            return false;
+        }
+        // Look up component from this output fake stack and unify it with the packet inside the output hatch
+        CircuitComponent component = CircuitComponent.getFromFakeStack(aStack);
+        CircuitComponentPacket outputPacket = new CircuitComponentPacket(component, aStack.stackSize);
+        hatch.unifyPacket(outputPacket);
+        return true;
     }
 
     public void setAvailableEUt(long eut) {
