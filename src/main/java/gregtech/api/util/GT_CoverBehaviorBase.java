@@ -28,14 +28,12 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.widgets.GT_CoverTickRateButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
 import gregtech.common.covers.CoverInfo;
 
 /**
@@ -632,18 +630,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         ICoverable aTileEntity, EntityPlayer aPlayer) {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = new WeakReference<>(aPlayer);
-            if (useModularUI()) {
-                GT_UIInfos.openCoverUI(aTileEntity, aPlayer, side);
-            } else {
-                GT_Values.NW.sendToPlayer(
-                    new GT_Packet_TileEntityCoverGUI(
-                        side,
-                        aCoverID,
-                        aCoverVariable,
-                        aTileEntity,
-                        (EntityPlayerMP) aPlayer),
-                    (EntityPlayerMP) aPlayer);
-            }
+            GT_UIInfos.openCoverUI(aTileEntity, aPlayer, side);
             return true;
         }
         return false;
