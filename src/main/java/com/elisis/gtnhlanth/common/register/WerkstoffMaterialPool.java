@@ -9,6 +9,7 @@ import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 
 @SuppressWarnings({ "unchecked" })
@@ -689,7 +690,7 @@ public class WerkstoffMaterialPool implements Runnable {
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
+            .onlyDust().addPrefix(OrePrefixes.block).removePrefix(OrePrefixes.ingot).removePrefix(OrePrefixes.gem),
         offsetID2 + 9,
         TextureSet.SET_DULL);
     // TODO: Deal with colouring

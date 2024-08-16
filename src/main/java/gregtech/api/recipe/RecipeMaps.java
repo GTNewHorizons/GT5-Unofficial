@@ -145,7 +145,6 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> neutroniumCompressorRecipes = RecipeMapBuilder
         .of("gt.recipe.neutroniumcompressor")
         .maxIO(1, 1, 1, 0)
-        // .minInputs(1, 0)
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GT_UITextures.OVERLAY_SLOT_COMPRESSOR
                 : null)
