@@ -239,6 +239,38 @@ public class TexturesGtBlock {
         "TileEntities/MACHINE_CASING_GRINDING_FACTORY");
     public static final CustomIcon TEXTURE_CASING_FLOTATION = new CustomIcon("TileEntities/MACHINE_CASING_FLOTATION");
 
+    // Redstone blocks
+    public static final CustomIcon Casing_Redstone_Top_Off = new CustomIcon(
+        "TileEntities/gt4/redstone/machine_top_redstone_off");
+    public static final CustomIcon Casing_Redstone_Top_Main_Off = new CustomIcon(
+        "TileEntities/gt4/redstone/machine_top_redstone_main_off");
+    public static final CustomIcon Casing_Redstone_Top_On = new CustomIcon(
+        "TileEntities/gt4/redstone/machine_top_redstone_on");
+    public static final CustomIcon Casing_Redstone_Top_Main_On = new CustomIcon(
+        "TileEntities/gt4/redstone/machine_top_redstone_main_on");
+
+    public static final CustomIcon Casing_Redstone_Side_Off = new CustomIcon(
+        "TileEntities/gt4/redstone/machine_side_redstone_off");
+    public static final CustomIcon Casing_Redstone_Side_Main_Off = new CustomIcon(
+        "TileEntities/gt4/redstone/machine_side_redstone_main_off");
+    public static final CustomIcon Casing_Redstone_Side_On = new CustomIcon(
+        "TileEntities/gt4/redstone/machine_side_redstone_on");
+    public static final CustomIcon Casing_Redstone_Side_Main_On = new CustomIcon(
+        "TileEntities/gt4/redstone/machine_side_redstone_main_on");
+
+    public static final CustomIcon Casing_Redstone_Bottom_Off = new CustomIcon(
+        "TileEntities/gt4/redstone/machine_bottom_redstone_off");
+    public static final CustomIcon Casing_Redstone_Bottom_Main_Off = new CustomIcon(
+        "TileEntities/gt4/redstone/machine_bottom_redstone_main_off");
+    public static final CustomIcon Casing_Redstone_Bottom_On = new CustomIcon(
+        "TileEntities/gt4/redstone/machine_bottom_redstone_on");
+    public static final CustomIcon Casing_Redstone_Bottom_Main_On = new CustomIcon(
+        "TileEntities/gt4/redstone/machine_bottom_redstone_main_on");
+
+    public static final CustomIcon Casing_InventoryManagaer_Red = new CustomIcon("TileEntities/gt4/OVERLAY_RED");
+    public static final CustomIcon Casing_InventoryManagaer_Red_Redstone = new CustomIcon(
+        "TileEntities/gt4/OVERLAY_RED_REDSTONE");
+
     // Custom Pipes
     public static final CustomIcon TEXTURE_PIPE_GRINDING_MILL = new CustomIcon("TileEntities/MACHINE_CASING_PIPE_T1");
     public static final CustomIcon TEXTURE_PIPE_GENERIC = new CustomIcon("iconsets/MACHINE_CASING_PIPE_GENERIC");

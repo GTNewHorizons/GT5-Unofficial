@@ -1,6 +1,5 @@
 package com.github.technus.tectech.loader.recipe;
 
-import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
 import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getOrDefault;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -31,7 +30,7 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_TIME, 16 * MINUTES + 20 * SECONDS)
             .itemInputs(
                 CustomItemList.Machine_Multi_Switch.get(1),
-                new Object[] { OrePrefixes.circuit.get(Materials.Master), 2 },
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1))
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000), Materials.Hydrogen.getGas(1000))
@@ -91,7 +90,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Emitter_ZPM.get(8),
                 ItemList.Robot_Arm_ZPM.get(1),
                 ItemList.Electric_Motor_ZPM.get(2),
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 2) },
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 16) },
                 CustomItemList.DATApipe.get(2))
@@ -110,7 +109,7 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_TIME, 16 * MINUTES + 40 * SECONDS)
             .itemInputs(
                 CustomItemList.Machine_Multi_Switch.get(1),
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 2 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 2 },
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1),
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 8) },
@@ -127,12 +126,12 @@ public class AssemblyLine implements Runnable {
 
         // Research Station
         GT_Values.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, getItemContainer("ScannerZPM").get(1))
+            .metadata(RESEARCH_ITEM, ItemList.ScannerZPM.get(1))
             .metadata(RESEARCH_TIME, 1 * HOURS + 6 * MINUTES + 40 * SECONDS)
             .itemInputs(
                 CustomItemList.Machine_Multi_Switch.get(1),
                 ItemList.Sensor_ZPM.get(8),
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
                 ItemList.Field_Generator_ZPM.get(1),
                 ItemList.Electric_Motor_ZPM.get(2),
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 4) },

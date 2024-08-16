@@ -138,6 +138,7 @@ import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
@@ -3489,6 +3490,7 @@ public class GT_Utility {
                 EnumChatFormatting.GOLD + GT_Utility.trans("166", "Is valid Beacon Pyramid Material")
                     + EnumChatFormatting.RESET);
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this block's info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
     }
@@ -3517,6 +3519,7 @@ public class GT_Utility {
                 }
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this tile's fluid tank info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3532,6 +3535,7 @@ public class GT_Utility {
                 if (temp != null) tList.addAll(temp);
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this block's debug info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3576,7 +3580,8 @@ public class GT_Utility {
     private static int addForestryLeavesInfo(ArrayList<String> tList, TileEntity tTileEntity) {
         int rEUAmount = 0;
         try {
-            if (tTileEntity instanceof forestry.arboriculture.tiles.TileLeaves tileLeaves) {
+            if (Mods.Forestry.isModLoaded()
+                && tTileEntity instanceof forestry.arboriculture.tiles.TileLeaves tileLeaves) {
                 final forestry.api.arboriculture.ITree tree = tileLeaves.getTree();
                 if (tree != null) {
                     rEUAmount += 1000;
@@ -3585,6 +3590,7 @@ public class GT_Utility {
                 }
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this leaves' info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3636,6 +3642,7 @@ public class GT_Utility {
                 }
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this crop's info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3647,6 +3654,7 @@ public class GT_Utility {
                 tList.addAll(Arrays.asList(info.getInfoData()));
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
     }
@@ -3660,6 +3668,7 @@ public class GT_Utility {
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's owner.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
     }
@@ -3702,6 +3711,7 @@ public class GT_Utility {
                         + " EU");
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's energy info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
     }
@@ -3716,6 +3726,7 @@ public class GT_Utility {
                 if (tString != null && !tString.equals(E)) tList.add(tString);
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's covers.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3747,6 +3758,7 @@ public class GT_Utility {
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's progress.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3762,6 +3774,7 @@ public class GT_Utility {
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's upgrades.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3783,6 +3796,7 @@ public class GT_Utility {
                         + " EU");
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's IC2 energy info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3799,6 +3813,7 @@ public class GT_Utility {
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's EU conduction info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3826,6 +3841,7 @@ public class GT_Utility {
                             + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's IC@ wrenchability.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3845,6 +3861,7 @@ public class GT_Utility {
                 }
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this device's alignment info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;
@@ -3869,6 +3886,7 @@ public class GT_Utility {
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
+            tList.add(String.format("§cAn exception was thrown while fetching this reactor's info.§r"));
             if (D1) e.printStackTrace(GT_Log.err);
         }
         return rEUAmount;

@@ -39,16 +39,6 @@ public class CokeOvenProcessingLogic extends MuTEProcessingLogic<CokeOvenProcess
                 ItemStack input = item.copy();
                 input.stackSize = 1;
                 return null;
-                // return FindRecipeResult.ofSuccess(
-                // GT_Values.RA.stdBuilder()
-                // .itemInputs(input)
-                // .itemOutputs(output)
-                // .noFluidInputs()
-                // .noFluidOutputs()
-                // .duration(NORMAL_RECIPE_TIME * timeMultiplier)
-                // .eut(0)
-                // .build()
-                // .get());
             }
         }
         return null;

@@ -97,7 +97,7 @@ public class RecipeLoader {
                 ItemRefer.Radiation_Protection_Plate.get(16),
                 ItemList.Field_Generator_ZPM.get(2),
                 ItemList.Electric_Pump_ZPM.get(8),
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
                 GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorLuV, 8),
                 GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Naquadah, 4),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 8),
@@ -659,7 +659,7 @@ public class RecipeLoader {
                 ItemRefer.Advanced_Radiation_Protection_Plate.get(64),
                 ItemList.Field_Generator_UV.get(8),
                 ItemList.Electric_Pump_UHV.get(2),
-                new Object[] { OrePrefixes.circuit.get(Materials.Bio), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 },
                 GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.MysteriousCrystal, 8),
                 ItemList.Circuit_Wafer_NPIC.get(16),
                 ItemList.UHV_Coil.get(64),
@@ -724,7 +724,7 @@ public class RecipeLoader {
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Americium, 8),
                     GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.BlackPlutonium, 16),
                     ItemList.Circuit_Wafer_PPIC.get(32),
-                    new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 1L })
+                    new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1L })
                 .fluidInputs(
                     WerkstoffLoader.Krypton.getFluidOrGas(1000),
                     Materials.ElectrumFlux.getMolten(9216),
@@ -746,7 +746,7 @@ public class RecipeLoader {
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 8),
                     GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 16),
                     ItemList.Circuit_Wafer_PPIC.get(48),
-                    new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1L })
+                    new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1L })
                 .fluidInputs(
                     Materials.Radon.getPlasma(1000),
                     Materials.DraconiumAwakened.getMolten(9216),
@@ -768,7 +768,7 @@ public class RecipeLoader {
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 8),
                     GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Infinity, 16),
                     ItemList.Circuit_Wafer_PPIC.get(64),
-                    new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L })
+                    new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1L })
                 .fluidInputs(
                     WerkstoffLoader.Oganesson.getFluidOrGas(1000),
                     Materials.Neutronium.getMolten(9216),
@@ -1017,7 +1017,7 @@ public class RecipeLoader {
                 .itemInputs(
                     ItemRefer.Quartz_Crystal_Resonator.get(2),
                     ItemRefer.Plastic_Case.get(1),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1),
                     ItemList.Cover_Screen.get(1),
                     GT_OreDictUnificator.get(OrePrefixes.componentCircuit, Materials.Diode, 16L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8))
@@ -1031,7 +1031,7 @@ public class RecipeLoader {
                 .itemInputs(
                     ItemRefer.Quartz_Crystal_Resonator.get(2),
                     ItemRefer.Plastic_Case.get(1),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1),
                     ItemList.Cover_Screen.get(1),
                     ItemList.Circuit_Parts_DiodeASMD.get(4),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8))
@@ -1044,7 +1044,7 @@ public class RecipeLoader {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Circuit_Board_Multifiberglass_Elite.get(1),
-                        GT_ModHandler.getModItem("dreamcraft", "item.EngravedGoldChip", 16),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedGoldChip", 16),
                         ItemList.Circuit_Chip_SoC2.get(8),
                         ItemList.Circuit_Chip_NOR.get(32),
                         MyMaterial.signalium.get(OrePrefixes.bolt, 32),
@@ -1059,7 +1059,7 @@ public class RecipeLoader {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Circuit_Board_Multifiberglass_Elite.get(1),
-                        GT_ModHandler.getModItem("dreamcraft", "item.EngravedGoldChip", 16),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedGoldChip", 16),
                         ItemList.Circuit_Chip_SoC2.get(8),
                         ItemList.Circuit_Chip_NOR.get(32),
                         MyMaterial.signalium.get(OrePrefixes.bolt, 32),
@@ -1180,7 +1180,7 @@ public class RecipeLoader {
                 ItemList.Cover_ActivityDetector.get(1L),
                 ItemList.Cover_Screen.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1),
                 ItemList.Sensor_HV.get(2),
                 GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(Materials.Helium.getGas(1000))

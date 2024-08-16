@@ -150,14 +150,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Ytterbium               = new Materials(  77, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             ,  44, 199,  80,   0,   "Ytterbium"               ,   "Ytterbium"                     ,    0,       0,       1097, 1097,  true, false,   4,   1,   1, Dyes._NULL          , Element.Yb        , Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 1)));
     public static Materials Yttrium                 = new Materials(  45, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 220, 250, 220,   0,   "Yttrium"                 ,   "Yttrium"                       ,    0,       0,       1799, 1799,  true, false,   4,   1,   1, Dyes._NULL          , Element.Y         , Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 1)));
     public static Materials Zinc                    = new Materials(  36, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1|2  |8   |32             , 250, 240, 240,   0,   "Zinc"                    ,   "Zinc"                          ,    0,       0,        692,    0, false, false,   2,   1,   1, Dyes.dyeWhite       , Element.Zn        , Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.SANO, 1)));
-    public static Materials Grade1PurifiedWater                = new Materials(   554, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   0,   0, 255, 0,   "Grade1PurifiedWater"                ,   "Grade 1 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue               , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
-    public static Materials Grade2PurifiedWater                = new Materials(   555, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   0,   0, 250, 0,   "Grade2PurifiedWater"                ,   "Grade 2 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue               , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
-    public static Materials Grade3PurifiedWater                = new Materials(   556, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   0,   0, 245, 0,   "Grade3PurifiedWater"                ,   "Grade 3 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue             , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
-    public static Materials Grade4PurifiedWater                = new Materials(   557, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   0,   0, 240, 0,   "Grade4PurifiedWater"                ,   "Grade 4 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
-    public static Materials Grade5PurifiedWater                = new Materials(   558, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   0,   0, 235, 0,   "Grade5PurifiedWater"                ,   "Grade 5 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
-    public static Materials Grade6PurifiedWater                = new Materials(   559, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   0,   0, 230, 0,   "Grade6PurifiedWater"                ,   "Grade 6 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
-    public static Materials Grade7PurifiedWater                = new Materials(   560, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   0,   0, 225, 0,   "Grade7PurifiedWater"                ,   "Grade 7 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
-    public static Materials Grade8PurifiedWater                = new Materials(   561, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   0,   0, 220, 0,   "Grade8PurifiedWater"                ,   "Grade 8 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials Grade1PurifiedWater                = new Materials(   554, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   63,   76, 253, 0,   "Grade1PurifiedWater"                ,   "Filtered Water (Grade 1)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue               , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials Grade2PurifiedWater                = new Materials(   555, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   93,   93, 254, 0,   "Grade2PurifiedWater"                ,   "Ozonated Water (Grade 2)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue               , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials Grade3PurifiedWater                = new Materials(   556, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   115,   109, 254, 0,   "Grade3PurifiedWater"                ,   "Flocculated Water (Grade 3)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue             , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials Grade4PurifiedWater                = new Materials(   557, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   135,   126, 255, 0,   "Grade4PurifiedWater"                ,   "pH Neutralized Water (Grade 4)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials Grade5PurifiedWater                = new Materials(   558, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   152,   144, 255, 0,   "Grade5PurifiedWater"                ,   "Extreme-Temperature Treated Water (Grade 5)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials Grade6PurifiedWater                = new Materials(   559, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   168,   161, 255, 0,   "Grade6PurifiedWater"                ,   "Ultraviolet Treated Electrically Neutral Water (Grade 6)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials Grade7PurifiedWater                = new Materials(   560, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   183,   179, 255, 0,   "Grade7PurifiedWater"                ,   "Degassed Decontaminant-Free Water (Grade 7)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials Grade8PurifiedWater                = new Materials(   561, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   197,   197, 255, 0,   "Grade8PurifiedWater"                ,   "Subatomically Perfect Water (Grade 8)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials FlocculationWasteLiquid = new Materials(562, TextureSet.SET_FLUID, 1.0f, 0, 2, 16, 61, 58, 82, 0, "FlocculationWasteLiquid", "Flocculation Waste Liquid", 0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
 
     //GT++ materials
 
@@ -347,6 +348,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Vyroxeres               = new Materials( 951, TextureSet.SET_METALLIC          ,  32.0F,   7680,  1, 1|2  |8      |64          ,  85, 224,   1,   0,   "Vyroxeres"               ,   "Vyroxeres"                     ,    0,       0,       5400, 5400, true, false,   1,   1,   1, Dyes._NULL          ).disableAutoGeneratedBlastFurnaceRecipes().setTurbineMultipliers(1, 3, 1);
     public static Materials Yellorium               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "Yellorium"               ,   "Yellorium"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      );
     public static Materials Zectium                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2  |8                   , 255, 255, 255,   0,   "Zectium"                 ,   "Zectium"                       ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlack       );
+    public static Materials Ultimate                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Ultimate"                ,   "Ultimate"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 8)));
+    public static Materials Advanced                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Advanced"                ,   "Advanced"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 4)));
 
     /**
      * Tiered materials, primarily Circuitry, Batteries and other Technical things
@@ -359,13 +362,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials IV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Elite"                   ,   "Elite"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 6)));
     public static Materials LuV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Master"                  ,   "Master"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 7)));
     public static Materials ZPM                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Ultimate"                ,   "Ultimate"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 8)));
-    public static Materials UV                      = Materials.SuperconductorUHV; //I hate this
-    public static Materials UHV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Infinite"                ,   "Infinite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 9)));
-    public static Materials UEV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Bio"                     ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 10)));
-    public static Materials UIV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Optical"                 ,   "Optical"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 13)));
-    public static Materials UMV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Exotic"                  ,   "Exotic"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
-    public static Materials UXV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Cosmic"                  ,   "Cosmic"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 15)));
-    public static Materials MAX                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Transcendent"            ,   "Transcendent"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 16)));
+    public static Materials UV                      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Superconductor"          ,   "Superconductor"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.MACHINA, 9)));
+    public static Materials UHV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Infinite"                ,   "Infinite"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 10)));
+    public static Materials UEV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Bio"                     ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 11)));
+    public static Materials UIV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Optical"                 ,   "Optical"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 12)));
+    public static Materials UMV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Exotic"                  ,   "Exotic"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 13)));
+    public static Materials UXV                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Cosmic"                  ,   "Cosmic"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
+    public static Materials MAX                     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Transcendent"            ,   "Transcendent"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 15)));
 
     public static Materials Resistor                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Resistor"                ,   "Resistor"                      ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 1)));
     public static Materials Diode                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Diode"                   ,   "Diode"                         ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TC_Aspects.ELECTRUM, 1)));
@@ -388,15 +391,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     @Deprecated
     public static Materials Good = Materials.MV;
     @Deprecated
-    public static Materials Advanced = Materials.HV;
-    @Deprecated
     public static Materials Data = Materials.EV;
     @Deprecated
     public static Materials Elite = Materials.IV;
     @Deprecated
     public static Materials Master = Materials.LuV;
-    @Deprecated
-    public static Materials Ultimate = Materials.ZPM;
     @Deprecated
     public static Materials Infinite = Materials.UHV;
     @Deprecated
@@ -657,7 +656,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials CalciumAcetateSolution    = new MaterialBuilder(671, TextureSet.SET_RUBY       ,                                                                                                     "Calcium Acetate Solution").addCell().addFluid().setRGB(220, 200, 180).setColor(Dyes.dyeCyan).setMaterialList(new MaterialStack(Calcium, 1), new MaterialStack(Carbon, 4), new MaterialStack(Oxygen, 4), new MaterialStack(Hydrogen, 6)).addElectrolyzerRecipe().constructMaterial();
     public static Materials Acetone                   = new MaterialBuilder(672, TextureSet.SET_FLUID      ,                                                                                                     "Acetone").addCell().addFluid().setRGB(175, 175, 175).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
     public static Materials Methanol                  = new MaterialBuilder(673, TextureSet.SET_FLUID      ,                                                                                                     "Methanol").addCell().addFluid().setRGB(170, 136, 0).setColor(Dyes.dyeBrown).setFuelPower(84).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 4), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
-    public static Materials CarbonMonoxide            = new MaterialBuilder(674, TextureSet.SET_FLUID      ,                                                                                                     "Carbon Monoxide").addCell().addGas().setRGB(14, 72, 128).setColor(Dyes.dyeBrown).setFuelType(MaterialBuilder.GAS).setFuelPower(24).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
+    public static Materials CarbonMonoxide            = new MaterialBuilder(674, TextureSet.SET_FLUID      ,                                                                                                     "Carbon Monoxide").addCell().addGas().setRGB(14, 72, 128).setColor(Dyes.dyeBrown).setFuelType(MaterialBuilder.GAS).setFuelPower(24).setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 1)).constructMaterial();
     public static Materials MetalMixture              = new MaterialBuilder(676, TextureSet.SET_METALLIC   ,                                                                                                     "Metal Mixture").addDustItems().setRGB(80, 45, 22).setColor(Dyes.dyeBrown).constructMaterial();
     public static Materials Ethylene                  = new MaterialBuilder(677, TextureSet.SET_FLUID      ,                                                                                                     "Ethylene").addCell().addGas().setRGB(225, 225, 225).setColor(Dyes.dyeWhite).setFuelType(MaterialBuilder.GAS).setFuelPower(128).setMaterialList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 4)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
     public static Materials Propene                   = new MaterialBuilder(678, TextureSet.SET_FLUID      ,                                                                                                     "Propene").addCell().addGas().setRGB(255, 221, 85).setColor(Dyes.dyeYellow).setFuelType(MaterialBuilder.GAS).setFuelPower(192).setMaterialList(new MaterialStack(Carbon, 3), new MaterialStack(Hydrogen, 6)).addElectrolyzerRecipe().setCanBeCracked(true).constructMaterial();
@@ -851,7 +850,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Polybenzimidazole   = new Materials(599, TextureSet.SET_DULL                 ,3.0F,     64,  1, 1|2          |64|128      , 45, 45,  45,   0,   "Polybenzimidazole"   ,   "Polybenzimidazole"  ,    0,       0,        1450,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 0, Arrays.asList(new MaterialStack(Carbon, 20), new MaterialStack(Nitrogen, 4), new MaterialStack(Hydrogen, 12)), Arrays.asList(new TC_AspectStack(TC_Aspects.ORDO, 2),new TC_AspectStack(TC_Aspects.VOLATUS, 1)));
 
     //Gasoline
-    public static Materials MTBEMixture        = new MaterialBuilder(983, TextureSet.SET_FLUID             ,                                                                                                      "MTBE Reaction Mixture").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 12), new MaterialStack(Oxygen, 1)).constructMaterial();
+    public static Materials MTBEMixture        = new MaterialBuilder(983, TextureSet.SET_FLUID             ,                                                                                                      "MTBE Reaction Mixture (Butene)").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 12), new MaterialStack(Oxygen, 1)).constructMaterial();
+    public static Materials MTBEMixtureAlt = makeMTBEMixtureAlt();
+    private static Materials makeMTBEMixtureAlt() {
+        return new MaterialBuilder(425, TextureSet.SET_FLUID , "MTBE Reaction Mixture (Butane)").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 14), new MaterialStack(Oxygen, 1)).constructMaterial();
+    }
     public static Materials NitrousOxide       = new MaterialBuilder(993, TextureSet.SET_FLUID             ,                                                                                                      "Nitrous Oxide").addCell().addGas().setRGB(125, 200, 255).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Nitrogen, 2), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
     public static Materials AntiKnock          = new MaterialBuilder(994, TextureSet.SET_FLUID             ,                                                                                                      "Anti-Knock Agent").setName("EthylTertButylEther").addCell().addFluid().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).setMaterialList(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 14), new MaterialStack(Oxygen, 1)).constructMaterial();
     public static Materials Octane             = new MaterialBuilder(995, TextureSet.SET_FLUID             ,                                                                                                      "Octane").addCell().addFluid().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).setFuelType(MaterialBuilder.DIESEL).setFuelPower(80).setMaterialList(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 18)).constructMaterial();
@@ -909,7 +912,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Infinity                = new Materials( 397, new TextureSet("infinity", true), 256.0F,2621440,  17, 1|2          |64|128      , 255, 255, 255,   0,   "Infinity"                ,   "Infinity"                      ,     5, 5000000,     10800,  10800,  true, false, 40,   1,   1, Dyes.dyeLightGray    ).setProcessingMaterialTierEU(TierEU.RECIPE_UV).disableAutoGeneratedVacuumFreezerRecipe();
     public static Materials Bedrockium              = new MaterialBuilder(395,TextureSet.SET_DULL, "Bedrockium").addOreItems().addDustItems().addMetalItems().setDurability(327680).setToolSpeed(8f).setToolQuality(9).setRGB(50,50,50).setName("Bedrockium").setBlastFurnaceRequired(true).setBlastFurnaceTemp(9900).setMeltingPoint(9900).setColor(Dyes.dyeBlack).setOreValue(4).setDensityDivider(1).setDensityMultiplier(1).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_EV).disableAutoGeneratedVacuumFreezerRecipe();
     public static Materials Trinium                 = new Materials( 868, TextureSet.SET_SHINY             , 128.0F,  51200,  8, 1|2    |8    |64|128      , 200, 200, 210,   0,   "Trinium"                 ,   "Trinium"                       ,     0,       0,      7200,   7200,  true, false,  4,   1,   1, Dyes.dyeLightGray    ).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
-    public static Materials Ichorium                = new Materials( 978, TextureSet.SET_SHINY             ,  32.0F, 850000,  12, 1|2    |8 |32|64|128      , 211, 120,   6,   0,   "Ichorium"                ,   "Ichorium"                      ,     5,  250000,      9000,   9000,  true, false,  4,   1,   1, Dyes.dyeOrange       ).setTurbineMultipliers(30, 30, 3).setHasCorrespondingPlasma(true);
+    public static Materials Ichorium                = new Materials( 978, TextureSet.SET_SHINY             ,  32.0F, 850000,  12, 1|2    |8 |32|64|128      , 211, 120,   6,   0,   "Ichorium"                ,   "Ichorium"                      ,     5,  250000,      9000,   9000,  true, false,  4,   1,   1, Dyes.dyeOrange       ).setTurbineMultipliers(6, 6, 3).setHasCorrespondingPlasma(true);
     public static Materials CosmicNeutronium        = new Materials( 982, TextureSet.SET_SHINY             ,  96.0F, 163840,  12, 1|2    |8 |32|64|128      ,  50,  50,  50,   0,   "CosmicNeutronium"        ,   "Cosmic Neutronium"             ,     0,       0,      9900,   9900,  true, false,  4,   1,   1, Dyes.dyeBlack        ).setProcessingMaterialTierEU(TierEU.RECIPE_ZPM).disableAutoGeneratedVacuumFreezerRecipe().setHasCorrespondingPlasma(true);
 
     // Superconductor base.
@@ -945,6 +948,58 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials TengamPurified = new MaterialBuilder(111, TextureSet.SET_METALLIC, "Purified Tengam").addDustItems().addGearItems().addMetalItems().addToolHeadItems().setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 2), new TC_AspectStack(TC_Aspects.ELECTRUM, 2))).setColor(Dyes.dyeLime).setName("TengamPurified").setRGB(186, 223, 112).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UV);
     public static Materials TengamAttuned  = new MaterialBuilder(112, TextureSet.SET_MAGNETIC, "Attuned Tengam") .addDustItems().addGearItems().addMetalItems().addToolHeadItems().setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 4), new TC_AspectStack(TC_Aspects.ELECTRUM, 1))).setColor(Dyes.dyeLime).setName("TengamAttuned") .setRGB(213, 255, 128).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UV);
     public static Materials TengamRaw      = new MaterialBuilder(110, TextureSet.SET_ROUGH,    "Raw Tengam")     .addOreItems()                                                   .setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 1), new TC_AspectStack(TC_Aspects.ELECTRUM, 4))).setColor(Dyes.dyeLime).setName("TengamRaw")     .setRGB(160, 191,  96).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UV);
+
+    // Activated Carbon Line
+    public static Materials ActivatedCarbon = new MaterialBuilder(563, TextureSet.SET_DULL, "Activated Carbon")
+        .addDustItems()
+        .setRGB(20, 20, 20)
+        .setName("ActivatedCarbon")
+        .setOreValue(0)
+        .setMaterialList(new MaterialStack(Carbon, 1))
+        .constructMaterial()
+        .disableAutoGeneratedRecycleRecipes();
+    public static Materials PreActivatedCarbon = new MaterialBuilder(564, TextureSet.SET_DULL, "Pre-Activated Carbon")
+        .addDustItems()
+        .setRGB(15, 51, 65)
+        .setName("PreActivatedCarbon")
+        .setOreValue(0)
+        .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(PhosphoricAcid, 1))
+        .constructMaterial()
+        .disableAutoGeneratedRecycleRecipes();
+    public static Materials DirtyActivatedCarbon = new MaterialBuilder(565, TextureSet.SET_DULL, "Dirty Activated Carbon")
+        .addDustItems()
+        .setRGB(110, 110, 110)
+        .setName("carbonactivateddirty") // don't change this to the more sensible name or a centrifuge recipe appears
+        .setOreValue(0)
+        .setMaterialList(new MaterialStack(Carbon, 1), new MaterialStack(PhosphoricAcid, 1))
+        .constructMaterial()
+        .disableAutoGeneratedRecycleRecipes();
+
+    // Advanced glue uses id 567?? ok
+    public static Materials PolyAluminiumChloride = new MaterialBuilder(566, TextureSet.SET_FLUID, "Polyaluminium Chloride")
+        .addFluid()
+        .addCell()
+        .setRGB(252, 236, 5)
+        .setName("PolyaluminiumChloride")
+        .constructMaterial();
+
+    public static Materials Ozone = new MaterialBuilder(568, TextureSet.SET_FLUID, "Ozone")
+        .addGas()
+        .addCell()
+        .setRGB(190, 244, 250)
+        .setName("Ozone")
+        .setMaterialList(new MaterialStack(Oxygen, 3))
+        .constructMaterial();
+
+    public static Materials StableBaryonicMatter = new MaterialBuilder(569,  new TextureSet("stablebaryonicmatter", true), "Stabilised Baryonic Matter")
+        .addFluid()
+        .addCell()
+        .setRGBA(255, 255, 255, 0)
+        .setTransparent(true)
+        .setName("stablebaryonicmatter")
+        .setColor(Dyes._NULL)
+        .constructMaterial()
+        .setHasCorrespondingFluid(true);
 
     // spotless:on
 
@@ -1949,11 +2004,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Grade6PurifiedWater.mChemicalFormula = "H\u2082O";
         Grade7PurifiedWater.mChemicalFormula = "H\u2082O";
         Grade8PurifiedWater.mChemicalFormula = "H\u2082O";
+        FlocculationWasteLiquid.mChemicalFormula = "Al\u2082(OH)\u2083??Cl\u2083";
         TengamRaw.mChemicalFormula = "";
         TengamPurified.mChemicalFormula = "M";
         TengamAttuned.mChemicalFormula = "M";
         MaterialsUEVplus.ExcitedDTSC.mChemicalFormula = "[-Stellar-Stellar-]";
         MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.mChemicalFormula = "Stellar";
+        PolyAluminiumChloride.mChemicalFormula = "Al\u2082(OH)\u2083Cl\u2083";
     }
 
     private static void initSubTags() {
