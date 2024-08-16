@@ -60,6 +60,7 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(new PlayerDataManager());
         registerItems();
         registerBlocks();
+        RecipeLoader.registerMTEs();
         if (Mods.MobsInfo.isModLoaded()) {
             MobHandlerLoader.init();
         }
@@ -70,7 +71,6 @@ public class CommonProxy {
     }
 
     public void postInit(FMLPostInitializationEvent event) {
-        RecipeLoader.registerMTEs();
         RecipeLoader.addRecipes();
         EIGBucketLoader.LoadEIGBuckets();
         if (Thaumcraft.isModLoaded()) TCLoader.init();
