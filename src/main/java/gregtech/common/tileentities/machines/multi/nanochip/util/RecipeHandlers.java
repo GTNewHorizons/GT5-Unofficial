@@ -251,6 +251,10 @@ public class RecipeHandlers {
             // so the recipe will be incorrectly generated in this case, but for debugging purposes this is fine.
             if (processedFakeInput == null) continue;
             // Get the input component, so we can construct a new fake input stack with the correct stack size easily.
+            // Note that this *is* a roundabout way to copying the processedFakeInput ItemStack, but whatever, this
+            // does logically make sense and is a bit more explicit. As a bonus, this verifies that processedFakeInput
+            // is in fact a circuit component, so this is another sanity check that can catch bugs in
+            // traverseCircuitRecipes.
             CircuitComponent componentInput = CircuitComponent.getFromFakeStack(processedFakeInput);
             ItemStack fakeInputStack = componentInput.getFakeStack(input.stackSize);
             itemInputs.set(i, fakeInputStack);
