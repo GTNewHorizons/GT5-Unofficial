@@ -1158,11 +1158,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         return false;
     }
 
-    @Deprecated
-    public String trans(String aKey, String aEnglish) {
-        return GT_Utility.trans(aKey, aEnglish);
-    }
-
     @Override
     public boolean hasAlternativeModeText() {
         return false;

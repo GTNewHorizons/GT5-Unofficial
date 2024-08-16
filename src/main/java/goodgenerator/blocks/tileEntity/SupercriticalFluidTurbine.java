@@ -1,5 +1,7 @@
 package goodgenerator.blocks.tileEntity;
 
+import static gregtech.api.util.GT_Utility.trans;
+
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;

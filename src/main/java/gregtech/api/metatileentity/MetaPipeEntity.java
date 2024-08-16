@@ -853,11 +853,6 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         return "";
     }
 
-    @Deprecated
-    public String trans(String aKey, String aEnglish) {
-        return GT_Utility.trans(aKey, aEnglish);
-    }
-
     protected boolean connectableColor(TileEntity tTileEntity) {
         // Determine if two entities are connectable based on their colorization:
         // Uncolored can connect to anything

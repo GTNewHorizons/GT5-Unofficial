@@ -581,11 +581,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         return null;
     }
 
-    @Deprecated
-    public String trans(String aKey, String aEnglish) {
-        return GT_Utility.trans(aKey, aEnglish);
-    }
-
     protected Supplier<Boolean> getValidator() {
         return () -> !this.isDead();
     }

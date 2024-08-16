@@ -66,13 +66,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
         super(aID, aName, aNameRegional, aTier, inventorySize, aDescription);
     }
 
-    @Deprecated
-    // having too many constructors is bad, don't be so lazy, use GT_MetaTileEntity_Hatch_OutputBus(String, int,
-    // String[], ITexture[][][])
-    public GT_MetaTileEntity_Hatch_OutputBus(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        this(aName, aTier, getSlots(aTier), ArrayExt.of(aDescription), aTextures);
-    }
-
     public GT_MetaTileEntity_Hatch_OutputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, getSlots(aTier), aDescription, aTextures);
     }
