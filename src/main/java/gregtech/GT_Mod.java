@@ -166,15 +166,7 @@ import ic2.api.recipe.RecipeOutput;
         + " after:gendustry;")
 public class GT_Mod implements IGT_Mod {
 
-    @Deprecated // Keep for use in BaseMetaTileEntity
-    public static final int VERSION = VERSION_MAJOR, SUBVERSION = VERSION_MINOR;
-
-    @Deprecated
-    public static final int TOTAL_VERSION = calculateTotalGTVersion(VERSION, SUBVERSION);
     public static final int NBT_VERSION = calculateTotalGTVersion(VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
-
-    @Deprecated
-    public static final int REQUIRED_IC2 = 624;
 
     @Mod.Instance(Mods.Names.GREG_TECH)
     public static GT_Mod instance;
@@ -212,11 +204,6 @@ public class GT_Mod implements IGT_Mod {
         Textures.BlockIcons.VOID.name();
         // noinspection ResultOfMethodCallIgnored// Suspicious likely pointless
         Textures.ItemIcons.VOID.name();
-    }
-
-    @SuppressWarnings("unused") // TODO: Delete this method
-    public static int calculateTotalGTVersion(int minorVersion) {
-        return calculateTotalGTVersion(VERSION, minorVersion);
     }
 
     public static int calculateTotalGTVersion(int majorVersion, int minorVersion) {

@@ -18,6 +18,8 @@ import static gregtech.api.enums.GT_Values.AuthorColen;
 import static gregtech.api.util.GT_ParallelHelper.calculateChancedOutputMultiplier;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
+import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static java.lang.Math.exp;
 import static java.lang.Math.max;
 import static java.lang.Math.pow;
@@ -37,6 +39,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
@@ -76,7 +79,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -97,7 +99,7 @@ import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_MultiblockBase_EM
-    implements IConstructable, IGlobalWirelessEnergy, ISurvivalConstructable {
+    implements IConstructable, ISurvivalConstructable {
 
     public static final boolean EOH_DEBUG_MODE = false;
     private static final long MOLTEN_SPACETIME_PER_FAILURE_TIER = 14_400L;
@@ -128,7 +130,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     // Exact value to get 2^21 parallels.
     private static final long ASTRAL_ARRAY_LIMIT = 8637;
 
-    private String userUUID = "";
+    private UUID userUUID;
     private BigInteger outputEU_BigInt = BigInteger.ZERO;
     private long startEU = 0;
 
@@ -1506,9 +1508,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         super.onPreTick(aBaseMetaTileEntity, aTick);
 
         if (aTick == 1) {
-            userUUID = String.valueOf(getBaseMetaTileEntity().getOwnerUuid());
-            String userName = getBaseMetaTileEntity().getOwnerName();
-            strongCheckOrAddUser(userUUID, userName);
+            userUUID = getBaseMetaTileEntity().getOwnerUuid();
+            strongCheckOrAddUser(userUUID);
         }
 
         if (!recipeRunning && mMachine) {

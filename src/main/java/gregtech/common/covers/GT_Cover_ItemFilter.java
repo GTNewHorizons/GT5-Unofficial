@@ -181,11 +181,6 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
         return new ItemFilterUIFactory(buildContext).createWindow();
     }

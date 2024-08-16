@@ -1269,11 +1269,6 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     // GUI stuff
 
     @Override
-    public boolean useModularUI() {
-        return getRecipeMap() != null;
-    }
-
-    @Override
     public int getCircuitSlotX() {
         return 153;
     }

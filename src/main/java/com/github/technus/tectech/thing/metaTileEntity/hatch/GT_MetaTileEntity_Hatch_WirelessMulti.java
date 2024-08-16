@@ -9,9 +9,12 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 import static gregtech.api.enums.GT_Values.AuthorColen;
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
+import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static java.lang.Long.min;
 
 import java.math.BigInteger;
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,21 +22,19 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.util.TT_Utility;
 
-import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
 
 public class GT_MetaTileEntity_Hatch_WirelessMulti extends GT_MetaTileEntity_Hatch_EnergyMulti
-    implements IGlobalWirelessEnergy, IWirelessEnergyHatchInformation {
+    implements IWirelessEnergyHatchInformation {
 
     private final BigInteger eu_transferred_per_operation = BigInteger
         .valueOf(Amperes * V[mTier] * ticks_between_energy_addition);
     private final long eu_transferred_per_operation_long = eu_transferred_per_operation.longValue();
 
-    private String owner_uuid;
-    private String owner_name;
+    private UUID owner_uuid;
 
     public GT_MetaTileEntity_Hatch_WirelessMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(
@@ -177,11 +178,9 @@ public class GT_MetaTileEntity_Hatch_WirelessMulti extends GT_MetaTileEntity_Hat
             // On first tick find the player name and attempt to add them to the map.
 
             // UUID and username of the owner.
-            owner_uuid = aBaseMetaTileEntity.getOwnerUuid()
-                .toString();
-            owner_name = aBaseMetaTileEntity.getOwnerName();
+            owner_uuid = aBaseMetaTileEntity.getOwnerUuid();
 
-            strongCheckOrAddUser(owner_uuid, owner_name);
+            strongCheckOrAddUser(owner_uuid);
 
             tryFetchingEnergy();
         }

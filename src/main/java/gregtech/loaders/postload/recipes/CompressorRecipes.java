@@ -25,6 +25,13 @@ public class CompressorRecipes implements Runnable {
     @Override
     public void run() {
         GT_Values.RA.stdBuilder()
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 8L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(sapling_Rainforest, 8))
             .itemOutputs(ItemList.IC2_Plantball.get(1))
             .duration(15 * SECONDS)

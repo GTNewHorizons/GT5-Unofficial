@@ -133,12 +133,6 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         addInfo(aID);
     }
 
-    @Deprecated
-    public GT_MetaPipeEntity_Fluid(String aName, float aThickNess, Materials aMaterial, int aCapacity,
-        int aHeatResistance, boolean aGasProof) {
-        this(aName, aThickNess, aMaterial, aCapacity, aHeatResistance, aGasProof, 1);
-    }
-
     public GT_MetaPipeEntity_Fluid(String aName, float aThickNess, Materials aMaterial, int aCapacity,
         int aHeatResistance, boolean aGasProof, int aFluidTypes) {
         super(aName, 0);
@@ -215,11 +209,6 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         return TextureFactory.of(
             aMaterial.mIconSet.mTextures[OrePrefixes.pipeHuge.mTextureIndex],
             Dyes.getModulation(colorIndex, aMaterial.mRGBa));
-    }
-
-    @Deprecated
-    protected static ITexture getRestrictorTexture(byte borderMask) {
-        return getRestrictorTexture((int) borderMask);
     }
 
     protected static ITexture getRestrictorTexture(int borderMask) {

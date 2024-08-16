@@ -18,7 +18,6 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_TOO_LOW;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_WRONG;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_WTF;
-import static com.github.technus.tectech.util.CommonValues.V;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -27,6 +26,7 @@ import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static java.lang.Math.min;

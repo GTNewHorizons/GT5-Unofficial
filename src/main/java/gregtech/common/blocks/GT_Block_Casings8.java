@@ -100,17 +100,6 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
         };
     }
 
-    @Deprecated
-    public IIcon getTurbineCasing(int meta, int iconIndex, boolean active) {
-        // noinspection SwitchStatementWithTooFewBranches // "if" is harder to edit
-        return switch (meta) {
-            case 9 -> active ? Textures.BlockIcons.TURBINE_ADVGASACTIVE[iconIndex].getIcon()
-                : Textures.BlockIcons.TURBINEADVGAS[iconIndex].getIcon();
-            default -> active ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon()
-                : Textures.BlockIcons.TURBINE[iconIndex].getIcon();
-        };
-    }
-
     public IIcon getTurbineCasing(int meta, int iconIndex, boolean active, boolean hasTurbine) {
         // noinspection SwitchStatementWithTooFewBranches // "if" is harder to edit
         return switch (meta) {
