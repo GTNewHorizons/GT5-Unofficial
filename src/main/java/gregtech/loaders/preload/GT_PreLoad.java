@@ -506,8 +506,6 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mAllowSmallBoilerAutomation = tMainConfig
             .get(GT_Mod.aTextGeneral, "AllowSmallBoilerAutomation", false)
             .getBoolean(false);
-        GT_Mod.gregtechproxy.mHardMachineCasings = tMainConfig.get(GT_Mod.aTextGeneral, "HardMachineCasings", true)
-            .getBoolean(true);
         GT_Mod.gregtechproxy.mDisableVanillaOres = tMainConfig.get(GT_Mod.aTextGeneral, "DisableVanillaOres", true)
             .getBoolean(true);
         GT_Mod.gregtechproxy.mNerfDustCrafting = tMainConfig.get(GT_Mod.aTextGeneral, "NerfDustCrafting", true)

@@ -547,7 +547,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public final BlockingQueue<String> mBufferedPlayerActivity = new LinkedBlockingQueue<>();
     public final GT_BlockMap<Boolean> mCTMBlockCache = new GT_BlockMap<>();
     public boolean mDisableVanillaOres = true;
-    public boolean mHardMachineCasings = true;
     public boolean mAllowSmallBoilerAutomation = false;
     public boolean mNerfDustCrafting = true;
     public boolean mSortToTheEnd = true;

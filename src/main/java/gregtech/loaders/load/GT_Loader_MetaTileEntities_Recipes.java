@@ -5056,121 +5056,70 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
 
         // hull crafting recipes. (They can't be used for recycling as that would create an exploit loop with the
         // assembler recipes.)
-        if (GT_Mod.gregtechproxy.mHardMachineCasings) {
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_ULV.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_ULV, 'C',
-                    OrePrefixes.cableGt01.get(Materials.Lead), 'H', OrePrefixes.plate.get(Materials.WroughtIron), 'P',
-                    OrePrefixes.plate.get(Materials.Wood) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_LV.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_LV, 'C',
-                    OrePrefixes.cableGt01.get(Materials.Tin), 'H', OrePrefixes.plate.get(Materials.Steel), 'P',
-                    OrePrefixes.plate.get(Materials.WroughtIron) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_MV.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_MV, 'C',
-                    OrePrefixes.cableGt01.get(Materials.Copper), 'H', OrePrefixes.plate.get(Materials.Aluminium), 'P',
-                    OrePrefixes.plate.get(Materials.WroughtIron) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_HV.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_HV, 'C',
-                    OrePrefixes.cableGt01.get(Materials.Gold), 'H', OrePrefixes.plate.get(Materials.StainlessSteel),
-                    'P', OrePrefixes.plate.get(Materials.Plastic) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_EV.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_EV, 'C',
-                    OrePrefixes.cableGt01.get(Materials.Aluminium), 'H', OrePrefixes.plate.get(Materials.Titanium), 'P',
-                    OrePrefixes.plate.get(Materials.Plastic) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_IV.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_IV, 'C',
-                    OrePrefixes.cableGt01.get(Materials.Tungsten), 'H', OrePrefixes.plate.get(Materials.TungstenSteel),
-                    'P', OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_LuV.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_LuV, 'C',
-                    OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H',
-                    OrePrefixes.plate.get(ExternalMaterials.getRhodiumPlatedPalladium()), 'P',
-                    OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_ZPM.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_ZPM, 'C',
-                    OrePrefixes.cableGt01.get(Materials.Naquadah), 'H', OrePrefixes.plate.get(Materials.Iridium), 'P',
-                    OrePrefixes.plate.get(Materials.Polybenzimidazole) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_UV.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_UV, 'C',
-                    OrePrefixes.wireGt04.get(Materials.NaquadahAlloy), 'H', OrePrefixes.plate.get(Materials.Osmium),
-                    'P', OrePrefixes.plate.get(Materials.Polybenzimidazole) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_MAX.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_MAX, 'C',
-                    OrePrefixes.wireGt04.get(Materials.SuperconductorUV), 'H',
-                    OrePrefixes.plate.get(Materials.Neutronium), 'P',
-                    OrePrefixes.plate.get(Materials.Polybenzimidazole) });
-        } else {
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_ULV.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { aTextCableHull, 'M', ItemList.Casing_ULV, 'C',
-                    OrePrefixes.cableGt01.get(Materials.Lead) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_LV.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { aTextCableHull, 'M', ItemList.Casing_LV, 'C',
-                    OrePrefixes.cableGt01.get(Materials.Tin) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_MV.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { aTextCableHull, 'M', ItemList.Casing_MV, 'C',
-                    OrePrefixes.cableGt01.get(Materials.Copper) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_HV.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { aTextCableHull, 'M', ItemList.Casing_HV, 'C',
-                    OrePrefixes.cableGt01.get(Materials.Gold) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_EV.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { aTextCableHull, 'M', ItemList.Casing_EV, 'C',
-                    OrePrefixes.cableGt01.get(Materials.Aluminium) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_IV.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { aTextCableHull, 'M', ItemList.Casing_IV, 'C',
-                    OrePrefixes.cableGt01.get(Materials.Tungsten) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_LuV.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { aTextCableHull, 'M', ItemList.Casing_LuV, 'C',
-                    OrePrefixes.cableGt01.get(Materials.VanadiumGallium) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_ZPM.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { aTextCableHull, 'M', ItemList.Casing_ZPM, 'C',
-                    OrePrefixes.cableGt01.get(Materials.Naquadah) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_UV.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { aTextCableHull, 'M', ItemList.Casing_UV, 'C',
-                    OrePrefixes.wireGt04.get(Materials.NaquadahAlloy) });
-            GT_ModHandler.addCraftingRecipe(
-                ItemList.Hull_MAX.get(1L),
-                GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { aTextCableHull, 'M', ItemList.Casing_MAX, 'C',
-                    OrePrefixes.wireGt04.get(Materials.SuperconductorUV) });
-        }
+
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_ULV.get(1L),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_ULV, 'C',
+                OrePrefixes.cableGt01.get(Materials.Lead), 'H', OrePrefixes.plate.get(Materials.WroughtIron), 'P',
+                OrePrefixes.plate.get(Materials.Wood) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_LV.get(1L),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_LV, 'C',
+                OrePrefixes.cableGt01.get(Materials.Tin), 'H', OrePrefixes.plate.get(Materials.Steel), 'P',
+                OrePrefixes.plate.get(Materials.WroughtIron) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_MV.get(1L),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_MV, 'C',
+                OrePrefixes.cableGt01.get(Materials.Copper), 'H', OrePrefixes.plate.get(Materials.Aluminium), 'P',
+                OrePrefixes.plate.get(Materials.WroughtIron) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_HV.get(1L),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_HV, 'C',
+                OrePrefixes.cableGt01.get(Materials.Gold), 'H', OrePrefixes.plate.get(Materials.StainlessSteel),
+                'P', OrePrefixes.plate.get(Materials.Plastic) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_EV.get(1L),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_EV, 'C',
+                OrePrefixes.cableGt01.get(Materials.Aluminium), 'H', OrePrefixes.plate.get(Materials.Titanium), 'P',
+                OrePrefixes.plate.get(Materials.Plastic) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_IV.get(1L),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_IV, 'C',
+                OrePrefixes.cableGt01.get(Materials.Tungsten), 'H', OrePrefixes.plate.get(Materials.TungstenSteel),
+                'P', OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_LuV.get(1L),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_LuV, 'C',
+                OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H',
+                OrePrefixes.plate.get(ExternalMaterials.getRhodiumPlatedPalladium()), 'P',
+                OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_ZPM.get(1L),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_ZPM, 'C',
+                OrePrefixes.cableGt01.get(Materials.Naquadah), 'H', OrePrefixes.plate.get(Materials.Iridium), 'P',
+                OrePrefixes.plate.get(Materials.Polybenzimidazole) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_UV.get(1L),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_UV, 'C',
+                OrePrefixes.wireGt04.get(Materials.NaquadahAlloy), 'H', OrePrefixes.plate.get(Materials.Osmium),
+                'P', OrePrefixes.plate.get(Materials.Polybenzimidazole) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_MAX.get(1L),
+            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_MAX, 'C',
+                OrePrefixes.wireGt04.get(Materials.SuperconductorUV), 'H',
+                OrePrefixes.plate.get(Materials.Neutronium), 'P',
+                OrePrefixes.plate.get(Materials.Polybenzimidazole) });
+
         // hull recycling data
         GT_OreDictUnificator.addItemDataFromInputs(
             ItemList.Hull_ULV.get(1L),
