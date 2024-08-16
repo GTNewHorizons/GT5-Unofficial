@@ -121,10 +121,11 @@ public class UIHelper {
      */
     public static List<Pos2d> getFluidInputPositions(int fluidInputCount) {
         List<Pos2d> results = new ArrayList<>();
-        int x = 52;
+        int base = Math.max(70 - (fluidInputCount * 18), 16);
+        int x = 0;
         for (int i = 0; i < fluidInputCount; i++) {
-            results.add(new Pos2d(x, 62));
-            x -= 18;
+            results.add(new Pos2d(base + x, 62));
+            x += 18;
         }
         return results;
     }

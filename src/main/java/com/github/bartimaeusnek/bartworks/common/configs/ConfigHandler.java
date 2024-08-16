@@ -24,10 +24,8 @@ import com.github.bartimaeusnek.bartworks.API.API_ConfigValues;
 
 public class ConfigHandler {
 
-    private static final int IDU = 10 * 8 + 5;
     public static Configuration c;
 
-    public static int IDOffset = 12600;
     public static int megaMachinesMax = 256;
     public static int mbWaterperSec = 150;
     public static int ross128BID = -64;
@@ -130,14 +128,6 @@ public class ConfigHandler {
                 "If you wish to enable \"Shared Item Stack\" tooltips")
             .getBoolean(true);
 
-        ConfigHandler.IDOffset = ConfigHandler.c
-            .get(
-                "System",
-                "ID Offset",
-                12600,
-                "ID Offset for this mod. This Mod uses " + ConfigHandler.IDU
-                    + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS")
-            .getInt(12600);
         ConfigHandler.teslastaff = ConfigHandler.c
             .get(
                 "System",
@@ -237,18 +227,6 @@ public class ConfigHandler {
             ConfigHandler.basePollutionMBFSecond,
             "How much should the MBF produce pollution per tick per ingot. Then it'll be multiplied by the amount of ingots done in parallel")
             .getInt(ConfigHandler.basePollutionMBFSecond);
-
-        if (ConfigHandler.IDOffset == 0) {
-            ConfigHandler.IDOffset = 12600;
-            ConfigHandler.c
-                .get(
-                    "System",
-                    "ID Offset",
-                    12600,
-                    "ID Offset for this mod. This Mod uses " + ConfigHandler.IDU
-                        + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS")
-                .set(12600);
-        }
 
         ConfigHandler.GTppLogDisabler = ConfigHandler.c
             .get("System", "Disable GT++ Logging", false, "Enables or Disables GT++ Logging.")

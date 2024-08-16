@@ -11,8 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Check file content
-        uses: mattsb42-meta/not-grep@1.0.0
-        with:
-          config-file: ./.github/test-scala-presence.toml
+        uses: actions/checkout@v4
+      - name: Detect scala presence
+        shell: bash
+        run: |
+          ! grep -E -r 'import scala\.' src/main/java
+

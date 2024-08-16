@@ -57,7 +57,6 @@ import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Sodiumformate;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Sodiumsulfate;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.ZincSulfate;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.OrePrefixes.cell;
@@ -79,6 +78,8 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gtPlusPlus.core.material.ALLOY.HELICOPTER;
+import static gtPlusPlus.core.material.ELEMENT.STANDALONE.WHITE_METAL;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -536,8 +537,8 @@ public class PlatinumSludgeOverHaul {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
-            .fluidInputs(RutheniumTetroxideSollution.getFluidOrGas(800))
-            .fluidOutputs(HotRutheniumTetroxideSollution.getFluidOrGas(1600))
+            .fluidInputs(RutheniumTetroxideSollution.getFluidOrGas(1000))
+            .fluidOutputs(HotRutheniumTetroxideSollution.getFluidOrGas(2000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .noOptimize()
@@ -1079,11 +1080,11 @@ public class PlatinumSludgeOverHaul {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        if (stack.getItem() == GT_ModHandler.getModItem(GTPlusPlus.ID, "itemDustHeLiCoPtEr", 1L)
+        if (stack.getItem() == HELICOPTER.getDust(1)
             .getItem()) {
             return true;
         }
-        if (stack.getItem() == GT_ModHandler.getModItem(GTPlusPlus.ID, "itemDustWhiteMetal", 1L)
+        if (stack.getItem() == WHITE_METAL.getDust(1)
             .getItem()) {
             return true;
         }

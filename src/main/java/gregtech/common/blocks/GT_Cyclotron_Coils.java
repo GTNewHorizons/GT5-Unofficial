@@ -38,9 +38,9 @@ public class GT_Cyclotron_Coils extends GT_Block_Casings_Abstract {
         ItemList.Superconducting_Magnet_Solenoid_UMV.set(new ItemStack(this, 1, 10));
     }
 
-    @Override // Magic numbers...
+    @Override
     public int getTextureIndex(int aMeta) {
-        return 208 + aMeta;
+        return (2 << 7) | (aMeta);
     }
 
     @Override

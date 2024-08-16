@@ -18,6 +18,7 @@ import common.recipeLoaders.Unpackager;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -45,7 +46,9 @@ public class Recipes {
         new ResearchableAssemblyLine().run();
         new Unpackager().run();
 
-        registerRecipes_Jars();
+        if (Mods.Thaumcraft.isModLoaded()) {
+            registerRecipes_Jars();
+        }
 
         KekzCore.LOGGER.info("Finished registering recipes");
     }

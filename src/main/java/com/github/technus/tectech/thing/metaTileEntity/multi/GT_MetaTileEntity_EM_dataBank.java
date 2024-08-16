@@ -95,7 +95,7 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
                     DataBankHatches.WirelessOutboundConnector)
                 .casingIndex(textureOffset + 1)
                 .dot(2)
-                .buildAndChain(DataBankHatches.DataStick.newAny(textureOffset + 1, 2), ofBlock(sBlockCasingsTT, 1)))
+                .buildAndChain(DataBankHatches.DataStick.newAnyOrCasing(textureOffset + 1, 2, sBlockCasingsTT, 1)))
         .build();
     // endregion
 
