@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GT_RecipeMapUtil.convertCellToFluid;
 
 import java.util.ArrayList;
@@ -18,8 +19,10 @@ import com.elisis.gtnhlanth.common.item.PhotolithographicMask;
 import com.elisis.gtnhlanth.common.register.LanthItemList;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
@@ -189,6 +192,20 @@ public class GT_RecipeConstants {
      */
     public static final RecipeMetadataKey<Integer> LFTR_OUTPUT_POWER = SimpleRecipeMetadataKey
         .create(Integer.class, "lftr_output_power");
+
+    /**
+     * Research Station data.
+     */
+    public static final RecipeMetadataKey<Integer> RESEARCH_STATION_DATA = SimpleRecipeMetadataKey
+        .create(Integer.class, "research_station_data");
+
+    /**
+     * glass tier required for the biovat recipes.
+     */
+    public static final RecipeMetadataKey<Integer> SIEVERTS = SimpleRecipeMetadataKey.create(Integer.class, "sieverts");
+
+    public static final RecipeMetadataKey<Integer> DECAY_TICKS = SimpleRecipeMetadataKey
+        .create(Integer.class, "decay_ticks");
 
     /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
@@ -460,17 +477,18 @@ public class GT_RecipeConstants {
         tPersistentHash = tPersistentHash * 31 + r.mDuration;
         tPersistentHash = tPersistentHash * 31 + r.mEUt;
         Collection<GT_Recipe> ret = new ArrayList<>(3);
-        ret.add(
-            RecipeMaps.scannerFakeRecipes.addFakeRecipe(
-                false,
-                new ItemStack[] { aResearchItem },
-                new ItemStack[] { aOutput },
-                new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Writes Research result") },
-                null,
-                null,
-                aResearchTime,
-                30,
-                -201)); // means it's scanned
+        ret.addAll(
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aResearchItem)
+                .itemOutputs(aOutput)
+                .special(ItemList.Tool_DataStick.getWithName(1L, "Writes Research result"))
+                .duration(aResearchTime)
+                .eut(TierEU.RECIPE_LV)
+                .specialValue(-201) // means it's scanned
+                .noOptimize()
+                .ignoreCollision()
+                .fake()
+                .addTo(scannerFakeRecipes));
 
         ret.add(
             RecipeMaps.assemblylineVisualRecipes.addFakeRecipe(
@@ -582,6 +600,9 @@ public class GT_RecipeConstants {
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(PRECISE_ASSEMBLER_CASING_TIER);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COAL_CASING_TIER);
         GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(BLACKHOLE);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RESEARCH_STATION_DATA);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(SIEVERTS);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DECAY_TICKS);
 
     }
 }

@@ -1,6 +1,5 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -13,6 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.github.technus.tectech.thing.CustomItemList;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -873,7 +874,7 @@ public class AssemblyLineRecipes implements Runnable {
                 ItemList.Field_Generator_UV.get(16),
                 ItemList.Gravistar.get(8),
                 ItemList.Emitter_UV.get(4),
-                GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 16, 15497),
+                CustomItemList.hatch_CreativeMaintenance.get(16),
                 ItemList.Energy_Cluster.get(8),
                 ItemList.Cover_WirelessNeedsMaintainance.get(1))
             .itemOutputs(ItemList.TierdDrone2.get(1))
