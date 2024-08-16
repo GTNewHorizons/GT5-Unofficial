@@ -1,17 +1,12 @@
 package gregtech.common.tileentities.machines.multi.nanochip.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.GT_CircuitComponent_FakeItem;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 
 public enum CircuitComponent {
 
@@ -23,37 +18,60 @@ public enum CircuitComponent {
     // that are only created through a module in the NAC
 
     // When adding to this list, PLEASE only add to the end! The ordinals are used as item ids for the fake items!
-    WireNiobiumTitanium("gt.circuitcomponent.wire",
-        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 1), Materials.NiobiumTitanium),
-    SMDTransistor("gt.circuitcomponent.smd.transistor", ItemList.Circuit_Parts_TransistorSMD.get(1)),
-    SMDInductor("gt.circuitcomponent.smd.inductor", ItemList.Circuit_Parts_InductorSMD.get(1)),
-    SMDCapacitor("gt.circuitcomponent.smd.capacitor", ItemList.Circuit_Parts_CapacitorSMD.get(1)),
-    SMDDiode("gt.circuitcomponent.smd.diode", ItemList.Circuit_Parts_DiodeSMD.get(1)),
-    AdvSMDTransistor("gt.circuitcomponent.asmd.transistor", ItemList.Circuit_Parts_TransistorASMD.get(1)),
-    AdvSMDInductor("gt.circuitcomponent.asmd.inductor", ItemList.Circuit_Parts_InductorASMD.get(1)),
-    AdvSMDCapacitor("gt.circuitcomponent.asmd.capacitor", ItemList.Circuit_Parts_CapacitorASMD.get(1)),
-    AdvSMDDiode("gt.circuitcomponent.asmd.diode", ItemList.Circuit_Parts_DiodeASMD.get(1)),
-    OpticalSMDTransistor("gt.circuitcomponent.xsmd.transistor", ItemList.Circuit_Parts_TransistorXSMD.get(1)),
-    OpticalSMDInductor("gt.circuitcomponent.xsmd.inductor", ItemList.Circuit_Parts_InductorXSMD.get(1)),
-    OpticalSMDCapacitor("gt.circuitcomponent.xsmd.capacitor", ItemList.Circuit_Parts_CapacitorXSMD.get(1)),
-    OpticalSMDDiode("gt.circuitcomponent.xsmd.diode", ItemList.Circuit_Parts_DiodeXSMD.get(1)),;
+    WireNiobiumTitanium("gt.circuitcomponent.wire", null, Materials.NiobiumTitanium), // todo: figure out if we still
+                                                                                      // need the material
+    SMDResistor("gt.circuitcomponent.smd.resistor", RecipeMaps.nanochipSMDProcessorRecipes),
+    SMDTransistor("gt.circuitcomponent.smd.transistor", RecipeMaps.nanochipSMDProcessorRecipes),
+    SMDInductor("gt.circuitcomponent.smd.inductor", RecipeMaps.nanochipSMDProcessorRecipes),
+    SMDCapacitor("gt.circuitcomponent.smd.capacitor", RecipeMaps.nanochipSMDProcessorRecipes),
+    SMDDiode("gt.circuitcomponent.smd.diode", RecipeMaps.nanochipSMDProcessorRecipes),
+    AdvSMDResistor("gt.circuitcomponent.asmd.resistor", RecipeMaps.nanochipSMDProcessorRecipes),
+    AdvSMDTransistor("gt.circuitcomponent.asmd.transistor", RecipeMaps.nanochipSMDProcessorRecipes),
+    AdvSMDInductor("gt.circuitcomponent.asmd.inductor", RecipeMaps.nanochipSMDProcessorRecipes),
+    AdvSMDCapacitor("gt.circuitcomponent.asmd.capacitor", RecipeMaps.nanochipSMDProcessorRecipes),
+    AdvSMDDiode("gt.circuitcomponent.asmd.diode", RecipeMaps.nanochipSMDProcessorRecipes),
+    OpticalSMDResistor("gt.circuitcomponent.xsmd.resistor", RecipeMaps.nanochipSMDProcessorRecipes),
+    OpticalSMDTransistor("gt.circuitcomponent.xsmd.transistor", RecipeMaps.nanochipSMDProcessorRecipes),
+    OpticalSMDInductor("gt.circuitcomponent.xsmd.inductor", RecipeMaps.nanochipSMDProcessorRecipes),
+    OpticalSMDCapacitor("gt.circuitcomponent.xsmd.capacitor", RecipeMaps.nanochipSMDProcessorRecipes),
+    OpticalSMDDiode("gt.circuitcomponent.xsmd.diode", RecipeMaps.nanochipSMDProcessorRecipes),
+    ProcessedSMDResistor("gt.circuitcomponent.processed.smd.resistor", RecipeMaps.nanochipAssemblyMatrixRecipes),
+
+    ProcessedSMDTransistor("gt.circuitcomponent.processed.smd.transistor", RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ProcessedSMDInductor("gt.circuitcomponent.processed.smd.inductor", RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ProcessedSMDCapacitor("gt.circuitcomponent.processed.smd.capacitor", RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ProcessedSMDDiode("gt.circuitcomponent.processed.smd.diode", RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ProcessedAdvSMDResistor("gt.circuitcomponent.processed.asmd.resistor", RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ProcessedAdvSMDTransistor("gt.circuitcomponent.processed.asmd.transistor",
+        RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ProcessedAdvSMDInductor("gt.circuitcomponent.processed.asmd.inductor", RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ProcessedAdvSMDCapacitor("gt.circuitcomponent.processed.asmd.capacitor", RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ProcessedAdvSMDDiode("gt.circuitcomponent.processed.asmd.diode", RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ProcessedOpticalSMDResistor("gt.circuitcomponent.processed.xsmd.resistor",
+        RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ProcessedOpticalSMDTransistor("gt.circuitcomponent.processed.xsmd.transistor",
+        RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ProcessedOpticalSMDInductor("gt.circuitcomponent.processed.xsmd.inductor",
+        RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ProcessedOpticalSMDCapacitor("gt.circuitcomponent.processed.xsmd.capacitor",
+        RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ProcessedOpticalSMDDiode("gt.circuitcomponent.processed.xsmd.diode", RecipeMaps.nanochipAssemblyMatrixRecipes),;
 
     public final String unlocalizedName;
     public final Materials material;
-    public final ItemStack realStack;
+    // This is the recipe map that this component is used in as an input item
+    public final RecipeMap<?> processingMap;
 
-    private static final Map<GT_Utility.ItemId, CircuitComponent> stackTranslationMap = new HashMap<>();
-
-    CircuitComponent(String unlocalizedName, ItemStack realStack) {
-        this(unlocalizedName, realStack, null);
+    CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap) {
+        this(unlocalizedName, processingMap, null);
     }
 
-    CircuitComponent(String unlocalizedName, ItemStack realStack, Materials material) {
+    CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, Materials material) {
         this.unlocalizedName = unlocalizedName;
         // Hide the fake stack in NEI
         codechicken.nei.api.API.hideItem(getFakeStack(1));
         this.material = material;
-        this.realStack = realStack;
+        this.processingMap = processingMap;
     }
 
     public String getLocalizedName() {
@@ -65,25 +83,8 @@ public enum CircuitComponent {
         return new ItemStack(GT_CircuitComponent_FakeItem.INSTANCE, amount, this.ordinal());
     }
 
-    // ItemStack of the real item used to create this component
-    public ItemStack getRealStack() {
-        return realStack;
-    }
-
     public static CircuitComponent getFromFakeStack(ItemStack stack) {
         // If this throws an IndexOutOfBounds exception, there is a bug
         return CircuitComponent.values()[stack.getItemDamage()];
-    }
-
-    public static CircuitComponent getFromRealStack(ItemStack stack) {
-        return stackTranslationMap.get(GT_Utility.ItemId.createNoCopy(stack));
-    }
-
-    static {
-        // Fill out the translation map. We can't do this inside the constructor because it is illegal
-        for (CircuitComponent component : CircuitComponent.values()) {
-            GT_Utility.ItemId id = GT_Utility.ItemId.createNoCopy(component.getRealStack());
-            stackTranslationMap.put(id, component);
-        }
     }
 }
