@@ -6,17 +6,17 @@ import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleSpeed;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleRecipeInfo;
 import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class NanochipAssemblyModuleSpeedKey extends RecipeMetadataKey<ModuleSpeed> {
+public class NanochipAssemblyRecipeInfo extends RecipeMetadataKey<ModuleRecipeInfo> {
 
-    public static final NanochipAssemblyModuleSpeedKey INSTANCE = new NanochipAssemblyModuleSpeedKey();
+    public static final NanochipAssemblyRecipeInfo INSTANCE = new NanochipAssemblyRecipeInfo();
 
-    private NanochipAssemblyModuleSpeedKey() {
-        super(ModuleSpeed.class, "nanochip_assembly_module_speed");
+    private NanochipAssemblyRecipeInfo() {
+        super(ModuleRecipeInfo.class, "nanochip_assembly_module_recipe_info");
     }
 
     @Override

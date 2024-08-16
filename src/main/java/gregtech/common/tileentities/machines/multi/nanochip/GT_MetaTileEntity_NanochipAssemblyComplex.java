@@ -1,6 +1,8 @@
 package gregtech.common.tileentities.machines.multi.nanochip;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
@@ -96,7 +98,8 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         .addElement(
             'V',
             GT_HatchElementBuilder.<GT_MetaTileEntity_NanochipAssemblyComplex>builder()
-                .atLeastList(Arrays.asList(AssemblyHatchElement.VacuumConveyorHatch, InputBus, OutputBus))
+                .atLeastList(
+                    Arrays.asList(AssemblyHatchElement.VacuumConveyorHatch, InputBus, OutputBus, Energy, ExoticEnergy))
                 .casingIndex(CASING_INDEX_BASE)
                 .dot(2)
                 .buildAndChain(ofBlock(GregTech_API.sBlockCasings4, 0)))
@@ -352,8 +355,15 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
             // conditions such as energy tier.
             if (isAllowedToWork()) {
                 if (aTick % MODULE_CONNECT_INTERVAL == 0) {
-                    for (GT_MetaTileEntity_NanochipAssemblyModuleBase<?> module : modules) {
-                        module.connect();
+                    if (!modules.isEmpty()) {
+                        long eutPerModule = this.getMaxInputEu() / modules.size();
+                        for (GT_MetaTileEntity_NanochipAssemblyModuleBase<?> module : modules) {
+                            module.connect();
+                            // Set available EU/t for this module, which is the total EU/t divided by the amount of
+                            // modules,
+                            // since each module can draw power equally (no mixed overclocks).
+                            module.setAvailableEUt(eutPerModule);
+                        }
                     }
                 }
             } else {
