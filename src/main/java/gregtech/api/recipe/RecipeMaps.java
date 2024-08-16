@@ -1217,10 +1217,24 @@ public final class RecipeMaps {
         .neiHandlerInfo(builder -> builder.setDisplayStack(GTModHandler.getIC2Item("nuclearReactor", 1, null)))
         .build();
 
+    public static final RecipeMap<RecipeMapBackend> nanochipConversionRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.conversion")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .disableOptimize()
+        .build();
+
     public static final RecipeMap<RecipeMapBackend> nanochipAssemblyMatrixRecipes = RecipeMapBuilder
         .of("gt.recipe.nanochip.assemblymatrix")
         .maxIO(9, 1, 4, 0)
         .minInputs(0, 0)
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> nanochipSMDProcessorRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.smdprocessor")
+        .maxIO(2, 1, 2, 0)
+        .minInputs(0, 0)
+        .disableOptimize()
         .build();
 
     static {
