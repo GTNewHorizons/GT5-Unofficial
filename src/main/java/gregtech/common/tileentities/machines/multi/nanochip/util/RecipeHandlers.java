@@ -85,7 +85,10 @@ public class RecipeHandlers {
         addConversionRecipe(
             CircuitComponent.SuperconductorLuV,
             GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 1));
-
+        // Frame boxes
+        addConversionRecipe(
+            CircuitComponent.FrameboxAluminium,
+            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1));
         // Wire processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.WireNiobiumTitanium,
@@ -205,6 +208,12 @@ public class RecipeHandlers {
         addSimpleProcessingRecipe(
             CircuitComponent.SuperconductorLuV,
             CircuitComponent.ProcessedSuperconductorLuV,
+            ModuleRecipeInfo.Medium,
+            TierEU.RECIPE_LV);
+        // Frame box processing recipes
+        addSimpleProcessingRecipe(
+            CircuitComponent.FrameboxAluminium,
+            CircuitComponent.ProcessedFrameboxAluminium,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
     }
