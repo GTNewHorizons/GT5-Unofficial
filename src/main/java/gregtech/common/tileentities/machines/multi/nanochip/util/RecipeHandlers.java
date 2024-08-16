@@ -211,6 +211,7 @@ public class RecipeHandlers {
 
     private static GT_Recipe findRecipeUsingStack(ItemStack input, RecipeMap<?> map) {
         return map.findRecipeQuery()
+            .dontCheckStackSizes(true)
             .items(input)
             .find();
     }
