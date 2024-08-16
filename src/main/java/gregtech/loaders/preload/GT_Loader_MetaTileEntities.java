@@ -118,6 +118,11 @@ import static gregtech.api.enums.MetaTileEntityIDs.BENDING_MACHINE_UIV;
 import static gregtech.api.enums.MetaTileEntityIDs.BENDING_MACHINE_UMV;
 import static gregtech.api.enums.MetaTileEntityIDs.BENDING_MACHINE_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.BENDING_MACHINE_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_IV;
@@ -919,7 +924,6 @@ import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -986,6 +990,7 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_AdvSeismicProspector;
+import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_BetterJukebox;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Boxinator;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Charger;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_IndustrialApiary;
@@ -2567,6 +2572,39 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "basicmachine.microtransmitter.08",
                 "UV Microwave Energy Transmitter",
                 8).getStackForm(1L));
+    }
+
+    private static void registerBetterJukebox() {
+        ItemList.BetterJukebox_LV.set(
+            new GT_MetaTileEntity_BetterJukebox(
+                BETTER_JUKEBOX_LV.ID,
+                "basicmachine.betterjukebox.tier.01",
+                "Basic Electric Jukebox",
+                1).getStackForm(1L));
+        ItemList.BetterJukebox_MV.set(
+            new GT_MetaTileEntity_BetterJukebox(
+                BETTER_JUKEBOX_MV.ID,
+                "basicmachine.betterjukebox.tier.02",
+                "Advanced Electric Jukebox",
+                2).getStackForm(1L));
+        ItemList.BetterJukebox_HV.set(
+            new GT_MetaTileEntity_BetterJukebox(
+                BETTER_JUKEBOX_HV.ID,
+                "basicmachine.betterjukebox.tier.03",
+                "Advanced Electric Jukebox II",
+                3).getStackForm(1L));
+        ItemList.BetterJukebox_EV.set(
+            new GT_MetaTileEntity_BetterJukebox(
+                BETTER_JUKEBOX_EV.ID,
+                "basicmachine.betterjukebox.tier.04",
+                "Extreme Music Mixer",
+                4).getStackForm(1L));
+        ItemList.BetterJukebox_IV.set(
+            new GT_MetaTileEntity_BetterJukebox(
+                BETTER_JUKEBOX_IV.ID,
+                "basicmachine.betterjukebox.tier.05",
+                "Duke Mix'em 3D",
+                5).getStackForm(1L));
     }
 
     private static void registerChestBuffer() {
@@ -9256,264 +9294,40 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         makeWires(Materials.Zinc, 1260, 1L, 2L, 1L, gregtech.api.enums.GT_Values.V[1], true, false);
         makeWires(Materials.SolderingAlloy, 1280, 1L, 2L, 1L, gregtech.api.enums.GT_Values.V[1], true, false);
 
-        makeWires(
-            Materials.Iron,
-            1300,
-            3L,
-            6L,
-            2L,
-            gregtech.api.enums.GT_Values.V[2],
-            true,
-            false);
-        makeWires(
-            Materials.Nickel,
-            1320,
-            3L,
-            6L,
-            3L,
-            gregtech.api.enums.GT_Values.V[2],
-            true,
-            false);
-        makeWires(
-            Materials.Cupronickel,
-            1340,
-            3L,
-            6L,
-            2L,
-            gregtech.api.enums.GT_Values.V[2],
-            true,
-            false);
-        makeWires(
-            Materials.Copper,
-            1360,
-            2L,
-            4L,
-            1L,
-            gregtech.api.enums.GT_Values.V[2],
-            true,
-            false);
-        makeWires(
-            Materials.AnnealedCopper,
-            1380,
-            2L,
-            4L,
-            1L,
-            gregtech.api.enums.GT_Values.V[2],
-            true,
-            false);
+        makeWires(Materials.Iron, 1300, 3L, 6L, 2L, gregtech.api.enums.GT_Values.V[2], true, false);
+        makeWires(Materials.Nickel, 1320, 3L, 6L, 3L, gregtech.api.enums.GT_Values.V[2], true, false);
+        makeWires(Materials.Cupronickel, 1340, 3L, 6L, 2L, gregtech.api.enums.GT_Values.V[2], true, false);
+        makeWires(Materials.Copper, 1360, 2L, 4L, 1L, gregtech.api.enums.GT_Values.V[2], true, false);
+        makeWires(Materials.AnnealedCopper, 1380, 2L, 4L, 1L, gregtech.api.enums.GT_Values.V[2], true, false);
 
-        makeWires(
-            Materials.Kanthal,
-            1400,
-            3L,
-            6L,
-            4L,
-            gregtech.api.enums.GT_Values.V[3],
-            true,
-            false);
-        makeWires(
-            Materials.Gold,
-            1420,
-            2L,
-            4L,
-            3L,
-            gregtech.api.enums.GT_Values.V[3],
-            true,
-            false);
-        makeWires(
-            Materials.Electrum,
-            1440,
-            2L,
-            4L,
-            2L,
-            gregtech.api.enums.GT_Values.V[3],
-            true,
-            false);
-        makeWires(
-            Materials.Silver,
-            1460,
-            1L,
-            2L,
-            1L,
-            gregtech.api.enums.GT_Values.V[3],
-            true,
-            false);
-        makeWires(
-            Materials.BlueAlloy,
-            1480,
-            1L,
-            2L,
-            2L,
-            gregtech.api.enums.GT_Values.V[3],
-            true,
-            false);
+        makeWires(Materials.Kanthal, 1400, 3L, 6L, 4L, gregtech.api.enums.GT_Values.V[3], true, false);
+        makeWires(Materials.Gold, 1420, 2L, 4L, 3L, gregtech.api.enums.GT_Values.V[3], true, false);
+        makeWires(Materials.Electrum, 1440, 2L, 4L, 2L, gregtech.api.enums.GT_Values.V[3], true, false);
+        makeWires(Materials.Silver, 1460, 1L, 2L, 1L, gregtech.api.enums.GT_Values.V[3], true, false);
+        makeWires(Materials.BlueAlloy, 1480, 1L, 2L, 2L, gregtech.api.enums.GT_Values.V[3], true, false);
 
-        makeWires(
-            Materials.Nichrome,
-            1500,
-            4L,
-             8L,
-            3L,
-            gregtech.api.enums.GT_Values.V[4],
-            true,
-            false);
-        makeWires(
-            Materials.Steel,
-            1520,
-            2L,
-            4L,
-            2L,
-            gregtech.api.enums.GT_Values.V[4],
-            true,
-            false);
-        makeWires(
-            Materials.BlackSteel,
-            1540,
-            2L,
-            4L,
-            3L,
-            gregtech.api.enums.GT_Values.V[4],
-            true,
-            false);
-        makeWires(
-            Materials.Titanium,
-            1560,
-            2L,
-            4L,
-            4L,
-            gregtech.api.enums.GT_Values.V[4],
-            true,
-            false);
-        makeWires(
-            Materials.Aluminium,
-            1580,
-            1L,
-            2L,
-            1L,
-            gregtech.api.enums.GT_Values.V[4],
-            true,
-            false);
+        makeWires(Materials.Nichrome, 1500, 4L, 8L, 3L, gregtech.api.enums.GT_Values.V[4], true, false);
+        makeWires(Materials.Steel, 1520, 2L, 4L, 2L, gregtech.api.enums.GT_Values.V[4], true, false);
+        makeWires(Materials.BlackSteel, 1540, 2L, 4L, 3L, gregtech.api.enums.GT_Values.V[4], true, false);
+        makeWires(Materials.Titanium, 1560, 2L, 4L, 4L, gregtech.api.enums.GT_Values.V[4], true, false);
+        makeWires(Materials.Aluminium, 1580, 1L, 2L, 1L, gregtech.api.enums.GT_Values.V[4], true, false);
 
-        makeWires(
-            Materials.Graphene,
-            1600,
-            1L,
-            2L,
-            1L,
-            gregtech.api.enums.GT_Values.V[5],
-            false,
-            true);
-        makeWires(
-            Materials.Osmium,
-            1620,
-            2L,
-            4L,
-            4L,
-            gregtech.api.enums.GT_Values.V[5],
-            true,
-            false);
-        makeWires(
-            Materials.Platinum,
-            1640,
-            1L,
-            2L,
-            2L,
-            gregtech.api.enums.GT_Values.V[5],
-            true,
-            false);
-        makeWires(
-            Materials.TungstenSteel,
-            1660,
-            2L,
-            4L,
-            3L,
-            gregtech.api.enums.GT_Values.V[5],
-            true,
-            false);
-        makeWires(
-            Materials.Tungsten,
-            1680,
-            2L,
-            4L,
-            2L,
-            gregtech.api.enums.GT_Values.V[5],
-            true,
-            false);
+        makeWires(Materials.Graphene, 1600, 1L, 2L, 1L, gregtech.api.enums.GT_Values.V[5], false, true);
+        makeWires(Materials.Osmium, 1620, 2L, 4L, 4L, gregtech.api.enums.GT_Values.V[5], true, false);
+        makeWires(Materials.Platinum, 1640, 1L, 2L, 2L, gregtech.api.enums.GT_Values.V[5], true, false);
+        makeWires(Materials.TungstenSteel, 1660, 2L, 4L, 3L, gregtech.api.enums.GT_Values.V[5], true, false);
+        makeWires(Materials.Tungsten, 1680, 2L, 4L, 2L, gregtech.api.enums.GT_Values.V[5], true, false);
 
-        makeWires(
-            Materials.HSSG,
-            1700,
-            2L,
-            4L,
-            4L,
-            gregtech.api.enums.GT_Values.V[6],
-            true,
-            false);
-        makeWires(
-            Materials.NiobiumTitanium,
-            1720,
-            2L,
-            4L,
-            4L,
-            gregtech.api.enums.GT_Values.V[6],
-            true,
-            false);
-        makeWires(
-            Materials.VanadiumGallium,
-            1740,
-            2L,
-            4L,
-            4L,
-            gregtech.api.enums.GT_Values.V[6],
-            true,
-            false);
-        makeWires(
-            Materials.YttriumBariumCuprate,
-            1760,
-            4L,
-            8L,
-            4L,
-            gregtech.api.enums.GT_Values.V[6],
-            true,
-            false);
+        makeWires(Materials.HSSG, 1700, 2L, 4L, 4L, gregtech.api.enums.GT_Values.V[6], true, false);
+        makeWires(Materials.NiobiumTitanium, 1720, 2L, 4L, 4L, gregtech.api.enums.GT_Values.V[6], true, false);
+        makeWires(Materials.VanadiumGallium, 1740, 2L, 4L, 4L, gregtech.api.enums.GT_Values.V[6], true, false);
+        makeWires(Materials.YttriumBariumCuprate, 1760, 4L, 8L, 4L, gregtech.api.enums.GT_Values.V[6], true, false);
 
-        makeWires(
-            Materials.Naquadah,
-            1780,
-            2L,
-            4L,
-            2L,
-            gregtech.api.enums.GT_Values.V[7],
-            true,
-            false);
+        makeWires(Materials.Naquadah, 1780, 2L, 4L, 2L, gregtech.api.enums.GT_Values.V[7], true, false);
 
-        makeWires(
-            Materials.NaquadahAlloy,
-            1800,
-            4L,
-            8L,
-            2L,
-            gregtech.api.enums.GT_Values.V[8],
-            true,
-            false);
-        makeWires(
-            Materials.Duranium,
-            1820,
-            8L,
-            16L,
-            1L,
-            gregtech.api.enums.GT_Values.V[8],
-            true,
-            false);
-        makeWires(
-            Materials.TPV,
-            1840,
-            1L,
-            2L,
-            6L,
-            gregtech.api.enums.GT_Values.V[4],
-            true,
-            false);
+        makeWires(Materials.NaquadahAlloy, 1800, 4L, 8L, 2L, gregtech.api.enums.GT_Values.V[8], true, false);
+        makeWires(Materials.Duranium, 1820, 8L, 16L, 1L, gregtech.api.enums.GT_Values.V[8], true, false);
+        makeWires(Materials.TPV, 1840, 1L, 2L, 6L, gregtech.api.enums.GT_Values.V[4], true, false);
 
         // Superconductor base.
         makeWires(
@@ -10066,6 +9880,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         registerElectrolyzer();
         registerCircuitAssembler();
         registerTurboCharger4By4();
+        registerBetterJukebox();
 
         ItemList.AdvDebugStructureWriter.set(
             new GT_MetaTileEntity_AdvDebugStructureWriter(
