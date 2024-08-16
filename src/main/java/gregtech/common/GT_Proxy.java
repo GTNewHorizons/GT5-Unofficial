@@ -2366,59 +2366,69 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 }
             }
             final boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);
-            if (aEvent.player.ticksExisted % 120 == 0) {
-                int tCount = 64;
-                for (int i = 0; i < 36; i++) {
-                    final ItemStack tStack;
-                    if ((tStack = aEvent.player.inventory.getStackInSlot(i)) != null) {
-                        if (!aEvent.player.capabilities.isCreativeMode) {
-                            GT_Utility.applyRadioactivity(
-                                aEvent.player,
-                                GT_Utility.getRadioactivityLevel(tStack),
-                                tStack.stackSize);
-                            final float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
-                            if (tHeat != 0.0F) {
-                                if (tHeat > 0.0F) {
-                                    GT_Utility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
-                                } else {
-                                    GT_Utility.applyFrostDamage(aEvent.player, -tHeat);
-                                }
-                            }
-                        }
-                        if (tHungerEffect) {
-                            tCount += tStack.stackSize * 64 / Math.max(1, tStack.getMaxStackSize());
-                        }
-                        if (this.mInventoryUnification) {
-                            GT_OreDictUnificator.setStack(true, tStack);
-                        }
-                    }
+
+            if (aEvent.player.ticksExisted % 120 != 0){
+                return;
+            }
+
+            int tCount = 64;
+            for (int i = 0; i < 36; i++) {
+                final ItemStack tStack = aEvent.player.inventory.getStackInSlot(i);
+                if (tStack == null){
+                    continue;
                 }
-                for (int i = 0; i < 4; i++) {
-                    final ItemStack tStack;
-                    if ((tStack = aEvent.player.inventory.armorInventory[i]) != null) {
-                        if (!aEvent.player.capabilities.isCreativeMode) {
-                            GT_Utility.applyRadioactivity(
-                                aEvent.player,
-                                GT_Utility.getRadioactivityLevel(tStack),
-                                tStack.stackSize);
-                            final float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
-                            if (tHeat != 0.0F) {
-                                if (tHeat > 0.0F) {
-                                    GT_Utility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
-                                } else {
-                                    GT_Utility.applyFrostDamage(aEvent.player, -tHeat);
-                                }
-                            }
-                        }
-                        if (tHungerEffect) {
-                            tCount += 256;
+
+                if (!aEvent.player.capabilities.isCreativeMode) {
+                    GT_Utility.applyRadioactivity(
+                        aEvent.player,
+                        GT_Utility.getRadioactivityLevel(tStack),
+                        tStack.stackSize);
+                    final float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
+                    if (tHeat != 0.0F) {
+                        if (tHeat > 0.0F) {
+                            GT_Utility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
+                        } else {
+                            GT_Utility.applyFrostDamage(aEvent.player, -tHeat);
                         }
                     }
                 }
                 if (tHungerEffect) {
-                    aEvent.player.addExhaustion(Math.max(1.0F, tCount / 666.6F));
+                    tCount += tStack.stackSize * 64 / Math.max(1, tStack.getMaxStackSize());
                 }
+                if (this.mInventoryUnification) {
+                    GT_OreDictUnificator.setStack(true, tStack);
+                }
+
             }
+            for (int i = 0; i < 4; i++) {
+                final ItemStack tStack = aEvent.player.inventory.armorInventory[i];
+                if (tStack == null){
+                    continue;
+                }
+
+                if (!aEvent.player.capabilities.isCreativeMode) {
+                    GT_Utility.applyRadioactivity(
+                        aEvent.player,
+                        GT_Utility.getRadioactivityLevel(tStack),
+                        tStack.stackSize);
+                    final float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
+                    if (tHeat != 0.0F) {
+                        if (tHeat > 0.0F) {
+                            GT_Utility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
+                        } else {
+                            GT_Utility.applyFrostDamage(aEvent.player, -tHeat);
+                        }
+                    }
+                }
+                if (tHungerEffect) {
+                    tCount += 256;
+                }
+
+            }
+            if (tHungerEffect) {
+                aEvent.player.addExhaustion(Math.max(1.0F, tCount / 666.6F));
+            }
+
         }
     }
 
