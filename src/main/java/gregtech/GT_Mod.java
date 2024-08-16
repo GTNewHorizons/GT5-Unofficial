@@ -243,7 +243,6 @@ public class GT_Mod implements IGT_Mod {
         }
 
         Configuration tMainConfig = GT_PreLoad.getConfiguration(aEvent.getModConfigurationDirectory());
-        GT_PreLoad.initCompat();
         GT_PreLoad.createLogFiles(
             aEvent.getModConfigurationDirectory()
                 .getParentFile(),

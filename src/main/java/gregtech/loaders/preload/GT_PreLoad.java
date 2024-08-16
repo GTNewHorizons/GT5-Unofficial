@@ -160,16 +160,6 @@ public class GT_PreLoad {
         return tMainConfig;
     }
 
-    public static void initCompat() {
-        GregTech_API.mIC2Classic = IndustrialCraft2Classic.isModLoaded();
-        GregTech_API.mGTPlusPlus = GTPlusPlus.isModLoaded();
-        GregTech_API.mTranslocator = Translocator.isModLoaded();
-        GregTech_API.mTConstruct = TinkerConstruct.isModLoaded();
-        GregTech_API.mGalacticraft = GalacticraftCore.isModLoaded();
-        GregTech_API.mHodgepodge = HodgePodge.isModLoaded();
-        GregTech_API.mAvaritia = Avaritia.isModLoaded();
-    }
-
     public static void createLogFiles(File parentFile, Configuration tMainConfig) {
         GT_Log.mLogFile = new File(parentFile, "logs/GregTech.log");
         if (!GT_Log.mLogFile.exists()) {

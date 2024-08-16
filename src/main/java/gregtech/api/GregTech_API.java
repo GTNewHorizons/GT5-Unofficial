@@ -312,10 +312,6 @@ public class GregTech_API {
         sMachineWireFire = true, mOutputRF = false, mInputRF = false, meIOLoaded = false, mRFExplosions = false,
         mServerStarted = false;
 
-    @Deprecated
-    public static boolean mIC2Classic = false, mMagneticraft = false, mImmersiveEngineering = false,
-        mGTPlusPlus = false, mTranslocator = false, mTConstruct = false, mGalacticraft = false, mHodgepodge = false,
-        mAvaritia = false;
     /**
      * This is always set to true
      */
