@@ -114,7 +114,7 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
 
     private final ArrayList<GT_MetaTileEntity_NanochipAssemblyModuleBase<?>> modules = new ArrayList<>();
 
-    private final VacuumConveyorHatchMap vacuumConveyors = new VacuumConveyorHatchMap();
+    private final VacuumConveyorHatchMap<GT_MetaTileEntity_Hatch_VacuumConveyor> vacuumConveyors = new VacuumConveyorHatchMap<>();
 
     public GT_MetaTileEntity_NanochipAssemblyComplex(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
