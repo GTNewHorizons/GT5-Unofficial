@@ -1,6 +1,9 @@
 package gregtech.common.tileentities.machines.multi.nanochip.util;
 
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,6 +63,28 @@ public class VacuumConveyorHatchMap<T extends GT_MetaTileEntity_Hatch_VacuumConv
 
     public ArrayList<T> findColoredHatches(byte color) {
         return conveyorsByColor.get(color);
+    }
+
+    public T findAnyColoredHatch(byte color) {
+        ArrayList<T> hatches = findColoredHatches(color);
+        if (hatches == null) return null;
+        for (T hatch : filterValidMTEs(hatches)) {
+            // Ensure that the color matches the expected color, since hatches can be recolored in between rebuilds
+            // of the hatch map
+            if (hatch.getBaseMetaTileEntity()
+                .getColorization() != color) {
+                // If the color did not match, we found an inconsistency in the hatch map, so fix it immediately
+                // and skip this hatch, since it's not a match
+                fixConsistency();
+                continue;
+            }
+            return hatch;
+        }
+        return null;
+    }
+
+    public Collection<ArrayList<T>> allHatches() {
+        return conveyorsByColor.values();
     }
 
     // Count all hatches in the map

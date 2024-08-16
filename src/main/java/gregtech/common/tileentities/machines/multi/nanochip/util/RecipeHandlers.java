@@ -10,10 +10,11 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.metadata.NanochipAssemblyModuleSpeedKey;
+import gregtech.api.recipe.metadata.NanochipAssemblyRecipeInfo;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -32,18 +33,19 @@ public class RecipeHandlers {
     // Adds a simple processing recipe for circuit components in a module. The recipe map used for processing is
     // inferred
     // from the map stored by the input component.
-    private static void addSimpleProcessingRecipe(CircuitComponent input, CircuitComponent output, ModuleSpeed speed) {
+    private static void addSimpleProcessingRecipe(CircuitComponent input, CircuitComponent output,
+        ModuleRecipeInfo info, long eut) {
         RecipeMap<?> recipeMap = input.processingMap;
         if (recipeMap == null) {
             throw new IllegalArgumentException(
                 "Tried to add component processing recipe for a component without an associated recipemap");
         }
         GT_Values.RA.stdBuilder()
-            .metadata(NanochipAssemblyModuleSpeedKey.INSTANCE, speed)
-            .itemInputs(input.getFakeStack(1))
-            .itemOutputs(output.getFakeStack(1))
+            .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
+            .itemInputs(input.getFakeStack(info.baseParallel))
+            .itemOutputs(output.getFakeStack(info.baseParallel))
             .duration(20)
-            .eut(0)
+            .eut(eut)
             .addTo(recipeMap);
     }
 
@@ -88,88 +90,123 @@ public class RecipeHandlers {
         addSimpleProcessingRecipe(
             CircuitComponent.WireNiobiumTitanium,
             CircuitComponent.ProcessedWireNiobiumTitanium,
-            ModuleSpeed.Fast);
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
         // SMD processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.SMDResistor,
             CircuitComponent.ProcessedSMDResistor,
-            ModuleSpeed.Fast);
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.SMDTransistor,
             CircuitComponent.ProcessedSMDTransistor,
-            ModuleSpeed.Fast);
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.SMDInductor,
             CircuitComponent.ProcessedSMDInductor,
-            ModuleSpeed.Fast);
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.SMDCapacitor,
             CircuitComponent.ProcessedSMDCapacitor,
-            ModuleSpeed.Fast);
-        addSimpleProcessingRecipe(CircuitComponent.SMDDiode, CircuitComponent.ProcessedSMDDiode, ModuleSpeed.Fast);
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.SMDDiode,
+            CircuitComponent.ProcessedSMDDiode,
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.AdvSMDResistor,
             CircuitComponent.ProcessedAdvSMDResistor,
-            ModuleSpeed.Fast);
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.AdvSMDTransistor,
             CircuitComponent.ProcessedAdvSMDTransistor,
-            ModuleSpeed.Fast);
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.AdvSMDInductor,
             CircuitComponent.ProcessedAdvSMDInductor,
-            ModuleSpeed.Fast);
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.AdvSMDCapacitor,
             CircuitComponent.ProcessedAdvSMDCapacitor,
-            ModuleSpeed.Fast);
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.AdvSMDDiode,
             CircuitComponent.ProcessedAdvSMDDiode,
-            ModuleSpeed.Fast);
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.OpticalSMDResistor,
             CircuitComponent.ProcessedOpticalSMDResistor,
-            ModuleSpeed.Fast);
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.OpticalSMDTransistor,
             CircuitComponent.ProcessedOpticalSMDTransistor,
-            ModuleSpeed.Fast);
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.OpticalSMDInductor,
             CircuitComponent.ProcessedOpticalSMDInductor,
-            ModuleSpeed.Fast);
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.OpticalSMDCapacitor,
             CircuitComponent.ProcessedOpticalSMDCapacitor,
-            ModuleSpeed.Fast);
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.OpticalSMDDiode,
             CircuitComponent.ProcessedOpticalSMDDiode,
-            ModuleSpeed.Fast);
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
         // Board processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.BoardMultifiberglassElite,
             CircuitComponent.ProcessedBoardMultifiberglassElite,
-            ModuleSpeed.Fast);
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
         // CPU processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.ChipCrystalCPU,
             CircuitComponent.ProcessedChipCrystalCPU,
-            ModuleSpeed.Slow);
+            ModuleRecipeInfo.Slow,
+            TierEU.RECIPE_LV);
         // Wafer cutting processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.ChipNanoCPU,
             CircuitComponent.ProcessedChipNanoCPU,
-            ModuleSpeed.Medium);
-        addSimpleProcessingRecipe(CircuitComponent.ChipRAM, CircuitComponent.ProcessedChipRAM, ModuleSpeed.Medium);
-        addSimpleProcessingRecipe(CircuitComponent.ChipNOR, CircuitComponent.ProcessedChipNOR, ModuleSpeed.Medium);
-        addSimpleProcessingRecipe(CircuitComponent.ChipNAND, CircuitComponent.ProcessedChipNAND, ModuleSpeed.Medium);
+            ModuleRecipeInfo.Medium,
+            TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.ChipRAM,
+            CircuitComponent.ProcessedChipRAM,
+            ModuleRecipeInfo.Medium,
+            TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.ChipNOR,
+            CircuitComponent.ProcessedChipNOR,
+            ModuleRecipeInfo.Medium,
+            TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.ChipNAND,
+            CircuitComponent.ProcessedChipNAND,
+            ModuleRecipeInfo.Medium,
+            TierEU.RECIPE_LV);
         // Superconductor processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.SuperconductorLuV,
             CircuitComponent.ProcessedSuperconductorLuV,
-            ModuleSpeed.Medium);
+            ModuleRecipeInfo.Medium,
+            TierEU.RECIPE_LV);
     }
 
     private static GT_Recipe findRecipeUsingStack(ItemStack input, RecipeMap<?> map) {
