@@ -27,6 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -57,6 +58,7 @@ public class GT_HatchElementBuilder<T> {
     private Predicate<? super T> mReject;
     private boolean mCacheHint;
     private boolean mNoStop;
+    private boolean mExclusive;
     private EnumSet<ForgeDirection> mDisallowedDirection = EnumSet.noneOf(ForgeDirection.class);
 
     private GT_HatchElementBuilder() {}
@@ -172,6 +174,19 @@ public class GT_HatchElementBuilder<T> {
     // endregion
 
     // region primitives
+
+    /**
+     * Mark this hatch element as the only candidate of given structure element. (e.g. muffler hatch on top of EBF)
+     * Currently, this will make the built IStructureElement to ignore gt_no_hatch directive from player
+     *
+     * Do note that {@link #buildAndChain(IStructureElement[])} and its overloads will force the resulting structure
+     * element
+     * to be non-exclusive.
+     */
+    public GT_HatchElementBuilder<T> exclusive() {
+        mExclusive = true;
+        return this;
+    }
 
     public GT_HatchElementBuilder<T> adder(IGT_HatchAdder<? super T> aAdder) {
         if (aAdder == null) throw new IllegalArgumentException();
@@ -360,6 +375,8 @@ public class GT_HatchElementBuilder<T> {
     @SuppressWarnings("unchecked")
     @SafeVarargs
     public final IStructureElementChain<T> buildAndChain(IStructureElement<T>... elements) {
+        // just in case
+        mExclusive = false;
         List<IStructureElement<T>> l = new ArrayList<>();
         l.add(build());
         l.addAll(Arrays.asList(elements));
@@ -462,6 +479,12 @@ public class GT_HatchElementBuilder<T> {
                 if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
                     return PlaceResult.REJECT;
                 if (mReject != null && mReject.test(t)) return PlaceResult.REJECT;
+                if (ChannelDataAccessor.hasSubChannel(trigger, "gt_no_hatch") && !mExclusive) {
+                    String type = getHint();
+                    env.getChatter()
+                        .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
+                    return PlaceResult.REJECT;
+                }
                 ItemStack taken = env.getSource()
                     .takeOne(mHatchItemFilter.apply(t, trigger), true);
                 if (GT_Utility.isStackInvalid(taken)) {
