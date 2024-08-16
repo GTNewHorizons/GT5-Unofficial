@@ -308,7 +308,7 @@ import static com.github.technus.tectech.thing.CustomItemList.hatch_CreativeMain
 import static com.github.technus.tectech.thing.CustomItemList.hatch_CreativeUncertainty;
 import static com.github.technus.tectech.thing.CustomItemList.holder_Hatch;
 import static com.github.technus.tectech.thing.CustomItemList.rack_Hatch;
-import static com.github.technus.tectech.util.CommonValues.V;
+import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.MetaTileEntityIDs.ActiveTransformer;
 import static gregtech.api.enums.MetaTileEntityIDs.AdvancedTeslaTransceiver1by1;
 import static gregtech.api.enums.MetaTileEntityIDs.AdvancedTeslaTransceiver2by2;

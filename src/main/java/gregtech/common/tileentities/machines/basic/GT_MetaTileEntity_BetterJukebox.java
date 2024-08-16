@@ -484,11 +484,6 @@ public class GT_MetaTileEntity_BetterJukebox extends GT_MetaTileEntity_BasicMach
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     protected BasicUIProperties getUIProperties() {
         return super.getUIProperties().toBuilder()
             .itemInputPositionsGetter(count -> UIHelper.getGridPositions(count, 7, 6, 7, 3))

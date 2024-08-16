@@ -18,6 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.ColorsMetadataSection;
 
+@SuppressWarnings("UnstableApiUsage")
 public class GT_GUIColorOverride {
 
     private static final Object NOT_FOUND = new Object();

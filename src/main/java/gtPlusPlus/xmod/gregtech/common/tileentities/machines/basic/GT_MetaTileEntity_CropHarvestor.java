@@ -647,11 +647,6 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
             new CycleButtonWidget().setToggle(() -> mModeAlternative, val -> mModeAlternative = val)
