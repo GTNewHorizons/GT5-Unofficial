@@ -545,6 +545,11 @@ import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_
 import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_OVEN_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_OVEN_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_OVEN_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_OVEN_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_OVEN_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_UEV;
 import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_UIV;
@@ -554,7 +559,12 @@ import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.MINER_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.MINER_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.MINER_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.MIXER_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.MIXER_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.MIXER_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.MIXER_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.MIXER_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.MIXER_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.MIXER_UEV;
 import static gregtech.api.enums.MetaTileEntityIDs.MIXER_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.MIXER_UIV;
@@ -597,6 +607,11 @@ import static gregtech.api.enums.MetaTileEntityIDs.ORE_DRILL_MKIII_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.ORE_DRILL_MKII_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.ORE_DRILL_MKIV_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.ORE_DRILL_MKI_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.ORE_WASHER_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.ORE_WASHER_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.ORE_WASHER_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.ORE_WASHER_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.ORE_WASHER_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.ORE_WASHING_PLANT_LuV;
 import static gregtech.api.enums.MetaTileEntityIDs.ORE_WASHING_PLANT_UEV;
 import static gregtech.api.enums.MetaTileEntityIDs.ORE_WASHING_PLANT_UHV;
@@ -631,6 +646,11 @@ import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_UMV;
 import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_UXV;
 import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.OVEN_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.OVEN_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.OVEN_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.OVEN_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.OVEN_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_IV;
@@ -640,7 +660,12 @@ import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.PCB_FACTORY_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_ARC_FURNACE_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_ARC_FURNACE_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_ARC_FURNACE_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_ARC_FURNACE_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_ARC_FURNACE_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_ARC_FURNACE_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_ARC_FURNACE_UEV;
 import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_ARC_FURNACE_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_ARC_FURNACE_UIV;
@@ -652,7 +677,12 @@ import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_LuV;
 import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.POLARIZER_EV;
+import static gregtech.api.enums.MetaTileEntityIDs.POLARIZER_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.POLARIZER_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.POLARIZER_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.POLARIZER_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.POLARIZER_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.POLARIZER_UEV;
 import static gregtech.api.enums.MetaTileEntityIDs.POLARIZER_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.POLARIZER_UIV;
@@ -4319,6 +4349,86 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private void registerMixer() {
+        ItemList.Machine_LV_Mixer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_LV.ID,
+                "basicmachine.mixer.tier.01",
+                "Basic Mixer",
+                1,
+                MachineType.MIXER.tooltipDescription(),
+                RecipeMaps.mixerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Mixer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_MV.ID,
+                "basicmachine.mixer.tier.02",
+                "Advanced Mixer",
+                2,
+                MachineType.MIXER.tooltipDescription(),
+                RecipeMaps.mixerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Mixer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_HV.ID,
+                "basicmachine.mixer.tier.03",
+                "Advanced Mixer II",
+                3,
+                MachineType.MIXER.tooltipDescription(),
+                RecipeMaps.mixerRecipes,
+                6,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Mixer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_EV.ID,
+                "basicmachine.mixer.tier.04",
+                "Advanced Mixer III",
+                4,
+                MachineType.MIXER.tooltipDescription(),
+                RecipeMaps.mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Mixer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_IV.ID,
+                "basicmachine.mixer.tier.05",
+                "Advanced Mixer IV",
+                5,
+                MachineType.MIXER.tooltipDescription(),
+                RecipeMaps.mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
         ItemList.MixerLuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 MIXER_LuV.ID,
@@ -6490,6 +6600,85 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private void registerMicrowave() {
+        ItemList.Machine_LV_Microwave.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MICROWAVE_OVEN_LV.ID,
+                "basicmachine.microwave.tier.01",
+                "Basic Microwave",
+                1,
+                MachineType.MICROWAVE.tooltipDescription(),
+                RecipeMaps.microwaveRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MICROWAVE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Microwave.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MICROWAVE_OVEN_MV.ID,
+                "basicmachine.microwave.tier.02",
+                "Advanced Microwave",
+                2,
+                MachineType.MICROWAVE.tooltipDescription(),
+                RecipeMaps.microwaveRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MICROWAVE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Microwave.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MICROWAVE_OVEN_HV.ID,
+                "basicmachine.microwave.tier.03",
+                "Advanced Microwave II",
+                3,
+                MachineType.MICROWAVE.tooltipDescription(),
+                RecipeMaps.microwaveRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MICROWAVE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Microwave.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MICROWAVE_OVEN_EV.ID,
+                "basicmachine.microwave.tier.04",
+                "Advanced Microwave III",
+                4,
+                MachineType.MICROWAVE.tooltipDescription(),
+                RecipeMaps.microwaveRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MICROWAVE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Microwave.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MICROWAVE_OVEN_IV.ID,
+                "basicmachine.microwave.tier.05",
+                "Advanced Microwave IV",
+                5,
+                MachineType.MICROWAVE.tooltipDescription(),
+                RecipeMaps.microwaveRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MICROWAVE",
+                null).getStackForm(1L));
 
         ItemList.MicrowaveLuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -6605,7 +6794,170 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     }
 
+    private static void registerOven() {
+        ItemList.Machine_LV_Oven.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                OVEN_LV.ID,
+                "basicmachine.e_oven.tier.01",
+                "Basic Electric Oven",
+                1,
+                MachineType.OVEN.tooltipDescription(),
+                RecipeMaps.furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_OVEN",
+                null).setProgressBarTextureName("E_Oven")
+                .getStackForm(1L));
+
+        ItemList.Machine_MV_Oven.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                OVEN_MV.ID,
+                "basicmachine.e_oven.tier.02",
+                "Advanced Electric Oven",
+                2,
+                MachineType.OVEN.tooltipDescription(),
+                RecipeMaps.furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_OVEN",
+                null).setProgressBarTextureName("E_Oven")
+                .getStackForm(1L));
+
+        ItemList.Machine_HV_Oven.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                OVEN_HV.ID,
+                "basicmachine.e_oven.tier.03",
+                "Advanced Electric Oven II",
+                3,
+                MachineType.OVEN.tooltipDescription(),
+                RecipeMaps.furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_OVEN",
+                null).setProgressBarTextureName("E_Oven")
+                .getStackForm(1L));
+
+        ItemList.Machine_EV_Oven.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                OVEN_EV.ID,
+                "basicmachine.e_oven.tier.04",
+                "Advanced Electric Oven III",
+                4,
+                MachineType.OVEN.tooltipDescription(),
+                RecipeMaps.furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_OVEN",
+                null).setProgressBarTextureName("E_Oven").getStackForm(1L));
+
+        ItemList.Machine_IV_Oven.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                OVEN_IV.ID,
+                "basicmachine.e_oven.tier.05",
+                "Advanced Electric Oven IV",
+                5,
+                MachineType.OVEN.tooltipDescription(),
+                RecipeMaps.furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_OVEN",
+                null).setProgressBarTextureName("E_Oven").getStackForm(1L));
+    }
     private void registerOreWashingPlant() {
+        ItemList.Machine_LV_OreWasher.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ORE_WASHER_LV.ID,
+                "basicmachine.orewasher.tier.01",
+                "Basic Ore Washing Plant",
+                1,
+                MachineType.ORE_WASHER.tooltipDescription(),
+                RecipeMaps.oreWasherRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ORE_WASHER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_OreWasher.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ORE_WASHER_MV.ID,
+                "basicmachine.orewasher.tier.02",
+                "Advanced Ore Washing Plant",
+                2,
+                MachineType.ORE_WASHER.tooltipDescription(),
+                RecipeMaps.oreWasherRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ORE_WASHER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_OreWasher.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ORE_WASHER_HV.ID,
+                "basicmachine.orewasher.tier.03",
+                "Advanced Ore Washing Plant II",
+                3,
+                MachineType.ORE_WASHER.tooltipDescription(),
+                RecipeMaps.oreWasherRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ORE_WASHER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_OreWasher.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ORE_WASHER_EV.ID,
+                "basicmachine.orewasher.tier.04",
+                "Advanced Ore Washing Plant III",
+                4,
+                MachineType.ORE_WASHER.tooltipDescription(),
+                RecipeMaps.oreWasherRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ORE_WASHER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_OreWasher.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ORE_WASHER_IV.ID,
+                "basicmachine.orewasher.tier.05",
+                "Repurposed Laundry-Washer I-360",
+                5,
+                MachineType.ORE_WASHER.tooltipDescription(),
+                RecipeMaps.oreWasherRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ORE_WASHER",
+                null).getStackForm(1L));
 
         ItemList.OreWashingPlantLuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -6722,6 +7074,85 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private void registerPolarizer() {
+        ItemList.Machine_LV_Polarizer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                POLARIZER_LV.ID,
+                "basicmachine.polarizer.tier.01",
+                "Basic Polarizer",
+                1,
+                MachineType.POLARIZER.tooltipDescription(),
+                RecipeMaps.polarizerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "POLARIZER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Polarizer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                POLARIZER_MV.ID,
+                "basicmachine.polarizer.tier.02",
+                "Advanced Polarizer",
+                2,
+                MachineType.POLARIZER.tooltipDescription(),
+                RecipeMaps.polarizerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "POLARIZER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Polarizer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                POLARIZER_HV.ID,
+                "basicmachine.polarizer.tier.03",
+                "Advanced Polarizer II",
+                3,
+                MachineType.POLARIZER.tooltipDescription(),
+                RecipeMaps.polarizerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "POLARIZER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Polarizer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                POLARIZER_EV.ID,
+                "basicmachine.polarizer.tier.04",
+                "Advanced Polarizer III",
+                4,
+                MachineType.POLARIZER.tooltipDescription(),
+                RecipeMaps.polarizerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "POLARIZER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Polarizer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                POLARIZER_IV.ID,
+                "basicmachine.polarizer.tier.05",
+                "Advanced Polarizer IV",
+                5,
+                MachineType.POLARIZER.tooltipDescription(),
+                RecipeMaps.polarizerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "POLARIZER",
+                null).getStackForm(1L));
 
         ItemList.PolarizerLuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -8251,6 +8682,87 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private void registerPlasmaArcFurnace() {
+        ItemList.Machine_LV_PlasmaArcFurnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PLASMA_ARC_FURNACE_LV.ID,
+                "basicmachine.plasmaarcfurnace.tier.01",
+                "Basic Plasma Arc Furnace",
+                1,
+                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
+                RecipeMaps.plasmaArcFurnaceRecipes,
+                1,
+                4,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PLASMA_ARC_FURNACE",
+                null)
+                .getStackForm(1L));
+
+        ItemList.Machine_MV_PlasmaArcFurnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PLASMA_ARC_FURNACE_MV.ID,
+                "basicmachine.plasmaarcfurnace.tier.02",
+                "Advanced Plasma Arc Furnace",
+                2,
+                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
+                RecipeMaps.plasmaArcFurnaceRecipes,
+                1,
+                4,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PLASMA_ARC_FURNACE",
+                null)
+                .getStackForm(1L));
+
+        ItemList.Machine_HV_PlasmaArcFurnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PLASMA_ARC_FURNACE_HV.ID,
+                "basicmachine.plasmaarcfurnace.tier.03",
+                "Advanced Plasma Arc Furnace II",
+                3,
+                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
+                RecipeMaps.plasmaArcFurnaceRecipes,
+                1,
+                4,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PLASMA_ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_PlasmaArcFurnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PLASMA_ARC_FURNACE_EV.ID,
+                "basicmachine.plasmaarcfurnace.tier.04",
+                "Advanced Plasma Arc Furnace III",
+                4,
+                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
+                RecipeMaps.plasmaArcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PLASMA_ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_PlasmaArcFurnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PLASMA_ARC_FURNACE_IV.ID,
+                "basicmachine.plasmaarcfurnace.tier.05",
+                "Advanced Plasma Arc Furnace IV",
+                5,
+                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
+                RecipeMaps.plasmaArcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PLASMA_ARC_FURNACE",
+                null).getStackForm(1L));
 
         ItemList.PlasmaArcFurnaceLuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -11088,6 +11600,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         registerBetterJukebox();
         registerUnpackager();
         registerPrinter();
+        registerOven();
 
         ItemList.AdvDebugStructureWriter.set(
             new GT_MetaTileEntity_AdvDebugStructureWriter(
