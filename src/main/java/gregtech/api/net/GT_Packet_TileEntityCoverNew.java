@@ -66,7 +66,7 @@ public class GT_Packet_TileEntityCoverNew extends GT_Packet_New {
 
     @Override
     public byte getPacketID() {
-        return 11;
+        return GT_PacketTypes.COVER_NEW.id;
     }
 
     @Override

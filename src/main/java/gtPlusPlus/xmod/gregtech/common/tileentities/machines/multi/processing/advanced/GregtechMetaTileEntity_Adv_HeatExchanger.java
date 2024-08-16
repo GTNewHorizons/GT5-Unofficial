@@ -30,6 +30,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -191,7 +192,6 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
         int shs_reduction_per_config = 4800; // reduce threshold 150L -> 4800L per second per circuitry level (1-25)
         float steam_output_multiplier = 20f; // default: multiply output by 4 * 10 (boosted x5)
         float penalty = 0.0f; // penalty to apply to output based on circuitry level (1-25).
-        boolean do_lava = false;
 
         // Do we have an integrated circuit with a valid configuration?
         if (mInventory[1] != null && mInventory[1].getUnlocalizedName()
@@ -203,39 +203,34 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
                 superheated_threshold -= (shs_reduction_per_config * (circuit_config - 1));
             }
         }
+
         efficiency -= penalty;
 
-        // If we're working with lava, adjust the threshold and multipliers accordingly.
-        if (GT_ModHandler.isLava(mInputHotFluidHatch.getFluid())) {
-            steam_output_multiplier /= 5f; // lava is not boosted
-            superheated_threshold /= 4f; // unchanged
-            do_lava = true;
-        } else if (mInputHotFluidHatch.getFluid()
-            .isFluidEqual(FluidRegistry.getFluidStack("ic2hotcoolant", 1))) {
-                steam_output_multiplier /= 2f; // was boosted x2 on top of x5 -> total x10 -> nerf with this code back
-                                               // to 5x
-                superheated_threshold /= 5f; // 10x smaller since the Hot Things production in reactor is the same.
-            } else {
-                // If we're working with neither, fail out
-                superheated_threshold = 0;
-                return CheckRecipeResultRegistry.NO_RECIPE;
-            }
+        var coolant = LHECoolantRegistry.getCoolant(
+            mInputHotFluidHatch.getFluid()
+                .getFluid());
 
-        superheated = fluidAmountToConsume >= superheated_threshold; // set the internal superheated flag if we have
-                                                                     // enough hot fluid. Used in the
-        // onRunningTick method.
-        fluidAmountToConsume = Math.min(fluidAmountToConsume, superheated_threshold * 2); // Don't consume too much hot
-                                                                                          // fluid per second, maximum
-                                                                                          // is 2x SH threshold.
+        if (coolant == null) {
+            superheated_threshold = 0;
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        } else {
+            steam_output_multiplier *= coolant.steamMultiplier;
+            superheated_threshold *= coolant.superheatedThreshold;
+        }
+
+        // set the internal superheated flag if we have enough hot fluid. Used in the onRunningTick method.
+        this.superheated = fluidAmountToConsume >= superheated_threshold;
+
+        // Don't consume too much hot fluid per second, maximum is 2x SH threshold.
+        fluidAmountToConsume = Math.min(fluidAmountToConsume, superheated_threshold * 2);
+
         mInputHotFluidHatch.drain(fluidAmountToConsume, true);
+        mOutputColdFluidHatch.fill(coolant.getColdFluid(fluidAmountToConsume), true);
+
         this.mMaxProgresstime = 20;
         this.lEUt = (long) (fluidAmountToConsume * steam_output_multiplier * efficiency);
-        if (do_lava) {
-            mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("ic2pahoehoelava", fluidAmountToConsume), true);
-        } else {
-            mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("ic2coolant", fluidAmountToConsume), true);
-        }
         this.mEfficiencyIncrease = 80;
+
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 

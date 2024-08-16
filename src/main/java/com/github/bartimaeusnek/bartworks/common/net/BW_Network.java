@@ -121,6 +121,15 @@ public class BW_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet_
     }
 
     @Override
+    public void sendToAll(@Nonnull GT_Packet aPacket) {
+        this.mChannel.get(Side.SERVER)
+            .attr(FMLOutboundHandler.FML_MESSAGETARGET)
+            .set(FMLOutboundHandler.OutboundTarget.ALL);
+        this.mChannel.get(Side.SERVER)
+            .writeAndFlush(aPacket);
+    }
+
+    @Override
     public void sendToServer(@Nonnull GT_Packet aPacket) {
         this.mChannel.get(Side.CLIENT)
             .attr(FMLOutboundHandler.FML_MESSAGETARGET)

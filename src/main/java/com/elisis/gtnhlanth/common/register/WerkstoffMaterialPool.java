@@ -460,7 +460,7 @@ public class WerkstoffMaterialPool implements Runnable {
 
     public static final Werkstoff UraniumFiltrate = new Werkstoff(
         new short[] { 190, 240, 94 },
-        "UraniumFiltrate",
+        "Uranium Filtrate",
         subscriptNumbers("??U??"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
@@ -1502,24 +1502,6 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID4 + 30,
         TextureSet.SET_FLUID);
 
-    // enum Lanthanides {
-    // Lanthanum,
-    // Praseodymium,
-    // Cerium,
-    // Neodymium,
-    // Promethium,
-    // Samarium,
-    // Europium,
-    // Gadolinium,
-    // Terbium,
-    // Dysprosium,
-    // Holmium,
-    // Erbium,
-    // Thulium,
-    // Ytterbium,
-    // Lutetium
-    // }
-
     // Lanthanides Chloride Concentrate
     // Lanthanum
     public static final Werkstoff LanthanumChlorideConcentrate = new Werkstoff(
@@ -1739,17 +1721,6 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID4 + 50,
         TextureSet.SET_DULL);
 
-    // Samarium
-    // public static final Werkstoff SamariumOreConcentrate = new Werkstoff(
-    // new short[] { 255, 200, 230 },
-    // "Samarium Ore Concentrate",
-    // subscriptNumbers("??Sm??"),
-    // new Werkstoff.Stats(),
-    // Werkstoff.Types.MIXTURE,
-    // new Werkstoff.GenerationFeatures().disable().onlyDust(),
-    // offsetID2 + 28,
-    // TextureSet.SET_DULL);
-
     // Europium
     public static final Werkstoff EuropiumOreConcentrate = new Werkstoff(
         new short[] { 240, 200, 240 },
@@ -1881,30 +1852,6 @@ public class WerkstoffMaterialPool implements Runnable {
             .addGems(),
         offsetID5 + 39,
         TextureSet.SET_GEM_VERTICAL);
-
-    // public static final Werkstoff RawCeriumDopedLutetiumAluminiumGarnetPart = new Werkstoff(
-    // new short[] { 63, 255, 63 },
-    // "Raw Cerium Doped Lutetium Aluminium Garnet Part",
-    // subscriptNumbers("(Ce)Lu3Al5O12"),
-    // new Werkstoff.Stats(),
-    // Werkstoff.Types.MATERIAL,
-    // new Werkstoff.GenerationFeatures().disable().addGems(),
-    // offsetID4 + 33,
-    // TextureSet.SET_GEM_VERTICAL);
-
-    // public static final Werkstoff C272 = new Werkstoff(
-    // new short[] { 0x29, 0xc2, 0x2a },
-    // "C-272",
-    // subscriptNumbers("(C8H17)2PO2H"),
-    // new Werkstoff.Stats().setElektrolysis(true),
-    // Werkstoff.Types.COMPOUND,
-    // new Werkstoff.GenerationFeatures().disable().addCells(),
-    // offsetID4 + 59,
-    // TextureSet.SET_FLUID,
-    // new Pair<>(Carbon, 16),
-    // new Pair<>(Phosphorus, 1),
-    // new Pair<>(Oxygen, 3),
-    // new Pair<>(Hydrogen, 35));
 
     public static final Werkstoff Permalloy = new Werkstoff(
         new short[] { 195, 230, 225 },

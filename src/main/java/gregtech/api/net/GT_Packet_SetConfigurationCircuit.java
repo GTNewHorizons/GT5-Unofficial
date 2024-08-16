@@ -55,7 +55,7 @@ public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
 
     @Override
     public byte getPacketID() {
-        return 12;
+        return GT_PacketTypes.SET_CONFIGURATION_CIRCUIT.id;
     }
 
     @Override
