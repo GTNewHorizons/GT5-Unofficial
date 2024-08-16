@@ -36,11 +36,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
@@ -49,7 +51,6 @@ import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileE
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Output;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
-import gregtech.common.tileentities.machines.multi.nanochip.util.ComponentConversionMap;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ItemStackWithSourceBus;
 import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
 
@@ -320,9 +321,13 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         ArrayList<ItemStackWithSourceBus> inputs = getStoredInputsWithBus();
         // For each stack in the input, try to find a matching circuit component and if so send it to the correct hatch
         for (ItemStackWithSourceBus stack : inputs) {
-            CircuitComponent component = ComponentConversionMap.find(stack.stack);
-            // Skip if this was not a valid circuit component
-            if (component == null) continue;
+            // Find a conversion recipe
+            GT_Recipe recipe = RecipeMaps.nanochipConversionRecipes.findRecipeQuery()
+                .items(stack.stack)
+                .find();
+            if (recipe == null) continue;
+            // If one existed, we have the component now
+            CircuitComponent component = CircuitComponent.getFromFakeStack(recipe.mOutputs[0]);
             // Find destination hatch. Note that we already know that this bus is a valid MTE, see
             // getStoredInputsWithBus
             byte busColor = stack.bus.getBaseMetaTileEntity()
