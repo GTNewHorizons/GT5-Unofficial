@@ -106,7 +106,7 @@ public class GT_NaniteChain {
             .itemOutputs(Materials.Silver.getNanite(1))
             .fluidInputs(Materials.UUMatter.getFluid(200_000))
             .metadata(NANO_FORGE_TIER, 2)
-            .duration(37 * MINUTES + 30 * SECONDS)
+            .duration(12 * MINUTES + 30 * SECONDS)
             .eut(10_000_000)
             .addTo(nanoForgeRecipes);
 
