@@ -10,7 +10,10 @@ import static gregtech.api.util.GT_StructureUtility.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import appeng.api.definitions.IBlocks;
+import appeng.core.Api;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -129,12 +132,16 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
         // TODO: OR glass
         .addElement(
             'B',
-            StructureUtility.ofBlocksTiered(
-                FueledBoiler::getTierCasing,
-                ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                0,
-                (t, m) -> t.tier = m,
-                t -> t.tier))
+            StructureUtility.ofChain(
+                StructureUtility.ofBlocksTiered(
+                    FueledBoiler::getTierCasing,
+                    ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                    0,
+                    (t, m) -> t.tier = m,
+                    t -> t.tier),
+                // I have one question for AE2.... W H Y ? ! ?
+                StructureUtility.ofBlock(Api.INSTANCE.definitions().blocks().quartzGlass().maybeBlock().or(Blocks.glass), 0))
+            )
         // Pipe casing
         .addElement(
             'P',
