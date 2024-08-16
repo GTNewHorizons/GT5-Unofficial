@@ -30,8 +30,7 @@ public class CircuitComponentPacket {
         ArrayList<ItemStack> stacks = new ArrayList<>();
         for (Map.Entry<CircuitComponent, Integer> entry : components.entrySet()) {
             ItemStack componentStack = entry.getKey()
-                .getFakeStack(entry.getValue())
-                .copy();
+                .getFakeStack(entry.getValue());
             stacks.add(componentStack);
         }
         return stacks;
