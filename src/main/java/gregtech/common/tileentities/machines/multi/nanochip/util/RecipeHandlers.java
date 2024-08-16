@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.nanochip.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import net.minecraft.item.ItemStack;
 
@@ -12,8 +13,10 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.metadata.NanochipAssemblyModuleSpeedKey;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 
 public class RecipeHandlers {
 
@@ -29,62 +32,144 @@ public class RecipeHandlers {
     // Adds a simple processing recipe for circuit components in a module. The recipe map used for processing is
     // inferred
     // from the map stored by the input component.
-    // Note that the duration of the recipe just indicates the speed, not necessarily the actual duration, since recipes
-    // are always processed in 20 ticks.
-    // TODO: Formalize this duration system a bit more once I get to implementing it
-    private static void addSimpleProcessingRecipe(CircuitComponent input, CircuitComponent output, int duration) {
+    private static void addSimpleProcessingRecipe(CircuitComponent input, CircuitComponent output, ModuleSpeed speed) {
         RecipeMap<?> recipeMap = input.processingMap;
         if (recipeMap == null) {
             throw new IllegalArgumentException(
                 "Tried to add component processing recipe for a component without an associated recipemap");
         }
         GT_Values.RA.stdBuilder()
+            .metadata(NanochipAssemblyModuleSpeedKey.INSTANCE, speed)
             .itemInputs(input.getFakeStack(1))
             .itemOutputs(output.getFakeStack(1))
-            .duration(duration)
+            .duration(20)
             .eut(0)
             .addTo(recipeMap);
     }
 
     public static void populateCircuitComponentRecipeMaps() {
+        // Wires
         addConversionRecipe(
             CircuitComponent.WireNiobiumTitanium,
             GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 1));
+        // SMDs
         addConversionRecipe(CircuitComponent.SMDTransistor, ItemList.Circuit_Parts_TransistorSMD.get(1));
         addConversionRecipe(CircuitComponent.SMDInductor, ItemList.Circuit_Parts_InductorSMD.get(1));
         addConversionRecipe(CircuitComponent.SMDCapacitor, ItemList.Circuit_Parts_CapacitorSMD.get(1));
         addConversionRecipe(CircuitComponent.SMDDiode, ItemList.Circuit_Parts_DiodeSMD.get(1));
+        addConversionRecipe(CircuitComponent.SMDResistor, ItemList.Circuit_Parts_ResistorSMD.get(1));
         addConversionRecipe(CircuitComponent.AdvSMDTransistor, ItemList.Circuit_Parts_TransistorASMD.get(1));
         addConversionRecipe(CircuitComponent.AdvSMDInductor, ItemList.Circuit_Parts_InductorASMD.get(1));
         addConversionRecipe(CircuitComponent.AdvSMDCapacitor, ItemList.Circuit_Parts_CapacitorASMD.get(1));
         addConversionRecipe(CircuitComponent.AdvSMDDiode, ItemList.Circuit_Parts_DiodeASMD.get(1));
+        addConversionRecipe(CircuitComponent.AdvSMDResistor, ItemList.Circuit_Parts_ResistorASMD.get(1));
         addConversionRecipe(CircuitComponent.OpticalSMDTransistor, ItemList.Circuit_Parts_TransistorXSMD.get(1));
         addConversionRecipe(CircuitComponent.OpticalSMDInductor, ItemList.Circuit_Parts_InductorXSMD.get(1));
         addConversionRecipe(CircuitComponent.OpticalSMDCapacitor, ItemList.Circuit_Parts_CapacitorXSMD.get(1));
         addConversionRecipe(CircuitComponent.OpticalSMDDiode, ItemList.Circuit_Parts_DiodeXSMD.get(1));
+        addConversionRecipe(CircuitComponent.OpticalSMDResistor, ItemList.Circuit_Parts_ResistorXSMD.get(1));
+        // Boards
+        addConversionRecipe(
+            CircuitComponent.BoardMultifiberglassElite,
+            ItemList.Circuit_Board_Multifiberglass_Elite.get(1));
+        // CPUs
+        addConversionRecipe(CircuitComponent.ChipCrystalCPU, ItemList.Circuit_Chip_CrystalCPU.get(1));
+        // Cut wafers
+        addConversionRecipe(CircuitComponent.ChipNanoCPU, ItemList.Circuit_Chip_NanoCPU.get(1));
+        addConversionRecipe(CircuitComponent.ChipRAM, ItemList.Circuit_Chip_Ram.get(1));
+        addConversionRecipe(CircuitComponent.ChipNOR, ItemList.Circuit_Chip_NOR.get(1));
+        addConversionRecipe(CircuitComponent.ChipNAND, ItemList.Circuit_Chip_NAND.get(1));
+        // Superconductors
+        addConversionRecipe(
+            CircuitComponent.SuperconductorLuV,
+            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 1));
 
-        // Add processing recipes for SMD module
-        addSimpleProcessingRecipe(CircuitComponent.SMDTransistor, CircuitComponent.ProcessedSMDTransistor, 20);
-        addSimpleProcessingRecipe(CircuitComponent.SMDInductor, CircuitComponent.ProcessedSMDInductor, 20);
-        addSimpleProcessingRecipe(CircuitComponent.SMDCapacitor, CircuitComponent.ProcessedSMDCapacitor, 20);
-        addSimpleProcessingRecipe(CircuitComponent.SMDDiode, CircuitComponent.ProcessedSMDDiode, 20);
-        addSimpleProcessingRecipe(CircuitComponent.AdvSMDTransistor, CircuitComponent.ProcessedAdvSMDTransistor, 20);
-        addSimpleProcessingRecipe(CircuitComponent.AdvSMDInductor, CircuitComponent.ProcessedAdvSMDInductor, 20);
-        addSimpleProcessingRecipe(CircuitComponent.AdvSMDCapacitor, CircuitComponent.ProcessedAdvSMDCapacitor, 20);
-        addSimpleProcessingRecipe(CircuitComponent.AdvSMDDiode, CircuitComponent.ProcessedAdvSMDDiode, 20);
+        // Wire processing recipes
+        addSimpleProcessingRecipe(
+            CircuitComponent.WireNiobiumTitanium,
+            CircuitComponent.ProcessedWireNiobiumTitanium,
+            ModuleSpeed.Fast);
+        // SMD processing recipes
+        addSimpleProcessingRecipe(
+            CircuitComponent.SMDResistor,
+            CircuitComponent.ProcessedSMDResistor,
+            ModuleSpeed.Fast);
+        addSimpleProcessingRecipe(
+            CircuitComponent.SMDTransistor,
+            CircuitComponent.ProcessedSMDTransistor,
+            ModuleSpeed.Fast);
+        addSimpleProcessingRecipe(
+            CircuitComponent.SMDInductor,
+            CircuitComponent.ProcessedSMDInductor,
+            ModuleSpeed.Fast);
+        addSimpleProcessingRecipe(
+            CircuitComponent.SMDCapacitor,
+            CircuitComponent.ProcessedSMDCapacitor,
+            ModuleSpeed.Fast);
+        addSimpleProcessingRecipe(CircuitComponent.SMDDiode, CircuitComponent.ProcessedSMDDiode, ModuleSpeed.Fast);
+        addSimpleProcessingRecipe(
+            CircuitComponent.AdvSMDResistor,
+            CircuitComponent.ProcessedAdvSMDResistor,
+            ModuleSpeed.Fast);
+        addSimpleProcessingRecipe(
+            CircuitComponent.AdvSMDTransistor,
+            CircuitComponent.ProcessedAdvSMDTransistor,
+            ModuleSpeed.Fast);
+        addSimpleProcessingRecipe(
+            CircuitComponent.AdvSMDInductor,
+            CircuitComponent.ProcessedAdvSMDInductor,
+            ModuleSpeed.Fast);
+        addSimpleProcessingRecipe(
+            CircuitComponent.AdvSMDCapacitor,
+            CircuitComponent.ProcessedAdvSMDCapacitor,
+            ModuleSpeed.Fast);
+        addSimpleProcessingRecipe(
+            CircuitComponent.AdvSMDDiode,
+            CircuitComponent.ProcessedAdvSMDDiode,
+            ModuleSpeed.Fast);
+        addSimpleProcessingRecipe(
+            CircuitComponent.OpticalSMDResistor,
+            CircuitComponent.ProcessedOpticalSMDResistor,
+            ModuleSpeed.Fast);
         addSimpleProcessingRecipe(
             CircuitComponent.OpticalSMDTransistor,
             CircuitComponent.ProcessedOpticalSMDTransistor,
-            20);
+            ModuleSpeed.Fast);
         addSimpleProcessingRecipe(
             CircuitComponent.OpticalSMDInductor,
             CircuitComponent.ProcessedOpticalSMDInductor,
-            20);
+            ModuleSpeed.Fast);
         addSimpleProcessingRecipe(
             CircuitComponent.OpticalSMDCapacitor,
             CircuitComponent.ProcessedOpticalSMDCapacitor,
-            20);
-        addSimpleProcessingRecipe(CircuitComponent.OpticalSMDDiode, CircuitComponent.ProcessedOpticalSMDDiode, 20);
+            ModuleSpeed.Fast);
+        addSimpleProcessingRecipe(
+            CircuitComponent.OpticalSMDDiode,
+            CircuitComponent.ProcessedOpticalSMDDiode,
+            ModuleSpeed.Fast);
+        // Board processing recipes
+        addSimpleProcessingRecipe(
+            CircuitComponent.BoardMultifiberglassElite,
+            CircuitComponent.ProcessedBoardMultifiberglassElite,
+            ModuleSpeed.Fast);
+        // CPU processing recipes
+        addSimpleProcessingRecipe(
+            CircuitComponent.ChipCrystalCPU,
+            CircuitComponent.ProcessedChipCrystalCPU,
+            ModuleSpeed.Slow);
+        // Wafer cutting processing recipes
+        addSimpleProcessingRecipe(
+            CircuitComponent.ChipNanoCPU,
+            CircuitComponent.ProcessedChipNanoCPU,
+            ModuleSpeed.Medium);
+        addSimpleProcessingRecipe(CircuitComponent.ChipRAM, CircuitComponent.ProcessedChipRAM, ModuleSpeed.Medium);
+        addSimpleProcessingRecipe(CircuitComponent.ChipNOR, CircuitComponent.ProcessedChipNOR, ModuleSpeed.Medium);
+        addSimpleProcessingRecipe(CircuitComponent.ChipNAND, CircuitComponent.ProcessedChipNAND, ModuleSpeed.Medium);
+        // Superconductor processing recipes
+        addSimpleProcessingRecipe(
+            CircuitComponent.SuperconductorLuV,
+            CircuitComponent.ProcessedSuperconductorLuV,
+            ModuleSpeed.Medium);
     }
 
     private static GT_Recipe findRecipeUsingStack(ItemStack input, RecipeMap<?> map) {
@@ -102,6 +187,12 @@ public class RecipeHandlers {
     private static ItemStack traverseCircuitRecipes(ItemStack input, RecipeMap<?> inputProcessingMap) {
         // TODO: In this algorithm, we might still need to keep track of amount ratios (1 SMD = N Processed SMD = 1/N
         // Circuits or something)
+
+        // Special case: if this item is a finished circuit item, we already know the component to use and we don't do
+        // this full iteration
+        CircuitComponent circuitComponent = CircuitComponent.realCircuitToComponent
+            .get(GT_Utility.ItemId.createNoCopy(input));
+        if (circuitComponent != null) return circuitComponent.getFakeStack(input.stackSize);
         // If the recipe map is null, we have a finalized CC (probably, this could also be a bug or missing mappings)
         if (inputProcessingMap == null) return input;
         // If this map is the nanochip assembly matrix map, return the input as we have finished the process
@@ -155,8 +246,19 @@ public class RecipeHandlers {
             ItemStack fakeInputStack = componentInput.getFakeStack(input.stackSize);
             itemInputs.set(i, fakeInputStack);
         }
-
-        return builder.itemInputs(itemInputs.toArray(new ItemStack[] {}))
-            .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
+        // Now find the correct output item for this circuit, we can do this using the populated conversion map
+        ItemStack realOutput = builder.getItemOutput(0);
+        GT_Utility.ItemId id = GT_Utility.ItemId.createNoCopy(realOutput);
+        CircuitComponent outputComponent = CircuitComponent.realCircuitToComponent.get(id);
+        if (outputComponent != null) {
+            // If we have an output component, then we should generate an assembly matrix recipe for this recipe
+            // TODO: Move this check WAY up to avoid unnecessary work
+            ItemStack fakeOutput = outputComponent.getFakeStack(realOutput.stackSize);
+            return builder.itemInputs(itemInputs.toArray(new ItemStack[] {}))
+                .itemOutputs(fakeOutput)
+                .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
+        }
+        // Not a nanochip assembly recipe because it has no matching fake circuit, return empty list
+        return Collections.emptyList();
     });
 }

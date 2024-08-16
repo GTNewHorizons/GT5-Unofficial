@@ -1,12 +1,17 @@
 package gregtech.common.tileentities.machines.multi.nanochip.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.GT_CircuitComponent_FakeItem;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GT_Utility;
 
 public enum CircuitComponent {
 
@@ -17,9 +22,11 @@ public enum CircuitComponent {
     // This also wouldn't work well with components that don't have a 'real' backing ItemStack, such as components
     // that are only created through a module in the NAC
 
-    // When adding to this list, PLEASE only add to the end! The ordinals are used as item ids for the fake items!
-    WireNiobiumTitanium("gt.circuitcomponent.wire", null, Materials.NiobiumTitanium), // todo: figure out if we still
-                                                                                      // need the material
+    // When adding to this list, PLEASE only add to the end! The ordinals are used as item ids for the fake items, so
+    // adding in the middle will break saved state!
+    WireNiobiumTitanium("gt.circuitcomponent.wirenbti", RecipeMaps.nanochipWireTracer, Materials.NiobiumTitanium),
+    ProcessedWireNiobiumTitanium("gt.circuitcomponent.processed.wirenbti", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        Materials.NiobiumTitanium),
     SMDResistor("gt.circuitcomponent.smd.resistor", RecipeMaps.nanochipSMDProcessorRecipes),
     SMDTransistor("gt.circuitcomponent.smd.transistor", RecipeMaps.nanochipSMDProcessorRecipes),
     SMDInductor("gt.circuitcomponent.smd.inductor", RecipeMaps.nanochipSMDProcessorRecipes),
@@ -36,7 +43,6 @@ public enum CircuitComponent {
     OpticalSMDCapacitor("gt.circuitcomponent.xsmd.capacitor", RecipeMaps.nanochipSMDProcessorRecipes),
     OpticalSMDDiode("gt.circuitcomponent.xsmd.diode", RecipeMaps.nanochipSMDProcessorRecipes),
     ProcessedSMDResistor("gt.circuitcomponent.processed.smd.resistor", RecipeMaps.nanochipAssemblyMatrixRecipes),
-
     ProcessedSMDTransistor("gt.circuitcomponent.processed.smd.transistor", RecipeMaps.nanochipAssemblyMatrixRecipes),
     ProcessedSMDInductor("gt.circuitcomponent.processed.smd.inductor", RecipeMaps.nanochipAssemblyMatrixRecipes),
     ProcessedSMDCapacitor("gt.circuitcomponent.processed.smd.capacitor", RecipeMaps.nanochipAssemblyMatrixRecipes),
@@ -55,23 +61,66 @@ public enum CircuitComponent {
         RecipeMaps.nanochipAssemblyMatrixRecipes),
     ProcessedOpticalSMDCapacitor("gt.circuitcomponent.processed.xsmd.capacitor",
         RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ProcessedOpticalSMDDiode("gt.circuitcomponent.processed.xsmd.diode", RecipeMaps.nanochipAssemblyMatrixRecipes),;
+    ProcessedOpticalSMDDiode("gt.circuitcomponent.processed.xsmd.diode", RecipeMaps.nanochipAssemblyMatrixRecipes),
+    BoardMultifiberglassElite("gt.circuitcomponent.boardmultifiberelite", RecipeMaps.nanochipBoardProcessorRecipes),
+    ProcessedBoardMultifiberglassElite("gt.circuitcomponent.processed.boardmultifiberelite",
+        RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ChipNanoCPU("gt.circuitcomponent.chipnanocpu", RecipeMaps.nanochipCuttingChamber),
+    ChipRAM("gt.circuitcomponent.chipram", RecipeMaps.nanochipCuttingChamber),
+    ChipNOR("gt.circuitcomponent.chipnor", RecipeMaps.nanochipCuttingChamber),
+    ChipNAND("gt.circuitcomponent.chipnand", RecipeMaps.nanochipCuttingChamber),
+    ChipCrystalCPU("gt.circuitcomponent.chipcrystalcpu", RecipeMaps.nanochipEtchingArray),
+    ProcessedChipNanoCPU("gt.circuitcomponent.processed.chipnanocpu", RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ProcessedChipCrystalCPU("gt.circuitcomponent.processed.chipcrystalcpu", RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ProcessedChipRAM("gt.circuitcomponent.processed.chipram", RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ProcessedChipNOR("gt.circuitcomponent.processed.chipnor", RecipeMaps.nanochipAssemblyMatrixRecipes),
+    ProcessedChipNAND("gt.circuitcomponent.processed.chipnand", RecipeMaps.nanochipAssemblyMatrixRecipes),
+    SuperconductorLuV("gt.circuitcomponent.superconductorluv", RecipeMaps.nanochipSuperconductorSplitter,
+        Materials.SuperconductorLuV),
+    ProcessedSuperconductorLuV("gt.circuitcomponent.processed.superconductorluv",
+        RecipeMaps.nanochipAssemblyMatrixRecipes, Materials.SuperconductorLuV),
+    FrameboxAluminium("gt.circuitcomponent.frame.aluminium", RecipeMaps.nanochipCuttingChamber, Materials.Aluminium),
+    ProcessedFrameboxAluminium("gt.circuitcomponent.processed.frame.aluminium",
+        RecipeMaps.nanochipAssemblyMatrixRecipes),
+    // The first three circuits in a line can be recursively used in the assembly matrix, and all of them can be turned
+    // into a physical circuit item
+    CrystalProcessor("gt.circuitcomponent.crystalprocessor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Crystalprocessor.get(1)),
+    CrystalAssembly("gt.circuitcomponent.crystassembly", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Crystalcomputer.get(1)),
+    CrystalComputer("gt.circuitcomponent.crystalcomputer", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Ultimatecrystalcomputer.get(1)),
+    CrystalMainframe("gt.circuitcomponent.crystalmainframe", null, ItemList.Circuit_Crystalmainframe.get(1)),;
 
     public final String unlocalizedName;
     public final Materials material;
     // This is the recipe map that this component is used in as an input item
     public final RecipeMap<?> processingMap;
+    public final ItemStack realCircuit;
+
+    // No need to use a full recipe map for conversions to real circuits, this also makes things a little easier
+    // since we won't need to match outputs of recipes
+    public static final Map<GT_Utility.ItemId, CircuitComponent> realCircuitToComponent = new HashMap<>();
 
     CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap) {
-        this(unlocalizedName, processingMap, null);
+        this(unlocalizedName, processingMap, null, null);
+    }
+
+    CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, ItemStack realCircuit) {
+        this(unlocalizedName, processingMap, realCircuit, null);
     }
 
     CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, Materials material) {
+        this(unlocalizedName, processingMap, null, material);
+    }
+
+    CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, ItemStack realCircuit, Materials material) {
         this.unlocalizedName = unlocalizedName;
         // Hide the fake stack in NEI
         codechicken.nei.api.API.hideItem(getFakeStack(1));
         this.material = material;
         this.processingMap = processingMap;
+        this.realCircuit = realCircuit;
     }
 
     public String getLocalizedName() {
@@ -86,5 +135,15 @@ public enum CircuitComponent {
     public static CircuitComponent getFromFakeStack(ItemStack stack) {
         // If this throws an IndexOutOfBounds exception, there is a bug
         return CircuitComponent.values()[stack.getItemDamage()];
+    }
+
+    static {
+        // Populate real circuit conversion hashmap
+        for (CircuitComponent component : CircuitComponent.values()) {
+            if (component.realCircuit != null) {
+                GT_Utility.ItemId id = GT_Utility.ItemId.createNoCopy(component.realCircuit);
+                realCircuitToComponent.put(id, component);
+            }
+        }
     }
 }
