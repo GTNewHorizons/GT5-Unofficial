@@ -10,7 +10,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_Na
  */
 public class ModuleStructureDefinition {
 
-    public static <B> StructureDefinition.Builder<B> builder() {
-        return GT_MetaTileEntity_NanochipAssemblyModuleBase.addBaseStructure(StructureDefinition.builder());
+    public static <B extends GT_MetaTileEntity_NanochipAssemblyModuleBase<B>> StructureDefinition.Builder<B> builder() {
+        return GT_MetaTileEntity_NanochipAssemblyModuleBase.addBaseStructure(StructureDefinition.<B>builder());
     }
 }
