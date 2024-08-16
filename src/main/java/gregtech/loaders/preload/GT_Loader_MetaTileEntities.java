@@ -275,6 +275,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.MULTI_LATHE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.MULTI_SMELTER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.NANOCHIP_ASSEMBLY_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.NANOCHIP_MODULE_ASSEMBLY_MATRIX;
+import static gregtech.api.enums.MetaTileEntityIDs.NANOCHIP_MODULE_SMD_PROCESSOR;
 import static gregtech.api.enums.MetaTileEntityIDs.NANO_FORGE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_IV;
@@ -617,6 +618,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_Va
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Input;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Output;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.AssemblyMatrix;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.SMDProcessor;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_Hatch_DegasifierControlHatch;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_LensHousing;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_LensIndicator;
@@ -1169,7 +1171,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new AssemblyMatrix(
                 NANOCHIP_MODULE_ASSEMBLY_MATRIX.ID,
                 "multimachine.nanochipmodule.assemblymatrix",
-                "Nanochip Assembly Matrix Module").getStackForm(1));
+                "Nanochip Assembly Matrix").getStackForm(1));
+        ItemList.NanoChipModule_SMDProcessor.set(
+            new SMDProcessor(
+                NANOCHIP_MODULE_SMD_PROCESSOR.ID,
+                "multimachine.nanochipmodule.smdprocessor",
+                "Part Preparation Apparatus").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
