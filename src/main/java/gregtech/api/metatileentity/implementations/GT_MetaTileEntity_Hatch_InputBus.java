@@ -276,11 +276,6 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
         return getSlots(mTier);
     }
 
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
     private void addSortStacksButton(ModularWindow.Builder builder) {
         builder.widget(
             createToggleButton(
