@@ -1,5 +1,6 @@
 package gregtech.loaders.postload;
 
+import static gregtech.api.enums.Mods.Chisel;
 import static gregtech.api.util.GT_ModHandler.addToRecyclerBlackList;
 
 import net.minecraft.init.Blocks;
@@ -90,12 +91,12 @@ public class GT_RecyclerBlacklistLoader implements Runnable {
         addToRecyclerBlackList(GT_ModHandler.getRecipeOutput(new ItemStack(Blocks.glass, 1, 0)));
         addToRecyclerBlackList(
             GT_ModHandler.getRecipeOutput(new ItemStack(Blocks.glass, 1, 0), new ItemStack(Blocks.glass, 1, 0)));
-        if (Mods.Chisel.isModLoaded()) {
+        if (Chisel.isModLoaded()) {
             for (int i = 1; i <= 15; i++) {
-                addToRecyclerBlackList(GT_ModHandler.getModItem("chisel", "cobblestone", 1, i));
+                addToRecyclerBlackList(GT_ModHandler.getModItem(Chisel.ID, "cobblestone", 1, i));
             }
             for (int i = 0; i <= 15; i++) {
-                addToRecyclerBlackList(GT_ModHandler.getModItem("chisel", "stonebricksmooth", 1, i));
+                addToRecyclerBlackList(GT_ModHandler.getModItem(Chisel.ID, "stonebricksmooth", 1, i));
             }
         }
         if (Mods.AE2FluidCraft.isModLoaded()) {

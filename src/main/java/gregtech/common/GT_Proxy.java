@@ -67,6 +67,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -87,7 +88,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -118,8 +118,6 @@ import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -146,6 +144,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.net.GT_Packet_MusicSystemData;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_UO_DimensionList;
@@ -157,10 +156,10 @@ import gregtech.api.util.GT_BlockMap;
 import gregtech.api.util.GT_CLS_Compat;
 import gregtech.api.util.GT_ChunkAssociatedData;
 import gregtech.api.util.GT_ClientPreference;
-import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_MusicSystem;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeRegistrator;
@@ -176,7 +175,7 @@ import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 
-public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
+public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
 
     private static final EnumSet<OreGenEvent.GenerateMinable.EventType> PREVENTED_ORES = EnumSet.of(
         OreGenEvent.GenerateMinable.EventType.COAL,
@@ -855,7 +854,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         this.mIgnoreTcon = GregTech_API.sOPStuff.get(ConfigCategories.general, "ignoreTConstruct", true);
         this.mWireHeatingTicks = GregTech_API.sOPStuff.get(ConfigCategories.general, "WireHeatingTicks", 4);
         this.replicatorExponent = GregTech_API.sOPStuff.get("Replicator", "Nerf Exponent", 1.2D);
-        NetworkRegistry.INSTANCE.registerGuiHandler(GT_Values.GT, this);
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
@@ -1383,6 +1381,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         GT_Log.out.println("GT_Mod: ServerStarting-Phase started!");
         GT_Log.ore.println("GT_Mod: ServerStarting-Phase started!");
 
+        GT_MusicSystem.ServerSystem.reset();
+
         this.mUniverse = null;
         this.isFirstServerWorldTick = true;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
@@ -1433,6 +1433,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     }
 
     public void onServerStopping() {
+        GT_MusicSystem.ServerSystem.reset();
         File tSaveDirectory = getSaveDirectory();
         GregTech_API.sWirelessRedstone.clear();
         if (tSaveDirectory != null) {
@@ -1561,6 +1562,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             ((EntityItem) aEvent.entity)
                 .setEntityItemStack(GT_OreDictUnificator.get(true, ((EntityItem) aEvent.entity).getEntityItem(), true));
         }
+    }
+
+    @SubscribeEvent
+    public void onPlayerJoinEvent(cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.player == null || event.player.isClientWorld()
+            || !(event.player instanceof EntityPlayerMP mpPlayer)) {
+            return;
+        }
+        GT_Values.NW.sendToPlayer(new GT_Packet_MusicSystemData(GT_MusicSystem.ServerSystem.serialize()), mpPlayer);
     }
 
     @SubscribeEvent
@@ -2223,9 +2233,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         if (aEvent.side.isServer()) {
             if (aEvent.phase == TickEvent.Phase.START) {
                 TICK_LOCK.lock();
-
             } else {
                 TICK_LOCK.unlock();
+                GT_MusicSystem.ServerSystem.tick();
             }
 
             // Making sure it is being freed up in order to prevent exploits or Garbage Collection mishaps.
@@ -2443,56 +2453,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     public void setClientPreference(UUID aPlayerID, GT_ClientPreference aPreference) {
         mClientPrefernces.put(aPlayerID, aPreference);
-    }
-
-    @Override
-    public Object getServerGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
-        if (aID >= 1000) {
-            return null;
-        }
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof IGregTechTileEntity)) {
-            if (GUI_ID_COVER_SIDE_BASE <= aID && aID < GUI_ID_COVER_SIDE_BASE + 6) {
-                return null;
-            }
-            final IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-            if (tMetaTileEntity != null && !tMetaTileEntity.useModularUI()) {
-                return tMetaTileEntity.getServerGUI(aID, aPlayer.inventory, (IGregTechTileEntity) tTileEntity);
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Object getClientGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
-        if (aID >= 1000) {
-            return null;
-        }
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof IGregTechTileEntity tile)) {
-
-            if (GUI_ID_COVER_SIDE_BASE <= aID && aID < GUI_ID_COVER_SIDE_BASE + 6) {
-                final ForgeDirection side = ForgeDirection
-                    .getOrientation((byte) (aID - GT_Proxy.GUI_ID_COVER_SIDE_BASE));
-                GT_CoverBehaviorBase<?> cover = tile.getCoverBehaviorAtSideNew(side);
-
-                if (cover.hasCoverGUI() && !cover.useModularUI()) {
-                    return cover.getClientGUI(
-                        side,
-                        tile.getCoverIDAtSide(side),
-                        tile.getComplexCoverDataAtSide(side),
-                        tile,
-                        aPlayer,
-                        aWorld);
-                }
-                return null;
-            }
-            final IMetaTileEntity tMetaTileEntity = tile.getMetaTileEntity();
-            if (tMetaTileEntity != null && !tMetaTileEntity.useModularUI()) {
-                return tMetaTileEntity.getClientGUI(aID, aPlayer.inventory, tile);
-            }
-        }
-        return null;
     }
 
     private static List<String> getOreDictNames(ItemStack stack) {

@@ -97,7 +97,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 
     /**
      * Check if *this* orelayer is enabled for pDimensionDef
-     * 
+     *
      * @param pDimensionDef the ChunkProvider in question
      * @return
      */
@@ -110,7 +110,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
     /**
      * Get the number of enabled OreMixes for given Dimension. This query is buffered and will only consume calculation
      * time on the first run for each dimension
-     * 
+     *
      * @param pDimensionDef
      * @return
      */
@@ -133,7 +133,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 
     /**
      * Get a List of all Veins which are enabled for given Dim. Query is buffered
-     * 
+     *
      * @param pDimensionDef
      * @return null if nothing is found or error
      */
@@ -171,7 +171,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 
     /**
      * Select a random ore-vein from the list
-     * 
+     *
      * @param pDimensionDef
      * @param pRandom
      * @return
@@ -188,10 +188,6 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
             List<String> tEnabledVeins = getOreMixIDsForDim(pDimensionDef);
             int tRnd = pRandom.nextInt(tEnabledVeins.size());
             String tVeinName = tEnabledVeins.get(tRnd);
-
-            // No lambda in Java 1.6 and 1.7 :(
-            // GT_Worldgen_GT_Ore_Layer_Space tGen = GalacticGreg.oreVeinWorldgenList.stream().filter(p ->
-            // p.mWorldGenName == tVeinName).findFirst();
 
             GT_Worldgen tGen = null;
             for (GT_Worldgen tWorldGen : GalacticGreg.oreVeinWorldgenList)

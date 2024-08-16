@@ -601,16 +601,6 @@ public class Material {
                 }
             }
 
-            /*
-             * if (vMaterialInput.size() > 0) { AutoMap<Integer> aDataSet = new AutoMap<Integer>(); int bonus = 0; bonus
-             * += this.vMaterialInput.size(); bonus += MathUtils.roundToClosestInt(meltingPointC/1000);
-             * aDataSet.put(bonus); for (MaterialStack m : this.vMaterialInput) {
-             * aDataSet.put(m.getStackMaterial().vTier); } int aAverage = MathUtils.getIntAverage(aDataSet); if
-             * (aAverage > Integer.MAX_VALUE || aAverage < Integer.MIN_VALUE) { aAverage = 0; } if (aAverage > 0) {
-             * this.vTier = Math.min(aAverage, 10); } else { this.vTier = MaterialUtils.getTierOfMaterial((int)
-             * MathUtils.celsiusToKelvin(meltingPoint)); } } else { this.vTier = MaterialUtils.getTierOfMaterial((int)
-             * MathUtils.celsiusToKelvin(meltingPoint)); }
-             */
             this.vTier = MaterialUtils.getTierOfMaterial(meltingPoint);
 
             // Sets the materials 'tier'. Will probably replace this logic.
@@ -1142,7 +1132,7 @@ public class Material {
 
     /**
      * Ore Components
-     * 
+     *
      * @return
      */
     public final ItemStack getOre(final int stacksize) {

@@ -9,7 +9,7 @@ import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_POWER_TT;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_TT;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.TESLA_TRANSCEIVER_TOP_BA;
-import static com.github.technus.tectech.util.CommonValues.V;
+import static gregtech.api.enums.GT_Values.V;
 import static java.lang.Math.round;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;

@@ -13,6 +13,17 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
+import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_MAX;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_ULV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_MAX;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_ULV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_MAX;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_ULV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_MAX;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_ULV;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_MAX;
+import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_ULV;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -21,7 +32,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 
 import gregtech.api.enums.GT_Values;
@@ -104,17 +114,12 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
     }
 
     private long getAmpsfromMeta(int meta) {
-        if (meta > ConfigHandler.IDOffset + GT_Values.VN.length
-            && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 2) return 2L;
-        if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 2
-            && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 3) return 4L;
-        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 3
-            && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 4) return 8L;
-        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 4
-            && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 5) return 12L;
-        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 5
-            && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 6) return 16L;
-        else return 0L;
+        if (meta >= Diode2A_ULV.ID && meta <= Diode2A_MAX.ID) return 2L;
+        if (meta >= Diode4A_ULV.ID && meta <= Diode4A_MAX.ID) return 4L;
+        if (meta >= Diode8A_ULV.ID && meta <= Diode8A_MAX.ID) return 8L;
+        if (meta >= Diode12A_ULV.ID && meta <= Diode12A_MAX.ID) return 12L;
+        if (meta >= Diode16A_ULV.ID && meta <= Diode16A_MAX.ID) return 16L;
+        return 0L;
     }
 
     @Override

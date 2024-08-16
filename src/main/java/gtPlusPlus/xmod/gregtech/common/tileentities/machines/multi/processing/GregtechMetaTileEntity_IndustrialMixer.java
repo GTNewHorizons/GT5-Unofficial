@@ -51,13 +51,11 @@ public class GregtechMetaTileEntity_IndustrialMixer
     public GregtechMetaTileEntity_IndustrialMixer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
         CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 2);
-        inputSeparation = true;
     }
 
     public GregtechMetaTileEntity_IndustrialMixer(final String aName) {
         super(aName);
         CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 2);
-        inputSeparation = true;
     }
 
     @Override

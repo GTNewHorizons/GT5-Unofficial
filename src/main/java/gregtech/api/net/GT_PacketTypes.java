@@ -3,7 +3,6 @@ package gregtech.api.net;
 import java.util.Arrays;
 
 import gregtech.common.blocks.GT_Packet_Ores;
-import gregtech.common.net.MessageSetFlaskCapacity;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 /**
@@ -16,21 +15,15 @@ public enum GT_PacketTypes {
     BLOCK_EVENT(2, new GT_Packet_Block_Event()),
     ORES(3, new GT_Packet_Ores()),
     POLLUTION(4, new GT_Packet_Pollution()),
-    @SuppressWarnings("deprecation")
-    SET_FLASK_CAPACITY(5, new MessageSetFlaskCapacity()),
-    COVER(6, new GT_Packet_TileEntityCover()),
-    COVER_GUI(7, new GT_Packet_TileEntityCoverGUI()),
     CLIENT_PREFERENCE(9, new GT_Packet_ClientPreference()),
-    WIRELESS_REDSTONE_COVER(10, new GT_Packet_WirelessRedstoneCover()),
-    COVER_NEW(11, new GT_Packet_TileEntityCoverNew()),
     SET_CONFIGURATION_CIRCUIT(12, new GT_Packet_SetConfigurationCircuit()),
     UPDATE_ITEM(13, new GT_Packet_UpdateItem()),
-    TILE_ENTITY_GUI_REQUEST(15, new GT_Packet_GtTileEntityGuiRequest()),
     SEND_COVER_DATA(16, new GT_Packet_SendCoverData()),
     REQUEST_COVER_DATA(17, new GT_Packet_RequestCoverData()),
     MULTI_TILE_ENTITY(18, new GT_Packet_MultiTileEntity(true)),
     SEND_OREGEN_PATTERN(19, new GT_Packet_SendOregenPattern()),
     TOOL_SWITCH_MODE(20, new GT_Packet_ToolSwitchMode()),
+    MUSIC_SYSTEM_DATA(21, new GT_Packet_MusicSystemData()),
     // merge conflict prevention comment, keep a trailing comma above
     ;
 

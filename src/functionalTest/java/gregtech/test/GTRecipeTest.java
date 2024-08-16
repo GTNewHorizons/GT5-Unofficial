@@ -1,12 +1,11 @@
 package gregtech.test;
 
+import static gregtech.api.GregTech_API.sBlockOres1;
 import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.ItemList.Circuit_Parts_Crystal_Chip_Master;
 import static gregtech.api.enums.ItemList.IC2_LapotronCrystal;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.OrePrefixes.circuit;
 import static gregtech.api.enums.OrePrefixes.lens;
-import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_OreDictUnificator.get;
 import static gregtech.api.util.GT_Utility.copyAmount;
 import static net.minecraft.init.Blocks.chest;
@@ -69,7 +68,7 @@ class GTRecipeTest {
             .toArray(new GT_Recipe[0])[0];
 
         RA.stdBuilder()
-            .itemInputs(getModItem(GregTech.ID, "gt.blockores", 1, 32))
+            .itemInputs(new ItemStack(sBlockOres1, 1, 32))
             .itemOutputs(new ItemStack(iron_ingot, 1))
             .duration(0)
             .eut(0)
@@ -227,7 +226,7 @@ class GTRecipeTest {
         // as mUnificationTarget is not set for circuits in GT5.
         // But it works in the same way; specific circuit -> GT ore block, unificated circuit -> vanilla ore block
         GT_Recipe recipeCorrectOre = recipeMap.findRecipeQuery()
-            .items(getModItem(GregTech.ID, "gt.blockores", 1, 32))
+            .items(new ItemStack(sBlockOres1, 1, 32))
             .find();
         assertNotNull(recipeCorrectOre);
 
