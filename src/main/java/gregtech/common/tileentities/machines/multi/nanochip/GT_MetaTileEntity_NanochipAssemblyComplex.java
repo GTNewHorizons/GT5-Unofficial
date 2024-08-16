@@ -114,6 +114,7 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         .build();
 
     public static final int MODULE_CONNECT_INTERVAL = 20;
+    private static final int INTERNAL_BUFFER_MULTIPLIER = 8;
 
     private final ArrayList<GT_MetaTileEntity_NanochipAssemblyModuleBase<?>> modules = new ArrayList<>();
 
@@ -152,12 +153,26 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
             true);
     }
 
+    private GT_MetaTileEntity_Hatch getEnergyHatch() {
+        if (this.mExoticEnergyHatches.isEmpty()) {
+            if (this.mEnergyHatches.isEmpty()) return null;
+            return this.mEnergyHatches.get(0);
+        }
+        return this.mExoticEnergyHatches.get(0);
+    }
+
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         fixAllIssues();
         modules.clear();
         vacuumConveyors.clear();
-        return checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z);
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z)) return false;
+        // At least most one energy hatch is accepted
+        if (this.mEnergyHatches.isEmpty()) {
+            return this.mExoticEnergyHatches.size() == 1;
+        } else {
+            return this.mEnergyHatches.size() == 1;
+        }
     }
 
     @Override
@@ -346,23 +361,49 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         }
     }
 
+    private void tryChargeInternalBuffer() {
+        GT_MetaTileEntity_Hatch hatch = this.getEnergyHatch();
+        if (hatch == null) return;
+
+        long eut = this.getMaxInputEu();
+        long euToAdd = Math.min(eut, hatch.getEUVar());
+        if (hatch.getBaseMetaTileEntity()
+            .decreaseStoredEnergyUnits(euToAdd, false)) {
+            setEUVar(getEUVar() + euToAdd);
+        }
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            // If the complex is turned on, periodically reconnect modules.
-            // This code can be extended to only connect modules based on tiers of the complex or other
-            // conditions such as energy tier.
             if (isAllowedToWork()) {
+                // Every running tick, try to charge the buffer in the controller,
+                // because the MTE base class does not actually do this, but we need to in order to distribute the
+                // power to the modules.
+                tryChargeInternalBuffer();
+                // If the complex is turned on, periodically reconnect modules.
+                // This code can be extended to only connect modules based on tiers of the complex or other
+                // conditions such as energy tier.
                 if (aTick % MODULE_CONNECT_INTERVAL == 0) {
                     if (!modules.isEmpty()) {
                         long eutPerModule = this.getMaxInputEu() / modules.size();
+                        long euToCharge = eutPerModule * MODULE_CONNECT_INTERVAL;
                         for (GT_MetaTileEntity_NanochipAssemblyModuleBase<?> module : modules) {
                             module.connect();
                             // Set available EU/t for this module, which is the total EU/t divided by the amount of
                             // modules,
                             // since each module can draw power equally (no mixed overclocks).
                             module.setAvailableEUt(eutPerModule);
+                            // Charge the module with power
+                            long availableEnergy = getEUVar();
+                            if (availableEnergy > 0) {
+                                setEUVar(
+                                    Math.max(
+                                        0,
+                                        availableEnergy
+                                            - module.increaseStoredEU(Math.min(euToCharge, availableEnergy))));
+                            }
                         }
                     }
                 }
@@ -389,6 +430,11 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         mEfficiencyIncrease = 0;
         mMaxProgresstime = 0;
         return CheckRecipeResultRegistry.NO_RECIPE;
+    }
+
+    @Override
+    public long maxEUStore() {
+        return INTERNAL_BUFFER_MULTIPLIER * super.maxEUStore();
     }
 
     // Hatch adder for modules
