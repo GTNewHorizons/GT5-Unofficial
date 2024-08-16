@@ -1,25 +1,36 @@
 package gregtech.common.tileentities.machines.multi.fuelboilers;
 
-import static gregtech.api.GregTech_API.*;
-import static gregtech.api.recipe.check.CheckRecipeResultRegistry.*;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
-import static net.minecraftforge.fluids.FluidRegistry.WATER;
-
-import com.gtnewhorizon.gtnhlib.client.renderer.util.MathUtil;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_Recipe;
-import gtPlusPlus.core.util.math.MathUtils;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_Recipe;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
+
+import static gregtech.api.GregTech_API.sBlockCasings1;
+import static gregtech.api.GregTech_API.sBlockCasings2;
+import static gregtech.api.GregTech_API.sBlockCasings3;
+import static gregtech.api.GregTech_API.sBlockMetal1;
+import static gregtech.api.recipe.check.CheckRecipeResultRegistry.MISSING_WATER;
+import static gregtech.api.recipe.check.CheckRecipeResultRegistry.NO_FUEL_FOUND;
+import static gregtech.api.recipe.check.CheckRecipeResultRegistry.SUCCESSFUL;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
+import static net.minecraftforge.fluids.FluidRegistry.WATER;
 
 /**
  * The base class for fuel-based boilers. These burn fuels (like Benzene or Diesel) into Steam, instead of direct
@@ -39,11 +50,10 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
     // Static (while multi is running)
     protected int tier = 0;
     // These are floats so I don't have to do annoying casts later
-    protected float waterMax = 10000, heatMax = 10000, steamMax = waterMax + heatMax;
+    protected float waterMax = 1, heatMax = 1, steamMax = 1; // we divide by these, don't want a divide-by-zero
 
     // Dynamic
-    protected int water, heatBoost, steam;
-    // I'm sure there's a method for this, but I'm not using GPL - this isn't a typical multi
+    protected int water, heat, steam;
     protected boolean isBurning;
     // Because we can't fractionally burn fuel, store it in a tiny buffer instead to guarantee 0 loss
     private int storedEU;
@@ -69,17 +79,23 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
         return RecipeMaps.fuelBoilerFuels;
     }
 
+    @Override
+    public ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic();
+    }
+
     /**
      * Fuel and water consumption is handled here, it only happens when the multi runs.
      */
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
-        isBurning = false;
-
         // There's gotta be a cleaner way to do this
         final boolean waterFirst = mInputHatches.get(0).mRecipeMap == RecipeMaps.waterOnly;
         final GT_MetaTileEntity_Hatch_Input waterIn = mInputHatches.get(waterFirst ? 0 : 1);
         final GT_MetaTileEntity_Hatch_Input fuelIn = mInputHatches.get(waterFirst ? 1 : 0);
+
+        waterMax = waterIn.getCapacity();
+        heatMax = 100 + MAX_BHEAT_BY_TIER[tier];
 
         final GT_Recipe r = getRecipeMap().findRecipeQuery().fluids(fuelIn.getFluid()).find();
         if (r == null) return NO_FUEL_FOUND;
@@ -88,8 +104,8 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
 
         // This never NPEs, due to earlier checks
         @SuppressWarnings("DataFlowIssue") final int eul = r.getMetadata(FUEL_VALUE);
-        final FluidStack fuel = fuelIn.drain(getLitersToBurn(eul), true);
-        if (fuel == null || fuel.amount < 1) return NO_FUEL_FOUND;
+        final int amt = getLitersToBurn(eul);
+        if (fuelIn.getFluidAmount() < amt) return NO_FUEL_FOUND;
 
         // We can burn, is there water?
         final FluidStack w = waterIn.getFluid();
@@ -99,14 +115,41 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
         final int need = (int) Math.ceil((getEut(eul) - storedWater) / 80D);
         if (need > water) return MISSING_WATER; // TODO: BLEVE?
 
-        // Do processing
-        if (need > 0) storedWater += waterIn.drain(need, true).amount * 80;
-        final int eu = fuel.amount * eul;
-        storedEU += eu;
-        storedWater -= eu;
+        // Processing can happen
         this.eul = eul;
         isBurning = true;
-        return GENERATING;
+        mMaxProgresstime = 1;
+
+        // Do processing and drain tanks
+        if (need > 0) storedWater += waterIn.drain(need, true).amount * 80;
+        final int eu = fuelIn.drain(amt, true).amount * eul;
+        storedEU += eu;
+        storedWater -= eu;
+        return SUCCESSFUL;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound nbt) {
+        super.saveNBTData(nbt);
+        nbt.setInteger("tier", tier);
+        nbt.setInteger("storedEU", storedEU);
+        nbt.setInteger("storedWater", storedWater);
+        nbt.setInteger("heat", heat);
+        nbt.setInteger("heatMax", (int) heatMax);
+        nbt.setInteger("eul", eul);
+        nbt.setBoolean("isBurning", isBurning);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound nbt) {
+        super.loadNBTData(nbt);
+        tier = nbt.getInteger("tier");
+        storedEU = nbt.getInteger("storedEU");
+        storedWater = nbt.getInteger("storedWater");
+        heat = nbt.getInteger("heat");
+        heatMax = nbt.getInteger("heatMax");
+        eul = nbt.getInteger("eul");
+        isBurning = nbt.getBoolean("isBurning");
     }
 
     /**
@@ -115,18 +158,32 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
     @Override
     public void onPostTick(IGregTechTileEntity thiz, long tick) {
         super.onPostTick(thiz, tick);
-        heatBoost += isBurning ? 1 : (int) -(tick % 2); // heat one degree per tick, cool at half that
-        heatBoost = MathHelper.clamp_int(heatBoost, 0, MAX_BHEAT_BY_TIER[tier]); // not too much :D
+
+        // Update displayed steam
+        final GT_MetaTileEntity_Hatch_Output s;
+        final boolean hasSteamHatch = !mOutputHatches.isEmpty();
+        if (hasSteamHatch) {
+            s = mOutputHatches.get(0);
+            final FluidStack f = s.getFluid();
+            final boolean hasSteam = f != null && f.getFluid() == FluidRegistry.getFluid("steam");
+            steam = hasSteam ? s.getFluidAmount() : 0;
+            steamMax = s.getCapacity();
+        } else s = null;
+
+        // Heat one degree per tick, cool at half that
+        heat += isBurning ? 1 : (int) -(tick % 2);
+        heat = MathHelper.clamp_int(heat, 0, 100 + MAX_BHEAT_BY_TIER[tier]);
 
         // Steam production
         if (!isBurning) return;
-        final int eut = getEut(eul);
+        final int eut = Math.min(storedEU, getEut(eul));
         storedEU -= eut;
-        steam += eut * 2;
-        if (steam > steamMax) {
-            steam = (int) steamMax;
-            ventSteam();
+        if (hasSteamHatch && heat >= 100) {
+            final int amt = s.fill(GT_ModHandler.getSteam((long) (eut * 2L * (heat - 100) / (heatMax - 100))), true);
+            if (amt < eut * 2) ventSteam();
+            steam += amt;
         }
+        isBurning = false;
     }
 
     @Override

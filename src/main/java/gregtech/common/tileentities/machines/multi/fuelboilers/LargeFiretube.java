@@ -304,7 +304,7 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
                 .widget(
                     new MultiChildWidget().addChild(new TextWidget("Heat"))
                         .addChild(
-                            new ProgressBar().setProgress(() -> heatBoost / heatMax)
+                            new ProgressBar().setProgress(() -> heat / heatMax)
                                 .setDirection(ProgressBar.Direction.RIGHT)
                                 .setTexture(
                                     GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM_R90
