@@ -788,11 +788,6 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
             new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())

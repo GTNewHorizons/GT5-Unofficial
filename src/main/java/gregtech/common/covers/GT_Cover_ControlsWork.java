@@ -177,11 +177,6 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControls
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
         return new ControlsWorkUIFactory(buildContext).createWindow();
     }

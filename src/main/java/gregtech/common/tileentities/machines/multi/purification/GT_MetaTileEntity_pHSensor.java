@@ -94,11 +94,6 @@ public class GT_MetaTileEntity_pHSensor extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public String[] getDescription() {
         return new String[] { "Can be installed in the pH Neutralization Purification Unit.",
             "Outputs Redstone Signal according to the current pH value.",

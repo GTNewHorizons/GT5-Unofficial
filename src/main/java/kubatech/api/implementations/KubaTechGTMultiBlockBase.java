@@ -264,11 +264,6 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
     public static final UITexture PICTURE_KUBATECH_LOGO = UITexture.fullImage(Tags.MODID, "gui/logo_13x15_dark");
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
             new DrawableWidget().setDrawable(PICTURE_KUBATECH_LOGO)

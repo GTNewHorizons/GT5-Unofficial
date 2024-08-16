@@ -1,8 +1,6 @@
 package gregtech.api;
 
 import static gregtech.api.enums.GT_Values.B;
-import static gregtech.api.enums.GT_Values.L;
-import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 
 import java.util.ArrayList;
@@ -94,16 +92,6 @@ import gregtech.common.items.GT_IntegratedCircuit_Item;
 @SuppressWarnings("unused") // API class has legitimately unused methods and members
 public class GregTech_API {
 
-    /**
-     * @deprecated Use {@link GT_Values#M}
-     */
-    @Deprecated
-    public static final long MATERIAL_UNIT = M;
-    /**
-     * @deprecated Use {@link GT_Values#L}
-     */
-    @Deprecated
-    public static final long FLUID_MATERIAL_UNIT = L;
     /**
      * Fixes the HashMap Mappings for ItemStacks once the Server started
      * <br>
@@ -311,16 +299,6 @@ public class GregTech_API {
         sMachineRainExplosions = true, sMachineThunderExplosions = true, sMachineFireExplosions = true,
         sMachineWireFire = true, mOutputRF = false, mInputRF = false, meIOLoaded = false, mRFExplosions = false,
         mServerStarted = false;
-
-    @Deprecated
-    public static boolean mIC2Classic = false, mMagneticraft = false, mImmersiveEngineering = false,
-        mGTPlusPlus = false, mTranslocator = false, mTConstruct = false, mGalacticraft = false, mHodgepodge = false,
-        mAvaritia = false;
-    /**
-     * This is always set to true
-     */
-    @Deprecated
-    public boolean mAE2 = true;
 
     public static int mEUtoRF = 360, mRFtoEU = 20;
 
@@ -901,17 +879,6 @@ public class GregTech_API {
 
     /**
      * returns a Cover behavior, guaranteed to not return null after preload
-     */
-    @Deprecated
-    public static GT_CoverBehavior getCoverBehavior(ItemStack aStack) {
-        if (aStack == null || aStack.getItem() == null) return sNoBehavior;
-        GT_CoverBehaviorBase<?> rCover = sCoverBehaviors.get(new GT_ItemStack(aStack));
-        if (!(rCover instanceof GT_CoverBehavior)) return sDefaultBehavior;
-        return (GT_CoverBehavior) rCover;
-    }
-
-    /**
-     * returns a Cover behavior, guaranteed to not return null after preload
      *
      * @return The Cover behavior
      */
@@ -922,15 +889,6 @@ public class GregTech_API {
         rCover = sCoverBehaviors.get(new GT_ItemStack(aStack, true));
         if (rCover != null) return rCover;
         return sDefaultBehavior;
-    }
-
-    /**
-     * returns a Cover behavior, guaranteed to not return null
-     */
-    @Deprecated
-    public static GT_CoverBehavior getCoverBehavior(int aStack) {
-        if (aStack == 0) return sNoBehavior;
-        return getCoverBehavior(GT_Utility.intToStack(aStack));
     }
 
     /**

@@ -330,9 +330,4 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
     public int getTankPressure() {
         return -100;
     }
-
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
 }

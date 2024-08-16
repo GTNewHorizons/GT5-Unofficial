@@ -234,7 +234,7 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity
 
     @Override
     public boolean useModularUI() {
-        return hasValidMetaTileEntity() && getMetaTileEntity().useModularUI();
+        return hasValidMetaTileEntity();
     }
 
     @Override
