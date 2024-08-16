@@ -50,6 +50,9 @@ dependencies {
     compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.10.1:dev')
     compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.4.1-GTNH:dev")
     compileOnlyApi("com.github.GTNewHorizons:Navigator:1.0.6:dev")
+    implementation('com.github.GTNewHorizons:Baubles:1.0.4:dev') {transitive=false}
+    // Required to prevent an older bauble api from Extra Utilities from loading first in the javac classpath
+    compileOnly('com.github.GTNewHorizons:Baubles:1.0.4:dev') {transitive=false}
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Infernal-Mobs:1.8.1-GTNH:dev")
 
@@ -90,7 +93,6 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.3.1:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.7.0-GTNH:dev") { transitive = false }
 
-    implementation('com.github.GTNewHorizons:Baubles:1.0.4:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:SC2:2.1.1:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.4.1:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
