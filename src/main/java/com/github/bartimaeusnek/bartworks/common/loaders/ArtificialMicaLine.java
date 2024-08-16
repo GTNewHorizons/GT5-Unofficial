@@ -169,7 +169,7 @@ public class ArtificialMicaLine {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Plate.get(0))
             .itemOutputs(WerkstoffLoader.Fluorophlogopite.get(OrePrefixes.plate, 1))
-            .fluidOutputs(WerkstoffLoader.HotFluorophlogopite.getFluidOrGas(144))
+            .fluidInputs(WerkstoffLoader.HotFluorophlogopite.getFluidOrGas(144))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .noOptimize()
