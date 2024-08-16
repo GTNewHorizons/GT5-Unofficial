@@ -795,8 +795,6 @@ public class GT_PreLoad {
             Blocks.mob_spawner.setHardness(500.0F)
                 .setResistance(6000000.0F);
         }
-        GT_Mod.gregtechproxy.mOnline = tMainConfig.get(GT_Mod.aTextGeneral, "online", true)
-            .getBoolean(false);
 
         GT_Mod.gregtechproxy.mUpgradeCount = Math.min(
             64,

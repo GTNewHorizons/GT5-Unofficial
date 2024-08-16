@@ -560,7 +560,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean mNerfedVanillaTools = true;
     public boolean mHardRock = false;
     public boolean mHungerEffect = true;
-    public boolean mOnline = true;
     public boolean mIgnoreTcon = true;
     public boolean mAchievements = true;
     private boolean isFirstServerWorldTick = true;
