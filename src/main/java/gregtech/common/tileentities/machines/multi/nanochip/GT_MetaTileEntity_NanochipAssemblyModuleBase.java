@@ -31,6 +31,7 @@ import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Input;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Output;
@@ -57,6 +58,10 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
     private final ArrayList<ItemStack> outputFakeItems = new ArrayList<>();
     private byte outputColor = -1;
     private int currentParallel;
+
+    // Something, needs to be tested further what this should really be (probably MUCH higher and scale with hatch tier)
+    protected static long EU_BUFFER_BASE_SIZE = 160008000L * 1024;
+    protected final long euBufferSize = EU_BUFFER_BASE_SIZE;
 
     protected final VacuumConveyorHatchMap<GT_MetaTileEntity_Hatch_VacuumConveyor_Input> vacuumConveyorInputs = new VacuumConveyorHatchMap<>();
     protected final VacuumConveyorHatchMap<GT_MetaTileEntity_Hatch_VacuumConveyor_Output> vacuumConveyorOutputs = new VacuumConveyorHatchMap<>();
@@ -269,6 +274,7 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
         // Reset output color
         outputColor = -1;
         currentParallel = 0;
+        this.lEUt = 0;
 
         if (!isConnected) {
             return CheckRecipeResultRegistry.NO_RECIPE;
@@ -309,9 +315,55 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
             mEfficiency = 10000;
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = recipe.mDuration;
+            // Needs to be negative obviously to display correctly
+            this.lEUt = -(long) recipe.mEUt * (long) this.currentParallel;
         }
 
         return result;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isServerSide() && isConnected) {
+            super.onPostTick(aBaseMetaTileEntity, aTick);
+            if (mEfficiency < 0) mEfficiency = 0;
+            if (aBaseMetaTileEntity.getStoredEU() <= 0 && mMaxProgresstime > 0) {
+                stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+            }
+        }
+    }
+
+    @Override
+    public long maxEUStore() {
+        return euBufferSize;
+    }
+
+    @Override
+    public boolean drainEnergyInput(long aEU) {
+        // Drain EU from internal buffer in controller. We will need to charge this buffer from the
+        // Assembly Complex
+        if (aEU <= this.getEUVar()) {
+            this.setEUVar(this.getEUVar() - aEU);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Increase the EU stored in the controller buffer
+     *
+     * @param maximumIncrease EU that should be added to the buffer
+     * @return Actually used amount
+     */
+    public long increaseStoredEU(long maximumIncrease) {
+        if (getBaseMetaTileEntity() == null) {
+            return 0;
+        }
+        connect();
+        long increasedEU = Math
+            .min(getBaseMetaTileEntity().getEUCapacity() - getBaseMetaTileEntity().getStoredEU(), maximumIncrease);
+        return getBaseMetaTileEntity().increaseStoredEnergyUnits(increasedEU, false) ? increasedEU : 0;
     }
 
     protected GT_MetaTileEntity_Hatch_VacuumConveyor_Output findOutputHatch(byte color) {
