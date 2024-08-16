@@ -156,16 +156,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         colorOverride = GT_GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
     }
 
-    /**
-     * This method will only be called on client side
-     *
-     * @return whether the secondary description should be display. default is false
-     */
-    @Deprecated
-    public boolean isDisplaySecondaryDescription() {
-        return false;
-    }
-
     @Override
     public IGregTechTileEntity getBaseMetaTileEntity() {
         return mBaseMetaTileEntity;

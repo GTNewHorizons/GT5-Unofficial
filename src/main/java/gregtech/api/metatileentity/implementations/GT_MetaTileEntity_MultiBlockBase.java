@@ -39,7 +39,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.TestOnly;
-import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -190,11 +189,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         this.damageFactorHigh = (float) GregTech_API.sMachineFile
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorHigh", 0.6f);
         if (!shouldCheckMaintenance()) fixAllIssues();
-    }
-
-    @Override
-    public boolean isDisplaySecondaryDescription() {
-        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
     }
 
     @Override
