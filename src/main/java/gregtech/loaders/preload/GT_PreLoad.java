@@ -549,9 +549,6 @@ public class GT_PreLoad {
             .getBoolean(true);
         GT_Mod.gregtechproxy.mHideUnusedOres = tMainConfig.get(GT_Mod.aTextGeneral, "HideUnusedOres", true)
             .getBoolean(true);
-        GT_Mod.gregtechproxy.mArcSmeltIntoAnnealed = tMainConfig
-            .get(GT_Mod.aTextGeneral, "ArcSmeltIntoAnnealedWrought", true)
-            .getBoolean(true);
         GT_Mod.gregtechproxy.mEnableAllMaterials = tMainConfig.get("general", "EnableAllMaterials", false)
             .getBoolean(false);
 

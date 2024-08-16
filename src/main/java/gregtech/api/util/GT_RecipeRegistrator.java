@@ -305,11 +305,8 @@ public class GT_RecipeRegistrator {
                 continue;
             }
             if (tMaterial.mMaterial.contains(SubTag.METAL)) {
-                if (GT_Mod.gregtechproxy.mArcSmeltIntoAnnealed) {
-                    tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mArcSmeltInto;
-                } else {
-                    tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mSmeltInto;
-                }
+
+                tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mArcSmeltInto;
                 continue;
             }
             tMaterial.mAmount = 0;
