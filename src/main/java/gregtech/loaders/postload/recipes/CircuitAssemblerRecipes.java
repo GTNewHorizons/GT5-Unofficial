@@ -11,6 +11,9 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.loaders.postload.MachineRecipeLoader.solderingMats;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -27,6 +30,69 @@ public class CircuitAssemblerRecipes implements Runnable {
         registerRailcraftRecipes();
         registerForestryRecipes();
 
+        // Debugging nanochip assembly complex: Add recipes for crystalprocessor line
+        Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
+            ? FluidRegistry.getFluid("molten.indalloy140")
+            : FluidRegistry.getFluid("molten.solderingalloy");
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Circuit_Board_Multifiberglass_Elite.get(1L),
+                ItemList.Circuit_Chip_CrystalCPU.get(1L),
+                ItemList.Circuit_Chip_NanoCPU.get(2L),
+                ItemList.Circuit_Parts_CapacitorASMD.get(6),
+                ItemList.Circuit_Parts_TransistorASMD.get(6),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 8))
+            .itemOutputs(ItemList.Circuit_Crystalprocessor.get(1L))
+            .fluidInputs(new FluidStack(solderIndalloy, 72))
+            .requiresCleanRoom()
+            .duration(5 * SECONDS)
+            .eut(9600)
+            .addTo(circuitAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Circuit_Board_Multifiberglass_Elite.get(1L),
+                ItemList.Circuit_Crystalprocessor.get(2L),
+                ItemList.Circuit_Parts_InductorASMD.get(6L),
+                ItemList.Circuit_Parts_CapacitorASMD.get(8L),
+                ItemList.Circuit_Chip_Ram.get(24),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 16))
+            .itemOutputs(ItemList.Circuit_Crystalcomputer.get(1L))
+            .fluidInputs(new FluidStack(solderIndalloy, 144))
+            .requiresCleanRoom()
+            .duration(10 * SECONDS)
+            .eut(9600)
+            .addTo(circuitAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Circuit_Board_Multifiberglass_Elite.get(1L),
+                ItemList.Circuit_Crystalcomputer.get(2L),
+                ItemList.Circuit_Chip_Ram.get(4L),
+                ItemList.Circuit_Chip_NOR.get(32L),
+                ItemList.Circuit_Chip_NAND.get(64L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 32))
+            .itemOutputs(ItemList.Circuit_Ultimatecrystalcomputer.get(1L))
+            .fluidInputs(new FluidStack(solderIndalloy, 144))
+            .requiresCleanRoom()
+            .duration(20 * SECONDS)
+            .eut(9600)
+            .addTo(circuitAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 2),
+                ItemList.Circuit_Ultimatecrystalcomputer.get(2L),
+                ItemList.Circuit_Parts_InductorASMD.get(8L),
+                ItemList.Circuit_Parts_CapacitorASMD.get(16L),
+                ItemList.Circuit_Chip_Ram.get(32L),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 16))
+            .itemOutputs(ItemList.Circuit_Crystalmainframe.get(1L))
+            .fluidInputs(new FluidStack(solderIndalloy, 288))
+            .requiresCleanRoom()
+            .duration(40 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(circuitAssemblerRecipes);
     }
 
     public void registerRailcraftRecipes() {
