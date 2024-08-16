@@ -221,6 +221,15 @@ public class RecipeHandlers {
         // This is a good thing, it means we can deal with unmodified circuit assembler recipes here and don't have to
         // worry about the CAL recipe transformation code at all.
 
+        // Before we do anything, find the output item, so we can check if this recipe should be touched at all
+        ItemStack realOutput = builder.getItemOutput(0);
+        GT_Utility.ItemId id = GT_Utility.ItemId.createNoCopy(realOutput);
+        CircuitComponent outputComponent = CircuitComponent.realCircuitToComponent.get(id);
+        if (outputComponent == null) {
+            // Not a nanochip assembly recipe because it has no matching fake circuit, return empty list
+            return Collections.emptyList();
+        }
+
         // Grab a copy of the item input list
         ArrayList<ItemStack> itemInputs = new ArrayList<>(Arrays.asList(builder.getItemInputsBasic()));
 
@@ -246,19 +255,10 @@ public class RecipeHandlers {
             ItemStack fakeInputStack = componentInput.getFakeStack(input.stackSize);
             itemInputs.set(i, fakeInputStack);
         }
-        // Now find the correct output item for this circuit, we can do this using the populated conversion map
-        ItemStack realOutput = builder.getItemOutput(0);
-        GT_Utility.ItemId id = GT_Utility.ItemId.createNoCopy(realOutput);
-        CircuitComponent outputComponent = CircuitComponent.realCircuitToComponent.get(id);
-        if (outputComponent != null) {
-            // If we have an output component, then we should generate an assembly matrix recipe for this recipe
-            // TODO: Move this check WAY up to avoid unnecessary work
-            ItemStack fakeOutput = outputComponent.getFakeStack(realOutput.stackSize);
-            return builder.itemInputs(itemInputs.toArray(new ItemStack[] {}))
-                .itemOutputs(fakeOutput)
-                .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
-        }
-        // Not a nanochip assembly recipe because it has no matching fake circuit, return empty list
-        return Collections.emptyList();
+
+        ItemStack fakeOutput = outputComponent.getFakeStack(realOutput.stackSize);
+        return builder.itemInputs(itemInputs.toArray(new ItemStack[] {}))
+            .itemOutputs(fakeOutput)
+            .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
     });
 }
