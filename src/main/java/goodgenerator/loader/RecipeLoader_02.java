@@ -4,7 +4,9 @@ import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemC
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.neutronActivatorRecipes;
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
 import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
-import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
@@ -244,7 +246,7 @@ public class RecipeLoader_02 {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hatch_Output_IV.get(1),
-                GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 440),
+                GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiPart", 1, 440),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CertusQuartz, 8),
                 GT_Utility.getIntegratedCircuit(1))
             .fluidInputs(Materials.Plastic.getMolten(144))
@@ -344,7 +346,7 @@ public class RecipeLoader_02 {
                 ItemList.Electric_Pump_HV.get(8),
                 ItemList.Quantum_Tank_LV.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmium, 8),
-                GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 6),
+                GT_ModHandler.getModItem(GalacticraftMars.ID, "item.null", 1L, 6),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polycaprolactam, 32))
             .fluidInputs(new FluidStack(solderIndalloy, 2304), Materials.Lubricant.getFluid(4000))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T3.get(1))
@@ -360,7 +362,7 @@ public class RecipeLoader_02 {
                 ItemList.Electric_Pump_EV.get(8),
                 ItemList.Quantum_Tank_LV.get(4),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Europium, 8),
-                GT_ModHandler.getModItem("GalacticraftMars", "item.null", 4L, 6),
+                GT_ModHandler.getModItem(GalacticraftMars.ID, "item.null", 4L, 6),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.StyreneButadieneRubber, 64),
                 GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.TungstenSteel, 64))
             .fluidInputs(new FluidStack(solderIndalloy, 18432), Materials.Lubricant.getFluid(16000))
@@ -377,7 +379,7 @@ public class RecipeLoader_02 {
                 ItemList.Electric_Pump_IV.get(8),
                 ItemList.Quantum_Tank_HV.get(8),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 8),
-                GT_ModHandler.getModItem("GalacticraftMars", "item.null", 16L, 6),
+                GT_ModHandler.getModItem(GalacticraftMars.ID, "item.null", 16L, 6),
                 GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Polycaprolactam, 24),
                 GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Titanium, 64))
             .fluidInputs(
@@ -398,7 +400,7 @@ public class RecipeLoader_02 {
                 ItemList.Quantum_Tank_EV.get(16),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 16),
-                GT_ModHandler.getModItem("GalacticraftMars", "item.null", 64L, 6),
+                GT_ModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Machine_IV_Compressor.get(64))
             .fluidInputs(
                 Materials.Draconium.getMolten(2304),
@@ -413,9 +415,9 @@ public class RecipeLoader_02 {
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T6.get(1))
             .metadata(RESEARCH_TIME, 4 * HOURS + 30 * MINUTES)
             .itemInputs(
-                GT_ModHandler.getModItem("GalacticraftMars", "item.null", 64L, 6),
+                GT_ModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_ZPM.get(8),
-                GT_ModHandler.getModItem("Avaritia", "Neutronium_Compressor", 1L, 0),
+                GT_ModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 1L, 0),
                 ItemList.Quantum_Tank_EV.get(32),
                 GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 8),
                 GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.InfinityCatalyst, 8),
@@ -433,9 +435,9 @@ public class RecipeLoader_02 {
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T7.get(1))
             .metadata(RESEARCH_TIME, 9 * HOURS)
             .itemInputs(
-                GT_ModHandler.getModItem("GalacticraftMars", "item.null", 64L, 6),
+                GT_ModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UV.get(8),
-                GT_ModHandler.getModItem("Avaritia", "Neutronium_Compressor", 2L, 0),
+                GT_ModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 2L, 0),
                 ItemList.Quantum_Tank_EV.get(64),
                 GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Infinity, 24),
@@ -453,9 +455,9 @@ public class RecipeLoader_02 {
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T8.get(1))
             .metadata(RESEARCH_TIME, 180 * HOURS)
             .itemInputs(
-                GT_ModHandler.getModItem("GalacticraftMars", "item.null", 64L, 6),
+                GT_ModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UHV.get(8),
-                GT_ModHandler.getModItem("Avaritia", "Neutronium_Compressor", 2L, 0),
+                GT_ModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 2L, 0),
                 ItemList.Quantum_Tank_IV.get(8),
                 GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 32),
                 GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Infinity, 36),
@@ -474,9 +476,9 @@ public class RecipeLoader_02 {
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T9.get(1))
             .metadata(RESEARCH_TIME, 360 * HOURS)
             .itemInputs(
-                GT_ModHandler.getModItem("GalacticraftMars", "item.null", 64L, 6),
+                GT_ModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UEV.get(8),
-                GT_ModHandler.getModItem("Avaritia", "Neutronium_Compressor", 4L, 0),
+                GT_ModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 4L, 0),
                 ItemList.Quantum_Tank_IV.get(16),
                 GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 32),
                 GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.CosmicNeutronium, 24),
@@ -1194,7 +1196,7 @@ public class RecipeLoader_02 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T1.get(2),
-                    GT_ModHandler.getModItem("dreamcraft", "item.EngravedDiamondCrystalChip", 8),
+                    GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedDiamondCrystalChip", 8),
                     ItemList.Circuit_Chip_NAND.get(16),
                     GT_ModHandler.getIC2Item("reactorVentCore", 1L, 1))
                 .itemOutputs(ItemRefer.HiC_T2.get(1))
@@ -1211,7 +1213,7 @@ public class RecipeLoader_02 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T1.get(2),
-                    GT_ModHandler.getModItem("dreamcraft", "item.EngravedDiamondCrystalChip", 8),
+                    GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedDiamondCrystalChip", 8),
                     ItemList.Circuit_Chip_NAND.get(16),
                     GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Aluminium, 2))
                 .itemOutputs(ItemRefer.HiC_T2.get(1))
@@ -1262,7 +1264,7 @@ public class RecipeLoader_02 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T3.get(2),
-                    GT_ModHandler.getModItem("dreamcraft", "item.EngravedEnergyChip", 8),
+                    GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedEnergyChip", 8),
                     ItemList.Circuit_Chip_QuantumCPU.get(16),
                     GT_ModHandler.getIC2Item("reactorVentGold", 1L, 1))
                 .itemOutputs(ItemRefer.HiC_T4.get(1))
@@ -1279,7 +1281,7 @@ public class RecipeLoader_02 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T3.get(2),
-                    GT_ModHandler.getModItem("dreamcraft", "item.EngravedEnergyChip", 8),
+                    GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedEnergyChip", 8),
                     ItemList.Circuit_Chip_QuantumCPU.get(16),
                     GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.EnergeticAlloy, 2))
                 .itemOutputs(ItemRefer.HiC_T4.get(1))
@@ -1296,7 +1298,7 @@ public class RecipeLoader_02 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T4.get(2),
-                    GT_ModHandler.getModItem("dreamcraft", "item.EngravedManyullynCrystalChip", 8),
+                    GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedManyullynCrystalChip", 8),
                     ItemList.Circuit_Chip_BioCPU.get(1),
                     Ic2Items.reactorVentSpread)
                 .itemOutputs(ItemRefer.HiC_T5.get(1))
@@ -1313,7 +1315,7 @@ public class RecipeLoader_02 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T4.get(2),
-                    GT_ModHandler.getModItem("dreamcraft", "item.EngravedManyullynCrystalChip", 8),
+                    GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedManyullynCrystalChip", 8),
                     ItemList.Circuit_Chip_BioCPU.get(1),
                     GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenCarbide, 2))
                 .itemOutputs(ItemRefer.HiC_T5.get(1))
@@ -1510,10 +1512,7 @@ public class RecipeLoader_02 {
 
         // Compact MK4 Fusion Coil
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "gtplusplus.blockcasings.3", 3, 13),
-                ItemRefer.HiC_T5.get(1),
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "item.itemBufferCore4", 1))
+            .itemInputs(GregtechItemList.Casing_Fusion_Internal.get(3), ItemRefer.HiC_T5.get(1), CI.getEnergyCore(4, 1))
             .itemOutputs(ItemRefer.Compact_Fusion_Coil_T3.get(1))
             .fluidInputs(
                 FluidRegistry.getFluidStack("molten.energycrystal", 1152),
