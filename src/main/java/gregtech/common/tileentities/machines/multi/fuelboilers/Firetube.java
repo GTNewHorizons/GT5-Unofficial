@@ -257,7 +257,9 @@ public class Firetube extends FueledBoiler<Firetube> implements ISurvivalConstru
         if (!checkPiece(MAIN_PIECE_NAME, X_OFFSET, Y_OFFSET, Z_OFFSET)) return false;
         if (mOutputHatches.size() != 1) return false;
         if (mInputHatches.size() != 2) return false;
+
         // TODO: check for glass amount
+        return true;
     }
 
     @Override
