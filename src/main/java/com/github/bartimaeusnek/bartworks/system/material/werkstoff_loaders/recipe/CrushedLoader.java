@@ -40,7 +40,6 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 
-import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
@@ -253,8 +252,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                     werkstoff.getOreByProduct(1, dust),
                     GT_OreDictUnificator.get(dust, Materials.Stone, 1L))
                 .outputChances(10000, 7000, 4000)
-                .fluidInputs(
-                    Materials.SodiumPersulfate.getFluid(GT_Mod.gregtechproxy.mDisableOldChemicalRecipes ? 1000L : 100L))
+                .fluidInputs(Materials.SodiumPersulfate.getFluid(100L))
                 .duration(40 * SECONDS)
                 .eut(8)
                 .addTo(chemicalBathRecipes);
