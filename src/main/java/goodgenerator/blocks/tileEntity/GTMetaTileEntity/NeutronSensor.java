@@ -235,11 +235,6 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
         final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
