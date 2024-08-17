@@ -46,11 +46,6 @@ public class GT_MetaTileEntity_MagHatch extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
             new SlotWidget(inventoryHandler, 0)
