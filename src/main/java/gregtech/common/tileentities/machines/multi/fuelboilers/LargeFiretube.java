@@ -7,12 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import appeng.api.definitions.IBlocks;
 import appeng.core.Api;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -24,25 +19,13 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.CrossAxisAlignment;
-import com.gtnewhorizons.modularui.api.math.Size;
-import com.gtnewhorizons.modularui.api.screen.IWindowCreator;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.*;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -255,101 +238,8 @@ public class LargeFiretube extends FueledBoiler<LargeFiretube> implements ISurvi
     }
 
     @Override
-    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {
-        // We set these manually
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        buildContext.addSyncedWindow(10, this.createMonitorWindow);
-        builder.widget(
-            new ButtonWidget().setOnClick(
-                (clickData, widget) -> {
-                    if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(10);
-                })
-                .setSize(16, 16)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
-                    // TODO: some flame texture? or steam?
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
-                    return ret.toArray(new IDrawable[0]);
-                })
-                .addTooltip("Boiler Monitor")
-                .setPos(174, 130));
-    }
-
-    private final IWindowCreator createMonitorWindow = (EntityPlayer ignored) -> {
-        final int pBarOffset = 30;
-        final int pBarPad = 10;
-        final ModularWindow.Builder b = ModularWindow.builder(190, 50);
-        b.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        b.setGuiTint(getGUIColorization());
-
-        b.widget(new TextWidget("Boiler Monitor").setPos(5, 5));
-        b.widget(
-            ButtonWidget.closeWindowButton(true)
-                .setPos(185, 3));
-        b.widget(
-            new DynamicPositionedColumn().setSynced(false)
-                .widget(
-                    new MultiChildWidget().addChild(new TextWidget("Water"))
-                        .addChild(
-                            new ProgressBar().setProgress(() -> water / waterMax)
-                                .setDirection(ProgressBar.Direction.RIGHT)
-                                .setTexture(
-                                    GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM_R90
-                                        .get(tier == 1 ? SteamVariant.BRONZE : SteamVariant.STEEL),
-                                    GT_UITextures.PROGRESSBAR_BOILER_WATER_R90,
-                                    54)
-                                .setPos(pBarOffset, 0)
-                                .setSizeProvider(
-                                    (screenSize, window,
-                                        parent) -> new Size(window.getSize().width - pBarOffset - pBarPad, 10))))
-                .widget(
-                    new MultiChildWidget().addChild(new TextWidget("Heat"))
-                        .addChild(
-                            new ProgressBar().setProgress(() -> heat / heatMax)
-                                .setDirection(ProgressBar.Direction.RIGHT)
-                                .setTexture(
-                                    GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM_R90
-                                        .get(tier == 1 ? SteamVariant.BRONZE : SteamVariant.STEEL),
-                                    GT_UITextures.PROGRESSBAR_BOILER_HEAT_R90,
-                                    54)
-                                .setPos(pBarOffset, 0)
-                                .setSizeProvider(
-                                    (screenSize, window,
-                                        parent) -> new Size(window.getSize().width - pBarOffset - pBarPad, 10))))
-                .widget(
-                    new MultiChildWidget().addChild(new TextWidget("Steam"))
-                        .addChild(
-                            new ProgressBar().setProgress(() -> steam / steamMax)
-                                .setDirection(ProgressBar.Direction.RIGHT)
-                                .setTexture(
-                                    GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM_R90
-                                        .get(tier == 1 ? SteamVariant.BRONZE : SteamVariant.STEEL),
-                                    GT_UITextures.PROGRESSBAR_BOILER_STEAM_R90,
-                                    54)
-                                .setPos(pBarOffset, 0)
-                                .setSizeProvider(
-                                    (screenSize, window,
-                                        parent) -> new Size(window.getSize().width - pBarOffset - pBarPad, 10))))
-                .setAlignment(CrossAxisAlignment.END)
-                .setPos(5, 15));
-
-        return b.build();
-    };
-
-    private boolean addHatchWithRecipeMap(IGregTechTileEntity te, int baseCasingIndex, RecipeMap<?> map) {
-        if (te == null) return false;
-        final IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte instanceof final GT_MetaTileEntity_Hatch_Input hatch) {
-            hatch.updateTexture(baseCasingIndex);
-            hatch.mRecipeMap = map;
-            return mInputHatches.add(hatch);
-        }
-        return false;
+    protected int getEut(int eul) {
+        // EU/t is (heatBoost / 25) * 32 EU/t * 2^tier
+        return getHeatBoost(eul) / 25 * (1 << (5 + tier));
     }
 }
