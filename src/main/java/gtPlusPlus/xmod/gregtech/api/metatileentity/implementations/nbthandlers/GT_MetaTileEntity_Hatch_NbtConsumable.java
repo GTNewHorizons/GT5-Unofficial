@@ -246,7 +246,7 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
     /**
      * Items that get compared when checking for Usage Slot validity. Can return an empty map if
      * isItemValidForUsageSlot() is overridden.
-     * 
+     *
      * @return
      */
     public abstract AutoMap<ItemStack> getItemsValidForUsageSlots();
@@ -254,7 +254,7 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
     /**
      * Checks if the given item is valid for Usage Slots. Can be overridden for easier handling if you already have
      * methods to check this.
-     * 
+     *
      * @param aStack
      * @return
      */
@@ -267,11 +267,6 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
             }
         }
         return false;
-    }
-
-    @Override
-    public boolean useModularUI() {
-        return true;
     }
 
     @Override

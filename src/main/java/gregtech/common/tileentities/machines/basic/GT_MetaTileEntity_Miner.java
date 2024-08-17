@@ -395,11 +395,6 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
         return pipe;
     }
 
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
     private static final FallbackableUITexture progressBarTexture = GT_UITextures
         .fallbackableProgressbar("miner", GT_UITextures.PROGRESSBAR_CANNER);
 

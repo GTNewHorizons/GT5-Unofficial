@@ -11,6 +11,7 @@ import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -385,7 +386,7 @@ public class RecipeLoader_Nuclear {
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(11),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 1))
-            .itemOutputs()
+            .itemOutputs(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1))
             .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid", 400))
             .fluidOutputs(aHydrogenChloride)
             .eut(500)
@@ -416,6 +417,14 @@ public class RecipeLoader_Nuclear {
             .duration(6 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
 
+        GT_Values.RA.stdBuilder()
+            .itemInputs(FLUORIDES.BERYLLIUM_HYDROXIDE.getDust(3), CI.getNumberedAdvancedCircuit(17))
+            .fluidInputs(FLUORIDES.AMMONIUM_BIFLUORIDE.getFluidStack(1152))
+            .fluidOutputs(Materials.Water.getFluid(2000L), FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1000))
+            .eut(TierEU.RECIPE_MV)
+            .duration(5 * MINUTES)
+            .addTo(multiblockChemicalReactorRecipes);
+
         // (NH4)2BeF4 → 2 NH3 + 2 HF + BeF2
         // Ammonium tetrafluoroberyllate uses fluid rule because it is not a molten form of a solid
         // Beryllium fluoride uses solid rule
@@ -431,6 +440,17 @@ public class RecipeLoader_Nuclear {
             .eut(TierEU.RECIPE_MV)
             .duration(5 * MINUTES)
             .addTo(chemicalDehydratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(CI.getNumberedAdvancedCircuit(17))
+            .itemOutputs(FLUORIDES.BERYLLIUM_FLUORIDE.getDust(3))
+            .fluidInputs(FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1000))
+            .fluidOutputs(
+                MISC_MATERIALS.AMMONIA.getFluidStack(2000),
+                FluidUtils.getFluidStack("hydrofluoricacid", 1000))
+            .eut(TierEU.RECIPE_MV)
+            .duration(5 * MINUTES)
+            .addTo(multiblockChemicalReactorRecipes);
     }
 
     private static void electroMagneticSeperator() {
@@ -534,7 +554,7 @@ public class RecipeLoader_Nuclear {
                 new FluidStack(ELEMENT.getInstance().NEON.getPlasma(), 144),
                 Materials.Bedrockium.getMolten(144))
             .fluidOutputs(new FluidStack(ELEMENT.STANDALONE.FORCE.getPlasma(), 1000))
-            .duration(3 * SECONDS + 4 * TICKS)
+            .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .metadata(FUSION_THRESHOLD, 100_000_000)
             .addTo(fusionRecipes);
@@ -589,10 +609,10 @@ public class RecipeLoader_Nuclear {
 
         GT_Values.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(ELEMENT.STANDALONE.ADVANCED_NITINOL.getPlasma(), 144),
+                new FluidStack(ELEMENT.STANDALONE.ADVANCED_NITINOL.getPlasma(), 72),
                 Materials.Tartarite.getMolten(2))
             .fluidOutputs(new FluidStack(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 1000))
-            .duration(16 * TICKS)
+            .duration(8 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .metadata(FUSION_THRESHOLD, 500_000_000)
             .addTo(fusionRecipes);

@@ -18,7 +18,6 @@ import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.NOBLE_GAS;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.fluids;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.molten;
-import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.TickTime.TICK;
 
@@ -43,7 +42,6 @@ import com.github.bartimaeusnek.bartworks.API.recipe.DynamicGTRecipe;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
-import com.github.bartimaeusnek.bartworks.util.StreamUtils;
 import com.github.bartimaeusnek.bartworks.util.log.DebugLog;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import com.google.common.collect.ArrayListMultimap;
@@ -105,24 +103,8 @@ public class StaticRecipeChangeLoaders {
         editRecipes(toChange, getNoGasItems(toChange));
     }
 
-    public static void fixEnergyRequirements() {
-        RecipeMap.ALL_RECIPE_MAPS.values()
-            .stream()
-            .filter(StreamUtils::filterVisualMaps)
-            .forEach(
-                recipeMap -> recipeMap.getAllRecipes()
-                    .parallelStream()
-                    .forEach(gt_recipe -> {
-                        for (int i = 0; i < VN.length - 1; i++) {
-                            if (gt_recipe.mEUt > BW_Util.getMachineVoltageFromTier(i)
-                                && gt_recipe.mEUt <= BW_Util.getTierVoltage(i)) {
-                                gt_recipe.mEUt = BW_Util.getMachineVoltageFromTier(i);
-                            }
-                        }
-                    }));
-    }
-
     public static void unificationRecipeEnforcer() {
+        List<GT_Recipe> toRemove = new ArrayList<>();
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             StaticRecipeChangeLoaders.runMaterialLinker(werkstoff);
             if (werkstoff.getGenerationFeatures().enforceUnification) {
@@ -142,7 +124,7 @@ public class StaticRecipeChangeLoaders {
                             || replacement == null
                             || replacement.getItem() == null) continue;
                         for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
-                            List<GT_Recipe> toRemove = new ArrayList<>();
+                            toRemove.clear();
                             nextRecipe: for (GT_Recipe recipe : map.getAllRecipes()) {
                                 boolean removal = map.equals(RecipeMaps.fluidExtractionRecipes)
                                     || map.equals(RecipeMaps.fluidSolidifierRecipes);

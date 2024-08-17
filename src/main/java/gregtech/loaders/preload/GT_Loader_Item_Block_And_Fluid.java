@@ -53,6 +53,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings1;
 import gregtech.common.blocks.GT_Block_Casings10;
+import gregtech.common.blocks.GT_Block_Casings11;
 import gregtech.common.blocks.GT_Block_Casings2;
 import gregtech.common.blocks.GT_Block_Casings3;
 import gregtech.common.blocks.GT_Block_Casings4;
@@ -62,14 +63,18 @@ import gregtech.common.blocks.GT_Block_Casings8;
 import gregtech.common.blocks.GT_Block_Casings9;
 import gregtech.common.blocks.GT_Block_Concretes;
 import gregtech.common.blocks.GT_Block_Drone;
+import gregtech.common.blocks.GT_Block_Glass1;
 import gregtech.common.blocks.GT_Block_Granites;
+import gregtech.common.blocks.GT_Block_Laser;
 import gregtech.common.blocks.GT_Block_Machines;
 import gregtech.common.blocks.GT_Block_Metal;
 import gregtech.common.blocks.GT_Block_Ores;
 import gregtech.common.blocks.GT_Block_Reinforced;
 import gregtech.common.blocks.GT_Block_Stones;
+import gregtech.common.blocks.GT_Block_TintedIndustrialGlass;
 import gregtech.common.blocks.GT_Cyclotron_Coils;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.GT_WormholeRenderBlock;
 import gregtech.common.items.GT_DepletetCell_Item;
 import gregtech.common.items.GT_FluidDisplayItem;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
@@ -82,7 +87,10 @@ import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.GT_NeutronReflector_Item;
 import gregtech.common.items.GT_TierDrone;
 import gregtech.common.items.GT_VolumetricFlask;
+import gregtech.common.items.GT_WirelessHeadphones;
 import gregtech.common.tileentities.render.TileDrone;
+import gregtech.common.tileentities.render.TileLaser;
+import gregtech.common.tileentities.render.TileWormhole;
 
 public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
@@ -153,6 +161,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         new GT_MetaGenerated_Item_99();
         new GT_MetaGenerated_Tool_01();
         new GT_FluidDisplayItem();
+        new GT_WirelessHeadphones();
 
         // Tiered recipe materials actually appear to be set in GT_MetaTileEntity_BasicMachine_GT_Recipe, making these
         // unused
@@ -538,12 +547,18 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockCasings8 = new GT_Block_Casings8();
         GregTech_API.sBlockCasings9 = new GT_Block_Casings9();
         GregTech_API.sBlockCasings10 = new GT_Block_Casings10();
+        GregTech_API.sBlockCasings11 = new GT_Block_Casings11();
         GregTech_API.sBlockGranites = new GT_Block_Granites();
         GregTech_API.sBlockLongDistancePipes = new GT_Block_LongDistancePipe();
         GregTech_API.sBlockConcretes = new GT_Block_Concretes();
         GregTech_API.sBlockStones = new GT_Block_Stones();
         GregTech_API.sBlockOres1 = new GT_Block_Ores();
         GregTech_API.sDroneRender = new GT_Block_Drone();
+        GregTech_API.sBlockGlass1 = new GT_Block_Glass1();
+        GregTech_API.sBlockTintedGlass = new GT_Block_TintedIndustrialGlass();
+        GregTech_API.sLaserRender = new GT_Block_Laser();
+        GregTech_API.sWormholeRender = new GT_WormholeRenderBlock();
+
         // meta ID order, DO NOT CHANGE ORDER
 
         GregTech_API.sBlockMetal1 = new GT_Block_Metal(
@@ -669,6 +684,12 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GT_Log.out.println("GT_Mod: Registering the DroneRender.");
         GameRegistry.registerTileEntity(TileDrone.class, "DroneRender");
+
+        GT_Log.out.println("GT_Mod: Registering the LaserRender.");
+        GameRegistry.registerTileEntity(TileLaser.class, "LaserRenderer");
+
+        GT_Log.out.println("GT_Mod: Registering the WormholeRender.");
+        GameRegistry.registerTileEntity(TileWormhole.class, "WormholeRender");
 
         GT_Log.out.println("GT_Mod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");

@@ -5,16 +5,25 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.Nullable;
+
+import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.GT_Mod;
+import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.widgets.GT_PhantomItemButton;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -22,7 +31,12 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
 
-public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch implements IAddUIWidgets {
+public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch implements IAddUIWidgets, IItemLockable {
+
+    private static final String DATA_STICK_DATA_TYPE = "outputBusFilter";
+    private static final String LOCKED_ITEM_NBT_KEY = "lockedItem";
+
+    protected ItemStack lockedItem = null;
 
     public GT_MetaTileEntity_Hatch_OutputBus(int aID, String aName, String aNameRegional, int aTier) {
         this(aID, aName, aNameRegional, aTier, getSlots(aTier));
@@ -37,7 +51,9 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
             slots,
             ArrayExt.of(
                 "Item Output for Multiblocks",
-                "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : "")));
+                "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : ""),
+                "Left click with data stick to save filter config",
+                "Right click with data stick to load filter config"));
     }
 
     public GT_MetaTileEntity_Hatch_OutputBus(int aID, String aName, String aNameRegional, int aTier,
@@ -48,13 +64,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
     public GT_MetaTileEntity_Hatch_OutputBus(int aID, String aName, String aNameRegional, int aTier,
         String[] aDescription, int inventorySize) {
         super(aID, aName, aNameRegional, aTier, inventorySize, aDescription);
-    }
-
-    @Deprecated
-    // having too many constructors is bad, don't be so lazy, use GT_MetaTileEntity_Hatch_OutputBus(String, int,
-    // String[], ITexture[][][])
-    public GT_MetaTileEntity_Hatch_OutputBus(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        this(aName, aTier, getSlots(aTier), ArrayExt.of(aDescription), aTextures);
     }
 
     public GT_MetaTileEntity_Hatch_OutputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -107,8 +116,52 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        if (!acceptsItemLock() || !(aPlayer instanceof EntityPlayerMP)) {
+            GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            return super.onRightclick(aBaseMetaTileEntity, aPlayer);
+        }
+
+        final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            return super.onRightclick(aBaseMetaTileEntity, aPlayer);
+        }
+
+        if (!dataStick.hasTagCompound() || !DATA_STICK_DATA_TYPE.equals(dataStick.stackTagCompound.getString("type"))) {
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.output_bus.invalid"));
+            return false;
+        }
+
+        final NBTTagCompound nbt = dataStick.stackTagCompound;
+        if (nbt.hasKey(LOCKED_ITEM_NBT_KEY)) {
+            lockedItem = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag(LOCKED_ITEM_NBT_KEY));
+        } else {
+            lockedItem = null;
+        }
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.output_bus.loaded"));
         return true;
+
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!acceptsItemLock() || !(aPlayer instanceof EntityPlayerMP)) {
+            return;
+        }
+        final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            return;
+        }
+
+        final NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setString("type", DATA_STICK_DATA_TYPE);
+        if (lockedItem != null) {
+            nbt.setTag(LOCKED_ITEM_NBT_KEY, lockedItem.writeToNBT(new NBTTagCompound()));
+        }
+
+        dataStick.stackTagCompound = nbt;
+        dataStick.setStackDisplayName("Output Bus Configuration");
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.output_bus.saved"));
     }
 
     /**
@@ -121,6 +174,11 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
      */
     public boolean storeAll(ItemStack aStack) {
         markDirty();
+
+        if (lockedItem != null && !lockedItem.isItemEqual(aStack)) {
+            return false;
+        }
+
         for (int i = 0, mInventoryLength = mInventory.length; i < mInventoryLength && aStack.stackSize > 0; i++) {
             ItemStack tSlot = mInventory[i];
             if (GT_Utility.isStackInvalid(tSlot)) {
@@ -186,8 +244,19 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        if (lockedItem != null) {
+            aNBT.setTag(LOCKED_ITEM_NBT_KEY, lockedItem.writeToNBT(new NBTTagCompound()));
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey(LOCKED_ITEM_NBT_KEY)) {
+            lockedItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(LOCKED_ITEM_NBT_KEY));
+        }
     }
 
     @Override
@@ -198,5 +267,41 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
             case 2 -> getBaseMetaTileEntity().add3by3Slots(builder);
             default -> getBaseMetaTileEntity().add4by4Slots(builder);
         }
+
+        if (acceptsItemLock()) {
+            builder.widget(
+                new GT_PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
+                    .setBackground(GT_PhantomItemButton.FILTER_BACKGROUND));
+        }
+    }
+
+    @Override
+    public void setLockedItem(@Nullable ItemStack itemStack) {
+        if (itemStack == null) {
+            clearLock();
+        } else {
+            lockedItem = ItemHandlerHelper.copyStackWithSize(itemStack, 1);
+        }
+    }
+
+    @Nullable
+    @Override
+    public ItemStack getLockedItem() {
+        return lockedItem;
+    }
+
+    @Override
+    public void clearLock() {
+        lockedItem = null;
+    }
+
+    @Override
+    public boolean isLocked() {
+        return lockedItem != null;
+    }
+
+    @Override
+    public boolean acceptsItemLock() {
+        return true;
     }
 }

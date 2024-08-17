@@ -107,6 +107,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -373,7 +374,7 @@ public class GT_MetaTileEntity_ExtremeEntityCrusher
     @SideOnly(Side.CLIENT)
     @Override
     public void HandleCustomPacket(CustomTileEntityPacket message) {
-        if (message.getDataBoolean()) {
+        if (message.getDataBoolean() && Mods.MobsInfo.isModLoaded()) {
             renderEntity = true;
             String mobType = message.getDataString();
             MobHandlerLoader.MobEECRecipe r = MobHandlerLoader.recipeMap.get(mobType);

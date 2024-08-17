@@ -1,8 +1,6 @@
 package gregtech.api;
 
 import static gregtech.api.enums.GT_Values.B;
-import static gregtech.api.enums.GT_Values.L;
-import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 
 import java.util.ArrayList;
@@ -95,16 +93,6 @@ import gregtech.common.items.GT_IntegratedCircuit_Item;
 public class GregTech_API {
 
     /**
-     * @deprecated Use {@link GT_Values#M}
-     */
-    @Deprecated
-    public static final long MATERIAL_UNIT = M;
-    /**
-     * @deprecated Use {@link GT_Values#L}
-     */
-    @Deprecated
-    public static final long FLUID_MATERIAL_UNIT = L;
-    /**
      * Fixes the HashMap Mappings for ItemStacks once the Server started
      * <br>
      * <br>
@@ -152,7 +140,8 @@ public class GregTech_API {
      * 14001 - 14100 are reserved for glowredman.
      * 14101 - 14200 are reserved for MuXiu1997.
      * 14201 - 14300 are reserved for kuba6000.
-     * 14301 - 14999 are currently free.
+     * 14301 - 14400 are reserved for eigenraven.
+     * 14401 - 14999 are currently free.
      * 15000 - 16999 are reserved for TecTech.
      * 17000 - 29999 are currently free.
      * 30000 - 31999 are reserved for Alkalus.
@@ -294,9 +283,13 @@ public class GregTech_API {
         sBlockMetal9, sBlockGem1, sBlockGem2, sBlockGem3, sBlockReinforced;
     public static Block sBlockGranites, sBlockConcretes, sBlockStones;
     public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4, sBlockCasings5, sBlockCasings6,
-        sBlockCasings8, sBlockCasings9, sBlockCasings10, sSolenoidCoilCasings;
+        sBlockCasings8, sBlockCasings9, sBlockCasings10, sBlockCasings11, sSolenoidCoilCasings;
     public static Block sBlockLongDistancePipes;
     public static Block sDroneRender;
+    public static Block sBlockGlass1;
+    public static Block sBlockTintedGlass;
+    public static Block sLaserRender;
+    public static Block sWormholeRender;
     /**
      * Getting assigned by the Config
      */
@@ -306,16 +299,6 @@ public class GregTech_API {
         sMachineRainExplosions = true, sMachineThunderExplosions = true, sMachineFireExplosions = true,
         sMachineWireFire = true, mOutputRF = false, mInputRF = false, meIOLoaded = false, mRFExplosions = false,
         mServerStarted = false;
-
-    @Deprecated
-    public static boolean mIC2Classic = false, mMagneticraft = false, mImmersiveEngineering = false,
-        mGTPlusPlus = false, mTranslocator = false, mTConstruct = false, mGalacticraft = false, mHodgepodge = false,
-        mAvaritia = false;
-    /**
-     * This is always set to true
-     */
-    @Deprecated
-    public boolean mAE2 = true;
 
     public static int mEUtoRF = 360, mRFtoEU = 20;
 
@@ -896,17 +879,6 @@ public class GregTech_API {
 
     /**
      * returns a Cover behavior, guaranteed to not return null after preload
-     */
-    @Deprecated
-    public static GT_CoverBehavior getCoverBehavior(ItemStack aStack) {
-        if (aStack == null || aStack.getItem() == null) return sNoBehavior;
-        GT_CoverBehaviorBase<?> rCover = sCoverBehaviors.get(new GT_ItemStack(aStack));
-        if (!(rCover instanceof GT_CoverBehavior)) return sDefaultBehavior;
-        return (GT_CoverBehavior) rCover;
-    }
-
-    /**
-     * returns a Cover behavior, guaranteed to not return null after preload
      *
      * @return The Cover behavior
      */
@@ -917,15 +889,6 @@ public class GregTech_API {
         rCover = sCoverBehaviors.get(new GT_ItemStack(aStack, true));
         if (rCover != null) return rCover;
         return sDefaultBehavior;
-    }
-
-    /**
-     * returns a Cover behavior, guaranteed to not return null
-     */
-    @Deprecated
-    public static GT_CoverBehavior getCoverBehavior(int aStack) {
-        if (aStack == 0) return sNoBehavior;
-        return getCoverBehavior(GT_Utility.intToStack(aStack));
     }
 
     /**

@@ -193,10 +193,6 @@ public final class CoverInfo {
         return getCoverBehavior().hasCoverGUI();
     }
 
-    public boolean useModularUI() {
-        return getCoverBehavior().useModularUI();
-    }
-
     public boolean letsItemsIn(int aSlot) {
         return getCoverBehavior().letsItemsIn(coverSide, coverID, coverData, aSlot, coveredTile.get());
     }

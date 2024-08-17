@@ -15,6 +15,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGE
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -22,8 +24,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -42,6 +42,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -180,7 +181,7 @@ public class GT_MetaTileEntity_HeatExchanger extends
     }
 
     @Override
-    @NotNull
+    @Nonnull
     public CheckRecipeResult checkProcessing() {
         if (mInputHotFluidHatch.getFluid() == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
@@ -191,9 +192,6 @@ public class GT_MetaTileEntity_HeatExchanger extends
         int shs_reduction_per_config = 150; // reduce threshold 150L/s per circuitry level (1-25)
         float steam_output_multiplier = 20f; // default: multiply output by 4 * 10 (boosted x5)
         float penalty = 0.0f; // penalty to apply to output based on circuitry level (1-25).
-        boolean do_lava = false;
-        boolean do_coolant = false;
-        boolean do_solarSalt = false;
 
         // Do we have an integrated circuit with a valid configuration?
         if (mInventory[1] != null && mInventory[1].getUnlocalizedName()
@@ -202,52 +200,38 @@ public class GT_MetaTileEntity_HeatExchanger extends
             if (circuit_config >= 1 && circuit_config <= 25) {
                 // If so, apply the penalty and reduce the threshold.
                 penalty = (circuit_config - 1) * penalty_per_config;
-                superheated_threshold -= (shs_reduction_per_config * (circuit_config - 1));
+                superheated_threshold -= shs_reduction_per_config * (circuit_config - 1);
             }
         }
+
         efficiency -= penalty;
 
-        // If we're working with lava, adjust the threshold and multipliers accordingly.
-        if (GT_ModHandler.isLava(mInputHotFluidHatch.getFluid())) {
-            steam_output_multiplier /= 5f; // lava is not boosted
-            superheated_threshold /= 4f; // unchanged
-            do_lava = true;
-        } else if (mInputHotFluidHatch.getFluid()
-            .isFluidEqual(FluidRegistry.getFluidStack("ic2hotcoolant", 1))) {
-                steam_output_multiplier /= 2f; // was boosted x2 on top of x5 -> total x10 ->
-                                               // nerf with this code back to 5x
-                superheated_threshold /= 5f; // 10x smaller since the Hot Things production in
-                                             // reactor is the same.
-                do_coolant = true;
-            } else if (mInputHotFluidHatch.getFluid()
-                .isFluidEqual(FluidRegistry.getFluidStack("molten.solarsalthot", 1))) {
-                    steam_output_multiplier *= 2.5f; // Solar Salt:Steam value is 5x higher than Hot
-                                                     // Coolant's value
-                    superheated_threshold /= 25f; // Given that, multiplier is 5x higher and
-                                                  // threshold is 5x lower
-                    do_solarSalt = true;
-                } else {
-                    // If we're working with neither, fail out
-                    superheated_threshold = 0;
-                    return CheckRecipeResultRegistry.NO_RECIPE;
-                }
+        var coolant = LHECoolantRegistry.getCoolant(
+            mInputHotFluidHatch.getFluid()
+                .getFluid());
 
-        superheated = fluidAmountToConsume >= superheated_threshold; // set the internal superheated flag if we have
-                                                                     // enough hot fluid. Used in the
-        // onRunningTick method.
-        fluidAmountToConsume = Math.min(fluidAmountToConsume, superheated_threshold * 2); // Don't consume too much hot
-                                                                                          // fluid per second
+        if (coolant == null) {
+            superheated_threshold = 0;
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        } else {
+            steam_output_multiplier *= coolant.steamMultiplier;
+            superheated_threshold *= coolant.superheatedThreshold;
+        }
+
+        // set the internal superheated flag if we have
+        // enough hot fluid. Used in the onRunningTick method.
+        superheated = fluidAmountToConsume >= superheated_threshold;
+
+        // Don't consume too much hot fluid per second
+        fluidAmountToConsume = Math.min(fluidAmountToConsume, superheated_threshold * 2);
+
         mInputHotFluidHatch.drain(fluidAmountToConsume, true);
+        mOutputColdFluidHatch.fill(coolant.getColdFluid(fluidAmountToConsume), true);
+
         this.mMaxProgresstime = 20;
         this.mEUt = (int) (fluidAmountToConsume * steam_output_multiplier * efficiency);
-        if (do_lava) {
-            mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("ic2pahoehoelava", fluidAmountToConsume), true);
-        } else if (do_coolant) {
-            mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("ic2coolant", fluidAmountToConsume), true);
-        } else {
-            mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("molten.solarsaltcold", fluidAmountToConsume), true);
-        }
         this.mEfficiencyIncrease = 80;
+
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 

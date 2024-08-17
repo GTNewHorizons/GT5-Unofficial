@@ -73,13 +73,6 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
                 "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : "")));
     }
 
-    @Deprecated
-    // having too many constructors is bad, don't be so lazy, use GT_MetaTileEntity_Hatch_InputBus(String, int,
-    // String[], ITexture[][][])
-    public GT_MetaTileEntity_Hatch_InputBus(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        this(aName, aTier, ArrayExt.of(aDescription), aTextures);
-    }
-
     public GT_MetaTileEntity_Hatch_InputBus(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         this(aName, aTier, getSlots(aTier) + 1, aDescription, aTextures);
     }
@@ -276,11 +269,6 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
         return getSlots(mTier);
     }
 
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
     private void addSortStacksButton(ModularWindow.Builder builder) {
         builder.widget(
             createToggleButton(
@@ -302,11 +290,18 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
         buildContext.addCloseListener(() -> uiButtonCount = 0);
         addSortStacksButton(builder);
         addOneStackLimitButton(builder);
-        switch (mTier) {
-            case 0 -> getBaseMetaTileEntity().add1by1Slot(builder);
-            case 1 -> getBaseMetaTileEntity().add2by2Slots(builder);
-            case 2 -> getBaseMetaTileEntity().add3by3Slots(builder);
-            default -> getBaseMetaTileEntity().add4by4Slots(builder);
+        // Remove one for ghost circuit slot
+        int slotCount = getSizeInventory();
+        if (allowSelectCircuit()) {
+            slotCount = slotCount - 1;
+        }
+        // We do this to decouple slot count from tier in here, since there is no reason to do so.
+        switch (slotCount) {
+            case 1 -> getBaseMetaTileEntity().add1by1Slot(builder);
+            case 4 -> getBaseMetaTileEntity().add2by2Slots(builder);
+            case 9 -> getBaseMetaTileEntity().add3by3Slots(builder);
+            case 16 -> getBaseMetaTileEntity().add4by4Slots(builder);
+            default -> {}
         }
     }
 

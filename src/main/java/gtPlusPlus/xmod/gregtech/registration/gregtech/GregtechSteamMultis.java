@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.ControllerSteamForgeHammer;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_SteamCentrifugeMulti;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_SteamCompressorMulti;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.MetaTileEntityIDs.Controller_SteamMaceratorMulti;
@@ -13,6 +14,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusOutput;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.GregtechMetaTileEntity_SteamCentrifuge;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.GregtechMetaTileEntity_SteamCompressor;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.GregtechMetaTileEntity_SteamForgeHammer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.GregtechMetaTileEntity_SteamMacerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.GregtechMetaTileEntity_SteamWasher;
 
@@ -42,6 +44,11 @@ public class GregtechSteamMultis {
                 Controller_SteamWasherMulti.ID,
                 "gtpp.multimachine.steam.washer",
                 "Steam Washer").getStackForm(1));
+        GregtechItemList.Controller_SteamForgeHammerMulti.set(
+            new GregtechMetaTileEntity_SteamForgeHammer(
+                ControllerSteamForgeHammer.ID,
+                "gtpp.multimachine.steam.forge.hammer",
+                "Steam Forge Hammer").getStackForm(1));
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
             new GT_MetaTileEntity_Hatch_Steam_BusInput(

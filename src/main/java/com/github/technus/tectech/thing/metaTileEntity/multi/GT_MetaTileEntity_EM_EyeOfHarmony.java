@@ -6,7 +6,6 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.eyeOfHarmonyRenderBlock;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsBA0;
 import static com.github.technus.tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
-import static com.github.technus.tectech.util.TT_Utility.toStandardForm;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -19,9 +18,12 @@ import static gregtech.api.enums.GT_Values.AuthorColen;
 import static gregtech.api.util.GT_ParallelHelper.calculateChancedOutputMultiplier;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.formatNumbers;
+import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
+import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static java.lang.Math.exp;
 import static java.lang.Math.max;
 import static java.lang.Math.pow;
+import static net.minecraft.util.EnumChatFormatting.AQUA;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
 import static net.minecraft.util.EnumChatFormatting.GOLD;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
@@ -29,6 +31,7 @@ import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
+import static util.Util.toStandardForm;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -36,6 +39,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
@@ -75,7 +79,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -83,16 +86,20 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import pers.gwyog.gtneioreplugin.plugin.block.BlockDimensionDisplay;
+import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_MultiblockBase_EM
-    implements IConstructable, IGlobalWirelessEnergy, ISurvivalConstructable {
+    implements IConstructable, ISurvivalConstructable {
 
     public static final boolean EOH_DEBUG_MODE = false;
     private static final long MOLTEN_SPACETIME_PER_FAILURE_TIER = 14_400L;
@@ -112,13 +119,18 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private static final double TIME_ACCEL_DECREASE_CHANCE_PER_TIER = 0.0925;
     // % Increase in recipe chance and % decrease in yield per tier.
     private static final double STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER = 0.05;
-    private static final double LOG_CONSTANT = Math.log(1.7);
+    private static final double PARALLEL_FOR_FIRST_ASTRAL_ARRAY = 8;
+    private static final double CONSTANT_FOR_LOG = 1.7;
+    private static final double LOG_CONSTANT = Math.log(CONSTANT_FOR_LOG);
     private static final double PARALLEL_MULTIPLIER_CONSTANT = 1.63;
-    private static final long POWER_DIVISION_CONSTANT = 9;
+    private static final double POWER_DIVISION_CONSTANT = 20.7;
+    private static final double POWER_INCREASE_CONSTANT = 2.3;
     private static final int TOTAL_CASING_TIERS_WITH_POWER_PENALTY = 8;
     private static final long PRECISION_MULTIPLIER = 1_000_000;
+    // Exact value to get 2^21 parallels.
+    private static final long ASTRAL_ARRAY_LIMIT = 8637;
 
-    private String userUUID = "";
+    private UUID userUUID;
     private BigInteger outputEU_BigInt = BigInteger.ZERO;
     private long startEU = 0;
 
@@ -924,6 +936,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private boolean animationsEnabled = true;
 
+    @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         animationsEnabled = !animationsEnabled;
         aPlayer.addChatMessage(
@@ -948,6 +961,20 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (getControllerSlot() == null) {
+            ItemStack heldItem = aPlayer.getHeldItem();
+            if (GT_Utility.getBlockFromStack(heldItem) instanceof BlockDimensionDisplay) {
+                mInventory[getControllerSlotIndex()] = heldItem.copy();
+                mInventory[getControllerSlotIndex()].stackSize = 1;
+                aPlayer.setCurrentItemOrArmor(0, ItemUtils.depleteStack(heldItem));
+                return true;
+            }
+        }
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer);
     }
 
     @Override
@@ -1048,12 +1075,26 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 "This multiblock can perform parallel processing by placing Astral Array Fabricators into the input bus.")
             .addInfo(
                 "They are stored internally and can be retrieved via right-clicking the controller with a wire cutter.")
-            .addInfo("The amount of parallel is calculated via these formulas:")
-            .addInfo(GREEN + "Parallel exponent = floor(log(8 * Astral Array amount) / log(1.7))")
+            .addInfo(
+                "The maximum amount of stored Astral Arrays is " + formatNumbers(ASTRAL_ARRAY_LIMIT)
+                    + ". The amount of parallel is calculated via these formulas:")
+            .addInfo(
+                GREEN + "Parallel exponent = floor(log("
+                    + formatNumbers(PARALLEL_FOR_FIRST_ASTRAL_ARRAY)
+                    + " * Astral Array amount) / log("
+                    + formatNumbers(CONSTANT_FOR_LOG)
+                    + "))")
             .addInfo(GREEN + "Parallel = 2^(Parallel exponent)")
             .addInfo("If the EOH is running parallel recipes, the power calculation changes.")
             .addInfo("The power needed for parallel processing is calculated as follows:")
-            .addInfo(GREEN + "total EU = ((EU output - EU input * 1.63) / 9) * 2.3^(Parallel exponent - 1)")
+            .addInfo(
+                GREEN + "total EU = ((EU output - EU input * "
+                    + formatNumbers(PARALLEL_MULTIPLIER_CONSTANT)
+                    + ") / "
+                    + formatNumbers(POWER_DIVISION_CONSTANT)
+                    + ") * "
+                    + formatNumbers(POWER_INCREASE_CONSTANT)
+                    + "^(Parallel exponent)")
             .addInfo(
                 "Furthermore, if parallel recipes are run, the recipes consume "
                     + MaterialsUEVplus.RawStarMatter.getLocalizedNameForItem("%material"))
@@ -1066,6 +1107,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             .addInfo("The success or failure of each parallel is determined independently.")
             .addInfo(TOOLTIP_BAR)
             .addInfo("Animations can be disabled by using a screwdriver on the multiblock.")
+            .addInfo("Planet block can be inserted directly by right-clicking the controller with planet block.")
             .addSeparator()
             .addStructureInfo("Eye of Harmony structure is too complex! See schematic for details.")
             .addStructureInfo(
@@ -1200,28 +1242,30 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         // Get circuit damage, clamp it and then use it later for overclocking.
         currentCircuitMultiplier = 0;
-        if (!mInputBusses.isEmpty()) {
-            for (ItemStack itemStack : mInputBusses.get(0)
-                .getRealInventory()) {
-                if (GT_Utility.isAnyIntegratedCircuit(itemStack)) {
-                    currentCircuitMultiplier = MathHelper.clamp_int(itemStack.getItemDamage(), 0, 24);
-                    break;
-                }
+        for (ItemStack itemStack : mInputBusses.get(0)
+            .getRealInventory()) {
+            if (GT_Utility.isAnyIntegratedCircuit(itemStack)) {
+                currentCircuitMultiplier = MathHelper.clamp_int(itemStack.getItemDamage(), 0, 24);
+                break;
             }
         }
 
         for (ItemStack itemStack : mInputBusses.get(0)
             .getRealInventory()) {
+            if (astralArrayAmount >= ASTRAL_ARRAY_LIMIT) break;
             if (itemStack != null && itemStack.isItemEqual(astralArrayFabricator.get(1))) {
-                astralArrayAmount += itemStack.stackSize;
-                itemStack.stackSize = 0;
+                long insertAmount = Math.min(itemStack.stackSize, ASTRAL_ARRAY_LIMIT - astralArrayAmount);
+                astralArrayAmount += insertAmount;
+                itemStack.stackSize -= insertAmount;
             }
         }
 
         long parallelExponent = 1;
 
         if (astralArrayAmount != 0) {
-            parallelExponent = (long) Math.floor(Math.log(8 * astralArrayAmount) / LOG_CONSTANT);
+            parallelExponent = (long) Math.floor(
+                Math.log(PARALLEL_FOR_FIRST_ASTRAL_ARRAY * Math.min(astralArrayAmount, ASTRAL_ARRAY_LIMIT))
+                    / LOG_CONSTANT);
             parallelAmount = (long) pow(2, parallelExponent);
         } else {
             parallelAmount = 1;
@@ -1237,12 +1281,12 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         if (parallelAmount == 1) {
             if ((EOH_DEBUG_MODE && getHydrogenStored() < 100)
-                || (!EOH_DEBUG_MODE && getHydrogenStored() < currentRecipe.getHydrogenRequirement() * parallelAmount)) {
+                || (!EOH_DEBUG_MODE && getHydrogenStored() < currentRecipe.getHydrogenRequirement())) {
                 return SimpleCheckRecipeResult.ofFailure("no_hydrogen");
             }
 
             if ((EOH_DEBUG_MODE && getHeliumStored() < 100)
-                || (!EOH_DEBUG_MODE && getHeliumStored() < currentRecipe.getHeliumRequirement() * parallelAmount)) {
+                || (!EOH_DEBUG_MODE && getHeliumStored() < currentRecipe.getHeliumRequirement())) {
                 return SimpleCheckRecipeResult.ofFailure("no_helium");
             }
         }
@@ -1253,13 +1297,13 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         }
 
         // Check tier of spacetime compression blocks is high enough.
-        if ((spacetimeCompressionFieldMetadata + 1) < recipeObject.getSpacetimeCasingTierRequired()) {
+        if (spacetimeCompressionFieldMetadata < recipeObject.getSpacetimeCasingTierRequired()) {
             return CheckRecipeResultRegistry
                 .insufficientMachineTier((int) recipeObject.getSpacetimeCasingTierRequired());
         }
 
         // Calculate multipliers used in power calculations
-        double powerMultiplier = Math.max(1, Math.pow(2.3, (parallelExponent - 1)));
+        double powerMultiplier = Math.max(1, Math.pow(POWER_INCREASE_CONSTANT, parallelExponent));
 
         // Determine EU recipe input
         startEU = recipeObject.getEUStartCost();
@@ -1275,17 +1319,17 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         if (parallelAmount > 1) {
             outputEU_BigInt = outputEU_BigInt
                 .multiply(BigInteger.valueOf((long) (powerMultiplier * PRECISION_MULTIPLIER)))
-                .divide(BigInteger.valueOf(PRECISION_MULTIPLIER * POWER_DIVISION_CONSTANT));
+                .divide(BigInteger.valueOf((long) (PRECISION_MULTIPLIER * POWER_DIVISION_CONSTANT)));
 
             usedEU = usedEU
                 .multiply(
                     BigInteger.valueOf((long) (powerMultiplier * PARALLEL_MULTIPLIER_CONSTANT * PRECISION_MULTIPLIER)))
-                .divide(BigInteger.valueOf(PRECISION_MULTIPLIER * POWER_DIVISION_CONSTANT));
+                .divide(BigInteger.valueOf((long) (PRECISION_MULTIPLIER * POWER_DIVISION_CONSTANT)));
         }
 
         // Remove EU from the users network.
         if (!addEUToGlobalEnergyMap(userUUID, usedEU)) {
-            return SimpleCheckRecipeResult.ofFailure("insufficient_power_no_val");
+            return CheckRecipeResultRegistry.insufficientStartupPower(usedEU.abs());
         }
 
         mMaxProgresstime = recipeProcessTimeCalculator(
@@ -1464,9 +1508,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         super.onPreTick(aBaseMetaTileEntity, aTick);
 
         if (aTick == 1) {
-            userUUID = String.valueOf(getBaseMetaTileEntity().getOwnerUuid());
-            String userName = getBaseMetaTileEntity().getOwnerName();
-            strongCheckOrAddUser(userUUID, userName);
+            userUUID = getBaseMetaTileEntity().getOwnerUuid();
+            strongCheckOrAddUser(userUUID);
         }
 
         if (!recipeRunning && mMachine) {
@@ -1478,53 +1521,32 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private boolean recipeRunning = false;
 
-    // Will void if AE network is full.
     private void outputItemToAENetwork(ItemStack item, long amount) {
+        if (item == null || amount <= 0) return;
 
-        if ((item == null) || (amount <= 0)) {
-            return;
-        }
-
-        if (amount < Integer.MAX_VALUE) {
+        while (amount >= Integer.MAX_VALUE) {
             ItemStack tmpItem = item.copy();
-            tmpItem.stackSize = (int) amount;
+            tmpItem.stackSize = Integer.MAX_VALUE;
             ((GT_MetaTileEntity_Hatch_OutputBus_ME) mOutputBusses.get(0)).store(tmpItem);
-        } else {
-            // For item stacks > Int max.
-            while (amount >= Integer.MAX_VALUE) {
-                ItemStack tmpItem = item.copy();
-                tmpItem.stackSize = Integer.MAX_VALUE;
-                ((GT_MetaTileEntity_Hatch_OutputBus_ME) mOutputBusses.get(0)).store(tmpItem);
-                amount -= Integer.MAX_VALUE;
-            }
-            ItemStack tmpItem = item.copy();
-            tmpItem.stackSize = (int) amount;
-            ((GT_MetaTileEntity_Hatch_OutputBus_ME) mOutputBusses.get(0)).store(tmpItem);
+            amount -= Integer.MAX_VALUE;
         }
+        ItemStack tmpItem = item.copy();
+        tmpItem.stackSize = (int) amount;
+        ((GT_MetaTileEntity_Hatch_OutputBus_ME) mOutputBusses.get(0)).store(tmpItem);
     }
 
     private void outputFluidToAENetwork(FluidStack fluid, long amount) {
+        if (fluid == null || amount <= 0) return;
 
-        if ((fluid == null) || (amount <= 0)) {
-            return;
-        }
-
-        if (amount < Integer.MAX_VALUE) {
+        while (amount >= Integer.MAX_VALUE) {
             FluidStack tmpFluid = fluid.copy();
-            tmpFluid.amount = (int) amount;
+            tmpFluid.amount = Integer.MAX_VALUE;
             ((GT_MetaTileEntity_Hatch_Output_ME) mOutputHatches.get(0)).tryFillAE(tmpFluid);
-        } else {
-            // For fluidStacks > Int max.
-            while (amount >= Integer.MAX_VALUE) {
-                FluidStack tmpFluid = fluid.copy();
-                tmpFluid.amount = Integer.MAX_VALUE;
-                ((GT_MetaTileEntity_Hatch_Output_ME) mOutputHatches.get(0)).tryFillAE(tmpFluid);
-                amount -= Integer.MAX_VALUE;
-            }
-            FluidStack tmpFluid = fluid.copy();
-            tmpFluid.amount = (int) amount;
-            ((GT_MetaTileEntity_Hatch_Output_ME) mOutputHatches.get(0)).tryFillAE(tmpFluid);
+            amount -= Integer.MAX_VALUE;
         }
+        FluidStack tmpFluid = fluid.copy();
+        tmpFluid.amount = (int) amount;
+        ((GT_MetaTileEntity_Hatch_Output_ME) mOutputHatches.get(0)).tryFillAE(tmpFluid);
     }
 
     @Override
@@ -1575,6 +1597,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             str.add(GOLD + "---------------------- Other Stats ---------------");
             str.add("Recipe Success Chance: " + RED + formatNumbers(100 * successChance) + RESET + "%");
             str.add("Recipe Yield: " + RED + formatNumbers(100 * yield) + RESET + "%");
+            str.add(
+                "Effective Astral Array Fabricators: " + RED
+                    + formatNumbers(Math.min(astralArrayAmount, ASTRAL_ARRAY_LIMIT)));
             str.add("Total Parallel: " + RED + formatNumbers(parallelAmount));
             str.add("EU Output: " + RED + toStandardForm(outputEU_BigInt) + RESET + " EU");
             str.add("EU Input:  " + RED + toStandardForm(usedEU.abs()) + RESET + " EU");
@@ -1650,6 +1675,32 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private static final String ITEM_STACK_NBT_TAG = "itemStack";
     private static final String FLUID_AMOUNT = "fluidAmount";
     private static final String FLUID_STACK_NBT_TAG = "fluidStack";
+
+    // Tags for pre-setting
+    public static final String PLANET_BLOCK = "planetBlock";
+
+    @Override
+    public void initDefaultModes(NBTTagCompound aNBT) {
+        super.initDefaultModes(aNBT);
+        if (aNBT != null && aNBT.hasKey(PLANET_BLOCK) && getControllerSlot() == null) {
+            mInventory[getControllerSlotIndex()] = new ItemStack(ModBlocks.getBlock(aNBT.getString(PLANET_BLOCK)));
+            aNBT.removeTag(PLANET_BLOCK);
+        }
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        if (stack.hasTagCompound() && stack.getTagCompound()
+            .hasKey(PLANET_BLOCK)) {
+            tooltip.add(
+                1,
+                GT_LanguageManager.addStringLocalization("EOH_Controller_PlanetBlock", "Current Planet Block: ") + AQUA
+                    + new ItemStack(
+                        ModBlocks.getBlock(
+                            stack.getTagCompound()
+                                .getString(PLANET_BLOCK))).getDisplayName());
+        }
+    }
 
     @Override
     public void setItemNBT(NBTTagCompound NBT) {
@@ -1735,13 +1786,15 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         successChance = aNBT.getDouble(RECIPE_SUCCESS_CHANCE_NBT_TAG);
         currentRecipeRocketTier = aNBT.getLong(ROCKET_TIER_NBT_TAG);
         currentCircuitMultiplier = aNBT.getLong(CURRENT_CIRCUIT_MULTIPLIER_TAG);
-        animationsEnabled = aNBT.getBoolean(ANIMATIONS_ENABLED);
+        if (aNBT.hasKey(ANIMATIONS_ENABLED)) animationsEnabled = aNBT.getBoolean(ANIMATIONS_ENABLED);
         parallelAmount = aNBT.getLong(PARALLEL_AMOUNT_NBT_TAG);
         yield = aNBT.getDouble(YIELD_NBT_TAG);
         successfulParallelAmount = aNBT.getLong(SUCCESSFUL_PARALLEL_AMOUNT_NBT_TAG);
         astralArrayAmount = aNBT.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG);
-        outputEU_BigInt = new BigInteger(aNBT.getByteArray(CALCULATED_EU_OUTPUT_NBT_TAG));
-        usedEU = new BigInteger(aNBT.getByteArray(CALCULATED_EU_INPUT_NBT_TAG));
+        if (aNBT.hasKey(CALCULATED_EU_OUTPUT_NBT_TAG))
+            outputEU_BigInt = new BigInteger(aNBT.getByteArray(CALCULATED_EU_OUTPUT_NBT_TAG));
+        if (aNBT.hasKey(CALCULATED_EU_INPUT_NBT_TAG))
+            usedEU = new BigInteger(aNBT.getByteArray(CALCULATED_EU_INPUT_NBT_TAG));
 
         // Load damage values/stack sizes of GT items being outputted and convert back to items.
         NBTTagCompound tempItemTag = aNBT.getCompoundTag(ITEM_OUTPUT_NBT_TAG);

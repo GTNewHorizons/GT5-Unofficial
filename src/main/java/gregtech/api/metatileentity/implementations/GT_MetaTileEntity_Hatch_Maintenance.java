@@ -83,7 +83,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
         if (sAutoMaintenanceInputs == null) sAutoMaintenanceInputs = new ItemStack[] { ItemList.Duct_Tape.get(4),
             GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 2),
             GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 4),
-            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2) };
+            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2) };
         return sAutoMaintenanceInputs;
     }
 
@@ -359,11 +359,6 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
                     return true;
         }
         return false;
-    }
-
-    @Override
-    public boolean useModularUI() {
-        return true;
     }
 
     @Override

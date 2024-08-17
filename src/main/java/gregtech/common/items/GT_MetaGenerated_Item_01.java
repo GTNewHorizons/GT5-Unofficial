@@ -1,6 +1,5 @@
 package gregtech.common.items;
 
-import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.Textures.BlockIcons.COVER_WOOD_PLATE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR;
@@ -32,14 +31,6 @@ import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_LuV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_MV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_ZPM;
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
-import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
-import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
-import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.client.GT_TooltipHandler.Tier.ERV;
 import static gregtech.client.GT_TooltipHandler.Tier.EV;
 import static gregtech.client.GT_TooltipHandler.Tier.HV;
@@ -48,12 +39,35 @@ import static gregtech.client.GT_TooltipHandler.Tier.LV;
 import static gregtech.client.GT_TooltipHandler.Tier.LuV;
 import static gregtech.client.GT_TooltipHandler.Tier.MAX;
 import static gregtech.client.GT_TooltipHandler.Tier.MV;
+import static gregtech.client.GT_TooltipHandler.Tier.UEV;
+import static gregtech.client.GT_TooltipHandler.Tier.UHV;
+import static gregtech.client.GT_TooltipHandler.Tier.UIV;
 import static gregtech.client.GT_TooltipHandler.Tier.ULV;
 import static gregtech.client.GT_TooltipHandler.Tier.UMV;
 import static gregtech.client.GT_TooltipHandler.Tier.UV;
 import static gregtech.client.GT_TooltipHandler.Tier.UXV;
 import static gregtech.client.GT_TooltipHandler.Tier.ZPM;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_EV;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_EV_Full;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_IV;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_IV_Full;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_LuV;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_LuV_Full;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_UEV;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_UEV_Full;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_UHV;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_UHV_Full;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_UIV;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_UIV_Full;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_UMV;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_UMV_Full;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_UV;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_UV_Full;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_UxV;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_UxV_Full;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_ZPM;
+import static gregtech.common.items.ID_MetaItem_01.BatteryHull_ZPM_Full;
 import static gregtech.common.items.ID_MetaItem_01.Battery_Hull_HV;
 import static gregtech.common.items.ID_MetaItem_01.Battery_Hull_LV;
 import static gregtech.common.items.ID_MetaItem_01.Battery_Hull_MV;
@@ -444,7 +458,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -461,7 +474,6 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects;
-import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -1439,11 +1451,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Energy_Lapotronic_Orb.ID,
                 "Lapotronic Energy Orb",
                 "Reusable battery",
-                "batteryIV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
-                OrePrefixes.battery.get(Materials.Ultimate)));
+                OrePrefixes.battery.get(Materials.IV)));
 
         // ZPM Module
         ItemList.ZPM.set(
@@ -1462,11 +1473,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Energy_Lapotronic_orb_2.ID,
                 "Lapotronic Energy Orb Cluster",
                 "Reusable battery",
-                "batteryLuV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
-                OrePrefixes.battery.get(Materials.Ultimate)));
+                OrePrefixes.battery.get(Materials.LuV)));
 
         // UV Battery
         ItemList.ZPM2.set(
@@ -1529,11 +1539,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Energy_Module.ID,
                 "Energy Module",
                 "Reusable battery",
-                "batteryZPM",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
-                OrePrefixes.battery.get(Materials.Ultimate)));
+                OrePrefixes.battery.get(Materials.ZPM)));
 
         // UV Cluster
         ItemList.Energy_Cluster.set(
@@ -1541,10 +1550,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Energy_Cluster.ID,
                 "Energy Cluster",
                 "Reusable battery",
-                "batteryUV",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L),
+                OrePrefixes.battery.get(Materials.UV)));
 
         // UIV, UMV, UXV and MAX component textures backported from gregicality.
         ItemList.Electric_Motor_LV.set(
@@ -2012,13 +2021,13 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.ItemFilter_Export.set(
             addItem(
                 ItemFilter_Export.ID,
-                "Item Filter Cover (Export)",
+                "Filtered Conveyor Cover (Export)",
                 "Right click with an item to set filter (Only supports Export Mode)"));
 
         ItemList.ItemFilter_Import.set(
             addItem(
                 ItemFilter_Import.ID,
-                "Item Filter Cover (Import)",
+                "Filtered Conveyor Cover (Import)",
                 "Right click with an item to set filter (Only supports Import Mode)"));
 
         ItemList.Cover_FluidLimiter
@@ -2643,49 +2652,49 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 Circuit_Primitive.ID,
                 "Vacuum Tube",
                 "A very simple Circuit",
-                OrePrefixes.circuit.get(Materials.Primitive),
+                OrePrefixes.circuit.get(Materials.ULV),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Basic.set(
             addItem(
                 Circuit_Basic.ID,
                 "Integrated Logic Circuit",
                 "A Basic Circuit",
-                OrePrefixes.circuit.get(Materials.Basic),
+                OrePrefixes.circuit.get(Materials.LV),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Good.set(
             addItem(
                 Circuit_Good.ID,
                 "Good Electronic Circuit",
                 "A Good Circuit",
-                OrePrefixes.circuit.get(Materials.Good),
+                OrePrefixes.circuit.get(Materials.MV),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Advanced.set(
             addItem(
                 Circuit_Advanced.ID,
                 "Processor Assembly",
                 "An Advanced Circuit",
-                OrePrefixes.circuit.get(Materials.Advanced),
+                OrePrefixes.circuit.get(Materials.HV),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Data.set(
             addItem(
                 Circuit_Data.ID,
                 "Workstation",
                 "An Extreme Circuit",
-                OrePrefixes.circuit.get(Materials.Data),
+                OrePrefixes.circuit.get(Materials.EV),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Elite.set(
             addItem(
                 Circuit_Elite.ID,
                 "Mainframe",
                 "An Elite Circuit",
-                OrePrefixes.circuit.get(Materials.Elite),
+                OrePrefixes.circuit.get(Materials.IV),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Master.set(
             addItem(
                 Circuit_Master.ID,
                 "Nanoprocessor Mainframe",
                 "A Master Circuit",
-                OrePrefixes.circuit.get(Materials.Master),
+                OrePrefixes.circuit.get(Materials.LuV),
                 SubTag.NO_UNIFICATION));
 
         // Backwards compatibility.
@@ -3123,6 +3132,199 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 EnumChatFormatting.GREEN + "Tengam Electromagnet",
                 MagnetTiers.buildMagnetTooltip(MagnetTiers.Tengam),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 40)));
+
+        // Empty battery hulls
+        ItemList.BatteryHull_EV.set(
+            addItem(
+                BatteryHull_EV.ID,
+                "Small Sunnarium Battery (Empty)",
+                "An empty EV Battery Container",
+                new ItemData(Materials.BlueSteel, OrePrefixes.plate.mMaterialAmount * 2L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 8L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 8L)));
+        ItemList.BatteryHull_IV.set(
+            addItem(
+                BatteryHull_IV.ID,
+                "Medium Sunnarium Battery (Empty)",
+                "An empty IV Battery Container",
+                new ItemData(Materials.RoseGold, OrePrefixes.plate.mMaterialAmount * 6L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 16L)));
+        ItemList.BatteryHull_LuV.set(
+            addItem(
+                BatteryHull_LuV.ID,
+                "Large Sunnarium Battery (Empty)",
+                "An empty LuV Battery Container",
+                new ItemData(Materials.RedSteel, OrePrefixes.plate.mMaterialAmount * 18L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 32L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 32L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 32L)));
+        ItemList.BatteryHull_ZPM.set(
+            addItem(
+                BatteryHull_ZPM.ID,
+                "Medium Naquadria Battery (Empty)",
+                "An empty ZPM Energy Storage",
+                new ItemData(Materials.Europium, OrePrefixes.plate.mMaterialAmount * 6L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 64L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 64L)));
+        ItemList.BatteryHull_UV.set(
+            addItem(
+                BatteryHull_UV.ID,
+                "Large Naquadria Battery (Empty)",
+                "An empty UV Energy Storage",
+                new ItemData(Materials.Americium, OrePrefixes.plate.mMaterialAmount * 18L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 128L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 128L)));
+        ItemList.BatteryHull_UHV.set(
+            addItem(
+                BatteryHull_UHV.ID,
+                "Small Neutronium Battery (Empty)",
+                "An empty UHV Energy Storage",
+                new ItemData(Materials.Naquadah, OrePrefixes.plate.mMaterialAmount * 24L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 256L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 256L)));
+        ItemList.BatteryHull_UEV.set(
+            addItem(
+                BatteryHull_UEV.ID,
+                "Medium Neutronium Battery (Empty)",
+                "An empty UEV Energy Storage",
+                new ItemData(Materials.NaquadahEnriched, OrePrefixes.plate.mMaterialAmount * 36L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 512L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 512L)));
+        ItemList.BatteryHull_UIV.set(
+            addItem(
+                BatteryHull_UIV.ID,
+                "Large Neutronium Battery (Empty)",
+                "An empty UIV Energy Storage",
+                new ItemData(Materials.NaquadahAlloy, OrePrefixes.plate.mMaterialAmount * 48L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1024L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 1024L)));
+        ItemList.BatteryHull_UMV.set(
+            addItem(
+                BatteryHull_UMV.ID,
+                "Medium Plasma Battery (Empty)",
+                "An empty UMV Energy Storage",
+                new ItemData(Materials.Neutronium, OrePrefixes.plate.mMaterialAmount * 56L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2048L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2048L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2048L)));
+        ItemList.BatteryHull_UxV.set(
+            addItem(
+                BatteryHull_UxV.ID,
+                "Large Plasma Battery (Empty)",
+                "An empty UXV Energy Storage",
+                new ItemData(Materials.DraconiumAwakened, OrePrefixes.plate.mMaterialAmount * 64L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4096L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4096L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 4096L)));
+
+        ItemList.BatteryHull_EV_Full.set(
+            addItem(
+                BatteryHull_EV_Full.ID,
+                "Small Sunnarium Battery",
+                "Reusable",
+                "batteryEV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_IV_Full.set(
+            addItem(
+                BatteryHull_IV_Full.ID,
+                "Medium Sunnarium Battery",
+                "Reusable",
+                "batteryIV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_LuV_Full.set(
+            addItem(
+                BatteryHull_LuV_Full.ID,
+                "Large Sunnarium Battery",
+                "Reusable",
+                "batteryLuV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_ZPM_Full.set(
+            addItem(
+                BatteryHull_ZPM_Full.ID,
+                "Medium Naquadria Battery",
+                "Reusable",
+                "batteryZPM",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UV_Full.set(
+            addItem(
+                BatteryHull_UV_Full.ID,
+                "Large Naquadria Battery",
+                "Reusable",
+                "batteryUV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UHV_Full.set(
+            addItem(
+                BatteryHull_UHV_Full.ID,
+                "Small Neutronium Battery",
+                "Reusable",
+                "batteryUHV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UEV_Full.set(
+            addItem(
+                BatteryHull_UEV_Full.ID,
+                "Medium Neutronium Battery",
+                "Reusable",
+                "batteryUEV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UIV_Full.set(
+            addItem(
+                BatteryHull_UIV_Full.ID,
+                "Large Neutronium Battery",
+                "Reusable",
+                "batteryUIV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UMV_Full.set(
+            addItem(
+                BatteryHull_UMV_Full.ID,
+                "Medium Infinity Battery",
+                "Reusable",
+                "batteryUMV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
+        ItemList.BatteryHull_UxV_Full.set(
+            addItem(
+                BatteryHull_UxV_Full.ID,
+                "Large Infinity Battery",
+                "Reusable",
+                "batteryUXV",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 16L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 32L)));
+
         removeRecipes();
         setBurnValues();
         oredictBlacklistEntries();
@@ -3132,13 +3334,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         setAllElectricStats();
         registerTieredTooltips();
 
-        compressorRecipes();
         craftingShapedRecipes();
         craftingShapelessRecipes();
-        assemblerRecipes();
-        cannerRecipes();
-        packagerRecipes();
-        extractorRecipes();
     }
 
     private static final Map<Materials, Materials> cauldronRemap = new HashMap<>();
@@ -3283,15 +3480,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
     private void oredictBlacklistEntries() {
         GT_OreDictUnificator.addToBlacklist(new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID));
-    }
-
-    private void compressorRecipes() {
-        RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 8L))
-            .itemOutputs(new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
     }
 
     private void registerCovers() {
@@ -3640,610 +3828,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             new ItemStack(Blocks.glass));
     }
 
-    private void assemblerRecipes() {
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Spray_Empty.get(1L))
-            .duration(40 * SECONDS)
-            .eut(1)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Aluminium, 2L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.ThermosCan_Empty.get(1L))
-            .duration(40 * SECONDS)
-            .eut(1)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.AnyBronze, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_Steel.get(1L))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenSteel, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Platinum, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_TungstenSteel.get(1L))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Silver, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_Aluminium.get(1L))
-            .duration(10 * SECONDS)
-            .eut(64)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.StainlessSteel, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Electrum, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_StainlessSteel.get(1L))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Titanium, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.RoseGold, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_Titanium.get(1L))
-            .duration(10 * SECONDS)
-            .eut(256)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Chrome, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Palladium, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_Chrome.get(1L))
-            .duration(10 * SECONDS)
-            .eut(1024)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Naquadah, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_Iridium.get(1L))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.ElectrumFlux, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_Osmium.get(1L))
-            .duration(10 * SECONDS)
-            .eut(4096)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Draconium, 4L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Large_Fluid_Cell_Neutronium.get(1L))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
-                ItemList.Large_Fluid_Cell_Aluminium.get(1),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Spray_Color_Remover_Empty.get(1L))
-            .duration(40 * SECONDS)
-            .eut(1)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Wood, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Phosphorus, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Matches.get(1L))
-            .duration(16 * TICKS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Wood, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.TricalciumPhosphate, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Matches.get(1L))
-            .duration(16 * TICKS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Wood, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Matches.get(4L))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Wood, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TricalciumPhosphate, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Matches.get(4L))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Invar, 2L),
-                new ItemStack(Items.flint, 1),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Lighter_Invar_Empty.get(1L))
-            .duration(12 * SECONDS + 16 * TICKS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Platinum, 2L),
-                new ItemStack(Items.flint, 1),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Lighter_Platinum_Empty.get(1L))
-            .duration(12 * SECONDS + 16 * TICKS)
-            .eut(256)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Lock.get(1L))
-            .duration(5 * MINUTES + 20 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Lock.get(1L))
-            .duration(5 * MINUTES + 20 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Lock.get(1L))
-            .duration(5 * MINUTES + 20 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                ItemList.Sensor_EV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_PlayerDetector.get(1L))
-            .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
-                ItemList.Cover_Drain.get(1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Shutter.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
-                ItemList.Cover_Drain.get(1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Shutter.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
-                ItemList.Cover_Drain.get(1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Shutter.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L),
-                new ItemStack(Blocks.iron_bars, 2),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Drain.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2L),
-                new ItemStack(Blocks.iron_bars, 2),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Drain.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 2L),
-                new ItemStack(Blocks.iron_bars, 2),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Drain.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
-                new ItemStack(Blocks.crafting_table, 1),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Crafting.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
-                new ItemStack(Blocks.crafting_table, 1),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Crafting.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
-                new ItemStack(Blocks.crafting_table, 1),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_Crafting.get(1L))
-            .duration(40 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_Screen.get(1L),
-                ItemList.Cover_FluidDetector.get(1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_FluidStorageMonitor.get(1L))
-            .duration(40 * SECONDS)
-            .eut(4)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(ItemList.Sensor_LV.get(1L), ItemList.Emitter_LV.get(1L), GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.NC_SensorKit.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                ItemList.Emitter_EV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_RedstoneTransmitterExternal.get(1L))
-            .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                ItemList.Sensor_EV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_RedstoneReceiverExternal.get(1L))
-            .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                ItemList.Emitter_MV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_NeedsMaintainance.get(1L))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 2L),
-                ItemList.Component_Filter.get(1L),
-                ItemList.Conveyor_Module_LV.get(1L),
-                GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.ItemFilter_Export.get(1L))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 2L),
-                ItemList.Component_Filter.get(1L),
-                ItemList.Conveyor_Module_LV.get(1L),
-                GT_Utility.getIntegratedCircuit(2))
-            .itemOutputs(ItemList.ItemFilter_Import.get(1L))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-    }
-
-    private void cannerRecipes() {
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 2L),
-                ItemList.Battery_Hull_LV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_LV_Cadmium.get(1L))
-            .duration(5 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 2L),
-                ItemList.Battery_Hull_LV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_LV_Lithium.get(1L))
-            .duration(5 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 2L),
-                ItemList.Battery_Hull_LV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_LV_Sodium.get(1L))
-            .duration(5 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 8L),
-                ItemList.Battery_Hull_MV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_MV_Cadmium.get(1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 8L),
-                ItemList.Battery_Hull_MV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_MV_Lithium.get(1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 8L),
-                ItemList.Battery_Hull_MV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_MV_Sodium.get(1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 32L),
-                ItemList.Battery_Hull_HV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_HV_Cadmium.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 32L),
-                ItemList.Battery_Hull_HV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_HV_Lithium.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-        RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 32L),
-                ItemList.Battery_Hull_HV.get(1L))
-            .itemOutputs(ItemList.Battery_RE_HV_Sodium.get(1L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(cannerRecipes);
-    }
-
-    private void packagerRecipes() {
-        RA.stdBuilder()
-            .itemInputs(
-                ItemList.Tool_Matches.get(16L),
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Paper, 1L))
-            .itemOutputs(ItemList.Tool_MatchBox_Full.get(1L))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(16)
-            .addTo(packagerRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Tool_MatchBox_Full.get(1L))
-            .itemOutputs(ItemList.Tool_Matches.get(16L))
-            .duration(1 * SECONDS + 12 * TICKS)
-            .eut(16)
-            .addTo(packagerRecipes);
-    }
-
-    private void extractorRecipes() {
-        RA.stdBuilder()
-            .itemInputs(ItemList.Battery_SU_LV_SulfuricAcid.get(1L))
-            .itemOutputs(ItemList.Battery_Hull_LV.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Battery_SU_LV_Mercury.get(1L))
-            .itemOutputs(ItemList.Battery_Hull_LV.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Battery_SU_MV_SulfuricAcid.get(1L))
-            .itemOutputs(ItemList.Battery_Hull_MV.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Battery_SU_MV_Mercury.get(1L))
-            .itemOutputs(ItemList.Battery_Hull_MV.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Battery_SU_HV_SulfuricAcid.get(1L))
-            .itemOutputs(ItemList.Battery_Hull_HV.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Battery_SU_HV_Mercury.get(1L))
-            .itemOutputs(ItemList.Battery_Hull_HV.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Battery_RE_LV_Cadmium.get(1L))
-            .itemOutputs(ItemList.Battery_Hull_LV.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Battery_RE_LV_Lithium.get(1L))
-            .itemOutputs(ItemList.Battery_Hull_LV.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Battery_RE_LV_Sodium.get(1L))
-            .itemOutputs(ItemList.Battery_Hull_LV.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Battery_RE_MV_Cadmium.get(1L))
-            .itemOutputs(ItemList.Battery_Hull_MV.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Battery_RE_MV_Lithium.get(1L))
-            .itemOutputs(ItemList.Battery_Hull_MV.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Battery_RE_MV_Sodium.get(1L))
-            .itemOutputs(ItemList.Battery_Hull_MV.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Battery_RE_HV_Cadmium.get(1L))
-            .itemOutputs(ItemList.Battery_Hull_HV.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Battery_RE_HV_Lithium.get(1L))
-            .itemOutputs(ItemList.Battery_Hull_HV.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-        RA.stdBuilder()
-            .itemInputs(ItemList.Battery_RE_HV_Sodium.get(1L))
-            .itemOutputs(ItemList.Battery_Hull_HV.get(1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(extractorRecipes);
-    }
-
     private void craftingShapedRecipes() {
         ItemStack tStack = new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID);
         tStack.setStackDisplayName("The holy Planks of Sengir");
@@ -4468,70 +4052,70 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.get(Materials.Steel), 'M',
                 ItemList.Electric_Motor_LV, 'P', ItemList.Electric_Piston_LV, 'E',
-                OrePrefixes.circuit.get(Materials.Basic), 'C', OrePrefixes.cableGt01.get(Materials.Tin) });
+                OrePrefixes.circuit.get(Materials.LV), 'C', OrePrefixes.cableGt01.get(Materials.Tin) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Robot_Arm_MV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.get(Materials.Aluminium), 'M',
                 ItemList.Electric_Motor_MV, 'P', ItemList.Electric_Piston_MV, 'E',
-                OrePrefixes.circuit.get(Materials.Good), 'C', OrePrefixes.cableGt01.get(Materials.AnyCopper) });
+                OrePrefixes.circuit.get(Materials.MV), 'C', OrePrefixes.cableGt01.get(Materials.AnyCopper) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Robot_Arm_HV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.get(Materials.StainlessSteel), 'M',
                 ItemList.Electric_Motor_HV, 'P', ItemList.Electric_Piston_HV, 'E',
-                OrePrefixes.circuit.get(Materials.Advanced), 'C', OrePrefixes.cableGt01.get(Materials.Gold) });
+                OrePrefixes.circuit.get(Materials.HV), 'C', OrePrefixes.cableGt01.get(Materials.Gold) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Robot_Arm_EV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.get(Materials.Titanium), 'M',
                 ItemList.Electric_Motor_EV, 'P', ItemList.Electric_Piston_EV, 'E',
-                OrePrefixes.circuit.get(Materials.Data), 'C', OrePrefixes.cableGt01.get(Materials.Aluminium) });
+                OrePrefixes.circuit.get(Materials.EV), 'C', OrePrefixes.cableGt01.get(Materials.Aluminium) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Robot_Arm_IV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.get(Materials.TungstenSteel), 'M',
                 ItemList.Electric_Motor_IV, 'P', ItemList.Electric_Piston_IV, 'E',
-                OrePrefixes.circuit.get(Materials.Elite), 'C', OrePrefixes.cableGt01.get(Materials.Tungsten) });
+                OrePrefixes.circuit.get(Materials.IV), 'C', OrePrefixes.cableGt01.get(Materials.Tungsten) });
 
         GT_ModHandler.addCraftingRecipe(
             ItemList.Emitter_LV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SSC", "WQS", "CWS", 'Q', OrePrefixes.gem.get(Materials.CertusQuartz), 'S',
-                OrePrefixes.stick.get(Materials.Brass), 'C', OrePrefixes.circuit.get(Materials.Basic), 'W',
+                OrePrefixes.stick.get(Materials.Brass), 'C', OrePrefixes.circuit.get(Materials.LV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Tin) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Emitter_MV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SSC", "WQS", "CWS", 'Q', OrePrefixes.gem.get(Materials.EnderPearl), 'S',
-                OrePrefixes.stick.get(Materials.Electrum), 'C', OrePrefixes.circuit.get(Materials.Good), 'W',
+                OrePrefixes.stick.get(Materials.Electrum), 'C', OrePrefixes.circuit.get(Materials.MV), 'W',
                 OrePrefixes.cableGt01.get(Materials.AnyCopper) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Emitter_HV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SSC", "WQS", "CWS", 'Q', OrePrefixes.gem.get(Materials.EnderEye), 'S',
-                OrePrefixes.stick.get(Materials.Chrome), 'C', OrePrefixes.circuit.get(Materials.Advanced), 'W',
+                OrePrefixes.stick.get(Materials.Chrome), 'C', OrePrefixes.circuit.get(Materials.HV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Gold) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Emitter_EV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SSC", "WQS", "CWS", 'Q', ItemList.QuantumEye, 'S',
-                OrePrefixes.stick.get(Materials.Platinum), 'C', OrePrefixes.circuit.get(Materials.Data), 'W',
+                OrePrefixes.stick.get(Materials.Platinum), 'C', OrePrefixes.circuit.get(Materials.EV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Aluminium) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Emitter_IV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SSC", "WQS", "CWS", 'Q', ItemList.QuantumStar, 'S',
-                OrePrefixes.stick.get(Materials.Iridium), 'C', OrePrefixes.circuit.get(Materials.Elite), 'W',
+                OrePrefixes.stick.get(Materials.Iridium), 'C', OrePrefixes.circuit.get(Materials.IV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Tungsten) });
 
         GT_ModHandler.addCraftingRecipe(
@@ -4540,35 +4124,35 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "P Q", "PS ", "CPP", 'Q', OrePrefixes.gem.get(Materials.CertusQuartz), 'S',
                 OrePrefixes.stick.get(Materials.Brass), 'P', OrePrefixes.plate.get(Materials.Steel), 'C',
-                OrePrefixes.circuit.get(Materials.Basic) });
+                OrePrefixes.circuit.get(Materials.LV) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Sensor_MV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "P Q", "PS ", "CPP", 'Q', OrePrefixes.gemFlawless.get(Materials.Emerald), 'S',
                 OrePrefixes.stick.get(Materials.Electrum), 'P', OrePrefixes.plate.get(Materials.Aluminium), 'C',
-                OrePrefixes.circuit.get(Materials.Good) });
+                OrePrefixes.circuit.get(Materials.MV) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Sensor_HV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "P Q", "PS ", "CPP", 'Q', OrePrefixes.gem.get(Materials.EnderEye), 'S',
                 OrePrefixes.stick.get(Materials.Chrome), 'P', OrePrefixes.plate.get(Materials.StainlessSteel), 'C',
-                OrePrefixes.circuit.get(Materials.Advanced) });
+                OrePrefixes.circuit.get(Materials.HV) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Sensor_EV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "P Q", "PS ", "CPP", 'Q', ItemList.QuantumEye, 'S',
                 OrePrefixes.stick.get(Materials.Platinum), 'P', OrePrefixes.plate.get(Materials.Titanium), 'C',
-                OrePrefixes.circuit.get(Materials.Data) });
+                OrePrefixes.circuit.get(Materials.EV) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Sensor_IV.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "P Q", "PS ", "CPP", 'Q', ItemList.QuantumStar, 'S',
                 OrePrefixes.stick.get(Materials.Iridium), 'P', OrePrefixes.plate.get(Materials.TungstenSteel), 'C',
-                OrePrefixes.circuit.get(Materials.Elite) });
+                OrePrefixes.circuit.get(Materials.IV) });
 
         GT_ModHandler.addCraftingRecipe(
             ItemList.Component_Sawblade_Diamond.get(1L),
@@ -4601,7 +4185,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             ItemList.Tool_Scanner.get(1L),
             GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
                 | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "EPR", "CSC", "PBP", 'C', OrePrefixes.circuit.get(Materials.Advanced), 'P',
+            new Object[] { "EPR", "CSC", "PBP", 'C', OrePrefixes.circuit.get(Materials.HV), 'P',
                 OrePrefixes.plate.get(Materials.Aluminium), 'E', ItemList.Emitter_MV, 'R', ItemList.Sensor_MV, 'S',
                 ItemList.Cover_Screen, 'B', ItemList.Battery_RE_MV_Lithium });
 
@@ -4887,6 +4471,16 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         setElectricStats(32000 + Tool_Cover_Copy_Paste.ID, 400000L, GT_Values.V[2], 2L, -1L, false);
         setElectricStats(32000 + Tool_Cheat.ID, -2000000000L, 1000000000L, -1L, -3L, false);
         setElectricStats(32000 + Tool_Scanner.ID, 400000L, GT_Values.V[2], 2L, -1L, false);
+        setElectricStats(32000 + BatteryHull_EV_Full.ID, 6400000L, GT_Values.V[4], 4L, -3L, true);
+        setElectricStats(32000 + BatteryHull_IV_Full.ID, 25600000L, GT_Values.V[5], 5L, -3L, true);
+        setElectricStats(32000 + BatteryHull_LuV_Full.ID, 102400000L, GT_Values.V[6], 6L, -3L, true);
+        setElectricStats(32000 + BatteryHull_ZPM_Full.ID, 409600000L, GT_Values.V[7], 7L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UV_Full.ID, 1638400000L, GT_Values.V[8], 8L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UHV_Full.ID, 6553600000L, GT_Values.V[9], 9L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UEV_Full.ID, 26214400000L, GT_Values.V[10], 10L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UIV_Full.ID, 104857600000L, GT_Values.V[11], 11L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UMV_Full.ID, 419430400000L, GT_Values.V[12], 12L, -3L, true);
+        setElectricStats(32000 + BatteryHull_UxV_Full.ID, 1677721600000L, GT_Values.V[13], 13L, -3L, true);
     }
 
     private void registerTieredTooltips() {
@@ -4923,6 +4517,16 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         registerTieredTooltip(ItemList.Circuit_Data.get(1), EV);
         registerTieredTooltip(ItemList.Circuit_Elite.get(1), IV);
         registerTieredTooltip(ItemList.Circuit_Master.get(1), LuV);
+        registerTieredTooltip(ItemList.BatteryHull_EV_Full.get(1), EV);
+        registerTieredTooltip(ItemList.BatteryHull_IV_Full.get(1), IV);
+        registerTieredTooltip(ItemList.BatteryHull_LuV_Full.get(1), LuV);
+        registerTieredTooltip(ItemList.BatteryHull_ZPM_Full.get(1), ZPM);
+        registerTieredTooltip(ItemList.BatteryHull_UV_Full.get(1), UV);
+        registerTieredTooltip(ItemList.BatteryHull_UHV_Full.get(1), UHV);
+        registerTieredTooltip(ItemList.BatteryHull_UEV_Full.get(1), UEV);
+        registerTieredTooltip(ItemList.BatteryHull_UIV_Full.get(1), UIV);
+        registerTieredTooltip(ItemList.BatteryHull_UMV_Full.get(1), UMV);
+        registerTieredTooltip(ItemList.BatteryHull_UxV_Full.get(1), UXV);
 
     }
 }

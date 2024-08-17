@@ -57,7 +57,6 @@ import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Sodiumformate;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Sodiumsulfate;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.ZincSulfate;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.OrePrefixes.cell;
@@ -79,8 +78,9 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gtPlusPlus.core.material.ALLOY.HELICOPTER;
+import static gtPlusPlus.core.material.ELEMENT.STANDALONE.WHITE_METAL;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -93,18 +93,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Items;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
-import com.github.bartimaeusnek.bartworks.util.CachedReflectionUtils;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -113,6 +106,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.interfaces.IRecipeMutableAccess;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.items.GT_Generic_Item;
@@ -543,19 +537,12 @@ public class PlatinumSludgeOverHaul {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
-            .fluidInputs(RutheniumTetroxideSollution.getFluidOrGas(800))
-            .fluidOutputs(HotRutheniumTetroxideSollution.getFluidOrGas(800))
+            .fluidInputs(RutheniumTetroxideSollution.getFluidOrGas(1000))
+            .fluidOutputs(HotRutheniumTetroxideSollution.getFluidOrGas(2000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
+            .noOptimize()
             .addTo(fluidHeaterRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(17))
-            .fluidInputs(RutheniumTetroxideSollution.getFluidOrGas(1000), GT_ModHandler.getSteam(1000))
-            .fluidOutputs(HotRutheniumTetroxideSollution.getFluidOrGas(2000))
-            .duration(7 * SECONDS + 10 * TICKS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(crackingRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemOutputs(Materials.Salt.getDust(6))
@@ -779,12 +766,7 @@ public class PlatinumSludgeOverHaul {
             .getRecipeList()
             .forEach(PlatinumSludgeOverHaul::setnewMaterialInRecipe);
         // gt crafting
-        try {
-            ((List<IRecipe>) FieldUtils.getDeclaredField(GT_ModHandler.class, "sBufferRecipeList", true)
-                .get(null)).forEach(PlatinumSludgeOverHaul::setnewMaterialInRecipe);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        GT_ModHandler.sBufferRecipeList.forEach(PlatinumSludgeOverHaul::setnewMaterialInRecipe);
         // gt machines
         maploop: for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
             if (map == fusionRecipes || map == unpackagerRecipes
@@ -984,76 +966,36 @@ public class PlatinumSludgeOverHaul {
         }
     }
 
-    private static void setnewMaterialInRecipe(Object obj) {
-        String inputName = "output";
-        String inputItemName = "input";
-        if (!(obj instanceof ShapedOreRecipe) && !(obj instanceof ShapelessOreRecipe)) {
-            if (obj instanceof ShapedRecipes || obj instanceof ShapelessRecipes) {
-                inputName = "recipeOutput";
-                inputItemName = "recipeItems";
-            } else {
-                try {
-                    if (Class.forName("gtPlusPlus.api.objects.minecraft.ShapedRecipe")
-                        .isAssignableFrom(obj.getClass()))
-                        obj = CachedReflectionUtils.getField(obj.getClass(), "mRecipe")
-                            .get(obj);
-                } catch (ClassNotFoundException | IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        IRecipe recipe = (IRecipe) obj;
+    private static void setnewMaterialInRecipe(IRecipe recipe) {
         ItemStack otpt = recipe.getRecipeOutput();
 
-        Field out = CachedReflectionUtils.getDeclaredField(recipe.getClass(), inputName);
-        if (out == null) out = CachedReflectionUtils.getField(recipe.getClass(), inputName);
-
-        Field in = CachedReflectionUtils.getDeclaredField(recipe.getClass(), inputItemName);
-        if (in == null) in = CachedReflectionUtils.getField(recipe.getClass(), inputItemName);
-        if (in == null) return;
-
-        Object input;
-        try {
-            input = in.get(obj);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        if (!(recipe instanceof IRecipeMutableAccess mutableRecipe)) {
             return;
         }
 
-        if (out != null && GT_Utility.areStacksEqual(otpt, Materials.Platinum.getDust(1), true)) {
+        Object input = mutableRecipe.gt5u$getRecipeInputs();
+
+        if (input == null) {
+            return;
+        }
+
+        if (GT_Utility.areStacksEqual(otpt, Materials.Platinum.getDust(1), true)) {
             if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Platinum)) return;
-            try {
-                out.set(recipe, PTMetallicPowder.get(dust, otpt.stackSize * 2));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        } else if (out != null && GT_Utility.areStacksEqual(otpt, Materials.Palladium.getDust(1), true)) {
+            mutableRecipe.gt5u$setRecipeOutputItem(PTMetallicPowder.get(dust, otpt.stackSize * 2));
+        } else if (GT_Utility.areStacksEqual(otpt, Materials.Palladium.getDust(1), true)) {
             if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Palladium)) return;
-            try {
-                out.set(recipe, PDMetallicPowder.get(dust, otpt.stackSize * 2));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        } else if (out != null && GT_Utility.areStacksEqual(otpt, Materials.Iridium.getDust(1), true)) {
+            mutableRecipe.gt5u$setRecipeOutputItem(PDMetallicPowder.get(dust, otpt.stackSize * 2));
+        } else if (GT_Utility.areStacksEqual(otpt, Materials.Iridium.getDust(1), true)) {
             if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Iridium)) return;
-            try {
-                out.set(recipe, IrLeachResidue.get(dust, otpt.stackSize));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        } else if (out != null && GT_Utility.areStacksEqual(otpt, Materials.Osmium.getDust(1), true)) {
+            mutableRecipe.gt5u$setRecipeOutputItem(IrLeachResidue.get(dust, otpt.stackSize));
+        } else if (GT_Utility.areStacksEqual(otpt, Materials.Osmium.getDust(1), true)) {
             if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Osmium)) return;
-            try {
-                out.set(recipe, IrOsLeachResidue.get(dust, otpt.stackSize));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+            mutableRecipe.gt5u$setRecipeOutputItem(IrOsLeachResidue.get(dust, otpt.stackSize));
         }
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    private static boolean checkRecipe(Object input, Materials mat) {
+    public static boolean checkRecipe(Object input, Materials mat) {
         if (input instanceof List || input instanceof Object[]) {
             Set lists = new HashSet(), stacks = new HashSet();
             List ip = input instanceof List ? (List) input : new ArrayList();
@@ -1138,11 +1080,11 @@ public class PlatinumSludgeOverHaul {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        if (stack.getItem() == GT_ModHandler.getModItem(GTPlusPlus.ID, "itemDustHeLiCoPtEr", 1L)
+        if (stack.getItem() == HELICOPTER.getDust(1)
             .getItem()) {
             return true;
         }
-        if (stack.getItem() == GT_ModHandler.getModItem(GTPlusPlus.ID, "itemDustWhiteMetal", 1L)
+        if (stack.getItem() == WHITE_METAL.getDust(1)
             .getItem()) {
             return true;
         }

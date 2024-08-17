@@ -123,7 +123,6 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
             .addStructureInfo(GOLD + "1+ " + GRAY + "Input Hatch")
             .addStructureInfo(GOLD + "1+ " + GRAY + "Output Hatch")
             .addStructureInfo(GOLD + "1+ " + GRAY + "Input Bus")
-            .addStructureInfo(GOLD + "1 " + GRAY + "Maintenance Hatch")
             .toolTipFinisher("Gregtech");
         return tt;
     }
@@ -172,24 +171,30 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            BigInteger recipeEU;
+
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
-                mWirelessEUt = 10L * (long) recipe.mEUt * (long) multiplier;
-                if (getUserEU(ownerUUID).compareTo(BigInteger.valueOf(mWirelessEUt * recipe.mDuration)) < 0) {
-                    return CheckRecipeResultRegistry.insufficientPower(mWirelessEUt * recipe.mDuration);
+                BigInteger availableEU = getUserEU(ownerUUID);
+                recipeEU = BigInteger.valueOf(10L * recipe.mEUt * recipe.mDuration);
+                if (availableEU.compareTo(recipeEU) < 0) {
+                    return CheckRecipeResultRegistry.insufficientStartupPower(recipeEU);
                 }
+                maxParallel = availableEU.divide(recipeEU)
+                    .min(BigInteger.valueOf(maxParallel))
+                    .intValue();
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@Nonnull GT_Recipe recipe) {
-                mWirelessEUt = 10L * (long) recipe.mEUt * (long) multiplier;
+                BigInteger finalConsumption = recipeEU.multiply(BigInteger.valueOf(-calculatedParallels));
                 // This will void the inputs if wireless energy has dropped
                 // below the required amount between validateRecipe and here.
-                if (!addEUToGlobalEnergyMap(ownerUUID, -mWirelessEUt * recipe.mDuration)) {
-                    return CheckRecipeResultRegistry.insufficientPower(mWirelessEUt * recipe.mDuration);
+                if (!addEUToGlobalEnergyMap(ownerUUID, finalConsumption)) {
+                    return CheckRecipeResultRegistry.insufficientStartupPower(finalConsumption);
                 }
                 // Energy consumed all at once from wireless net.
                 setCalculatedEut(0);
@@ -248,7 +253,9 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
             return false;
         }
 
-        return (mMaintenanceHatches.size() == 1);
+        // Maintenance hatch not required but left for compatibility.
+        // Don't allow more than 1, no free casing spam!
+        return (mMaintenanceHatches.size() <= 1);
     }
 
     @Override
@@ -353,5 +360,10 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     @Override
     public boolean supportsVoidProtection() {
         return true;
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

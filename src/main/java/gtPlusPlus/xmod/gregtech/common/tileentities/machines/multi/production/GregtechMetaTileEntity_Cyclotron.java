@@ -15,6 +15,7 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,6 +25,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -134,9 +137,10 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
         return survivialBuildPiece(mName, stackSize, 7, 1, 12, elementBudget, env, false, true);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
-        return SoundResource.GT_MACHINES_FUSION_LOOP;
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_FUSION_LOOP.resourceLocation;
     }
 
     @Override

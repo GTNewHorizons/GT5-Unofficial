@@ -647,8 +647,6 @@ public class GT_MetaTileEntity_PlasmaForge extends
                     + EnumChatFormatting.GRAY
                     + " TT energy hatch.")
             .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " maintenance hatch.")
-            .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + min_input_hatch
                     + EnumChatFormatting.GRAY
@@ -864,8 +862,9 @@ public class GT_MetaTileEntity_PlasmaForge extends
         // If there are no energy hatches or TT energy hatches, structure will fail to form.
         if ((mEnergyHatches.size() == 0) && (mExoticEnergyHatches.size() == 0)) return false;
 
-        // One maintenance hatch only. Mandatory.
-        if (mMaintenanceHatches.size() != 1) return false;
+        // Maintenance hatch not required but left for compatibility.
+        // Don't allow more than 1, no free casing spam!
+        if (mMaintenanceHatches.size() > 1) return false;
 
         // Heat capacity of coils used on multi. No free heat from extra EU!
         mHeatingCapacity = (int) getCoilLevel().getHeat();
@@ -1219,5 +1218,10 @@ public class GT_MetaTileEntity_PlasmaForge extends
     @Override
     public boolean supportsBatchMode() {
         return true;
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }
