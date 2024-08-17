@@ -16,34 +16,14 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_GLOW;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
-import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
-import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaOilCracker;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.GregTechTileClientEvents;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Recipe;
-import gregtech.common.blocks.GT_Block_Casings10;
-import gregtech.common.blocks.GT_Block_Casings4;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -69,20 +49,22 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-
-import javax.annotation.Nonnull;
-import java.util.List;
+import gregtech.common.blocks.GT_Block_Casings10;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_MultiAutoclave extends
     GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_MultiAutoclave> implements ISurvivalConstructable {
-
 
     public GT_MetaTileEntity_MultiAutoclave(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -136,7 +118,8 @@ public class GT_MetaTileEntity_MultiAutoclave extends
     }
 
     public Integer getCoilTier() {
-        return (int) this.getCoilLevel().getTier() + 1;
+        return (int) this.getCoilLevel()
+            .getTier() + 1;
     }
 
     private static final IStructureDefinition<GT_MetaTileEntity_MultiAutoclave> STRUCTURE_DEFINITION = StructureDefinition
@@ -254,8 +237,7 @@ public class GT_MetaTileEntity_MultiAutoclave extends
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) return false;
         // if (mCasingAmount < 8) return false;
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-        return this.mMaintenanceHatches.size() == 1
-            && fluidPipeTier >= 0
+        return this.mMaintenanceHatches.size() == 1 && fluidPipeTier >= 0
             && itemPipeTier >= 0
             && mEnergyHatches.size() >= 1
             && mMufflerHatches.size() == 1;
@@ -342,7 +324,7 @@ public class GT_MetaTileEntity_MultiAutoclave extends
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-                                int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("fluidPipeTier", getFluidPipeTier());
         tag.setInteger("itemPipeTier", getItemPipeTier());
@@ -351,20 +333,13 @@ public class GT_MetaTileEntity_MultiAutoclave extends
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-                             IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
-            StatCollector.translateToLocal("GT5U.machines.oreprocessor1"));
-        currenttip.add( "Fluid Pipe Tier: "
-            + EnumChatFormatting.WHITE
-            + tag.getInteger("fluidPipeTier"));
-        currenttip.add( "Item Pipe Tier: "
-            + EnumChatFormatting.WHITE
-            + tag.getInteger("itemPipeTier"));
-        currenttip.add( "Heating Coil Level: "
-            + EnumChatFormatting.WHITE
-            + tag.getInteger("coilTier"));
+        currenttip.add(StatCollector.translateToLocal("GT5U.machines.oreprocessor1"));
+        currenttip.add("Fluid Pipe Tier: " + EnumChatFormatting.WHITE + tag.getInteger("fluidPipeTier"));
+        currenttip.add("Item Pipe Tier: " + EnumChatFormatting.WHITE + tag.getInteger("itemPipeTier"));
+        currenttip.add("Heating Coil Level: " + EnumChatFormatting.WHITE + tag.getInteger("coilTier"));
     }
 
     @Override
