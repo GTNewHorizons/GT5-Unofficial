@@ -381,4 +381,10 @@ public class GT_MetaTileEntity_MultiAutoclave extends
     public boolean supportsSingleRecipeLocking() {
         return true;
     }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(GT_Utility.roundUpVoltage(this.getMaxInputVoltage()));
+        logic.setAvailableAmperage(1L);
+    }
 }
