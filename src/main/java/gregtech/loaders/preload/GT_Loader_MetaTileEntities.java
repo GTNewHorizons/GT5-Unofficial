@@ -2994,6 +2994,86 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private void registerFermenter() {
+        ItemList.Machine_LV_Fermenter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_LV.ID,
+                "basicmachine.fermenter.tier.01",
+                "Basic Fermenter",
+                1,
+                MachineType.FERMENTER.tooltipDescription(),
+                RecipeMaps.fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Fermenter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_MV.ID,
+                "basicmachine.fermenter.tier.02",
+                "Advanced Fermenter",
+                2,
+                MachineType.FERMENTER.tooltipDescription(),
+                RecipeMaps.fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Fermenter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_HV.ID,
+                "basicmachine.fermenter.tier.03",
+                "Advanced Fermenter II",
+                3,
+                MachineType.FERMENTER.tooltipDescription(),
+                RecipeMaps.fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Fermenter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_EV.ID,
+                "basicmachine.fermenter.tier.04",
+                "Advanced Fermenter III",
+                4,
+                MachineType.FERMENTER.tooltipDescription(),
+                RecipeMaps.fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Fermenter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_IV.ID,
+                "basicmachine.fermenter.tier.05",
+                "Advanced Fermenter IV",
+                5,
+                MachineType.FERMENTER.tooltipDescription(),
+                RecipeMaps.fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
         ItemList.FermenterLuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 FERMENTER_LuV.ID,
@@ -3108,6 +3188,86 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private void registerFluidCanner() {
+        ItemList.Machine_LV_FluidCanner.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_LV.ID,
+                "basicmachine.fluidcanner.tier.01",
+                "Basic Fluid Canner",
+                1,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                RecipeMaps.fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_FluidCanner.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_MV.ID,
+                "basicmachine.fluidcanner.tier.02",
+                "Advanced Fluid Canner",
+                2,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                RecipeMaps.fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_FluidCanner.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_HV.ID,
+                "basicmachine.fluidcanner.tier.03",
+                "Quick Fluid Canner",
+                3,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                RecipeMaps.fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_FluidCanner.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_EV.ID,
+                "basicmachine.fluidcanner.tier.04",
+                "Turbo Fluid Canner",
+                4,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                RecipeMaps.fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_FluidCanner.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_IV.ID,
+                "basicmachine.fluidcanner.tier.05",
+                "Instant Fluid Canner",
+                5,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                RecipeMaps.fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
         ItemList.FluidCannerLuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 FLUID_CANNER_LuV.ID,
@@ -3222,6 +3382,86 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private void registerFluidExtractor() {
+        ItemList.Machine_LV_FluidExtractor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_LV.ID,
+                "basicmachine.fluidextractor.tier.01",
+                "Basic Fluid Extractor",
+                1,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                RecipeMaps.fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_FluidExtractor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_MV.ID,
+                "basicmachine.fluidextractor.tier.02",
+                "Advanced Fluid Extractor",
+                2,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                RecipeMaps.fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_FluidExtractor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_HV.ID,
+                "basicmachine.fluidextractor.tier.03",
+                "Advanced Fluid Extractor II",
+                3,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                RecipeMaps.fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_FluidExtractor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_EV.ID,
+                "basicmachine.fluidextractor.tier.04",
+                "Advanced Fluid Extractor III",
+                4,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                RecipeMaps.fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_FluidExtractor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_IV.ID,
+                "basicmachine.fluidextractor.tier.05",
+                "Advanced Fluid Extractor IV",
+                5,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                RecipeMaps.fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
         ItemList.FluidExtractorLuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 FLUID_EXTRACTOR_LuV.ID,
@@ -3336,6 +3576,86 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private void registerFluidHeater() {
+        ItemList.Machine_LV_FluidHeater.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_LV.ID,
+                "basicmachine.fluidheater.tier.01",
+                "Basic Fluid Heater",
+                1,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                RecipeMaps.fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_FluidHeater.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_MV.ID,
+                "basicmachine.fluidheater.tier.02",
+                "Advanced Fluid Heater",
+                2,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                RecipeMaps.fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_FluidHeater.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_HV.ID,
+                "basicmachine.fluidheater.tier.03",
+                "Advanced Fluid Heater II",
+                3,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                RecipeMaps.fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_FluidHeater.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_EV.ID,
+                "basicmachine.fluidheater.tier.04",
+                "Advanced Fluid Heater III",
+                4,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                RecipeMaps.fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_FluidHeater.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_IV.ID,
+                "basicmachine.fluidheater.tier.05",
+                "Advanced Fluid Heater IV",
+                5,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                RecipeMaps.fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
         ItemList.FluidHeaterLuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 FLUID_HEATER_LuV.ID,
@@ -4843,6 +5163,85 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private void registerExtruder() {
+        ItemList.Machine_LV_Extruder.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRUDER_LV.ID,
+                "basicmachine.extruder.tier.01",
+                "Basic Extruder",
+                1,
+                MachineType.EXTRUDER.tooltipDescription(),
+                RecipeMaps.extruderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRUDER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Extruder.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRUDER_MV.ID,
+                "basicmachine.extruder.tier.02",
+                "Advanced Extruder",
+                2,
+                MachineType.EXTRUDER.tooltipDescription(),
+                RecipeMaps.extruderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRUDER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Extruder.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRUDER_HV.ID,
+                "basicmachine.extruder.tier.03",
+                "Advanced Extruder II",
+                3,
+                MachineType.EXTRUDER.tooltipDescription(),
+                RecipeMaps.extruderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRUDER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Extruder.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRUDER_EV.ID,
+                "basicmachine.extruder.tier.04",
+                "Advanced Extruder III",
+                4,
+                MachineType.EXTRUDER.tooltipDescription(),
+                RecipeMaps.extruderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRUDER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Extruder.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRUDER_IV.ID,
+                "basicmachine.extruder.tier.05",
+                "Advanced Extruder IV",
+                5,
+                MachineType.EXTRUDER.tooltipDescription(),
+                RecipeMaps.extruderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRUDER",
+                null).getStackForm(1L));
 
         ItemList.ExtruderLuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -4959,6 +5358,90 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private void registerFluidSolidifier() {
+        ItemList.Machine_LV_FluidSolidifier.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_SOLIDIFIER_LV.ID,
+                "basicmachine.fluidsolidifier.tier.01",
+                "Basic Fluid Solidifier",
+                1,
+                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
+                RecipeMaps.fluidSolidifierRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_SOLIDIFIER",
+                null)
+                .getStackForm(1L));
+
+        ItemList.Machine_MV_FluidSolidifier.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_SOLIDIFIER_MV.ID,
+                "basicmachine.fluidsolidifier.tier.02",
+                "Advanced Fluid Solidifier",
+                2,
+                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
+                RecipeMaps.fluidSolidifierRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_SOLIDIFIER",
+                null)
+                .getStackForm(1L));
+
+        ItemList.Machine_HV_FluidSolidifier.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_SOLIDIFIER_HV.ID,
+                "basicmachine.fluidsolidifier.tier.03",
+                "Advanced Fluid Solidifier II",
+                3,
+                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
+                RecipeMaps.fluidSolidifierRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_SOLIDIFIER",
+                null)
+                .getStackForm(1L));
+
+        ItemList.Machine_EV_FluidSolidifier.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_SOLIDIFIER_EV.ID,
+                "basicmachine.fluidsolidifier.tier.04",
+                "Advanced Fluid Solidifier III",
+                4,
+                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
+                RecipeMaps.fluidSolidifierRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_SOLIDIFIER",
+                null)
+                .getStackForm(1L));
+
+        ItemList.Machine_IV_FluidSolidifier.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_SOLIDIFIER_IV.ID,
+                "basicmachine.fluidsolidifier.tier.05",
+                "Advanced Fluid Solidifier IV",
+                5,
+                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
+                RecipeMaps.fluidSolidifierRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_SOLIDIFIER",
+                null)
+                .getStackForm(1L));
 
         ItemList.FluidSolidifierLuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -5270,6 +5753,88 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private void registerForgeHammer() {
+        ItemList.Machine_LV_Hammer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORGE_HAMMER_LV.ID,
+                "basicmachine.hammer.tier.01",
+                "Basic Forge Hammer",
+                1,
+                MachineType.FORGE_HAMMER.tooltipDescription(),
+                RecipeMaps.hammerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.RANDOM_ANVIL_USE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                "HAMMER",
+                null)
+                .getStackForm(1L));
+
+        ItemList.Machine_MV_Hammer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORGE_HAMMER_MV.ID,
+                "basicmachine.hammer.tier.02",
+                "Advanced Forge Hammer",
+                2,
+                MachineType.FORGE_HAMMER.tooltipDescription(),
+                RecipeMaps.hammerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.RANDOM_ANVIL_USE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                "HAMMER",
+                null)
+                .getStackForm(1L));
+
+        ItemList.Machine_HV_Hammer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORGE_HAMMER_HV.ID,
+                "basicmachine.hammer.tier.03",
+                "Advanced Forge Hammer II",
+                3,
+                MachineType.FORGE_HAMMER.tooltipDescription(),
+                RecipeMaps.hammerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.RANDOM_ANVIL_USE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                "HAMMER",
+                null)
+                .getStackForm(1L));
+
+        ItemList.Machine_EV_Hammer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORGE_HAMMER_EV.ID,
+                "basicmachine.hammer.tier.04",
+                "Advanced Forge Hammer III",
+                4,
+                MachineType.FORGE_HAMMER.tooltipDescription(),
+                RecipeMaps.hammerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.RANDOM_ANVIL_USE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                "HAMMER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Hammer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORGE_HAMMER_IV.ID,
+                "basicmachine.hammer.tier.05",
+                "Advanced Forge Hammer IV",
+                5,
+                MachineType.FORGE_HAMMER.tooltipDescription(),
+                RecipeMaps.hammerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.RANDOM_ANVIL_USE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                "HAMMER",
+                null).getStackForm(1L));
 
         ItemList.ForgeHammerLuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
