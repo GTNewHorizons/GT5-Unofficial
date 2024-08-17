@@ -20,4 +20,10 @@ public class GT_CircuitComponent_FakeItem extends GT_Generic_Item {
         CircuitComponent component = CircuitComponent.getFromFakeStack(aStack);
         return component.unlocalizedName;
     }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        CircuitComponent component = CircuitComponent.getFromFakeStack(stack);
+        return component.getLocalizedName();
+    }
 }
