@@ -15,6 +15,22 @@ public class PackagerRecipes implements Runnable {
     @Override
     public void run() {
         GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Tool_Matches.get(16L),
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Paper, 1L))
+            .itemOutputs(ItemList.Tool_MatchBox_Full.get(1L))
+            .duration(3 * SECONDS + 4 * TICKS)
+            .eut(16)
+            .addTo(packagerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Tool_MatchBox_Full.get(1L))
+            .itemOutputs(ItemList.Tool_Matches.get(16L))
+            .duration(1 * SECONDS + 12 * TICKS)
+            .eut(16)
+            .addTo(packagerRecipes);
+
+        GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Scrap.get(9), ItemList.Schematic_3by3.get(0))
             .itemOutputs(ItemList.IC2_Scrapbox.get(1))
             .duration(16 * TICKS)

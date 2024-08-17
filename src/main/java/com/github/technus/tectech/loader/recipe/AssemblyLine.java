@@ -1,6 +1,5 @@
 package com.github.technus.tectech.loader.recipe;
 
-import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
 import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getOrDefault;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -127,7 +126,7 @@ public class AssemblyLine implements Runnable {
 
         // Research Station
         GT_Values.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, getItemContainer("ScannerZPM").get(1))
+            .metadata(RESEARCH_ITEM, ItemList.ScannerZPM.get(1))
             .metadata(RESEARCH_TIME, 1 * HOURS + 6 * MINUTES + 40 * SECONDS)
             .itemInputs(
                 CustomItemList.Machine_Multi_Switch.get(1),

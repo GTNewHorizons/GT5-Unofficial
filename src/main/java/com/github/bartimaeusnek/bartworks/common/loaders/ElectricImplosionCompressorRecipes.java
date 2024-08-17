@@ -1,16 +1,23 @@
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
 import static com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps.electricImplosionCompressorRecipes;
+import static goodgenerator.loader.Loaders.highDensityPlutonium;
+import static goodgenerator.loader.Loaders.highDensityPlutoniumNugget;
+import static goodgenerator.loader.Loaders.highDensityThorium;
+import static goodgenerator.loader.Loaders.highDensityThoriumNugget;
+import static goodgenerator.loader.Loaders.highDensityUranium;
+import static goodgenerator.loader.Loaders.highDensityUraniumNugget;
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.OpenComputers;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.enums.Mods.UniversalSingularities;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
+import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -51,8 +58,8 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         }
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(getModItem(GoodGenerator.ID, "highDensityPlutoniumNugget", 5L))
-            .itemOutputs(getModItem(GoodGenerator.ID, "highDensityPlutonium", 1L))
+            .itemInputs(new ItemStack(highDensityPlutoniumNugget, 5))
+            .itemOutputs(new ItemStack(highDensityPlutonium, 1))
             .fluidInputs(Materials.Neutronium.getMolten(72L))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)
@@ -60,8 +67,8 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .addTo(electricImplosionCompressorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(getModItem(GoodGenerator.ID, "highDensityUraniumNugget", 5L))
-            .itemOutputs(getModItem(GoodGenerator.ID, "highDensityUranium", 1L))
+            .itemInputs(new ItemStack(highDensityUraniumNugget, 5))
+            .itemOutputs(new ItemStack(highDensityUranium, 1))
             .fluidInputs(Materials.Neutronium.getMolten(72L))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)
@@ -69,8 +76,8 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .addTo(electricImplosionCompressorRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(getModItem(GoodGenerator.ID, "highDensityThoriumNugget", 5L))
-            .itemOutputs(getModItem(GoodGenerator.ID, "highDensityThorium", 1L))
+            .itemInputs(new ItemStack(highDensityThoriumNugget, 5))
+            .itemOutputs(new ItemStack(highDensityThorium, 1))
             .fluidInputs(Materials.Neutronium.getMolten(72L))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)

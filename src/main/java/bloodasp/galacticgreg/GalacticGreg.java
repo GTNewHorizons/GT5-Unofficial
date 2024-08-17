@@ -68,11 +68,6 @@ public class GalacticGreg {
         Logger.trace("Leaving PRELOAD");
     }
 
-    // @EventHandler
-    // public void onLoad(FMLInitializationEvent event){
-    // GalacticGregRegistry.registerModContainer(ModRegisterer.Setup_GalactiCraftCore());
-    // }
-
     public static final ArrayList<Runnable> ADDITIONALVEINREGISTER = new ArrayList<>();
 
     /**

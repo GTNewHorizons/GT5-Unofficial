@@ -2,7 +2,9 @@ package com.github.technus.tectech.mechanics.tesla;
 
 import static java.lang.Math.sqrt;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import com.github.technus.tectech.mechanics.spark.ThaumSpark;
@@ -41,6 +43,7 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
         private static final HashSet<ITeslaConnectableSimple> teslaSimpleNodeSet = new HashSet<>(); // Targets for power
                                                                                                     // transmission
         private static final HashSet<ITeslaConnectable> teslaNodeSet = new HashSet<>(); // Sources of power transmission
+        private static final List<ITeslaConnectableSimple> scheduledRemove = new ArrayList<>();
 
         public static void teslaSimpleNodeSetAdd(ITeslaConnectableSimple target) {
             if (!teslaSimpleNodeSet.contains(target)) {
@@ -53,6 +56,17 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
             teslaSimpleNodeSet.remove(target);
             if (target instanceof ITeslaConnectable) teslaNodeSet.remove(target);
             teslaNodeSet.forEach(origin -> removeTargetFromTeslaOrigin(target, origin));
+        }
+
+        public static void teslaSimpleNodeSetRemoveScheduled(ITeslaConnectableSimple target) {
+            scheduledRemove.add(target);
+        }
+
+        public static void housekeep() {
+            for (ITeslaConnectableSimple e : scheduledRemove) {
+                teslaSimpleNodeSet.remove(e);
+            }
+            scheduledRemove.clear();
         }
 
         private static void addTargetToTeslaOrigin(ITeslaConnectableSimple target, ITeslaConnectable origin) {

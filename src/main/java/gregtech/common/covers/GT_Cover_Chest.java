@@ -129,7 +129,12 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
 
         @Override
         protected int getGUIHeight() {
-            return slots / 3 * 18 + 8;
+            int height = slots / 3 * 18 + 8;
+            if (!getUIBuildContext().isAnotherWindow()) {
+                // player inv is 4 row
+                return height + 4 * 18 + 14;
+            }
+            return height;
         }
 
         @Override
@@ -137,7 +142,11 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
 
         @Override
         protected int getGUIWidth() {
-            return 18 * 3 + 20;
+            if (getUIBuildContext().isAnotherWindow()) {
+                return 18 * 3 + 20;
+            } else {
+                return 18 * 9 + 20;
+            }
         }
 
         @Override
@@ -153,15 +162,25 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
                 return;
             }
             h = d.items;
-            w.addChild(
-                SlotGroup.ofItemHandler(h, 3)
-                    .build()
-                    .setPos(4, 4));
+            SlotGroup slotGroup = SlotGroup.ofItemHandler(h, 3)
+                                           .build();
+            if (getUIBuildContext().isAnotherWindow()) {
+                slotGroup.setPos(4, 4);
+            } else {
+                slotGroup.setPos(getGUIWidth() / 2 - 18 * 3 / 2, 6);
+            }
+            w.addChild(slotGroup);
             builder.widget(w);
 
             builder.setPos(
-                (p, t) -> Alignment.Center
-                    .getAlignedPos(new Size(t.getPos().x == 0 ? p.width : t.getPos().x, p.height), new Size(getGUIWidth(), getGUIHeight())));
+                (p, t) -> Alignment.Center.getAlignedPos(
+                    new Size(getUIBuildContext().isAnotherWindow() ? t.getPos().x : p.width, p.height),
+                    new Size(getGUIWidth(), getGUIHeight())));
+        }
+
+        @Override
+        protected boolean doesBindPlayerInventory() {
+            return true;
         }
     }
 

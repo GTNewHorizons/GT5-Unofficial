@@ -113,20 +113,6 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
     }
 
     @Deprecated
-    public IIcon getTurbineCasing(int meta, int iconIndex, boolean active) {
-        return switch (meta) {
-            case 10 -> active ? Textures.BlockIcons.TURBINE_ACTIVE1[iconIndex].getIcon()
-                : Textures.BlockIcons.TURBINE1[iconIndex].getIcon();
-            case 11 -> active ? Textures.BlockIcons.TURBINE_ACTIVE2[iconIndex].getIcon()
-                : Textures.BlockIcons.TURBINE2[iconIndex].getIcon();
-            case 12 -> active ? Textures.BlockIcons.TURBINE_ACTIVE3[iconIndex].getIcon()
-                : Textures.BlockIcons.TURBINE3[iconIndex].getIcon();
-            default -> active ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon()
-                : Textures.BlockIcons.TURBINE[iconIndex].getIcon();
-        };
-    }
-
-    @Deprecated
     public IIcon getTurbineCasing(int meta, int iconIndex, boolean active, boolean hasTurbine) {
         return switch (meta) {
             case 10 -> active ? Textures.BlockIcons.TURBINE_ACTIVE1[iconIndex].getIcon()

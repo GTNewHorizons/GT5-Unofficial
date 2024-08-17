@@ -1,9 +1,7 @@
 package gtPlusPlus.core.recipe;
 
-import static gregtech.api.enums.Mods.BartWorks;
+import static goodgenerator.loader.Loaders.supercriticalFluidTurbineCasing;
 import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.enums.Mods.GoodGenerator;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.RemoteIO;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -28,10 +26,12 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.google.common.collect.ImmutableList;
 
+import goodgenerator.loader.Loaders;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -549,9 +549,9 @@ public class RECIPES_Machines {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(18),
-                GT_ModHandler.getModItem(GoodGenerator.ID, "supercriticalFluidTurbineCasing", 1),
-                GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedplate", 4, 10101),
-                GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedscrew", 8, 10101))
+                new ItemStack(supercriticalFluidTurbineCasing, 1),
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.plate), 4, 10101),
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.screw), 8, 10101))
             .itemOutputs(GregtechItemList.Casing_Turbine_SC.get(1))
             .fluidInputs(FluidRegistry.getFluidStack("molten.adamantium alloy", 144 * 2))
             .duration(5 * SECONDS)
@@ -560,10 +560,10 @@ public class RECIPES_Machines {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(18),
-                GT_ModHandler.getModItem(GregTech.ID, "gt.blockmachines", 1, 32016),
-                GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedplate", 8, 10104),
-                GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedscrew", 16, 10104),
-                GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedgearGt", 4, 10104),
+                GT_Utility.copyAmount(1, Loaders.SCTurbine),
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.plate), 8, 10104),
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.screw), 16, 10104),
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.gearGt), 4, 10104),
                 CI.getCircuit(7, 8))
             .itemOutputs(GregtechItemList.Large_SCSteam_Turbine.get(1))
             .fluidInputs(FluidRegistry.getFluidStack("molten.hikarium", 144 * 8))

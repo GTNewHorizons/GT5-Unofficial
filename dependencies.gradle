@@ -40,21 +40,25 @@ dependencies {
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.0:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.4.2:dev")
     api("com.github.GTNewHorizons:ModularUI:1.2.0:dev")
-    api("com.github.GTNewHorizons:ModularUI2:2.0.14-1.7.10:dev")
+    api("com.github.GTNewHorizons:ModularUI2:2.1.1-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.8.1:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-426-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.3.21-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.6.0:dev')
 
     compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.10.1:dev')
-    compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.3.2-GTNH:dev")
+    compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.4.1-GTNH:dev")
     compileOnlyApi("com.github.GTNewHorizons:Navigator:1.0.6:dev")
+    implementation('com.github.GTNewHorizons:Baubles:1.0.4:dev') {transitive=false}
+    // Required to prevent an older bauble api from Extra Utilities from loading first in the javac classpath
+    compileOnly('com.github.GTNewHorizons:Baubles:1.0.4:dev') {transitive=false}
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Infernal-Mobs:1.8.1-GTNH:dev")
 
     implementation('com.github.GTNewHorizons:GTNEIOrePlugin:1.3.3:dev') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Avaritia:1.51:dev")
-    compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.9.7:dev") { transitive = false }
+    // this is required because forestry is an hidden hard dep, revert this if you fixed the hidden hard dep
+    implementation("com.github.GTNewHorizons:ForestryMC:4.9.7:dev") { transitive = false }
 
     compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta4:api') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.0:dev") { transitive = false }
@@ -88,7 +92,6 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.3.1:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.7.0-GTNH:dev") { transitive = false }
 
-    implementation('com.github.GTNewHorizons:Baubles:1.0.4:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:SC2:2.1.1:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.4.1:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
