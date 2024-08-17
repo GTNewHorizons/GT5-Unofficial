@@ -8,7 +8,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemPickaxe;
 
-import gregtech.GT_Mod;
 import gregtech.api.util.GT_Utility;
 
 public class GT_BlockResistanceLoader implements Runnable {

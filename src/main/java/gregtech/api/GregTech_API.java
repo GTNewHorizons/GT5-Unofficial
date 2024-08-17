@@ -300,7 +300,6 @@ public class GregTech_API {
         sMachineWireFire = true, mOutputRF = false, mInputRF = false, meIOLoaded = false, mRFExplosions = false,
         mServerStarted = false;
 
-
     public static int mEUtoRF = 360, mRFtoEU = 20;
 
     /**

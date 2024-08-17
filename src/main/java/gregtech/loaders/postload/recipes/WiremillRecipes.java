@@ -2,13 +2,11 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeRegistrator.registerWiremillRecipes;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;

@@ -2690,11 +2690,8 @@ public class AssemblerRecipes implements Runnable {
             .eut(16)
             .addTo(assemblerRecipes);
 
-
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Lead, 2),
-                ItemList.Casing_ULV.get(1))
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Lead, 2), ItemList.Casing_ULV.get(1))
             .itemOutputs(ItemList.Hull_ULV.get(1))
             .fluidInputs(Materials.Plastic.getMolten(288))
             .duration(1 * SECONDS + 5 * TICKS)
@@ -2702,9 +2699,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin, 2),
-                ItemList.Casing_LV.get(1))
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin, 2), ItemList.Casing_LV.get(1))
             .itemOutputs(ItemList.Hull_LV.get(1))
             .fluidInputs(Materials.Plastic.getMolten(288))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2712,9 +2707,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Copper, 2),
-                ItemList.Casing_MV.get(1))
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Copper, 2), ItemList.Casing_MV.get(1))
             .itemOutputs(ItemList.Hull_MV.get(1))
             .fluidInputs(Materials.Plastic.getMolten(288))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2732,9 +2725,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 2),
-                ItemList.Casing_HV.get(1))
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 2), ItemList.Casing_HV.get(1))
             .itemOutputs(ItemList.Hull_HV.get(1))
             .fluidInputs(Materials.Plastic.getMolten(288))
             .duration(2 * SECONDS + 10 * TICKS)

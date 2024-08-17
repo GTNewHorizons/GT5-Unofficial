@@ -41,7 +41,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import forestry.api.recipes.RecipeManagers;
-import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -190,14 +189,12 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
 
         addCentrifugeToItemStack(
             CombType.LIGNIE,
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 1),
-                ItemList.FR_Wax.get(1) },
+            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 1), ItemList.FR_Wax.get(1) },
             new int[] { 90 * 100, 50 * 100 },
             Voltage.ULV);
         addCentrifugeToItemStack(
             CombType.COAL,
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1),
-                ItemList.FR_Wax.get(1) },
+            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1), ItemList.FR_Wax.get(1) },
             new int[] { 5 * 100, 50 * 100 },
             Voltage.ULV);
         addCentrifugeToItemStack(
@@ -347,7 +344,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             ItemList.FR_RefractoryWax.get(1),
             50 * 100);
 
-
         // Thaumic
         addProcessGT(CombType.THAUMIUMDUST, new Materials[] { Materials.Thaumium }, Voltage.MV);
         addCentrifugeToItemStack(
@@ -384,7 +380,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addCentrifugeToMaterial(
             CombType.ASTRALSILVER,
             new Materials[] { Materials.AstralSilver, Materials.Silver },
-            new int[] { 20 * 100,10 * 100 },
+            new int[] { 20 * 100, 10 * 100 },
             new int[] {},
             Voltage.HV,
             GT_ModHandler.getModItem(MagicBees.ID, "wax", 1, 0),
@@ -438,8 +434,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             new int[] { 50 * 100, 100 * 100 },
             Voltage.ULV);
 
-
-
         // Gem Line
         addProcessGT(CombType.STONE, new Materials[] { Materials.Soapstone }, Voltage.LV);
         addProcessGT(CombType.CERTUS, new Materials[] { Materials.CertusQuartz }, Voltage.LV);
@@ -482,7 +476,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             Voltage.ULV,
             NI,
             30 * 100);
-
 
         // Metals Line
         addProcessGT(CombType.SLAG, new Materials[] { Materials.Limestone }, Voltage.LV);
@@ -574,7 +567,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             NI,
             30 * 100);
 
-
         // Rare Metals Line
         addProcessGT(CombType.BAUXITE, new Materials[] { Materials.Bauxite }, Voltage.LV);
         addProcessGT(CombType.ALUMINIUM, new Materials[] { Materials.Aluminium }, Voltage.LV);
@@ -601,7 +593,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             new int[] { 100 * 100, 100 * 100, 50 * 100, 25 * 100 },
             Voltage.MV,
             160);
-
 
         // Radioactive Line
         addProcessGT(CombType.ALMANDINE, new Materials[] { Materials.Almandine }, Voltage.LV);
@@ -756,7 +747,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addCentrifugeToMaterial(
             CombType.INFUSEDGOLD,
             new Materials[] { Materials.InfusedGold, Materials.Gold },
-            new int[] {  20 * 100, 10 * 100 },
+            new int[] { 20 * 100, 10 * 100 },
             new int[] {},
             Voltage.IV,
             200,
@@ -774,7 +765,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             50 * 100);
         addProcessGT(CombType.BLACKPLUTONIUM, new Materials[] { Materials.BlackPlutonium }, Voltage.LuV);
         addProcessGT(CombType.TRINIUM, new Materials[] { Materials.Trinium }, Voltage.ZPM);
-
 
         // Planet Line
         addCentrifugeToItemStack(

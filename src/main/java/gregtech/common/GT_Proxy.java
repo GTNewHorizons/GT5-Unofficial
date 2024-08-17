@@ -33,7 +33,6 @@ import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.enums.Mods.WitchingGadgets;
 import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
-import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_Util.LAST_BROKEN_TILEENTITY;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
@@ -2362,22 +2361,20 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
             }
             final boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);
 
-            if (aEvent.player.ticksExisted % 120 != 0){
+            if (aEvent.player.ticksExisted % 120 != 0) {
                 return;
             }
 
             int tCount = 64;
             for (int i = 0; i < 36; i++) {
                 final ItemStack tStack = aEvent.player.inventory.getStackInSlot(i);
-                if (tStack == null){
+                if (tStack == null) {
                     continue;
                 }
 
                 if (!aEvent.player.capabilities.isCreativeMode) {
-                    GT_Utility.applyRadioactivity(
-                        aEvent.player,
-                        GT_Utility.getRadioactivityLevel(tStack),
-                        tStack.stackSize);
+                    GT_Utility
+                        .applyRadioactivity(aEvent.player, GT_Utility.getRadioactivityLevel(tStack), tStack.stackSize);
                     final float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
                     if (tHeat != 0.0F) {
                         if (tHeat > 0.0F) {
@@ -2397,15 +2394,13 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
             }
             for (int i = 0; i < 4; i++) {
                 final ItemStack tStack = aEvent.player.inventory.armorInventory[i];
-                if (tStack == null){
+                if (tStack == null) {
                     continue;
                 }
 
                 if (!aEvent.player.capabilities.isCreativeMode) {
-                    GT_Utility.applyRadioactivity(
-                        aEvent.player,
-                        GT_Utility.getRadioactivityLevel(tStack),
-                        tStack.stackSize);
+                    GT_Utility
+                        .applyRadioactivity(aEvent.player, GT_Utility.getRadioactivityLevel(tStack), tStack.stackSize);
                     final float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
                     if (tHeat != 0.0F) {
                         if (tHeat > 0.0F) {

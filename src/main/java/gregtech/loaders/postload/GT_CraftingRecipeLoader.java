@@ -1305,9 +1305,8 @@ public class GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addShapelessCraftingRecipe(
             GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Brass, 9L),
             bits_no_remove_buffered,
-            new Object[] { OrePrefixes.dust.get(Materials.Tetrahedrite),
-                OrePrefixes.dust.get(Materials.Tetrahedrite), OrePrefixes.dust.get(Materials.Tetrahedrite),
-                OrePrefixes.dust.get(Materials.Zinc) });
+            new Object[] { OrePrefixes.dust.get(Materials.Tetrahedrite), OrePrefixes.dust.get(Materials.Tetrahedrite),
+                OrePrefixes.dust.get(Materials.Tetrahedrite), OrePrefixes.dust.get(Materials.Zinc) });
         GT_ModHandler.addShapelessCraftingRecipe(
             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 3L),
             bits_no_remove_buffered,
@@ -1316,9 +1315,8 @@ public class GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addShapelessCraftingRecipe(
             GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Bronze, 9L),
             bits_no_remove_buffered,
-            new Object[] { OrePrefixes.dust.get(Materials.Tetrahedrite),
-                OrePrefixes.dust.get(Materials.Tetrahedrite), OrePrefixes.dust.get(Materials.Tetrahedrite),
-                OrePrefixes.dust.get(Materials.Tin) });
+            new Object[] { OrePrefixes.dust.get(Materials.Tetrahedrite), OrePrefixes.dust.get(Materials.Tetrahedrite),
+                OrePrefixes.dust.get(Materials.Tetrahedrite), OrePrefixes.dust.get(Materials.Tin) });
         GT_ModHandler.addShapelessCraftingRecipe(
             GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Invar, 9L),
             bits_no_remove_buffered,
@@ -1506,10 +1504,11 @@ public class GT_CraftingRecipeLoader implements Runnable {
             GT_ModHandler.addShapelessCraftingRecipe(tItem, new Object[] { tItem });
         }
 
-        List<ItemStack> iToRemoveAndHide = Arrays.stream(
-            new String[] { "copperCableItem", "insulatedCopperCableItem", "goldCableItem", "insulatedGoldCableItem",
-                "insulatedIronCableItem", "glassFiberCableItem", "tinCableItem", "ironCableItem",
-                "insulatedTinCableItem", "detectorCableItem", "splitterCableItem", "electrolyzer", "cutter" })
+        List<ItemStack> iToRemoveAndHide = Arrays
+            .stream(
+                new String[] { "copperCableItem", "insulatedCopperCableItem", "goldCableItem", "insulatedGoldCableItem",
+                    "insulatedIronCableItem", "glassFiberCableItem", "tinCableItem", "ironCableItem",
+                    "insulatedTinCableItem", "detectorCableItem", "splitterCableItem", "electrolyzer", "cutter" })
             .map(x -> GT_ModHandler.getIC2Item(x, 1L))
             .collect(Collectors.toList());
 
@@ -1520,12 +1519,13 @@ public class GT_CraftingRecipeLoader implements Runnable {
             });
         }
 
-        Arrays.stream(
-            new String[] { "batBox", "mfeUnit", "lvTransformer", "mvTransformer", "hvTransformer", "evTransformer",
-                "cesuUnit", "luminator", "teleporter", "energyOMat", "advBattery", "boatElectric", "cropnalyzer",
-                "coil", "powerunit", "powerunitsmall", "remote", "odScanner", "ovScanner", "solarHelmet",
-                "staticBoots", "ecMeter", "obscurator", "overclockerUpgrade", "transformerUpgrade",
-                "energyStorageUpgrade", "ejectorUpgrade", "suBattery", "frequencyTransmitter", "pullingUpgrade" })
+        Arrays
+            .stream(
+                new String[] { "batBox", "mfeUnit", "lvTransformer", "mvTransformer", "hvTransformer", "evTransformer",
+                    "cesuUnit", "luminator", "teleporter", "energyOMat", "advBattery", "boatElectric", "cropnalyzer",
+                    "coil", "powerunit", "powerunitsmall", "remote", "odScanner", "ovScanner", "solarHelmet",
+                    "staticBoots", "ecMeter", "obscurator", "overclockerUpgrade", "transformerUpgrade",
+                    "energyStorageUpgrade", "ejectorUpgrade", "suBattery", "frequencyTransmitter", "pullingUpgrade" })
             .map(x -> GT_ModHandler.getIC2Item(x, 1L))
             .forEach(GT_ModHandler::removeRecipeByOutputDelayed);
 
@@ -1571,8 +1571,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
             bits_no_remove_buffered,
             new Object[] { "GFG", "CMC", "GDG", 'C', OrePrefixes.cableGt01.get(Materials.Platinum), 'G',
                 OrePrefixes.circuit.get(Materials.HV), 'D', OrePrefixes.gem.get(Materials.Diamond), 'M',
-                GT_ModHandler.getIC2Item("machine", 1L), 'F',
-                GT_ModHandler.getIC2Item("frequencyTransmitter", 1L) });
+                GT_ModHandler.getIC2Item("machine", 1L), 'F', GT_ModHandler.getIC2Item("frequencyTransmitter", 1L) });
         GT_ModHandler.addCraftingRecipe(
             GT_ModHandler.getIC2Item("energyOMat", 1L),
             bits_no_remove_buffered,
@@ -1647,8 +1646,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
             GT_ModHandler.getIC2Item("overclockerUpgrade", 1L),
             bits_no_remove_buffered,
             new Object[] { "CCC", "WEW", 'W', OrePrefixes.cableGt01.get(Materials.Copper), 'C',
-                GT_ModHandler.getIC2Item("reactorCoolantSimple", 1L, 1), 'E',
-                OrePrefixes.circuit.get(Materials.LV) });
+                GT_ModHandler.getIC2Item("reactorCoolantSimple", 1L, 1), 'E', OrePrefixes.circuit.get(Materials.LV) });
         GT_ModHandler.addCraftingRecipe(
             GT_ModHandler.getIC2Item("transformerUpgrade", 1L),
             bits_no_remove_buffered,

@@ -1,7 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
-import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
@@ -9,7 +8,6 @@ import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -134,9 +132,7 @@ public class CropProcessingRecipes implements Runnable {
 
         GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
         recipeBuilder
-            .itemInputs(
-                GT_Utility.copyAmount(9, tCrop),
-                GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1))
+            .itemInputs(GT_Utility.copyAmount(9, tCrop), GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4))
             .fluidInputs(Materials.Water.getFluid(1000));
         if (fluidOutputChemReactor != null) {

@@ -52,7 +52,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.SetMultimap;
 
 import cpw.mods.fml.relauncher.ReflectionHelper;
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;

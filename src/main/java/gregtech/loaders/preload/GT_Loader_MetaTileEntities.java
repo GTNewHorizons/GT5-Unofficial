@@ -44,9 +44,6 @@ import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
-import gregtech.api.enums.OreDictNames;
-import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_ModHandler;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.GregTech_API;
@@ -80,6 +77,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_WetTransformer;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Wireless_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Wireless_Hatch;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -3036,8 +3034,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.IC2_MACHINES_EXTRACTOR_OP,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "CHEMICAL_REACTOR",
-                null)
-                .getStackForm(1L));
+                null).getStackForm(1L));
 
         ItemList.ChemicalReactorLuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -4722,8 +4719,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.NONE,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "CUTTER",
-                null)
-                .getStackForm(1L));
+                null).getStackForm(1L));
 
         ItemList.Machine_MV_Cutter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -4739,8 +4735,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.NONE,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "CUTTER",
-                null)
-                .getStackForm(1L));
+                null).getStackForm(1L));
 
         ItemList.Machine_HV_Cutter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -4756,8 +4751,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.NONE,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "CUTTER",
-                null)
-                .getStackForm(1L));
+                null).getStackForm(1L));
 
         ItemList.Machine_EV_Cutter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -4773,8 +4767,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.NONE,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "CUTTER",
-                null)
-                .getStackForm(1L));
+                null).getStackForm(1L));
 
         ItemList.Machine_IV_Cutter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -4790,8 +4783,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.NONE,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "CUTTER",
-                null)
-                .getStackForm(1L));
+                null).getStackForm(1L));
 
         ItemList.CuttingMachineLuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -5118,7 +5110,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_FURNACE",
                 null).setProgressBarTextureName("E_Furnace")
-                .getStackForm(1L));
+                    .getStackForm(1L));
 
         ItemList.Machine_MV_E_Furnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -5135,7 +5127,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_FURNACE",
                 null).setProgressBarTextureName("E_Furnace")
-                .getStackForm(1L));
+                    .getStackForm(1L));
 
         ItemList.Machine_HV_E_Furnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -5152,7 +5144,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_FURNACE",
                 null).setProgressBarTextureName("E_Furnace")
-                .getStackForm(1L));
+                    .getStackForm(1L));
 
         ItemList.Machine_EV_E_Furnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -5169,7 +5161,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_FURNACE",
                 null).setProgressBarTextureName("E_Furnace")
-                .getStackForm(1L));
+                    .getStackForm(1L));
 
         ItemList.Machine_IV_E_Furnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -5186,7 +5178,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_FURNACE",
                 null).setProgressBarTextureName("E_Furnace")
-                .getStackForm(1L));
+                    .getStackForm(1L));
 
         ItemList.ElectricFurnaceLuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -6096,8 +6088,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.NONE,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "FLUID_SOLIDIFIER",
-                null)
-                .getStackForm(1L));
+                null).getStackForm(1L));
 
         ItemList.Machine_MV_FluidSolidifier.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -6113,8 +6104,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.NONE,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "FLUID_SOLIDIFIER",
-                null)
-                .getStackForm(1L));
+                null).getStackForm(1L));
 
         ItemList.Machine_HV_FluidSolidifier.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -6130,8 +6120,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.NONE,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "FLUID_SOLIDIFIER",
-                null)
-                .getStackForm(1L));
+                null).getStackForm(1L));
 
         ItemList.Machine_EV_FluidSolidifier.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -6147,8 +6136,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.NONE,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "FLUID_SOLIDIFIER",
-                null)
-                .getStackForm(1L));
+                null).getStackForm(1L));
 
         ItemList.Machine_IV_FluidSolidifier.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -6164,8 +6152,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.NONE,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "FLUID_SOLIDIFIER",
-                null)
-                .getStackForm(1L));
+                null).getStackForm(1L));
 
         ItemList.FluidSolidifierLuV.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -6491,8 +6478,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.RANDOM_ANVIL_USE,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
                 "HAMMER",
-                null)
-                .getStackForm(1L));
+                null).getStackForm(1L));
 
         ItemList.Machine_MV_Hammer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -6508,8 +6494,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.RANDOM_ANVIL_USE,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
                 "HAMMER",
-                null)
-                .getStackForm(1L));
+                null).getStackForm(1L));
 
         ItemList.Machine_HV_Hammer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -6525,8 +6510,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.RANDOM_ANVIL_USE,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
                 "HAMMER",
-                null)
-                .getStackForm(1L));
+                null).getStackForm(1L));
 
         ItemList.Machine_EV_Hammer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -7516,7 +7500,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_OVEN",
                 null).setProgressBarTextureName("E_Oven")
-                .getStackForm(1L));
+                    .getStackForm(1L));
 
         ItemList.Machine_MV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -7533,7 +7517,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_OVEN",
                 null).setProgressBarTextureName("E_Oven")
-                .getStackForm(1L));
+                    .getStackForm(1L));
 
         ItemList.Machine_HV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -7550,7 +7534,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_OVEN",
                 null).setProgressBarTextureName("E_Oven")
-                .getStackForm(1L));
+                    .getStackForm(1L));
 
         ItemList.Machine_EV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -7566,7 +7550,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_OVEN",
-                null).setProgressBarTextureName("E_Oven").getStackForm(1L));
+                null).setProgressBarTextureName("E_Oven")
+                    .getStackForm(1L));
 
         ItemList.Machine_IV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -7582,8 +7567,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "ELECTRIC_OVEN",
-                null).setProgressBarTextureName("E_Oven").getStackForm(1L));
+                null).setProgressBarTextureName("E_Oven")
+                    .getStackForm(1L));
     }
+
     private void registerOreWashingPlant() {
         ItemList.Machine_LV_OreWasher.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -7973,6 +7960,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 null).getStackForm(1L));
 
     }
+
     private static void registerPrinter() {
         ItemList.Machine_LV_Printer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -8102,6 +8090,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "PRINTER",
                 null).getStackForm(1L));
     }
+
     private void registerRecycler() {
         ItemList.Machine_LV_Recycler.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -9481,8 +9470,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "PLASMA_ARC_FURNACE",
-                null)
-                .getStackForm(1L));
+                null).getStackForm(1L));
 
         ItemList.Machine_MV_PlasmaArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -9498,8 +9486,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 SoundResource.IC2_MACHINES_INDUCTION_LOOP,
                 GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
                 "PLASMA_ARC_FURNACE",
-                null)
-                .getStackForm(1L));
+                null).getStackForm(1L));
 
         ItemList.Machine_HV_PlasmaArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
