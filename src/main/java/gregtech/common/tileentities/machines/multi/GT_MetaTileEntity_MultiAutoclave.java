@@ -12,6 +12,10 @@ import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_Values.AuthorVolence;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_ACTIVE_GLOW;
@@ -29,12 +33,14 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Recipe;
+import gregtech.common.blocks.GT_Block_Casings10;
 import gregtech.common.blocks.GT_Block_Casings4;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -70,15 +76,13 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Casings2;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
-import java.util.Collections;
 import java.util.List;
 
 public class GT_MetaTileEntity_MultiAutoclave extends
     GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_MultiAutoclave> implements ISurvivalConstructable {
+
 
     public GT_MetaTileEntity_MultiAutoclave(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -159,12 +163,12 @@ public class GT_MetaTileEntity_MultiAutoclave extends
             'A',
             buildHatchAdder(GT_MetaTileEntity_MultiAutoclave.class)
                 .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Muffler, Energy)
-                .casingIndex(((GT_Block_Casings4) GregTech_API.sBlockCasings4).getTextureIndex(1))
+                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(3))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(
                         GT_MetaTileEntity_MultiAutoclave::onCasingAdded,
-                        ofBlock(GregTech_API.sBlockCasings4, 1))))
+                        ofBlock(GregTech_API.sBlockCasings10, 3))))
         .addElement('B', Glasses.chainAllGlasses()) // Steel Casings
         .addElement('C', ofFrame(Materials.Polytetrafluoroethylene)) // PTFE Frame
         .addElement(
@@ -210,23 +214,26 @@ public class GT_MetaTileEntity_MultiAutoclave extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Lathe")
-            .addInfo("Controller Block for the Industrial Precision Lathe")
-            .addInfo("Gains 2 parallels per voltage tier,")
-            .addInfo("and 4 parallels per pipe casing tier (16 for Black Plutonium)")
-            .addInfo("Better pipe casings increase speed")
+        tt.addMachineType("Autoclave")
+            .addInfo("Controller Block for the Industrial Autoclave.")
+            .addInfo("Gains 12 parallels per item pipe casing tier.")
+            .addInfo("Each pipe casing (bronze, steel, titanium, tungstensteel)")
+            .addInfo("decreases the EU usageby 1/pipe tier.")
+            .addInfo("Heating Coils increase speed by 1/((tier + 1) / 2).")
             .addInfo(AuthorVolence)
             .addSeparator()
             .beginStructureBlock(7, 5, 5, true)
             .addController("Front Center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 36, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 8, false)
-            .addInputBus("Any of the 9 Solid Steel Casing at Each End", 1)
-            .addOutputBus("Any of the 9 Solid Steel Casing at Each End", 1)
-            .addEnergyHatch("Any Solid Steel Casing", 1)
-            .addMaintenanceHatch("Any Solid Steel Casing", 1)
-            .addMufflerHatch("Any Solid Steel Casing", 1)
-            .addOtherStructurePart("4 Item Pipe Casings", "Center of the glass", 4)
+            .addCasingInfoMin("Pressure Containment Casings", 1, false)
+            .addCasingInfoExactly("Item Pipe Casings", 7, true)
+            .addCasingInfoExactly("Pipe Casings", 14, true)
+            .addCasingInfoExactly("Heating Coils", 7, true)
+            .addCasingInfoExactly("PTFE Frame", 42, false)
+            .addInputBus("Any of the Pressure Containment Casings", 1)
+            .addOutputBus("Any of the Pressure Containment Casings", 1)
+            .addEnergyHatch("Any of the Pressure Containment Casings", 1)
+            .addMaintenanceHatch("Any of the Pressure Containment Casings", 1)
+            .addMufflerHatch("Any of the Pressure Containment Casings", 1)
             .toolTipFinisher("GregTech");
         return tt;
     }
@@ -262,33 +269,33 @@ public class GT_MetaTileEntity_MultiAutoclave extends
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 3)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATHE_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATHE_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 3)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATHE)
+                        .addIcon(OVERLAY_FRONT_MULTI_AUTOCLAVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATHE_GLOW)
+                        .addIcon(OVERLAY_FRONT_MULTI_AUTOCLAVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)) };
+                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings10, 3)) };
         }
         return rTexture;
     }
@@ -323,14 +330,14 @@ public class GT_MetaTileEntity_MultiAutoclave extends
             @Nonnull
             public CheckRecipeResult process() {
                 euModifier = (float) 1 / (fluidPipeTier);
-                speedBoost = 1F / getCoilTier() + 1;
+                speedBoost = 1F / (Math.min(1, (getCoilTier() + 1) / 2));
                 return super.process();
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     public int getMaxParallelRecipes() {
-        return itemPipeTier * 2;
+        return itemPipeTier * 12;
     }
 
     @Override
