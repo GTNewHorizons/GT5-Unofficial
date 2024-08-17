@@ -75,15 +75,6 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
             if (!tooltip.isEmpty()) {
                 aList.add(tooltip);
             }
-
-            String owner = werkstoff.getOwner();
-            if (owner != null) {
-                aList.add(BW_Tooltip_Reference.ADDED_VIA_BARTWORKS.apply(owner));
-            } else {
-                aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
-            }
-        } else {
-            aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
         }
     }
 

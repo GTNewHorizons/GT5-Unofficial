@@ -51,7 +51,6 @@ public class GT_Destructopack_Item extends GT_Generic_Item implements IItemWithM
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
-        aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
     @Override

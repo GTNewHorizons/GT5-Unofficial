@@ -13,6 +13,8 @@
 
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
+import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.BloodArsenal;
 import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.Botany;
@@ -31,6 +33,11 @@ import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Mods.Witchery;
 import static gregtech.api.enums.Mods.ZTones;
 
+import java.util.Map;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 import com.github.bartimaeusnek.bartworks.API.GlassTier;
 
 /**
@@ -41,6 +48,50 @@ import com.github.bartimaeusnek.bartworks.API.GlassTier;
 public class RegisterGlassTiers {
 
     public static void run() {
+
+        // Register glass ore dict entries.
+        for (Map.Entry<GlassTier.BlockMetaPair, Integer> pair : GlassTier.getGlassMap()
+            .entrySet()) {
+            String oreName = "blockGlass" + VN[pair.getValue()];
+            ItemStack itemStack = new ItemStack(
+                pair.getKey()
+                    .getBlock(),
+                1,
+                pair.getKey()
+                    .getMeta());
+            OreDictionary.registerOre(oreName, itemStack);
+        }
+
+        // ---------------------------------------------------------------------
+        // Register glass.
+        // ---------------------------------------------------------------------
+
+        GlassTier.addCustomGlass(BartWorks.ID, "BW_GlasBlocks", 0, 3);
+        GlassTier.addCustomGlass(BartWorks.ID, "BW_GlasBlocks", 1, 4);
+        GlassTier.addCustomGlass(BartWorks.ID, "BW_GlasBlocks", 2, 5);
+        GlassTier.addCustomGlass(BartWorks.ID, "BW_GlasBlocks", 3, 6);
+        GlassTier.addCustomGlass(BartWorks.ID, "BW_GlasBlocks", 4, 7);
+        GlassTier.addCustomGlass(BartWorks.ID, "BW_GlasBlocks", 5, 8);
+
+        // Stained boro glass
+        GlassTier.addCustomGlass(BartWorks.ID, "BW_GlasBlocks", 6, 3);
+        GlassTier.addCustomGlass(BartWorks.ID, "BW_GlasBlocks", 7, 3);
+        GlassTier.addCustomGlass(BartWorks.ID, "BW_GlasBlocks", 8, 3);
+        GlassTier.addCustomGlass(BartWorks.ID, "BW_GlasBlocks", 9, 3);
+        GlassTier.addCustomGlass(BartWorks.ID, "BW_GlasBlocks", 10, 3);
+        GlassTier.addCustomGlass(BartWorks.ID, "BW_GlasBlocks", 11, 3);
+
+        // Incrementing tiers
+        GlassTier.addCustomGlass(BartWorks.ID, "BW_GlasBlocks", 13, 9);
+        GlassTier.addCustomGlass(BartWorks.ID, "BW_GlasBlocks", 14, 10);
+        GlassTier.addCustomGlass(BartWorks.ID, "BW_GlasBlocks", 15, 11);
+
+        // Glass block 2 for transcendent (Really?)
+        GlassTier.addCustomGlass(BartWorks.ID, "BW_GlasBlocks2", 0, 12);
+
+        // block = GameRegistry.findBlock(BartWorks.ID, "BW_GlasBlocks");
+        // block2 = GameRegistry.findBlock(BartWorks.ID, "BW_GlasBlocks2");
+
         for (int i = 0; i < 16; i++) {
             GlassTier.addCustomGlass(Minecraft.ID, "stained_glass", i, 3);
         }

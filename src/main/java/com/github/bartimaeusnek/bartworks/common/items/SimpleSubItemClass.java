@@ -51,12 +51,6 @@ public class SimpleSubItemClass extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List<String> aList, boolean p_77624_4_) {
-        super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
-        aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
-    }
-
-    @Override
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List<ItemStack> p_150895_3_) {
         for (int i = 0; i < this.tex.length; i++) {
             p_150895_3_.add(new ItemStack(p_150895_1_, 1, i));

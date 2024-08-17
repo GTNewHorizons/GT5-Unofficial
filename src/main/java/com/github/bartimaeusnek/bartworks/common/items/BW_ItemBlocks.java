@@ -64,8 +64,6 @@ public class BW_ItemBlocks extends ItemBlock {
         }
         aList.add(this.mNoMobsToolTip);
         if (!(this.field_150939_a instanceof ITileEntityProvider)) aList.add(this.mNoTileEntityToolTip);
-
-        aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
     @Override

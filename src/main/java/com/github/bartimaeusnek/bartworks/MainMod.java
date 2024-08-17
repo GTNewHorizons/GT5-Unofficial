@@ -15,14 +15,11 @@ package com.github.bartimaeusnek.bartworks;
 
 import static com.github.bartimaeusnek.bartworks.common.loaders.BioRecipeLoader.runOnServerStarted;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.removeIC2Recipes;
-import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Mods.BartWorks;
 
 import java.io.IOException;
-import java.util.Map;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -31,7 +28,6 @@ import org.apache.logging.log4j.Logger;
 import com.github.bartimaeusnek.bartworks.API.API_ConfigValues;
 import com.github.bartimaeusnek.bartworks.API.BioObjectAdder;
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
-import com.github.bartimaeusnek.bartworks.API.GlassTier;
 import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.client.ClientEventHandler.TooltipEventHandler;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.BioTab;
@@ -78,7 +74,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_OreDictUnificator;
 
 @Mod(modid = MainMod.MOD_ID, name = MainMod.NAME, version = GT_Version.VERSION, dependencies = """
     required-after:IC2;\
@@ -161,19 +156,6 @@ public final class MainMod {
         NetworkRegistry.INSTANCE.registerGuiHandler(MainMod.instance, MainMod.GH);
 
         RegisterGlassTiers.run();
-
-        // Register glass ore dict entries.
-        for (Map.Entry<GlassTier.BlockMetaPair, Integer> pair : GlassTier.getGlassMap()
-            .entrySet()) {
-            String oreName = "blockGlass" + VN[pair.getValue()];
-            ItemStack itemStack = new ItemStack(
-                pair.getKey()
-                    .getBlock(),
-                1,
-                pair.getKey()
-                    .getMeta());
-            GT_OreDictUnificator.registerOre(oreName, itemStack);
-        }
 
         ArtificialMicaLine.runArtificialMicaRecipe();
         BioObjectAdder.regenerateBioFluids();

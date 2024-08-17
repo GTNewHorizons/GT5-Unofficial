@@ -113,7 +113,6 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
                 aList.add(tooltip);
             }
         }
-        aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
     @Override

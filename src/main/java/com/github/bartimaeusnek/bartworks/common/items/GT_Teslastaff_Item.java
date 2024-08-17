@@ -63,7 +63,6 @@ public class GT_Teslastaff_Item extends ItemTool implements IElectricItem {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         aList.add(StatCollector.translateToLocal("tooltip.teslastaff.0.name"));
-        aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
     @Override

@@ -368,7 +368,6 @@ public class BW_Meta_Items {
         @Override
         protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
             super.addAdditionalToolTips(aList, aStack, aPlayer);
-            aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
         }
 
         @Override

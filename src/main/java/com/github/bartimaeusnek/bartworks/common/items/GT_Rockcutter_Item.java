@@ -74,7 +74,6 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         aList.add(StatCollector.translateToLocal("tooltip.bw.tier.name") + " " + GT_Values.VN[this.mTier]);
-        aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
     @Override

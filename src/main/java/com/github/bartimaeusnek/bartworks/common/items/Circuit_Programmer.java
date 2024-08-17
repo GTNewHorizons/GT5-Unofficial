@@ -80,7 +80,6 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
                 + (aStack.getTagCompound()
                     .getBoolean("HasChip") ? StatCollector.translateToLocal("tooltip.bw.yes.name")
                         : StatCollector.translateToLocal("tooltip.bw.no.name")));
-        aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
     @Override
