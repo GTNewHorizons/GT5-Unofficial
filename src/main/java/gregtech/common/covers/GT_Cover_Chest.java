@@ -55,11 +55,6 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public boolean isSimpleCover() {
         return true;
     }
@@ -163,7 +158,7 @@ public class GT_Cover_Chest extends GT_CoverBehaviorBase<GT_Cover_Chest.ChestInv
             }
             h = d.items;
             SlotGroup slotGroup = SlotGroup.ofItemHandler(h, 3)
-                                           .build();
+                .build();
             if (getUIBuildContext().isAnotherWindow()) {
                 slotGroup.setPos(4, 4);
             } else {
