@@ -84,7 +84,7 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.4.12-GTNH:dev') { transitive = false }
     compileOnly rfg.deobf("curse.maven:extra-utilities-225561:2264384")
     compileOnly rfg.deobf('curse.maven:minefactory-reloaded-66672:2366150')
-    compileOnly("com.github.GTNewHorizons:OpenComputers:1.10.19-GTNH:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:OpenComputers:1.10.20-GTNH:dev") {transitive = false}
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     compileOnlyApi rfg.deobf('curse.maven:advsolar-362768:2885953')
     compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.6.22-GTNH:dev') {transitive =  false}
