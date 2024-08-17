@@ -472,11 +472,6 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ);
     }
 
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
     protected void addEmitEnergyButton(ModularWindow.Builder builder) {
         builder.widget(
             createToggleButton(
