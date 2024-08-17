@@ -476,6 +476,7 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -491,6 +492,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.GT_Cover_Arm;
+import gregtech.common.covers.GT_Cover_Chest;
 import gregtech.common.covers.GT_Cover_ControlsWork;
 import gregtech.common.covers.GT_Cover_Conveyor;
 import gregtech.common.covers.GT_Cover_Crafting;
@@ -2862,6 +2864,24 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "Displays the fluid stored in the Tank",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 2L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)));
+        ItemList.Cover_Chest_Basic.set(
+            addItem(
+                Cover_Chest_Basic.ID,
+                "Basic Item Holder",
+                "Hold a few item for use within machine GUI",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L)));
+        ItemList.Cover_Chest_Good.set(
+            addItem(
+                Cover_Chest_Good.ID,
+                "Good Item Holder",
+                "Hold a few item for use within machine GUI",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L)));
+        ItemList.Cover_Chest_Advanced.set(
+            addItem(
+                Cover_Chest_Advanced.ID,
+                "Advanced Item Holder",
+                "Hold a few item for use within machine GUI",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L)));
 
         ItemList.Cover_Screen.set(
             addItem(
@@ -3706,6 +3726,18 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_CONTROLLER)),
             new GT_Cover_ControlsWork(TextureFactory.of(OVERLAY_CONTROLLER)));
 
+        GregTech_API.registerCover(
+            ItemList.Cover_Chest_Basic.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_1)),
+            new GT_Cover_Chest(9, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_1)));
+        GregTech_API.registerCover(
+            ItemList.Cover_Chest_Good.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_2)),
+            new GT_Cover_Chest(12, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_2)));
+        GregTech_API.registerCover(
+            ItemList.Cover_Chest_Advanced.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_3)),
+            new GT_Cover_Chest(15, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_3)));
         GregTech_API.registerCover(
             ItemList.Cover_ActivityDetector.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], doesWorkCoverTexture),
