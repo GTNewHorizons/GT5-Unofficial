@@ -18,7 +18,8 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
     public enum ConnectionType {
         CABLE,
         WIRELESS,
-        LASER
+        LASER,
+        BIO
     }
 
     /**

@@ -14,6 +14,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_UIV;
 import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_UMV;
 import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.ALLOY_SMELTER_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.AO_ASSEMBLER;
 import static gregtech.api.enums.MetaTileEntityIDs.ARC_FURNACE_LuV;
 import static gregtech.api.enums.MetaTileEntityIDs.ARC_FURNACE_UEV;
 import static gregtech.api.enums.MetaTileEntityIDs.ARC_FURNACE_UHV;
@@ -125,6 +126,9 @@ import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.BLACKHOLE_COMPRESSOR_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.BIO_HATCH_INPUT;
+import static gregtech.api.enums.MetaTileEntityIDs.BIO_HATCH_OUTPUT;
+import static gregtech.api.enums.MetaTileEntityIDs.BIO_PIPE;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_IV;
@@ -272,6 +276,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_UMV;
 import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_UXV;
 import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_ZPM;
+import static gregtech.api.enums.MetaTileEntityIDs.EVOLUTION_CHAMBER;
 import static gregtech.api.enums.MetaTileEntityIDs.EXTRACTOR_LuV;
 import static gregtech.api.enums.MetaTileEntityIDs.EXTRACTOR_UEV;
 import static gregtech.api.enums.MetaTileEntityIDs.EXTRACTOR_UHV;
@@ -1629,6 +1634,27 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.LargeFluidExtractor.set(
             new MTELargeFluidExtractor(LARGE_FLUID_EXTRACTOR.ID, "multimachine.fluidextractor", "Large Fluid Extractor")
+                .getStackForm(1));
+            new GT_MetaTileEntity_MultiLathe(
+                MULTI_LATHE_CONTROLLER.ID,
+                "multimachine.lathe",
+                "Industrial Precision Lathe").getStackForm(1));
+
+        ItemList.Machine_Multi_EvolutionChamber.set(
+            new GT_MetaTileEntity_EvolutionChamber(
+                EVOLUTION_CHAMBER.ID,
+                "multimachine.evolutionchamber",
+                "Hyperaccelerated Macroevolution Chamber").getStackForm(1));
+        ItemList.Bio_Pipe
+            .set(new GT_MetaPipeEntity_BioPipe(BIO_PIPE.ID, "pipe.bio", "Sterile Bio Pipe").getStackForm(1));
+        ItemList.Bio_Hatch_Input.set(
+            new GT_MetaTileEntity_Hatch_BioInput(BIO_HATCH_INPUT.ID, "hatch.bioinput", "Bio Hatch (Input)", 8)
+                .getStackForm(1));
+        ItemList.Bio_Hatch_Output.set(
+            new GT_MetaTileEntity_Hatch_BioOutput(BIO_HATCH_OUTPUT.ID, "hatch.biooutput", "Bio Hatch (Output)", 8)
+                .getStackForm(1));
+        ItemList.Machine_Multi_AOAssembler.set(
+            new GT_MetaTileEntity_AOAssembler(AO_ASSEMBLER.ID, "multimachine.aoassembler", "AO Assembling Unit")
                 .getStackForm(1));
     }
 
