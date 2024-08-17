@@ -158,11 +158,6 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
         return new OverflowUIFactory(buildContext).createWindow();
     }

@@ -3,12 +3,15 @@ package gtPlusPlus.core.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.gui.GT_Slot_Render;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.InventoryPestKiller;
 import gtPlusPlus.core.slots.SlotGeneric;
@@ -143,5 +146,89 @@ public class Container_PestKiller extends Container {
     @Override
     public boolean func_94530_a(final ItemStack p_94530_1_, final Slot p_94530_2_) {
         return super.func_94530_a(p_94530_1_, p_94530_2_);
+    }
+
+    private class GT_Slot_Render extends Slot {
+
+        public final int mSlotIndex;
+        public boolean mEnabled = true;
+        public boolean mCanInsertItem, mCanStackItem;
+        public int mMaxStacksize = 127;
+
+        public GT_Slot_Render(IInventory inventory, int slotIndex, int xPos, int yPos) {
+            this(inventory, slotIndex, xPos, yPos, false, false, 0);
+        }
+
+        public GT_Slot_Render(IInventory inventory, int slotIndex, int xPos, int yPos, boolean aCanInsertItem,
+            boolean aCanStackItem, int aMaxStacksize) {
+            super(inventory, slotIndex, xPos, yPos);
+            mCanInsertItem = aCanInsertItem;
+            mCanStackItem = aCanStackItem;
+            mMaxStacksize = aMaxStacksize;
+            mSlotIndex = slotIndex;
+        }
+
+        @Override
+        public boolean isItemValid(ItemStack itemStack) {
+            return mCanInsertItem;
+        }
+
+        @Override
+        public int getSlotStackLimit() {
+            return mMaxStacksize;
+        }
+
+        @Override
+        public boolean getHasStack() {
+            return false;
+        }
+
+        @Override
+        public ItemStack decrStackSize(int amount) {
+            if (!mCanStackItem) return null;
+            return super.decrStackSize(amount);
+        }
+
+        @Override
+        public boolean canTakeStack(EntityPlayer player) {
+            return false;
+        }
+
+        /**
+         * Sets if this slot should be ignored in event-processing. For example, highlight the slot on mouseOver.
+         *
+         * @param enabled if the slot should be enabled
+         */
+        public void setEnabled(boolean enabled) {
+            mEnabled = enabled;
+        }
+
+        /**
+         * Use this value to determine whether to ignore this slot in event processing
+         */
+        public boolean isEnabled() {
+            return mEnabled;
+        }
+
+        /**
+         * This function controls whether to highlight the slot on mouseOver.
+         */
+        @Override
+        @SideOnly(Side.CLIENT)
+        public boolean func_111238_b() {
+            return isEnabled();
+        }
+
+        /**
+         * NEI has a nice and "useful" Delete-All Function, which would delete the Content of this Slot. This is here to
+         * prevent that.
+         */
+        @Override
+        public void putStack(ItemStack aStack) {
+            if (inventory instanceof TileEntity && ((TileEntity) inventory).getWorldObj().isRemote) {
+                inventory.setInventorySlotContents(getSlotIndex(), aStack);
+            }
+            onSlotChanged();
+        }
     }
 }

@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.api.enums.GT_Values.GT;
 import static gregtech.api.enums.GT_Values.NW;
 
 import java.util.Arrays;
@@ -15,7 +14,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -184,20 +182,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
                 .getEffectiveSide() == Side.CLIENT;
         }
         return worldObj.isRemote;
-    }
-
-    @Override
-    @Deprecated
-    public final boolean openGUI(EntityPlayer player) {
-        return openGUI(player, 0);
-    }
-
-    @Override
-    @Deprecated
-    public final boolean openGUI(EntityPlayer player, int aID) {
-        if (player == null) return false;
-        player.openGui(GT, aID, worldObj, xCoord, yCoord, zCoord);
-        return true;
     }
 
     @Override
@@ -595,11 +579,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     @Nullable
     public List<ItemStack> getItemsForHoloGlasses() {
         return null;
-    }
-
-    @Deprecated
-    public String trans(String aKey, String aEnglish) {
-        return GT_Utility.trans(aKey, aEnglish);
     }
 
     protected Supplier<Boolean> getValidator() {

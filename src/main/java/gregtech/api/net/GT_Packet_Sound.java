@@ -2,6 +2,7 @@ package gregtech.api.net;
 
 import java.io.IOException;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -60,7 +61,9 @@ public class GT_Packet_Sound extends GT_Packet_New {
 
     @Override
     public void process(IBlockAccess aWorld) {
-        GT_Utility.doSoundAtClient(mSoundName, 1, mSoundStrength, mSoundPitch, mX, mY, mZ);
+        if (mSoundName != null) {
+            GT_Utility.doSoundAtClient(new ResourceLocation(mSoundName), 1, mSoundStrength, mSoundPitch, mX, mY, mZ);
+        }
     }
 
     @Override
