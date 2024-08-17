@@ -1,30 +1,32 @@
 package com.github.bartimaeusnek.bartworks.API;
 
-import net.minecraft.block.Block;
+import static cpw.mods.fml.common.registry.GameRegistry.findBlock;
 
 import java.util.HashMap;
 import java.util.Objects;
 
-import static cpw.mods.fml.common.registry.GameRegistry.findBlock;
+import net.minecraft.block.Block;
 
 public class GlassTier {
 
     private static final HashMap<BlockMetaPair, Integer> glasses = new HashMap<>();
 
     /**
-     * @param modname        The modid owning the block
+     * @param modname              The modid owning the block
      * @param unlocalisedBlockName The name of the block itself
-     * @param meta            The meta of the block
-     * @param tier            the glasses Tier = Voltage tier (MIN 3)
+     * @param meta                 The meta of the block
+     * @param tier                 the glasses Tier = Voltage tier (MIN 3)
      */
     public static void addCustomGlass(String modname, String unlocalisedBlockName, int meta, int tier) {
         Block block = findBlock(modname, unlocalisedBlockName);
         if (block != null) {
             GlassTier.glasses.put(new BlockMetaPair(block, (byte) meta), tier);
-        }
-        else {
+        } else {
             new IllegalArgumentException(
-                "Block: " + unlocalisedBlockName + " of the Mod: " + modname + " was NOT found when attempting to register a glass!").printStackTrace();
+                "Block: " + unlocalisedBlockName
+                    + " of the Mod: "
+                    + modname
+                    + " was NOT found when attempting to register a glass!").printStackTrace();
         }
     }
 

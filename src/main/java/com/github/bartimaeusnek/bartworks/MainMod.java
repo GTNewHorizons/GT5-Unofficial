@@ -21,7 +21,6 @@ import static gregtech.api.enums.Mods.BartWorks;
 import java.io.IOException;
 import java.util.Map;
 
-import com.github.bartimaeusnek.bartworks.API.GlassTier;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -32,6 +31,7 @@ import org.apache.logging.log4j.Logger;
 import com.github.bartimaeusnek.bartworks.API.API_ConfigValues;
 import com.github.bartimaeusnek.bartworks.API.BioObjectAdder;
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
+import com.github.bartimaeusnek.bartworks.API.GlassTier;
 import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.client.ClientEventHandler.TooltipEventHandler;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.BioTab;
@@ -43,11 +43,11 @@ import com.github.bartimaeusnek.bartworks.common.loaders.ArtificialMicaLine;
 import com.github.bartimaeusnek.bartworks.common.loaders.BeforeGTPreload;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioCultureLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioLabLoader;
-import com.github.bartimaeusnek.bartworks.common.loaders.RegisterGlassTiers;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.common.loaders.LocalisationLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.RadioHatchMaterialLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.RecipeLoader;
+import com.github.bartimaeusnek.bartworks.common.loaders.RegisterGlassTiers;
 import com.github.bartimaeusnek.bartworks.common.loaders.RegisterServerCommands;
 import com.github.bartimaeusnek.bartworks.common.loaders.StaticRecipeChangeLoaders;
 import com.github.bartimaeusnek.bartworks.common.net.BW_Network;
@@ -163,9 +163,15 @@ public final class MainMod {
         RegisterGlassTiers.run();
 
         // Register glass ore dict entries.
-        for (Map.Entry<GlassTier.BlockMetaPair, Integer> pair : GlassTier.getGlassMap().entrySet()) {
+        for (Map.Entry<GlassTier.BlockMetaPair, Integer> pair : GlassTier.getGlassMap()
+            .entrySet()) {
             String oreName = "blockGlass" + VN[pair.getValue()];
-            ItemStack itemStack = new ItemStack(pair.getKey().getBlock(), 1, pair.getKey().getMeta());
+            ItemStack itemStack = new ItemStack(
+                pair.getKey()
+                    .getBlock(),
+                1,
+                pair.getKey()
+                    .getMeta());
             GT_OreDictUnificator.registerOre(oreName, itemStack);
         }
 

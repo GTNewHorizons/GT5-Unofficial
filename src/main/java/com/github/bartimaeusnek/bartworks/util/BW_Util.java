@@ -31,7 +31,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.github.bartimaeusnek.bartworks.API.GlassTier;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Items;
@@ -49,6 +48,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
+import com.github.bartimaeusnek.bartworks.API.GlassTier;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;

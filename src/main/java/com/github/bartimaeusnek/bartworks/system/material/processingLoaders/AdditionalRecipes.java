@@ -66,7 +66,6 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.github.bartimaeusnek.bartworks.API.recipe.BartWorksRecipeMaps;
-import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioCultureLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioItemList;
 import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
@@ -251,7 +250,6 @@ public class AdditionalRecipes {
                 }
             }
         }
-
 
         List<Pair<Materials, Integer>> liquidFuels = Arrays.asList(
             ImmutablePair.of(Materials.PhosphoricAcid, 36),

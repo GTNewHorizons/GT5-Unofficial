@@ -13,17 +13,12 @@
 
 package com.github.bartimaeusnek.bartworks.API;
 
-import static cpw.mods.fml.common.registry.GameRegistry.findBlock;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 import com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems;
