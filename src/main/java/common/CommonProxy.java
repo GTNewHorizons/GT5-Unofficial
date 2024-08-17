@@ -7,6 +7,7 @@ import common.tileentities.GTMTE_TFFTHatch;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import gregtech.api.enums.Mods;
 import kekztech.Items;
 
 public class CommonProxy {
@@ -22,8 +23,10 @@ public class CommonProxy {
         Blocks.preInit();
         // TileEntities
         TileEntities.preInit();
-        // TC Research
-        Researches.preInit();
+        if (Mods.Thaumcraft.isModLoaded() && Mods.ThaumicTinkerer.isModLoaded()) {
+            // TC Research
+            Researches.preInit();
+        }
     }
 
     public void init(final FMLInitializationEvent e) {
@@ -34,8 +37,10 @@ public class CommonProxy {
     public void postInit(final FMLPostInitializationEvent e) {
         // Recipes
         Recipes.postInit();
-        // Research
-        Researches.postInit();
+        if (Mods.Thaumcraft.isModLoaded() && Mods.ThaumicTinkerer.isModLoaded()) {
+            // Research
+            Researches.postInit();
+        }
 
         GTMTE_TFFTHatch.registerAEIntegration();
     }

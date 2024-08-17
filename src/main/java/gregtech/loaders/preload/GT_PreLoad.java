@@ -1,16 +1,10 @@
 package gregtech.loaders.preload;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.CraftTweaker;
 import static gregtech.api.enums.Mods.EnderIO;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Mods.HodgePodge;
-import static gregtech.api.enums.Mods.IndustrialCraft2Classic;
-import static gregtech.api.enums.Mods.TinkerConstruct;
-import static gregtech.api.enums.Mods.Translocator;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -158,16 +152,6 @@ public class GT_PreLoad {
         GregTech_API.sClientDataFile = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "Client.cfg")));
         return tMainConfig;
-    }
-
-    public static void initCompat() {
-        GregTech_API.mIC2Classic = IndustrialCraft2Classic.isModLoaded();
-        GregTech_API.mGTPlusPlus = GTPlusPlus.isModLoaded();
-        GregTech_API.mTranslocator = Translocator.isModLoaded();
-        GregTech_API.mTConstruct = TinkerConstruct.isModLoaded();
-        GregTech_API.mGalacticraft = GalacticraftCore.isModLoaded();
-        GregTech_API.mHodgepodge = HodgePodge.isModLoaded();
-        GregTech_API.mAvaritia = Avaritia.isModLoaded();
     }
 
     public static void createLogFiles(File parentFile, Configuration tMainConfig) {
@@ -429,6 +413,11 @@ public class GT_PreLoad {
         // GT_Values.oreveinMaxSize = tMainConfig.get(aTextGeneral, "oreveinMaxSize_64",64).getInt(64);
         GT_Values.ticksBetweenSounds = tMainConfig.get("machines", "TicksBetweenSounds", 30)
             .getInt(30);
+        GT_Values.blacklistedTileEntiyClassNamesForWA = tMainConfig.getStringList(
+            "blacklistedTileEntiyClassNamesForWA",
+            "machines",
+            GT_Values.blacklistedTileEntiyClassNamesForWA,
+            "class names to be blacklisted from the world accelerator");
         GT_Values.cleanroomGlass = (float) tMainConfig.get("machines", "ReinforcedGlassPercentageForCleanroom", 5D)
             .getDouble(5D);
         GT_Values.enableChunkloaders = tMainConfig.get("machines", "enableChunkloaders", true)

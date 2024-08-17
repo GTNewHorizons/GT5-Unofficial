@@ -158,6 +158,7 @@ public enum CustomItemList implements IItemContainer {
     eM_dynamoTunnel5_UMV,
     eM_dynamoTunnel6_UMV,
     eM_dynamoTunnel7_UMV,
+    eM_dynamoTunnel8_UMV,
     eM_dynamoTunnel1_UXV,
     eM_dynamoTunnel2_UXV,
     eM_dynamoTunnel3_UXV,
@@ -165,6 +166,8 @@ public enum CustomItemList implements IItemContainer {
     eM_dynamoTunnel5_UXV,
     eM_dynamoTunnel6_UXV,
     eM_dynamoTunnel7_UXV,
+    eM_dynamoTunnel8_UXV,
+    eM_dynamoTunnel9_UXV,
     eM_dynamoTunnel9001,
 
     eM_energyMulti4_EV,
@@ -286,6 +289,7 @@ public enum CustomItemList implements IItemContainer {
     eM_energyTunnel5_UMV,
     eM_energyTunnel6_UMV,
     eM_energyTunnel7_UMV,
+    eM_energyTunnel8_UMV,
     eM_energyTunnel1_UXV,
     eM_energyTunnel2_UXV,
     eM_energyTunnel3_UXV,
@@ -293,6 +297,8 @@ public enum CustomItemList implements IItemContainer {
     eM_energyTunnel5_UXV,
     eM_energyTunnel6_UXV,
     eM_energyTunnel7_UXV,
+    eM_energyTunnel8_UXV,
+    eM_energyTunnel9_UXV,
     eM_energyTunnel9001,
     eM_energyWirelessTunnel1_UXV,
     eM_energyWirelessTunnel2_UXV,
@@ -301,6 +307,8 @@ public enum CustomItemList implements IItemContainer {
     eM_energyWirelessTunnel5_UXV,
     eM_energyWirelessTunnel6_UXV,
     eM_energyWirelessTunnel7_UXV,
+    eM_energyWirelessTunnel8_UXV,
+    eM_energyWirelessTunnel9_UXV,
 
     Parametrizer_Hatch,
     ParametrizerX_Hatch,
@@ -411,6 +419,7 @@ public enum CustomItemList implements IItemContainer {
     Machine_TeslaCoil_4by4_IV,
     DATApipeBlock,
     LASERpipeBlock,
+    LASERpipeSmart,
 
     SpacetimeCompressionFieldGeneratorTier0,
     SpacetimeCompressionFieldGeneratorTier1,
@@ -474,6 +483,12 @@ public enum CustomItemList implements IItemContainer {
     public IItemContainer set(ItemStack aStack) {
         mHasNotBeenSet = false;
         mStack = GT_Utility.copyAmount(1, aStack);
+        return this;
+    }
+
+    @Override
+    public IItemContainer hidden() {
+        codechicken.nei.api.API.hideItem(get(1L));
         return this;
     }
 

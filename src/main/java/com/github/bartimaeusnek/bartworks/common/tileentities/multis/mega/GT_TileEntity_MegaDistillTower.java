@@ -408,9 +408,11 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
             boolean foundMEHatch = false;
 
             for (IFluidStore tHatch : tLayerOutputHatches) {
-                if (tHatch instanceof GT_MetaTileEntity_Hatch_Output_ME) {
-                    foundMEHatch = true;
-                    break;
+                if (tHatch instanceof GT_MetaTileEntity_Hatch_Output_ME tMEHatch) {
+                    if (tMEHatch.canAcceptFluid()) {
+                        foundMEHatch = true;
+                        break;
+                    }
                 }
             }
 
