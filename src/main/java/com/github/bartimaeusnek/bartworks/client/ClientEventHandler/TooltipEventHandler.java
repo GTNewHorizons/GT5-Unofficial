@@ -1,5 +1,7 @@
 package com.github.bartimaeusnek.bartworks.client.ClientEventHandler;
 
+import com.github.bartimaeusnek.bartworks.API.GlassTier;
+import micdoodle8.mods.galacticraft.api.prefab.core.BlockMetaPair;
 import net.minecraft.block.Block;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -25,14 +27,13 @@ public class TooltipEventHandler {
         if (event == null || event.itemStack == null || event.itemStack.getItem() == null) return;
 
         final Block block = Block.getBlockFromItem(event.itemStack.getItem());
+        final int meta = event.itemStack.getItemDamage();
 
-        Byte tier = BioVatLogicAdder.BioVatGlass.getGlassMap().getOrDefault(new BioVatLogicAdder.BlockMetaPair(
-            block,
-            (byte) event.itemStack.getItemDamage()), null);
+        int tier = GlassTier.getGlassTier(block, meta);
 
-        if (tier == null) return;
+        if (tier == 0) return;
 
-        event.toolTip.add(StatCollector.translateToLocal("tooltip.glass_tier.0.name") + " " + getColoredTierNameFromTier(tier));
+        event.toolTip.add(StatCollector.translateToLocal("tooltip.glass_tier.0.name") + " " + getColoredTierNameFromTier((byte) tier));
 
     }
 }

@@ -207,32 +207,6 @@ public final class BioVatLogicAdder {
         }
     }
 
-    public static class BioVatGlass {
-
-        private static final HashMap<BlockMetaPair, Byte> glasses = new HashMap<>();
-
-        /**
-         * @param modname        The modid owning the block
-         * @param unlocalisedBlockName The name of the block itself
-         * @param meta            The meta of the block
-         * @param tier            the glasses Tier = Voltage tier (MIN 3)
-         */
-        public static void addCustomGlass(String modname, String unlocalisedBlockName, int meta, int tier) {
-            Block block = findBlock(modname, unlocalisedBlockName);
-            if (block != null) {
-                BioVatGlass.glasses.put(new BlockMetaPair(block, (byte) meta), (byte) tier);
-            }
-            else {
-                new IllegalArgumentException(
-                    "Block: " + unlocalisedBlockName + " of the Mod: " + modname + " was NOT found!").printStackTrace();
-            }
-        }
-
-        public static HashMap<BlockMetaPair, Byte> getGlassMap() {
-            return BioVatGlass.glasses;
-        }
-    }
-
     public static class MaterialSvPair {
 
         final Materials materials;
@@ -266,35 +240,4 @@ public final class BioVatLogicAdder {
         }
     }
 
-    public static class BlockMetaPair {
-
-        final Block block;
-        final Byte aByte;
-
-        public BlockMetaPair(Block block, Byte aByte) {
-            this.block = block;
-            this.aByte = aByte;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || this.getClass() != o.getClass()) return false;
-            BioVatLogicAdder.BlockMetaPair that = (BioVatLogicAdder.BlockMetaPair) o;
-            return Objects.equals(this.getBlock(), that.getBlock()) && Objects.equals(this.getaByte(), that.getaByte());
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(this.getBlock(), this.getaByte());
-        }
-
-        public Block getBlock() {
-            return this.block;
-        }
-
-        public Byte getaByte() {
-            return this.aByte;
-        }
-    }
 }

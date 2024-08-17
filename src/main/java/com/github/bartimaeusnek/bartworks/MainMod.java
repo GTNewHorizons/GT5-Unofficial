@@ -21,6 +21,7 @@ import static gregtech.api.enums.Mods.BartWorks;
 import java.io.IOException;
 import java.util.Map;
 
+import com.github.bartimaeusnek.bartworks.API.GlassTier;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -42,7 +43,7 @@ import com.github.bartimaeusnek.bartworks.common.loaders.ArtificialMicaLine;
 import com.github.bartimaeusnek.bartworks.common.loaders.BeforeGTPreload;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioCultureLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioLabLoader;
-import com.github.bartimaeusnek.bartworks.common.loaders.GTNHBlocks;
+import com.github.bartimaeusnek.bartworks.common.loaders.RegisterGlassTiers;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.common.loaders.LocalisationLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.RadioHatchMaterialLoader;
@@ -124,9 +125,7 @@ public final class MainMod {
 
         WerkstoffLoader.setUp();
 
-        if (ConfigHandler.BioLab) {
-            BioCultureLoader.run();
-        }
+        BioCultureLoader.run();
 
         Werkstoff.init();
         GregTech_API.sAfterGTPostload.add(new CircuitPartLoader());
@@ -147,9 +146,7 @@ public final class MainMod {
         FMLCommonHandler.instance()
             .bus()
             .register(serverEventHandler);
-        if (ConfigHandler.BioLab) {
-            BioLabLoader.run();
-        }
+        BioLabLoader.run();
 
         WerkstoffLoader.runInit();
 
@@ -162,20 +159,16 @@ public final class MainMod {
         RecipeLoader.run();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(MainMod.instance, MainMod.GH);
-        if (ConfigHandler.BioLab) {
-            GTNHBlocks.run();
-            for (Map.Entry<BioVatLogicAdder.BlockMetaPair, Byte> pair : BioVatLogicAdder.BioVatGlass.getGlassMap()
-                .entrySet()) {
-                GT_OreDictUnificator.registerOre(
-                    "blockGlass" + VN[pair.getValue()],
-                    new ItemStack(
-                        pair.getKey()
-                            .getBlock(),
-                        1,
-                        pair.getKey()
-                            .getaByte()));
-            }
+
+        RegisterGlassTiers.run();
+
+        // Register glass ore dict entries.
+        for (Map.Entry<GlassTier.BlockMetaPair, Integer> pair : GlassTier.getGlassMap().entrySet()) {
+            String oreName = "blockGlass" + VN[pair.getValue()];
+            ItemStack itemStack = new ItemStack(pair.getKey().getBlock(), 1, pair.getKey().getMeta());
+            GT_OreDictUnificator.registerOre(oreName, itemStack);
         }
+
         ArtificialMicaLine.runArtificialMicaRecipe();
         BioObjectAdder.regenerateBioFluids();
 
