@@ -50,6 +50,10 @@ public class RecipeHandlers {
     }
 
     public static void populateCircuitComponentRecipeMaps() {
+        // Note: To correctly generate localized names, currently all conversion recipes need to be registered
+        // before processing recipes. I'll admit this is a bit messy, so I may try to find a solution for this
+        // in the future (TODO)
+
         // Wires
         addConversionRecipe(
             CircuitComponent.WireNiobiumTitanium,
