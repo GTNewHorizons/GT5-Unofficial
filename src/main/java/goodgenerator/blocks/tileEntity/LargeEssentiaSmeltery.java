@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -168,7 +169,11 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
                     'A',
                     ofChain(
                         buildHatchAdder(LargeEssentiaSmeltery.class)
-                            .atLeast(GT_HatchElement.Maintenance, GT_HatchElement.Energy, GT_HatchElement.InputBus)
+                            .atLeast(
+                                GT_HatchElement.Maintenance,
+                                GT_HatchElement.Energy,
+                                GT_HatchElement.InputBus,
+                                GT_HatchElement.InputHatch)
                             .casingIndex(CASING_INDEX)
                             .dot(1)
                             .build(),
@@ -298,13 +303,14 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
     public @NotNull CheckRecipeResult checkProcessing_EM() {
         if (!isFullPower()) return SimpleCheckRecipeResult.ofFailure("node_too_small");
 
-        ArrayList<ItemStack> tInputList = getStoredInputs();
+        ArrayList<ItemStack> tItemsList = getStoredInputs();
+        ArrayList<FluidStack> tFluidsList = getStoredFluids();
 
-        if (tInputList.size() == 0) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (tItemsList.isEmpty() && tFluidsList.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
 
         int p = (int) this.mParallel;
-        for (int i = tInputList.size() - 1; i >= 0; i--) {
-            ItemStack itemStack = tInputList.get(i);
+        for (int i = tItemsList.size() - 1; i >= 0; i--) {
+            ItemStack itemStack = tItemsList.get(i);
             int stackSize = itemStack.stackSize;
             int sur = p - stackSize;
 
@@ -319,6 +325,26 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
             } else {
                 this.mOutputAspects.add(getEssentia(itemStack, p));
                 itemStack.stackSize -= p;
+                break;
+            }
+        }
+
+        for (int i = tFluidsList.size() - 1; i >= 0; i--) {
+            FluidStack fluidStack = tFluidsList.get(i);
+            int stackSize = fluidStack.amount / 1000;
+            int sur = p - stackSize;
+
+            if (sur > 0) {
+                p -= stackSize;
+                this.mOutputAspects.add(getEssentia(fluidStack, stackSize));
+                if (!depleteInput(fluidStack)) fluidStack.amount = 0;
+            } else if (sur == 0) {
+                this.mOutputAspects.add(getEssentia(fluidStack, stackSize));
+                if (!depleteInput(fluidStack)) fluidStack.amount = 0;
+                break;
+            } else {
+                this.mOutputAspects.add(getEssentia(fluidStack, p));
+                fluidStack.amount -= p;
                 break;
             }
         }
@@ -351,12 +377,23 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
 
     private AspectList getEssentia(ItemStack itemStack, int amount) {
         AspectList aspectList = new AspectList();
+        if (amount == 0) {
+            return aspectList;
+        }
         AspectList aspects = ThaumcraftCraftingManager.getObjectTags(itemStack);
         aspects = ThaumcraftCraftingManager.getBonusTags(itemStack, aspects);
         if (aspects != null && aspects.size() != 0 && aspects.getAspects()[0] != null) {
             for (int i = 0; i < amount; i++) aspectList.add(aspects);
         } else aspectList.add(Aspect.ENTROPY, amount);
         return aspectList;
+    }
+
+    private AspectList getEssentia(FluidStack fluidStack, int amountBuckets) {
+        Block fluidBlock = fluidStack.getFluid()
+            .getBlock();
+        if (fluidBlock == null) return new AspectList();
+        ItemStack block = new ItemStack(fluidBlock);
+        return getEssentia(block, amountBuckets);
     }
 
     private void fillEssentiaOutputHatch() {
