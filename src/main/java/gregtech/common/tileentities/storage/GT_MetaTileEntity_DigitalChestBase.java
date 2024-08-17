@@ -519,11 +519,6 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         tag.setTag("itemType", is.writeToNBT(new NBTTagCompound()));
     }
 
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
     protected int clientItemCount;
 

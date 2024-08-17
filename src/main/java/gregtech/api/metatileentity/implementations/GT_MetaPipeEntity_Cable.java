@@ -75,18 +75,9 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     public final boolean mInsulated, mCanShock;
 
     public int mTransferredAmperage = 0;
-    public long mTransferredVoltage = 0;
 
-    @Deprecated
-    public int mTransferredAmperageLast20 = 0, mTransferredAmperageLast20OK = 0, mTransferredAmperageOK = 0;
-    @Deprecated
-    public long mTransferredVoltageLast20 = 0, mTransferredVoltageLast20OK = 0, mTransferredVoltageOK = 0;
-
-    public long mRestRF;
     public int mOverheat;
     public static short mMaxOverheat = (short) (GT_Mod.gregtechproxy.mWireHeatingTicks * 100);
-
-    private long lastWorldTick;
 
     public GT_MetaPipeEntity_Cable(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
         long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
@@ -265,17 +256,6 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
             }
         }
         return PowerNodes.powerNode(tNode, null, new NodeList(tToPower), (int) voltage, (int) amperage);
-    }
-
-    @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            lastWorldTick = aBaseMetaTileEntity.getWorld()
-                .getTotalWorldTime() - 1;
-            // sets initial value -1 since it is
-            // in the same tick as first on post
-            // tick
-        }
     }
 
     @Override

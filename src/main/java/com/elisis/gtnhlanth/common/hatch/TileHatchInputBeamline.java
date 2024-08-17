@@ -34,7 +34,7 @@ public class TileHatchInputBeamline extends TileHatchBeamlineConnector<BeamLineP
         TT_Utility.setTier(tier, this);
     }
 
-    public TileHatchInputBeamline(String name, int tier, String desc, ITexture[][][] textures) {
+    public TileHatchInputBeamline(String name, int tier, String[] desc, ITexture[][][] textures) {
         super(name, tier, desc, textures);
     }
 
@@ -58,7 +58,7 @@ public class TileHatchInputBeamline extends TileHatchBeamlineConnector<BeamLineP
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity tile) {
-        return new TileHatchInputBeamline(mName, mTier, mDescription, mTextures);
+        return new TileHatchInputBeamline(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override

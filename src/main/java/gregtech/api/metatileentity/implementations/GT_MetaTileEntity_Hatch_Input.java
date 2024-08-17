@@ -193,9 +193,4 @@ public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
     public int getTankPressure() {
         return -100;
     }
-
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
 }
