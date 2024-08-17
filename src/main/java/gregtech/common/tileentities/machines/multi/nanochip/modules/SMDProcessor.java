@@ -24,6 +24,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_NanochipAssemblyModuleBase;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 
 public class SMDProcessor extends GT_MetaTileEntity_NanochipAssemblyModuleBase<SMDProcessor> {
@@ -125,6 +126,11 @@ public class SMDProcessor extends GT_MetaTileEntity_NanochipAssemblyModuleBase<S
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48] };
+    }
+
+    public static void registerLocalName(String unprocessedName, CircuitComponent component) {
+        // Processed SMDs can be given a name like 'SMD Inductor Tray'
+        component.fallbackLocalizedName = unprocessedName + " Tray";
     }
 
     @Override
