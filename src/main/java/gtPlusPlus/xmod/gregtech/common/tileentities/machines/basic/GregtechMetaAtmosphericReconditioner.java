@@ -857,11 +857,6 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(new SlotWidget(inventoryHandler, SLOT_ROTOR).setFilter(stack -> {
             if (stack.getItem() instanceof ItemBasicScrubberTurbine) {
