@@ -34,7 +34,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 
-public class Firetube extends FueledBoiler<LargeFiretube> implements ISurvivalConstructable {
+public class Firetube extends FueledBoiler<Firetube> implements ISurvivalConstructable {
 
     // There's only one piece to this structure... for now >:)
     // TODO: multiple boiler chambers + superheater
@@ -50,19 +50,19 @@ public class Firetube extends FueledBoiler<LargeFiretube> implements ISurvivalCo
         new String[][] {
             { "     ", " BBB ", " BBB ", "FWWWF", "FF-FF", "F---F", "F ~ F" },
             { " OOO ", "B---B", "B---B", "W---W", "FbHbF", "-----", " ITI " },
-            { " OMO ", "B---B", "B---B", "W---W", "-HPH-", "-----", "ITTTI" },
+            { " OMO ", "B-P-B", "B-P-B", "W-P-W", "-HPH-", "-----", "ITTTI" },
             { " OOO ", "B---B", "B---B", "W---W", "FbHbF", "-----", " ITI " },
             { "     ", " BBB ", " BBB ", "FWWWF", "FF-FF", "F---F", "F I F" } };
     // spotless:on
 
-    private static final IStructureDefinition<LargeFiretube> STRUCTURE_DEFINITION = StructureDefinition
-        .<LargeFiretube>builder()
+    private static final IStructureDefinition<Firetube> STRUCTURE_DEFINITION = StructureDefinition
+        .<Firetube>builder()
         .addShape(MAIN_PIECE_NAME, structure)
         // IO
         // Fuel + maint
         .addElement(
             'I',
-            GT_StructureUtility.<LargeFiretube>buildHatchAdder()
+            GT_StructureUtility.<Firetube>buildHatchAdder()
                 .atLeast(
                     InputHatch.withAdder(
                         (thiz, gtTE, baseCasingIndex) -> thiz
@@ -80,7 +80,7 @@ public class Firetube extends FueledBoiler<LargeFiretube> implements ISurvivalCo
         // Water in
         .addElement(
             'W',
-            GT_StructureUtility.<LargeFiretube>buildHatchAdder()
+            GT_StructureUtility.<Firetube>buildHatchAdder()
                 .atLeast(
                     InputHatch.withAdder(
                         (thiz, gtTE, baseCasingIndex) -> thiz
@@ -105,7 +105,7 @@ public class Firetube extends FueledBoiler<LargeFiretube> implements ISurvivalCo
         // Pollution out
         .addElement(
             'M',
-            GT_StructureUtility.<LargeFiretube>buildHatchAdder()
+            GT_StructureUtility.<Firetube>buildHatchAdder()
                 .atLeast(Muffler)
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
@@ -113,7 +113,7 @@ public class Firetube extends FueledBoiler<LargeFiretube> implements ISurvivalCo
         // Steam out
         .addElement(
             'O',
-            GT_StructureUtility.<LargeFiretube>buildHatchAdder()
+            GT_StructureUtility.<Firetube>buildHatchAdder()
                 .atLeast(OutputHatch)
                 .casingIndex(CASING_TEXTURE_INDEX)
                 .dot(1)
@@ -153,6 +153,15 @@ public class Firetube extends FueledBoiler<LargeFiretube> implements ISurvivalCo
                         .maybeBlock()
                         .or(Blocks.glass),
                     0)))
+        // Mandatory casings
+        .addElement(
+            'b',
+            StructureUtility.ofBlocksTiered(
+                FueledBoiler::getTierCasing,
+                ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                0,
+                (t, m) -> t.tier = m,
+                t -> t.tier))
         // Pipe casing
         .addElement(
             'P',
@@ -245,8 +254,9 @@ public class Firetube extends FueledBoiler<LargeFiretube> implements ISurvivalCo
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         // Validate structure
-        return checkPiece(MAIN_PIECE_NAME, X_OFFSET, Y_OFFSET, Z_OFFSET);
-
+        if (!checkPiece(MAIN_PIECE_NAME, X_OFFSET, Y_OFFSET, Z_OFFSET)) return false;
+        if (mOutputHatches.size() != 1) return false;
+        if (mInputHatches.size() != 2) return false;
         // TODO: check for glass amount
     }
 
@@ -256,13 +266,13 @@ public class Firetube extends FueledBoiler<LargeFiretube> implements ISurvivalCo
     }
 
     @Override
-    public IStructureDefinition<LargeFiretube> getStructureDefinition() {
+    public IStructureDefinition<Firetube> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new LargeFiretube(this.mName);
+        return new Firetube(this.mName);
     }
 
     @Override

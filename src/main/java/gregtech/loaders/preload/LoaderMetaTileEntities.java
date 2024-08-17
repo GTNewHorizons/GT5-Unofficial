@@ -440,6 +440,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_ADVANCED_GAS_TURBINE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_BRONZE_BOILER_CONTROLLER;
+import static gregtech.api.enums.MetaTileEntityIDs.FIRETUBE_BOILER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_GAS_TURBINE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_HEAT_EXCHANGER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_HP_STEAM_TURBINE_CONTROLLER;
@@ -932,6 +933,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import gregtech.common.tileentities.machines.multi.fuelboilers.Firetube;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.GregTechAPI;
@@ -1402,8 +1404,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "hatch.degasifiercontrol",
                 "Degasser Control Hatch",
                 8).getStackForm(1L));
-        ItemList.Machine_Multi_LargeFiretubeBoiler.set(
-            new LargeFiretube(LARGE_FIRETUBE_BOILER.ID, "multimachine.firetube.large", "Large Firetube Boiler")
+        ItemList.Machine_Multi_FiretubeBoiler.set(
+            new Firetube(FIRETUBE_BOILER.ID, "multimachine.firetube", "Firetube Boiler")
                 .getStackForm(1L));
         ItemList.Machine_Multi_LargeBoiler_Bronze.set(
             new MTELargeBoilerBronze(
