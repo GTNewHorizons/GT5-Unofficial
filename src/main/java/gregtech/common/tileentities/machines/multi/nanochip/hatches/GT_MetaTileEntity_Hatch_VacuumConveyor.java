@@ -11,6 +11,7 @@ import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -125,6 +126,22 @@ public abstract class GT_MetaTileEntity_Hatch_VacuumConveyor extends GT_MetaTile
     @Override
     public byte getColorization() {
         return getBaseMetaTileEntity().getColorization();
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        if (this.contents != null) {
+            aNBT.setTag("vacuumContents", this.contents.writeToNBT());
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        if (aNBT.hasKey("vacuumContents")) {
+            this.contents = new CircuitComponentPacket(aNBT.getCompoundTag("vacuumContents"));
+        }
+        super.loadNBTData(aNBT);
     }
 
     @Override
