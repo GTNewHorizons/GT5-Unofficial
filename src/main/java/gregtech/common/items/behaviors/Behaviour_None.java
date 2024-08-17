@@ -18,7 +18,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.util.GT_Utility;
 
 public class Behaviour_None implements IItemBehaviour<GT_MetaBase_Item> {
 
@@ -87,10 +86,5 @@ public class Behaviour_None implements IItemBehaviour<GT_MetaBase_Item> {
     public EntityArrow getProjectile(GT_MetaBase_Item aItem, SubTag aProjectileType, ItemStack aStack, World aWorld,
         EntityLivingBase aEntity, float aSpeed) {
         return null;
-    }
-
-    @Deprecated
-    public String trans(String aKey, String aEnglish) {
-        return GT_Utility.trans(aKey, aEnglish);
     }
 }
