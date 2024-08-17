@@ -290,11 +290,6 @@ public class GT_ModHandler {
         return FluidRegistry.getFluidStack("milk", (int) aAmount);
     }
 
-    @Deprecated
-    public static ItemStack getEmptyFuelCan(long aAmount) {
-        return null;
-    }
-
     public static ItemStack getEmptyCell(long aAmount) {
         return ItemList.Cell_Empty.get(aAmount);
     }
@@ -328,23 +323,6 @@ public class GT_ModHandler {
      */
     public static int getFuelValue(ItemStack aStack) {
         return TileEntityFurnace.getItemBurnTime(aStack);
-    }
-
-    /**
-     * @param aValue Fuel value in EU
-     */
-    @Deprecated
-    public static ItemStack getFuelCan(int aValue) {
-        return null;
-    }
-
-    /**
-     * @param aFuelCan the Item you want to check
-     * @return the exact Value in EU the Fuel Can is worth if its even a Fuel Can.
-     */
-    @Deprecated
-    public static int getFuelCanValue(ItemStack aFuelCan) {
-        return 0;
     }
 
     /**
@@ -1664,33 +1642,6 @@ public class GT_ModHandler {
     }
 
     /**
-     * Used in my own Macerator. Decreases StackSize of the Input if wanted.
-     */
-    @Deprecated
-    public static ItemStack getMaceratorOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
-        return GT_Utility.copyOrNull(
-            getMachineOutput(aInput, getMaceratorRecipeList(), aRemoveInput, new NBTTagCompound(), aOutputSlot)[0]);
-    }
-
-    /**
-     * Used in my own Extractor. Decreases StackSize of the Input if wanted.
-     */
-    @Deprecated
-    public static ItemStack getExtractorOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
-        return GT_Utility.copyOrNull(
-            getMachineOutput(aInput, getExtractorRecipeList(), aRemoveInput, new NBTTagCompound(), aOutputSlot)[0]);
-    }
-
-    /**
-     * Used in my own Compressor. Decreases StackSize of the Input if wanted.
-     */
-    @Deprecated
-    public static ItemStack getCompressorOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
-        return GT_Utility.copyOrNull(
-            getMachineOutput(aInput, getCompressorRecipeList(), aRemoveInput, new NBTTagCompound(), aOutputSlot)[0]);
-    }
-
-    /**
      * Used in my own Furnace.
      */
     public static ItemStack getSmeltingOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
@@ -2112,11 +2063,6 @@ public class GT_ModHandler {
             }
             sBoxableItems.add(new GT_ItemStack(aStack));
         }
-    }
-
-    @Deprecated
-    public static void registerBoxableItemToToolBox(Item aItem) {
-        registerBoxableItemToToolBox(new ItemStack(aItem, 1, GT_Values.W));
     }
 
     public static int getCapsuleCellContainerCountMultipliedWithStackSize(ItemStack... aStacks) {

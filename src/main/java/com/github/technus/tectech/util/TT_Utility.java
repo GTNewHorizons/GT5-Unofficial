@@ -1,5 +1,7 @@
 package com.github.technus.tectech.util;
 
+import static gregtech.api.enums.GT_Values.V;
+
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.Formatter;
@@ -98,10 +100,10 @@ public final class TT_Utility {
 
         do {
             ++b;
-            if (b >= CommonValues.V.length) {
+            if (b >= V.length) {
                 return b;
             }
-        } while (l > CommonValues.V[b]);
+        } while (l > V[b]);
 
         return b;
     }

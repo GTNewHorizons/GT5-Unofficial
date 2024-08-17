@@ -516,11 +516,6 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
         return null;
     }
 
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     @Override

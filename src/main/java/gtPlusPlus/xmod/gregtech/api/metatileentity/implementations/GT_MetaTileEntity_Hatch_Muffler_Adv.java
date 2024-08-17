@@ -343,11 +343,6 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {}
 
     @Override

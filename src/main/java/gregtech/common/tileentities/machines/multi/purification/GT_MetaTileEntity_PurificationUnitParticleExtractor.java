@@ -479,9 +479,6 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        if (this.currentCombination != null) {
-            aNBT.setTag("currentCombination", this.currentCombination.saveToNBT());
-        }
         NBTTagCompound insertedNBT = new NBTTagCompound();
         for (int i = 0; i < insertedCatalysts.size(); ++i) {
             ItemStack inserted = insertedCatalysts.get(i);
@@ -496,9 +493,8 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        if (aNBT.hasKey("currentCombination")) {
-            currentCombination = CatalystCombination.readFromNBT(aNBT.getCompoundTag("currentCombination"));
-        }
+        // Generate a random combination on load
+        currentCombination = generateNewCombination();
         if (aNBT.hasKey("insertedItems")) {
             NBTTagCompound insertedList = aNBT.getCompoundTag("insertedItems");
             // Initialize empty list with correct size
