@@ -62,13 +62,7 @@ public class BW_ItemBlocks extends ItemBlock {
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        byte tier = BorosilicateGlass.getTier(this.field_150939_a, aStack.getItemDamage());
-        if (tier >= 0) {
-            aList.add(
-                StatCollector.translateToLocal("tooltip.glas.0.name") + " "
-                    + BW_ColorUtil.getColorForTier(tier)
-                    + GT_Values.VN[tier]);
-        }
+
         if (this.field_150939_a instanceof ITileAddsInformation) {
             aList.addAll(Arrays.asList(((ITileAddsInformation) this.field_150939_a).getInfoData()));
         }
