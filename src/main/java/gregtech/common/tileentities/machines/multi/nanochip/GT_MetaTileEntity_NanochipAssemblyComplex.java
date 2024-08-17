@@ -432,6 +432,10 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
+    public static void registerLocalName(ItemStack stack, CircuitComponent component) {
+        component.fallbackLocalizedName = stack.getDisplayName();
+    }
+
     @Override
     public long maxEUStore() {
         return INTERNAL_BUFFER_MULTIPLIER * super.maxEUStore();

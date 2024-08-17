@@ -24,6 +24,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_NanochipAssemblyModuleBase;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 
 public class AssemblyMatrix extends GT_MetaTileEntity_NanochipAssemblyModuleBase<AssemblyMatrix> {
@@ -132,6 +133,10 @@ public class AssemblyMatrix extends GT_MetaTileEntity_NanochipAssemblyModuleBase
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48] };
+    }
+
+    public static void registerLocalName(ItemStack stack, CircuitComponent component) {
+        component.fallbackLocalizedName = stack.getDisplayName();
     }
 
     @Override
