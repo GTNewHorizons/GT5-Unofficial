@@ -212,45 +212,20 @@ public final class BioVatLogicAdder {
         private static final HashMap<BlockMetaPair, Byte> glasses = new HashMap<>();
 
         /**
-         * @param sModname        The modid owning the block
-         * @param sUnlocBlockName The name of the block itself
+         * @param modname        The modid owning the block
+         * @param unlocalisedBlockName The name of the block itself
          * @param meta            The meta of the block
          * @param tier            the glasses Tier = Voltage tier (MIN 3)
-         * @return if the block was found in the Block registry
          */
-        public static boolean addCustomGlass(String sModname, String sUnlocBlockName, int meta, int tier) {
-            Block block = findBlock(sModname, sUnlocBlockName);
-            boolean ret = block != null;
-            if (ret) BioVatGlass.glasses.put(new BlockMetaPair(block, (byte) meta), (byte) tier);
-            else new IllegalArgumentException(
-                "Block: " + sUnlocBlockName + " of the Mod: " + sModname + " was NOT found!").printStackTrace();
-            block = null;
-            return ret;
-        }
-
-        /**
-         * @param block the block to add
-         * @param meta  the meta of the block (0-15)
-         * @param tier  the glasses Tier = Voltage tier (MIN 3)
-         */
-        public static void addCustomGlass(@Nonnull Block block, @Nonnegative int meta, @Nonnegative int tier) {
-            BioVatGlass.glasses.put(new BlockMetaPair(block, (byte) meta), (byte) tier);
-        }
-
-        /**
-         * @param block the block to add
-         * @param tier  the glasses Tier = Voltage tier (MIN 3)
-         */
-        public static void addCustomGlass(@Nonnull Block block, @Nonnegative int tier) {
-            BioVatGlass.glasses.put(new BlockMetaPair(block, (byte) 0), (byte) tier);
-        }
-
-        /**
-         * @param blockBytePair the block to add and its meta as a javafx.util Pair
-         * @param tier          the glasses Tier = Voltage tier (MIN 3)
-         */
-        public static void addCustomGlass(@Nonnull BlockMetaPair blockBytePair, @Nonnegative byte tier) {
-            BioVatGlass.glasses.put(blockBytePair, tier);
+        public static void addCustomGlass(String modname, String unlocalisedBlockName, int meta, int tier) {
+            Block block = findBlock(modname, unlocalisedBlockName);
+            if (block != null) {
+                BioVatGlass.glasses.put(new BlockMetaPair(block, (byte) meta), (byte) tier);
+            }
+            else {
+                new IllegalArgumentException(
+                    "Block: " + unlocalisedBlockName + " of the Mod: " + modname + " was NOT found!").printStackTrace();
+            }
         }
 
         public static HashMap<BlockMetaPair, Byte> getGlassMap() {
