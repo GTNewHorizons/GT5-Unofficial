@@ -70,14 +70,14 @@ public class TooltipEventHandler {
                 if (GLASSMAP.containsKey(PAIR)) {
                     int tier = GLASSMAP.get(PAIR);
                     tooAdd.add(
-                        StatCollector.translateToLocal("tooltip.glas.0.name") + " "
+                        StatCollector.translateToLocal("tooltip.glass.0.name") + " "
                             + BW_ColorUtil.getColorForTier(tier)
                             + GT_Values.VN[tier]
                             + EnumChatFormatting.RESET);
                 } else if (BLOCK.getMaterial()
                     .equals(Material.glass)) {
                         tooAdd.add(
-                            StatCollector.translateToLocal("tooltip.glas.0.name") + " "
+                            StatCollector.translateToLocal("tooltip.glass.0.name") + " "
                                 + BW_ColorUtil.getColorForTier(3)
                                 + GT_Values.VN[3]
                                 + EnumChatFormatting.RESET);

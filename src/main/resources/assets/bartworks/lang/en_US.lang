@@ -67,7 +67,7 @@ BW_GlasBlocks.14.name=Cosmic Neutronium Reinforced Borosilicate Glass Block
 BW_GlasBlocks.15.name=Infinity Reinforced Borosilicate Glass Block
 BW_GlasBlocks2.0.name=Transcendentally Reinforced Borosilicate Glass Block
 
-tooltip.glas.0.name=Glass-Tier:
+tooltip.glass.0.name=Glass-Tier:
 tooltip.LESU.0.name=Maximum Capacity!
 tooltip.LESU.1.name=Multiple Controllers!
 
