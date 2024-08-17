@@ -500,23 +500,15 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mAllowSmallBoilerAutomation = tMainConfig
             .get(GT_Mod.aTextGeneral, "AllowSmallBoilerAutomation", false)
             .getBoolean(false);
-        GT_Mod.gregtechproxy.mHardMachineCasings = tMainConfig.get(GT_Mod.aTextGeneral, "HardMachineCasings", true)
-            .getBoolean(true);
         GT_Mod.gregtechproxy.mDisableVanillaOres = tMainConfig.get(GT_Mod.aTextGeneral, "DisableVanillaOres", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mNerfDustCrafting = tMainConfig.get(GT_Mod.aTextGeneral, "NerfDustCrafting", true)
             .getBoolean(true);
         GT_Mod.gregtechproxy.mIncreaseDungeonLoot = tMainConfig.get(GT_Mod.aTextGeneral, "IncreaseDungeonLoot", true)
             .getBoolean(true);
         GT_Mod.gregtechproxy.mAxeWhenAdventure = tMainConfig.get(GT_Mod.aTextGeneral, "AdventureModeStartingAxe", true)
             .getBoolean(true);
-        GT_Mod.gregtechproxy.mHardcoreCables = tMainConfig.get(GT_Mod.aTextGeneral, "HardCoreCableLoss", false)
-            .getBoolean(false);
         GT_Mod.gregtechproxy.mSurvivalIntoAdventure = tMainConfig.get(GT_Mod.aTextGeneral, "forceAdventureMode", false)
             .getBoolean(false);
         GT_Mod.gregtechproxy.mHungerEffect = tMainConfig.get(GT_Mod.aTextGeneral, "AFK_Hunger", false)
-            .getBoolean(false);
-        GT_Mod.gregtechproxy.mHardRock = tMainConfig.get(GT_Mod.aTextGeneral, "harderstone", false)
             .getBoolean(false);
         GT_Mod.gregtechproxy.mInventoryUnification = tMainConfig.get(GT_Mod.aTextGeneral, "InventoryUnification", true)
             .getBoolean(true);
@@ -531,18 +523,9 @@ public class GT_PreLoad {
             .getBoolean(true);
         GT_Mod.gregtechproxy.mSortToTheEnd = tMainConfig.get(GT_Mod.aTextGeneral, "EnsureToBeLoadedLast", true)
             .getBoolean(true);
-        GT_Mod.gregtechproxy.mDisableIC2Cables = tMainConfig.get(GT_Mod.aTextGeneral, "DisableIC2Cables", true)
-            .getBoolean(true);
         GT_Mod.gregtechproxy.mAchievements = tMainConfig.get(GT_Mod.aTextGeneral, "EnableAchievements", true)
             .getBoolean(true);
-        GT_Mod.gregtechproxy.mNerfedCombs = tMainConfig.get(GT_Mod.aTextGeneral, "NerfCombs", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mNerfedCrops = tMainConfig.get(GT_Mod.aTextGeneral, "NerfCrops", true)
-            .getBoolean(true);
         GT_Mod.gregtechproxy.mHideUnusedOres = tMainConfig.get(GT_Mod.aTextGeneral, "HideUnusedOres", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mArcSmeltIntoAnnealed = tMainConfig
-            .get(GT_Mod.aTextGeneral, "ArcSmeltIntoAnnealedWrought", true)
             .getBoolean(true);
         GT_Mod.gregtechproxy.mEnableAllMaterials = tMainConfig.get("general", "EnableAllMaterials", false)
             .getBoolean(false);
@@ -790,8 +773,6 @@ public class GT_PreLoad {
             Blocks.mob_spawner.setHardness(500.0F)
                 .setResistance(6000000.0F);
         }
-        GT_Mod.gregtechproxy.mOnline = tMainConfig.get(GT_Mod.aTextGeneral, "online", true)
-            .getBoolean(false);
 
         GT_Mod.gregtechproxy.mUpgradeCount = Math.min(
             64,
