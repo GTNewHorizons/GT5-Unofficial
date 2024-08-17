@@ -208,16 +208,6 @@ public class GT_Values {
     @Deprecated
     public static final String TEX_DIR = "textures/";
     @Deprecated
-    public static final String TEX_DIR_GUI = TEX_DIR + "gui/";
-    @Deprecated
-    public static final String TEX_DIR_ITEM = TEX_DIR + "items/";
-    @Deprecated
-    public static final String TEX_DIR_BLOCK = TEX_DIR + "blocks/";
-    @Deprecated
-    public static final String TEX_DIR_ENTITY = TEX_DIR + "entity/";
-    @Deprecated
-    public static final String TEX_DIR_ASPECTS = TEX_DIR + "aspects/";
-    @Deprecated
     public static final String RES_PATH = GregTech.getResourcePath(TEX_DIR);
     @Deprecated
     public static final String RES_PATH_GUI = GregTech.getResourcePath("textures", "gui/");

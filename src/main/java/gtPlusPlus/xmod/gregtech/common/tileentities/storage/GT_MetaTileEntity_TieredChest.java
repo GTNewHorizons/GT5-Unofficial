@@ -213,11 +213,6 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
         return new ITexture[0][0][0];
     }
 
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     @Override

@@ -336,9 +336,4 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     public int getTankPressure() {
         return -100;
     }
-
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
 }

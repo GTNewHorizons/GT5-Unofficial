@@ -1004,11 +1004,6 @@ public class GT_MetaTileEntity_PCBFactory extends
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public byte getUpdateData() {
         byte data = 0;
         if (mSetTier == 1) {

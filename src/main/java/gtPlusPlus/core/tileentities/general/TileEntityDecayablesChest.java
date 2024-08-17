@@ -419,7 +419,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
                 .matrix("IIIII", "IIIII", "IIIII")
                 .key(
                     'I',
-                    index -> new ItemSlot<>().slot(
+                    index -> new ItemSlot().slot(
                         SyncHandlers.itemSlot(contents, index)
                             .slotGroup(SLOT_GROUP)))
                 .build()

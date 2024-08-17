@@ -492,9 +492,4 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch
         return new GUITextureSet().setMainBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT)
             .setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT);
     }
-
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
 }
