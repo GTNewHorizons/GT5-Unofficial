@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
-import static com.github.technus.tectech.util.CommonValues.V;
+import static gregtech.api.enums.GT_Values.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.github.technus.tectech.util.CommonValues;
@@ -9,6 +9,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
+@Deprecated
 public class GT_MetaTileEntity_WetTransformer extends GT_MetaTileEntity_TT_Transformer {
 
     public GT_MetaTileEntity_WetTransformer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

@@ -201,80 +201,12 @@ public class GT_Values {
      * most of the time I don't know what kind of Data Type the "null" stands for
      */
     public static final FluidStack NF = null;
-    /**
-     * MOD ID Strings, since they are very common Parameters.
-     */
-    @Deprecated
-    public static final String MOD_ID = "gregtech";
-    @Deprecated
-    public static final String MOD_ID_IC2 = "IC2";
-    @Deprecated
-    public static final String MOD_ID_NC = "IC2NuclearControl";
-    @Deprecated
-    public static final String MOD_ID_TC = "Thaumcraft";
-    @Deprecated
-    public static final String MOD_ID_TF = "TwilightForest";
-    @Deprecated
-    public static final String MOD_ID_RC = "Railcraft";
-    @Deprecated
-    public static final String MOD_ID_TE = "ThermalExpansion";
-    @Deprecated
-    public static final String MOD_ID_AE = "appliedenergistics2";
-    @Deprecated
-    public static final String MOD_ID_TFC = "terrafirmacraft";
-    @Deprecated
-    public static final String MOD_ID_PFAA = "PFAAGeologica";
-    @Deprecated
-    public static final String MOD_ID_FR = "Forestry";
-    @Deprecated
-    public static final String MOD_ID_HaC = "harvestcraft";
-    @Deprecated
-    public static final String MOD_ID_APC = "AppleCore";
-    @Deprecated
-    public static final String MOD_ID_MaCr = "magicalcrops";
-    @Deprecated
-    public static final String MOD_ID_GaEn = "ganysend";
-    @Deprecated
-    public static final String MOD_ID_GaSu = "ganyssurface";
-    @Deprecated
-    public static final String MOD_ID_GaNe = "ganysnether";
-    @Deprecated
-    public static final String MOD_ID_BC_SILICON = "BuildCraft|Silicon";
-    @Deprecated
-    public static final String MOD_ID_BC_TRANSPORT = "BuildCraft|Transport";
-    @Deprecated
-    public static final String MOD_ID_BC_FACTORY = "BuildCraft|Factory";
-    @Deprecated
-    public static final String MOD_ID_BC_ENERGY = "BuildCraft|Energy";
-    @Deprecated
-    public static final String MOD_ID_BC_BUILDERS = "BuildCraft|Builders";
-    @Deprecated
-    public static final String MOD_ID_BC_CORE = "BuildCraft|Core";
-    @Deprecated
-    public static final String MOD_ID_GC_CORE = "GalacticraftCore";
-    @Deprecated
-    public static final String MOD_ID_GC_MARS = "GalacticraftMars";
-    @Deprecated
-    public static final String MOD_ID_GC_PLANETS = "GalacticraftPlanets";
-    @Deprecated
-    public static final String MOD_ID_DC = "dreamcraft";
-    @Deprecated
-    public static final String MOD_ID_GTPP = "miscutils";
+
     /**
      * File Paths and Resource Paths
      */
     @Deprecated
     public static final String TEX_DIR = "textures/";
-    @Deprecated
-    public static final String TEX_DIR_GUI = TEX_DIR + "gui/";
-    @Deprecated
-    public static final String TEX_DIR_ITEM = TEX_DIR + "items/";
-    @Deprecated
-    public static final String TEX_DIR_BLOCK = TEX_DIR + "blocks/";
-    @Deprecated
-    public static final String TEX_DIR_ENTITY = TEX_DIR + "entity/";
-    @Deprecated
-    public static final String TEX_DIR_ASPECTS = TEX_DIR + "aspects/";
     @Deprecated
     public static final String RES_PATH = GregTech.getResourcePath(TEX_DIR);
     @Deprecated
@@ -522,6 +454,63 @@ public class GT_Values {
      */
     public static boolean allow_broken_recipemap = false;
     /**
+     * This will set the blacklist for the world accelerator in TE mode.
+     */
+    public static String[] blacklistedTileEntiyClassNamesForWA = new String[] {
+        "com.rwtema.extrautils.tileentity.enderquarry.TileEntityEnderQuarry",
+        "advsolar.common.tiles.TileEntityUltimateSolarPanel", "advsolar.common.tiles.TileEntitySolarPanel",
+        "advsolar.common.tiles.TileEntityQuantumSolarPanel", "advsolar.common.tiles.TileEntityHybridSolarPanel",
+        "advsolar.common.tiles.TileEntityAdvancedSolarPanel", "com.supsolpans.tiles.TileAdminSolarPanel",
+        "com.supsolpans.tiles.TilePhotonicSolarPanel", "com.supsolpans.tiles.TileSingularSolarPanel",
+        "com.supsolpans.tiles.TileSpectralSolarPanel", "emt.tile.solar.air.TileEntityAirSolar",
+        "emt.tile.solar.air.TileEntityDoubleAirSolar", "emt.tile.solar.air.TileEntityTripleAirSolar",
+        "emt.tile.solar.air.TileEntityQuadrupleAirSolar", "emt.tile.solar.air.TileEntityQuintupleAirSolar",
+        "emt.tile.solar.air.TileEntitySextupleAirSolar", "emt.tile.solar.air.TileEntitySeptupleAirSolar",
+        "emt.tile.solar.air.TileEntityOctupleAirSolar", "emt.tile.solar.compressed.TileEntityCompressedSolar",
+        "emt.tile.solar.compressed.TileEntityDoubleCompressedSolar",
+        "emt.tile.solar.compressed.TileEntityTripleCompressedSolar",
+        "emt.tile.solar.compressed.TileEntityQuadrupleAirSolar",
+        "emt.tile.solar.compressed.TileEntityQuintupleAirSolar", "emt.tile.solar.compressed.TileEntitySextupleAirSolar",
+        "emt.tile.solar.compressed.TileEntitySeptupleAirSolar", "emt.tile.solar.compressed.TileEntityOctupleAirSolar",
+        "emt.tile.solar.dark.TileEntityDarkSolar", "emt.tile.solar.dark.TileEntityDoubleDarkSolar",
+        "emt.tile.solar.dark.TileEntityTripleDarkSolar", "emt.tile.solar.dark.TileEntityQuadrupleAirSolar",
+        "emt.tile.solar.dark.TileEntityQuintupleAirSolar", "emt.tile.solar.dark.TileEntitySextupleAirSolar",
+        "emt.tile.solar.dark.TileEntitySeptupleAirSolar", "emt.tile.solar.dark.TileEntityOctupleAirSolar",
+        "emt.tile.solar.earth.TileEntityDoubleEarthSolar", "emt.tile.solar.earth.TileEntityEarthSolar",
+        "emt.tile.solar.earth.TileEntityTripleEarthSolar", "emt.tile.solar.earth.TileEntityQuadrupleAirSolar",
+        "emt.tile.solar.earth.TileEntityQuintupleAirSolar", "emt.tile.solar.earth.TileEntitySextupleAirSolar",
+        "emt.tile.solar.earth.TileEntitySeptupleAirSolar", "emt.tile.solar.earth.TileEntityOctupleAirSolar",
+        "emt.tile.solar.fire.TileEntityDoubleFireSolar", "emt.tile.solar.fire.TileEntityFireSolar",
+        "emt.tile.solar.fire.TileEntityTripleFireSolar", "emt.tile.solar.fire.TileEntityQuadrupleAirSolar",
+        "emt.tile.solar.fire.TileEntityQuintupleAirSolar", "emt.tile.solar.fire.TileEntitySextupleAirSolar",
+        "emt.tile.solar.fire.TileEntitySeptupleAirSolar", "emt.tile.solar.fire.TileEntityOctupleAirSolar",
+        "emt.tile.solar.order.TileEntityDoubleOrderSolar", "emt.tile.solar.order.TileEntityOrderSolar",
+        "emt.tile.solar.order.TileEntityTripleOrderSolar", "emt.tile.solar.order.TileEntityQuadrupleAirSolar",
+        "emt.tile.solar.order.TileEntityQuintupleAirSolar", "emt.tile.solar.order.TileEntitySextupleAirSolar",
+        "emt.tile.solar.order.TileEntitySeptupleAirSolar", "emt.tile.solar.order.TileEntityOctupleAirSolar",
+        "emt.tile.solar.water.TileEntityDoubleWaterSolar", "emt.tile.solar.water.TileEntityTripleWaterSolar",
+        "emt.tile.solar.water.TileEntityWaterSolar", "emt.tile.solar.water.TileEntityQuadrupleAirSolar",
+        "emt.tile.solar.water.TileEntityQuintupleAirSolar", "emt.tile.solar.water.TileEntitySextupleAirSolar",
+        "emt.tile.solar.water.TileEntitySeptupleAirSolar", "emt.tile.solar.water.TileEntityOctupleAirSolar",
+        "com.lulan.compactkineticgenerators.tileentity.TileCkgE",
+        "com.lulan.compactkineticgenerators.tileentity.TileCkgH",
+        "com.lulan.compactkineticgenerators.tileentity.TileCkgL",
+        "com.lulan.compactkineticgenerators.tileentity.TileCkgM",
+        "com.lulan.compactkineticgenerators.tileentity.TileCkwaE",
+        "com.lulan.compactkineticgenerators.tileentity.TileCkwaH",
+        "com.lulan.compactkineticgenerators.tileentity.TileCkwaL",
+        "com.lulan.compactkineticgenerators.tileentity.TileCkwaM",
+        "com.lulan.compactkineticgenerators.tileentity.TileCkwmE",
+        "com.lulan.compactkineticgenerators.tileentity.TileCkwmH",
+        "com.lulan.compactkineticgenerators.tileentity.TileCkwmL",
+        "com.lulan.compactkineticgenerators.tileentity.TileCkwmM", "com.supsolpans.tiles.TileSpectralSolarPanel",
+        "com.supsolpans.tiles.TileSingularSolarPanel", "com.supsolpans.tiles.TileAdminSolarPanel",
+        "com.supsolpans.tiles.TilePhotonicSolarPanel", "gtPlusPlus.core.tileentities.general.TileEntityFishTrap",
+        "gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest",
+        "net.bdew.gendustry.machines.apiary.TileApiary", "goodgenerator.blocks.tileEntity.EssentiaHatch",
+        "magicbees.tileentity.TileEntityApimancersDrainerCommon",
+        "magicbees.tileentity.TileEntityApimancersDrainerGT" };
+    /**
      * This will set the percentage how much ReinforcedGlass is Allowed in Cleanroom Walls.
      */
     public static float cleanroomGlass = 5.0f;
@@ -677,6 +666,11 @@ public class GT_Values {
         + EnumChatFormatting.BOLD
         + "Gold";
     public static final String AuthorVolence = "Author: " + EnumChatFormatting.AQUA + "Volence";
+
+    public static final String AuthorEigenRaven = "Author: " + EnumChatFormatting.DARK_PURPLE
+        + "Eigen"
+        + EnumChatFormatting.BOLD
+        + "Raven";
 
     public static final String AuthorNotAPenguin = "Author: " + EnumChatFormatting.WHITE
         + EnumChatFormatting.BOLD

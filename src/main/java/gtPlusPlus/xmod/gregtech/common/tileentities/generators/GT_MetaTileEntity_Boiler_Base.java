@@ -6,6 +6,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTankInfo;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -211,6 +212,11 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
+    protected boolean isItemValidFuel(@NotNull ItemStack stack) {
+        return getBurnTime(stack) > 0;
+    }
+
+    @Override
     // Since this type of machine can have different water and steam capacities, we need to override getTankInfo() to
     // support returning those different capacities.
     public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
@@ -219,15 +225,8 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return aIndex == 1 || aIndex == 3;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return aIndex == 2;
+    protected boolean isAutomatable() {
+        return true;
     }
 
     @Override

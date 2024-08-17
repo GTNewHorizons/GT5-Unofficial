@@ -161,11 +161,6 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
         return new RedstoneWirelessBaseUIFactory(buildContext).createWindow();
     }

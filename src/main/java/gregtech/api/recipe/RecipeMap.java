@@ -138,26 +138,6 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap, 
     @Nullable
     public GT_Recipe addFakeRecipe(boolean aCheckForCollisions, @Nullable ItemStack[] aInputs,
         @Nullable ItemStack[] aOutputs, @Nullable Object aSpecial, @Nullable FluidStack[] aFluidInputs,
-        @Nullable FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        return addFakeRecipe(
-            aCheckForCollisions,
-            new GT_Recipe(
-                false,
-                aInputs,
-                aOutputs,
-                aSpecial,
-                null,
-                aFluidInputs,
-                aFluidOutputs,
-                aDuration,
-                aEUt,
-                aSpecialValue));
-    }
-
-    @Deprecated
-    @Nullable
-    public GT_Recipe addFakeRecipe(boolean aCheckForCollisions, @Nullable ItemStack[] aInputs,
-        @Nullable ItemStack[] aOutputs, @Nullable Object aSpecial, @Nullable FluidStack[] aFluidInputs,
         @Nullable FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue, ItemStack[][] aAlt,
         boolean hidden) {
         return addFakeRecipe(

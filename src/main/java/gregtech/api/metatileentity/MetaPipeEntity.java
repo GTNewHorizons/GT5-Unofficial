@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -747,16 +746,6 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
-    }
-
-    @Override
     public float getExplosionResistance(ForgeDirection side) {
         return (mConnections & IConnectable.HAS_FOAM) != 0 ? 50.0F : 5.0F;
     }
@@ -862,11 +851,6 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     @Override
     public String getAlternativeModeText() {
         return "";
-    }
-
-    @Deprecated
-    public String trans(String aKey, String aEnglish) {
-        return GT_Utility.trans(aKey, aEnglish);
     }
 
     protected boolean connectableColor(TileEntity tTileEntity) {

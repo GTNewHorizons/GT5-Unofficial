@@ -1,10 +1,9 @@
 package common.recipeLoaders;
 
+import static goodgenerator.loader.Loaders.huiCircuit;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.UniversalSingularities;
 import static gregtech.api.util.GT_RecipeBuilder.HOURS;
@@ -13,6 +12,7 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
+import static gtPlusPlus.core.material.ELEMENT.STANDALONE.HYPOGEN;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -95,7 +95,7 @@ public class AssemblyLine implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.InfinityCatalyst, 6),
                 ItemList.Field_Generator_ZPM.get(16),
                 ItemList.Field_Generator_UV.get(4),
-                GT_ModHandler.getModItem(GoodGenerator.ID, "huiCircuit", 4, 2),
+                new ItemStack(huiCircuit, 4, 2),
                 GT_ModHandler.getModItem(UniversalSingularities.ID, "universal.tinkersConstruct.singularity", 1, 4))
             .fluidInputs(Materials.CrystallinePinkSlime.getMolten(4320), new FluidStack(radoxPoly, 2880))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 8))
@@ -113,10 +113,10 @@ public class AssemblyLine implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 6),
                 GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 3),
                 ItemList.EnergisedTesseract.get(1),
-                GT_ModHandler.getModItem(GTPlusPlus.ID, "itemRotorHypogen", 6),
+                HYPOGEN.getRotor(6),
                 ItemList.Field_Generator_UHV.get(16),
                 ItemList.Field_Generator_UEV.get(4),
-                GT_ModHandler.getModItem(GoodGenerator.ID, "huiCircuit", 4, 3),
+                new ItemStack(huiCircuit, 4, 3),
                 GT_ModHandler.getModItem(UniversalSingularities.ID, "universal.tinkersConstruct.singularity", 1, 4))
             .fluidInputs(Materials.MelodicAlloy.getMolten(5760), new FluidStack(radoxPoly, 3456))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 9))
@@ -138,8 +138,8 @@ public class AssemblyLine implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.rotor, MaterialsUEVplus.SpaceTime, 6),
                 ItemList.Field_Generator_UEV.get(16),
                 ItemList.Field_Generator_UIV.get(4),
-                GT_ModHandler.getModItem(GoodGenerator.ID, "huiCircuit", 4, 4),
-                GT_ModHandler.getModItem(GoodGenerator.ID, "huiCircuit", 4, 4),
+                new ItemStack(huiCircuit, 4, 4),
+                new ItemStack(huiCircuit, 4, 4),
                 GT_ModHandler.getModItem(EnderIO.ID, "itemBasicCapacitor", 64, 6),
                 GT_ModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1))
             .fluidInputs(Materials.StellarAlloy.getMolten(7200), new FluidStack(radoxPoly, 4608))

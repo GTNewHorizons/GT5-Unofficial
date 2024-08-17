@@ -1,0 +1,18 @@
+name: Forbidden getModItems
+
+on:
+  pull_request:
+    branches: [ master, main ]
+  push:
+    branches: [ master, main ]
+
+jobs:
+  test-forbidden-getmoditems:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Detect forbidden getModItem calls
+        shell: bash
+        run: |
+          ! grep -E -r 'getModItem\(("(bartworks|galacticgreg|ggfab|GoodGenerator|gregtech|gtnhlanth|miscutils|kekztech|kubatech|tectech)"|(BartWorks|GalactiGreg|GGFab|GoodGenerator|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech)\.ID)' src/main/java
