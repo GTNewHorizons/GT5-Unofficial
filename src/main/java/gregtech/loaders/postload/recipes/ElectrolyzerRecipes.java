@@ -192,7 +192,7 @@ public class ElectrolyzerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemOutputs(Materials.Sulfur.getDust(1))
-            .fluidInputs(Materials.HydrogenSulfide.getGas(1000))
+            .fluidInputs(Materials.HydricSulfide.getGas(1000))
             .fluidOutputs(Materials.Hydrogen.getGas(2000))
             .duration(3 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_MV)
@@ -200,7 +200,7 @@ public class ElectrolyzerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemOutputs(Materials.Sulfur.getDust(1), Materials.Hydrogen.getCells(2))
-            .itemInputs(Materials.HydrogenSulfide.getCells(1), Materials.Empty.getCells(1))
+            .itemInputs(Materials.HydricSulfide.getCells(1), Materials.Empty.getCells(1))
             .duration(3 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
