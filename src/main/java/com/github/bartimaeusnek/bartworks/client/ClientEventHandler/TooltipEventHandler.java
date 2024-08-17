@@ -55,41 +55,7 @@ public class TooltipEventHandler {
 
         if (TooltipCache.getTooltip(event.itemStack)
             .isEmpty()) {
-            ItemStack tmp = event.itemStack.copy();
-            Pair<Integer, Short> abstractedStack = new Pair<>(
-                Item.getIdFromItem(tmp.getItem()),
-                (short) tmp.getItemDamage());
             List<String> tooAdd = new ArrayList<>();
-            if (ConfigHandler.sharedItemStackTooltip && OreDictHandler.getNonBWCache()
-                .contains(abstractedStack)) {
-                for (Pair<Integer, Short> pair : OreDictHandler.getNonBWCache()) {
-                    if (pair.equals(abstractedStack)) {
-                        GameRegistry.UniqueIdentifier UI = GameRegistry.findUniqueIdentifierFor(tmp.getItem());
-                        if (UI == null)
-                            UI = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(tmp.getItem()));
-                        if (UI != null) {
-                            for (ModContainer modContainer : Loader.instance()
-                                .getModList()) {
-                                if (MainMod.MOD_ID.equals(UI.modId) || BartWorksCrossmod.MOD_ID.equals(UI.modId)
-                                    || "BWCore".equals(UI.modId)) break;
-                                if (UI.modId.equals(modContainer.getModId())) {
-                                    tooAdd.add(
-                                        "Shared ItemStack between " + EnumChatFormatting.DARK_GREEN
-                                            + "BartWorks"
-                                            + EnumChatFormatting.GRAY
-                                            + " and "
-                                            + EnumChatFormatting.RED
-                                            + modContainer.getName());
-                                }
-                            }
-                        } else tooAdd.add(
-                            "Shared ItemStack between " + EnumChatFormatting.DARK_GREEN
-                                + "BartWorks"
-                                + EnumChatFormatting.GRAY
-                                + " and another Mod, that doesn't use the ModContainer propperly!");
-                    }
-                }
-            }
 
             Block BLOCK = Block.getBlockFromItem(event.itemStack.getItem());
             if (BLOCK != null && BLOCK != Blocks.air) {
