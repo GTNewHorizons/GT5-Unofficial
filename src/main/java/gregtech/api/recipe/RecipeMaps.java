@@ -1261,33 +1261,27 @@ public final class RecipeMaps {
                         .eut(TierEU.RECIPE_UEV))));
 
         // Add fuels above 100 EU/L to the fuel boiler
-        dieselFuels.addDownstream(
-            IRecipeMap.newRecipeMap(
-                b -> {
-                    final FluidStack f =
-                        GT_Utility.getFluidForFilledItem(b.getItemInputBasic(0), true);
-                    if (f == null) return Collections.emptyList();
-                    f.amount = 1;
-                    final int eul = b.getMetadataOrDefault(FUEL_VALUE, 0);
-                    if (eul < 100) return Collections.emptyList();
-                    return GT_Values.RA.stdBuilder().fluidInputs(f.copy()).metadata(FUEL_VALUE, eul)
-                        .addTo(fuelBoilerFuels);
-                }
-            )
-        );
-        gasTurbineFuels.addDownstream(
-            IRecipeMap.newRecipeMap(
-                b -> {
-                    final FluidStack f =
-                        GT_Utility.getFluidForFilledItem(b.getItemInputBasic(0), true);
-                    if (f == null) return Collections.emptyList();
-                    f.amount = 1;
-                    final int eul = b.getMetadataOrDefault(FUEL_VALUE, 0);
-                    if (eul < 100) return Collections.emptyList();
-                    return GT_Values.RA.stdBuilder().fluidInputs(f.copy()).metadata(FUEL_VALUE, eul)
-                        .addTo(fuelBoilerFuels);
-                }
-            )
-        );
+        dieselFuels.addDownstream(IRecipeMap.newRecipeMap(b -> {
+            final FluidStack f = GT_Utility.getFluidForFilledItem(b.getItemInputBasic(0), true);
+            if (f == null) return Collections.emptyList();
+            f.amount = 1;
+            final int eul = b.getMetadataOrDefault(FUEL_VALUE, 0);
+            if (eul < 100) return Collections.emptyList();
+            return GT_Values.RA.stdBuilder()
+                .fluidInputs(f.copy())
+                .metadata(FUEL_VALUE, eul)
+                .addTo(fuelBoilerFuels);
+        }));
+        gasTurbineFuels.addDownstream(IRecipeMap.newRecipeMap(b -> {
+            final FluidStack f = GT_Utility.getFluidForFilledItem(b.getItemInputBasic(0), true);
+            if (f == null) return Collections.emptyList();
+            f.amount = 1;
+            final int eul = b.getMetadataOrDefault(FUEL_VALUE, 0);
+            if (eul < 100) return Collections.emptyList();
+            return GT_Values.RA.stdBuilder()
+                .fluidInputs(f.copy())
+                .metadata(FUEL_VALUE, eul)
+                .addTo(fuelBoilerFuels);
+        }));
     }
 }

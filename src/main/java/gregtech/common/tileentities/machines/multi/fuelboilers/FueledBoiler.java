@@ -1,5 +1,28 @@
 package gregtech.common.tileentities.machines.multi.fuelboilers;
 
+import static gregtech.api.GregTech_API.sBlockCasings1;
+import static gregtech.api.GregTech_API.sBlockCasings2;
+import static gregtech.api.GregTech_API.sBlockCasings3;
+import static gregtech.api.GregTech_API.sBlockMetal1;
+import static gregtech.api.recipe.check.CheckRecipeResultRegistry.MISSING_WATER;
+import static gregtech.api.recipe.check.CheckRecipeResultRegistry.NO_FUEL_FOUND;
+import static gregtech.api.recipe.check.CheckRecipeResultRegistry.SUCCESSFUL;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
+import static net.minecraftforge.fluids.FluidRegistry.WATER;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.CrossAxisAlignment;
@@ -8,6 +31,7 @@ import com.gtnewhorizons.modularui.api.screen.IWindowCreator;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.*;
+
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -19,33 +43,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nonnull;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static gregtech.api.GregTech_API.sBlockCasings1;
-import static gregtech.api.GregTech_API.sBlockCasings2;
-import static gregtech.api.GregTech_API.sBlockCasings3;
-import static gregtech.api.GregTech_API.sBlockMetal1;
-import static gregtech.api.recipe.check.CheckRecipeResultRegistry.MISSING_WATER;
-import static gregtech.api.recipe.check.CheckRecipeResultRegistry.NO_FUEL_FOUND;
-import static gregtech.api.recipe.check.CheckRecipeResultRegistry.SUCCESSFUL;
-import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
-import static net.minecraftforge.fluids.FluidRegistry.WATER;
 
 /**
  * The base class for fuel-based boilers. These burn fuels (like Benzene or Diesel) into Steam, instead of direct
@@ -54,13 +53,8 @@ import static net.minecraftforge.fluids.FluidRegistry.WATER;
 public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
 
-    private static final int[] MAX_BHEAT_BY_TIER = {
-        0, // there is no tier 0!
-        50,
-        100,
-        200,
-        500
-    };
+    private static final int[] MAX_BHEAT_BY_TIER = { 0, // there is no tier 0!
+        50, 100, 200, 500 };
 
     // Static (while multi is running)
     protected int tier = 0;
@@ -112,13 +106,16 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
         waterMax = waterIn.getCapacity();
         heatMax = 100 + MAX_BHEAT_BY_TIER[tier];
 
-        final GT_Recipe r = getRecipeMap().findRecipeQuery().fluids(fuelIn.getFluid()).find();
+        final GT_Recipe r = getRecipeMap().findRecipeQuery()
+            .fluids(fuelIn.getFluid())
+            .find();
         if (r == null) return NO_FUEL_FOUND;
 
         // Fuel found, time to burn!
 
         // This never NPEs, due to earlier checks
-        @SuppressWarnings("DataFlowIssue") final int eul = r.getMetadata(FUEL_VALUE);
+        @SuppressWarnings("DataFlowIssue")
+        final int eul = r.getMetadata(FUEL_VALUE);
         final int amt = getLitersToBurn(eul);
         if (fuelIn.getFluidAmount() < amt) return NO_FUEL_FOUND;
 
@@ -222,10 +219,10 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
         buildContext.addSyncedWindow(10, this.createMonitorWindow);
         builder.widget(
             new ButtonWidget().setOnClick(
-                    (clickData, widget) -> {
-                        if (!widget.isClient()) widget.getContext()
-                            .openSyncedWindow(10);
-                    })
+                (clickData, widget) -> {
+                    if (!widget.isClient()) widget.getContext()
+                        .openSyncedWindow(10);
+                })
                 .setSize(16, 16)
                 .setBackground(() -> {
                     List<UITexture> ret = new ArrayList<>();
@@ -264,7 +261,7 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
                                 .setPos(pBarOffset, 0)
                                 .setSizeProvider(
                                     (screenSize, window,
-                                     parent) -> new Size(window.getSize().width - pBarOffset - pBarPad, 10))))
+                                        parent) -> new Size(window.getSize().width - pBarOffset - pBarPad, 10))))
                 .widget(
                     new MultiChildWidget().addChild(new TextWidget("Heat"))
                         .addChild(
@@ -278,7 +275,7 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
                                 .setPos(pBarOffset, 0)
                                 .setSizeProvider(
                                     (screenSize, window,
-                                     parent) -> new Size(window.getSize().width - pBarOffset - pBarPad, 10))))
+                                        parent) -> new Size(window.getSize().width - pBarOffset - pBarPad, 10))))
                 .widget(
                     new MultiChildWidget().addChild(new TextWidget("Steam"))
                         .addChild(
@@ -292,7 +289,7 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
                                 .setPos(pBarOffset, 0)
                                 .setSizeProvider(
                                     (screenSize, window,
-                                     parent) -> new Size(window.getSize().width - pBarOffset - pBarPad, 10))))
+                                        parent) -> new Size(window.getSize().width - pBarOffset - pBarPad, 10))))
                 .setAlignment(CrossAxisAlignment.END)
                 .setPos(5, 15));
 
@@ -323,7 +320,8 @@ public abstract class FueledBoiler<T extends GT_MetaTileEntity_ExtendedPowerMult
 
     private int getLitersToBurn(int eul) {
         // The fuel buffer needs to have at least 1 tick worth of EU in it every tick.
-        // Integer division in various steps mean we never have to hit fractional EU/t targets, making my life much easier
+        // Integer division in various steps mean we never have to hit fractional EU/t targets, making my life much
+        // easier
         final int target = Math.max(0, getEut(eul) - storedEU);
         return (int) Math.ceil(target / (float) eul);
     }
