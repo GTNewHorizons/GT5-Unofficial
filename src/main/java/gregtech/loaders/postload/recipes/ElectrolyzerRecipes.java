@@ -180,6 +180,31 @@ public class ElectrolyzerRecipes implements Runnable {
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.CarbonMonoxide.getCells(1))
+            .itemOutputs(Materials.Carbon.getDust(1), Materials.Oxygen.getCells(1))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(electrolyzerRecipes);
+
+        // H2S = S + 2H
+
+        GT_Values.RA.stdBuilder()
+            .itemOutputs(Materials.Sulfur.getDust(1))
+            .fluidInputs(Materials.HydricSulfide.getGas(1000))
+            .fluidOutputs(Materials.Hydrogen.getGas(2000))
+            .duration(3 * SECONDS + 12 * TICKS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(electrolyzerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemOutputs(Materials.Sulfur.getDust(1), Materials.Hydrogen.getCells(2))
+            .itemInputs(Materials.HydricSulfide.getCells(1), Materials.Empty.getCells(1))
+            .duration(3 * SECONDS + 12 * TICKS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(electrolyzerRecipes);
+
         // SO2 = S + 2O
 
         GT_Values.RA.stdBuilder()

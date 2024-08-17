@@ -19,7 +19,7 @@ public class GT_Tool_Pickaxe extends GT_Tool {
 
     @Override
     public int getToolDamagePerBlockBreak() {
-        return GT_Mod.gregtechproxy.mHardRock ? 25 : 50;
+        return 50;
     }
 
     @Override
