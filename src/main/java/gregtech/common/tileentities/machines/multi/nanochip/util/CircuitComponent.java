@@ -93,6 +93,7 @@ public enum CircuitComponent {
     CrystalMainframe("gt.circuitcomponent.crystalmainframe", null, ItemList.Circuit_Crystalmainframe.get(1)),;
 
     public final String unlocalizedName;
+    public String fallbackLocalizedName = null;
     public final Materials material;
     // This is the recipe map that this component is used in as an input item
     public final RecipeMap<?> processingMap;
@@ -124,7 +125,11 @@ public enum CircuitComponent {
     }
 
     public String getLocalizedName() {
-        return StatCollector.translateToLocal(unlocalizedName);
+        // If a translation key is set, use it, otherwise use the automatically generated fallback name
+        if (StatCollector.canTranslate(unlocalizedName)) {
+            return StatCollector.translateToLocal(unlocalizedName);
+        }
+        return fallbackLocalizedName;
     }
 
     // ItemStack of a fake item, only for display and recipe checking purposes
