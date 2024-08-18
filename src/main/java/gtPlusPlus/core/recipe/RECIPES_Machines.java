@@ -1054,6 +1054,19 @@ public class RECIPES_Machines {
             aBronzeBricks,
             GregtechItemList.Controller_SteamWasherMulti.get(1));
 
+        // Steam Mixer Multi
+        RecipeUtils.addShapedGregtechRecipe(
+            aBronzeBricks,
+            ALLOY.TUMBAGA.getRing(1),
+            aBronzeBricks,
+            ALLOY.TUMBAGA.getRotor(1),
+            ALLOY.TUMBAGA.getFrameBox(1),
+            ALLOY.TUMBAGA.getRotor(1),
+            aBronzeBricks,
+            ALLOY.TUMBAGA.getRing(1),
+            aBronzeBricks,
+            GregtechItemList.Controller_SteamMixerMulti.get(1));
+
         ItemStack aWoodenCasing = ItemUtils.simpleMetaStack(GregTech_API.sBlockCasings9, 2, 1);
         // WaterPump
         RecipeUtils.addShapedGregtechRecipe(
