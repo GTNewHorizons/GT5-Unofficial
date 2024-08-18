@@ -62,6 +62,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.GT_Assemblyline_Server;
 import gregtech.api.util.GT_Forestry_Compat;
@@ -165,15 +166,7 @@ import ic2.api.recipe.RecipeOutput;
         + " after:gendustry;")
 public class GT_Mod implements IGT_Mod {
 
-    @Deprecated // Keep for use in BaseMetaTileEntity
-    public static final int VERSION = VERSION_MAJOR, SUBVERSION = VERSION_MINOR;
-
-    @Deprecated
-    public static final int TOTAL_VERSION = calculateTotalGTVersion(VERSION, SUBVERSION);
     public static final int NBT_VERSION = calculateTotalGTVersion(VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
-
-    @Deprecated
-    public static final int REQUIRED_IC2 = 624;
 
     @Mod.Instance(Mods.Names.GREG_TECH)
     public static GT_Mod instance;
@@ -213,11 +206,6 @@ public class GT_Mod implements IGT_Mod {
         Textures.ItemIcons.VOID.name();
     }
 
-    @SuppressWarnings("unused") // TODO: Delete this method
-    public static int calculateTotalGTVersion(int minorVersion) {
-        return calculateTotalGTVersion(VERSION, minorVersion);
-    }
-
     public static int calculateTotalGTVersion(int majorVersion, int minorVersion) {
         return calculateTotalGTVersion(majorVersion, minorVersion, 0);
     }
@@ -242,7 +230,6 @@ public class GT_Mod implements IGT_Mod {
         }
 
         Configuration tMainConfig = GT_PreLoad.getConfiguration(aEvent.getModConfigurationDirectory());
-        GT_PreLoad.initCompat();
         GT_PreLoad.createLogFiles(
             aEvent.getModConfigurationDirectory()
                 .getParentFile(),
@@ -358,6 +345,9 @@ public class GT_Mod implements IGT_Mod {
         if (Mods.HoloInventory.isModLoaded()) {
             HoloInventory.init();
         }
+
+        LHECoolantRegistry.registerBaseCoolants();
+
         GregTech_API.sLoadFinished = true;
         GT_Log.out.println("GT_Mod: Load-Phase finished!");
         GT_Log.ore.println("GT_Mod: Load-Phase finished!");

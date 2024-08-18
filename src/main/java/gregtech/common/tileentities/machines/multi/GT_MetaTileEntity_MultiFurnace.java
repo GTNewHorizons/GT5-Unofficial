@@ -156,11 +156,14 @@ public class GT_MetaTileEntity_MultiFurnace
         ArrayList<ItemStack> tInputList = getAllStoredInputs();
         if (tInputList.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        int mVoltage = GT_Utility.safeInt(getMaxInputVoltage());
+        long inputVoltage = getMaxInputVoltage();
 
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setEUt(mVoltage)
+        int fakeOriginalMaxParallel = 1;
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setEUt(inputVoltage)
             .setRecipeEUt(RECIPE_EUT)
-            .setDuration(RECIPE_DURATION);
+            .setDuration(RECIPE_DURATION)
+            .setParallel(fakeOriginalMaxParallel);
+
         int maxParallel = this.mLevel;
         int originalMaxParallel = maxParallel;
         double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
@@ -174,35 +177,32 @@ public class GT_MetaTileEntity_MultiFurnace
         }
 
         // Calculate parallel
-        int tCurrentParallel = 0;
+        int currentParallel = 0;
         for (ItemStack item : tInputList) {
             ItemStack smeltedOutput = GT_ModHandler.getSmeltingOutput(item, false, null);
             if (smeltedOutput != null) {
-                if (item.stackSize <= (maxParallel - tCurrentParallel)) {
-                    tCurrentParallel += item.stackSize;
+                if (item.stackSize <= (maxParallel - currentParallel)) {
+                    currentParallel += item.stackSize;
                 } else {
-                    tCurrentParallel = maxParallel;
+                    currentParallel = maxParallel;
                     break;
                 }
             }
         }
-        if (tCurrentParallel <= 0) {
+        if (currentParallel <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        int currentParallelBeforeBatchMode = Math.min(tCurrentParallel, maxParallelBeforeBatchMode);
+        int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
+        int fakeCurrentParallel = (int) Math.ceil((double) currentParallelBeforeBatchMode / originalMaxParallel);
 
-        long eutUseAfterOC = calculator.calculateEUtConsumptionUnderOneTick(
-            1,
-            (int) Math.ceil((double) currentParallelBeforeBatchMode / originalMaxParallel));
-        calculator
-            .setParallel(Math.min((int) Math.ceil((double) currentParallelBeforeBatchMode / originalMaxParallel), 1))
+        calculator.setCurrentParallel(fakeCurrentParallel)
             .calculate();
 
         double batchMultiplierMax = 1;
         // In case batch mode enabled
-        if (tCurrentParallel > maxParallelBeforeBatchMode && calculator.getDuration() < getMaxBatchSize()) {
+        if (currentParallel > maxParallelBeforeBatchMode && calculator.getDuration() < getMaxBatchSize()) {
             batchMultiplierMax = (double) getMaxBatchSize() / calculator.getDuration();
-            batchMultiplierMax = Math.min(batchMultiplierMax, (double) tCurrentParallel / maxParallelBeforeBatchMode);
+            batchMultiplierMax = Math.min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
         }
         int finalParallel = (int) (batchMultiplierMax * maxParallelBeforeBatchMode);
 
@@ -230,7 +230,7 @@ public class GT_MetaTileEntity_MultiFurnace
         this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         this.mEfficiencyIncrease = 10000;
         this.mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMax);
-        this.lEUt = eutUseAfterOC;
+        this.lEUt = calculator.getConsumption();
 
         if (this.lEUt > 0) this.lEUt = -this.lEUt;
 

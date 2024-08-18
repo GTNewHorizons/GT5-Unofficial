@@ -28,7 +28,7 @@ public class GoodGeneratorRecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> naquadahFuelRefineFactoryRecipes = RecipeMapBuilder
         .of("gg.recipe.naquadah_fuel_refine_factory")
-        .maxIO(6, 0, 2, 1)
+        .maxIO(6, 0, 4, 1)
         .minInputs(0, 1)
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("value.naquadah_fuel_refine_factory"))
         .build();

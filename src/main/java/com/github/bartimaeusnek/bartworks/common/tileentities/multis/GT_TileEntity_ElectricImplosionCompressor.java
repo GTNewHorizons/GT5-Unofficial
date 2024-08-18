@@ -74,6 +74,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -206,7 +207,9 @@ public class GT_TileEntity_ElectricImplosionCompressor
 
             {
                 this.add(Pair.of(GregTech_API.sBlockMetal5, 2));
-                this.add(Pair.of(LudicrousBlocks.resource_block, 1));
+                if (Mods.Avaritia.isModLoaded()) {
+                    this.add(Pair.of(LudicrousBlocks.resource_block, 1));
+                }
                 this.add(Pair.of(GregTech_API.sBlockMetal9, 4));
                 this.add(Pair.of(GregTech_API.sBlockMetal9, 3));
                 this.add(Pair.of(GregTech_API.sBlockMetal9, 8));

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.machine;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockJukebox;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -8,11 +10,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -31,6 +35,18 @@ public class Machine_SuperJukebox extends BlockJukebox {
     @SideOnly(Side.CLIENT)
     private IIcon mIcon;
 
+    public static class SuperJukeboxItemBlock extends ItemBlock {
+
+        public SuperJukeboxItemBlock(Block block) {
+            super(block);
+        }
+
+        @Override
+        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltips, boolean f3HEnabled) {
+            tooltips.add(StatCollector.translateToLocal("tile.blockSuperJukebox.deprecated"));
+        }
+    }
+
     public Machine_SuperJukebox() {
         this.setBlockName("blockSuperJukebox");
         this.setCreativeTab(CreativeTabs.tabRedstone);
@@ -38,7 +54,7 @@ public class Machine_SuperJukebox extends BlockJukebox {
         setResistance(10.0F);
         setStepSound(soundTypePiston);
         setBlockTextureName("jukebox");
-        GameRegistry.registerBlock(this, "blockSuperJukebox");
+        GameRegistry.registerBlock(this, SuperJukeboxItemBlock.class, "blockSuperJukebox");
     }
 
     /**

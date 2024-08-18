@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT;
-import static com.github.technus.tectech.util.CommonValues.V;
+import static gregtech.api.enums.GT_Values.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -22,7 +22,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
  */
 public class GT_MetaTileEntity_Hatch_EnergyMulti extends GT_MetaTileEntity_Hatch {
 
-    public final int Amperes;
+    public final int maxAmperes;
+    public int Amperes;
 
     public GT_MetaTileEntity_Hatch_EnergyMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(
@@ -34,20 +35,20 @@ public class GT_MetaTileEntity_Hatch_EnergyMulti extends GT_MetaTileEntity_Hatch
             new String[] { CommonValues.TEC_MARK_GENERAL, translateToLocal("gt.blockmachines.hatch.energymulti.desc.0"),
                 translateToLocalFormatted("gt.blockmachines.hatch.energymulti.desc.2", aAmp + (aAmp >> 2)),
                 translateToLocalFormatted("gt.blockmachines.hatch.energymulti.desc.3", aAmp) });
-        Amperes = aAmp;
+        Amperes = maxAmperes = aAmp;
         TT_Utility.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_Hatch_EnergyMulti(String aName, int aTier, int aAmp, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        Amperes = aAmp;
+        Amperes = maxAmperes = aAmp;
     }
 
     public GT_MetaTileEntity_Hatch_EnergyMulti(int aID, String aName, String aNameRegional, int aTier, int i,
         String[] description, int aAmp) {
         super(aID, aName, aNameRegional, aTier, 0, description);
-        Amperes = aAmp;
+        Amperes = maxAmperes = aAmp;
     }
 
     @Override

@@ -254,10 +254,10 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Laser Engraver")
-            .addInfo("Controller Block for the High Energy Laser Emitter")
+            .addInfo("Controller Block for the Hyper-Intensity Laser Engraver")
             .addInfo("200% faster than single block machines of the same voltage")
             .addInfo("Uses 80% of the EU normally required")
-            .addInfo("Laser source hatch determines maximum power tier and parallels")
+            .addInfo("Laser source hatch determines maximum recipe tier and parallels")
             .addInfo("Parallels equal to the cube root of laser source amperage input")
             .addInfo("Glass tier determines maximum laser source tier")
             .addInfo("Only accepts borosilicate glass (no, really)")
@@ -414,6 +414,12 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(GT_Utility.roundUpVoltage(this.getMaxInputVoltage()));
+        logic.setAvailableAmperage(1L);
     }
 
     @Override
