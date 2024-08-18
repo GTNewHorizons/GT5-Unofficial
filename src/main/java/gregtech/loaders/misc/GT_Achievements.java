@@ -349,12 +349,12 @@ public class GT_Achievements {
             false);
         registerAchievement("conducting", 14, 6, ItemList.Casing_Coil_Superconductor.get(1), "upgrade3", false);
         registerAchievement("fusion", 15, 7, ItemList.FusionComputer_LuV.get(1), "tungstensteel", false);
-        registerAchievement("higherefficency", 15, 9, ItemList.Generator_Plasma_IV.get(1), "fusion", false);
+        registerAchievement("higherefficency", 15, 9, ItemList.Generator_Plasma_EV.get(1), "fusion", false);
         registerAchievement("advancing", 13, 7, ItemList.FusionComputer_ZPMV.get(1), "fusion", false);
 
-        registerAchievement("stargateliquid", 11, 9, ItemList.Generator_Plasma_LuV.get(1), "advancing", false);
-        registerAchievement("tothelimit", 13, 9, ItemList.Generator_Plasma_LuV.get(1), "advancing", false);
-        registerAchievement("fullefficiency", 12, 10, ItemList.Generator_Plasma_ZPMV.get(1), "tothelimit", false);
+        registerAchievement("stargateliquid", 11, 9, ItemList.Generator_Plasma_IV.get(1), "advancing", false);
+        registerAchievement("tothelimit", 13, 9, ItemList.Generator_Plasma_IV.get(1), "advancing", false);
+        registerAchievement("fullefficiency", 12, 10, ItemList.Generator_Plasma_LuV.get(1), "tothelimit", false);
         registerAchievement("upgrade5", 9, 9, ItemList.Casing_Coil_Naquadah.get(1), "stargateliquid", false);
         registerAchievement(
             "alienmetallurgy",

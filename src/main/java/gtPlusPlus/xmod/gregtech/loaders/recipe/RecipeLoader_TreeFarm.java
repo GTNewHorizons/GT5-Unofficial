@@ -3,18 +3,10 @@ package gtPlusPlus.xmod.gregtech.loaders.recipe;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
-import binnie.extratrees.genetics.ExtraTreeSpecies;
-import forestry.api.arboriculture.EnumGermlingType;
-import forestry.api.arboriculture.EnumWoodType;
-import forestry.api.arboriculture.ITree;
-import forestry.api.arboriculture.TreeManager;
-import forestry.arboriculture.genetics.TreeDefinition;
-import forestry.plugins.PluginArboriculture;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GT_ModHandler;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.forestry.ForestryTreeHandler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntityTreeFarm;
 
 public class RecipeLoader_TreeFarm {
@@ -41,8 +33,11 @@ public class RecipeLoader_TreeFarm {
         if (Mods.PamsHarvestCraft.isModLoaded()) generatePamsTrees();
         if (Mods.PamsHarvestTheNether.isModLoaded()) generatePamsNetherTrees();
 
-        if (Mods.Forestry.isModLoaded()) generateForestryTrees();
-        if (Mods.ExtraTrees.isModLoaded()) generateExtraTreesTrees();
+        if (Mods.Forestry.isModLoaded()) {
+            ForestryTreeHandler.generateForestryTrees();
+        }
+
+        if (Mods.Forestry.isModLoaded() && Mods.ExtraTrees.isModLoaded()) ForestryTreeHandler.generateExtraTreesTrees();
     }
 
     private static void generateVanillaTrees() {
@@ -632,88 +627,4 @@ public class RecipeLoader_TreeFarm {
             null);
     }
 
-    /*
-     * Abdiel Kavash: I do not claim the code in the following two methods to be ideal, or to even completely understand
-     * all the details. Much of it has been copied from the previous version, available at
-     * https://github.com/GTNewHorizons/GTplusplus/blob/dca836fee368878cf64ca59e4c7ffc5875a3f489/src/main/java/
-     * gtPlusPlus/xmod/forestry/HANDLER_FR.java#L60. If anybody understands Forestry and/or Extra Trees internals better
-     * than I do, and knows a more straightforward way to retrieve the relevant ItemStacks here, please update this.
-     */
-
-    private static void generateForestryTrees() {
-        for (TreeDefinition tree : TreeDefinition.values()) {
-            String speciesUID = tree.getUID();
-
-            ItemStack sapling = tree.getMemberStack(EnumGermlingType.SAPLING);
-
-            ItemStack log;
-            EnumWoodType woodType = ReflectionUtils.getField(tree, "woodType");
-            if (woodType != null) {
-                log = TreeManager.woodItemAccess.getLog(woodType, false);
-            } else {
-                log = ReflectionUtils.getField(tree, "vanillaWood");
-            }
-
-            ItemStack leaves = new ItemStack(PluginArboriculture.blocks.leaves, 1, 0);
-            if (speciesUID != null) {
-                NBTTagCompound nbtTagCompound = new NBTTagCompound();
-                nbtTagCompound.setString("species", speciesUID);
-                leaves.setTagCompound(nbtTagCompound);
-            }
-
-            ItemStack fruit = null;
-            ITree individual = tree.getIndividual();
-            if (individual.canBearFruit()) {
-                ItemStack[] produceList = individual.getProduceList();
-                if (produceList != null && produceList.length > 0) {
-                    fruit = individual.getProduceList()[0];
-                }
-            }
-
-            GregtechMetaTileEntityTreeFarm.registerForestryTree(
-                speciesUID,
-                sapling == null ? null : sapling.copy(),
-                log == null ? null : log.copy(),
-                leaves == null ? null : leaves.copy(),
-                fruit == null ? null : fruit.copy());
-        }
-    }
-
-    private static void generateExtraTreesTrees() {
-        for (ExtraTreeSpecies species : ExtraTreeSpecies.values()) {
-
-            String speciesUID = species.getUID();
-
-            ITree individual = TreeManager.treeRoot.templateAsIndividual(species.getTemplate());
-            ItemStack sapling = TreeManager.treeRoot.getMemberStack(individual, 0);
-
-            ItemStack log = null;
-            if (species.getLog() != null) {
-                log = species.getLog()
-                    .getItemStack();
-            }
-
-            ItemStack leaves = new ItemStack(PluginArboriculture.blocks.leaves, 1, 0);
-            if (speciesUID != null) {
-                NBTTagCompound nbtTagCompound = new NBTTagCompound();
-                nbtTagCompound.setString("species", speciesUID);
-                leaves.setTagCompound(nbtTagCompound);
-            }
-
-            ItemStack fruit = null;
-            if (individual.canBearFruit()) {
-                ItemStack[] produceList = individual.getProduceList();
-                if (produceList != null && produceList.length > 0) {
-                    fruit = individual.getProduceList()[0];
-                }
-            }
-
-            GregtechMetaTileEntityTreeFarm.registerForestryTree(
-                speciesUID,
-                sapling == null ? null : sapling.copy(),
-                log == null ? null : log.copy(),
-                leaves == null ? null : leaves.copy(),
-                fruit == null ? null : fruit.copy());
-        }
-    }
 }

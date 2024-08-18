@@ -32,7 +32,7 @@ public class TileHatchOutputBeamline extends TileHatchBeamlineConnector<BeamLine
         TT_Utility.setTier(tier, this);
     }
 
-    public TileHatchOutputBeamline(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public TileHatchOutputBeamline(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -133,6 +133,6 @@ public class TileHatchOutputBeamline extends TileHatchBeamlineConnector<BeamLine
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
-        return new TileHatchOutputBeamline(mName, mTier, mDescription, mTextures);
+        return new TileHatchOutputBeamline(mName, mTier, mDescriptionArray, mTextures);
     }
 }

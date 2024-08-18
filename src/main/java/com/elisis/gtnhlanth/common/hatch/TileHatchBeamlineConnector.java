@@ -33,7 +33,7 @@ public abstract class TileHatchBeamlineConnector<T extends DataPacket> extends G
         TT_Utility.setTier(aTier, this);
     }
 
-    protected TileHatchBeamlineConnector(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    protected TileHatchBeamlineConnector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
