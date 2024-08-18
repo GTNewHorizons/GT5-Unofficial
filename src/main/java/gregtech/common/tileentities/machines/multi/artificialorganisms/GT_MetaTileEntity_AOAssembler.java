@@ -186,6 +186,7 @@ public class GT_MetaTileEntity_AOAssembler extends
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
+        bioHatch = null;
         mEnergyHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0)) return false;

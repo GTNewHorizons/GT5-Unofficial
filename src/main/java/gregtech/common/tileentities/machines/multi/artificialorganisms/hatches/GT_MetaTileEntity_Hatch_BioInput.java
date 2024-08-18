@@ -14,7 +14,7 @@ import gregtech.common.tileentities.machines.multi.artificialorganisms.util.ICon
 
 public class GT_MetaTileEntity_Hatch_BioInput extends GT_MetaTileEntity_Hatch implements IConnectsToBioPipe {
 
-    private GT_MetaTileEntity_Hatch_BioOutput networkOutput;
+    GT_MetaTileEntity_Hatch_BioOutput networkOutput;
 
     public GT_MetaTileEntity_Hatch_BioInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Accepts Artificial Organisms");
