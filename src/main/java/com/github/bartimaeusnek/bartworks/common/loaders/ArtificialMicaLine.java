@@ -5,13 +5,11 @@ import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
-
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.bartworks.system.material.BW_GT_MaterialReference;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
@@ -21,9 +19,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
 public class ArtificialMicaLine {
@@ -170,18 +166,15 @@ public class ArtificialMicaLine {
             .addTo(blastFurnaceRecipes);
 
         // 144Fluorophlogopite(l) = Fluorophlogopite
-        RecipeMaps.vacuumFreezerRecipes.addRecipe(
-            new GT_Recipe(
-                false,
-                new ItemStack[] { ItemList.Shape_Mold_Plate.get(0) },
-                new ItemStack[] { WerkstoffLoader.Fluorophlogopite.get(OrePrefixes.plate, 1) },
-                null,
-                null,
-                new FluidStack[] { WerkstoffLoader.HotFluorophlogopite.getFluidOrGas(144) },
-                null,
-                10,
-                120,
-                0));
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Shape_Mold_Plate.get(0))
+            .itemOutputs(WerkstoffLoader.Fluorophlogopite.get(OrePrefixes.plate, 1))
+            .fluidInputs(WerkstoffLoader.HotFluorophlogopite.getFluidOrGas(144))
+            .duration(10 * TICKS)
+            .eut(TierEU.RECIPE_MV)
+            .noOptimize()
+            .addTo(vacuumFreezerRecipes);
+
         // Fluorophlogopite = 4Insulator Foil
         if (NewHorizonsCoreMod.isModLoaded()) {
 

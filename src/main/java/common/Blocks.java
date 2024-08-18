@@ -10,6 +10,7 @@ import common.blocks.Block_TFFTStorageField;
 import common.blocks.Block_ThaumiumReinforcedJar;
 import common.blocks.Block_YSZUnit;
 
+import gregtech.api.enums.Mods;
 import kekztech.KekzCore;
 
 public class Blocks {
@@ -28,7 +29,9 @@ public class Blocks {
 
         registerBlocks_SOFC();
         registerBlocks_TFFT();
-        registerBlocks_Jars();
+        if (Mods.Thaumcraft.isModLoaded()) {
+            registerBlocks_Jars();
+        }
         registerBlocks_LSC();
         registerBlocks_Cosmetics();
 

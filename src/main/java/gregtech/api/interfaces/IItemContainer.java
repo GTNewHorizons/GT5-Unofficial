@@ -28,6 +28,10 @@ public interface IItemContainer {
 
     IItemContainer set(ItemStack aStack);
 
+    default IItemContainer hidden() {
+        return this;
+    }
+
     IItemContainer registerOre(Object... aOreNames);
 
     IItemContainer registerWildcardAsOre(Object... aOreNames);
