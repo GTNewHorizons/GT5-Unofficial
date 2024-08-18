@@ -201,23 +201,26 @@ public class GregtechMetaTileEntity_SteamMacerator
         if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (tierMachineCasing < 0) return false;
         if (tierMachineCasing == 1 && mCounCasing > 14
-            && !mSteamInputFluids.isEmpty()
-            && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()) {
+            && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
         if (tierMachineCasing == 2 && mCounCasing > 14
-            && !mSteamInputFluids.isEmpty()
-            && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()) {
+            && checkHatches()) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
         }
 
         return false;
+    }
+
+    private boolean checkHatches() {
+        return !mSteamInputFluids.isEmpty() && !mSteamInputs.isEmpty()
+            && !mSteamOutputs.isEmpty()
+            && mOutputHatches.isEmpty()
+            && mInputHatches.isEmpty();
     }
 
     @Override
