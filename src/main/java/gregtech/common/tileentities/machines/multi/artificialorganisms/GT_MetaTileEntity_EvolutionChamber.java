@@ -16,6 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -37,9 +38,9 @@ import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Casings10;
 import gregtech.common.blocks.GT_Block_Casings2;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.GT_MetaTileEntity_Hatch_BioOutput;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class GT_MetaTileEntity_EvolutionChamber
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_EvolutionChamber>
@@ -55,19 +56,23 @@ public class GT_MetaTileEntity_EvolutionChamber
             'B',
             ofChain(
                 buildHatchAdder(GT_MetaTileEntity_EvolutionChamber.class)
+                    .adder(GT_MetaTileEntity_EvolutionChamber::addBioHatch)
+                    .hatchClass(GT_MetaTileEntity_Hatch_BioOutput.class)
+                    .shouldReject(t -> !(t.bioHatch == null))
+                    .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                    .dot(2)
+                    .buildAndChain(
+                        onElementPass(
+                            GT_MetaTileEntity_EvolutionChamber::onCasingAdded,
+                            ofBlock(GregTech_API.sBlockCasings2, 0))),
+                buildHatchAdder(GT_MetaTileEntity_EvolutionChamber.class)
                     .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
                     .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
                     .dot(1)
                     .buildAndChain(
                         onElementPass(
                             GT_MetaTileEntity_EvolutionChamber::onCasingAdded,
-                            ofBlock(GregTech_API.sBlockCasings2, 0))),
-                buildHatchAdder(GT_MetaTileEntity_EvolutionChamber.class)
-                    .adder(GT_MetaTileEntity_EvolutionChamber::addBioHatch)
-                    .hatchClass(GT_MetaTileEntity_Hatch_BioOutput.class)
-                    .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
-                    .dot(2)
-                    .build()))
+                            ofBlock(GregTech_API.sBlockCasings2, 0)))))
         .addElement('A', Glasses.chainAllGlasses())
         .build();
 
@@ -232,5 +237,12 @@ public class GT_MetaTileEntity_EvolutionChamber
             }
         }
         return false;
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (bioHatch != null) {
+            if (bioHatch.pipenetwork != null) PlayerUtils.messagePlayer(aPlayer, bioHatch.pipenetwork.toString());
+        }
     }
 }

@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.multi.artificialorganisms.util;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -10,8 +10,13 @@ public interface IConnectsToBioPipe {
 
     boolean canConnect(ForgeDirection side);
 
-    ArrayList<IConnectsToBioPipe> getConnected(GT_MetaTileEntity_Hatch_BioOutput output,
-        ArrayList<IConnectsToBioPipe> connections);
+    /**
+     * Used by Bio Output hatches to find the connected inputs. The output hatch itself is passed in for linking.
+     * Connections is used to determine which pipes in a network have already been visited.
+     * Returns a HashSet containing connected input hatches.
+     */
+    HashSet<IConnectsToBioPipe> getConnected(GT_MetaTileEntity_Hatch_BioOutput output,
+        HashSet<IConnectsToBioPipe> connections);
 
     boolean isComponentsInputFacing(ForgeDirection side);
 }
