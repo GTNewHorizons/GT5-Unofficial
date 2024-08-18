@@ -144,7 +144,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (aBaseMetaTileEntity.isActive() || heat > 500) {
+        if (aBaseMetaTileEntity.isActive() || heat > 2000) {
             return false;
         }
         return side == aBaseMetaTileEntity.getFrontFacing();
@@ -153,10 +153,15 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (aBaseMetaTileEntity.isActive() || heat > 500) {
+        if (aBaseMetaTileEntity.isActive() || heat > 2000) {
             return false;
         }
         return side == aBaseMetaTileEntity.getFrontFacing();
+    }
+
+    @Override
+    public int getSizeInventory() { // HACK TO NOT DROP CONTENTS!!!
+        return heat > 2000 || getBaseMetaTileEntity().isActive() ? 0 : mInventory.length;
     }
 
     @Override
@@ -202,6 +207,9 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
                             / (1 + (overclock - overvolt) * (overclock - overvolt));
                     }
                 }
+            } else {
+                computation += comp.computation * (1 + overclock * overclock)
+                    / (1 + (overclock - overvolt) * (overclock - overvolt)); // For getInfoData()
             }
         }
         if (tickingComponents) {
@@ -244,11 +252,6 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
     }
 
     @Override
-    public int getSizeInventory() { // HACK TO NOT DROP CONTENTS!!!
-        return heat > 500 || getBaseMetaTileEntity().isActive() ? 0 : mInventory.length;
-    }
-
-    @Override
     public boolean isGivingInformation() {
         return true;
     }
@@ -258,15 +261,11 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
         return new String[] {
             translateToLocalFormatted("tt.keyphrase.Base_computation", clientLocale) + ": "
                 + EnumChatFormatting.AQUA
-                + getComputationPower(1, 0, false),
-            translateToLocalFormatted("tt.keyphrase.After_overclocking", clientLocale) + ": "
-                + EnumChatFormatting.AQUA
-                + getComputationPower(overClock, 0, false),
+                + getComputationPower(overClock, overVolt, false),
             translateToLocalFormatted("tt.keyphrase.Heat_Accumulated", clientLocale) + ": "
                 + EnumChatFormatting.RED
-                + (heat + 99) / 100
-                + EnumChatFormatting.RESET
-                + " %" };
+                + heat
+                + EnumChatFormatting.RESET };
     }
 
     @Override
