@@ -24,7 +24,7 @@ public class GT_Tool_JackHammer extends GT_Tool_Drill_LV {
 
     @Override
     public int getToolDamagePerBlockBreak() {
-        return GT_Mod.gregtechproxy.mHardRock ? 200 : 400;
+        return 400;
     }
 
     @Override
