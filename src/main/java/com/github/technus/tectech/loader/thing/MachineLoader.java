@@ -2533,13 +2533,13 @@ public class MachineLoader implements Runnable {
             new GT_MetaTileEntity_Hatch_InputData(
                 OpticalSlaveConnector.ID,
                 "hatch.datain.tier.07",
-                "Optical Data Reception Connector",
+                "Optical Reception Connector",
                 7).getStackForm(1L));
         dataOut_Hatch.set(
             new GT_MetaTileEntity_Hatch_OutputData(
                 OpticalMasterConnector.ID,
                 "hatch.dataout.tier.07",
-                "Optical Data Transmission Connector",
+                "Optical Transmission Connector",
                 7).getStackForm(1L));
         dataInAss_Hatch.set(
             new GT_MetaTileEntity_Hatch_InputDataItems(

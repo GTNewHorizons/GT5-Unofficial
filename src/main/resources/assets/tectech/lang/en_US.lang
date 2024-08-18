@@ -507,12 +507,12 @@ gt.blockmachines.hatch.certain.tier.10.name=Uncertainty Resolver X
 gt.blockmachines.hatch.certain.desc.0=Feeling certain, or not?
 gt.blockmachines.hatch.certain.desc.1=Schrödinger equation in a box
 
-gt.blockmachines.hatch.datain.tier.07.name=Optical Data Reception Connector
+gt.blockmachines.hatch.datain.tier.07.name=Optical Reception Connector
 gt.blockmachines.hatch.datain.desc.0=Quantum Data Input for Multiblocks
 gt.blockmachines.hatch.datain.desc.1=High speed fibre optics connector.
 gt.blockmachines.hatch.datain.desc.2=Must be painted to work
 
-gt.blockmachines.hatch.dataout.tier.07.name=Optical Data Transmission Connector
+gt.blockmachines.hatch.dataout.tier.07.name=Optical Transmission Connector
 gt.blockmachines.hatch.dataout.desc.0=Quantum Data Output for Multiblocks
 gt.blockmachines.hatch.dataout.desc.1=High speed fibre optics connector.
 gt.blockmachines.hatch.dataout.desc.2=Must be painted to work
