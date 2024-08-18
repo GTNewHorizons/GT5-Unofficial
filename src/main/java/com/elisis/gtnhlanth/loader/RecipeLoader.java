@@ -354,6 +354,17 @@ public class RecipeLoader {
             .eut(7680)
             .addTo(AssemblyLine);
 
+        // Niobium Cavity Casing
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Niobium, 1),
+                Materials.Niobium.getPlates(6))
+            .fluidInputs(Materials.Helium.getGas(2000))
+            .itemOutputs(new ItemStack(LanthItemList.NIOBIUM_CAVITY_CASING, 1))
+            .duration(12 * GT_RecipeBuilder.SECONDS)
+            .eut(7680)
+            .addTo(assemblerRecipes);
+
         // Focus Manipulator
         GT_Values.RA.stdBuilder()
             .fluidInputs(
@@ -533,6 +544,24 @@ public class RecipeLoader {
             .eut(1920)
             .addTo(multiblockChemicalReactorRecipes);
 
+        /*
+         * GT_Values.RA.stdBuilder()
+         * .fluidInputs(Materials.Nitrogen.getPlasma(4000), Materials.Silane.getFluid(2000))
+         * .fluidOutputs(WerkstoffMaterialPool.NitrogenPlasmaSilaneMix.getFluidOrGas(6000))
+         * .duration(20 * GT_RecipeBuilder.SECONDS)
+         * .eut(7680)
+         * .addTo(mixerNonCellRecipes);
+         */
+
+        GT_Values.RA.stdBuilder()
+            .fluidInputs(Materials.Nitrogen.getPlasma(4000))
+            .itemInputs(Materials.Silane.getCells(2))
+            .fluidOutputs(WerkstoffMaterialPool.NitrogenPlasmaSilaneMix.getFluidOrGas(6000))
+            .duration(20 * GT_RecipeBuilder.SECONDS)
+            .eut(7680)
+            .noOptimize()
+            .addTo(mixerRecipes);
+
         // NB: http://www.smfl.rit.edu/pdf/process/process_nitride_etch_paper.pdf
         // Reactive Ion Etchant
         GT_Values.RA.stdBuilder()
@@ -561,8 +590,8 @@ public class RecipeLoader {
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK1)))
             .outputChances(10000)
             .requiresCleanRoom()
-            .duration(12 * SECONDS)
-            .eut(1920)
+            .duration(144 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
             .addTo(autoclaveRecipes);
 
         /*
@@ -580,18 +609,18 @@ public class RecipeLoader {
             .fluidInputs(Materials.Silane.getGas(4000))
             .itemOutputs(new ItemStack(LanthItemList.SUBSTRATE_PRECURSOR))
             .duration(60 * GT_RecipeBuilder.SECONDS)
-            .eut(480)
+            .eut(TierEU.RECIPE_LuV)
             .requiresCleanRoom()
             .addTo(autoclaveRecipes);
 
         // Now to deposit nitride
         GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(LanthItemList.SUBSTRATE_PRECURSOR), Materials.Silane.getCells(2))
-            .fluidInputs(Materials.Nitrogen.getPlasma(4000))
+            .itemInputs(new ItemStack(LanthItemList.SUBSTRATE_PRECURSOR))
+            .fluidInputs(WerkstoffMaterialPool.NitrogenPlasmaSilaneMix.getFluidOrGas(4000))
             .fluidOutputs(Materials.Nitrogen.getGas(3000))
             .itemOutputs(new ItemStack(LanthItemList.MASK_SUBSTRATE), Materials.Empty.getCells(2))
             .duration(30 * GT_RecipeBuilder.SECONDS)
-            .eut(TierEU.EV)
+            .eut(TierEU.RECIPE_LuV)
             .specialValue(3200)
             .requiresCleanRoom()
             .addTo(blastFurnaceRecipes);
@@ -609,8 +638,8 @@ public class RecipeLoader {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(0, lens), new ItemStack(LanthItemList.MASK_SUBSTRATE))
                 .itemOutputs(new ItemStack(LanthItemList.MASKED_MASK))
-                .duration(60 * GT_RecipeBuilder.SECONDS)
-                .eut(1920)
+                .duration(30 * GT_RecipeBuilder.SECONDS)
+                .eut(TierEU.RECIPE_IV)
                 .requiresCleanRoom()
                 .addTo(WaferEngravingRecipes);
 
@@ -621,11 +650,11 @@ public class RecipeLoader {
             .fluidInputs(WerkstoffMaterialPool.FluoroformOxygenMix.getFluidOrGas(4000))
             .itemOutputs(new ItemStack(LanthItemList.ETCHED_MASK_1))
             .duration(60 * GT_RecipeBuilder.SECONDS)
-            .eut(1920)
+            .eut(TierEU.RECIPE_LuV)
             .requiresCleanRoom()
             .addTo(autoclaveRecipes);
 
-        // Etch pt. 2 with KOH
+        // Etch pt. 2 with LiCl
         GT_Values.RA.stdBuilder()
             .fluidInputs(Materials.Argon.getGas(1000))
             .itemInputs(
@@ -633,8 +662,8 @@ public class RecipeLoader {
                 MyMaterial.lithiumChloride.get(OrePrefixes.dust, 2),
                 GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PotassiumHydroxideDust", 4))
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK2)))
-            .duration(25 * GT_RecipeBuilder.SECONDS)
-            .eut(1920)
+            .duration(80 * GT_RecipeBuilder.SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
             .specialValue(2400)
             .addTo(blastFurnaceRecipes);
 
@@ -646,8 +675,8 @@ public class RecipeLoader {
                 Materials.Gold.getPlates(2))
             .fluidInputs(Materials.Hydrogen.getGas(1000))
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK3)))
-            .duration(10 * GT_RecipeBuilder.SECONDS)
-            .eut(1920)
+            .duration(2 * GT_RecipeBuilder.MINUTES)
+            .eut(TierEU.RECIPE_ZPM)
             .specialValue(3600)
             .addTo(blastFurnaceRecipes);
 
@@ -669,9 +698,10 @@ public class RecipeLoader {
                         .fluidInputs(Materials.Sunnarium.getMolten(1440L))
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PPIC)))
                         .duration(60 * GT_RecipeBuilder.SECONDS)
-                        .eut(TierEU.RECIPE_ZPM)
+                        .eut(mask.getEngraverEUt())
                         .requiresCleanRoom()
-                        .addTo(UniversalChemical);
+                        .addTo(UniversalChemical); // This is incredibly boring and doesn't make much sense, fix at some
+                                                   // point. Maybe engrave again from precursor?
 
                 } else if (mask == MaskList.HPIC) {
                     GT_Values.RA.stdBuilder()
@@ -681,7 +711,7 @@ public class RecipeLoader {
                         .fluidInputs(Materials.VanadiumGallium.getMolten(288L))
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.HPIC)))
                         .duration(60 * GT_RecipeBuilder.SECONDS)
-                        .eut(7860)
+                        .eut(mask.getEngraverEUt())
                         .requiresCleanRoom()
                         .addTo(UniversalChemical);
 
@@ -694,7 +724,7 @@ public class RecipeLoader {
                         .fluidInputs(Materials.Naquadah.getMolten(576L))
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.UHPIC)))
                         .duration(60 * GT_RecipeBuilder.SECONDS)
-                        .eut(TierEU.RECIPE_LuV)
+                        .eut(mask.getEngraverEUt())
                         .requiresCleanRoom()
                         .addTo(UniversalChemical);
 
@@ -707,7 +737,7 @@ public class RecipeLoader {
                         .fluidInputs(Materials.Glowstone.getMolten(576L))
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.NCPU)))
                         .duration(60 * GT_RecipeBuilder.SECONDS)
-                        .eut(TierEU.RECIPE_EV)
+                        .eut(mask.getEngraverEUt())
                         .requiresCleanRoom()
                         .addTo(UniversalChemical);
 
@@ -720,7 +750,7 @@ public class RecipeLoader {
                         .fluidInputs(Materials.Radon.getGas(50L))
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.QBIT)))
                         .duration(60 * GT_RecipeBuilder.SECONDS)
-                        .eut(TierEU.RECIPE_EV)
+                        .eut(mask.getEngraverEUt())
                         .requiresCleanRoom()
                         .addTo(UniversalChemical);
 
@@ -729,7 +759,7 @@ public class RecipeLoader {
                         .fluidInputs(Materials.GalliumArsenide.getMolten(288L))
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.QBIT)))
                         .duration(45 * GT_RecipeBuilder.SECONDS)
-                        .eut(TierEU.RECIPE_EV)
+                        .eut(mask.getEngraverEUt())
                         .requiresCleanRoom()
                         .addTo(UniversalChemical);
 
@@ -750,7 +780,7 @@ public class RecipeLoader {
                     .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
                     .requiresCleanRoom()
                     .duration(120 * SECONDS)
-                    .eut(1920)
+                    .eut(mask.getEngraverEUt())
                     .addTo(WaferEngravingRecipes);
 
             } else if (mask == MaskList.NOR) {
@@ -762,7 +792,7 @@ public class RecipeLoader {
                     .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
                     .requiresCleanRoom()
                     .duration(120 * SECONDS)
-                    .eut(1920)
+                    .eut(mask.getEngraverEUt())
                     .addTo(WaferEngravingRecipes);
 
             }
@@ -780,7 +810,7 @@ public class RecipeLoader {
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
                         .requiresCleanRoom()
                         .duration(120 * SECONDS)
-                        .eut(1920)
+                        .eut(mask.getEngraverEUt())
                         .addTo(WaferEngravingRecipes);
 
                 }
@@ -1032,6 +1062,16 @@ public class RecipeLoader {
             .eut(450)
             .addTo(UniversalChemical);
 
+        // La + 6HCl = LaCl3 + 3H
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Lanthanum.getDust(1), GT_Utility.getIntegratedCircuit(1))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(3000))
+            .itemOutputs(WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dust, 4))
+            .fluidOutputs(Materials.Hydrogen.getGas(3000))
+            .duration(10 * SECONDS)
+            .eut(480)
+            .addTo(UniversalChemical);
+
         // Lanthanum Oxide
         GT_Values.RA.stdBuilder()
             .fluidInputs(Materials.Water.getFluid(3000))
@@ -1066,7 +1106,7 @@ public class RecipeLoader {
             .fluidInputs(WerkstoffMaterialPool.BoronTrichloride.getFluidOrGas(8000))
             .fluidOutputs(FluidRegistry.getFluidStack("boricacid", 1000))
             .itemInputs(WerkstoffMaterialPool.LanthanumOxide.get(OrePrefixes.dust, 1))
-            .itemOutputs(WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.gemChipped))
+            .itemOutputs(WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.gemFlawless))
             .duration(60 * GT_RecipeBuilder.SECONDS)
             .eut(7980)
             .addTo(autoclaveRecipes);

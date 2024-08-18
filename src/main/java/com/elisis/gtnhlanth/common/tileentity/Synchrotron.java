@@ -442,8 +442,8 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
                 .addElement('k', ofBlock(GregTech_API.sBlockCasings1, 15)) // Superconducting coils
                 .addElement('d', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
                 .addElement('e', buildHatchAdder(Synchrotron.class).atLeast(ImmutableMap.of(Energy, 4)).dot(6).casingIndex(CASING_INDEX).build())
-                .addElement('n', ofBlock(GregTech_API.sBlockMetal5, 5)) //Niobium Blocks
-                .addElement('a', ofBlockAdder(Synchrotron::addAntenna, LanthItemList.ANTENNA_CASING_T1, 3)) //Antenna Casings
+                .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
+                .addElement('a', ofBlockAdder(Synchrotron::addAntenna, LanthItemList.ANTENNA_CASING_T1, 0)) //Antenna Casings
                 .addElement('i', buildHatchAdder(Synchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).dot(4).casingIndex(CASING_INDEX).build())
                 .addElement('o', buildHatchAdder(Synchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).dot(5).casingIndex(CASING_INDEX).build())
                 .addElement('v', buildHatchAdder(Synchrotron.class).hatchClass(TileHatchInputBeamline.class).casingIndex(CASING_INDEX)
@@ -500,9 +500,11 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
             .addInfo("Valid Coolants:");
 
         // Valid coolant list
-        for (Fluid fluid : BeamlineRecipeLoader.coolantMap.keySet()) {
+        for (String fluidName : BeamlineRecipeLoader.coolantMap.keySet()) {
 
-            tt.addInfo("- " + fluid.getLocalizedName(new FluidStack(fluid, 1)));
+            tt.addInfo(
+                "- " + FluidRegistry.getFluid(fluidName)
+                    .getLocalizedName(null));
 
         }
 
@@ -512,7 +514,7 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
             .addController("Front middle")
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 676, false)
             .addCasingInfoExactly("Superconducting Coil Block", 90, false)
-            .addCasingInfoExactly("Niobium Block", 64, false)
+            .addCasingInfoExactly("Niobium Cavity Casing", 64, false)
             .addCasingInfoExactly(LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), 28, false)
             .addCasingInfoExactly("Borosilicate Glass Block (LuV+)", 16, false)
             .addCasingInfoExactly("Antenna Casing (must match)", 4, true)
@@ -781,12 +783,17 @@ public class Synchrotron extends GT_MetaTileEntity_EnhancedMultiBlockBase<Synchr
 
         primaryFluid.amount -= CONSUMED_FLUID;
 
-        FluidStack fluidOutput = new FluidStack(
-            BeamlineRecipeLoader.coolantMap.get(primaryFluid.getFluid()),
-            CONSUMED_FLUID);
+        Fluid fluidOutput = BeamlineRecipeLoader.coolantMap.get(
+            primaryFluid.getFluid()
+                .getName());
+
         if (Objects.isNull(fluidOutput)) return false;
 
-        this.addFluidOutputs(new FluidStack[] { fluidOutput });
+        FluidStack fluidOutputStack = new FluidStack(fluidOutput, CONSUMED_FLUID);
+
+        if (Objects.isNull(fluidOutputStack)) return false;
+
+        this.addFluidOutputs(new FluidStack[] { fluidOutputStack });
 
         outputAfterRecipe();
 
