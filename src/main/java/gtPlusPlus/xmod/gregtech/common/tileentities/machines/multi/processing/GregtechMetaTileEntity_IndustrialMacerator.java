@@ -45,6 +45,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -192,18 +193,20 @@ public class GregtechMetaTileEntity_IndustrialMacerator
     }
 
     protected void updateHatchTexture() {
-        for (GT_MetaTileEntity_Hatch h : mInputBusses) h.updateTexture(getCasingTextureId());
-        for (GT_MetaTileEntity_Hatch h : mOutputBusses) h.updateTexture(getCasingTextureId());
-        for (GT_MetaTileEntity_Hatch h : mMaintenanceHatches) h.updateTexture(getCasingTextureId());
-        for (GT_MetaTileEntity_Hatch h : mMufflerHatches) h.updateTexture(getCasingTextureId());
-        for (GT_MetaTileEntity_Hatch h : mEnergyHatches) h.updateTexture(getCasingTextureId());
+        int textureID = getCasingTextureId();
+        for (GT_MetaTileEntity_Hatch h : mInputBusses) h.updateTexture(textureID);
+        for (IDualInputHatch h : mDualInputHatches) h.updateTexture(textureID);
+        for (GT_MetaTileEntity_Hatch h : mOutputBusses) h.updateTexture(textureID);
+        for (GT_MetaTileEntity_Hatch h : mMaintenanceHatches) h.updateTexture(textureID);
+        for (GT_MetaTileEntity_Hatch h : mMufflerHatches) h.updateTexture(textureID);
+        for (GT_MetaTileEntity_Hatch h : mEnergyHatches) h.updateTexture(textureID);
     }
 
     @Override
     public boolean checkHatch() {
         return !mMufflerHatches.isEmpty() && !mMaintenanceHatches.isEmpty()
             && !mOutputBusses.isEmpty()
-            && !mInputBusses.isEmpty();
+            && (!mInputBusses.isEmpty() || !mDualInputHatches.isEmpty());
     }
 
     @Override
