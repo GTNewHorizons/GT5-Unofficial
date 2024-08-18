@@ -314,16 +314,15 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
     protected ProcessingLogic createProcessingLogic() {
 
         return new ProcessingLogic() {
-
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
                 if (isBroken) {
                     checkForWater();
                     isBroken = false;
-                } else {
-                    return CheckRecipeResultRegistry.SUCCESSFUL;
-                }
+                } else if (availableVoltage < recipe.mEUt) {
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                } else return CheckRecipeResultRegistry.SUCCESSFUL;
                 return SimpleCheckRecipeResult.ofFailure("no_water");
             }
 
@@ -338,15 +337,21 @@ public class GregtechMetaTileEntity_SteamWasher extends GregtechMeta_SteamMultiB
     }
 
     @Override
+    public int getTierRecipes() {
+        return tierMachine == 1 ? 1 : 2;
+    }
+
+    @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for the Steam Washer")
-            .addInfo("Runs recipes up to LV tier")
             .addInfo("33.3% faster than a single block steam machine would run.")
             .addInfo(
                 "On Tier 1, it uses only 66.6% of the steam/s required compared to what a single block steam machine would use.")
-            .addInfo("Washes up to 8 x Tier things at a time.")
+            .addInfo("Bronze tier runs recipes up to LV tier")
+            .addInfo("Steel tier runs recipes up to MV tier")
+            .addInfo("Processes 8x parallel Bronze tier and 16x parallel Steel tier")
             .addSeparator()
             .beginStructureBlock(5, 5, 5, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
