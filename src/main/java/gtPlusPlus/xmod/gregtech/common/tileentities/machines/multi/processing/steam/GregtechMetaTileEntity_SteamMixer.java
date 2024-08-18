@@ -6,6 +6,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTech_API.sBlockCasings1;
 import static gregtech.api.GregTech_API.sBlockCasings2;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.AuthorEvgenWarGold;
 import static gregtech.api.enums.GT_Values.V;
@@ -17,6 +18,10 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.GTVoltageIndex;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -205,7 +210,7 @@ public class GregtechMetaTileEntity_SteamMixer extends GregtechMeta_SteamMultiBa
                             .allowOnly(ForgeDirection.NORTH)
                             .build(),
                         buildHatchAdder(GregtechMetaTileEntity_SteamMixer.class)
-                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam, OutputHatch)
+                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam, OutputHatch, InputHatch)
                             .casingIndex(10)
                             .dot(1)
                             .allowOnly(ForgeDirection.NORTH)
@@ -252,10 +257,11 @@ public class GregtechMetaTileEntity_SteamMixer extends GregtechMeta_SteamMultiBa
         if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierMachineCasing < 0) return false;
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
             && tierMachineCasing == 1
-            && tCountCasing > 60
+            && tCountCasing > 90
             && !mSteamInputFluids.isEmpty()
             && !mSteamInputs.isEmpty()
             && !mSteamOutputs.isEmpty()
+            && !mInputHatches.isEmpty()
             && !mOutputHatches.isEmpty()) {
             updateHatchTexture();
             tierMachine = 1;
@@ -263,10 +269,11 @@ public class GregtechMetaTileEntity_SteamMixer extends GregtechMeta_SteamMultiBa
         }
         if (tierGearBoxCasing == 2 && tierPipeCasing == 2
             && tierMachineCasing == 2
-            && tCountCasing > 60
+            && tCountCasing > 90
             && !mSteamInputFluids.isEmpty()
             && !mSteamInputs.isEmpty()
             && !mSteamOutputs.isEmpty()
+            && !mInputHatches.isEmpty()
             && !mOutputHatches.isEmpty()) {
             updateHatchTexture();
             tierMachine = 2;
@@ -288,6 +295,14 @@ public class GregtechMetaTileEntity_SteamMixer extends GregtechMeta_SteamMultiBa
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
+            @Nonnull
+            @Override
+            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+                if (availableVoltage < recipe.mEUt) {
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
             @Override
             @Nonnull
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
@@ -299,27 +314,22 @@ public class GregtechMetaTileEntity_SteamMixer extends GregtechMeta_SteamMultiBa
     }
 
     @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        if (tierMachine == 1) {
-            logic.setAvailableVoltage(V[0]);
-        } else logic.setAvailableVoltage(V[1]);
-        logic.setAvailableAmperage(getMaxParallelRecipes());
-        logic.setAmperageOC(false);
+    public int getTierRecipes() {
+        return tierMachine == 1 ? 1 : 2;
     }
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Steam Centrifuge")
-            .addInfo("Runs recipes up to MV tier")
-            .addInfo("33.3% faster than a single block steam machine would run.")
-            .addInfo(
-                "On Tier 1, it uses only 66.6% of the steam/s required compared to what a single block steam machine would use.")
-            .addInfo("Centrifuges up to 8 x Tier things at a time.")
+            .addInfo("Controller Block for the Steam Mixer")
+            .addInfo("Bronze tier runs recipes up to LV tier")
+            .addInfo("Steel tier runs recipes up to MV tier")
+            .addInfo("Processes 8x parallel Bronze tier and 16x parallel Steel tier")
             .addSeparator()
-            .beginStructureBlock(5, 5, 5, false)
+            .beginStructureBlock(7, 6, 7, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addStructureInfo(
@@ -330,17 +340,17 @@ public class GregtechMetaTileEntity_SteamMixer extends GregtechMeta_SteamMultiBa
                     + " Any casing")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1)
-            .addStructureInfo(EnumChatFormatting.GOLD + "60-65x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Bronze Gear Box Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "3x" + EnumChatFormatting.GRAY + " Bronze Firebox Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "90-95x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Gear Box Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Block of Iron")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2)
             .addStructureInfo(
-                EnumChatFormatting.GOLD + "60-65x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Steel Gear Box Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "3x" + EnumChatFormatting.GRAY + " Steel Firebox Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
+                EnumChatFormatting.GOLD + "90-95x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Gear Box Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Block of Iron")
             .addStructureInfo("")
             .toolTipFinisher(AuthorEvgenWarGold);
         return tt;
