@@ -45,7 +45,7 @@ public class GT_Packet_SendOregenPattern extends GT_Packet_New {
 
     @Override
     public byte getPacketID() {
-        return 19;
+        return GT_PacketTypes.SEND_OREGEN_PATTERN.id;
     }
 
     @Override

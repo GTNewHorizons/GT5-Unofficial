@@ -10,9 +10,17 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+
+import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -20,7 +28,6 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
-import gregtech.api.enums.SteamVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -78,11 +85,6 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
             rTextures[4][i] = texFrontActive;
         }
         return rTextures;
-    }
-
-    @Override
-    public int maxProgresstime() {
-        return 500;
     }
 
     @Override
@@ -179,133 +181,80 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
 
     @Override
     protected void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (this.mInventory[2] == null) return;
-        if ((GT_Utility.isPartOfMaterials(this.mInventory[2], Materials.Coal)
-            && !GT_Utility.isPartOfOrePrefix(this.mInventory[2], OrePrefixes.block))
-            || (GT_Utility.isPartOfMaterials(this.mInventory[2], Materials.Charcoal)
-                && !GT_Utility.isPartOfOrePrefix(this.mInventory[2], OrePrefixes.block))
-            || (GT_Utility.isPartOfMaterials(this.mInventory[2], Materials.Lignite)
-                && !GT_Utility.isPartOfOrePrefix(this.mInventory[2], OrePrefixes.block))
-            || (GT_Utility.isPartOfMaterials(this.mInventory[2], Materials.Diamond)
-                && !GT_Utility.isPartOfOrePrefix(this.mInventory[2], OrePrefixes.block))
-            || GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], "fuelCoke")
-            || GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], "fuelCactusCharcoal")
-            || GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], "fuelCactusCoke")
-            || GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], "fuelSugarCharcoal")
-            || GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], "fuelSugarCoke")) {
-            if ((TileEntityFurnace.getItemBurnTime(this.mInventory[2]) / 10) > 0) {
-                this.mProcessingEnergy += (TileEntityFurnace.getItemBurnTime(this.mInventory[2]) / 10);
-                if (XSTR.XSTR_INSTANCE.nextInt(
-                    GT_Utility.isPartOfMaterials(this.mInventory[2], Materials.Coal)
-                        || GT_Utility.isPartOfMaterials(this.mInventory[2], Materials.Charcoal) ? 3
-                            : GT_Utility.isPartOfMaterials(this.mInventory[2], Materials.Lignite) ? 8 : 2)
-                    == 0) {
-                    aBaseMetaTileEntity.addStackToSlot(
-                        3,
-                        GT_OreDictUnificator.get(
-                            OrePrefixes.dustTiny,
-                            (GT_Utility.isPartOfMaterials(this.mInventory[2], Materials.Lignite)
-                                || GT_Utility.isPartOfMaterials(this.mInventory[2], Materials.Coal)) ? Materials.DarkAsh
-                                    : Materials.Ash,
-                            1L));
-                }
-                aBaseMetaTileEntity.decrStackSize(2, 1);
-            }
-        } else if (
-        // If its a block of the following materials
-        GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.block.get(Materials.Coal))
-            || GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.block.get(Materials.Lignite))
-            || GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.block.get(Materials.Charcoal))
-            || GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[2], OrePrefixes.block.get(Materials.Diamond))
-            ||
+        ItemStack fuel = mInventory[2];
+        int burnTime = TileEntityFurnace.getItemBurnTime(fuel);
+        getCombustionPotential(fuel, burnTime).ifPresent(ashMaterial -> {
+            aBaseMetaTileEntity.decrStackSize(2, 1);
+            this.mProcessingEnergy += burnTime / 10;
+            boolean isABlock = !Block.getBlockFromItem(fuel.getItem())
+                .equals(Blocks.air);
+            combustFuel(burnTime, isABlock).map(dustSize -> GT_OreDictUnificator.get(dustSize, ashMaterial, 1L))
+                .ifPresent(ashes -> aBaseMetaTileEntity.addStackToSlot(3, ashes));
+        });
+    }
 
-            // if its either a Railcraft Coke Block or a custom GTNH compressed Coal/charcoal/lignite/coke block
-            (Block.getBlockFromItem(this.mInventory[2].getItem()) != null && // check if the block exists
-                (Block.getBlockFromItem(this.mInventory[2].getItem())
-                    .getUnlocalizedName()
-                    .toLowerCase()
-                    .contains("tile") && // check if the block is a tile -> block
-                    (
-                    // If the name of the block contains these names
-                    Block.getBlockFromItem(this.mInventory[2].getItem())
-                        .getUnlocalizedName()
-                        .toLowerCase()
-                        .contains("charcoal")
-                        || Block.getBlockFromItem(this.mInventory[2].getItem())
-                            .getUnlocalizedName()
-                            .toLowerCase()
-                            .contains("coal")
-                        || Block.getBlockFromItem(this.mInventory[2].getItem())
-                            .getUnlocalizedName()
-                            .toLowerCase()
-                            .contains("diamond")
-                        || Block.getBlockFromItem(this.mInventory[2].getItem())
-                            .getUnlocalizedName()
-                            .toLowerCase()
-                            .contains("coke")
-                        || Block.getBlockFromItem(this.mInventory[2].getItem())
-                            .getUnlocalizedName()
-                            .toLowerCase()
-                            .contains("railcraft.cube")
-                        || Block.getBlockFromItem(this.mInventory[2].getItem())
-                            .getUnlocalizedName()
-                            .toLowerCase()
-                            .contains("lignite"))))) {
-                                // try to add 10% of the burnvalue as Processing energy, no boost
-                                // for coal coke here
-                                if ((TileEntityFurnace.getItemBurnTime(this.mInventory[2]) / 10) > 0) {
-                                    this.mProcessingEnergy += (TileEntityFurnace.getItemBurnTime(this.mInventory[2])
-                                        / 10);
-                                    aBaseMetaTileEntity.addStackToSlot(
-                                        3,
-                                        GT_OreDictUnificator.get(
-                                            OrePrefixes.dust,
-                                            (GT_Utility.isPartOfMaterials(this.mInventory[2], Materials.Lignite)
-                                                || GT_Utility.isPartOfMaterials(this.mInventory[2], Materials.Coal)
-                                                || Block.getBlockFromItem(this.mInventory[2].getItem())
-                                                    .getUnlocalizedName()
-                                                    .toLowerCase()
-                                                    .contains("coal")
-                                                || Block.getBlockFromItem(this.mInventory[2].getItem())
-                                                    .getUnlocalizedName()
-                                                    .toLowerCase()
-                                                    .contains("lignite")) ? Materials.DarkAsh : Materials.Ash,
-                                            1L));
-                                    aBaseMetaTileEntity.decrStackSize(2, 1);
-                                }
-                                // enables every other fuel with at least 2000 burntime as a fuel,
-                                // i.e. peat, Magic/Solid Super Fuel, Coal
-                                // Singularities, Nitor, while bucket of creosite should be blocked
-                                // same goes for lava
-                            } else
-            if ((TileEntityFurnace.getItemBurnTime(this.mInventory[2])) >= 2000
-                && !(this.mInventory[2].getUnlocalizedName()
-                    .toLowerCase()
-                    .contains("bucket")
-                    || this.mInventory[2].getUnlocalizedName()
-                        .toLowerCase()
-                        .contains("cell"))) {
-                            this.mProcessingEnergy += (TileEntityFurnace.getItemBurnTime(this.mInventory[2]) / 10);
-                            // adds tiny pile of ash for burntime under 10k, small pile for
-                            // under 100k and pile for
-                            // bigger values
-                            if (XSTR.XSTR_INSTANCE.nextInt(2) == 0)
-                                aBaseMetaTileEntity.addStackToSlot(
-                                    3,
-                                    GT_OreDictUnificator.get(
-                                        (TileEntityFurnace.getItemBurnTime(this.mInventory[2]) >= 10000
-                                            ? TileEntityFurnace.getItemBurnTime(this.mInventory[2]) >= 100000
-                                                ? OrePrefixes.dust
-                                                : OrePrefixes.dustSmall
-                                            : OrePrefixes.dustTiny),
-                                        Materials.Ash,
-                                        1L));
-                            aBaseMetaTileEntity.decrStackSize(2, 1);
-                        }
+    private static Optional<Materials> getCombustionPotential(ItemStack fuel, int burnTime) {
+        if (burnTime / 10 <= 0 || FluidContainerRegistry.isFilledContainer(fuel)) {
+            return Optional.empty();
+        }
+        String lowerCaseBlockName = Block.getBlockFromItem(fuel.getItem())
+            .getUnlocalizedName()
+            .toLowerCase();
+        if (couldProduceDarkAshes(fuel, lowerCaseBlockName)) {
+            return Optional.of(Materials.DarkAsh);
+        }
+        if (couldProduceRegularAshes(fuel, lowerCaseBlockName, burnTime)) {
+            return Optional.of(Materials.Ash);
+        }
+        return Optional.empty();
+    }
+
+    private static boolean couldProduceDarkAshes(ItemStack fuel, String lowerCaseBlockName) {
+        return GT_Utility.isPartOfMaterials(fuel, Materials.Coal)
+            || GT_Utility.isPartOfMaterials(fuel, Materials.Lignite)
+            || lowerCaseBlockName.matches("tile\\..+compressedcoal");
+    }
+
+    private static boolean couldProduceRegularAshes(ItemStack fuel, String lowerCaseBlockName, int burnTime) {
+        return GT_Utility.isPartOfMaterials(fuel, Materials.Charcoal)
+            || GT_Utility.isPartOfMaterials(fuel, Materials.Diamond)
+            || (Stream.of("^tile\\..+charcoal", "^tile\\..+coke", "^tile\\..+railcraft.cube")
+                .anyMatch(lowerCaseBlockName::matches))
+            || Stream.of("fuelCoke", "fuelCactusCharcoal", "fuelCactusCoke", "fuelSugarCharcoal", "fuelSugarCoke")
+                .anyMatch(name -> GT_OreDictUnificator.isItemStackInstanceOf(fuel, name))
+            || burnTime >= 2000;
+    }
+
+    private static Optional<OrePrefixes> combustFuel(int burnTime, boolean isABlock) {
+        if (isABlock) {
+            return Optional.of(OrePrefixes.dust);
+        } else if (XSTR.XSTR_INSTANCE.nextInt(getAshChanceBound(burnTime)) == 0) {
+            if (burnTime > 100000) {
+                return Optional.of(OrePrefixes.dust);
+            } else if (burnTime > 10000) {
+                return Optional.of(OrePrefixes.dustSmall);
+            } else {
+                return Optional.of(OrePrefixes.dustTiny);
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * The upper bound for the chance to get ash from combustion
+     * <br>
+     * Ash chance scales based on burn time from 14% at 0 up to 50% at 2000
+     *
+     * @param burnTime number assumed to be positive
+     * @return an upper bound between 7 and 2.
+     */
+    private static int getAshChanceBound(int burnTime) {
+        return (5 - (Math.min(burnTime, 2000) / 400)) + 2;
     }
 
     @Override
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.BRONZE;
+    protected boolean isItemValidFuel(@NotNull ItemStack stack) {
+        return getCombustionPotential(stack, TileEntityFurnace.getItemBurnTime(stack)).isPresent();
     }
+
 }

@@ -40,6 +40,22 @@ the chance of strange errors.
 Some textures/ideas have been taken from future versions of GT and texture pack authors for GTNH. Credit goes to Jimbno
 for the UU-Tex texture pack and its contributions to the base pack here: https://github.com/Jimbno/UU-Tex.
 
+## Music duration metadata
+
+The electric jukebox requires duration metadata to specify how many milliseconds each disk plays for.
+These can be included in mods' jar resources under `soundmeta/durations.json`, or in the pack config directory at `config/soundmeta/durations.json`.
+The format is a simple key-value map of sound IDs mapping to millisecond counts, and can be generated from the client automatically using `/gt dump_music_durations`.
+
+```json
+{
+  "soundDurationsMs": {
+    "minecraft:11": 71112,
+    "minecraft:13": 178086,
+    "minecraft:blocks": 345914
+  }
+}
+```
+
 ## License
 
 GT5-Unofficial is free software: you can redistribute it and/or modify it under the terms of the

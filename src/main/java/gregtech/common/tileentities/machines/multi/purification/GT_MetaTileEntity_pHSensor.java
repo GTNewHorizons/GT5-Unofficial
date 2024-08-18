@@ -94,11 +94,6 @@ public class GT_MetaTileEntity_pHSensor extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public String[] getDescription() {
         return new String[] { "Can be installed in the pH Neutralization Purification Unit.",
             "Outputs Redstone Signal according to the current pH value.",
@@ -177,8 +172,9 @@ public class GT_MetaTileEntity_pHSensor extends GT_MetaTileEntity_Hatch {
                     .setPos(28, 12))
             .widget(
                 new NumericWidget().setBounds(0, 14.0)
+                    .setIntegerOnly(false)
                     .setGetter(() -> (double) threshold)
-                    .setSetter((value) -> threshold = (float) value)
+                    .setSetter((value) -> threshold = (float) Math.round(value * 100.0) / 100.0f)
                     .setScrollValues(0.1, 0.01, 1.0)
                     .setMaximumFractionDigits(2)
                     .setTextColor(Color.WHITE.dark(1))

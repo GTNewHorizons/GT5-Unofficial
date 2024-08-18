@@ -445,6 +445,13 @@ GT5U.machines.dronecentre.turnoff=Successfully turn off all machines!
 GT5U.machines.dronecentre.noconnection=No valid connection
 GT5U.machines.dronecentre.enableRender=Enable Drone Render
 GT5U.machines.dronecentre.disableRender=Disable Drone Render
+GT5U.machines.betterjukebox.attenuationDistance.tooltip=Sound attenuation distance: %d blocks
+GT5U.machines.betterjukebox.p2pAttenuationDistance.tooltip=P2P sound attenuation distance: %d blocks
+GT5U.machines.betterjukebox.loop.tooltip=Loop mode (keep discs in input inventory)
+GT5U.machines.betterjukebox.shuffle.tooltip=Shuffle mode (play random discs instead of in order)
+GT5U.machines.betterjukebox.headphonesbound=Headphones bound to jukebox
+GT5U.machines.betterjukebox.headphonesunbound=Shift-click on an electric jukebox to bind headphones
+GT5U.machines.laser_hatch.amperage=Amperage
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
@@ -554,7 +561,9 @@ GT5U.gui.text.pollution_fail=§4Failed to output the pollution.
 GT5U.gui.text.structure_incomplete=§4Shut down due to incomplete structure.
 GT5U.gui.text.no_repair=§4Shut down due to machine damage.
 GT5U.gui.text.no_machine_part=No correct machine part in controller slot.
+GT5U.gui.text.missing_item=§7Missing required item: §b%s§f
 GT5U.gui.text.ph_sensor=pH threshold
+GT5U.gui.text.critical_ph_value=pH exceeded critical value.
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
