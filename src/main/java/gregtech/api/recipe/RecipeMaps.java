@@ -71,7 +71,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_RecipeMapUtil;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.machines.multi.purification.PurifiedWaterHelpers;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
@@ -290,10 +289,12 @@ public final class RecipeMaps {
             (index, isFluid, isOutput,
                 isSpecial) -> !isFluid && !isOutput && index != 0 ? GT_UITextures.OVERLAY_SLOT_LENS : null)
         // Add a simple ordering so lower tier purified water is displayed first, otherwise it gets really confusing
-        .neiRecipeComparator(
-            (a, b) -> Comparator.comparing(PurifiedWaterHelpers::getWaterTierFromRecipe)
-                .thenComparing(GT_Recipe::compareTo)
-                .compare(a, b))
+        /*
+         * .neiRecipeComparator(
+         * (a, b) -> Comparator.comparing(PurifiedWaterHelpers::getWaterTierFromRecipe)
+         * .thenComparing(GT_Recipe::compareTo)
+         * .compare(a, b))
+         */
         .build();
     public static final RecipeMap<RecipeMapBackend> mixerRecipes = RecipeMapBuilder.of("gt.recipe.mixer")
         .maxIO(9, 4, 1, 1)
