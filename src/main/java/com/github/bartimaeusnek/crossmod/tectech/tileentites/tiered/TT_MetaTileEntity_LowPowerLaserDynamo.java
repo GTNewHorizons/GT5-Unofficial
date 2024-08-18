@@ -70,14 +70,7 @@ public class TT_MetaTileEntity_LowPowerLaserDynamo extends GT_MetaTileEntity_Hat
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            StatCollector.translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
-                + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(this.getTotalPower())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+        return mDescriptionArray;
     }
 
     @Override

@@ -29,6 +29,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.util.GT_Utility.getColoredTierNameFromTier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -162,18 +163,18 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             .addInfo("Change Mode with Screwdriver")
             .addInfo("Does not lose efficiency when overclocked")
             .addInfo(
-                "---------" + EnumChatFormatting.WHITE
+                "--------- " + EnumChatFormatting.GOLD
                     + StatCollector.translateToLocal("chat.cal.mode.0")
                     + EnumChatFormatting.GRAY
-                    + "--------")
+                    + " --------")
             .addInfo("Imprint this machine with a Circuit Imprint,")
             .addInfo("by putting the imprint in the controller")
             .addInfo("Every Circuit Assembly Line can only be imprinted ONCE")
             .addInfo(
-                "---------" + EnumChatFormatting.WHITE
+                "--------- " + EnumChatFormatting.GOLD
                     + StatCollector.translateToLocal("chat.cal.mode.1")
                     + EnumChatFormatting.GRAY
-                    + "--------")
+                    + " --------")
             .addInfo(
                 "Does Circuit Assembler recipes, Minimum Length: " + EnumChatFormatting.RED
                     + MINIMUM_CIRCUIT_ASSEMBLER_LENGTH
@@ -187,7 +188,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             .addStructureInfo("From Bottom to Top, Left to Right")
             .addStructureInfo(
                 "Layer 1 - Solid Steel Machine Casing, Input bus (Last Output bus), Solid Steel Machine Casing")
-            .addStructureInfo("Layer 2 - EV+ Tier Glass, Assembling Line Casing, EV+ Tier Glass")
+            .addStructureInfo("Layer 2 - " + getColoredTierNameFromTier((byte) 4) + "+ Tier Glass, Assembling Line Casing, " + getColoredTierNameFromTier((byte) 4) + "+ Tier Glass")
             .addStructureInfo("Layer 3 - Grate Machine Casing")
             .addStructureInfo("Up to 7 repeating slices, last is Output Bus")
             .addController("Layer 3 first slice front")
@@ -198,7 +199,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             .addInputHatch("Any layer 1 casing", 2)
             .addInputBus("As specified on layer 1", 3, 4)
             .addOutputBus("As specified in final slice on layer 1", 4)
-            .addOtherStructurePart("EV+ Tier Glass", "As specified on layer 2", 5)
+            .addOtherStructurePart( getColoredTierNameFromTier((byte) 4) + "+ Tier Glass", "As specified on layer 2", 5)
             .addMaintenanceHatch("Any layer 1 casing", 2)
             .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
         return tt;

@@ -611,7 +611,7 @@ public class ItemRegistry {
                 TecTechLaserAdditions[0][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserBox(
                     LowPowerLaserConverter[amps / 32 - 1][tier - 4],
                     GT_Values.VN[tier] + "_LPLaser_Converter_" + amps,
-                    GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Converter",
+                    GT_Values.VN[tier] + " " + amps + "A" + " Low Power Laser Converter",
                     tier,
                     amps).getStackForm(1L);
             }
@@ -633,7 +633,7 @@ public class ItemRegistry {
                 TecTechLaserAdditions[1][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserHatch(
                     LowPowerLaserTargetHatch[amps / 32 - 1][tier - 4],
                     GT_Values.VN[tier] + "_LPLaser_Hatch_" + amps,
-                    GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Target Hatch",
+                    GT_Values.VN[tier] + " " + amps + "A" + " Low Power Laser Target Hatch",
                     tier,
                     amps).getStackForm(1L);
             }
@@ -655,7 +655,7 @@ public class ItemRegistry {
                 TecTechLaserAdditions[2][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserDynamo(
                     LowPowerLaserSourceHatch[amps / 32 - 1][tier - 4],
                     GT_Values.VN[tier] + "_LPLaser_Dynamo_" + amps,
-                    GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Source Hatch",
+                    GT_Values.VN[tier] + " " + amps + "A" + " Low Power Laser Source Hatch",
                     tier,
                     amps).getStackForm(1L);
             }
