@@ -11,6 +11,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.ArtificialOrganism;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.GT_MetaPipeEntity_BioPipe;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.util.IConnectsToBioPipe;
 
 public class GT_MetaTileEntity_Hatch_BioOutput extends GT_MetaTileEntity_Hatch implements IConnectsToBioPipe {
@@ -46,28 +47,49 @@ public class GT_MetaTileEntity_Hatch_BioOutput extends GT_MetaTileEntity_Hatch i
         return isInputFacing(side);
     }
 
+    private boolean rescanQueued = false;
+
+    public void queueRescan() {
+        rescanQueued = true;
+    }
+
+    private void rescan() {
+        if (pipenetwork != null) {
+            for (IConnectsToBioPipe node : pipenetwork) {
+                if (node instanceof GT_MetaPipeEntity_BioPipe) ((GT_MetaPipeEntity_BioPipe) node).networkOutput = null;
+                if (node instanceof GT_MetaTileEntity_Hatch_BioInput)
+                    ((GT_MetaTileEntity_Hatch_BioInput) node).networkOutput = null;
+            }
+        }
+        pipenetwork = getConnected(this, new HashSet<>());
+    }
+
     @Override
     public HashSet<IConnectsToBioPipe> getConnected(GT_MetaTileEntity_Hatch_BioOutput output,
         HashSet<IConnectsToBioPipe> connections) {
+        connections.add(this);
         IGregTechTileEntity baseTE = getBaseMetaTileEntity();
         TileEntity next = baseTE.getTileEntityAtSide(baseTE.getFrontFacing());
         if (next != null) {
             IMetaTileEntity meta = ((IGregTechTileEntity) next).getMetaTileEntity();
             if (meta instanceof IConnectsToBioPipe)
-                return ((IConnectsToBioPipe) meta).getConnected(output, new HashSet<>());
+                return ((IConnectsToBioPipe) meta).getConnected(output, connections);
         }
         return null;
     }
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        pipenetwork = getConnected(this, new HashSet<>());
+        rescan();
         super.onFirstTick(aBaseMetaTileEntity);
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aTick % 1200 == 0) pipenetwork = getConnected(this, new HashSet<>());
+        if (aTick % 40 == 0 && rescanQueued) {
+            rescan();
+            rescanQueued = false;
+        }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 

@@ -34,7 +34,7 @@ import gregtech.common.tileentities.machines.multi.artificialorganisms.util.ICon
 
 public class GT_MetaPipeEntity_BioPipe extends MetaPipeEntity implements IConnectsToBioPipe {
 
-    private GT_MetaTileEntity_Hatch_BioOutput networkOutput;
+    public GT_MetaTileEntity_Hatch_BioOutput networkOutput;
 
     private static Textures.BlockIcons.CustomIcon pipeTexture;
 
@@ -259,11 +259,27 @@ public class GT_MetaPipeEntity_BioPipe extends MetaPipeEntity implements IConnec
 
     public void connectPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer) {
         if (!isConnectedAtSide(side)) {
-            if (connect(side) > 0) GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("214", "Connected"));
+            if (connect(side) > 0) {
+                GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("214", "Connected"));
+            }
         } else {
             disconnect(side);
             GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("215", "Disconnected"));
         }
+    }
+
+    @Override
+    public int connect(ForgeDirection side) {
+        int success = super.connect(side);
+        if (success > 0) {
+            if (networkOutput != null) networkOutput.queueRescan();
+        }
+        return success;
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        if (networkOutput != null) networkOutput.queueRescan();
     }
 
     @Override
