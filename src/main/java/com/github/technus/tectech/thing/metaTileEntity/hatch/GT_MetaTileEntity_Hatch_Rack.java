@@ -3,8 +3,10 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
 import static com.github.technus.tectech.util.TT_Utility.getUniqueIdentifier;
+import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.OpenComputers;
+import static gregtech.api.util.GT_ModHandler.getModItem;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -121,7 +123,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return facing.offsetY == 0;
+        return true;
     }
 
     @Override
@@ -135,9 +137,14 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
     }
 
     @Override
+    public int getInventoryStackLimit() {
+        return 1;
+    }
+
+    @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (aBaseMetaTileEntity.isActive() || heat > 500) {
+        if (aBaseMetaTileEntity.isActive() || heat > 2000) {
             return false;
         }
         return side == aBaseMetaTileEntity.getFrontFacing();
@@ -146,10 +153,15 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (aBaseMetaTileEntity.isActive() || heat > 500) {
+        if (aBaseMetaTileEntity.isActive() || heat > 2000) {
             return false;
         }
         return side == aBaseMetaTileEntity.getFrontFacing();
+    }
+
+    @Override
+    public int getSizeInventory() { // HACK TO NOT DROP CONTENTS!!!
+        return heat > 2000 || getBaseMetaTileEntity().isActive() ? 0 : mInventory.length;
     }
 
     @Override
@@ -187,19 +199,17 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
                     mInventory[i] = null;
                     continue;
                 } else if (comp.subZero || this.heat >= 0) {
-                    heat += (1f + comp.coEff * this.heat / 10000f)
-                        * (comp.heat > 0 ? comp.heat * overclock * overclock * overvolt : comp.heat);
-                    // =MAX(0;MIN(MIN($B4;1*C$3+C$3-0,25);1+RAND()+(C$3-1)-($B4-1)/2))
-                    if (overvolt * 10f > 7f + TecTech.RANDOM.nextFloat()) {
-                        computation += comp.computation * Math.max(
-                            0,
-                            Math.min(
-                                Math.min(overclock, overvolt + overvolt - 0.25),
-                                1 + TecTech.RANDOM.nextFloat() + (overvolt - 1) - (overclock - 1) / 2));
+                    heat += (1f + comp.coolConstant * this.heat / 100000f)
+                        * (comp.heatConstant > 0 ? comp.heatConstant * overclock * overvolt * overvolt : -10f);
+
+                    if (overvolt > TecTech.RANDOM.nextFloat()) {
+                        computation += comp.computation * (1 + overclock * overclock)
+                            / (1 + (overclock - overvolt) * (overclock - overvolt));
                     }
                 }
             } else {
-                computation += comp.computation * overclock;
+                computation += comp.computation * (1 + overclock * overclock)
+                    / (1 + (overclock - overvolt) * (overclock - overvolt)); // For getInfoData()
             }
         }
         if (tickingComponents) {
@@ -208,15 +218,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
         return (int) Math.floor(computation);
     }
 
-    @Override
-    public int getInventoryStackLimit() {
-        return 1;
-    }
-
     public int tickComponents(float oc, float ov) {
-        if (oc > 3 + TecTech.RANDOM.nextFloat() || ov > 2 + TecTech.RANDOM.nextFloat()) {
-            getBaseMetaTileEntity().setToFire();
-        }
         overClock = oc;
         overVolt = ov;
         return getComputationPower(overClock, overVolt, true);
@@ -236,35 +238,17 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
                         if (comp == null) {
                             continue;
                         }
-                        if (heat > comp.maxHeat) {
+                        if (heat - 20 > comp.maxHeat) {
                             mInventory[i] = null;
-                        } else if (comp.heat < 0) {
-                            heatC += comp.heat * (heat / 10000f);
+                        } else if (comp.heatConstant < 0) {
+                            heatC += comp.heatConstant * (heat / 10000f);
                         }
                     }
                     heat += Math.max(-heat, Math.ceil(heatC));
-                }
-
-                if (heat > 0) {
-                    heat -= Math.max(heat / 1000, 1);
-                } else if (heat < 0) {
-                    heat -= Math.min(heat / 1000, -1);
-                }
-
-                if (heat > 10000) {
-                    aBaseMetaTileEntity.setToFire();
-                } else if (heat > 9000) {
-                    aBaseMetaTileEntity.setOnFire();
-                } else if (heat < -10000) {
-                    heat = -10000;
+                    heat -= Math.max(heat / 1000, 20);
                 }
             }
         }
-    }
-
-    @Override
-    public int getSizeInventory() { // HACK TO NOT DROP CONTENTS!!!
-        return heat > 500 || getBaseMetaTileEntity().isActive() ? 0 : mInventory.length;
     }
 
     @Override
@@ -277,17 +261,11 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
         return new String[] {
             translateToLocalFormatted("tt.keyphrase.Base_computation", clientLocale) + ": "
                 + EnumChatFormatting.AQUA
-                + getComputationPower(1, 0, false),
-            translateToLocalFormatted("tt.keyphrase.After_overclocking", clientLocale) + ": "
-                + EnumChatFormatting.AQUA
-                + getComputationPower(overClock, 0, false),
+                + getComputationPower(overClock, overVolt, false),
             translateToLocalFormatted("tt.keyphrase.Heat_Accumulated", clientLocale) + ": "
                 + EnumChatFormatting.RED
-                + (heat + 99) / 100
-                + EnumChatFormatting.RESET
-                + " %" };
-        // heat==0? --> ((heat+9)/10) = 0
-        // Heat==1-10? --> 1
+                + heat
+                + EnumChatFormatting.RESET };
     }
 
     @Override
@@ -352,95 +330,66 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
     }
 
     public static void run() { // 20k heat cap max!
-        new RackComponent(ItemList.Circuit_Primitive.get(1), 1, 4, 0, 500, true); // Primitive Circuit
-        new RackComponent(ItemList.Circuit_Basic.get(1), 4, 8, 0, 1000, true); // Basic Circuit
-        new RackComponent(ItemList.Circuit_Microprocessor.get(1), 6, 8, 0, 1250, true);
-        new RackComponent(ItemList.Circuit_Good.get(1), 6, 9, -.05f, 1500, true); // Good Circuit
-        new RackComponent(ItemList.Circuit_Integrated_Good.get(1), 7, 9, -.075f, 1750, true);
-        new RackComponent(ItemList.Circuit_Processor.get(1), 8, 9, -.07f, 1800, true);
-        new RackComponent(ItemList.Circuit_Parts_Advanced.get(1), 1, 2, -.05f, 2000, true);
-        new RackComponent(ItemList.Circuit_Nanoprocessor.get(1), 8, 10, -.09f, 2250, true); // Advanced Circuit
-        new RackComponent(ItemList.Circuit_Advanced.get(1), 8, 10, -.1f, 2500, true);
-        new RackComponent(ItemList.Circuit_Data.get(1), 9, 1, -.1f, 3000, true); // EV Circuit
-        new RackComponent(ItemList.Circuit_Nanocomputer.get(1), 11, 10, -.125f, 3300, true);
-        new RackComponent(ItemList.Circuit_Quantumprocessor.get(1), 13, 10, -.15f, 3600, true);
-        new RackComponent(ItemList.Circuit_Elite.get(1), 12, 10, -.15F, 3500, true); // IV Circuit
-        new RackComponent(ItemList.Circuit_Elitenanocomputer.get(1), 14, 10, -.15F, 4000, true);
-        new RackComponent(ItemList.Circuit_Quantumcomputer.get(1), 16, 10, -.15F, 4500, true);
-        new RackComponent(ItemList.Circuit_Crystalprocessor.get(1), 18, 10, -.15F, 5000, true);
-        new RackComponent(ItemList.Circuit_Master.get(1), 16, 12, -.2F, 5000, true); // LuV Circuit
-        new RackComponent(ItemList.Circuit_Masterquantumcomputer.get(1), 16, 13, -.2F, 5100, true);
-        new RackComponent(ItemList.Circuit_Crystalcomputer.get(1), 20, 14, -.25F, 5200, true);
-        new RackComponent(ItemList.Circuit_Neuroprocessor.get(1), 24, 15, -.3F, 5300, true);
-        new RackComponent(ItemList.Circuit_Quantummainframe.get(1), 22, 14, -.3F, 5200, true); // ZPM Circuit
-        new RackComponent(ItemList.Circuit_Ultimatecrystalcomputer.get(1), 26, 16, -.3F, 5400, true);
-        new RackComponent(ItemList.Circuit_Wetwarecomputer.get(1), 30, 18, -.3F, 5600, true);
-        new RackComponent(ItemList.Circuit_Crystalmainframe.get(1), 30, 18, -.35F, 5500, true); // UV Circuit
-        new RackComponent(ItemList.Circuit_Wetwaresupercomputer.get(1), 35, 22, -.3F, 5700, true);
-        new RackComponent(ItemList.Circuit_Wetwaremainframe.get(1), 38, 25, -.4F, 6000, true); // UHV Circuit
+        new RackComponent(ItemList.Circuit_Crystalprocessor.get(1), 60, 56, -1f, 2000, true); // IV
+        new RackComponent(ItemList.Circuit_Crystalcomputer.get(1), 80, 54, -1f, 2000, true); // LuV
+        new RackComponent(ItemList.Circuit_Ultimatecrystalcomputer.get(1), 100, 52, -1f, 2000, true); // ZPM
+        new RackComponent(ItemList.Circuit_Crystalmainframe.get(1), 120, 50, -1f, 2000, true); // UV
 
-        new RackComponent("IC2:ic2.reactorVent", 0, -1, 10f, 1000, false);
-        new RackComponent("IC2:ic2.reactorVentCore", 0, -1, 20f, 2500, false);
-        new RackComponent("IC2:ic2.reactorVentGold", 0, -1, 40f, 5000, false);
-        new RackComponent("IC2:ic2.reactorVentDiamond", 0, -1, 80f, 10000, false); // 2x oc
+        new RackComponent(ItemList.Circuit_Neuroprocessor.get(1), 160, 46, -1f, 4000, true); // LuV
+        new RackComponent(ItemList.Circuit_Wetwarecomputer.get(1), 180, 44, -1f, 4000, true); // ZPM
+        new RackComponent(ItemList.Circuit_Wetwaresupercomputer.get(1), 200, 42, -1f, 4000, true); // UV
+        new RackComponent(ItemList.Circuit_Wetwaremainframe.get(1), 220, 40, -1f, 4000, true); // UHV
+
+        new RackComponent("IC2:ic2.reactorVent", 0, -1, 40f, 2000, false); // Heat Vent
+        new RackComponent("IC2:ic2.reactorVentCore", 0, -1, 80f, 4000, false); // Reactor Heat Vent
+        new RackComponent("IC2:ic2.reactorVentGold", 0, -1, 120f, 6000, false); // Overclocked Heat Vent
+        new RackComponent("IC2:ic2.reactorVentDiamond", 0, -1, 160f, 8000, false); // Advanced Heat Vent
 
         if (NewHorizonsCoreMod.isModLoaded()) {
-            // GTNH-GT5u circuits
-            // these components causes crashes when used with the original GT5u
-            new RackComponent(ItemList.NandChip.get(1), 2, 6, 0, 750, true); // Primitive Circuit
-            new RackComponent(ItemList.Circuit_Biowarecomputer.get(1), 40, 26, -.35F, 5900, true);
-            new RackComponent(ItemList.Circuit_Biowaresupercomputer.get(1), 42, 30, -.4F, 6200, true);
-            new RackComponent(ItemList.Circuit_Biomainframe.get(1), 44, 28, -.4F, 6000, true); // UEV Circuit
-            new RackComponent(ItemList.Circuit_Bioprocessor.get(1), 34, 20, -.35F, 5800, true);
+            // GTNH-GT5u circuits (these components causes crashes when used with the original GT5u)
+            new RackComponent(ItemList.Circuit_Bioprocessor.get(1), 200, 36, -1f, 6000, true); // ZPM
+            new RackComponent(ItemList.Circuit_Biowarecomputer.get(1), 220, 34, -1f, 6000, true); // UV
+            new RackComponent(ItemList.Circuit_Biowaresupercomputer.get(1), 240, 32, -1f, 6000, true); // UHV
+            new RackComponent(ItemList.Circuit_Biomainframe.get(1), 260, 30, -1f, 6000, true); // UEV
 
-            new RackComponent("dreamcraft:item.HighEnergyCircuitParts", 3, 2, -.1f, 9001, true);
-            new RackComponent("dreamcraft:item.HighEnergyFlowCircuit", 24, 16, -.25f, 10000, true);
-            new RackComponent("dreamcraft:item.NanoCircuit", 50, 35, -.45f, 8000, true);
-            new RackComponent("dreamcraft:item.PikoCircuit", 64, 40, -.5f, 8500, true);
-            new RackComponent("dreamcraft:item.QuantumCircuit", 128, 48, -.6f, 9000, true);
+            new RackComponent(ItemList.Circuit_OpticalProcessor.get(1), 200, 26, -1f, 8000, true); // UV
+            new RackComponent(ItemList.Circuit_OpticalAssembly.get(1), 220, 24, -1f, 8000, true); // UHV
+            new RackComponent(ItemList.Circuit_OpticalComputer.get(1), 240, 22, -1f, 8000, true); // UEV
+            new RackComponent(ItemList.Circuit_OpticalMainframe.get(1), 260, 20, -1f, 8000, true); // UIV
+
+            new RackComponent("dreamcraft:item.PikoCircuit", 260, 12, -1f, 9500, true); // UMV
+            new RackComponent("dreamcraft:item.QuantumCircuit", 320, 10, -1f, 10000, true); // UXV
         }
 
         if (OpenComputers.isModLoaded()) {
-            new RackComponent("OpenComputers:item.oc.Transistor", 0, 1, 0f, 100, true); // Transistor
-            new RackComponent("OpenComputers:item.oc.Microchip0", 7, 12, -.05f, 1500, true); // chip t1
-            new RackComponent("OpenComputers:item.oc.Microchip1", 18, 20, -.1f, 3000, true); // chip t2
-            new RackComponent("OpenComputers:item.oc.Microchip2", 25, 22, -.15f, 4500, true); // chip t3
-            new RackComponent("OpenComputers:item.oc.ALU", 10, 15, -.05f, 3000, true); // alu
-            new RackComponent("OpenComputers:item.oc.ControlUnit", 25, 18, -.05f, 1500, true); // cu
+            new RackComponent("OpenComputers:item.oc.CPU2", 80, 46, -1f, 2000, true); // CPU T3
+            new RackComponent("OpenComputers:item.oc.GraphicsCard2", 100, 44, -1f, 2000, true); // GPU T3
+            new RackComponent("OpenComputers:item.oc.APU1", 120, 42, -1f, 2000, true); // APU T3
+            new RackComponent("OpenComputers:item.oc.APU2", 240, 40, -1f, 2000, true); // APU Creative
+        }
 
-            new RackComponent("OpenComputers:item.oc.ComponentBus0", 42, 30, -.05f, 1500, true); // bus t1
-            new RackComponent("OpenComputers:item.oc.ComponentBus1", 70, 50, -.1f, 3000, true); // bus t2
-            new RackComponent("OpenComputers:item.oc.ComponentBus2", 105, 72, -.15f, 4500, true); // bus t3
-
-            new RackComponent("OpenComputers:item.oc.CPU0", 106, 73, -.1f, 1500, true); // cpu t1
-            new RackComponent("OpenComputers:item.oc.CPU1", 226, 153, -.15f, 3000, true); // cpu t2
-            new RackComponent("OpenComputers:item.oc.CPU2", 374, 241, -.2f, 4500, true); // cpu t3
-
-            new RackComponent("OpenComputers:item.oc.GraphicsCard0", 20, 27, -.1f, 1500, true); // gpu t1
-            new RackComponent("OpenComputers:item.oc.GraphicsCard1", 62, 67, -.2f, 3000, true); // gpu t2
-            new RackComponent("OpenComputers:item.oc.GraphicsCard2", 130, 111, -.3f, 4500, true); // gpu t3
-
-            new RackComponent("OpenComputers:item.oc.APU0", 350, 234, -.1f, 1500, true); // apu t2
-            new RackComponent("OpenComputers:item.oc.APU1", 606, 398, -.2f, 4500, true); // apu t3
-            new RackComponent("OpenComputers:item.oc.APU2", 1590, 1006, -.3f, 9000, true); // apu tC
+        if (GraviSuite.isModLoaded()) {
+            new RackComponent(getModItem(GraviSuite.ID, "itemSimpleItem", 1, 2), 0, -1, 200f, 10000, false); // CC
         }
     }
 
     public static class RackComponent implements Comparable<RackComponent> {
 
         private final String unlocalizedName;
-        private final float heat, coEff, computation, maxHeat;
+        private final float heatConstant, coolConstant, computation, maxHeat;
         private final boolean subZero;
 
-        RackComponent(ItemStack is, float computation, float heat, float coEff, float maxHeat, boolean subZero) {
-            this(getUniqueIdentifier(is), computation, heat, coEff, maxHeat, subZero);
+        RackComponent(ItemStack is, float computation, float heatConstant, float coolConstant, float maxHeat,
+            boolean subZero) {
+            this(getUniqueIdentifier(is), computation, heatConstant, coolConstant, maxHeat, subZero);
         }
 
-        RackComponent(String is, float computation, float heat, float coEff, float maxHeat, boolean subZero) {
+        RackComponent(String is, float computation, float heatConstant, float coolConstant, float maxHeat,
+            boolean subZero) {
             unlocalizedName = is;
-            this.heat = heat;
-            this.coEff = coEff;
             this.computation = computation;
+            this.heatConstant = heatConstant;
+            this.coolConstant = coolConstant;
             this.maxHeat = maxHeat;
             this.subZero = subZero;
             componentBinds.put(unlocalizedName, this);
