@@ -48,7 +48,7 @@ public class GT_ParallelHelper {
     /**
      * The current parallel possible for the multiblock
      */
-    private int currentParallel = 0;
+    protected int currentParallel = 0;
     /**
      * The maximum possible parallel possible for the multiblock
      */
@@ -73,7 +73,7 @@ public class GT_ParallelHelper {
     /**
      * The outputs of the recipe with the applied parallel
      */
-    private ItemStack[] itemOutputs;
+    protected ItemStack[] itemOutputs;
     /**
      * The inputs of the multiblock for the current recipe check
      */
@@ -125,11 +125,11 @@ public class GT_ParallelHelper {
     /**
      * Multiplier that is applied on the output chances
      */
-    private double chanceMultiplier = 1;
+    protected double chanceMultiplier = 1;
     /**
      * Multiplier by which the output will be multiplied
      */
-    private int outputMultiplier = 1;
+    protected int outputMultiplier = 1;
     /**
      * Method for calculating max parallel from given inputs.
      */
@@ -603,7 +603,7 @@ public class GT_ParallelHelper {
         fluidInputs = fluidInputsToUse;
     }
 
-    private void calculateItemOutputs(ItemStack[] truncatedItemOutputs) {
+    protected void calculateItemOutputs(ItemStack[] truncatedItemOutputs) {
         if (customItemOutputCalculation != null) {
             itemOutputs = customItemOutputCalculation.apply(currentParallel);
             return;
@@ -624,7 +624,7 @@ public class GT_ParallelHelper {
         itemOutputs = itemOutputsList.toArray(new ItemStack[0]);
     }
 
-    private void calculateFluidOutputs(FluidStack[] truncatedFluidOutputs) {
+    protected void calculateFluidOutputs(FluidStack[] truncatedFluidOutputs) {
         if (customFluidOutputCalculation != null) {
             fluidOutputs = customFluidOutputCalculation.apply(currentParallel);
             return;

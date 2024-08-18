@@ -435,7 +435,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_ADVANCED_GAS_TURBINE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_BRONZE_BOILER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_FLUID_EXTRACTOR;
+import static gregtech.api.enums.MetaTileEntityIDs.LARGE_CRYSTALIZER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_GAS_TURBINE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_HEAT_EXCHANGER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_HP_STEAM_TURBINE_CONTROLLER;
@@ -1621,6 +1621,10 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 LARGE_FLUID_EXTRACTOR.ID,
                 "multimachine.fluidextractor",
                 "Large Fluid Extractor").getStackForm(1));
+
+        ItemList.Machine_Large_Crystalizer.set(
+            new GT_MetaTileEntity_Crystalizer(LARGE_CRYSTALIZER.ID, "multimachine.crystalizer", "Large Crystalizer")
+                .getStackForm(1));
     }
 
     private static void registerSteamMachines() {
