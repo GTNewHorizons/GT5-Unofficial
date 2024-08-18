@@ -690,7 +690,10 @@ public class WerkstoffMaterialPool implements Runnable {
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
-            .onlyDust().addPrefix(OrePrefixes.block).removePrefix(OrePrefixes.ingot).removePrefix(OrePrefixes.gem),
+            .onlyDust()
+            .addPrefix(OrePrefixes.block)
+            .removePrefix(OrePrefixes.ingot)
+            .removePrefix(OrePrefixes.gem),
         offsetID2 + 9,
         TextureSet.SET_DULL);
     // TODO: Deal with colouring
