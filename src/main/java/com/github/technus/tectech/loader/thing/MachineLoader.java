@@ -2533,25 +2533,25 @@ public class MachineLoader implements Runnable {
             new GT_MetaTileEntity_Hatch_InputData(
                 OpticalSlaveConnector.ID,
                 "hatch.datain.tier.07",
-                "Optical Slave Connector",
+                "Optical Data Reception Connector",
                 7).getStackForm(1L));
         dataOut_Hatch.set(
             new GT_MetaTileEntity_Hatch_OutputData(
                 OpticalMasterConnector.ID,
                 "hatch.dataout.tier.07",
-                "Optical Master Connector",
+                "Optical Data Transmission Connector",
                 7).getStackForm(1L));
         dataInAss_Hatch.set(
             new GT_MetaTileEntity_Hatch_InputDataItems(
                 AssemblylineSlaveConnector.ID,
                 "hatch.datainass.tier.07",
-                "Assembly line Slave Connector",
+                "Assembly line Reception Connector",
                 7).getStackForm(1L));
         dataOutAss_Hatch.set(
             new GT_MetaTileEntity_Hatch_OutputDataItems(
                 DataBankMasterConnector.ID,
                 "hatch.dataoutass.tier.07",
-                "Data Bank Master Connector",
+                "Data Bank Transmission Connector",
                 7).getStackForm(1L));
         dataOut_Wireless_Hatch.set(
             new GT_MetaTileEntity_Hatch_WirelessComputation_Output(
@@ -2569,13 +2569,13 @@ public class MachineLoader implements Runnable {
             new GT_MetaTileEntity_Hatch_WirelessInputDataItems(
                 WirelessAssemblylineSlaveConnector.ID,
                 "hatch.datainass.wireless.tier.12",
-                "Wireless Assembly line Slave Connector",
+                "Wireless Assembly line Reception Connector",
                 12).getStackForm(1L));
         dataOutAss_Wireless_Hatch.set(
             new GT_MetaTileEntity_Hatch_WirelessOutputDataItems(
                 WirelessDataBankMasterConnector.ID,
                 "hatch.dataoutass.wireless.tier.12",
-                "Wireless Data Bank Master Connector",
+                "Wireless Data Bank Transmission Connector",
                 12).getStackForm(1L));
         rack_Hatch.set(
             new GT_MetaTileEntity_Hatch_Rack(ComputerRack.ID, "hatch.rack.tier.08", "Computer Rack", 8)
