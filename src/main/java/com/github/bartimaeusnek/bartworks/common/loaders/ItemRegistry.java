@@ -194,7 +194,6 @@ import com.github.bartimaeusnek.bartworks.common.items.BW_ItemBlocks;
 import com.github.bartimaeusnek.bartworks.common.items.BW_SimpleWindMeter;
 import com.github.bartimaeusnek.bartworks.common.items.BW_Stonage_Rotors;
 import com.github.bartimaeusnek.bartworks.common.items.Circuit_Programmer;
-import com.github.bartimaeusnek.bartworks.common.items.GT_Destructopack_Item;
 import com.github.bartimaeusnek.bartworks.common.items.GT_Rockcutter_Item;
 import com.github.bartimaeusnek.bartworks.common.items.GT_Teslastaff_Item;
 import com.github.bartimaeusnek.bartworks.common.items.SimpleIconItem;
@@ -238,7 +237,6 @@ import ic2.api.item.IKineticRotor;
 
 public class ItemRegistry {
 
-    public static final Item DESTRUCTOPACK = new GT_Destructopack_Item();
     public static final Item TESLASTAFF = new GT_Teslastaff_Item();
     public static final Item ROCKCUTTER_LV = new GT_Rockcutter_Item(1);
     public static final Item ROCKCUTTER_MV = new GT_Rockcutter_Item(2);
