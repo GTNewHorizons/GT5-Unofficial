@@ -289,7 +289,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.3")) // Does not consume the
                                                                                            // item until
             // the Data Stick is written
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.4")) // Use screwdriver to change mode
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.4")) // Use screwdriver to change
+                                                                                           // mode
             .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
             .addSeparator()
             .beginStructureBlock(3, 7, 7, false)
