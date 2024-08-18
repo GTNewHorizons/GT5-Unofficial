@@ -188,7 +188,11 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             .addStructureInfo("From Bottom to Top, Left to Right")
             .addStructureInfo(
                 "Layer 1 - Solid Steel Machine Casing, Input bus (Last Output bus), Solid Steel Machine Casing")
-            .addStructureInfo("Layer 2 - " + getColoredTierNameFromTier((byte) 4) + "+ Tier Glass, Assembling Line Casing, " + getColoredTierNameFromTier((byte) 4) + "+ Tier Glass")
+            .addStructureInfo(
+                "Layer 2 - " + getColoredTierNameFromTier((byte) 4)
+                    + "+ Tier Glass, Assembling Line Casing, "
+                    + getColoredTierNameFromTier((byte) 4)
+                    + "+ Tier Glass")
             .addStructureInfo("Layer 3 - Grate Machine Casing")
             .addStructureInfo("Up to 7 repeating slices, last is Output Bus")
             .addController("Layer 3 first slice front")
@@ -199,7 +203,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             .addInputHatch("Any layer 1 casing", 2)
             .addInputBus("As specified on layer 1", 3, 4)
             .addOutputBus("As specified in final slice on layer 1", 4)
-            .addOtherStructurePart( getColoredTierNameFromTier((byte) 4) + "+ Tier Glass", "As specified on layer 2", 5)
+            .addOtherStructurePart(getColoredTierNameFromTier((byte) 4) + "+ Tier Glass", "As specified on layer 2", 5)
             .addMaintenanceHatch("Any layer 1 casing", 2)
             .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
         return tt;

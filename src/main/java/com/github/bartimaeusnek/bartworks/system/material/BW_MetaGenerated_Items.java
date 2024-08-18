@@ -36,7 +36,6 @@ import net.minecraft.world.World;
 import com.github.bartimaeusnek.bartworks.API.IRadMaterial;
 import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

@@ -14,7 +14,6 @@
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
 import static gregtech.api.enums.GT_Values.VN;
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.BloodArsenal;
 import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.Botany;
@@ -35,10 +34,10 @@ import static gregtech.api.enums.Mods.ZTones;
 
 import java.util.Map;
 
-import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.API.GlassTier;
 
 /**
@@ -50,7 +49,8 @@ public class RegisterGlassTiers {
 
     public static void run() {
 
-        // This feels like it should happen after registration, but it wasn't before refactoring. So I will leave it be for now...
+        // This feels like it should happen after registration, but it wasn't before refactoring. So I will leave it be
+        // for now...
 
         // Register glass ore dict entries.
         for (Map.Entry<GlassTier.BlockMetaPair, Integer> pair : GlassTier.getGlassMap()

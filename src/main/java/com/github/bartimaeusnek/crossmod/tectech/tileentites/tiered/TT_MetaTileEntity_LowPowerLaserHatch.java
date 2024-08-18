@@ -13,18 +13,11 @@
 
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered;
 
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-
-import org.apache.commons.lang3.ArrayUtils;
-
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GT_Utility;
 
 public class TT_MetaTileEntity_LowPowerLaserHatch extends GT_MetaTileEntity_Hatch_EnergyTunnel
     implements LowPowerLaser {

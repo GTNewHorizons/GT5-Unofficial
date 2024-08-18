@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import net.minecraft.block.Block;
+
 import org.jetbrains.annotations.NotNull;
 
 public class GlassTier {

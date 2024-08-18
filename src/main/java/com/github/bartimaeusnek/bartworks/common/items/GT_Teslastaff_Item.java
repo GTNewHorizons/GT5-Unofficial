@@ -30,7 +30,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.google.common.collect.Sets;
 
 import cpw.mods.fml.relauncher.Side;

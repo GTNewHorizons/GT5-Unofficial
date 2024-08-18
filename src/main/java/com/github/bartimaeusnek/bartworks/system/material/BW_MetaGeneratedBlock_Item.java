@@ -24,7 +24,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import com.github.bartimaeusnek.bartworks.common.items.BW_ItemBlocks;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

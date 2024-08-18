@@ -25,7 +25,6 @@ import net.minecraft.util.IIcon;
 
 import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

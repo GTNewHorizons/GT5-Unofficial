@@ -13,17 +13,13 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
-import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_EnergyDistributor extends GT_MetaTileEntity_Transformer {
 

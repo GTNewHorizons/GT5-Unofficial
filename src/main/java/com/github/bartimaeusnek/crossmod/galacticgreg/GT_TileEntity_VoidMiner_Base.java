@@ -144,7 +144,11 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
                     + " Ores per Second depending on the Dimension it is build in")
             .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
             .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
-            .addInfo("Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED + "VOIDED" + EnumChatFormatting.RESET + ".")
+            .addInfo(
+                "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
+                    + "VOIDED"
+                    + EnumChatFormatting.RESET
+                    + ".")
             .addSeparator()
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
