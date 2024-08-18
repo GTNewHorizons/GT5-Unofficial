@@ -203,14 +203,12 @@ public class GregtechMetaTileEntity_SteamCompressor
         tierMachineCasing = -1;
         if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (tierMachineCasing < 0) return false;
-        if (tierMachineCasing == 1 && mCountCasing > 25
-            && checkHatches()) {
+        if (tierMachineCasing == 1 && mCountCasing > 25 && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
-        if (tierMachineCasing == 2 && mCountCasing > 25
-            && checkHatches()) {
+        if (tierMachineCasing == 2 && mCountCasing > 25 && checkHatches()) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
