@@ -137,6 +137,7 @@ public class GregtechMetaTileEntity_SteamMixer extends GregtechMeta_SteamMultiBa
         for (GT_MetaTileEntity_Hatch h : mSteamOutputs) h.updateTexture(getCasingTextureID());
         for (GT_MetaTileEntity_Hatch h : mSteamInputFluids) h.updateTexture(getCasingTextureID());
         for (GT_MetaTileEntity_Hatch h : mOutputHatches) h.updateTexture(getCasingTextureID());
+        for (GT_MetaTileEntity_Hatch h : mInputHatches) h.updateTexture(getCasingTextureID());
     }
 
     private int getCasingTextureID() {
