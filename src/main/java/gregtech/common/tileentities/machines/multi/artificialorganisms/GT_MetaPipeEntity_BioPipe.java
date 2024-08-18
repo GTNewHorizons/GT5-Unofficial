@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.multi.artificialorganisms;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -179,10 +179,12 @@ public class GT_MetaPipeEntity_BioPipe extends MetaPipeEntity implements IConnec
         return true;
     }
 
+    // Pipes recursively call this function on other pipes, returning a connections hashset.
     @Override
-    public ArrayList<IConnectsToBioPipe> getConnected(GT_MetaTileEntity_Hatch_BioOutput output,
-        ArrayList<IConnectsToBioPipe> connections) {
+    public HashSet<IConnectsToBioPipe> getConnected(GT_MetaTileEntity_Hatch_BioOutput output,
+        HashSet<IConnectsToBioPipe> connections) {
         networkOutput = output;
+        connections.add(this);
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if ((mConnections & 1 << side.ordinal()) == 0) {
                 continue; // if not connected continue
@@ -191,12 +193,11 @@ public class GT_MetaPipeEntity_BioPipe extends MetaPipeEntity implements IConnec
             if (next != null) {
                 IMetaTileEntity meta = ((IGregTechTileEntity) next).getMetaTileEntity();
                 if (meta instanceof IConnectsToBioPipe && !connections.contains(meta)) {
-                    connections.add((IConnectsToBioPipe) meta);
-                    return ((IConnectsToBioPipe) meta).getConnected(output, connections);
+                    connections.addAll(((IConnectsToBioPipe) meta).getConnected(output, connections));
                 }
             }
         }
-        return null;
+        return connections;
     }
 
     @Override

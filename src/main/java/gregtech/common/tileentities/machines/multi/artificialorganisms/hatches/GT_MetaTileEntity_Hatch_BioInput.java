@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.multi.artificialorganisms.hatches;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -55,11 +55,14 @@ public class GT_MetaTileEntity_Hatch_BioInput extends GT_MetaTileEntity_Hatch im
     }
 
     @Override
-    public ArrayList<IConnectsToBioPipe> getConnected(GT_MetaTileEntity_Hatch_BioOutput output,
-        ArrayList<IConnectsToBioPipe> connections) {
+    public HashSet<IConnectsToBioPipe> getConnected(GT_MetaTileEntity_Hatch_BioOutput output,
+        HashSet<IConnectsToBioPipe> connections) {
+        HashSet<IConnectsToBioPipe> c = new HashSet<>();
+        c.add(this);
         networkOutput = output;
-        connections.add(this);
-        return connections;
+        return c;
+        // connections.add(this);
+        // return connections;
     }
 
     @Override

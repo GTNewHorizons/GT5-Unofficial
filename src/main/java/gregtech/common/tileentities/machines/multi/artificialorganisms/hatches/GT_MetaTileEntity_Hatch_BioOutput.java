@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.multi.artificialorganisms.hatches;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -15,7 +15,7 @@ import gregtech.common.tileentities.machines.multi.artificialorganisms.util.ICon
 
 public class GT_MetaTileEntity_Hatch_BioOutput extends GT_MetaTileEntity_Hatch implements IConnectsToBioPipe {
 
-    ArrayList<IConnectsToBioPipe> pipenetwork;
+    public HashSet<IConnectsToBioPipe> pipenetwork;
     ArtificialOrganism currentSpecies = new ArtificialOrganism();
 
     public GT_MetaTileEntity_Hatch_BioOutput(int aID, String aName, String aNameRegional, int aTier) {
@@ -47,26 +47,27 @@ public class GT_MetaTileEntity_Hatch_BioOutput extends GT_MetaTileEntity_Hatch i
     }
 
     @Override
-    public ArrayList<IConnectsToBioPipe> getConnected(GT_MetaTileEntity_Hatch_BioOutput output,
-        ArrayList<IConnectsToBioPipe> connections) {
+    public HashSet<IConnectsToBioPipe> getConnected(GT_MetaTileEntity_Hatch_BioOutput output,
+        HashSet<IConnectsToBioPipe> connections) {
         IGregTechTileEntity baseTE = getBaseMetaTileEntity();
         TileEntity next = baseTE.getTileEntityAtSide(baseTE.getFrontFacing());
-        IMetaTileEntity meta = ((IGregTechTileEntity) next).getMetaTileEntity();
-        pipenetwork = new ArrayList<>();
-        pipenetwork.add(this);
-        if (meta instanceof IConnectsToBioPipe) return ((IConnectsToBioPipe) meta).getConnected(output, pipenetwork);
+        if (next != null) {
+            IMetaTileEntity meta = ((IGregTechTileEntity) next).getMetaTileEntity();
+            if (meta instanceof IConnectsToBioPipe)
+                return ((IConnectsToBioPipe) meta).getConnected(output, new HashSet<>());
+        }
         return null;
     }
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        pipenetwork = getConnected(this, new ArrayList<>());
+        pipenetwork = getConnected(this, new HashSet<>());
         super.onFirstTick(aBaseMetaTileEntity);
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aTick % 1200 == 0) pipenetwork = getConnected(this, new ArrayList<>());
+        if (aTick % 1200 == 0) pipenetwork = getConnected(this, new HashSet<>());
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 

@@ -39,7 +39,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Casings10;
 import gregtech.common.blocks.GT_Block_Casings2;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.GT_MetaTileEntity_Hatch_BioInput;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -56,6 +55,15 @@ public class GT_MetaTileEntity_AOAssembler extends
         .addElement(
             'B',
             ofChain(
+                buildHatchAdder(GT_MetaTileEntity_AOAssembler.class).adder(GT_MetaTileEntity_AOAssembler::addBioHatch)
+                    .hatchClass(GT_MetaTileEntity_Hatch_BioInput.class)
+                    .shouldReject(t -> !(t.bioHatch == null))
+                    .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                    .dot(2)
+                    .buildAndChain(
+                        onElementPass(
+                            GT_MetaTileEntity_AOAssembler::onCasingAdded,
+                            ofBlock(GregTech_API.sBlockCasings2, 0))),
                 buildHatchAdder(GT_MetaTileEntity_AOAssembler.class)
                     .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
                     .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
@@ -63,16 +71,16 @@ public class GT_MetaTileEntity_AOAssembler extends
                     .buildAndChain(
                         onElementPass(
                             GT_MetaTileEntity_AOAssembler::onCasingAdded,
-                            ofBlock(GregTech_API.sBlockCasings2, 0))),
-                buildHatchAdder(GT_MetaTileEntity_AOAssembler.class).adder(GT_MetaTileEntity_AOAssembler::addBioHatch)
-                    .hatchClass(GT_MetaTileEntity_Hatch_BioInput.class)
-                    .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
-                    .dot(2)
-                    .build()))
+                            ofBlock(GregTech_API.sBlockCasings2, 0)))))
         .addElement('A', Glasses.chainAllGlasses())
         .build();
 
     GT_MetaTileEntity_Hatch_BioInput bioHatch;
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        return super.onRunningTick(aStack);
+    }
 
     public GT_MetaTileEntity_AOAssembler(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
