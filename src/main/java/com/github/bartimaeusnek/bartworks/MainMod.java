@@ -131,7 +131,7 @@ public final class MainMod {
     }
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent init) {
+    public void init(FMLInitializationEvent ignored) {
         if (SideReference.Side.Client && ConfigHandler.tooltips)
             MinecraftForge.EVENT_BUS.register(new TooltipEventHandler());
         ServerEventHandler serverEventHandler = new ServerEventHandler();
@@ -149,7 +149,7 @@ public final class MainMod {
     }
 
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent postinit) {
+    public void postInit(FMLPostInitializationEvent ignored) {
 
         RecipeLoader.run();
 
@@ -174,12 +174,12 @@ public final class MainMod {
     }
 
     @Mod.EventHandler
-    public void onServerStarted(FMLServerStartedEvent event) {
+    public void onServerStarted(FMLServerStartedEvent ignored) {
         MainMod.runOnPlayerJoined(ConfigHandler.classicMode, ConfigHandler.disableExtraGassesForEBF);
     }
 
     @Mod.EventHandler
-    public void onModLoadingComplete(FMLLoadCompleteEvent event) {
+    public void onModLoadingComplete(FMLLoadCompleteEvent ignored) {
         removeIC2Recipes();
         StaticRecipeChangeLoaders.addElectricImplosionCompressorRecipes();
         PlatinumSludgeOverHaul.replacePureElements();
@@ -199,8 +199,6 @@ public final class MainMod {
             if (!disableExtraGasRecipes) StaticRecipeChangeLoaders.addEBFGasRecipes();
 
             if (classicMode) DownTierLoader.run();
-
-            // StaticRecipeChangeLoaders.patchEBFMapForCircuitUnification();
 
             recipesAdded = true;
         }

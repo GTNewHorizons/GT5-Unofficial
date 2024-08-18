@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import net.minecraft.block.Block;
+import org.jetbrains.annotations.NotNull;
 
 public class GlassTier {
 
@@ -20,7 +21,7 @@ public class GlassTier {
     public static void addCustomGlass(String modname, String unlocalisedBlockName, int meta, int tier) {
         Block block = findBlock(modname, unlocalisedBlockName);
         if (block != null) {
-            GlassTier.glasses.put(new BlockMetaPair(block, (byte) meta), tier);
+            addCustomGlass(block, meta, tier);
         } else {
             new IllegalArgumentException(
                 "Block: " + unlocalisedBlockName
@@ -28,6 +29,10 @@ public class GlassTier {
                     + modname
                     + " was NOT found when attempting to register a glass!").printStackTrace();
         }
+    }
+
+    public static void addCustomGlass(@NotNull Block block, int meta, int tier) {
+        GlassTier.glasses.put(new BlockMetaPair(block, (byte) meta), tier);
     }
 
     public static HashMap<BlockMetaPair, Integer> getGlassMap() {
