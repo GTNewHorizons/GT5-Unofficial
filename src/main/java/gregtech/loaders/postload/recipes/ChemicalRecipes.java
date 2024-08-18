@@ -1,6 +1,5 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -12,6 +11,8 @@ import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+import static gtPlusPlus.core.material.MISC_MATERIALS.CALCIUM_CHLORIDE;
+import static gtPlusPlus.core.material.MISC_MATERIALS.SODIUM_NITRATE;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.init.Blocks;
@@ -21,6 +22,9 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -30,6 +34,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.item.ModItems;
 
 public class ChemicalRecipes implements Runnable {
 
@@ -3706,7 +3711,7 @@ public class ChemicalRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 2),
-                getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 3L, 63))
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 3, 63))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(2000))
             .fluidOutputs(Materials.Hydrogen.getGas(2000))
             .duration(45 * SECONDS)
@@ -3721,7 +3726,7 @@ public class ChemicalRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 1),
-                getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 6L, 10052))
+                new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 6, 10052))
             .fluidInputs(Materials.SiliconTetrachloride.getFluid(1000))
             .duration(20 * SECONDS)
             .eut(30)
@@ -3743,8 +3748,9 @@ public class ChemicalRecipes implements Runnable {
         // 4CH2O + C2H4O =NaOH= C5H12O4 + CO
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                getModItem(GTPlusPlus.ID, "Formaldehyde", 4),
+            .itemInputs( // very poor way of looking for it, but getModItem on GT++ within GT5U jar is prohibited now,
+                // and i don't feel like reworking GT++ cell registration for now
+                GameRegistry.findItemStack(GTPlusPlus.ID, "Formaldehyde", 4),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1))
             .itemOutputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.Pentaerythritol, 21),
@@ -3776,7 +3782,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CalciumCarbide, 3),
                 GT_Utility.getIntegratedCircuit(1))
-            .itemOutputs(getModItem(GTPlusPlus.ID, "itemDustCalciumHydroxide", 5))
+            .itemOutputs(new ItemStack(ModItems.dustCalciumHydroxide, 5))
             .fluidInputs(Materials.Water.getFluid(2000))
             .fluidOutputs(MaterialsKevlar.Acetylene.getGas(1000))
             .duration(15 * SECONDS)
@@ -3789,9 +3795,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(
                 MaterialsKevlar.CobaltIINitrate.getDust(9),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 6))
-            .itemOutputs(
-                MaterialsKevlar.CobaltIIHydroxide.getDust(5),
-                getModItem(GTPlusPlus.ID, "itemDustSodiumNitrate", 10))
+            .itemOutputs(MaterialsKevlar.CobaltIIHydroxide.getDust(5), SODIUM_NITRATE.getDust(10))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(UniversalChemical);
@@ -5852,7 +5856,7 @@ public class ChemicalRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_Utility.getIntegratedCircuit(1),
-                getModItem(GTPlusPlus.ID, "itemDustCalciumChloride", 1),
+                CALCIUM_CHLORIDE.getDust(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 9),
                 GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 9))
             .fluidInputs(MaterialsKevlar.NMethylIIPyrrolidone.getFluid(1000))
@@ -5866,7 +5870,7 @@ public class ChemicalRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_Utility.getIntegratedCircuit(9),
-                getModItem(GTPlusPlus.ID, "itemDustCalciumChloride", 7),
+                CALCIUM_CHLORIDE.getDust(7),
                 GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 63),
                 GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 63))
             .fluidInputs(MaterialsKevlar.NMethylIIPyrrolidone.getFluid(7000))

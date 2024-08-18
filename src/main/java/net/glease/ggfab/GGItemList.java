@@ -27,6 +27,7 @@ public enum GGItemList implements IItemContainer {
     One_Use_craftingToolHardHammer,
     One_Use_craftingToolSoftHammer,
     One_Use_craftingToolScrewdriver,
+    One_Use_craftingToolSaw,
     Shape_One_Use_craftingToolFile,
     Shape_One_Use_craftingToolWrench,
     Shape_One_Use_craftingToolCrowbar,
@@ -34,6 +35,7 @@ public enum GGItemList implements IItemContainer {
     Shape_One_Use_craftingToolHardHammer,
     Shape_One_Use_craftingToolSoftHammer,
     Shape_One_Use_craftingToolScrewdriver,
+    Shape_One_Use_craftingToolSaw,
     // ordered section ends
     // endregion
     //

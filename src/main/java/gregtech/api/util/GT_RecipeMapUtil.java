@@ -1,8 +1,6 @@
 package gregtech.api.util;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.util.GT_Config.getStackConfigName;
-import static gregtech.api.util.GT_Utility.isArrayEmptyOrNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,32 +37,6 @@ public class GT_RecipeMapUtil {
         return r;
     };
 
-    public static final Function<GT_Recipe, String> FIRST_FLUID_INPUT = r -> isArrayEmptyOrNull(r.mFluidInputs) ? null
-        : r.mFluidInputs[0].getFluid()
-            .getName();
-    public static final Function<GT_Recipe, String> FIRST_FLUID_OUTPUT = r -> isArrayEmptyOrNull(r.mFluidInputs) ? null
-        : r.mFluidOutputs[0].getFluid()
-            .getName();
-    public static final Function<GT_Recipe, String> FIRST_FLUIDSTACK_INPUT = r -> isArrayEmptyOrNull(r.mFluidInputs)
-        ? null
-        : r.mFluidInputs[0].getUnlocalizedName();
-    public static final Function<GT_Recipe, String> FIRST_FLUIDSTACK_OUTPUT = r -> isArrayEmptyOrNull(r.mFluidOutputs)
-        ? null
-        : r.mFluidOutputs[0].getUnlocalizedName();
-    public static final Function<GT_Recipe, String> FIRST_ITEM_INPUT = r -> isArrayEmptyOrNull(r.mInputs) ? null
-        : getStackConfigName(r.mInputs[0]);
-    public static final Function<GT_Recipe, String> FIRST_ITEM_OUTPUT = r -> isArrayEmptyOrNull(r.mOutputs) ? null
-        : getStackConfigName(r.mOutputs[0]);
-    public static final Function<GT_Recipe, String> FIRST_ITEM_OR_FLUID_INPUT = r -> isArrayEmptyOrNull(r.mInputs)
-        ? isArrayEmptyOrNull(r.mFluidInputs) ? null
-            : r.mFluidInputs[0].getFluid()
-                .getName()
-        : getStackConfigName(r.mInputs[0]);
-    public static final Function<GT_Recipe, String> FIRST_ITEM_OR_FLUID_OUTPUT = r -> isArrayEmptyOrNull(r.mOutputs)
-        ? isArrayEmptyOrNull(r.mFluidOutputs) ? null
-            : r.mFluidOutputs[0].getFluid()
-                .getName()
-        : getStackConfigName(r.mOutputs[0]);
     private static final Map<String, IRecipeMap> addonRecipeMaps = new HashMap<>();
     private static final Multimap<String, Consumer<IRecipeMap>> delayedActions = ArrayListMultimap.create();
 

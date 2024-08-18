@@ -108,6 +108,15 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
     }
 
     @Override
+    public void sendToAll(GT_Packet aPacket) {
+        this.mChannel.get(Side.SERVER)
+            .attr(FMLOutboundHandler.FML_MESSAGETARGET)
+            .set(FMLOutboundHandler.OutboundTarget.ALL);
+        this.mChannel.get(Side.SERVER)
+            .writeAndFlush(aPacket);
+    }
+
+    @Override
     public void sendToServer(GT_Packet aPacket) {
         this.mChannel.get(Side.CLIENT)
             .attr(FMLOutboundHandler.FML_MESSAGETARGET)

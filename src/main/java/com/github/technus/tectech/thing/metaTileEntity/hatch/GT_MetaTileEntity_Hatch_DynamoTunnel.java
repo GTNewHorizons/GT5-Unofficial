@@ -2,7 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT;
 import static com.github.technus.tectech.util.CommonValues.TRANSFER_AT;
-import static com.github.technus.tectech.util.CommonValues.V;
+import static gregtech.api.enums.GT_Values.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -260,11 +260,6 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
-        return true;
-    }
-
-    @Override
-    public boolean useModularUI() {
         return true;
     }
 

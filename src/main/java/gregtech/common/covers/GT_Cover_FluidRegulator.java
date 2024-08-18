@@ -224,11 +224,6 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
         return new FluidRegulatorUIFactory(buildContext).createWindow();
     }

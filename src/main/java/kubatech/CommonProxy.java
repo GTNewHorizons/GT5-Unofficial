@@ -37,6 +37,7 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import gregtech.api.enums.Mods;
 import kubatech.commands.CommandHandler;
 import kubatech.config.Config;
 import kubatech.loaders.EIGBucketLoader;
@@ -59,11 +60,16 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(new PlayerDataManager());
         registerItems();
         registerBlocks();
-        MobHandlerLoader.init();
+        if (Mods.MobsInfo.isModLoaded()) {
+            MobHandlerLoader.init();
+        }
     }
 
     public void init(FMLInitializationEvent event) {
-        if (MineTweaker.isModLoaded()) MTLoader.init();
+        RecipeLoader.registerMTEs(); // crashes in preinit because EIG references some blocks from other mods.
+        if (MineTweaker.isModLoaded()) {
+            MTLoader.init();
+        }
     }
 
     public void postInit(FMLPostInitializationEvent event) {
