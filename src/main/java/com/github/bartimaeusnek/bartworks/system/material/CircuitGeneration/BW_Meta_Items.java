@@ -93,63 +93,6 @@ public class BW_Meta_Items {
                 BW_Util.CLEANROOM));
     }
 
-    public void addNewCircuit(int aTier, int aID, String aName) {
-
-        String additionalOreDictData = "";
-        String tooltip = "";
-        String aOreDictPrefix = OrePrefixes.circuit.toString();
-        switch (aTier) {
-            case 0 -> {
-                additionalOreDictData = Materials.ULV.toString();
-                tooltip = Materials.ULV.getToolTip();
-            }
-            case 1 -> {
-                additionalOreDictData = Materials.LV.toString();
-                tooltip = Materials.LV.getToolTip();
-            }
-            case 2 -> {
-                additionalOreDictData = Materials.MV.toString();
-                tooltip = Materials.MV.getToolTip();
-            }
-            case 3 -> {
-                additionalOreDictData = Materials.HV.toString();
-                tooltip = Materials.HV.getToolTip();
-            }
-            case 4 -> {
-                additionalOreDictData = Materials.EV.toString();
-                tooltip = Materials.EV.getToolTip();
-            }
-            case 5 -> {
-                additionalOreDictData = Materials.IV.toString();
-                tooltip = Materials.IV.getToolTip();
-            }
-            case 6 -> {
-                additionalOreDictData = Materials.LuV.toString();
-                tooltip = Materials.LuV.getToolTip();
-            }
-            case 7 -> {
-                additionalOreDictData = Materials.ZPM.toString();
-                tooltip = Materials.ZPM.getToolTip();
-            }
-            case 8 -> {
-                additionalOreDictData = Materials.UV.toString();
-                tooltip = Materials.UV.getToolTip();
-            }
-            case 9 -> {
-                additionalOreDictData = Materials.UHV.toString();
-                tooltip = Materials.UHV.getToolTip();
-            }
-            case 10 -> {
-                additionalOreDictData = Materials.UEV.toString();
-                tooltip = Materials.UEV.getToolTip();
-            }
-        }
-
-        ItemStack tStack = BW_Meta_Items.NEWCIRCUITS.addCircuit(aID, aName, tooltip, aTier);
-
-        GT_OreDictUnificator.registerOre((aOreDictPrefix + additionalOreDictData).replace(" ", ""), tStack);
-    }
-
     public static class BW_GT_MetaGenCircuits extends BW_Meta_Items.BW_GT_MetaGen_Item_Hook {
 
         public BW_GT_MetaGenCircuits() {
@@ -206,7 +149,7 @@ public class BW_Meta_Items {
                         0,
                         2,
                         aIconRegister.registerIcon(
-                            "gregtech:" + (GT_Config.troll ? "troll" : this.getUnlocalizedName() + "/" + i)),
+                            "gregtech:" + this.getUnlocalizedName() + "/" + i),
                         this.mIconList);
                 }
             }
