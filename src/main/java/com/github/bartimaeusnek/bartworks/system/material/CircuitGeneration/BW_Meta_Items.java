@@ -50,7 +50,6 @@ import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -99,32 +98,18 @@ public class BW_Meta_Items {
             super("bwMetaGeneratedItem0");
         }
 
-        public final ItemStack addCircuit(int aID, String aEnglish, String aToolTip, int tier) {
-            CircuitImprintLoader.bwCircuitTagMap.put(
-                new CircuitData(
-                    BW_Util.getMachineVoltageFromTier(Math.min(1, tier - 2)),
-                    tier > 2 ? BW_Util.CLEANROOM : 0,
-                    (byte) tier),
-                new ItemStack(BW_Meta_Items.NEWCIRCUITS, 1, aID));
-            return this.addItem(aID, aEnglish, aToolTip, SubTag.NO_UNIFICATION);
+        public final ItemStack getStack(int meta) {
+            return getStack(meta, 1);
         }
 
-        public final ItemStack getStack(int... meta_amount) {
-            ItemStack ret = new ItemStack(this);
-            if (meta_amount.length <= 0 || meta_amount.length > 2) return ret;
-            if (meta_amount.length == 1) {
-                ret.setItemDamage(meta_amount[0]);
-                return ret;
-            }
-            ret.setItemDamage(meta_amount[0]);
-            ret.stackSize = meta_amount[1];
-            return ret;
+        public final ItemStack getStack(int meta, int stackSize) {
+            return new ItemStack(this, stackSize, meta);
         }
 
-        public final ItemStack getStackWithNBT(NBTTagCompound tag, int... meta_amount) {
-            ItemStack ret = this.getStack(meta_amount);
-            ret.setTagCompound(tag);
-            return ret;
+        public final ItemStack getStackWithNBT(NBTTagCompound tag, int meta, int stackSize) {
+            ItemStack itemStack = getStack(meta, stackSize);
+            itemStack.setTagCompound(tag);
+            return itemStack;
         }
 
         @Override
@@ -176,22 +161,28 @@ public class BW_Meta_Items {
 
         @Override
         protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-            if (aStack.getItemDamage() == 0) if (aStack.getTagCompound() != null
-                && CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()) != null)
-                aList.add(
-                    "An Imprint for: " + GT_LanguageManager.getTranslation(
-                        GT_LanguageManager.getTranslateableItemStackName(
-                            CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()))));
-            else aList.add("An Imprint for a Circuit");
-            else if (aStack.getItemDamage() == 1) if (aStack.getTagCompound() != null
-                && CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()) != null)
-                aList.add(
-                    "A Sliced " + GT_LanguageManager.getTranslation(
-                        GT_LanguageManager.getTranslateableItemStackName(
-                            CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()))));
-            else aList.add("A Sliced Circuit");
+            if (aStack.getTagCompound() != null) {
+                ItemStack tagStack = CircuitImprintLoader.getStackFromTag(aStack.getTagCompound());
+                String itemName = tagStack != null
+                    ? GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(tagStack))
+                    : "a circuit";
+
+                if (aStack.getItemDamage() == 0) {
+                    aList.add("An imprint for: " + itemName);
+                } else if (aStack.getItemDamage() == 1) {
+                    aList.add("A sliced " + itemName);
+                }
+            } else {
+                if (aStack.getItemDamage() == 0) {
+                    aList.add("An imprint for a Circuit");
+                } else if (aStack.getItemDamage() == 1) {
+                    aList.add("A sliced Circuit");
+                }
+            }
+
             super.addAdditionalToolTips(aList, aStack, aPlayer);
         }
+
     }
 
     public static class BW_GT_MetaGen_Item_Hook extends GT_MetaBase_Item {
