@@ -204,7 +204,8 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
                 throw new RuntimeException(
                     "Could not construct GT NEI Handler cache for category " + recipeCategory
                         + ", display name "
-                        + recipeNameDisplay);
+                        + recipeNameDisplay,
+                    e);
             }
         }
         return cache;
