@@ -15,7 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.obj.*;
-import net.minecraftforge.common.util.ForgeDirection;
+import org.joml.Matrix4fStack;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -25,7 +25,6 @@ import org.lwjgl.opengl.GL20;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -37,12 +36,17 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
     private static final int FLOATS_P_VERT = 5;
     // 6 faces, two tris per, 3 vertices per, five floats per
     private static final float[] steamBoxTris = new float[6 * 2 * 3 * FLOATS_P_VERT];
-    private static final int VERTEX_COUNT = steamBoxTris.length / 3;
+    private static final int VERTEX_COUNT = steamBoxTris.length / FLOATS_P_VERT;
 
+    private static int uModelProjection;
     private static int uTime;
     private static int uHeight;
     private static int uUV;
     private static int vertBuf;
+
+    // Since TESRs are singlethreaded, we can use just the one
+    private static final Matrix4fStack modelProjectionMatrix = new Matrix4fStack(2);
+    private static final FloatBuffer projMatBuf = BufferUtils.createFloatBuffer(16);
 
     public FiretubeRenderer() {
         ClientRegistry.bindTileEntitySpecialRenderer(Tile.class, this);
@@ -90,13 +94,13 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
                 steamProgram.use();
 
                 // Register uniforms
+                uModelProjection = steamProgram.getUniformLocation("u_ModelProjection");
                 uTime = steamProgram.getUniformLocation("u_Time");
                 uHeight = steamProgram.getUniformLocation("u_Height");
                 uUV = steamProgram.getUniformLocation("u_UV");
                 /*
                 aVertexID = cableProgram.getAttribLocation("vertexId");
 
-                uModelProjectionMatrix = cableProgram.getUniformLocation("u_ModelProjection");
                 uBlockTex = cableProgram.getUniformLocation("u_BlockTex");
                 uSectionHeight = cableProgram.getUniformLocation("u_SectionHeight");
                 uBaseY = cableProgram.getUniformLocation("u_BaseY");
@@ -135,6 +139,11 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
                 uTime,
                 ((tile.getWorldObj().getWorldInfo().getWorldTotalTime() % 60) + timeSinceLastTick) / 60f);
             GL20.glUniform1f(uHeight, 1);
+
+            modelProjectionMatrix.identity();
+            modelProjectionMatrix.translate((float) x, (float) y, (float) z);
+            modelProjectionMatrix.get(0, projMatBuf);
+            GL20.glUniformMatrix4(uModelProjection, false, projMatBuf);
 
             // Draw a bunch of vertices, under the effect of the shaders
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertBuf);
