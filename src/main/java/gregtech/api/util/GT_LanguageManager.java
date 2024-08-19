@@ -559,11 +559,11 @@ public class GT_LanguageManager {
 
         addStringLocalization("Item_DESCRIPTION_Index_000", "Stored Heat: %s");
         addStringLocalization("Item_DESCRIPTION_Index_001", "Durability: %s/%s");
-        addStringLocalization("Item_DESCRIPTION_Index_002", "%s lvl %s");
+        addStringLocalization("Item_DESCRIPTION_Index_002", "%s Tier %s");
         addStringLocalization("Item_DESCRIPTION_Index_003", "Attack Damage: %s");
         addStringLocalization("Item_DESCRIPTION_Index_004", "Mining Speed: %s");
-        addStringLocalization("Item_DESCRIPTION_Index_005", "Turbine Efficiency: %s");
-        addStringLocalization("Item_DESCRIPTION_Index_006", "Optimal Steam flow: %s L/t");
+        addStringLocalization("Item_DESCRIPTION_Index_005", "Base Efficiency: %s");
+        addStringLocalization("Item_DESCRIPTION_Index_006", "Fuel | Optimal Flow > EU/t Produced | Efficiency");
         addStringLocalization("Item_DESCRIPTION_Index_007", "Energy from Optimal Gas Flow: %s EU/t");
         addStringLocalization("Item_DESCRIPTION_Index_008", "Energy from Optimal Plasma Flow: %s EU/t");
         addStringLocalization("Item_DESCRIPTION_Index_009", "Contains %s EU   Tier: %s");
