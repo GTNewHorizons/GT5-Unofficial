@@ -43,25 +43,32 @@ public class TreePanel extends ModularPanel {
         return (TreePanel) new TreePanel(name, containers, widgetForTech).size(width, height);
     }
 
-    Pos2d getWidgetCenter(IWidget widget) {
+    Pos2d getWidgetCenterRight(IWidget widget, int thickness) {
         Area area = widget.getArea();
-        return new Pos2d(area.x + area.width / 2, area.y + area.height / 2);
+        return new Pos2d(area.x + area.width - thickness, area.y + area.height / 2);
     }
 
-    private void drawLine(GuiContext context, WidgetTheme widgetTheme, IWidget start, IWidget end) {
+    Pos2d getWidgetCenterLeft(IWidget widget, int thickness) {
+        Area area = widget.getArea();
+        return new Pos2d(area.x + thickness, area.y + area.height / 2);
+    }
+
+    private void drawLine(GuiContext context, WidgetTheme widgetTheme, IWidget start, IWidget end, int thickness) {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
         GL11.glShadeModel(GL11.GL_SMOOTH);
-        Pos2d startPos = getWidgetCenter(start);
-        Pos2d endPos = getWidgetCenter(end);
 
-        // Create coordinates for a 4-pixel thick line (hopefully)
+        // Start pos is the center right pixel of the widget
+        Pos2d startPos = getWidgetCenterRight(start, thickness);
+        Pos2d endPos = getWidgetCenterLeft(end, thickness);
+
+        // Create coordinates for a diagonal line quad
         // Source: https://forums.ogre3d.org/viewtopic.php?t=57710
-        int thickness = 4;
         Pos2d diff = endPos.subtract(startPos);
         double distance = startPos.distance(endPos);
+        // x/y swap is not a typo
         double dx = (-diff.y / distance) * thickness;
         double dy = (diff.x / distance) * thickness;
         Pos2d q1 = new Pos2d(startPos.x - dx, startPos.y - dy);
@@ -76,10 +83,11 @@ public class TreePanel extends ModularPanel {
         bufferbuilder.pos(q2.x, q2.y, 0.0f)
             .color(255, 255, 255, 255)
             .endVertex();
-        bufferbuilder.pos(q3.x, q3.y, 0.0f)
+        // Not a typo, CCW order needed
+        bufferbuilder.pos(q4.x, q4.y, 0.0f)
             .color(255, 255, 255, 255)
             .endVertex();
-        bufferbuilder.pos(q4.x, q4.y, 0.0f)
+        bufferbuilder.pos(q3.x, q3.y, 0.0f)
             .color(255, 255, 255, 255)
             .endVertex();
         Tessellator.instance.draw();
@@ -102,7 +110,7 @@ public class TreePanel extends ModularPanel {
                 // For each dependent technology, draw a line to it
                 for (ITechnology depTech : tech.getChildren()) {
                     IWidget depWidget = widgetForTech.get(depTech.getInternalName());
-                    drawLine(context, widgetTheme, child, depWidget);
+                    drawLine(context, widgetTheme, child, depWidget, 2);
                 }
             }
         }
