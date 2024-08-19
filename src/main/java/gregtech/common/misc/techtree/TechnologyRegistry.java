@@ -42,4 +42,8 @@ public class TechnologyRegistry {
     public static ITechnology findTechnology(String internalName) {
         return registeredTechs.get(internalName);
     }
+
+    public static int numTechnologies() {
+        return registeredTechs.size();
+    }
 }

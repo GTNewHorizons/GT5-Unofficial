@@ -11,7 +11,6 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.GuiSyncManager;
 import com.cleanroommc.modularui.widget.ScrollWidget;
 import com.cleanroommc.modularui.widget.scroll.HorizontalScrollData;
-import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
@@ -40,7 +39,7 @@ public class TechTreeGui {
     }
 
     public static IWidget buildTechWidget(TechTreeGuiData data, ITechnology tech) {
-        return new TechSelectorButton<>().size(120, 16)
+        return new TechSelectorButton<>().size(60, 16)
             .overlay(IKey.lang(tech.getUnlocalizedName()))
             .onMousePressed(mouseButton -> {
                 // Make this tech the selected technology
@@ -63,16 +62,16 @@ public class TechTreeGui {
             .coverChildrenWidth();
     }
 
-    public static Column getTechContainer(int depth, ArrayList<Column> containers) {
+    public static Column getTechContainer(int layer, ArrayList<Column> containers) {
         // If this container already exists, simply return it
-        if (depth < containers.size()) return containers.get(depth);
-        // If it doesn't extend the list with new container objects until the needed depth is reached
+        if (layer < containers.size()) return containers.get(layer);
+        // If it doesn't extend the list with new container objects until the needed layer is reached
         int n = containers.size();
-        for (int i = n; i <= depth; ++i) {
+        for (int i = n; i <= layer; ++i) {
             containers.add(i, makeTechContainer(i));
         }
         // Then return the container
-        return containers.get(depth);
+        return containers.get(layer);
     }
 
     public static ModularPanel buildUI(TechTreeGuiData data, GuiSyncManager syncManager) {
@@ -82,14 +81,15 @@ public class TechTreeGui {
 
         mainPanel.child(buildTitle());
 
+        TechTreeLayout layout = TechTreeLayout.constructOrGet();
+
         // Index into the list specifies the depth of the technology
         ArrayList<Column> techContainers = new ArrayList<>();
 
         Collection<ITechnology> techs = TechnologyRegistry.getTechnologies();
         for (ITechnology tech : techs) {
             IWidget techWidget = buildTechWidget(data, tech);
-            // Find the depth of the tech and make a column for it if it doesn't exist yet
-            Column container = getTechContainer(tech.getDepth(), techContainers);
+            Column container = getTechContainer(layout.layerInfo.getDisplayLayer(tech), techContainers);
             container.child(techWidget);
         }
 

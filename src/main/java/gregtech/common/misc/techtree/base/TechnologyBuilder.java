@@ -1,5 +1,9 @@
 package gregtech.common.misc.techtree.base;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import gregtech.common.misc.techtree.TechList;
 import gregtech.common.misc.techtree.TechnologyRegistry;
 import gregtech.common.misc.techtree.interfaces.IPrerequisite;
 
@@ -44,6 +48,20 @@ public class TechnologyBuilder {
      * @return The researchable tech, so you can store it for easy referencing
      */
     public Technology buildAndRegister() {
+        // If no prerequisite technology exists, add the hidden root tech as a prerequisite
+        boolean foundTech = false;
+        for (IPrerequisite prereq : this.prereqs) {
+            if (prereq.getTechnology() != null) {
+                foundTech = true;
+                break;
+            }
+        }
+        if (!foundTech) {
+            // Add root tech to the list
+            ArrayList<IPrerequisite> prereqs = new ArrayList<>(Arrays.asList(this.prereqs));
+            prereqs.add(TechList.HiddenRoot);
+            this.prereqs = prereqs.toArray(new IPrerequisite[] {});
+        }
         Technology tech = new Technology(this.internalName, this.unlocalizedname, this.prereqs);
         TechnologyRegistry.register(tech);
         return tech;
