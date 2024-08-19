@@ -22,9 +22,10 @@ import static net.minecraft.util.EnumChatFormatting.YELLOW;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -44,9 +45,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -65,7 +63,7 @@ public class GT_MetaTileEntity_LargeFluidExtractor
     private static final double SPEED_PER_COIL = 0.1;
     private static final int PARALLELS_PER_SOLENOID = 8;
     private static final double SOLENOID_EU_PENALTY = 0.25;
-    private static final double HEATING_COIL_EU_BONUS = 0.05;
+    private static final double HEATING_COIL_EU_DISCOUNT = 0.05;
 
     // spotless:off
     private static final IStructureDefinition<GT_MetaTileEntity_LargeFluidExtractor> STRUCTURE_DEFINITION = StructureDefinition
@@ -128,7 +126,9 @@ public class GT_MetaTileEntity_LargeFluidExtractor
     // spotless:on
 
     private byte mGlassTier = 0;
+    @Nullable
     private HeatingCoilLevel mCoilLevel = null;
+    @Nullable
     private Byte mSolenoidLevel = null;
     private int mCasingAmount;
     private boolean mBadStructure = false, mStructureBadGlassTier = false, mStructureBadCasingCount = false;
@@ -198,6 +198,9 @@ public class GT_MetaTileEntity_LargeFluidExtractor
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(GT_Utility.roundUpVoltage(this.getMaxInputVoltage()));
         logic.setAvailableAmperage(1L);
+        logic.setEuModifier((float) (getEUMultiplier()));
+        logic.setMaxParallel(getParallels());
+        logic.setSpeedBonus((float) (getSpeedBonus()));
     }
 
     @Override
@@ -275,12 +278,20 @@ public class GT_MetaTileEntity_LargeFluidExtractor
             .addInfo(String.format(
                 "Every coil tier above Cupronickel gives +%d%% speed and a %d%% EU/t discount",
                 (int) (SPEED_PER_COIL * 100),
-                (int) (HEATING_COIL_EU_BONUS * 100)
+                (int) (HEATING_COIL_EU_DISCOUNT * 100)
             ))
             .addInfo(String.format(
                 "Every solenoid tier gives +%d parallels and a %d%% EU/t penalty (multiplicative)",
                 (int) (PARALLELS_PER_SOLENOID),
                 (int) (SOLENOID_EU_PENALTY * 100)
+            ))
+            .addInfo(String.format(
+                "The EU multiplier is %s%.2f * (%.2f ^ Solenoid Tier) * (1 - %.2f * Heating Coil Tier)%s, prior to overclocks",
+                EnumChatFormatting.ITALIC,
+                BASE_EU_DISCOUNT,
+                1 + SOLENOID_EU_PENALTY,
+                HEATING_COIL_EU_DISCOUNT,
+                EnumChatFormatting.GRAY
             ))
             .addInfo("The energy hatch tier is limited by the glass tier")
             .addSeparator()
@@ -315,11 +326,6 @@ public class GT_MetaTileEntity_LargeFluidExtractor
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10_000;
-    }
-
-    @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new LFEProcessingLogic();
     }
 
     @Override
@@ -379,22 +385,9 @@ public class GT_MetaTileEntity_LargeFluidExtractor
         }
 
         data.add(String.format("Max Parallels: %s%d%s", YELLOW, getParallels(), RESET));
-
         data.add(String.format("Heating Coil Speed Bonus: +%s%.0f%s %%", YELLOW, getSpeedBonus() * 100, RESET));
-
-        data.add(
-            String.format(
-                "Total Speed Multiplier: %s%.0f%s %%",
-                YELLOW,
-                (getSpeedBonus() + BASE_SPEED_BONUS) * 100,
-                RESET));
-
-        data.add(
-            String.format(
-                "Total EU/t Multiplier: %s%.0f%s %%",
-                YELLOW,
-                BASE_EU_DISCOUNT * getEUMultiplier() * 100,
-                RESET));
+        data.add(String.format("Total Speed Multiplier: %s%.0f%s %%", YELLOW, getSpeedBonus() * 100, RESET));
+        data.add(String.format("Total EU/t Multiplier: %s%.0f%s %%", YELLOW, getEUMultiplier() * 100, RESET));
 
         return data.toArray(new String[data.size()]);
     }
@@ -403,31 +396,15 @@ public class GT_MetaTileEntity_LargeFluidExtractor
         return Math.max(1, mSolenoidLevel == null ? 0 : (PARALLELS_PER_SOLENOID * mSolenoidLevel));
     }
 
-    public double getSpeedBonus() {
-        return mCoilLevel == null ? 0 : SPEED_PER_COIL * mCoilLevel.getTier();
+    public float getSpeedBonus() {
+        return (float) (BASE_SPEED_BONUS + (mCoilLevel == null ? 0 : SPEED_PER_COIL * mCoilLevel.getTier()));
     }
 
-    public double getEUMultiplier() {
-        double heatingBonus = 1 / (1 + mCoilLevel.getTier() * HEATING_COIL_EU_BONUS);
-        double solenoidPenalty = Math.pow(1 + SOLENOID_EU_PENALTY, (double) mSolenoidLevel);
+    public float getEUMultiplier() {
+        double heatingBonus = 1 - (mCoilLevel == null ? 0 : mCoilLevel.getTier() * HEATING_COIL_EU_DISCOUNT);
+        double solenoidPenalty = mSolenoidLevel == null ? 1
+            : Math.pow(1 + SOLENOID_EU_PENALTY, (double) mSolenoidLevel);
 
-        return solenoidPenalty * heatingBonus;
-    }
-
-    private class LFEProcessingLogic extends ProcessingLogic {
-
-        @Override
-        @Nonnull
-        protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
-            return super.createParallelHelper(recipe).setEUtModifier((float) (BASE_EU_DISCOUNT * getEUMultiplier()))
-                .setMaxParallel(getParallels());
-        }
-
-        @Override
-        @Nonnull
-        protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
-            return super.createOverclockCalculator(recipe).setSpeedBoost((float) (getSpeedBonus() + BASE_SPEED_BONUS))
-                .setEUtDiscount((float) (BASE_EU_DISCOUNT * getEUMultiplier()));
-        }
+        return (float) (BASE_EU_DISCOUNT * solenoidPenalty * heatingBonus);
     }
 }
