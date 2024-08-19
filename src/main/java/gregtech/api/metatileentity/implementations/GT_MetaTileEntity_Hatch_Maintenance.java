@@ -362,11 +362,6 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         if (mAuto) {
             getBaseMetaTileEntity().add2by2Slots(builder);

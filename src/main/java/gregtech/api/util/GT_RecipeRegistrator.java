@@ -52,7 +52,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.SetMultimap;
 
 import cpw.mods.fml.relauncher.ReflectionHelper;
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -305,11 +304,8 @@ public class GT_RecipeRegistrator {
                 continue;
             }
             if (tMaterial.mMaterial.contains(SubTag.METAL)) {
-                if (GT_Mod.gregtechproxy.mArcSmeltIntoAnnealed) {
-                    tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mArcSmeltInto;
-                } else {
-                    tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mSmeltInto;
-                }
+
+                tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mArcSmeltInto;
                 continue;
             }
             tMaterial.mAmount = 0;

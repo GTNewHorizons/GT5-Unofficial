@@ -87,6 +87,7 @@ public class TecTech {
             .bus()
             .register(enderWorldSavedData);
         MinecraftForge.EVENT_BUS.register(enderWorldSavedData);
+        TecTechEventHandlers.init();
 
         TecTechRecipeMaps.init();
         MainLoader.preLoad();

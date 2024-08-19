@@ -158,11 +158,6 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         if (mTier == 4) {
             getBaseMetaTileEntity()

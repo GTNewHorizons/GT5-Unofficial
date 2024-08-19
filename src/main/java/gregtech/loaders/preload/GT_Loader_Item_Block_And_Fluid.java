@@ -87,6 +87,7 @@ import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.items.GT_NeutronReflector_Item;
 import gregtech.common.items.GT_TierDrone;
 import gregtech.common.items.GT_VolumetricFlask;
+import gregtech.common.items.GT_WirelessHeadphones;
 import gregtech.common.tileentities.render.TileDrone;
 import gregtech.common.tileentities.render.TileLaser;
 import gregtech.common.tileentities.render.TileWormhole;
@@ -160,6 +161,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         new GT_MetaGenerated_Item_99();
         new GT_MetaGenerated_Tool_01();
         new GT_FluidDisplayItem();
+        new GT_WirelessHeadphones();
 
         // Tiered recipe materials actually appear to be set in GT_MetaTileEntity_BasicMachine_GT_Recipe, making these
         // unused
@@ -556,6 +558,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockTintedGlass = new GT_Block_TintedIndustrialGlass();
         GregTech_API.sLaserRender = new GT_Block_Laser();
         GregTech_API.sWormholeRender = new GT_WormholeRenderBlock();
+
         // meta ID order, DO NOT CHANGE ORDER
 
         GregTech_API.sBlockMetal1 = new GT_Block_Metal(
@@ -681,8 +684,10 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GT_Log.out.println("GT_Mod: Registering the DroneRender.");
         GameRegistry.registerTileEntity(TileDrone.class, "DroneRender");
+
         GT_Log.out.println("GT_Mod: Registering the LaserRender.");
         GameRegistry.registerTileEntity(TileLaser.class, "LaserRenderer");
+
         GT_Log.out.println("GT_Mod: Registering the WormholeRender.");
         GameRegistry.registerTileEntity(TileWormhole.class, "WormholeRender");
 

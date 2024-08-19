@@ -408,11 +408,6 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
         return null;
     }
 
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     @Override

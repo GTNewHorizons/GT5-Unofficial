@@ -8,7 +8,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemPickaxe;
 
-import gregtech.GT_Mod;
 import gregtech.api.util.GT_Utility;
 
 public class GT_BlockResistanceLoader implements Runnable {
@@ -16,14 +15,6 @@ public class GT_BlockResistanceLoader implements Runnable {
     @Override
     @SuppressWarnings("unchecked")
     public void run() {
-        if (GT_Mod.gregtechproxy.mHardRock) {
-            Blocks.stone.setHardness(16.0F);
-            Blocks.brick_block.setHardness(32.0F);
-            Blocks.hardened_clay.setHardness(32.0F);
-            Blocks.stained_hardened_clay.setHardness(32.0F);
-            Blocks.cobblestone.setHardness(12.0F);
-            Blocks.stonebrick.setHardness(24.0F);
-        }
         Blocks.stone.setResistance(10.0F);
         Blocks.cobblestone.setResistance(10.0F);
         Blocks.stonebrick.setResistance(10.0F);

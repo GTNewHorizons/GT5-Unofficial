@@ -115,11 +115,6 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
         // Only open gui if we're placed on a fluid tank
         if (buildContext.getTile() instanceof IFluidHandler) {

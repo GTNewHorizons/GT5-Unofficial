@@ -42,7 +42,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEnti
             aNameRegional,
             6,
             0,
-            new String[] { "Slave for Crafting Input Buffer/Bus",
+            new String[] { "Proxy for Crafting Input Buffer/Bus",
                 "Link with Crafting Input Buffer/Bus using Data Stick to share inventory",
                 "Left click on the Crafting Input Buffer/Bus, then right click on this block to link them", });
         disableSort = true;

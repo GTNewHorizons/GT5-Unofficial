@@ -146,11 +146,6 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_BasicMachine {
         return new GT_MetaTileEntity_Pump(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
     private static final FallbackableUITexture progressBarTexture = GT_UITextures
         .fallbackableProgressbar("pump", GT_UITextures.PROGRESSBAR_CANNER);
 
