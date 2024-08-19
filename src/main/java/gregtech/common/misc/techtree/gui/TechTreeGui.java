@@ -2,6 +2,7 @@ package gregtech.common.misc.techtree.gui;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -12,7 +13,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ScrollWidget;
 import com.cleanroommc.modularui.widget.scroll.HorizontalScrollData;
 import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
@@ -22,8 +22,8 @@ import gregtech.common.misc.techtree.interfaces.ITechnology;
 
 public class TechTreeGui {
 
-    public static ModularPanel buildMainPanel() {
-        return ModularPanel.defaultPanel("Technology Tree")
+    public static TreePanel buildMainPanel(ArrayList<TechLayer> containers, HashMap<String, IWidget> widgetForTech) {
+        return (TreePanel) TreePanel.defaultPanel("Technology Tree", containers, widgetForTech)
             .full()
             .background(UITextures.BACKGROUND_SCREEN_BLUE);
     }
@@ -58,12 +58,12 @@ public class TechTreeGui {
             }));
     }
 
-    public static Flow makeTechContainer(int depth) {
-        return new Column().marginRight(40)
+    public static TechLayer makeTechContainer(int layer) {
+        return (TechLayer) new TechLayer().marginRight(40)
             .coverChildrenWidth();
     }
 
-    public static Flow getTechContainer(int layer, ArrayList<Flow> containers) {
+    public static TechLayer getTechContainer(int layer, ArrayList<TechLayer> containers) {
         // If this container already exists, simply return it
         if (layer < containers.size()) return containers.get(layer);
         // If it doesn't extend the list with new container objects until the needed layer is reached
@@ -78,28 +78,29 @@ public class TechTreeGui {
     public static ModularPanel buildUI(TechTreeGuiData data, PanelSyncManager syncManager) {
         data.getNEISettings()
             .disableNEI();
-        ModularPanel mainPanel = buildMainPanel();
-
-        mainPanel.child(buildTitle());
 
         TechTreeLayout layout = TechTreeLayout.constructOrGet();
-
-        // Index into the list specifies the depth of the technology
-        ArrayList<Flow> techContainers = new ArrayList<>();
+        // Index into the list specifies the layer of the technology
+        ArrayList<TechLayer> techContainers = new ArrayList<>();
+        HashMap<String, IWidget> widgetForTech = new HashMap<>();
 
         Collection<ITechnology> techs = TechnologyRegistry.getTechnologies();
         for (ITechnology tech : techs) {
             IWidget techWidget = buildTechWidget(data, tech);
-            Flow container = getTechContainer(layout.layerInfo.getDisplayLayer(tech), techContainers);
-            container.child(techWidget);
+            TechLayer container = getTechContainer(layout.layerInfo.getDisplayLayer(tech), techContainers);
+            container.addTechnology(tech, techWidget);
+            widgetForTech.put(tech.getInternalName(), techWidget);
         }
+
+        TreePanel mainPanel = buildMainPanel(techContainers, widgetForTech);
+        mainPanel.child(buildTitle());
 
         Flow treeParent = new Row().align(Alignment.TopLeft)
             // Cover all columns with width (at least)
             .coverChildrenWidth();
 
         // Now add all containers as children of the main row
-        for (Flow container : techContainers) {
+        for (TechLayer container : techContainers) {
             treeParent.child(container);
         }
 

@@ -221,9 +221,18 @@ public class TechTreeLayout {
     private static TechTreeLayout construct() {
         // Construct layout information of the technology tree based on the current technology registry.
 
+        // Step 1 in constructing a layout is dividing all the nodes in the tree into layers. We can give this
+        // procedure a maximum amount of nodes per layer, to limit the width of each layer.
+
         // TODO: Parameter to configure this somehow, or decide based on gui layout
         final int maxWidth = 3;
         Layering layers = calculateLayering(maxWidth);
+
+        // Step 2 is re-ordering the nodes inside each layer to minimize the number of crossings between edges
+        // in the newly layered graph. This is a NP-hard problem, so the solution will not be efficient either way.
+        // While complex hybrid algorithms are possible, this doesn't seem to be worth it, so we will be going with a
+        // common and relatively simple heuristic-based algorithm instead.
+
         return new TechTreeLayout(layers);
     }
 
