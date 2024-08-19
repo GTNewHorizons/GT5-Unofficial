@@ -653,15 +653,15 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         // then dry recipes
         // then with fewer inputs
         if (this.mEUt != recipe.mEUt) {
-            return this.mEUt - recipe.mEUt;
+            return Integer.compare(this.mEUt, recipe.mEUt);
         } else if (this.mDuration != recipe.mDuration) {
-            return this.mDuration - recipe.mDuration;
+            return Integer.compare(this.mDuration, recipe.mDuration);
         } else if (this.mSpecialValue != recipe.mSpecialValue) {
-            return this.mSpecialValue - recipe.mSpecialValue;
+            return Integer.compare(this.mSpecialValue, recipe.mSpecialValue);
         } else if (this.mFluidInputs.length != recipe.mFluidInputs.length) {
-            return this.mFluidInputs.length - recipe.mFluidInputs.length;
+            return Integer.compare(this.mFluidInputs.length, recipe.mFluidInputs.length);
         } else if (this.mInputs.length != recipe.mInputs.length) {
-            return this.mInputs.length - recipe.mInputs.length;
+            return Integer.compare(this.mInputs.length, recipe.mInputs.length);
         }
         return 0;
     }
