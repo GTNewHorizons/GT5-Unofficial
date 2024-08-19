@@ -8,11 +8,12 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.value.sync.GuiSyncManager;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ScrollWidget;
 import com.cleanroommc.modularui.widget.scroll.HorizontalScrollData;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.gui.modularui2.UITextures;
@@ -57,12 +58,12 @@ public class TechTreeGui {
             }));
     }
 
-    public static Column makeTechContainer(int depth) {
+    public static Flow makeTechContainer(int depth) {
         return new Column().marginRight(40)
             .coverChildrenWidth();
     }
 
-    public static Column getTechContainer(int layer, ArrayList<Column> containers) {
+    public static Flow getTechContainer(int layer, ArrayList<Flow> containers) {
         // If this container already exists, simply return it
         if (layer < containers.size()) return containers.get(layer);
         // If it doesn't extend the list with new container objects until the needed layer is reached
@@ -74,7 +75,7 @@ public class TechTreeGui {
         return containers.get(layer);
     }
 
-    public static ModularPanel buildUI(TechTreeGuiData data, GuiSyncManager syncManager) {
+    public static ModularPanel buildUI(TechTreeGuiData data, PanelSyncManager syncManager) {
         data.getNEISettings()
             .disableNEI();
         ModularPanel mainPanel = buildMainPanel();
@@ -84,21 +85,21 @@ public class TechTreeGui {
         TechTreeLayout layout = TechTreeLayout.constructOrGet();
 
         // Index into the list specifies the depth of the technology
-        ArrayList<Column> techContainers = new ArrayList<>();
+        ArrayList<Flow> techContainers = new ArrayList<>();
 
         Collection<ITechnology> techs = TechnologyRegistry.getTechnologies();
         for (ITechnology tech : techs) {
             IWidget techWidget = buildTechWidget(data, tech);
-            Column container = getTechContainer(layout.layerInfo.getDisplayLayer(tech), techContainers);
+            Flow container = getTechContainer(layout.layerInfo.getDisplayLayer(tech), techContainers);
             container.child(techWidget);
         }
 
-        Row treeParent = new Row().align(Alignment.TopLeft)
+        Flow treeParent = new Row().align(Alignment.TopLeft)
             // Cover all columns with width (at least)
             .coverChildrenWidth();
 
         // Now add all containers as children of the main row
-        for (Column container : techContainers) {
+        for (Flow container : techContainers) {
             treeParent.child(container);
         }
 

@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
-import com.cleanroommc.modularui.value.sync.GuiSyncManager;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_LanguageManager;
@@ -33,8 +33,7 @@ public class ItemTechAccessor extends Item implements IGuiHolder<TechTreeGuiData
         return new ModularScreen(mainPanel);
     }
 
-    @Override
-    public ModularPanel buildUI(TechTreeGuiData data, GuiSyncManager syncManager) {
+    public ModularPanel buildUI(TechTreeGuiData data, PanelSyncManager syncManager) {
         return TechTreeGui.buildUI(data, syncManager);
     }
 

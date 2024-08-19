@@ -1573,9 +1573,13 @@ gt.time.second.plural=seconds
 gt.wrench.mode.1=Line Mode
 
 #Researchable technologies
-gt.tech.debug.name=DebugTech 9000
-gt.tech.debug2.name=DebugTech 9001
-gt.tech.debug3.name=DebugTech 9002
+gt.tech.a.name=Tech A
+gt.tech.b.name=Tech B
+gt.tech.c.name=Tech C
+gt.tech.d.name=Tech D
+gt.tech.e.name=Tech E
+gt.tech.f.name=Tech F
+gt.tech.g.name=Tech G
 
 #Tech tree gui
 gt.gui.techtree.title=Technology Tree
