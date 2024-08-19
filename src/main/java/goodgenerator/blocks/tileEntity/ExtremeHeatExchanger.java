@@ -209,7 +209,7 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
             .addOtherStructurePart("Input Hatch", "Distilled water. Any bottom left/right side casing", 1)
             .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam/Steam. Any top layer casing", 2)
             .addOtherStructurePart("Input Hatch", "Hot fluid or plasma. Front middle on 4th layer", 3)
-            .addOtherStructurePart("Output Hatch", "Cold fluid", 4)
+            .addOtherStructurePart("Output Hatch", "Cold fluid. Back middle on 4th layer", 4)
             .addMaintenanceHatch("Any Casing", 1, 2, 5)
             .addCasingInfoMin("Robust Tungstensteel Machine Casings", 25, false)
             .toolTipFinisher("Good Generator");
