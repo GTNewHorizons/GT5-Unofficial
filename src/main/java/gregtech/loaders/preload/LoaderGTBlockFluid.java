@@ -19,6 +19,7 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
+import gregtech.common.tileentities.machines.multi.fuelboilers.FiretubeRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -561,6 +562,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sLaserRender = new BlockLaser();
         GregTechAPI.sWormholeRender = new BlockWormholeRender();
         GregTechAPI.sBlackholeRender = new BlockBlackholeRenderer();
+        GregTechAPI.sFiretubeRender = new FiretubeRenderer.Block();
 
         // meta ID order, DO NOT CHANGE ORDER
 
@@ -698,6 +700,10 @@ public class LoaderGTBlockFluid implements Runnable {
         GameRegistry.registerTileEntity(TileEntityBlackhole.class, "BlackholeRender");
 
         GTLog.out.println("GTMod: Registering the BaseMetaPipeEntity.");
+        GTLog.out.println("GT_Mod: Registering the FiretubeRender.");
+        GameRegistry.registerTileEntity(FiretubeRenderer.Tile.class, "FiretubeRender");
+
+        GTLog.out.println("GT_Mod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
         FMLInterModComms.sendMessage(AppliedEnergistics2.ID, "whitelist-spatial", BaseMetaPipeEntity.class.getName());
 
