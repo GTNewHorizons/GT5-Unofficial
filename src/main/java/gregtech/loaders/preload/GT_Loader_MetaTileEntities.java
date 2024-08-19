@@ -11135,8 +11135,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_CraftingInput_Bus_Slave.set(
             new GT_MetaTileEntity_Hatch_CraftingInput_Slave(
                 CRAFTING_INPUT_SLAVE.ID,
-                "hatch.crafting_input.slave",
-                "Crafting Input Slave").getStackForm(1L));
+                "hatch.crafting_input.proxy",
+                "Crafting Input Proxy").getStackForm(1L));
     }
 
     private static void registerMagHatch() {
