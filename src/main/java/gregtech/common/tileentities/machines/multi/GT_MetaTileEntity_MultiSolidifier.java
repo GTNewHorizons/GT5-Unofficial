@@ -28,7 +28,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaVacuumFreezer;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -36,6 +40,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
@@ -94,6 +99,35 @@ public class GT_MetaTileEntity_MultiSolidifier extends
     private static final int SOLIDIFIER_CASING_INDEX = ((GT_Block_Casings10) GregTech_API.sBlockCasings10)
         .getTextureIndex(3);
     private static final int DTPF_CASING_INDEX = ((GT_Block_Casings1) GregTech_API.sBlockCasings1).getTextureIndex(12);
+
+    private GT_MetaTileEntity_MultiSolidifier.CoolingFluid currentCoolingFluid = null;
+    private static final ArrayList<GT_MetaTileEntity_MultiSolidifier.CoolingFluid> COOLING_FLUIDS = new ArrayList<>(
+        Arrays.asList(
+            new GT_MetaTileEntity_MultiSolidifier.CoolingFluid(MaterialsUEVplus.SpaceTime, 1, 7500),
+            new GT_MetaTileEntity_MultiSolidifier.CoolingFluid(MaterialsUEVplus.Space, 2, 5000),
+            new GT_MetaTileEntity_MultiSolidifier.CoolingFluid(MaterialsUEVplus.Eternity, 3, 2500)));
+    private static class CoolingFluid {
+
+        public Materials material;
+        public static int speedMultiplier;
+        // Consumption per second of runtime
+        public long amount;
+
+        public CoolingFluid(Materials material, int speedMultiplier, long amount) {
+            this.material = material;
+            this.speedMultiplier = speedMultiplier;
+            this.amount = amount;
+        }
+
+        public FluidStack getStack() {
+            FluidStack stack = material.getFluid(amount);
+            // FUCK THIS FUCK THIS FUCK THIS
+            if (stack == null) {
+                return material.getMolten(amount);
+            }
+            return stack;
+        }
+    }
 
     private final Map<Integer, Pair<Block, Integer>> tieredFluidSolidifierCasings = new HashMap<>() {
 
@@ -408,10 +442,20 @@ public class GT_MetaTileEntity_MultiSolidifier extends
         }
         return true;
     }
+    public CoolingFluid findCoolingFluid() {
+        // Loop over all hatches and find the first match with a valid fluid
+        for (GT_MetaTileEntity_Hatch_Input hatch : mInputHatches) {
+            Optional<CoolingFluid> fluid = COOLING_FLUIDS.stream()
+                .filter(candidate -> drain(hatch, candidate.getStack(), false))
+                .findFirst();
+            if (fluid.isPresent()) return fluid.get();
+        }
+        return null;
+    }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2F)
+        return new ProcessingLogic().setSpeedBonus(CoolingFluid.speedMultiplier / 2F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
