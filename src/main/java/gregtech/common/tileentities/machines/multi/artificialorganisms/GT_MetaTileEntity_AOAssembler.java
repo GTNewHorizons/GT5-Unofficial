@@ -16,6 +16,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import gregtech.api.objects.ArtificialOrganism;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GT_Recipe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,6 +47,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings2;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.GT_MetaTileEntity_Hatch_BioInput;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class GT_MetaTileEntity_AOAssembler extends
     GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_AOAssembler> implements ISurvivalConstructable {
@@ -76,6 +82,8 @@ public class GT_MetaTileEntity_AOAssembler extends
         .build();
 
     GT_MetaTileEntity_Hatch_BioInput bioHatch;
+
+    private int AOsInUse = 0;
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
@@ -196,9 +204,33 @@ public class GT_MetaTileEntity_AOAssembler extends
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                ArtificialOrganism currentOrganism = getAO();
+                if (currentOrganism == null) return SimpleCheckRecipeResult.ofFailure("missing_ao");
+                else if (currentOrganism.getCount() <= 0) return SimpleCheckRecipeResult.ofFailure("insufficient_ao");
+                else if (currentOrganism.getIntelligence() <= 0) return SimpleCheckRecipeResult.ofFailure("ao_too_stupid");
 
+                AOsInUse = currentOrganism.consumeAOs(50);
+                return super.validateRecipe(recipe);
+            }
+
+            @Override
+            public ProcessingLogic clear() {
+                ArtificialOrganism currentOrganism = getAO();
+                if (currentOrganism != null) {
+                    AOsInUse -= currentOrganism.replenishAOs(AOsInUse);
+                }
+                return super.clear();
+            }
         }.setSpeedBonus(1F / 2F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
+    }
+
+    private ArtificialOrganism getAO() {
+        if (bioHatch != null) return bioHatch.getAO();
+        return null;
     }
 
     @Override
@@ -215,7 +247,7 @@ public class GT_MetaTileEntity_AOAssembler extends
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.assemblerRecipes;
+        return RecipeMaps.assemblylineVisualRecipes;
     }
 
     public int getMaxParallelRecipes() {
