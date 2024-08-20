@@ -2312,112 +2312,106 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
     }
 
     public static void registerRecipes(GT_Proxy.OreDictEventContainer aOre) {
-        if ((aOre.mEvent.Ore == null) || (aOre.mEvent.Ore.getItem() == null)) {
+        if ((aOre.mEvent.Ore == null) || (aOre.mEvent.Ore.getItem() == null) || (aOre.mPrefix == null) ||
+            (aOre.mPrefix.isIgnored(aOre.mMaterial))) {
             return;
         }
         if (aOre.mEvent.Ore.stackSize != 1) {
             aOre.mEvent.Ore.stackSize = 1;
         }
-        if (aOre.mPrefix != null) {
-            if (!aOre.mPrefix.isIgnored(aOre.mMaterial)) {
-                aOre.mPrefix.processOre(
-                    aOre.mMaterial == null ? Materials._NULL : aOre.mMaterial,
-                    aOre.mEvent.Name,
-                    aOre.mModID,
-                    GT_Utility.copyAmount(1, aOre.mEvent.Ore));
-            }
-        } else {
-            // GT_FML_LOGGER.info("Thingy Name: "+ aOre.mEvent.Name+ " !!!Unknown 'Thingy' detected!!! This
-            // Object seems to probably not follow a valid OreDictionary Convention, or I missed a Convention. Please
-            // report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag
-            // Source, it is just an Information, which you should pass to me.");
-        }
+
+        aOre.mPrefix.processOre(
+            aOre.mMaterial == null ? Materials._NULL : aOre.mMaterial,
+            aOre.mEvent.Name,
+            aOre.mModID,
+            GT_Utility.copyAmount(1, aOre.mEvent.Ore));
     }
 
     @SubscribeEvent
     public void onPlayerTickEventServer(TickEvent.PlayerTickEvent aEvent) {
-        if ((aEvent.side.isServer()) && (aEvent.phase == TickEvent.Phase.END) && (!aEvent.player.isDead)) {
-            if ((aEvent.player.ticksExisted % 200 == 0) && (aEvent.player.capabilities.allowEdit)
-                && (!aEvent.player.capabilities.isCreativeMode)
-                && (this.mSurvivalIntoAdventure)) {
-                aEvent.player.setGameType(GameType.ADVENTURE);
-                aEvent.player.capabilities.allowEdit = false;
-                if (this.mAxeWhenAdventure) {
-                    GT_Utility.sendChatToPlayer(
-                        aEvent.player,
-                        GT_LanguageManager.addStringLocalization(
-                            "Interaction_DESCRIPTION_Index_097",
-                            "It's dangerous to go alone! Take this."));
-                    aEvent.player.worldObj.spawnEntityInWorld(
-                        new EntityItem(
-                            aEvent.player.worldObj,
-                            aEvent.player.posX,
-                            aEvent.player.posY,
-                            aEvent.player.posZ,
-                            GT_MetaGenerated_Tool_01.INSTANCE
-                                .getToolWithStats(ID_MetaTool_01.AXE.ID, 1, Materials.Flint, Materials.Wood, null)));
-                }
+        if ((!aEvent.side.isServer()) || (aEvent.phase == TickEvent.Phase.END) || (aEvent.player.isDead)){
+            return;
+        }
+
+        if ((aEvent.player.ticksExisted % 200 == 0) && (aEvent.player.capabilities.allowEdit)
+            && (!aEvent.player.capabilities.isCreativeMode)
+            && (this.mSurvivalIntoAdventure)) {
+            aEvent.player.setGameType(GameType.ADVENTURE);
+            aEvent.player.capabilities.allowEdit = false;
+            if (this.mAxeWhenAdventure) {
+                GT_Utility.sendChatToPlayer(
+                    aEvent.player,
+                    GT_LanguageManager.addStringLocalization(
+                        "Interaction_DESCRIPTION_Index_097",
+                        "It's dangerous to go alone! Take this."));
+                aEvent.player.worldObj.spawnEntityInWorld(
+                    new EntityItem(
+                        aEvent.player.worldObj,
+                        aEvent.player.posX,
+                        aEvent.player.posY,
+                        aEvent.player.posZ,
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(ID_MetaTool_01.AXE.ID, 1, Materials.Flint, Materials.Wood, null)));
             }
-            final boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);
+        }
+        final boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);
 
-            if (aEvent.player.ticksExisted % 120 != 0) {
-                return;
+        if (aEvent.player.ticksExisted % 120 != 0) {
+            return;
+        }
+
+        int tCount = 64;
+        for (int i = 0; i < 36; i++) {
+            final ItemStack tStack = aEvent.player.inventory.getStackInSlot(i);
+            if (tStack == null) {
+                continue;
             }
 
-            int tCount = 64;
-            for (int i = 0; i < 36; i++) {
-                final ItemStack tStack = aEvent.player.inventory.getStackInSlot(i);
-                if (tStack == null) {
-                    continue;
-                }
-
-                if (!aEvent.player.capabilities.isCreativeMode) {
-                    GT_Utility
-                        .applyRadioactivity(aEvent.player, GT_Utility.getRadioactivityLevel(tStack), tStack.stackSize);
-                    final float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
-                    if (tHeat != 0.0F) {
-                        if (tHeat > 0.0F) {
-                            GT_Utility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
-                        } else {
-                            GT_Utility.applyFrostDamage(aEvent.player, -tHeat);
-                        }
+            if (!aEvent.player.capabilities.isCreativeMode) {
+                GT_Utility
+                    .applyRadioactivity(aEvent.player, GT_Utility.getRadioactivityLevel(tStack), tStack.stackSize);
+                final float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
+                if (tHeat != 0.0F) {
+                    if (tHeat > 0.0F) {
+                        GT_Utility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
+                    } else {
+                        GT_Utility.applyFrostDamage(aEvent.player, -tHeat);
                     }
                 }
-                if (tHungerEffect) {
-                    tCount += tStack.stackSize * 64 / Math.max(1, tStack.getMaxStackSize());
-                }
-                if (this.mInventoryUnification) {
-                    GT_OreDictUnificator.setStack(true, tStack);
-                }
-
-            }
-            for (int i = 0; i < 4; i++) {
-                final ItemStack tStack = aEvent.player.inventory.armorInventory[i];
-                if (tStack == null) {
-                    continue;
-                }
-
-                if (!aEvent.player.capabilities.isCreativeMode) {
-                    GT_Utility
-                        .applyRadioactivity(aEvent.player, GT_Utility.getRadioactivityLevel(tStack), tStack.stackSize);
-                    final float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
-                    if (tHeat != 0.0F) {
-                        if (tHeat > 0.0F) {
-                            GT_Utility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
-                        } else {
-                            GT_Utility.applyFrostDamage(aEvent.player, -tHeat);
-                        }
-                    }
-                }
-                if (tHungerEffect) {
-                    tCount += 256;
-                }
-
             }
             if (tHungerEffect) {
-                aEvent.player.addExhaustion(Math.max(1.0F, tCount / 666.6F));
+                tCount += tStack.stackSize * 64 / Math.max(1, tStack.getMaxStackSize());
+            }
+            if (this.mInventoryUnification) {
+                GT_OreDictUnificator.setStack(true, tStack);
             }
 
+        }
+        for (int i = 0; i < 4; i++) {
+            final ItemStack tStack = aEvent.player.inventory.armorInventory[i];
+            if (tStack == null) {
+                continue;
+            }
+
+            if (!aEvent.player.capabilities.isCreativeMode) {
+                GT_Utility
+                    .applyRadioactivity(aEvent.player, GT_Utility.getRadioactivityLevel(tStack), tStack.stackSize);
+                final float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
+                if (tHeat != 0.0F) {
+                    if (tHeat > 0.0F) {
+                        GT_Utility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
+                    } else {
+                        GT_Utility.applyFrostDamage(aEvent.player, -tHeat);
+                    }
+                }
+            }
+            if (tHungerEffect) {
+                tCount += 256;
+            }
+
+        }
+        if (tHungerEffect) {
+            aEvent.player.addExhaustion(Math.max(1.0F, tCount / 666.6F));
         }
     }
 

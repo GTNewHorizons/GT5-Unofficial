@@ -368,6 +368,7 @@ public class GT_Mod implements IGT_Mod {
             return;
         }
 
+        // Seems only used by GGFab so far
         for (Runnable tRunnable : GregTech_API.sBeforeGTPostload) {
             try {
                 tRunnable.run();
