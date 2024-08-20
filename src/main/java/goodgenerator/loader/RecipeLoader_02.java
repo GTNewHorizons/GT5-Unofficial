@@ -1834,7 +1834,7 @@ public class RecipeLoader_02 {
             .addTo(plasmaForgeRecipes);
     }
 
-    public static float EHEEfficiencyMultiplier = 1.2f;
+    public static float EHEEfficiencyMultiplier = 0.7f;
 
     public static void FinishLoadRecipe() {
         for (GT_Recipe plasmaFuel : RecipeMaps.plasmaFuels.getAllRecipes()) {
@@ -1863,13 +1863,13 @@ public class RecipeLoader_02 {
                 if (output == null) output = FluidRegistry.getFluidStack("molten." + tOutName, tPlasma.amount);
                 if (output != null) {
                     long waterAmount = (long) (tUnit * EHEEfficiencyMultiplier * tPlasma.amount / 160);
-                    long criticalSteamAmount = (long) (tUnit * EHEEfficiencyMultiplier * tPlasma.amount / 100);
+                    long criticalSteamAmount = (long) (tUnit * EHEEfficiencyMultiplier * tPlasma.amount / 1000);
                     MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
                         tPlasma,
                         output,
                         FluidRegistry.getFluidStack("ic2distilledwater", (int) waterAmount),
                         FluidRegistry.getFluidStack("ic2superheatedsteam", 0), // Plasma always outputs SC steam.
-                        FluidRegistry.getFluidStack("supercriticalsteam", (int) criticalSteamAmount),
+                        Materials.DenseSupercriticalSteam.getGas(criticalSteamAmount),
                         1);
                 }
             }

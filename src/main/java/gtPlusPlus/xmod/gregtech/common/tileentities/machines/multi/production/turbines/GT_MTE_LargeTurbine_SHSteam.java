@@ -9,6 +9,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GT_Mod;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -25,6 +26,7 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
 
     public boolean achievement = false;
     private boolean looseFit = false;
+    private boolean isUsingDenseSteam;
 
     public GT_MTE_LargeTurbine_SHSteam(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -68,20 +70,19 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
     long fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers) {
         if (looseFit) {
             aOptFlow *= 4;
+            final double flowMultiplier = Math.pow(1.1f, ((aBaseEff - 7500) / 10000F) * 10f);
             if (aBaseEff > 10000) {
-                aOptFlow *= Math.pow(1.1f, ((aBaseEff - 7500) / 10000F) * 20f);
-                aBaseEff = 7500;
-            } else if (aBaseEff > 7500) {
-                aOptFlow *= Math.pow(1.1f, ((aBaseEff - 7500) / 10000F) * 20f);
-                aBaseEff *= 0.75f;
-            } else {
-                aBaseEff *= 0.75f;
+                aOptFlow *= flowMultiplier;
             }
+            aBaseEff *= 0.75f;
         }
-        // prevent overflow like that in SC Steam
+
         long tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
+        float denseFlow = 0;
+        float steamFlowForNextSteam = 0;
+        int steamInHatch = 0;
 
         // Variable required outside of loop for
         // multi-hatch scenarios.
@@ -89,38 +90,69 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
 
         int remainingFlow = MathUtils.safeInt((long) (realOptFlow * 1.25f)); // Allowed to use up to
         // 125% of optimal flow.
+        float remainingDenseFlow = 0;
+
+        boolean hasConsumedSteam = false;
 
         storedFluid = 0;
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
             String fluidName = aFluids.get(i)
                 .getFluid()
                 .getUnlocalizedName(aFluids.get(i));
-            if (fluidName.equals("ic2.fluidSuperheatedSteam")) {
-                flow = Math.min(aFluids.get(i).amount, remainingFlow); // try to use up w/o exceeding remainingFlow
-                depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
-                this.storedFluid += aFluids.get(i).amount;
-                remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
-                totalFlow += flow; // track total input used
-                if (!achievement) {
-                    try {
-                        GT_Mod.achievements.issueAchievement(
-                            this.getBaseMetaTileEntity()
-                                .getWorld()
-                                .getPlayerEntityByName(
-                                    this.getBaseMetaTileEntity()
-                                        .getOwnerName()),
-                            "efficientsteam");
-                    } catch (Exception e) {}
-                    achievement = true;
+            switch (fluidName) {
+                case "ic2.fluidSuperheatedSteam" -> {
+                    if (!hasConsumedSteam) {
+                        hasConsumedSteam = true;
+                        isUsingDenseSteam = false;
+                    } else if (isUsingDenseSteam) {
+                        continue;
+                    }
+                    flow = Math.min(aFluids.get(i).amount, remainingFlow); // try to use up w/o exceeding remainingFlow
+                    depleteInput(new FluidStack(aFluids.get(i), flow)); // deplete that amount
+                    this.storedFluid += aFluids.get(i).amount;
+                    remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
+                    totalFlow += flow; // track total input used
+                    if (!achievement) {
+                        try {
+                            GT_Mod.achievements.issueAchievement(
+                                this.getBaseMetaTileEntity()
+                                    .getWorld()
+                                    .getPlayerEntityByName(
+                                        this.getBaseMetaTileEntity()
+                                            .getOwnerName()),
+                                "efficientsteam");
+                        } catch (Exception e) {}
+                        achievement = true;
+                    }
                 }
-            } else if (fluidName.equals("fluid.steam") || fluidName.equals("ic2.fluidSteam")
-                || fluidName.equals("fluid.mfr.steam.still.name")) {
-                    depleteInput(new FluidStack(aFluids.get(i), aFluids.get(i).amount));
+                case "fluid.densesuperheatedsteam" -> {
+                    if (!hasConsumedSteam) {
+                        hasConsumedSteam = true;
+                        isUsingDenseSteam = true;
+                    } else if (!isUsingDenseSteam) {
+                        continue;
+                    }
+                    steamInHatch = aFluids.get(i).amount;
+                    remainingDenseFlow = (float) remainingFlow / 1000; // Dense Steam is 1000x the EU value
+                    denseFlow = Math.min(steamInHatch, remainingDenseFlow); // try to use up w/o exceeding
+                                                                            // remainingDenseFlow
+                    depleteInput(new FluidStack(aFluids.get(i), (int) denseFlow)); // deplete that amount
+                    this.storedFluid += aFluids.get(i).amount;
+                    remainingFlow -= denseFlow * 1000; // track amount we're allowed to continue depleting from hatches
+                    totalFlow += denseFlow * 1000; // track total input used
+                    steamFlowForNextSteam += denseFlow;
                 }
+                case "fluid.steam", "ic2.fluidSteam", "fluid.mfr.steam.still.name" -> depleteInput(
+                    new FluidStack(aFluids.get(i), aFluids.get(i).amount));
+            }
         }
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
-        addOutput(GT_ModHandler.getSteam(totalFlow));
+        if (isUsingDenseSteam) {
+            addOutput(Materials.DenseSteam.getGas((long) steamFlowForNextSteam));
+        } else {
+            addOutput(GT_ModHandler.getSteam(totalFlow));
+        }
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);
             // if(totalFlow>aOptFlow){efficiency = 1.0f;}

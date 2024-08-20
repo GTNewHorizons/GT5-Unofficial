@@ -950,6 +950,18 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials TengamAttuned  = new MaterialBuilder(112, TextureSet.SET_MAGNETIC, "Attuned Tengam") .addDustItems().addGearItems().addMetalItems().addToolHeadItems().setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 4), new TC_AspectStack(TC_Aspects.ELECTRUM, 1))).setColor(Dyes.dyeLime).setName("TengamAttuned") .setRGB(213, 255, 128).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UV);
     public static Materials TengamRaw      = new MaterialBuilder(110, TextureSet.SET_ROUGH,    "Raw Tengam")     .addOreItems()                                                   .setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 1), new TC_AspectStack(TC_Aspects.ELECTRUM, 4))).setColor(Dyes.dyeLime).setName("TengamRaw")     .setRGB(160, 191,  96).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UV);
 
+    public static Materials DenseSteam = makeDenseSteam();
+    private static Materials makeDenseSteam() {
+        return new MaterialBuilder(232, TextureSet.SET_FLUID , "Dense Steam").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).constructMaterial();
+    }
+    public static Materials DenseSuperheatedSteam = makeDenseSuperheatedSteam();
+    private static Materials makeDenseSuperheatedSteam() {
+        return new MaterialBuilder(233, TextureSet.SET_FLUID , "Dense Superheated Steam").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).constructMaterial();
+    }
+    public static Materials DenseSupercriticalSteam = makeDenseSupercriticalSteam();
+    private static Materials makeDenseSupercriticalSteam() {
+        return new MaterialBuilder(234, TextureSet.SET_FLUID , "Dense Supercritical Steam").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).constructMaterial();
+    }
     // Activated Carbon Line
     public static Materials ActivatedCarbon = new MaterialBuilder(563, TextureSet.SET_DULL, "Activated Carbon")
         .addDustItems()

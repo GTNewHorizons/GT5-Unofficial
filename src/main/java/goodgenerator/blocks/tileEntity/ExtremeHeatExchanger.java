@@ -264,8 +264,15 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
             Fluid tReadySteam = transformed ? tRunningRecipe.getHeatedSteam() : tRunningRecipe.getNormalSteam();
             int waterAmount = (int) (this.mEUt / getUnitSteamPower(tReadySteam.getName())) / 160;
             if (waterAmount < 0) return false;
+            int steamToOutput;
             if (depleteInput(GT_ModHandler.getDistilledWater(waterAmount))) {
-                addOutput(new FluidStack(tReadySteam, waterAmount * 160));
+                if (tRunningRecipe.mFluidInputs[0].getUnlocalizedName()
+                    .contains("plasma")) {
+                    steamToOutput = waterAmount * 160 / 1000;
+                } else {
+                    steamToOutput = waterAmount * 160;
+                }
+                addOutput(new FluidStack(tReadySteam, steamToOutput));
             } else {
                 GT_Log.exp.println(this.mName + " had no more Distilled water!");
                 mHotFluidHatch.getBaseMetaTileEntity()
@@ -277,16 +284,13 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
     }
 
     public double getUnitSteamPower(String steam) {
-        switch (steam) {
-            case "steam":
-                return 0.5;
-            case "ic2superheatedsteam":
-                return 1;
-            case "supercriticalsteam":
-                return 100;
-            default:
-                return -1;
-        }
+        return switch (steam) {
+            case "steam" -> 0.5;
+            case "ic2superheatedsteam" -> 1;
+            case "supercriticalsteam" -> 100;
+            case "densesupercriticalsteam" -> 1;
+            default -> -1;
+        };
     }
 
     @Override
