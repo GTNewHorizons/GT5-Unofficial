@@ -94,10 +94,23 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
         return new GT_MetaTileEntity_EM_transformer(mName);
     }
 
+    // Gives a one-chance grace period for deforming the multi. This is to allow you to hotswap hatches without
+    // powerfailing due to an unlucky tick timing - this grace period is already a part of base TecTech but the
+    // tick timer is essentially random, so it was extremely unreliable. Now you are guaranteed the length
+    // of one structure check to finish your hotswap before it deforms.
+    private boolean grace = false;
+
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         casingCount = 0;
-        return structureCheck_EM("main", 1, 1, 0) && casingCount >= 5;
+        if (structureCheck_EM("main", 1, 1, 0) && casingCount >= 5) {
+            grace = true;
+            return true;
+        } else if (grace) {
+            grace = false;
+            return true;
+        }
+        return false;
     }
 
     @Override
