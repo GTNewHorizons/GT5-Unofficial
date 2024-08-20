@@ -260,7 +260,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
 
         List<ItemStack> tInput = getStoredInputs();
         List<FluidStack> tInputFluid = getStoredFluids();
-        long availableEUt = getMaxInputVoltage();
+        long availableEUt = GT_Utility.roundUpVoltage(getMaxInputVoltage());
         if (availableEUt < RECIPE_EUT) {
             return CheckRecipeResultRegistry.insufficientPower(RECIPE_EUT);
         }
