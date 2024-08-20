@@ -1732,8 +1732,7 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
                 }
             }
             String tModToName = aMod + " -> " + aEvent.Name;
-            if ((this.mOreDictActivated) || (GregTech_API.sPostloadStarted)
-                || ((this.mSortToTheEnd) && (GregTech_API.sLoadFinished))) {
+            if (this.mOreDictActivated || GregTech_API.sPostloadStarted || GregTech_API.sLoadFinished) {
                 tModToName = aOriginalMod + " --Late--> " + aEvent.Name;
             }
             if (((aEvent.Ore.getItem() instanceof ItemBlock))

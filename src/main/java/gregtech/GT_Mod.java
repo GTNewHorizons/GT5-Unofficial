@@ -336,11 +336,10 @@ public class GT_Mod implements IGT_Mod {
 
         new GT_Loader_MetaTileEntities_Recipes().run();
 
-        if (gregtechproxy.mSortToTheEnd) {
-            new GT_ItemIterator().run();
-            gregtechproxy.registerUnificationEntries();
-            new GT_FuelLoader().run();
-        }
+        new GT_ItemIterator().run();
+        gregtechproxy.registerUnificationEntries();
+        new GT_FuelLoader().run();
+
         if (Mods.Waila.isModLoaded()) {
             Waila.init();
         }
@@ -388,13 +387,9 @@ public class GT_Mod implements IGT_Mod {
                 }
             }
         }
-        if (gregtechproxy.mSortToTheEnd) {
-            gregtechproxy.registerUnificationEntries();
-        } else {
-            new GT_ItemIterator().run();
-            gregtechproxy.registerUnificationEntries();
-            new GT_FuelLoader().run();
-        }
+
+        gregtechproxy.registerUnificationEntries();
+
         new GT_BookAndLootLoader().run();
         new GT_ItemMaxStacksizeLoader().run();
         new GT_BlockResistanceLoader().run();
