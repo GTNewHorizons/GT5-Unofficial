@@ -2312,8 +2312,9 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
     }
 
     public static void registerRecipes(GT_Proxy.OreDictEventContainer aOre) {
-        if ((aOre.mEvent.Ore == null) || (aOre.mEvent.Ore.getItem() == null) || (aOre.mPrefix == null) ||
-            (aOre.mPrefix.isIgnored(aOre.mMaterial))) {
+        if ((aOre.mEvent.Ore == null) || (aOre.mEvent.Ore.getItem() == null)
+            || (aOre.mPrefix == null)
+            || (aOre.mPrefix.isIgnored(aOre.mMaterial))) {
             return;
         }
         if (aOre.mEvent.Ore.stackSize != 1) {
@@ -2329,7 +2330,7 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
 
     @SubscribeEvent
     public void onPlayerTickEventServer(TickEvent.PlayerTickEvent aEvent) {
-        if ((!aEvent.side.isServer()) || (aEvent.phase == TickEvent.Phase.END) || (aEvent.player.isDead)){
+        if ((!aEvent.side.isServer()) || (aEvent.phase == TickEvent.Phase.END) || (aEvent.player.isDead)) {
             return;
         }
 
