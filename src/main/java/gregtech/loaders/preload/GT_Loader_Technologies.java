@@ -31,11 +31,13 @@ public class GT_Loader_Technologies implements Runnable {
         TechList.TechE = new TechnologyBuilder("TechE").unlocalizedName("gt.tech.e.name")
             .prerequisites(TechList.TechB, TechList.TechC)
             .buildAndRegister();
-        TechList.TechF = new TechnologyBuilder("TechF").unlocalizedName("gt.tech.f.name")
-            .prerequisites(TechList.TechA, TechList.TechD)
-            .buildAndRegister();
+        /*
+         * TechList.TechF = new TechnologyBuilder("TechF").unlocalizedName("gt.tech.f.name")
+         * .prerequisites(TechList.TechA, TechList.TechD)
+         * .buildAndRegister();
+         */
         TechList.TechG = new TechnologyBuilder("TechG").unlocalizedName("gt.tech.g.name")
-            .prerequisites(TechList.TechF, TechList.TechC)
+            .prerequisites(TechList.TechC)
             .buildAndRegister();
     }
 }
