@@ -33,10 +33,15 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
     private static boolean isShaderInit;
     private static final WavefrontObject steamBoxObj = new WavefrontObject(new ResourceLocation("gregtech", "models/firetube.obj"));
     private static final int BYTES_P_FLOAT = 4;
-    private static final int FLOATS_P_VERT = 5;
+    private static final int POS_W = 3; // three floats for a XYZ
+    private static final int UV_W = 2; // two floats for a UV
+    private static final int STRIDE = POS_W + UV_W;
     // 6 faces, two tris per, 3 vertices per, five floats per
-    private static final float[] steamBoxTris = new float[6 * 2 * 3 * FLOATS_P_VERT];
-    private static final int VERTEX_COUNT = steamBoxTris.length / FLOATS_P_VERT;
+    private static final float[] steamBoxTris = new float[6 * 2 * 3 * STRIDE];
+    private static final int VERTEX_COUNT = steamBoxTris.length / STRIDE;
+
+    private static int aPos;
+    private static int aUV;
 
     private static int uModelProjection;
     private static int uTime;
@@ -50,6 +55,29 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
 
     public FiretubeRenderer() {
         ClientRegistry.bindTileEntitySpecialRenderer(Tile.class, this);
+
+        // Read the .obj to a float array
+        int i = 0;
+        for (final GroupObject go : steamBoxObj.groupObjects) {
+            for (final Face f : go.faces) {
+                i = addTri(f.vertices, f.textureCoordinates, 0, i);
+                i = addTri(f.vertices, f.textureCoordinates, 2, i);
+            }
+        }
+    }
+
+    private static int addTri(Vertex[] vs, TextureCoordinate[] tcs, int offset, int i) {
+        for (int ii = 0; ii < 3; ++ii) {
+            final Vertex v = vs[(ii + offset) % 4];
+            steamBoxTris[i++] = v.x;
+            steamBoxTris[i++] = v.y;
+            steamBoxTris[i++] = v.z;
+
+            // final TextureCoordinate tc = tcs[(ii + offset) % 4];
+            steamBoxTris[i++] = 1;//tc.u * dU + minU;
+            steamBoxTris[i++] = 1;//tc.v * dV + minU;
+        }
+        return i;
     }
 
     @Override
@@ -70,22 +98,7 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
                 final float dU = maxU - minU;
                 final float dV = maxV - minV;
 
-                // Read the .obj to a float array
-                int i = 0;
-                for (final GroupObject go : steamBoxObj.groupObjects) {
-                    for (final Face f : go.faces) {
-                        for (int ii = 0; ii < f.vertices.length; ++ii) {
-                            final Vertex v = f.vertices[ii];
-                            steamBoxTris[i++] = v.x;
-                            steamBoxTris[i++] = v.y;
-                            steamBoxTris[i++] = v.z;
 
-                            final TextureCoordinate tc = f.textureCoordinates[ii];
-                            steamBoxTris[i++] = tc.u * dU + minU;
-                            steamBoxTris[i++] = tc.v * dV + minU;
-                        }
-                    }
-                }
 
                 steamProgram = new ShaderProgram(
                     "gregtech",
@@ -93,27 +106,22 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
                     "shaders/firetube.frag.glsl");
                 steamProgram.use();
 
+                // Register attributes
+                aPos = steamProgram.getAttribLocation("pos");
+                aUV = steamProgram.getAttribLocation("uvIn");
+
                 // Register uniforms
                 uModelProjection = steamProgram.getUniformLocation("u_ModelProjection");
                 uTime = steamProgram.getUniformLocation("u_Time");
                 uHeight = steamProgram.getUniformLocation("u_Height");
                 uUV = steamProgram.getUniformLocation("u_UV");
-                /*
-                aVertexID = cableProgram.getAttribLocation("vertexId");
-
-                uBlockTex = cableProgram.getUniformLocation("u_BlockTex");
-                uSectionHeight = cableProgram.getUniformLocation("u_SectionHeight");
-                uBaseY = cableProgram.getUniformLocation("u_BaseY");
-                uGlowU = cableProgram.getUniformLocation("u_GlowU");
-                uGlowV = cableProgram.getUniformLocation("u_GlowV");
-                */
 
                 // Bind vertex buffer
                 vertBuf = GL15.glGenBuffers();
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertBuf);
                 // Make a 3x-sized buffer to act as a vec3 position input to the shader.
-                final ByteBuffer vertexIDData = BufferUtils.createByteBuffer(VERTEX_COUNT * BYTES_P_FLOAT * FLOATS_P_VERT);
-                for (i = 0; i < VERTEX_COUNT * FLOATS_P_VERT; i++) {
+                final ByteBuffer vertexIDData = BufferUtils.createByteBuffer(VERTEX_COUNT * BYTES_P_FLOAT * STRIDE);
+                for (int i = 0; i < VERTEX_COUNT * STRIDE; i++) {
                     vertexIDData.putFloat(i * BYTES_P_FLOAT, steamBoxTris[i]);
                 }
                 GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertexIDData, GL15.GL_STATIC_DRAW);
@@ -147,11 +155,15 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
 
             // Draw a bunch of vertices, under the effect of the shaders
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertBuf);
-            GL20.glEnableVertexAttribArray(0);
-            GL20.glVertexAttribPointer(0, 5, GL_FLOAT, false, 0, 0);
+            GL20.glEnableVertexAttribArray(aPos);
+            GL20.glEnableVertexAttribArray(aUV);
+            GL20.glVertexAttribPointer(aPos, POS_W, GL_FLOAT, false, STRIDE * BYTES_P_FLOAT, 0);
+            GL20.glVertexAttribPointer(aUV, UV_W, GL_FLOAT, false, STRIDE * BYTES_P_FLOAT, POS_W * BYTES_P_FLOAT);
             GL11.glEnableClientState(GL_VERTEX_ARRAY);
 
+            GL11.glDisableClientState(GL_CULL_FACE);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, VERTEX_COUNT);
+            GL11.glEnableClientState(GL_CULL_FACE);
 
             GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
             GL20.glDisableVertexAttribArray(0);
