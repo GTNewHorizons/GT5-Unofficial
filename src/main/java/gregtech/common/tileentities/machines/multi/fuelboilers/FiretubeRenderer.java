@@ -6,6 +6,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -43,10 +44,12 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
     private static int aPos;
     private static int aUV;
 
+    private static int uBlockAtlas;
     private static int uModelProjection;
     private static int uTime;
     private static int uHeight;
-    private static int uUV;
+    private static int uminUV;
+    private static int udUV;
     private static int vertBuf;
 
     // Since TESRs are singlethreaded, we can use just the one
@@ -55,15 +58,6 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
 
     public FiretubeRenderer() {
         ClientRegistry.bindTileEntitySpecialRenderer(Tile.class, this);
-
-        // Read the .obj to a float array
-        int i = 0;
-        for (final GroupObject go : steamBoxObj.groupObjects) {
-            for (final Face f : go.faces) {
-                i = addTri(f.vertices, f.textureCoordinates, 0, i);
-                i = addTri(f.vertices, f.textureCoordinates, 2, i);
-            }
-        }
     }
 
     private static int addTri(Vertex[] vs, TextureCoordinate[] tcs, int offset, int i) {
@@ -73,9 +67,9 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
             steamBoxTris[i++] = v.y;
             steamBoxTris[i++] = v.z;
 
-            // final TextureCoordinate tc = tcs[(ii + offset) % 4];
-            steamBoxTris[i++] = 1;//tc.u * dU + minU;
-            steamBoxTris[i++] = 1;//tc.v * dV + minU;
+            final TextureCoordinate tc = tcs[(ii + offset) % 4];
+            steamBoxTris[i++] = tc.u;
+            steamBoxTris[i++] = tc.v;
         }
         return i;
     }
@@ -93,12 +87,21 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
                 final float minU = Blocks.flowing_water.getBlockTextureFromSide(0).getMinU();
                 final float maxU = Blocks.flowing_water.getBlockTextureFromSide(0).getMaxU();
                 final float minV = Blocks.flowing_water.getBlockTextureFromSide(0).getMinV();
-                final float maxV = Blocks.flowing_water.getBlockTextureFromSide(0).getMaxV();
+
+                // Stop at 61/64 of the way to the bottom, since we display a 3-long slice
+                final float maxV = Blocks.flowing_water.getBlockTextureFromSide(0).getMaxV(); // * 61 / 64;
 
                 final float dU = maxU - minU;
                 final float dV = maxV - minV;
 
-
+                // Read the .obj to a float array
+                int i = 0;
+                for (final GroupObject go : steamBoxObj.groupObjects) {
+                    for (final Face f : go.faces) {
+                        i = addTri(f.vertices, f.textureCoordinates, 0, i);
+                        i = addTri(f.vertices, f.textureCoordinates, 2, i);
+                    }
+                }
 
                 steamProgram = new ShaderProgram(
                     "gregtech",
@@ -111,29 +114,28 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
                 aUV = steamProgram.getAttribLocation("uvIn");
 
                 // Register uniforms
+                uBlockAtlas = steamProgram.getUniformLocation("u_BlockAtlas");
                 uModelProjection = steamProgram.getUniformLocation("u_ModelProjection");
                 uTime = steamProgram.getUniformLocation("u_Time");
                 uHeight = steamProgram.getUniformLocation("u_Height");
-                uUV = steamProgram.getUniformLocation("u_UV");
+                uminUV = steamProgram.getUniformLocation("u_minUV");
+                udUV = steamProgram.getUniformLocation("u_dUV");
 
-                // Bind vertex buffer
+                // Create + bind vertex buffer
                 vertBuf = GL15.glGenBuffers();
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertBuf);
                 // Make a 3x-sized buffer to act as a vec3 position input to the shader.
                 final ByteBuffer vertexIDData = BufferUtils.createByteBuffer(VERTEX_COUNT * BYTES_P_FLOAT * STRIDE);
-                for (int i = 0; i < VERTEX_COUNT * STRIDE; i++) {
+                for (i = 0; i < VERTEX_COUNT * STRIDE; i++) {
                     vertexIDData.putFloat(i * BYTES_P_FLOAT, steamBoxTris[i]);
                 }
                 GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertexIDData, GL15.GL_STATIC_DRAW);
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
-                final FloatBuffer uvBuffer = BufferUtils.createFloatBuffer(4);
-                uvBuffer.put(0, minU);
-                uvBuffer.put(1, minV);
-                uvBuffer.put(2, maxU);
-                uvBuffer.put(3, maxV);
-
-                GL20.glUniform4f(uUV, minU, minV, maxU, maxV);
+                // Load constant uniforms
+                GL20.glUniform1i(uBlockAtlas, OpenGlHelper.defaultTexUnit - GL13.GL_TEXTURE0);
+                GL20.glUniform2f(uminUV, minU, minV);
+                GL20.glUniform2f(udUV, dU, dV);
 
                 ShaderProgram.clear();
 
@@ -146,7 +148,7 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
             GL20.glUniform1f(
                 uTime,
                 ((tile.getWorldObj().getWorldInfo().getWorldTotalTime() % 60) + timeSinceLastTick) / 60f);
-            GL20.glUniform1f(uHeight, 1);
+            GL20.glUniform1f(uHeight, 1.5f);
 
             modelProjectionMatrix.identity();
             modelProjectionMatrix.translate((float) x, (float) y, (float) z);
@@ -199,10 +201,10 @@ public class FiretubeRenderer extends TileEntitySpecialRenderer {
             return false;
         }
 
-        /*@Override
-        public boolean canRenderInPass(int a) {
-            return true;
-        }*/
+        @Override
+        public int getRenderBlockPass() {
+            return 1;
+        }
 
         @Override
         public boolean renderAsNormalBlock() {
