@@ -9,10 +9,51 @@ public class ArtificialOrganism {
     private int count;
     private int sentience;
 
+    private boolean immortal;
+
     public ArtificialOrganism(int intelligence, int strength, int reproduction) {
         this.intelligence = intelligence;
         this.strength = strength;
         this.reproduction = reproduction;
+        count = 500;
+        sentience = 0;
+    }
+
+    /**
+     * Try to use some number of AOs. Returns the number of AOs that were actually consumed, or -1 if the
+     * operation should fail.
+     */
+    public int consumeAOs(int number) {
+        if (immortal) return 0;
+        if (count - number >= 0) {
+            count -= number;
+            return number;
+        }
+        return -1;
+    }
+
+    /**
+     * Try to restore some number of AOs. Returns the number of AOs that were actually restored, or -1 if the
+     * operation should fail.
+     */
+    public int replenishAOs(int number) {
+        count += number;
+        return number;
+    }
+
+    public int getIntelligence() {
+        return intelligence;
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    /**
+     * Returns current number of AOs, used in recipe validation
+     */
+    public int getCount() {
+        return count;
     }
 
     /**
@@ -26,14 +67,22 @@ public class ArtificialOrganism {
         sentience = 0;
     }
 
+    public ArtificialOrganism(int intelligence, int strength, int reproduction, int count, int sentience) {
+        this.intelligence = intelligence;
+        this.strength = strength;
+        this.reproduction = reproduction;
+        this.count = count;
+        this.sentience = sentience;
+    }
+
     @Override
     public String toString() {
         return "Intelligence " + intelligence
-            + "\nStrength: "
+            + " Strength: "
             + strength
-            + "\nReproduction: "
+            + " Reproduction: "
             + reproduction
-            + "\nCount: "
+            + " Count: "
             + count;
     }
 }
