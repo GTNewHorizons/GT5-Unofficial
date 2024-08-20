@@ -583,6 +583,7 @@ public class Textures {
         OVERLAY_FUSION3_GLOW,
         OVERLAY_SCREEN,
         OVERLAY_SCREEN_GLOW,
+        OVERLAY_RAINBOWSCREEN_GLOW,
         OVERLAY_QTANK,
         OVERLAY_QTANK_GLOW,
         OVERLAY_QCHEST,
