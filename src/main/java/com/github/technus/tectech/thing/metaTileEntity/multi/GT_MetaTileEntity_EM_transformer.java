@@ -81,12 +81,12 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
 
     public GT_MetaTileEntity_EM_transformer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        eDismantleBoom = true;
+        eDismantleBoom = false;
     }
 
     public GT_MetaTileEntity_EM_transformer(String aName) {
         super(aName);
-        eDismantleBoom = true;
+        eDismantleBoom = false;
     }
 
     @Override
