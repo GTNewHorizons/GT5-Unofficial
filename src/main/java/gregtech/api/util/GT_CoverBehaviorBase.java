@@ -30,6 +30,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.gui.widgets.GT_CoverTickRateButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -431,9 +432,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
             ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
             builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
             builder.setGuiTint(getUIBuildContext().getGuiColorization());
-            if (doesBindPlayerInventory() && !getUIBuildContext().isAnotherWindow()) {
-                builder.bindPlayerInventory(getUIBuildContext().getPlayer());
-            }
+            maybeBindPlayerInventory(builder);
             addTitleToUI(builder);
             addUIWidgets(builder);
             if (getUIBuildContext().isAnotherWindow()) {
@@ -451,6 +450,12 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
             }
 
             return builder.build();
+        }
+
+        protected void maybeBindPlayerInventory(ModularWindow.Builder builder) {
+            if (doesBindPlayerInventory() && !getUIBuildContext().isAnotherWindow()) {
+                builder.bindPlayerInventory(getUIBuildContext().getPlayer(), 7, GUITextureSet.DEFAULT.getItemSlot());
+            }
         }
 
         /**
