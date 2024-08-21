@@ -364,7 +364,7 @@ public class RECIPES_General {
 
         // No Material for void, natch.
         if (Thaumcraft.isModLoaded()) {
-            generatePipeRecipes(GT_Materials.Void.mDefaultLocalName, GT_Materials.Void.getMass(), 16);
+            generatePipeRecipes(GT_Materials.Void.mDefaultLocalName, GT_Materials.Void.getMass(), 15);
         }
 
         Material[] gtpp = new Material[] { ALLOY.STABALLOY, ALLOY.TANTALLOY_60, ALLOY.TANTALLOY_61, ALLOY.POTIN,
@@ -385,7 +385,7 @@ public class RECIPES_General {
                     continue;
                 }
             }
-            int tVoltageMultiplier = (e.mBlastFurnaceTemp >= 2800) ? 64 : 16;
+            int tVoltageMultiplier = (e.mBlastFurnaceTemp >= 2800) ? 60 : 15;
             generatePipeRecipes(e.mDefaultLocalName, e.getMass(), tVoltageMultiplier);
         }
 
