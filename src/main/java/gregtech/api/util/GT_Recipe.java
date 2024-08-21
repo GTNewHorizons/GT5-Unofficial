@@ -49,6 +49,15 @@ import it.unimi.dsi.fastutil.objects.Reference2LongMap;
 import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 
 public class GT_Recipe implements Comparable<GT_Recipe> {
+    private static ItemStack dataStick;
+    private static ItemStack dataOrb;
+    private static ItemStack ic2FluidCell;
+
+    public static void setItemStacks(){
+        ic2FluidCell = Ic2Items.FluidCell.copy();
+        dataStick = ItemList.Tool_DataStick.get(1L);
+        dataOrb = ItemList.Tool_DataOrb.get(1L);
+    }
 
     /**
      * If you want to change the Output, feel free to modify or even replace the whole ItemStack Array, for Inputs,
@@ -584,9 +593,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      */
     private boolean shouldCheckNBT(ItemStack item) {
         if (GTppRecipeHelper) {
-            return GT_Utility.areStacksEqual(item, Ic2Items.FluidCell.copy(), true)
-                || GT_Utility.areStacksEqual(item, ItemList.Tool_DataStick.get(1L), true)
-                || GT_Utility.areStacksEqual(item, ItemList.Tool_DataOrb.get(1L), true);
+            return GT_Utility.areStacksEqual(item, ic2FluidCell, true)
+                || GT_Utility.areStacksEqual(item, dataStick, true)
+                || GT_Utility.areStacksEqual(item, dataOrb, true);
         }
         return false;
     }
