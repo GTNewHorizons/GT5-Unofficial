@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
-import static gregtech.api.enums.Mods.BartWorks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +16,7 @@ import net.minecraft.block.Block;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.SetMultimap;
@@ -25,7 +25,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderState;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * API for bartworks borosilicate glass.
@@ -38,27 +37,12 @@ import cpw.mods.fml.common.registry.GameRegistry;
  */
 public class BorosilicateGlass {
 
-    private static Block block, block2;
     private static List<Pair<Block, Integer>> representatives;
     private static SetMultimap<Byte, Pair<Block, Integer>> allLevels;
     private static final Table<Block, Integer, Byte> allLevelsReverse = HashBasedTable.create();
 
     private static boolean isValidTier(int tier) {
         return tier > 0 && tier <= Byte.MAX_VALUE;
-    }
-
-    private static Block getGlassBlock() {
-        if (block == null) {
-            block = GameRegistry.findBlock(BartWorks.ID, "BW_GlasBlocks");
-        }
-        return block;
-    }
-
-    private static Block getGlassBlock2() {
-        if (block2 == null) {
-            block2 = GameRegistry.findBlock(BartWorks.ID, "BW_GlasBlocks2");
-        }
-        return block2;
     }
 
     private static void doRegister(byte level, Block block, int meta,
@@ -70,7 +54,7 @@ public class BorosilicateGlass {
     private static SetMultimap<Byte, Pair<Block, Integer>> getAllLevels() {
         if (allLevels == null) {
             SetMultimap<Byte, Pair<Block, Integer>> ret = LinkedHashMultimap.create();
-            Block block = getGlassBlock();
+            Block block = ItemRegistry.bw_realglas;
             doRegister((byte) 3, block, 0, ret);
             doRegister((byte) 4, block, 1, ret);
             doRegister((byte) 5, block, 12, ret);
@@ -84,7 +68,7 @@ public class BorosilicateGlass {
             doRegister((byte) 9, block, 13, ret);
             doRegister((byte) 10, block, 14, ret);
             doRegister((byte) 11, block, 15, ret);
-            block = getGlassBlock2();
+            block = ItemRegistry.bw_realglas2;
             doRegister((byte) 12, block, 0, ret);
             allLevels = ret;
         }
@@ -108,6 +92,14 @@ public class BorosilicateGlass {
 
     private static Byte checkWithinBound(byte val, byte lo, byte hi) {
         return val > hi || val < lo ? null : val;
+    }
+
+    /**
+     * ONLY registers borosilicate glass. Without this, {@link #getTier} won't work properly in environments that don't
+     * have the coremod.
+     */
+    public static void registerBorosilicateGlass() {
+        getAllLevels();
     }
 
     /**
@@ -155,7 +147,7 @@ public class BorosilicateGlass {
      * Use this if you just want boroglass here and doesn't care what tier it is.
      */
     public static <T> IStructureElement<T> ofBoroGlassAnyTier() {
-        return lazy(t -> ofBlockAnyMeta(getGlassBlock()));
+        return lazy(t -> ofBlockAnyMeta(ItemRegistry.bw_realglas));
     }
 
     /**
