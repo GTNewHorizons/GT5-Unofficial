@@ -181,6 +181,7 @@ public class GT_Mod implements IGT_Mod {
 
     public static int MAX_IC2 = 2147483647;
     public static GT_Achievements achievements;
+    @Deprecated
     public static final String aTextGeneral = "general";
     public static final String aTextIC2 = "ic2_";
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");

@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import gregtech.common.GT_ConfigMachines;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.Launch;
@@ -372,61 +373,34 @@ public class GT_PreLoad {
     }
 
     public static void loadConfig(Configuration tMainConfig) {
-        GT_Values.D1 = tMainConfig.get(GT_Mod.aTextGeneral, "Debug", false)
-            .getBoolean(false);
-        GT_Values.D2 = tMainConfig.get(GT_Mod.aTextGeneral, "Debug2", false)
-            .getBoolean(false);
-        GT_Values.allow_broken_recipemap = tMainConfig.get(GT_Mod.aTextGeneral, "debug allow broken recipemap", false)
-            .getBoolean(false);
-        GT_Values.debugCleanroom = tMainConfig.get(GT_Mod.aTextGeneral, "debugCleanroom", false)
-            .getBoolean(false);
-        GT_Values.debugDriller = tMainConfig.get(GT_Mod.aTextGeneral, "debugDriller", false)
-            .getBoolean(false);
-        GT_Values.debugWorldGen = tMainConfig.get(GT_Mod.aTextGeneral, "debugWorldGen", false)
-            .getBoolean(false);
-        GT_Values.debugOrevein = tMainConfig.get(GT_Mod.aTextGeneral, "debugOrevein", false)
-            .getBoolean(false);
-        GT_Values.debugSmallOres = tMainConfig.get(GT_Mod.aTextGeneral, "debugSmallOres", false)
-            .getBoolean(false);
-        GT_Values.debugStones = tMainConfig.get(GT_Mod.aTextGeneral, "debugStones", false)
-            .getBoolean(false);
-        GT_Values.debugBlockMiner = tMainConfig.get(GT_Mod.aTextGeneral, "debugBlockMiner", false)
-            .getBoolean(false);
-        GT_Values.debugBlockPump = tMainConfig.get(GT_Mod.aTextGeneral, "debugBlockPump", false)
-            .getBoolean(false);
-        GT_Values.debugEntityCramming = tMainConfig.get(GT_Mod.aTextGeneral, "debugEntityCramming", false)
-            .getBoolean(false);
-        GT_Values.debugWorldData = tMainConfig.get(GT_Mod.aTextGeneral, "debugWorldData", false)
-            .getBoolean(false);
-        GT_Values.oreveinPercentage = tMainConfig.get(GT_Mod.aTextGeneral, "oreveinPercentage_100", 100)
-            .getInt(100);
-        GT_Values.oreveinAttempts = tMainConfig.get(GT_Mod.aTextGeneral, "oreveinAttempts_64", 64)
-            .getInt(64);
-        GT_Values.oreveinMaxPlacementAttempts = tMainConfig.get(GT_Mod.aTextGeneral, "oreveinMaxPlacementAttempts_8", 8)
-            .getInt(8);
-        GT_Values.oreveinPlacerOres = tMainConfig.get(GT_Mod.aTextGeneral, "oreveinPlacerOres", true)
-            .getBoolean(true);
-        GT_Values.oreveinPlacerOresMultiplier = tMainConfig.get(GT_Mod.aTextGeneral, "oreveinPlacerOresMultiplier", 2)
-            .getInt(2);
-        // GT_Values.oreveinMaxSize = tMainConfig.get(aTextGeneral, "oreveinMaxSize_64",64).getInt(64);
-        GT_Values.ticksBetweenSounds = tMainConfig.get("machines", "TicksBetweenSounds", 30)
-            .getInt(30);
-        GT_Values.blacklistedTileEntiyClassNamesForWA = tMainConfig.getStringList(
-            "blacklistedTileEntiyClassNamesForWA",
-            "machines",
-            GT_Values.blacklistedTileEntiyClassNamesForWA,
-            "class names to be blacklisted from the world accelerator");
-        GT_Values.cleanroomGlass = (float) tMainConfig.get("machines", "ReinforcedGlassPercentageForCleanroom", 5D)
-            .getDouble(5D);
-        GT_Values.enableChunkloaders = tMainConfig.get("machines", "enableChunkloaders", true)
-            .getBoolean(true);
-        GT_Values.alwaysReloadChunkloaders = tMainConfig.get("machines", "alwaysReloadChunkloaders", false)
-            .getBoolean(false);
-        GT_Values.debugChunkloaders = tMainConfig.get("machines", "debugChunkloaders", false)
-            .getBoolean(false);
-        GT_Values.disableDigitalChestsExternalAccess = tMainConfig
-            .get("machines", "disableDigitalChestsExternalAccess", false)
-            .getBoolean(false);
+        GT_Values.D1 = gregtech.common.GT_Config.D1;
+        GT_Values.D2 = gregtech.common.GT_Config.D2;
+        GT_Values.allow_broken_recipemap = gregtech.common.GT_Config.allowBrokenRecipeMap;
+        GT_Values.debugCleanroom = gregtech.common.GT_Config.debugCleanroom;
+        GT_Values.debugDriller = gregtech.common.GT_Config.debugDriller;
+        GT_Values.debugWorldGen = gregtech.common.GT_Config.debugWorldgen;
+        GT_Values.debugOrevein = gregtech.common.GT_Config.debugOrevein;
+        GT_Values.debugSmallOres = gregtech.common.GT_Config.debugSmallOres;
+        GT_Values.debugStones = gregtech.common.GT_Config.debugStones;
+        GT_Values.debugBlockMiner = gregtech.common.GT_Config.debugBlockMiner;
+        GT_Values.debugBlockPump = gregtech.common.GT_Config.debugBlockPump;
+        GT_Values.debugEntityCramming = gregtech.common.GT_Config.debugEntityCramming;
+        GT_Values.debugWorldData = gregtech.common.GT_Config.debugWorldData;
+        GT_Values.oreveinPercentage = gregtech.common.GT_Config.oreveinPercentage;
+        GT_Values.oreveinAttempts = gregtech.common.GT_Config.oreveinAttempts;
+        GT_Values.oreveinMaxPlacementAttempts = gregtech.common.GT_Config.oreveinMaxPlacementAttempts;
+        GT_Values.oreveinPlacerOres = gregtech.common.GT_Config.oreveinPlacerOres;
+        GT_Values.oreveinPlacerOresMultiplier = gregtech.common.GT_Config.oreveinPlacerOresMultiplier;
+        GT_Values.ticksBetweenSounds = GT_ConfigMachines.ticksBetweenSounds;
+
+        GT_Values.blacklistedTileEntiyClassNamesForWA = GT_ConfigMachines.blacklistedTileEntiyClassNamesForWA;
+        GT_Values.cleanroomGlass = GT_ConfigMachines.cleanroomGlass;
+        GT_Values.enableChunkloaders = GT_ConfigMachines.enableChunkloaders;
+
+        GT_Values.alwaysReloadChunkloaders = GT_ConfigMachines.alwaysReloadChunkloaders;
+        GT_Values.debugChunkloaders = GT_ConfigMachines.debugChunkloaders;
+        GT_Values.disableDigitalChestsExternalAccess = GT_ConfigMachines.disableDigitalChestsExternalAccess;
+
         GT_Values.enableMultiTileEntities = tMainConfig.get(
             "machines",
             "enableMultiTileEntities",
@@ -441,6 +415,9 @@ public class GT_PreLoad {
         GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = tMainConfig
             .get(GT_Mod.aTextGeneral, "MillisecondsPassedInGTTileEntityUntilLagWarning", 100)
             .getInt(100);
+
+
+        // bad idea, marked for removal
         if (tMainConfig.get(GT_Mod.aTextGeneral, "disable_STDOUT", false)
             .getBoolean(false)) {
             GT_FML_LOGGER.info("Disableing Console Messages.");
@@ -448,40 +425,25 @@ public class GT_PreLoad {
             System.out.close();
             System.err.close();
         }
-        GregTech_API.sMachineExplosions = tMainConfig.get("machines", "machines_explosion_damage", true)
-            .getBoolean(false);
-        GregTech_API.sMachineFlammable = tMainConfig.get("machines", "machines_flammable", true)
-            .getBoolean(false);
-        GregTech_API.sMachineNonWrenchExplosions = tMainConfig.get("machines", "explosions_on_nonwrenching", true)
-            .getBoolean(false);
-        GregTech_API.sMachineWireFire = tMainConfig.get("machines", "wirefire_on_explosion", true)
-            .getBoolean(false);
-        GregTech_API.sMachineFireExplosions = tMainConfig.get("machines", "fire_causes_explosions", true)
-            .getBoolean(false);
-        GregTech_API.sMachineRainExplosions = tMainConfig.get("machines", "rain_causes_explosions", true)
-            .getBoolean(false);
-        GregTech_API.sMachineThunderExplosions = tMainConfig.get("machines", "lightning_causes_explosions", true)
-            .getBoolean(false);
+        GregTech_API.sMachineExplosions = GT_ConfigMachines.sMachineExplosions;
+        GregTech_API.sMachineFlammable = GT_ConfigMachines.sMachineFlammable;
+        GregTech_API.sMachineNonWrenchExplosions = GT_ConfigMachines.sMachineNonWrenchExplosions;
+        GregTech_API.sMachineWireFire = GT_ConfigMachines.sMachineWireFire;
+        GregTech_API.sMachineFireExplosions = GT_ConfigMachines.sMachineFireExplosions;
+        GregTech_API.sMachineRainExplosions = GT_ConfigMachines.sMachineRainExplosions;
+        GregTech_API.sMachineThunderExplosions = GT_ConfigMachines.sMachineThunderExplosions;
+        // deprecated it seems
         GregTech_API.sConstantEnergy = tMainConfig.get("machines", "constant_need_of_energy", true)
             .getBoolean(false);
-        GregTech_API.sColoredGUI = tMainConfig.get("machines", "colored_guis_when_painted", true)
-            .getBoolean(false);
-        GregTech_API.sMachineMetalGUI = tMainConfig.get("machines", "guis_in_consistent_machine_metal_color", false)
-            .getBoolean(false);
-
+        GregTech_API.sColoredGUI = GT_ConfigMachines.sColoredGUI;
+        GregTech_API.sMachineMetalGUI = GT_ConfigMachines.sMachineMetalGUI;
         // Implementation for this is actually handled in NewHorizonsCoreMod in MainRegistry.java!
-        GregTech_API.sUseMachineMetal = tMainConfig.get("machines", "use_machine_metal_tint", true)
-            .getBoolean(true);
+        GregTech_API.sUseMachineMetal = GT_ConfigMachines.sUseMachineMetal;
 
-        GregTech_API.sTimber = tMainConfig.get(GT_Mod.aTextGeneral, "timber_axe", true)
-            .getBoolean(true);
-        GregTech_API.sDrinksAlwaysDrinkable = tMainConfig.get(GT_Mod.aTextGeneral, "drinks_always_drinkable", false)
-            .getBoolean(false);
-        GregTech_API.sDoShowAllItemsInCreative = tMainConfig
-            .get(GT_Mod.aTextGeneral, "show_all_metaitems_in_creative_and_NEI", false)
-            .getBoolean(false);
-        GregTech_API.sMultiThreadedSounds = tMainConfig.get(GT_Mod.aTextGeneral, "sound_multi_threading", false)
-            .getBoolean(false);
+        GregTech_API.sTimber = gregtech.common.GT_Config.sTimber;
+        GregTech_API.sDrinksAlwaysDrinkable = gregtech.common.GT_Config.sDrinksAlwaysDrinkable;
+        GregTech_API.sDoShowAllItemsInCreative = gregtech.common.GT_Config.sDoShowAllItemsInCreative;
+        GregTech_API.sMultiThreadedSounds = gregtech.common.GT_Config.sMultiThreadedSounds;
 
         loadClientConfig();
 
