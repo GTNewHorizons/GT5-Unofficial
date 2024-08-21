@@ -90,7 +90,7 @@ public class GregtechIndustrialMassFabricator {
 
         // Advanced UUM
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(3))
+            .itemInputs(GT_Utility.getIntegratedCircuit(4))
             .fluidInputs(Materials.UUAmplifier.getFluid(256))
             .fluidOutputs(Materials.UUMatter.getFluid(256))
             .duration(40 * SECONDS)
