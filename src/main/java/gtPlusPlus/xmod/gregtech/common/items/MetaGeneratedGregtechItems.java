@@ -341,14 +341,14 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         GT_Values.RA.stdBuilder()
             .itemInputs(GregtechItemList.Pellet_RTG_SR90.get(1))
             .duration(0)
-            .eut(32)
+            .eut(TierEU.RECIPE_LV)
             .metadata(RTG_DURATION_IN_DAYS, MathUtils.roundToClosestInt(28.8f))
             .addTo(rtgFuels);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GregtechItemList.Pellet_RTG_PO210.get(1))
             .duration(0)
-            .eut(TierEU.HV)
+            .eut(TierEU.RECIPE_HV)
             .metadata(RTG_DURATION_IN_DAYS, 1)
             .addTo(rtgFuels);
 

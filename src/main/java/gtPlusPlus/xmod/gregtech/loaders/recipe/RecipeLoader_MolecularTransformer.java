@@ -80,7 +80,7 @@ public class RecipeLoader_MolecularTransformer {
                 .itemInputs(GT_ModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 4))
                 .itemOutputs(GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9))
                 .duration(1 * TICKS)
-                .eut(1996080)
+                .eut(TierEU.RECIPE_UHV)
                 .addTo(molecularTransformerRecipes);
 
         }
