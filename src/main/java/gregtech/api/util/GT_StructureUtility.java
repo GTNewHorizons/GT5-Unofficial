@@ -44,8 +44,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.common.blocks.GT_Block_Casings5;
 import gregtech.common.blocks.GT_Block_FrameBox;
