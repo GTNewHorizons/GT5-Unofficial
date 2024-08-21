@@ -262,10 +262,7 @@ public class GregtechMetaTileEntity_SteamCentrifuge
             && tierFireBoxCasing == 1
             && tierMachineCasing == 1
             && tCountCasing > 60
-            && !mSteamInputFluids.isEmpty()
-            && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && !mOutputHatches.isEmpty()) {
+            && checkHatch()) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
@@ -274,15 +271,19 @@ public class GregtechMetaTileEntity_SteamCentrifuge
             && tierFireBoxCasing == 2
             && tierMachineCasing == 2
             && tCountCasing > 60
-            && !mSteamInputFluids.isEmpty()
-            && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && !mOutputHatches.isEmpty()) {
+            && checkHatches()) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
         }
         return false;
+    }
+
+    private boolean checkHatches() {
+        return !mSteamInputFluids.isEmpty() && !mSteamInputs.isEmpty()
+            && !mSteamOutputs.isEmpty()
+            && !mOutputHatches.isEmpty()
+            && mInputHatches.isEmpty();
     }
 
     @Override
