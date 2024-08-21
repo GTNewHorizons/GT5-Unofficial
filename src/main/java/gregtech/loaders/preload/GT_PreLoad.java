@@ -401,20 +401,9 @@ public class GT_PreLoad {
         GT_Values.debugChunkloaders = GT_ConfigMachines.debugChunkloaders;
         GT_Values.disableDigitalChestsExternalAccess = GT_ConfigMachines.disableDigitalChestsExternalAccess;
 
-        GT_Values.enableMultiTileEntities = tMainConfig.get(
-            "machines",
-            "enableMultiTileEntities",
-            false,
-            "This enabled MuTEs(multitile entities) to be added to the game. MuTEs are in the start of development and its not recommended to enable them unless you know what you are doing.")
-            .getBoolean(false)
-            // Make sure MuTEs are enabled in development
-            || (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
-        GregTech_API.TICKS_FOR_LAG_AVERAGING = tMainConfig
-            .get(GT_Mod.aTextGeneral, "TicksForLagAveragingWithScanner", 25)
-            .getInt(25);
-        GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = tMainConfig
-            .get(GT_Mod.aTextGeneral, "MillisecondsPassedInGTTileEntityUntilLagWarning", 100)
-            .getInt(100);
+        GT_Values.enableMultiTileEntities = gregtech.common.GT_ConfigMachines.enableMultiTileEntities || (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+        GregTech_API.TICKS_FOR_LAG_AVERAGING = gregtech.common.GT_Config.TICKS_FOR_LAG_AVERAGING;
+        GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = gregtech.common.GT_Config.MILLISECOND_THESHOLD_UNTIL_LAG_WARNING;
 
 
         // bad idea, marked for removal
@@ -432,7 +421,7 @@ public class GT_PreLoad {
         GregTech_API.sMachineFireExplosions = GT_ConfigMachines.sMachineFireExplosions;
         GregTech_API.sMachineRainExplosions = GT_ConfigMachines.sMachineRainExplosions;
         GregTech_API.sMachineThunderExplosions = GT_ConfigMachines.sMachineThunderExplosions;
-        // deprecated it seems
+        // deprecated it seems, marked for removal
         GregTech_API.sConstantEnergy = tMainConfig.get("machines", "constant_need_of_energy", true)
             .getBoolean(false);
         GregTech_API.sColoredGUI = GT_ConfigMachines.sColoredGUI;
@@ -447,46 +436,28 @@ public class GT_PreLoad {
 
         loadClientConfig();
 
-        GT_Mod.gregtechproxy.mMaxEqualEntitiesAtOneSpot = tMainConfig
-            .get(GT_Mod.aTextGeneral, "MaxEqualEntitiesAtOneSpot", 3)
-            .getInt(3);
+        GT_Mod.gregtechproxy.mMaxEqualEntitiesAtOneSpot = gregtech.common.GT_Config.mMaxEqualEntitiesAtOneSpot;
+        // arrows got removed, marking for removal.
         GT_Mod.gregtechproxy.mSkeletonsShootGTArrows = tMainConfig
             .get(GT_Mod.aTextGeneral, "SkeletonsShootGTArrows", 16)
             .getInt(16);
-        GT_Mod.gregtechproxy.mFlintChance = tMainConfig.get(GT_Mod.aTextGeneral, "FlintAndSteelChance", 30)
-            .getInt(30);
-        GT_Mod.gregtechproxy.mItemDespawnTime = tMainConfig.get(GT_Mod.aTextGeneral, "ItemDespawnTime", 6000)
-            .getInt(6000);
-        GT_Mod.gregtechproxy.mAllowSmallBoilerAutomation = tMainConfig
-            .get(GT_Mod.aTextGeneral, "AllowSmallBoilerAutomation", false)
-            .getBoolean(false);
-        GT_Mod.gregtechproxy.mDisableVanillaOres = tMainConfig.get(GT_Mod.aTextGeneral, "DisableVanillaOres", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mIncreaseDungeonLoot = tMainConfig.get(GT_Mod.aTextGeneral, "IncreaseDungeonLoot", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mAxeWhenAdventure = tMainConfig.get(GT_Mod.aTextGeneral, "AdventureModeStartingAxe", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mSurvivalIntoAdventure = tMainConfig.get(GT_Mod.aTextGeneral, "forceAdventureMode", false)
-            .getBoolean(false);
-        GT_Mod.gregtechproxy.mHungerEffect = tMainConfig.get(GT_Mod.aTextGeneral, "AFK_Hunger", false)
-            .getBoolean(false);
-        GT_Mod.gregtechproxy.mInventoryUnification = tMainConfig.get(GT_Mod.aTextGeneral, "InventoryUnification", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mGTBees = tMainConfig.get(GT_Mod.aTextGeneral, "GTBees", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mCraftingUnification = tMainConfig.get(GT_Mod.aTextGeneral, "CraftingUnification", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mNerfedWoodPlank = tMainConfig.get(GT_Mod.aTextGeneral, "WoodNeedsSawForCrafting", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mNerfedVanillaTools = tMainConfig
-            .get(GT_Mod.aTextGeneral, "smallerVanillaToolDurability", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mAchievements = tMainConfig.get(GT_Mod.aTextGeneral, "EnableAchievements", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mHideUnusedOres = tMainConfig.get(GT_Mod.aTextGeneral, "HideUnusedOres", true)
-            .getBoolean(true);
-        GT_Mod.gregtechproxy.mEnableAllMaterials = tMainConfig.get("general", "EnableAllMaterials", false)
-            .getBoolean(false);
+        GT_Mod.gregtechproxy.mFlintChance = gregtech.common.GT_Config.mFlintChance;
+
+        GT_Mod.gregtechproxy.mItemDespawnTime = gregtech.common.GT_Config.mItemDespawnTime;
+        GT_Mod.gregtechproxy.mAllowSmallBoilerAutomation = gregtech.common.GT_Config.mAllowSmallBoilerAutomation;
+        GT_Mod.gregtechproxy.mDisableVanillaOres = gregtech.common.GT_Config.mDisableVanillaOres;
+        GT_Mod.gregtechproxy.mIncreaseDungeonLoot = gregtech.common.GT_Config.mIncreaseDungeonLoot;
+        GT_Mod.gregtechproxy.mAxeWhenAdventure = gregtech.common.GT_Config.mAxeWhenAdventure;
+        GT_Mod.gregtechproxy.mSurvivalIntoAdventure = gregtech.common.GT_Config.mSurvivalIntoAdventure;
+        GT_Mod.gregtechproxy.mHungerEffect = gregtech.common.GT_Config.mHungerEffect;
+        GT_Mod.gregtechproxy.mInventoryUnification = gregtech.common.GT_Config.mInventoryUnification;
+        GT_Mod.gregtechproxy.mGTBees = gregtech.common.GT_Config.mGTBees;
+        GT_Mod.gregtechproxy.mCraftingUnification = gregtech.common.GT_Config.mCraftingUnification;
+        GT_Mod.gregtechproxy.mNerfedWoodPlank = gregtech.common.GT_Config.mNerfedWoodPlank;
+        GT_Mod.gregtechproxy.mNerfedVanillaTools = gregtech.common.GT_Config.mNerfedVanillaTools;
+        GT_Mod.gregtechproxy.mAchievements = gregtech.common.GT_Config.mAchievements;
+        GT_Mod.gregtechproxy.mHideUnusedOres = gregtech.common.GT_Config.mHideUnusedOres;
+        GT_Mod.gregtechproxy.mEnableAllMaterials = gregtech.common.GT_Config.mEnableAllMaterials;
 
         // Pollution: edit GT_Proxy.java to change default values
         GT_Mod.gregtechproxy.mPollution = tMainConfig

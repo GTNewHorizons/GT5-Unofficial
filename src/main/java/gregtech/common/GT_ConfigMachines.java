@@ -147,4 +147,8 @@ public class GT_ConfigMachines {
     @Config.RequiresMcRestart
     public static boolean sUseMachineMetal;
 
+    @Config.Comment("if true, enables MuTEs(multitile entities) to be added to the game. MuTEs are in the start of development and its not recommended to enable them unless you know what you are doing. (always activated in dev env)")
+    @Config.DefaultBoolean(false)
+    @Config.RequiresMcRestart
+    public static boolean enableMultiTileEntities;
 }
