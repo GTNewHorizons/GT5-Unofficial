@@ -49,11 +49,12 @@ import it.unimi.dsi.fastutil.objects.Reference2LongMap;
 import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 
 public class GT_Recipe implements Comparable<GT_Recipe> {
+
     private static ItemStack dataStick;
     private static ItemStack dataOrb;
     private static ItemStack ic2FluidCell;
 
-    public static void setItemStacks(){
+    public static void setItemStacks() {
         ic2FluidCell = Ic2Items.FluidCell.copy();
         dataStick = ItemList.Tool_DataStick.get(1L);
         dataOrb = ItemList.Tool_DataOrb.get(1L);

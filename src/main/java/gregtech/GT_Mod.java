@@ -15,7 +15,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import ic2.core.Ic2Items;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
