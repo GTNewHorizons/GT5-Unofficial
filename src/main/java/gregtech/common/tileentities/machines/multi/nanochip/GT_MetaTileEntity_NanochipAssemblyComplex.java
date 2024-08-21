@@ -5,12 +5,16 @@ import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_X;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Y;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Z;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -29,7 +34,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import appeng.api.AEApi;
+import appeng.tile.crafting.TileCraftingStorageTile;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -51,6 +59,7 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInp
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Output;
+import gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ItemStackWithSourceBus;
@@ -61,56 +70,53 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
     implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    public static final int STRUCTURE_OFFSET_X = 6;
-    public static final int STRUCTURE_OFFSET_Y = 1;
-    public static final int STRUCTURE_OFFSET_Z = 5;
-
-    public static final int CASING_INDEX_BASE = GregTech_API.getCasingTextureIndex(GregTech_API.sBlockCasings4, 0);
-
-    public static final String[][] structure = new String[][] {
-        { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
-        { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
-        { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
-        { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
-        { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
-        { "     VVV     ", "     V~V     ", "     VVV     ", "BBBBBBBBBBBBB" },
-        { "     VVV     ", "     V V     ", "     VVV     ", "BBBBBBBBBBBBB" },
-        { "     VVV     ", "     VVV     ", "     VVV     ", "BBBBBBBBBBBBB" },
-        { "             ", "             ", "             ", "BBBBBBBBBBBBB" },
-        { "             ", "             ", " AIA     AIA ", "BBBBBBBBBBBBB" },
-        { "             ", "             ", " AAA     AAA ", "BBBBBBBBBBBBB" },
-        { "             ", "             ", " AAA     AAA ", "BBBBBBBBBBBBB" },
-        { "             ", "             ", "             ", "BBBBBBBBBBBBB" } };
+    public static final int CASING_INDEX_BASE = GregTech_API.getCasingTextureIndex(GregTech_API.sBlockCasings8, 10);
+    public static final int CASING_INDEX_WHITE = GregTech_API.getCasingTextureIndex(GregTech_API.sBlockCasings8, 5);
 
     public static final IStructureDefinition<GT_MetaTileEntity_NanochipAssemblyComplex> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_NanochipAssemblyComplex>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
-        // Either a casing block or an ignored hatch
-        .addElement(
-            'A',
-            GT_HatchElementBuilder.<GT_MetaTileEntity_NanochipAssemblyComplex>builder()
-                .atLeast(AssemblyHatchElement.IgnoredHatch)
-                .casingIndex(CASING_INDEX_BASE)
-                .dot(3)
-                .buildAndChain(ofBlock(GregTech_API.sBlockCasings4, 0)))
-        .addElement('B', ofBlock(GregTech_API.sBlockCasings8, 10))
+        .addShape(STRUCTURE_PIECE_MAIN, AssemblyComplexStructureString.MAIN_STRUCTURE)
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings1, 14))
         // Vacuum conveyor hatches that the main controller cares about go in specific slots
         .addElement(
-            'V',
+            'B',
             GT_HatchElementBuilder.<GT_MetaTileEntity_NanochipAssemblyComplex>builder()
-                .atLeastList(
-                    Arrays.asList(AssemblyHatchElement.VacuumConveyorHatch, InputBus, OutputBus, Energy, ExoticEnergy))
-                .casingIndex(CASING_INDEX_BASE)
+                .atLeastList(Arrays.asList(AssemblyHatchElement.VacuumConveyorHatch, InputBus, OutputBus))
+                .casingIndex(CASING_INDEX_WHITE)
                 .dot(2)
-                .buildAndChain(ofBlock(GregTech_API.sBlockCasings4, 0)))
+                .buildAndChain(ofBlock(GregTech_API.sBlockCasings8, 5)))
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings8, 5))
+        .addElement('D', ofBlock(GregTech_API.sBlockCasings8, 10))
+        // Either a white casing block or an ignored hatch (this hatch is on the module)
         .addElement(
-            'I',
+            'E',
+            GT_HatchElementBuilder.<GT_MetaTileEntity_NanochipAssemblyComplex>builder()
+                .atLeast(AssemblyHatchElement.IgnoredHatch)
+                .casingIndex(CASING_INDEX_WHITE)
+                .dot(3)
+                .buildAndChain(ofBlock(GregTech_API.sBlockCasings8, 5)))
+        // Crafting storage block
+        .addElement('F', ofBlock(getCraftingStorageBlock(), getCraftingStorageMeta()))
+        // .addElement('F', ofSpecificTileAdder(GT_MetaTileEntity_NanochipAssemblyComplex::addCraftingStorage,
+        // TileCraftingStorageTile.class, getCraftingStorageBlock(), getCraftingStorageMeta()))
+        .addElement('G', ofFrame(Materials.Naquadah))
+        // Energy Hatch
+        .addElement(
+            'L',
+            GT_HatchElementBuilder.<GT_MetaTileEntity_NanochipAssemblyComplex>builder()
+                .atLeast(Energy, ExoticEnergy)
+                .casingIndex(CASING_INDEX_BASE)
+                .dot(1)
+                .buildAndChain(GregTech_API.sBlockCasings8, 10))
+        // Module
+        .addElement(
+            'M',
             GT_HatchElementBuilder.<GT_MetaTileEntity_NanochipAssemblyComplex>builder()
                 .atLeast(AssemblyHatchElement.AssemblyModule)
                 .casingIndex(CASING_INDEX_BASE)
                 .dot(1)
                 // Base casing or assembly module
-                .buildAndChain(GregTech_API.sBlockCasings4, 0))
+                .buildAndChain(GregTech_API.sBlockCasings8, 10))
         .build();
 
     public static final int MODULE_CONNECT_INTERVAL = 20;
@@ -130,13 +136,7 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
 
     @Override
     public void construct(ItemStack trigger, boolean hintsOnly) {
-        buildPiece(
-            STRUCTURE_PIECE_MAIN,
-            trigger,
-            hintsOnly,
-            STRUCTURE_OFFSET_X,
-            STRUCTURE_OFFSET_Y,
-            STRUCTURE_OFFSET_Z);
+        buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, MAIN_OFFSET_X, MAIN_OFFSET_Y, MAIN_OFFSET_Z);
     }
 
     @Override
@@ -144,9 +144,9 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         return survivialBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
-            STRUCTURE_OFFSET_X,
-            STRUCTURE_OFFSET_Y,
-            STRUCTURE_OFFSET_Z,
+            MAIN_OFFSET_X,
+            MAIN_OFFSET_Y,
+            MAIN_OFFSET_Z,
             elementBudget,
             env,
             false,
@@ -166,7 +166,7 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
         fixAllIssues();
         modules.clear();
         vacuumConveyors.clear();
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, MAIN_OFFSET_X, MAIN_OFFSET_Y, MAIN_OFFSET_Z)) return false;
         // At least most one energy hatch is accepted
         if (this.mEnergyHatches.isEmpty()) {
             return this.mExoticEnergyHatches.size() == 1;
@@ -194,26 +194,28 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
-                .extFacing()
-                .build(),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
-                .extFacing()
-                .build(),
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW)
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48] };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE) };
     }
 
     public boolean addModuleToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -253,6 +255,32 @@ public class GT_MetaTileEntity_NanochipAssemblyComplex
             return true;
         }
         return false;
+    }
+
+    public boolean addCraftingStorage(TileCraftingStorageTile tile) {
+        // Only accept 16384k storage components
+        return tile.isStorage() && tile.getStorageBytes() >= 16384000;
+    }
+
+    private static Block getCraftingStorageBlock() {
+        // Should never error on get()
+        return AEApi.instance()
+            .definitions()
+            .blocks()
+            .craftingStorage16384k()
+            .maybeBlock()
+            .get();
+    }
+
+    private static int getCraftingStorageMeta() {
+        // Should never error on get()
+        return AEApi.instance()
+            .definitions()
+            .blocks()
+            .craftingStorage16384k()
+            .maybeStack(1)
+            .get()
+            .getItemDamage();
     }
 
     /**
