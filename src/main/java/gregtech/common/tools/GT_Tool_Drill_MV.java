@@ -2,7 +2,6 @@ package gregtech.common.tools;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.GT_Mod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 
@@ -10,7 +9,7 @@ public class GT_Tool_Drill_MV extends GT_Tool_Drill_LV {
 
     @Override
     public int getToolDamagePerBlockBreak() {
-        return GT_Mod.gregtechproxy.mHardRock ? 100 : 200;
+        return 200;
     }
 
     @Override
