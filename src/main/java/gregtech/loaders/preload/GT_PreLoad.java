@@ -406,14 +406,6 @@ public class GT_PreLoad {
         GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = gregtech.common.GT_Config.MILLISECOND_THESHOLD_UNTIL_LAG_WARNING;
 
 
-        // bad idea, marked for removal
-        if (tMainConfig.get(GT_Mod.aTextGeneral, "disable_STDOUT", false)
-            .getBoolean(false)) {
-            GT_FML_LOGGER.info("Disableing Console Messages.");
-            GT_FML_LOGGER.exit();
-            System.out.close();
-            System.err.close();
-        }
         GregTech_API.sMachineExplosions = GT_ConfigMachines.sMachineExplosions;
         GregTech_API.sMachineFlammable = GT_ConfigMachines.sMachineFlammable;
         GregTech_API.sMachineNonWrenchExplosions = GT_ConfigMachines.sMachineNonWrenchExplosions;
@@ -421,9 +413,6 @@ public class GT_PreLoad {
         GregTech_API.sMachineFireExplosions = GT_ConfigMachines.sMachineFireExplosions;
         GregTech_API.sMachineRainExplosions = GT_ConfigMachines.sMachineRainExplosions;
         GregTech_API.sMachineThunderExplosions = GT_ConfigMachines.sMachineThunderExplosions;
-        // deprecated it seems, marked for removal
-        GregTech_API.sConstantEnergy = tMainConfig.get("machines", "constant_need_of_energy", true)
-            .getBoolean(false);
         GregTech_API.sColoredGUI = GT_ConfigMachines.sColoredGUI;
         GregTech_API.sMachineMetalGUI = GT_ConfigMachines.sMachineMetalGUI;
         // Implementation for this is actually handled in NewHorizonsCoreMod in MainRegistry.java!
@@ -437,10 +426,6 @@ public class GT_PreLoad {
         loadClientConfig();
 
         GT_Mod.gregtechproxy.mMaxEqualEntitiesAtOneSpot = gregtech.common.GT_Config.mMaxEqualEntitiesAtOneSpot;
-        // arrows got removed, marking for removal.
-        GT_Mod.gregtechproxy.mSkeletonsShootGTArrows = tMainConfig
-            .get(GT_Mod.aTextGeneral, "SkeletonsShootGTArrows", 16)
-            .getInt(16);
         GT_Mod.gregtechproxy.mFlintChance = gregtech.common.GT_Config.mFlintChance;
 
         GT_Mod.gregtechproxy.mItemDespawnTime = gregtech.common.GT_Config.mItemDespawnTime;

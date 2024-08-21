@@ -564,7 +564,6 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
     public boolean mPollution = true;
     public boolean mExplosionItemDrop = false;
     public boolean mUseGreatlyShrukenReplacementList = true;
-    public int mSkeletonsShootGTArrows = 16;
     public int mMaxEqualEntitiesAtOneSpot = 3;
     public int mFlintChance = 30;
     public int mItemDespawnTime = 6000;
