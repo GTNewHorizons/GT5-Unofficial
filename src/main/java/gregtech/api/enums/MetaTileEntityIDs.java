@@ -1,10 +1,22 @@
 package gregtech.api.enums;
 
-/*
+/**
+ * An enum for all registered MetaTileEntities.
  * No more magic numbers about TE's IDs. Yay!!!
  * The entries are sorted by ID, so if you need to take one,
  * please, pretty please, insert it at the correct place.
+ * <p/>
+ * This does not list all used IDs. If you are looking for
+ * a free ID, you can use the java arg `-Dgt.debug` to
+ * list all that are in use.
+ * <p/>
+ * Additionally, some ID ranges are blocked for automatic
+ * generation, do not use these:
+ * <p/>
+ * 4096 - 5095 are used for GregTech Frames.
+ * 5096 - 6099 are used for GregTech Pipes.
  */
+
 public enum MetaTileEntityIDs {
 
     HULL_BRONZE(1),
