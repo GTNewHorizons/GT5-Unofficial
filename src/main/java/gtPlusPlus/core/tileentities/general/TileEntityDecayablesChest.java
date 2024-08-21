@@ -14,10 +14,10 @@ import net.minecraft.world.World;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.GuiData;
-import com.cleanroommc.modularui.future.InvWrapper;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.value.sync.GuiSyncManager;
+import com.cleanroommc.modularui.utils.item.InvWrapper;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -395,7 +395,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
     }
 
     @Override
-    public ModularPanel buildUI(GuiData data, GuiSyncManager syncManager) {
+    public ModularPanel buildUI(GuiData data, PanelSyncManager syncManager) {
         final SlotGroup SLOT_GROUP = new SlotGroup("decayables", 5);
         syncManager.registerSlotGroup(SLOT_GROUP);
         syncManager.addOpenListener(player -> {
@@ -419,7 +419,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
                 .matrix("IIIII", "IIIII", "IIIII")
                 .key(
                     'I',
-                    index -> new ItemSlot<>().slot(
+                    index -> new ItemSlot().slot(
                         SyncHandlers.itemSlot(contents, index)
                             .slotGroup(SLOT_GROUP)))
                 .build()

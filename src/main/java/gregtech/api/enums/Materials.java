@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.IllegalFormatException;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -150,14 +151,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Ytterbium               = new Materials(  77, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2  |8   |32             ,  44, 199,  80,   0,   "Ytterbium"               ,   "Ytterbium"                     ,    0,       0,       1097, 1097,  true, false,   4,   1,   1, Dyes._NULL          , Element.Yb        , Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 1)));
     public static Materials Yttrium                 = new Materials(  45, TextureSet.SET_METALLIC          ,   1.0F,      0,  2, 1|2  |8   |32             , 220, 250, 220,   0,   "Yttrium"                 ,   "Yttrium"                       ,    0,       0,       1799, 1799,  true, false,   4,   1,   1, Dyes._NULL          , Element.Y         , Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.RADIO, 1)));
     public static Materials Zinc                    = new Materials(  36, TextureSet.SET_METALLIC          ,   1.0F,      0,  1, 1|2  |8   |32             , 250, 240, 240,   0,   "Zinc"                    ,   "Zinc"                          ,    0,       0,        692,    0, false, false,   2,   1,   1, Dyes.dyeWhite       , Element.Zn        , Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 2), new TC_AspectStack(TC_Aspects.SANO, 1)));
-    public static Materials Grade1PurifiedWater                = new Materials(   554, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   63,   76, 253, 0,   "Grade1PurifiedWater"                ,   "Grade 1 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue               , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
-    public static Materials Grade2PurifiedWater                = new Materials(   555, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   93,   93, 254, 0,   "Grade2PurifiedWater"                ,   "Grade 2 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue               , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
-    public static Materials Grade3PurifiedWater                = new Materials(   556, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   115,   109, 254, 0,   "Grade3PurifiedWater"                ,   "Grade 3 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue             , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
-    public static Materials Grade4PurifiedWater                = new Materials(   557, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   135,   126, 255, 0,   "Grade4PurifiedWater"                ,   "Grade 4 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
-    public static Materials Grade5PurifiedWater                = new Materials(   558, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   152,   144, 255, 0,   "Grade5PurifiedWater"                ,   "Grade 5 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
-    public static Materials Grade6PurifiedWater                = new Materials(   559, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   168,   161, 255, 0,   "Grade6PurifiedWater"                ,   "Grade 6 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
-    public static Materials Grade7PurifiedWater                = new Materials(   560, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   183,   179, 255, 0,   "Grade7PurifiedWater"                ,   "Grade 7 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
-    public static Materials Grade8PurifiedWater                = new Materials(   561, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   197,   197, 255, 0,   "Grade8PurifiedWater"                ,   "Grade 8 Purified Water"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials Grade1PurifiedWater                = new Materials(   554, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   63,   76, 253, 0,   "Grade1PurifiedWater"                ,   "Filtered Water (Grade 1)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue               , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials Grade2PurifiedWater                = new Materials(   555, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   93,   93, 254, 0,   "Grade2PurifiedWater"                ,   "Ozonated Water (Grade 2)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue               , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials Grade3PurifiedWater                = new Materials(   556, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   115,   109, 254, 0,   "Grade3PurifiedWater"                ,   "Flocculated Water (Grade 3)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue             , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials Grade4PurifiedWater                = new Materials(   557, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   135,   126, 255, 0,   "Grade4PurifiedWater"                ,   "pH Neutralized Water (Grade 4)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials Grade5PurifiedWater                = new Materials(   558, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   152,   144, 255, 0,   "Grade5PurifiedWater"                ,   "Extreme-Temperature Treated Water (Grade 5)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials Grade6PurifiedWater                = new Materials(   559, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16            ,   168,   161, 255, 0,   "Grade6PurifiedWater"                ,   "Ultraviolet Treated Electrically Neutral Water (Grade 6)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials Grade7PurifiedWater                = new Materials(   560, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   183,   179, 255, 0,   "Grade7PurifiedWater"                ,   "Degassed Decontaminant-Free Water (Grade 7)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
+    public static Materials Grade8PurifiedWater                = new Materials(   561, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             ,   197,   197, 255, 0,   "Grade8PurifiedWater"                ,   "Subatomically Perfect Water (Grade 8)"                      ,    0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
     public static Materials FlocculationWasteLiquid = new Materials(562, TextureSet.SET_FLUID, 1.0f, 0, 2, 16, 61, 58, 82, 0, "FlocculationWasteLiquid", "Flocculation Waste Liquid", 0,      0,         273,    0, false,  true,   2,   1,   1, Dyes.dyeBlue                 , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setHasCorrespondingFluid(true);
 
     //GT++ materials
@@ -567,7 +568,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Sodalite                = new Materials( 525, TextureSet.SET_LAPIS             ,   1.0F,      0,  1, 1  |4|8                   ,  20,  20, 255,   0,   "Sodalite"                ,   "Sodalite"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeBlue        , 1, Arrays.asList(new MaterialStack(Aluminium, 3), new MaterialStack(Silicon, 3), new MaterialStack(Sodium, 4), new MaterialStack(Chlorine, 1)));
     public static Materials SodiumPersulfate        = new Materials( 718, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 255, 255, 255,   0,   "SodiumPersulfate"        ,   "Sodium Persulfate"             ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 2), new MaterialStack(Oxygen, 8)));
     public static Materials SodiumSulfide           = new Materials( 719, TextureSet.SET_FLUID             ,   1.0F,      0,  2, 1                         , 255, 230, 128,   0,   "SodiumSulfide"           ,   "Sodium Sulfide"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 1)));
-    public static Materials HydricSulfide           = new Materials( 460, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 255, 255, 255,   0,   "HydricSulfide"           ,   "Hydrogen Sulfide"              ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Sulfur, 1)));
+    public static Materials HydricSulfide           = new Materials( 460, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16                , 255, 255, 255,   0,   "HydricSulfide"           ,   "Hydrogen Sulfide"              ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 0, Arrays.asList(new MaterialStack(Hydrogen, 2), new MaterialStack(Sulfur, 1)));
 
     public static Materials OilHeavy                = new Materials( 730, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "OilHeavy"                ,   "Heavy Oil"                     ,    3,      40,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
     public static Materials OilMedium               = new Materials( 731, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,  10,  10,  10,   0,   "OilMedium"               ,   "Raw Oil"                       ,    3,      30,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
@@ -991,12 +992,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         .setMaterialList(new MaterialStack(Oxygen, 3))
         .constructMaterial();
 
-    public static Materials StableBaryonicMatter = new MaterialBuilder(569, TextureSet.SET_FLUID, "Stabilised Baryonic Matter")
+    public static Materials StableBaryonicMatter = new MaterialBuilder(569,  new TextureSet("stablebaryonicmatter", true), "Stabilised Baryonic Matter")
         .addFluid()
         .addCell()
-        .setRGB(20, 10, 20)
-        .setName("StableBaryonicMatter")
-        .constructMaterial();
+        .setRGBA(255, 255, 255, 0)
+        .setTransparent(true)
+        .setName("stablebaryonicmatter")
+        .setColor(Dyes._NULL)
+        .constructMaterial()
+        .setHasCorrespondingFluid(true);
 
     // spotless:on
 
@@ -3227,19 +3231,27 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public String getDefaultLocalizedNameForItem(String aFormat) {
-        return String.format(
-            aFormat.replace("%s", "%temp")
-                .replace("%material", "%s"),
-            this.mDefaultLocalName)
-            .replace("%temp", "%s");
+        try {
+            return String.format(
+                aFormat.replace("%s", "%temp")
+                    .replace("%material", "%s"),
+                this.mDefaultLocalName)
+                .replace("%temp", "%s");
+        } catch (IllegalFormatException ignored) {
+            return aFormat;
+        }
     }
 
     public String getLocalizedNameForItem(String aFormat) {
-        return String.format(
-            aFormat.replace("%s", "%temp")
-                .replace("%material", "%s"),
-            this.mLocalizedName)
-            .replace("%temp", "%s");
+        try {
+            return String.format(
+                aFormat.replace("%s", "%temp")
+                    .replace("%material", "%s"),
+                this.mLocalizedName)
+                .replace("%temp", "%s");
+        } catch (IllegalFormatException ignored) {
+            return aFormat;
+        }
     }
 
     public boolean hasCorrespondingFluid() {

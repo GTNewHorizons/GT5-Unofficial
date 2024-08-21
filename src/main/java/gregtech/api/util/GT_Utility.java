@@ -138,6 +138,7 @@ import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
@@ -2311,24 +2312,6 @@ public class GT_Utility {
         return true;
     }
 
-    /**
-     * @inheritDoc
-     * @Deprecated Use {@link #doSoundAtClient(ResourceLocation, int, float, float, double, double, double)}
-     */
-    @Deprecated
-    public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength,
-        float aSoundModulation, double aX, double aY, double aZ) {
-        if (isStringInvalid(aSoundName)) return false;
-        return doSoundAtClient(
-            new ResourceLocation(aSoundName),
-            aTimeUntilNextSound,
-            aSoundStrength,
-            aSoundModulation,
-            aX,
-            aY,
-            aZ);
-    }
-
     public static boolean sendSoundToPlayers(World aWorld, String aSoundName, float aSoundStrength,
         float aSoundModulation, int aX, int aY, int aZ) {
         if (isStringInvalid(aSoundName) || aWorld == null || aWorld.isRemote) return false;
@@ -2431,11 +2414,6 @@ public class GT_Utility {
         return rList;
     }
 
-    @Deprecated // why do you use Objects?
-    public static Block getBlock(Object aBlock) {
-        return (Block) aBlock;
-    }
-
     public static Block getBlockFromStack(ItemStack itemStack) {
         if (isStackInvalid(itemStack)) return Blocks.air;
         return getBlockFromItem(itemStack.getItem());
@@ -2443,16 +2421,6 @@ public class GT_Utility {
 
     public static Block getBlockFromItem(Item item) {
         return Block.getBlockFromItem(item);
-    }
-
-    @Deprecated // why do you use Objects? And if you want to check your block to be not null, check it directly!
-    public static boolean isBlockValid(Object aBlock) {
-        return (aBlock instanceof Block);
-    }
-
-    @Deprecated // why do you use Objects? And if you want to check your block to be null, check it directly!
-    public static boolean isBlockInvalid(Object aBlock) {
-        return !(aBlock instanceof Block);
     }
 
     public static boolean isStringValid(Object aString) {
@@ -2606,16 +2574,6 @@ public class GT_Utility {
                 + "="
                 + (startIndex + blockMeta)
                 + "]");
-    }
-
-    /**
-     * Return texture id from item stack, unoptimized but readable?
-     *
-     * @return casing texture 0 to 16383
-     */
-    @Deprecated
-    public static int getTextureId(ItemStack stack) {
-        return getTextureId(Block.getBlockFromItem(stack.getItem()), (byte) stack.getItemDamage());
     }
 
     /**
@@ -2901,13 +2859,6 @@ public class GT_Utility {
         return false;
     }
 
-    @Deprecated
-    public static ItemStack setStack(Object aSetStack, Object aToStack) {
-        if (aSetStack instanceof ItemStack setStack && aToStack instanceof ItemStack toStack)
-            return setStack(setStack, toStack);
-        return null;
-    }
-
     public static ItemStack setStack(ItemStack aSetStack, ItemStack aToStack) {
         if (isStackInvalid(aSetStack) || isStackInvalid(aToStack)) return null;
         aSetStack.func_150996_a(aToStack.getItem());
@@ -2990,14 +2941,6 @@ public class GT_Utility {
         return rStack;
     }
 
-    /**
-     * @deprecated use {@link #multiplyStack(int, ItemStack)} instead
-     */
-    @Deprecated
-    public static ItemStack multiplyStack(long aMultiplier, Object... aStacks) {
-        return multiplyStack((int) aMultiplier, firstStackOrNull(aStacks));
-    }
-
     public static ItemStack multiplyStack(int aMultiplier, ItemStack aStack) {
         ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
@@ -3007,14 +2950,6 @@ public class GT_Utility {
         else if (tAmount < 0) tAmount = 0;
         rStack.stackSize = (byte) tAmount;
         return rStack;
-    }
-
-    /**
-     * @deprecated use {@link #copyAmountUnsafe(int, ItemStack)} instead
-     */
-    @Deprecated
-    public static ItemStack copyAmountUnsafe(long aAmount, Object... aStacks) {
-        return copyAmountUnsafe((int) aAmount, firstStackOrNull(aStacks));
     }
 
     /**
@@ -3028,27 +2963,11 @@ public class GT_Utility {
         return rStack;
     }
 
-    /**
-     * @deprecated use {@link #copyMetaData(int, ItemStack)} instead
-     */
-    @Deprecated
-    public static ItemStack copyMetaData(long aMetaData, Object... aStacks) {
-        return copyMetaData((int) aMetaData, firstStackOrNull(aStacks));
-    }
-
     public static ItemStack copyMetaData(int aMetaData, ItemStack aStack) {
         ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
         Items.feather.setDamage(rStack, aMetaData);
         return rStack;
-    }
-
-    /**
-     * @deprecated use {@link #copyAmountAndMetaData(int, int, ItemStack)} instead
-     */
-    @Deprecated
-    public static ItemStack copyAmountAndMetaData(long aAmount, long aMetaData, Object... aStacks) {
-        return copyAmountAndMetaData(aAmount, aMetaData, firstStackOrNull(aStacks));
     }
 
     /**
@@ -3064,14 +2983,6 @@ public class GT_Utility {
         if (isStackInvalid(rStack)) return null;
         Items.feather.setDamage(rStack, aMetaData);
         return rStack;
-    }
-
-    /**
-     * @deprecated use {@link #mul(int, ItemStack)} instead
-     */
-    @Deprecated
-    public static ItemStack mul(long aMultiplier, Object... aStacks) {
-        return mul((int) aMultiplier, firstStackOrNull(aStacks));
     }
 
     /**
@@ -3579,7 +3490,8 @@ public class GT_Utility {
     private static int addForestryLeavesInfo(ArrayList<String> tList, TileEntity tTileEntity) {
         int rEUAmount = 0;
         try {
-            if (tTileEntity instanceof forestry.arboriculture.tiles.TileLeaves tileLeaves) {
+            if (Mods.Forestry.isModLoaded()
+                && tTileEntity instanceof forestry.arboriculture.tiles.TileLeaves tileLeaves) {
                 final forestry.api.arboriculture.ITree tree = tileLeaves.getTree();
                 if (tree != null) {
                     rEUAmount += 1000;
@@ -4706,16 +4618,6 @@ public class GT_Utility {
             return fluidStack;
         }
         return null;
-    }
-
-    /**
-     * @deprecated typo in method name. use {@link #isAnyIntegratedCircuit(ItemStack)} instead.
-     */
-    @Deprecated
-    public static boolean checkIfSameIntegratedCircuit(ItemStack itemStack) {
-        if (itemStack == null) return false;
-        for (int i = 0; i < 25; i++) if (itemStack.isItemEqual(GT_Utility.getIntegratedCircuit(i))) return true;
-        return false;
     }
 
     public static boolean isAnyIntegratedCircuit(ItemStack itemStack) {

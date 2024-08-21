@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -38,12 +39,14 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
 import gregtech.common.items.ID_MetaItem_03;
 
@@ -163,7 +166,9 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
 
     private ArrayList<ItemStack> insertedCatalysts = new ArrayList<>();
 
-    private int correctIndexA = -1, correctIndexB = -1;
+    private static final long CATALYST_BASE_COST = 144L;
+
+    private int correctStartIndex = -1;
     private int numCasings = 0;
     private static final int MIN_CASINGS = 300;
 
@@ -279,7 +284,16 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
                     + EnumChatFormatting.GRAY
                     + " ticks, consumes ALL catalysts in the input bus.")
             .addInfo(
-                "If the two most recently inserted catalysts were the correct combination, immediately outputs "
+                "The base cost of inserting a catalyst is " + EnumChatFormatting.RED
+                    + CATALYST_BASE_COST
+                    + "L"
+                    + EnumChatFormatting.WHITE
+                    + " Molten Infinity")
+            .addInfo("For every duplicate occurrence of an inserted catalyst in the sequence, this cost is doubled.")
+            .addSeparator()
+            .addInfo("Keeps track of the entire sequence of catalysts inserted this recipe.")
+            .addInfo(
+                "If the correct catalyst combination is in the sequence of inserted catalysts, immediately outputs "
                     + EnumChatFormatting.WHITE
                     + "Stabilised Baryonic Matter")
             .addInfo("At the end of the recipe, all incorrectly inserted catalysts are returned in the output bus.")
@@ -351,8 +365,7 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
         super.startCycle(cycleTime, progressTime);
         this.insertedCatalysts.clear();
         this.currentCombination = generateNewCombination();
-        correctIndexA = -1;
-        correctIndexB = -1;
+        correctStartIndex = -1;
     }
 
     private boolean isCatalyst(ItemStack stack) {
@@ -370,7 +383,7 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
         // Output incorrect indices unchanged, the spent ones will follow if recipe was successful from the actual
         // recipe outputs
         for (int i = 0; i < insertedCatalysts.size(); ++i) {
-            if (i == correctIndexA || i == correctIndexB) continue;
+            if (i == correctStartIndex || i == correctStartIndex + 1) continue;
 
             addOutput(insertedCatalysts.get(i));
         }
@@ -379,8 +392,41 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
     @Override
     public float calculateFinalSuccessChance() {
         // Only succeed if correct combination was inserted
-        if (correctIndexA >= 0) return 100.0f;
+        if (correctStartIndex != -1) return 100.0f;
         else return 0.0f;
+    }
+
+    private int calculateCatalystCost(ItemStack newCatalyst) {
+        // Count number of previously inserted catalysts
+        int count = 0;
+        for (ItemStack cat : this.insertedCatalysts) {
+            // We already assume that newCatalyst is a valid catalyst item
+            if (cat.getItemDamage() == newCatalyst.getItemDamage()) {
+                ++count;
+            }
+        }
+        // Cost is exponential in function of amount of duplicate catalysts
+        return (int) (Math.pow(2, count + 1) * CATALYST_BASE_COST);
+    }
+
+    // Returns the first index of a valid combination, or -1 if there is no valid combination in the sequence
+    public int checkSequence() {
+        // Loop over the entire sequence and check if any pair contains a valid combination
+        for (int i = 0; i < insertedCatalysts.size() - 1; ++i) {
+            ItemStack first = insertedCatalysts.get(i);
+            ItemStack second = insertedCatalysts.get(i + 1);
+            // Found a match, return its starting index
+            if (currentCombination.matches(first, second)) {
+                return i;
+            }
+        }
+        // No match found, return -1
+        return -1;
+    }
+
+    @Override
+    protected void setHatchRecipeMap(GT_MetaTileEntity_Hatch_Input hatch) {
+        // Do nothing to avoid hatches being annoying
     }
 
     @Override
@@ -392,41 +438,47 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
             // For each stack in the input, check if it is a valid catalyst item and if so consume it
             for (ItemStack stack : storedInputs) {
                 if (isCatalyst(stack)) {
-                    this.insertedCatalysts.add(stack.copy());
+                    // Try to deplete catalyst cost first
+                    int cost = calculateCatalystCost(stack);
+                    FluidStack inputCost = Materials.Infinity.getMolten(cost);
+                    // Drain the input cost directly from a hatch since we are not inside
+                    // recipe processing
+                    boolean drained = false;
+                    for (GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
+                        FluidStack drainedStack = hatch.drain(ForgeDirection.UNKNOWN, inputCost, true);
+                        if (drainedStack != null && drainedStack.amount == inputCost.amount) {
+                            drained = true;
+                            break;
+                        }
+                    }
+                    // If we could not drain, stop the machine
+                    if (!drained) {
+                        stopMachine(ShutDownReasonRegistry.outOfFluid(inputCost));
+                        return;
+                    }
+                    // Now add the catalysts to the list, one by one since there may be multiples and we want to
+                    // keep them as single entries in the list
+                    for (int i = 0; i < stack.stackSize; ++i) {
+                        ItemStack singleStack = new ItemStack(stack.getItem(), 1, stack.getItemDamage());
+                        this.insertedCatalysts.add(singleStack);
+                    }
+                    // Then deplete the entire stack
                     this.depleteInput(stack);
                 }
             }
 
             // Only do this check if we didn't find a correct combination yet
-            if (correctIndexA >= 0) return;
+            if (correctStartIndex != -1) return;
 
-            // After draining all catalyst inputs, find the 2 most recently inserted items
-            if (insertedCatalysts.isEmpty()) return;
-            int firstIndex = insertedCatalysts.size() - 1;
-            ItemStack first = insertedCatalysts.get(firstIndex);
-            // Since correct combinations are always different catalysts, we can require that there is a second item in
-            // the history
-            if (first.stackSize == 1 && insertedCatalysts.size() >= 2) {
-                int secondIndex = insertedCatalysts.size() - 2;
-                ItemStack second = insertedCatalysts.get(secondIndex);
-                // Now check if this combination matches the current correct one.
-                if (currentCombination.matches(first, second)) {
-                    // It does, we can save that the indices are correct. This means we need to
-                    // - stop checking if any future insertions are the correct combination (but still consume them)
-                    // - output baryonic matter
-                    correctIndexA = firstIndex;
-                    correctIndexB = secondIndex;
-                    addOutput(Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT));
-                }
-            }
+            // Now check the sequence for a correct combination
+            correctStartIndex = checkSequence();
+            // If we found something, immediately output stable baryonic matter
+            if (correctStartIndex != -1) addOutput(Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT));
         }
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        if (this.currentCombination != null) {
-            aNBT.setTag("currentCombination", this.currentCombination.saveToNBT());
-        }
         NBTTagCompound insertedNBT = new NBTTagCompound();
         for (int i = 0; i < insertedCatalysts.size(); ++i) {
             ItemStack inserted = insertedCatalysts.get(i);
@@ -435,16 +487,14 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
             insertedNBT.setTag(Integer.toString(i), itemNBT);
         }
         aNBT.setTag("insertedItems", insertedNBT);
-        aNBT.setInteger("correctIndexA", correctIndexA);
-        aNBT.setInteger("correctIndexB", correctIndexB);
+        aNBT.setInteger("correctStartIndex", correctStartIndex);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        if (aNBT.hasKey("currentCombination")) {
-            currentCombination = CatalystCombination.readFromNBT(aNBT.getCompoundTag("currentCombination"));
-        }
+        // Generate a random combination on load
+        currentCombination = generateNewCombination();
         if (aNBT.hasKey("insertedItems")) {
             NBTTagCompound insertedList = aNBT.getCompoundTag("insertedItems");
             // Initialize empty list with correct size
@@ -459,17 +509,14 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
                 this.insertedCatalysts.set(index, ItemStack.loadItemStackFromNBT(itemCompound));
             }
         }
-        if (aNBT.hasKey("correctIndexA")) {
-            correctIndexA = aNBT.getInteger("correctIndexA");
-        }
-        if (aNBT.hasKey("correctIndexB")) {
-            correctIndexB = aNBT.getInteger("correctIndexB");
+        if (aNBT.hasKey("correctStartIndex")) {
+            correctStartIndex = aNBT.getInteger("correctStartIndex");
         }
         super.loadNBTData(aNBT);
     }
 
     private String getCorrectlyDecodedString() {
-        if (correctIndexA >= 0) {
+        if (correctStartIndex != -1) {
             return EnumChatFormatting.GREEN + "Yes";
         }
         return EnumChatFormatting.RED + "No";
@@ -488,8 +535,8 @@ public class GT_MetaTileEntity_PurificationUnitParticleExtractor
 
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Catalyst insertion history for this recipe cycle (most recent first): ");
-        for (int i = insertedCatalysts.size() - 1; i >= 0; --i) {
+        info.add("Catalyst insertion history for this recipe cycle");
+        for (int i = 0; i < insertedCatalysts.size(); ++i) {
             ItemStack stack = insertedCatalysts.get(i);
             String name = stack.getDisplayName();
             String[] split = name.split("-");

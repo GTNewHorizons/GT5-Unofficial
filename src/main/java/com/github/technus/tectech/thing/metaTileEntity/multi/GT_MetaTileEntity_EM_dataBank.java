@@ -4,9 +4,9 @@ import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
-import static com.github.technus.tectech.util.CommonValues.V;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -95,7 +95,7 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
                     DataBankHatches.WirelessOutboundConnector)
                 .casingIndex(textureOffset + 1)
                 .dot(2)
-                .buildAndChain(DataBankHatches.DataStick.newAny(textureOffset + 1, 2), ofBlock(sBlockCasingsTT, 1)))
+                .buildAndChain(DataBankHatches.DataStick.newAnyOrCasing(textureOffset + 1, 2, sBlockCasingsTT, 1)))
         .build();
     // endregion
 

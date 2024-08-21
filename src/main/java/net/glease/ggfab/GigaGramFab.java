@@ -2,13 +2,7 @@ package net.glease.ggfab;
 
 import static gregtech.api.enums.ToolDictNames.*;
 import static gregtech.common.items.GT_MetaGenerated_Tool_01.*;
-import static gregtech.common.items.ID_MetaTool_01.CROWBAR;
-import static gregtech.common.items.ID_MetaTool_01.FILE;
-import static gregtech.common.items.ID_MetaTool_01.HARDHAMMER;
-import static gregtech.common.items.ID_MetaTool_01.SCREWDRIVER;
-import static gregtech.common.items.ID_MetaTool_01.SOFTMALLET;
-import static gregtech.common.items.ID_MetaTool_01.WIRECUTTER;
-import static gregtech.common.items.ID_MetaTool_01.WRENCH;
+import static gregtech.common.items.ID_MetaTool_01.*;
 import static net.glease.ggfab.api.GGFabRecipeMaps.toolCastRecipes;
 
 import net.glease.ggfab.api.GigaGramFabAPI;
@@ -133,6 +127,7 @@ public class GigaGramFab {
                 craftingToolScrewdriver,
                 INSTANCE.mToolStats.get((short) SCREWDRIVER.ID),
                 2 * rod);
+            GigaGramFabAPI.addSingleUseToolType(craftingToolSaw, INSTANCE.mToolStats.get((short) SAW.ID), 2 * plate);
             GT_ProcessingArray_Manager.addRecipeMapToPA("ggfab.toolcast", toolCastRecipes);
         });
         GregTech_API.sBeforeGTPostload.add(new ComponentRecipeLoader());
