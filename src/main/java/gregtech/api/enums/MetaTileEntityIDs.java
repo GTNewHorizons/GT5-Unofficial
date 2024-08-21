@@ -7,7 +7,7 @@ package gregtech.api.enums;
  * please, pretty please, insert it at the correct place.
  * <p/>
  * This does not list all used IDs. If you are looking for
- * a free ID, you can use the java arg `-Dgt.debug` to
+ * a free ID, you can use the java arg `-Dgt.debug=true` to
  * list all that are in use.
  * <p/>
  * Additionally, some ID ranges are blocked for automatic
