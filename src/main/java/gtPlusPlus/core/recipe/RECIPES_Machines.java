@@ -949,7 +949,7 @@ public class RECIPES_Machines {
             .itemOutputs(GregtechItemList.Gregtech_Computer_Cube.get(1))
             .fluidInputs(ELEMENT.getInstance().TANTALUM.getFluidStack(144 * 16))
             .duration(3 * MINUTES)
-            .eut(8000)
+            .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
         // Circuit programmer
         GT_Values.RA.stdBuilder()
@@ -986,7 +986,7 @@ public class RECIPES_Machines {
             .itemOutputs(GregtechItemList.RTG.get(1))
             .fluidInputs(ALLOY.NIOBIUM_CARBIDE.getFluidStack(144 * 16))
             .duration(10 * MINUTES)
-            .eut(8000)
+            .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
         // Super Jukebox
         GT_Values.RA.stdBuilder()
@@ -1024,7 +1024,7 @@ public class RECIPES_Machines {
             .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPooCollector, 8, 1))
             .fluidInputs(CI.getAlternativeTieredFluid(5, 144 * 9))
             .duration(5 * MINUTES)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
         ItemStack aBronzeBricks = ItemUtils.simpleMetaStack(GregTech_API.sBlockCasings1, 10, 1);
@@ -1960,7 +1960,7 @@ public class RECIPES_Machines {
                     .itemOutputs(washers.get(i))
                     .fluidInputs(CI.getTieredFluid(tier, 144 * tier))
                     .duration(20 * 5 * tier)
-                    .eut(GT_Values.V[tier])
+                    .eut(GT_Values.VP[tier])
                     .addTo(assemblerRecipes);
 
             }
@@ -2249,7 +2249,7 @@ public class RECIPES_Machines {
                     CI.fieldGenerator_HV)
                 .itemOutputs(controlCircuit)
                 .duration(4 * MINUTES)
-                .eut(500)
+                .eut(TierEU.RECIPE_HV)
                 .addTo(assemblerRecipes);
 
             // Fission Fuel Plant
@@ -2906,7 +2906,7 @@ public class RECIPES_Machines {
             .itemOutputs(GregtechItemList.Casing_BedrockMiner.get(1))
             .fluidInputs(ALLOY.MARAGING350.getFluidStack(144 * 16 * 1))
             .duration((int) GT_Values.V[4])
-            .eut(GT_Values.V[6])
+            .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
 
         int aCostMultiplier = 1;
@@ -3355,7 +3355,7 @@ public class RECIPES_Machines {
                 .itemInputs(CI.getTieredMachineCasing(i))
                 .itemOutputs(aTier[i])
                 .duration(i * 5 * SECONDS)
-                .eut(GT_Values.V[i])
+                .eut(GT_Values.VP[i])
                 .addTo(cutterRecipes);
         }
     }
@@ -3400,7 +3400,7 @@ public class RECIPES_Machines {
                 .itemOutputs(mSuperBusesInput[tier - 1].get(1))
                 .fluidInputs(CI.getAlternativeTieredFluid(tier, 144 * 8))
                 .duration(60 * SECONDS)
-                .eut(GT_Values.V[tier])
+                .eut(GT_Values.VP[tier])
                 .addTo(assemblerRecipes);
 
         }
@@ -3417,7 +3417,7 @@ public class RECIPES_Machines {
                 .itemOutputs(mSuperBusesOutput[tier - 1].get(1))
                 .fluidInputs(CI.getTertiaryTieredFluid(tier, 144 * 8))
                 .duration(60 * SECONDS)
-                .eut(GT_Values.V[tier])
+                .eut(GT_Values.VP[tier])
                 .addTo(assemblerRecipes);
 
         }
