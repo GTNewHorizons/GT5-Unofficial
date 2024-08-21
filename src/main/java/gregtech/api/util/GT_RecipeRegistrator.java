@@ -3,6 +3,7 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.L;
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.enums.GT_Values.VP;
 import static gregtech.api.enums.Materials.Bronze;
 import static gregtech.api.enums.Materials.Cobalt;
 import static gregtech.api.enums.Materials.DarkSteel;
@@ -28,6 +29,7 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.RECYCLE;
 import static gregtech.api.util.GT_RecipeConstants.UniversalArcFurnace;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
+import static gregtech.api.util.GT_Utility.getTier;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -222,9 +224,15 @@ public class GT_RecipeRegistrator {
         if (recipeOutput != null) {
             builder.itemOutputs(recipeOutput);
         }
+        long powerUsage = Math.max(8, (long) Math.sqrt(2 * aMaterial.mSmeltInto.mStandardMoltenFluid.getTemperature()));
+        // avoid full amp recipes
+        int powerTier = getTier(powerUsage);
+        if (powerTier > 0 && powerTier < VP.length && powerUsage > VP[powerTier]) {
+            powerUsage = VP[powerTier];
+        }
         builder.fluidOutputs(aMaterial.mSmeltInto.getMolten((L * aMaterialAmount) / (M * aStack.stackSize)))
             .duration((int) Math.max(1, (24 * aMaterialAmount) / M))
-            .eut(Math.max(8, (int) Math.sqrt(2 * aMaterial.mSmeltInto.mStandardMoltenFluid.getTemperature())))
+            .eut(powerUsage)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
             .addTo(fluidExtractionRecipes);
     }

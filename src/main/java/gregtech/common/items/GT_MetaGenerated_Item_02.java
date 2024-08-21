@@ -2871,7 +2871,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .itemInputs(ItemList.Tesseract.get(1))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 8L))
             .duration(5 * SECONDS)
-            .eut(32_000_000)
+            .eut(TierEU.RECIPE_UIV)
             .addTo(maceratorRecipes);
     }
 
