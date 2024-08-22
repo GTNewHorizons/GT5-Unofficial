@@ -15,6 +15,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
+import gregtech.common.config.ConfigGeneral;
+import gregtech.common.config.ConfigMachines;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -166,6 +170,15 @@ import ic2.api.recipe.RecipeOutput;
         + " after:Translocator;"
         + " after:gendustry;")
 public class GT_Mod implements IGT_Mod {
+    static {
+        try{
+            ConfigurationManager.registerConfig(ConfigGeneral.class);
+            ConfigurationManager.registerConfig(ConfigMachines.class);
+        }
+        catch (ConfigException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static final int NBT_VERSION = calculateTotalGTVersion(VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
 

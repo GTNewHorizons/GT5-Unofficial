@@ -1,12 +1,10 @@
-package gregtech.common;
+package gregtech.common.config;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
-import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Mods;
 
 @Config(modid = Mods.Names.GREG_TECH, category = "machines",configSubDirectory = "GregTech",filename = "GregTech")
-public class GT_ConfigMachines {
+public class ConfigMachines {
     @Config.Comment("Number of ticks between sending sound packets to clients for electric machines. Default is 1.5 seconds. Trying to mitigate lag and FPS drops.")
     @Config.DefaultInt(30)
     @Config.RequiresMcRestart

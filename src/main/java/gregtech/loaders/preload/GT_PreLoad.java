@@ -20,7 +20,8 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import gregtech.common.GT_ConfigMachines;
+import gregtech.common.config.ConfigGeneral;
+import gregtech.common.config.ConfigMachines;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.Launch;
@@ -373,76 +374,76 @@ public class GT_PreLoad {
     }
 
     public static void loadConfig(Configuration tMainConfig) {
-        GT_Values.D1 = gregtech.common.GT_Config.D1;
-        GT_Values.D2 = gregtech.common.GT_Config.D2;
-        GT_Values.allow_broken_recipemap = gregtech.common.GT_Config.allowBrokenRecipeMap;
-        GT_Values.debugCleanroom = gregtech.common.GT_Config.debugCleanroom;
-        GT_Values.debugDriller = gregtech.common.GT_Config.debugDriller;
-        GT_Values.debugWorldGen = gregtech.common.GT_Config.debugWorldgen;
-        GT_Values.debugOrevein = gregtech.common.GT_Config.debugOrevein;
-        GT_Values.debugSmallOres = gregtech.common.GT_Config.debugSmallOres;
-        GT_Values.debugStones = gregtech.common.GT_Config.debugStones;
-        GT_Values.debugBlockMiner = gregtech.common.GT_Config.debugBlockMiner;
-        GT_Values.debugBlockPump = gregtech.common.GT_Config.debugBlockPump;
-        GT_Values.debugEntityCramming = gregtech.common.GT_Config.debugEntityCramming;
-        GT_Values.debugWorldData = gregtech.common.GT_Config.debugWorldData;
-        GT_Values.oreveinPercentage = gregtech.common.GT_Config.oreveinPercentage;
-        GT_Values.oreveinAttempts = gregtech.common.GT_Config.oreveinAttempts;
-        GT_Values.oreveinMaxPlacementAttempts = gregtech.common.GT_Config.oreveinMaxPlacementAttempts;
-        GT_Values.oreveinPlacerOres = gregtech.common.GT_Config.oreveinPlacerOres;
-        GT_Values.oreveinPlacerOresMultiplier = gregtech.common.GT_Config.oreveinPlacerOresMultiplier;
-        GT_Values.ticksBetweenSounds = GT_ConfigMachines.ticksBetweenSounds;
+        GT_Values.D1 = ConfigGeneral.D1;
+        GT_Values.D2 = ConfigGeneral.D2;
+        GT_Values.allow_broken_recipemap = ConfigGeneral.allowBrokenRecipeMap;
+        GT_Values.debugCleanroom = ConfigGeneral.debugCleanroom;
+        GT_Values.debugDriller = ConfigGeneral.debugDriller;
+        GT_Values.debugWorldGen = ConfigGeneral.debugWorldgen;
+        GT_Values.debugOrevein = ConfigGeneral.debugOrevein;
+        GT_Values.debugSmallOres = ConfigGeneral.debugSmallOres;
+        GT_Values.debugStones = ConfigGeneral.debugStones;
+        GT_Values.debugBlockMiner = ConfigGeneral.debugBlockMiner;
+        GT_Values.debugBlockPump = ConfigGeneral.debugBlockPump;
+        GT_Values.debugEntityCramming = ConfigGeneral.debugEntityCramming;
+        GT_Values.debugWorldData = ConfigGeneral.debugWorldData;
+        GT_Values.oreveinPercentage = ConfigGeneral.oreveinPercentage;
+        GT_Values.oreveinAttempts = ConfigGeneral.oreveinAttempts;
+        GT_Values.oreveinMaxPlacementAttempts = ConfigGeneral.oreveinMaxPlacementAttempts;
+        GT_Values.oreveinPlacerOres = ConfigGeneral.oreveinPlacerOres;
+        GT_Values.oreveinPlacerOresMultiplier = ConfigGeneral.oreveinPlacerOresMultiplier;
+        GT_Values.ticksBetweenSounds = ConfigMachines.ticksBetweenSounds;
 
-        GT_Values.blacklistedTileEntiyClassNamesForWA = GT_ConfigMachines.blacklistedTileEntiyClassNamesForWA;
-        GT_Values.cleanroomGlass = GT_ConfigMachines.cleanroomGlass;
-        GT_Values.enableChunkloaders = GT_ConfigMachines.enableChunkloaders;
+        GT_Values.blacklistedTileEntiyClassNamesForWA = ConfigMachines.blacklistedTileEntiyClassNamesForWA;
+        GT_Values.cleanroomGlass = ConfigMachines.cleanroomGlass;
+        GT_Values.enableChunkloaders = ConfigMachines.enableChunkloaders;
 
-        GT_Values.alwaysReloadChunkloaders = GT_ConfigMachines.alwaysReloadChunkloaders;
-        GT_Values.debugChunkloaders = GT_ConfigMachines.debugChunkloaders;
-        GT_Values.disableDigitalChestsExternalAccess = GT_ConfigMachines.disableDigitalChestsExternalAccess;
+        GT_Values.alwaysReloadChunkloaders = ConfigMachines.alwaysReloadChunkloaders;
+        GT_Values.debugChunkloaders = ConfigMachines.debugChunkloaders;
+        GT_Values.disableDigitalChestsExternalAccess = ConfigMachines.disableDigitalChestsExternalAccess;
 
-        GT_Values.enableMultiTileEntities = gregtech.common.GT_ConfigMachines.enableMultiTileEntities || (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
-        GregTech_API.TICKS_FOR_LAG_AVERAGING = gregtech.common.GT_Config.TICKS_FOR_LAG_AVERAGING;
-        GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = gregtech.common.GT_Config.MILLISECOND_THESHOLD_UNTIL_LAG_WARNING;
+        GT_Values.enableMultiTileEntities = ConfigMachines.enableMultiTileEntities || (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+        GregTech_API.TICKS_FOR_LAG_AVERAGING = ConfigGeneral.TICKS_FOR_LAG_AVERAGING;
+        GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = ConfigGeneral.MILLISECOND_THESHOLD_UNTIL_LAG_WARNING;
 
 
-        GregTech_API.sMachineExplosions = GT_ConfigMachines.sMachineExplosions;
-        GregTech_API.sMachineFlammable = GT_ConfigMachines.sMachineFlammable;
-        GregTech_API.sMachineNonWrenchExplosions = GT_ConfigMachines.sMachineNonWrenchExplosions;
-        GregTech_API.sMachineWireFire = GT_ConfigMachines.sMachineWireFire;
-        GregTech_API.sMachineFireExplosions = GT_ConfigMachines.sMachineFireExplosions;
-        GregTech_API.sMachineRainExplosions = GT_ConfigMachines.sMachineRainExplosions;
-        GregTech_API.sMachineThunderExplosions = GT_ConfigMachines.sMachineThunderExplosions;
-        GregTech_API.sColoredGUI = GT_ConfigMachines.sColoredGUI;
-        GregTech_API.sMachineMetalGUI = GT_ConfigMachines.sMachineMetalGUI;
+        GregTech_API.sMachineExplosions = ConfigMachines.sMachineExplosions;
+        GregTech_API.sMachineFlammable = ConfigMachines.sMachineFlammable;
+        GregTech_API.sMachineNonWrenchExplosions = ConfigMachines.sMachineNonWrenchExplosions;
+        GregTech_API.sMachineWireFire = ConfigMachines.sMachineWireFire;
+        GregTech_API.sMachineFireExplosions = ConfigMachines.sMachineFireExplosions;
+        GregTech_API.sMachineRainExplosions = ConfigMachines.sMachineRainExplosions;
+        GregTech_API.sMachineThunderExplosions = ConfigMachines.sMachineThunderExplosions;
+        GregTech_API.sColoredGUI = ConfigMachines.sColoredGUI;
+        GregTech_API.sMachineMetalGUI = ConfigMachines.sMachineMetalGUI;
         // Implementation for this is actually handled in NewHorizonsCoreMod in MainRegistry.java!
-        GregTech_API.sUseMachineMetal = GT_ConfigMachines.sUseMachineMetal;
+        GregTech_API.sUseMachineMetal = ConfigMachines.sUseMachineMetal;
 
-        GregTech_API.sTimber = gregtech.common.GT_Config.sTimber;
-        GregTech_API.sDrinksAlwaysDrinkable = gregtech.common.GT_Config.sDrinksAlwaysDrinkable;
-        GregTech_API.sDoShowAllItemsInCreative = gregtech.common.GT_Config.sDoShowAllItemsInCreative;
-        GregTech_API.sMultiThreadedSounds = gregtech.common.GT_Config.sMultiThreadedSounds;
+        GregTech_API.sTimber = ConfigGeneral.sTimber;
+        GregTech_API.sDrinksAlwaysDrinkable = ConfigGeneral.sDrinksAlwaysDrinkable;
+        GregTech_API.sDoShowAllItemsInCreative = ConfigGeneral.sDoShowAllItemsInCreative;
+        GregTech_API.sMultiThreadedSounds = ConfigGeneral.sMultiThreadedSounds;
 
         loadClientConfig();
 
-        GT_Mod.gregtechproxy.mMaxEqualEntitiesAtOneSpot = gregtech.common.GT_Config.mMaxEqualEntitiesAtOneSpot;
-        GT_Mod.gregtechproxy.mFlintChance = gregtech.common.GT_Config.mFlintChance;
+        GT_Mod.gregtechproxy.mMaxEqualEntitiesAtOneSpot = ConfigGeneral.mMaxEqualEntitiesAtOneSpot;
+        GT_Mod.gregtechproxy.mFlintChance = ConfigGeneral.mFlintChance;
 
-        GT_Mod.gregtechproxy.mItemDespawnTime = gregtech.common.GT_Config.mItemDespawnTime;
-        GT_Mod.gregtechproxy.mAllowSmallBoilerAutomation = gregtech.common.GT_Config.mAllowSmallBoilerAutomation;
-        GT_Mod.gregtechproxy.mDisableVanillaOres = gregtech.common.GT_Config.mDisableVanillaOres;
-        GT_Mod.gregtechproxy.mIncreaseDungeonLoot = gregtech.common.GT_Config.mIncreaseDungeonLoot;
-        GT_Mod.gregtechproxy.mAxeWhenAdventure = gregtech.common.GT_Config.mAxeWhenAdventure;
-        GT_Mod.gregtechproxy.mSurvivalIntoAdventure = gregtech.common.GT_Config.mSurvivalIntoAdventure;
-        GT_Mod.gregtechproxy.mHungerEffect = gregtech.common.GT_Config.mHungerEffect;
-        GT_Mod.gregtechproxy.mInventoryUnification = gregtech.common.GT_Config.mInventoryUnification;
-        GT_Mod.gregtechproxy.mGTBees = gregtech.common.GT_Config.mGTBees;
-        GT_Mod.gregtechproxy.mCraftingUnification = gregtech.common.GT_Config.mCraftingUnification;
-        GT_Mod.gregtechproxy.mNerfedWoodPlank = gregtech.common.GT_Config.mNerfedWoodPlank;
-        GT_Mod.gregtechproxy.mNerfedVanillaTools = gregtech.common.GT_Config.mNerfedVanillaTools;
-        GT_Mod.gregtechproxy.mAchievements = gregtech.common.GT_Config.mAchievements;
-        GT_Mod.gregtechproxy.mHideUnusedOres = gregtech.common.GT_Config.mHideUnusedOres;
-        GT_Mod.gregtechproxy.mEnableAllMaterials = gregtech.common.GT_Config.mEnableAllMaterials;
+        GT_Mod.gregtechproxy.mItemDespawnTime = ConfigGeneral.mItemDespawnTime;
+        GT_Mod.gregtechproxy.mAllowSmallBoilerAutomation = ConfigGeneral.mAllowSmallBoilerAutomation;
+        GT_Mod.gregtechproxy.mDisableVanillaOres = ConfigGeneral.mDisableVanillaOres;
+        GT_Mod.gregtechproxy.mIncreaseDungeonLoot = ConfigGeneral.mIncreaseDungeonLoot;
+        GT_Mod.gregtechproxy.mAxeWhenAdventure = ConfigGeneral.mAxeWhenAdventure;
+        GT_Mod.gregtechproxy.mSurvivalIntoAdventure = ConfigGeneral.mSurvivalIntoAdventure;
+        GT_Mod.gregtechproxy.mHungerEffect = ConfigGeneral.mHungerEffect;
+        GT_Mod.gregtechproxy.mInventoryUnification = ConfigGeneral.mInventoryUnification;
+        GT_Mod.gregtechproxy.mGTBees = ConfigGeneral.mGTBees;
+        GT_Mod.gregtechproxy.mCraftingUnification = ConfigGeneral.mCraftingUnification;
+        GT_Mod.gregtechproxy.mNerfedWoodPlank = ConfigGeneral.mNerfedWoodPlank;
+        GT_Mod.gregtechproxy.mNerfedVanillaTools = ConfigGeneral.mNerfedVanillaTools;
+        GT_Mod.gregtechproxy.mAchievements = ConfigGeneral.mAchievements;
+        GT_Mod.gregtechproxy.mHideUnusedOres = ConfigGeneral.mHideUnusedOres;
+        GT_Mod.gregtechproxy.mEnableAllMaterials = ConfigGeneral.mEnableAllMaterials;
 
         // Pollution: edit GT_Proxy.java to change default values
         GT_Mod.gregtechproxy.mPollution = tMainConfig

@@ -1,14 +1,10 @@
-package gregtech.common;
+package gregtech.common.config;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
-import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Mods;
-import net.minecraft.launchwrapper.Launch;
 
 @Config(modid = Mods.Names.GREG_TECH, category = "general",configSubDirectory = "GregTech",filename = "GregTech")
-public class GT_Config {
+public class ConfigGeneral {
 
     @Config.Comment("enable D1 flag (a set of debug logs)")
     @Config.DefaultBoolean(false)
