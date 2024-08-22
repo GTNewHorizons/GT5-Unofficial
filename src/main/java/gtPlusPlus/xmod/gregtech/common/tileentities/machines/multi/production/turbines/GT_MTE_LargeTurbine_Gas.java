@@ -25,6 +25,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.TurbineStatCalculator;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("deprecation")
@@ -111,7 +112,7 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
     }
 
     @Override
-    long fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers) {
+    long fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
         if (aFluids.size() >= 1) {
             int tEU = 0;
             int actualOptimalFlow = 0;
@@ -119,17 +120,17 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
                                                                           // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
             // log("Fuel Value of "+aFluids.get(0).getLocalizedName()+" is "+fuelValue+"eu");
-            if (aOptFlow < fuelValue) {
+            if (turbine.getOptimalGasEUt() < fuelValue) {
                 // turbine too weak and/or fuel too powerful
                 // at least consume 1L
                 this.realOptFlow = 1;
                 // wastes the extra fuel and generate aOptFlow directly
                 depleteInput(new FluidStack(firstFuelType, 1));
                 this.storedFluid += 1;
-                return GT_Utility.safeInt((long) aOptFlow * (long) aBaseEff / 10000L);
+                return GT_Utility.safeInt((long) (turbine.getOptimalGasEUt()));
             }
 
-            actualOptimalFlow = GT_Utility.safeInt((long) (aOptFlow * (double) flowMultipliers[1] / fuelValue));
+            actualOptimalFlow = GT_Utility.safeInt((long) (turbine.getOptimalGasFlow() / fuelValue));
             this.realOptFlow = actualOptimalFlow;
 
             int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of
@@ -154,11 +155,11 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
             tEU = GT_Utility.safeInt((long) totalFlow * fuelValue);
 
             if (totalFlow == actualOptimalFlow) {
-                tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
+                tEU = GT_Utility.safeInt((long) (tEU * turbine.getGasEfficiency()));
             } else {
                 float efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
                 tEU *= efficiency;
-                tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
+                tEU = GT_Utility.safeInt((long) (tEU * turbine.getGasEfficiency()));
             }
 
             return tEU;

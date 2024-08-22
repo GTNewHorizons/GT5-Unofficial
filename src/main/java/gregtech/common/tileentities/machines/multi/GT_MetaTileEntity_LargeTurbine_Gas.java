@@ -24,6 +24,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.TurbineStatCalculator;
 
 public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeTurbine {
 
@@ -128,8 +129,7 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier,
-        float[] flowMultipliers) {
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
         if (aFluids.size() >= 1) {
             int tEU = 0;
             int actualOptimalFlow = 0;
@@ -138,17 +138,17 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
                                                                           // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
 
-            if (aOptFlow < fuelValue) {
+            if (turbine.getOptimalGasEUt() < fuelValue) {
                 // turbine too weak and/or fuel too powerful
                 // at least consume 1L
                 this.realOptFlow = 1;
                 // wastes the extra fuel and generate aOptFlow directly
                 depleteInput(new FluidStack(firstFuelType, 1));
                 this.storedFluid += 1;
-                return GT_Utility.safeInt((long) aOptFlow * (long) aBaseEff / 10000L);
+                return GT_Utility.safeInt((long) turbine.getOptimalGasEUt());
             }
 
-            actualOptimalFlow = GT_Utility.safeInt((long) (aOptFlow * flowMultipliers[1] / fuelValue));
+            actualOptimalFlow = GT_Utility.safeInt((long) (turbine.getOptimalGasFlow() / fuelValue));
             this.realOptFlow = actualOptimalFlow;
 
             // Allowed to use up to 450% optimal flow rate, depending on the value of overflowMultiplier.
@@ -160,7 +160,7 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
             // - 300% if it is 2
             // - 450% if it is 3
             // Variable required outside of loop for multi-hatch scenarios.
-            int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow * (1.5f * overflowMultiplier)));
+            int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow * (1.5f * turbine.getOverflowEfficiency())));
             int flow = 0;
             int totalFlow = 0;
 
@@ -178,10 +178,10 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
             tEU = GT_Utility.safeInt((long) totalFlow * fuelValue);
 
             if (totalFlow != actualOptimalFlow) {
-                float efficiency = getOverflowEfficiency(totalFlow, actualOptimalFlow, overflowMultiplier);
+                float efficiency = getOverflowEfficiency(totalFlow, actualOptimalFlow, turbine.getOverflowEfficiency());
                 tEU *= efficiency;
             }
-            tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
+            tEU = GT_Utility.safeInt((long) (tEU * turbine.getGasEfficiency()));
 
             // EU/t output cap to properly tier the LGT against the Advanced LGT, will be implemented in a future dev
             // update

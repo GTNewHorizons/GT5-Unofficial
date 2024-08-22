@@ -34,6 +34,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 
@@ -131,10 +132,8 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier,
-        float[] flowMultipliers) {
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
         if (aFluids.size() >= 1) {
-            aOptFlow *= 800; // CHANGED THINGS HERE, check recipe runs once per 20 ticks
             int tEU = 0;
 
             int actualOptimalFlow = 0;
@@ -143,7 +142,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                                                                           // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
             actualOptimalFlow = GT_Utility
-                .safeInt((long) Math.ceil((double) aOptFlow * flowMultipliers[2] / (double) fuelValue));
+                .safeInt((long) Math.ceil((double) turbine.getOptimalPlasmaFlow()*20 / (double) fuelValue));
             this.realOptFlow = actualOptimalFlow; // For scanner info
 
             // Allowed to use up to 550% optimal flow rate, depending on the value of overflowMultiplier.
@@ -155,7 +154,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
             // - 400% if it is 2
             // - 550% if it is 3
             // Variable required outside of loop for multi-hatch scenarios.
-            int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow * (1.5f * overflowMultiplier + 1)));
+            int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow * (1.5f * turbine.getOverflowEfficiency() + 1)));
             int flow = 0;
             int totalFlow = 0;
 
@@ -187,10 +186,10 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
             // GT_FML_LOGGER.info(totalFlow+" : "+fuelValue+" : "+aOptFlow+" : "+actualOptimalFlow+" : "+tEU);
 
             if (totalFlow != actualOptimalFlow) {
-                float efficiency = getOverflowEfficiency(totalFlow, actualOptimalFlow, overflowMultiplier);
+                float efficiency = getOverflowEfficiency(totalFlow, actualOptimalFlow, turbine.getOverflowEfficiency());
                 tEU = (int) (tEU * efficiency);
             }
-            tEU = GT_Utility.safeInt((long) (aBaseEff / 10000D * tEU));
+            tEU = GT_Utility.safeInt((long) (turbine.getPlasmaEfficiency() * tEU));
 
             // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the
             // turbine
@@ -227,76 +226,14 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
-        ItemStack controllerSlot = getControllerSlot();
-        if ((counter & 7) == 0
-            && (controllerSlot == null || !(controllerSlot.getItem() instanceof GT_MetaGenerated_Tool)
-                || controllerSlot.getItemDamage() < 170
-                || controllerSlot.getItemDamage() > 179)) {
-            stopMachine(ShutDownReasonRegistry.NO_TURBINE);
-            return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
-        }
-        ArrayList<FluidStack> tFluids = getStoredFluids();
-        if (!tFluids.isEmpty()) {
-            if (baseEff == 0 || optFlow == 0
-                || counter >= 512
-                || this.getBaseMetaTileEntity()
-                    .hasWorkJustBeenEnabled()
-                || this.getBaseMetaTileEntity()
-                    .hasInventoryBeenModified()) {
-                counter = 0;
-                baseEff = GT_Utility.safeInt(
-                    (long) ((5F
-                        + ((GT_MetaGenerated_Tool) controllerSlot.getItem()).getToolCombatDamage(controllerSlot))
-                        * 1000F));
-                optFlow = GT_Utility.safeInt(
-                    (long) Math.max(
-                        Float.MIN_NORMAL,
-                        ((GT_MetaGenerated_Tool) controllerSlot.getItem()).getToolStats(controllerSlot)
-                            .getSpeedMultiplier() * GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mToolSpeed
-                            * 50));
-                overflowMultiplier = getOverflowMultiplier(controllerSlot);
-
-                flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mSteamMultiplier;
-                flowMultipliers[1] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mGasMultiplier;
-                flowMultipliers[2] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mPlasmaMultiplier;
-
-                if (optFlow <= 0 || baseEff <= 0) {
-                    stopMachine(ShutDownReasonRegistry.NONE); // in case the turbine got removed
-                    return CheckRecipeResultRegistry.NO_FUEL_FOUND;
-                }
-            } else {
-                counter++;
-            }
-        }
-
-        int newPower = fluidIntoPower(tFluids, optFlow, baseEff, overflowMultiplier, flowMultipliers); // How much the
-                                                                                                       // turbine should
-                                                                                                       // be producing
-                                                                                                       // with this flow
-
-        int difference = newPower - this.mEUt; // difference between current output and new output
-
-        // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the difference in
-        // power level (per tick)
-        // This is how much the turbine can actually change during this tick
-        int maxChangeAllowed = Math.max(200, GT_Utility.safeInt((long) Math.abs(difference) / 5));
-
-        if (Math.abs(difference) > maxChangeAllowed) { // If this difference is too big, use the maximum allowed change
-            int change = maxChangeAllowed * (difference > 0 ? 1 : -1); // Make the change positive or negative.
-            this.mEUt += change; // Apply the change
-        } else this.mEUt = newPower;
-
-        if (this.mEUt <= 0) {
-            // stopMachine();
-            this.mEUt = 0;
-            this.mEfficiency = 0;
-            return CheckRecipeResultRegistry.NO_FUEL_FOUND;
-        } else {
+        CheckRecipeResult status = super.checkProcessing();
+        if (status == CheckRecipeResultRegistry.GENERATING) {
+            // The plasma turbine runs only once every 20 ticks
             this.mMaxProgresstime = 20;
             this.mEfficiencyIncrease = 200;
-            // Overvoltage is handled inside the MultiBlockBase when pushing out to dynamos. no need to do it here.
-
             return CheckRecipeResultRegistry.GENERATING;
+        } else {
+            return status;
         }
     }
 

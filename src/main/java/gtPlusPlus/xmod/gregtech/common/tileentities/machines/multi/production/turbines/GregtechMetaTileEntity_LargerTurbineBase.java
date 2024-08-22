@@ -45,6 +45,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.objects.Logger;
@@ -451,6 +452,11 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
 
             ArrayList<FluidStack> tFluids = getStoredFluids();
 
+            ItemStack aStack = getFullTurbineAssemblies().get(0)
+            .getTurbine();
+
+            TurbineStatCalculator turbine = new TurbineStatCalculator((GT_MetaGenerated_Tool) aStack.getItem(), aStack);
+
             if (tFluids.size() > 0) {
                 if (baseEff == 0 || optFlow == 0
                     || counter >= 512
@@ -462,26 +468,15 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
                     float aTotalBaseEff = 0;
                     float aTotalOptimalFlow = 0;
 
-                    ItemStack aStack = getFullTurbineAssemblies().get(0)
-                        .getTurbine();
-                    aTotalBaseEff += GT_Utility.safeInt(
-                        (long) ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
+                    aTotalBaseEff += turbine.getEfficiency();
                     aTotalOptimalFlow += GT_Utility.safeInt(
                         (long) Math.max(
                             Float.MIN_NORMAL,
-                            ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack)
-                                .getSpeedMultiplier() * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
-                                * 50)
-                            * getSpeedMultiplier());
+                            turbine.getOptimalFlow()));
                     if (aTotalOptimalFlow < 0) {
                         aTotalOptimalFlow = 100;
                     }
 
-                    flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mSteamMultiplier;
-                    flowMultipliers[1] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mGasMultiplier;
-                    flowMultipliers[2] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mPlasmaMultiplier;
-                    baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
-                    optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
                     if (optFlow <= 0 || baseEff <= 0) {
                         stopMachine(ShutDownReasonRegistry.NONE); // in case the turbine got removed
                         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
@@ -492,7 +487,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
             }
 
             // How much the turbine should be producing with this flow
-            long newPower = fluidIntoPower(tFluids, optFlow, baseEff, flowMultipliers);
+            long newPower = fluidIntoPower(tFluids, turbine);
             long difference = newPower - this.lEUt; // difference between current output and new output
 
             // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the
@@ -556,7 +551,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase
         return (getFullTurbineAssemblies().size());
     }
 
-    abstract long fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers);
+    abstract long fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine);
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {

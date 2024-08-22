@@ -26,6 +26,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.TurbineStatCalculator;
 
 public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_LargeTurbine {
 
@@ -111,13 +112,7 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowEfficiency,
-        float[] flowMultipliers) {
-        if (looseFit) {
-            float[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
-            aOptFlow = GT_Utility.safeInt((long) calculatedFlow[0]);
-            aBaseEff = GT_Utility.safeInt((long) calculatedFlow[1]);
-        }
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
         int tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
@@ -131,8 +126,8 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
         // - 200% if it is 2
         // - 250% if it is 3
         // Variable required outside of loop for multi-hatch scenarios.
-        this.realOptFlow = aOptFlow * flowMultipliers[0];
-        int remainingFlow = GT_Utility.safeInt((long) (realOptFlow * (0.5f * overflowMultiplier + 1)));
+        this.realOptFlow = looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow();
+        int remainingFlow = GT_Utility.safeInt((long) (realOptFlow * (0.5f * turbine.getOverflowEfficiency() + 1)));
 
         storedFluid = 0;
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) { // loop through each hatch; extract inputs and
@@ -163,14 +158,14 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
         int waterToOutput = condenseSteam(totalFlow);
         addOutput(GT_ModHandler.getDistilledWater(waterToOutput));
         if (totalFlow == (GT_Utility.safeInt((long) realOptFlow))) {
-            tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 20000L);
+            tEU = GT_Utility.safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()) * 0.5f));
         } else {
             float efficiency = getOverflowEfficiency(
                 totalFlow,
                 (GT_Utility.safeInt((long) realOptFlow)),
-                overflowMultiplier);
+                turbine.getOverflowEfficiency());
             tEU *= efficiency;
-            tEU = Math.max(1, GT_Utility.safeInt((long) tEU * (long) aBaseEff / 20000L));
+            tEU = Math.max(1, GT_Utility.safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()) * 0.5f)));
         }
 
         // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the
@@ -201,40 +196,6 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
         }
 
         return efficiency;
-    }
-
-    public static float[] calculateLooseFlow(float aOptFlow, float aBaseEff) {
-        aOptFlow *= 4f;
-        if (aBaseEff >= 26000f) {
-            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 8000f) / 10000f) * 20f);
-            aBaseEff = aBaseEff * 0.6f;
-        } else if (aBaseEff > 22000f) {
-            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 7000f) / 10000f) * 20f);
-            aBaseEff = aBaseEff * 0.65f;
-        } else if (aBaseEff > 18000f) {
-            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 6000f) / 10000f) * 20f);
-            aBaseEff = aBaseEff * 0.70f;
-        } else if (aBaseEff > 14000f) {
-            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 5000f) / 10000f) * 20f);
-            aBaseEff = aBaseEff * 0.75f;
-        } else if (aBaseEff > 10000f) {
-            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 4000f) / 10000f) * 20f);
-            aBaseEff = aBaseEff * 0.8f;
-        } else if (aBaseEff > 6000f) {
-            aOptFlow = aOptFlow * (float) Math.pow(1.1f, ((aBaseEff - 3000f) / 10000f) * 20f);
-            aBaseEff = aBaseEff * 0.85f;
-        } else {
-            aBaseEff = aBaseEff * 0.9f;
-        }
-
-        if (aBaseEff % 100 != 0) {
-            aBaseEff -= aBaseEff % 100;
-        }
-
-        float[] looseFlow = new float[2];
-        looseFlow[0] = aOptFlow;
-        looseFlow[1] = aBaseEff;
-        return looseFlow;
     }
 
     @Override

@@ -51,6 +51,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.LightingHelper;
+import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.render.GT_RenderUtil;
@@ -266,6 +267,9 @@ public abstract class GT_MetaTileEntity_LargeTurbine
             stopMachine(ShutDownReasonRegistry.NO_TURBINE);
             return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         }
+
+        TurbineStatCalculator turbine = new TurbineStatCalculator((GT_MetaGenerated_Tool) controllerSlot.getItem(), controllerSlot);
+
         ArrayList<FluidStack> tFluids = getStoredFluids();
         if (!tFluids.isEmpty()) {
 
@@ -276,22 +280,10 @@ public abstract class GT_MetaTileEntity_LargeTurbine
                 || this.getBaseMetaTileEntity()
                     .hasInventoryBeenModified()) {
                 counter = 0;
-                baseEff = GT_Utility.safeInt(
-                    (long) ((5F
-                        + ((GT_MetaGenerated_Tool) controllerSlot.getItem()).getToolCombatDamage(controllerSlot))
-                        * 1000F));
-                optFlow = GT_Utility.safeInt(
-                    (long) Math.max(
-                        Float.MIN_NORMAL,
-                        ((GT_MetaGenerated_Tool) controllerSlot.getItem()).getToolStats(controllerSlot)
-                            .getSpeedMultiplier() * GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mToolSpeed
-                            * 50));
+                baseEff = (int) turbine.getEfficiency();
+                optFlow = (int) turbine.getOptimalFlow();
 
-                overflowMultiplier = getOverflowMultiplier(controllerSlot);
-
-                flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mSteamMultiplier;
-                flowMultipliers[1] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mGasMultiplier;
-                flowMultipliers[2] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mPlasmaMultiplier;
+                overflowMultiplier = turbine.getOverflowEfficiency();
 
                 if (optFlow <= 0 || baseEff <= 0) {
                     stopMachine(ShutDownReasonRegistry.NONE); // in case the turbine got removed
@@ -302,7 +294,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine
             }
         }
 
-        int newPower = fluidIntoPower(tFluids, optFlow, baseEff, overflowMultiplier, flowMultipliers); // How much the
+        int newPower = fluidIntoPower(tFluids, turbine); // How much the
                                                                                                        // turbine should
                                                                                                        // be producing
                                                                                                        // with this flow
@@ -331,8 +323,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine
         }
     }
 
-    abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier,
-        float[] flowMultipliers);
+    abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine);
 
     abstract float getOverflowEfficiency(int totalFlow, int actualOptimalFlow, int overflowMultiplier);
 
@@ -344,19 +335,6 @@ public abstract class GT_MetaTileEntity_LargeTurbine
             aTotal = aDynamo.maxAmperesOut() * aVoltage;
         }
         return aTotal;
-    }
-
-    public int getOverflowMultiplier(ItemStack aStack) {
-        int aOverflowMultiplier = 0;
-        int toolQualityLevel = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolQuality;
-        if (toolQualityLevel >= 6) {
-            aOverflowMultiplier = 3;
-        } else if (toolQualityLevel >= 3) {
-            aOverflowMultiplier = 2;
-        } else {
-            aOverflowMultiplier = 1;
-        }
-        return aOverflowMultiplier;
     }
 
     @Override

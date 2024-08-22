@@ -6,7 +6,6 @@ import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_NEW_EMPTY5;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
-import static gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Steam.calculateLooseFlow;
 
 import java.util.ArrayList;
 
@@ -26,6 +25,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.TurbineStatCalculator;
 
 public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_LargeTurbine {
 
@@ -103,13 +103,7 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowEfficiency,
-        float[] flowMultipliers) {
-        if (looseFit) {
-            float[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
-            aOptFlow = GT_Utility.safeInt((long) calculatedFlow[0]);
-            aBaseEff = GT_Utility.safeInt((long) calculatedFlow[1]);
-        }
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
         int tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
@@ -123,8 +117,8 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
         // - 250% if it is 2
         // - 300% if it is 3
         // Variable required outside of loop for multi-hatch scenarios.
-        this.realOptFlow = aOptFlow * flowMultipliers[0];
-        int remainingFlow = GT_Utility.safeInt((long) (realOptFlow * (0.5f * overflowMultiplier + 1.5)));
+        this.realOptFlow = looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow();
+        int remainingFlow = GT_Utility.safeInt((long) (realOptFlow * (0.5f * turbine.getOverflowEfficiency() + 1.5)));
 
         storedFluid = 0;
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
@@ -155,14 +149,14 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
         tEU = totalFlow;
         addOutput(GT_ModHandler.getSteam(totalFlow));
         if (totalFlow == (GT_Utility.safeInt((long) realOptFlow))) {
-            tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
+            tEU = GT_Utility.safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
         } else {
             float efficiency = getOverflowEfficiency(
                 totalFlow,
                 (GT_Utility.safeInt((long) realOptFlow)),
                 overflowMultiplier);
             tEU *= efficiency;
-            tEU = Math.max(1, GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L));
+            tEU = Math.max(1, GT_Utility.safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()))));
         }
 
         // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the
