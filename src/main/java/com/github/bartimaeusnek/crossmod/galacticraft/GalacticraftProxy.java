@@ -15,6 +15,7 @@ package com.github.bartimaeusnek.crossmod.galacticraft;
 
 import java.io.File;
 
+import gregtech.api.util.GT_Config;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
@@ -32,8 +33,6 @@ import gregtech.api.objects.GT_UO_DimensionList;
 
 public class GalacticraftProxy {
 
-    public static GT_UO_DimensionList uo_dimensionList = new GT_UO_DimensionList();
-    static Configuration gtConf;
 
     private GalacticraftProxy() {}
 
@@ -60,12 +59,6 @@ public class GalacticraftProxy {
     private static void clientpreInit(FMLPreInitializationEvent e) {}
 
     private static void commonpreInit(FMLPreInitializationEvent e) {
-        GalacticraftProxy.gtConf = new Configuration(
-            new File(new File(e.getModConfigurationDirectory(), "GregTech"), "GregTech.cfg"));
-        GalacticraftProxy.uo_dimensionList.getConfig(GalacticraftProxy.gtConf, "undergroundfluid");
-        BW_WorldGenRoss128b.initundergroundFluids();
-        BW_WorldGenRoss128ba.init_undergroundFluids();
-        if (GalacticraftProxy.gtConf.hasChanged()) GalacticraftProxy.gtConf.save();
         BW_WorldGenRoss128b.initOres();
         BW_WorldGenRoss128ba.init_Ores();
         MinecraftForge.EVENT_BUS.register(BWAtmosphereManager.INSTANCE);

@@ -225,7 +225,7 @@ public class ConfigGeneral {
     @Config.RequiresMcRestart
     public static boolean i18nPlaceholder;
 
-    @Config.Comment("if true, vanilla mobspawners with have a hardness of 500 and a blast resistance of 6 000 000.")
+    @Config.Comment("if true,.")
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
     public static boolean harderMobSpawner;
@@ -244,4 +244,19 @@ public class ConfigGeneral {
         "team.chisel.block.BlockCarvableGlass" })
     @Config.RequiresMcRestart
     public static String[] CTMWhitelist;
+
+    @Config.Comment("if true, log all the oredict in logs/OreDict.log.")
+    @Config.DefaultBoolean(false)
+    @Config.RequiresMcRestart
+    public static boolean loggingOreDict;
+
+    @Config.Comment("if true, log all the oredict in logs/Explosion.log.")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean loggingExplosions;
+
+    @Config.Comment("if true, log all the oredict in logs/PlayerActivity.log.")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresMcRestart
+    public static boolean loggingPlayerActicity;
 }

@@ -1,11 +1,16 @@
 package gregtech.api.objects;
 
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import net.minecraftforge.fluids.FluidRegistry;
+
+import static gregtech.api.enums.Materials.Helium_3;
+import static gregtech.api.enums.Materials.SaltWater;
 
 public class GT_UO_DimensionList {
 
@@ -17,6 +22,10 @@ public class GT_UO_DimensionList {
 
     public GT_UO_DimensionList() {
         fDimensionList = HashBiMap.create();
+    }
+
+    public void save(){
+        fConfig.save();
     }
 
     public GT_UO_Dimension GetDimension(int aDimension) {
@@ -66,7 +75,13 @@ public class GT_UO_DimensionList {
         SetConfigValues("Overworld", "0", "liquid_heavy_oil", "liquid_heavy_oil", 0, 550, 20, 4);
         SetConfigValues("Overworld", "0", "oil", "oil", 0, 600, 20, 5);
         SetConfigValues("Moon", "Moon", "helium-3", "helium-3", 24, 128, 100, 1);
-        fConfig.save();
+
+        SetConfigValues("Ross128b", "Ross128b", "veryheavyoil", "liquid_extra_heavy_oil", 0, 625, 40, 5);
+        SetConfigValues("Ross128b", "Ross128b", "lava", "lava", 0, 820, 5, 5);
+        SetConfigValues("Ross128b", "Ross128b", "gas_natural_gas", "gas_natural_gas", 0, 625, 65, 5);
+
+        SetConfigValues("Ross128ba", "Ross128ba", "saltwater", "saltwater", 0, 1250, 40, 5);
+        SetConfigValues("Ross128ba", "Ross128ba", "helium-3", "helium-3", 0, 1250, 60, 5);
     }
 
     public void getConfig(Configuration aConfig, String aCategory) {
@@ -95,5 +110,6 @@ public class GT_UO_DimensionList {
                     .toArray()[i]);
             fDimensionList.put(Dimension.Dimension, Dimension);
         }
+        save();
     }
 }

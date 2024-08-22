@@ -36,7 +36,6 @@ import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Thorianit;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.VanadioOxyDravit;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Wittichenit;
-import static com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy.uo_dimensionList;
 import static gregtech.api.enums.Materials.Bismuth;
 import static gregtech.api.enums.Materials.Coal;
 import static gregtech.api.enums.Materials.Diamond;
@@ -191,14 +190,6 @@ public class BW_WorldGenRoss128b extends BW_OreLayer {
             FuchsitAL,
             RedZircon,
             FuchsitCR);
-    }
-
-    public static void initundergroundFluids() {
-        String ross128b = StatCollector.translateToLocal("planet.Ross128b");
-        uo_dimensionList.SetConfigValues(ross128b, ross128b, "veryheavyoil", "liquid_extra_heavy_oil", 0, 625, 40, 5);
-        uo_dimensionList
-            .SetConfigValues(ross128b, ross128b, "lava", FluidRegistry.getFluidName(FluidRegistry.LAVA), 0, 820, 5, 5);
-        uo_dimensionList.SetConfigValues(ross128b, ross128b, "gas_natural_gas", "gas_natural_gas", 0, 625, 65, 5);
     }
 
     @Override

@@ -133,12 +133,8 @@ public class GT_PreLoad {
                     .addStringLocalization("Material." + aMaterial.mName.toLowerCase(), aMaterial.mDefaultLocalName));
     }
 
-    public static Configuration getConfiguration(File configDir) {
-        File tFile = new File(new File(configDir, "GregTech"), "GregTech.cfg");
-        Configuration tMainConfig = new Configuration(tFile);
-        tMainConfig.load();
-
-        tFile = new File(new File(configDir, "GregTech"), "IDs.cfg");
+    public static void getConfiguration(File configDir) {
+        File tFile = new File(new File(configDir, "GregTech"), "IDs.cfg");
         GT_Config.sConfigFileIDs = new Configuration(tFile);
         GT_Config.sConfigFileIDs.load();
         GT_Config.sConfigFileIDs.save();
@@ -168,10 +164,9 @@ public class GT_PreLoad {
 
         GregTech_API.sClientDataFile = new GT_Config(
             new Configuration(new File(new File(configDir, "GregTech"), "Client.cfg")));
-        return tMainConfig;
     }
 
-    public static void createLogFiles(File parentFile, Configuration tMainConfig) {
+    public static void createLogFiles(File parentFile) {
         GT_Log.mLogFile = new File(parentFile, "logs/GregTech.log");
         if (!GT_Log.mLogFile.exists()) {
             try {
@@ -182,8 +177,7 @@ public class GT_PreLoad {
             GT_Log.out = GT_Log.err = new PrintStream(GT_Log.mLogFile);
         } catch (FileNotFoundException ignored) {}
 
-        if (tMainConfig.get(GT_Mod.aTextGeneral, "LoggingOreDict", false)
-            .getBoolean(false)) {
+        if (ConfigGeneral.loggingOreDict) {
             GT_Log.mOreDictLogFile = new File(parentFile, "logs/OreDict.log");
             if (!GT_Log.mOreDictLogFile.exists()) {
                 try {
@@ -202,8 +196,7 @@ public class GT_PreLoad {
             GT_Log.ore.println("******************************************************************************");
             tList.forEach(GT_Log.ore::println);
         }
-        if (tMainConfig.get(GT_Mod.aTextGeneral, "LoggingExplosions", true)
-            .getBoolean(true)) {
+        if (ConfigGeneral.loggingExplosions) {
             GT_Log.mExplosionLog = new File(parentFile, "logs/Explosion.log");
             if (!GT_Log.mExplosionLog.exists()) {
                 try {
@@ -215,8 +208,7 @@ public class GT_PreLoad {
             } catch (Throwable ignored) {}
         }
 
-        if (tMainConfig.get(GT_Mod.aTextGeneral, "LoggingPlayerActivity", true)
-            .getBoolean(true)) {
+        if (ConfigGeneral.loggingPlayerActicity) {
             GT_Log.mPlayerActivityLogFile = new File(parentFile, "logs/PlayerActivity.log");
             if (!GT_Log.mPlayerActivityLogFile.exists()) {
                 try {
@@ -390,7 +382,7 @@ public class GT_PreLoad {
         GT_ModHandler.addScrapboxDrop(200.0F, GT_ModHandler.getIC2Item("scrap", 1L));
     }
 
-    public static void loadConfig(Configuration tMainConfig) {
+    public static void loadConfig() {
         // general
         GT_Values.D1 = ConfigDebug.D1;
         GT_Values.D2 = ConfigDebug.D2;

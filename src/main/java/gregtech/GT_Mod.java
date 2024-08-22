@@ -17,6 +17,7 @@ import java.util.function.Predicate;
 
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
+import gregtech.api.util.GT_Config;
 import gregtech.common.config.ConfigDebug;
 import gregtech.common.config.ConfigFeatures;
 import gregtech.common.config.ConfigGeneral;
@@ -253,26 +254,20 @@ public class GT_Mod implements IGT_Mod {
             }
         }
 
-        Configuration tMainConfig = GT_PreLoad.getConfiguration(aEvent.getModConfigurationDirectory());
-        GT_PreLoad.createLogFiles(
-            aEvent.getModConfigurationDirectory()
-                .getParentFile(),
-            tMainConfig);
+        GT_PreLoad.getConfiguration(aEvent.getModConfigurationDirectory());
+        GT_PreLoad.createLogFiles(aEvent.getModConfigurationDirectory().getParentFile());
 
         gregtechproxy.onPreLoad();
 
         GT_Log.out.println("GT_Mod: Setting Configs");
 
-        GT_PreLoad.loadConfig(tMainConfig);
+        GT_PreLoad.loadConfig();
 
         new Enchantment_Hazmat();
         new Enchantment_EnderDamage();
         new Enchantment_Radioactivity();
 
         Materials.init();
-
-        GT_Log.out.println("GT_Mod: Saving Main Config");
-        tMainConfig.save();
 
         GT_PreLoad.initLocalization(
             aEvent.getModConfigurationDirectory()
