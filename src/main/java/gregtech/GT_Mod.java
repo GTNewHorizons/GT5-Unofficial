@@ -20,6 +20,7 @@ import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import gregtech.common.config.ConfigDebug;
 import gregtech.common.config.ConfigGeneral;
 import gregtech.common.config.ConfigMachines;
+import gregtech.common.config.ConfigPollution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -176,6 +177,7 @@ public class GT_Mod implements IGT_Mod {
             ConfigurationManager.registerConfig(ConfigGeneral.class);
             ConfigurationManager.registerConfig(ConfigMachines.class);
             ConfigurationManager.registerConfig(ConfigDebug.class);
+            ConfigurationManager.registerConfig(ConfigPollution.class);
         }
         catch (ConfigException e) {
             throw new RuntimeException(e);

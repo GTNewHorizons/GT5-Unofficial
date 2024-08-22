@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 import gregtech.common.config.ConfigDebug;
 import gregtech.common.config.ConfigGeneral;
 import gregtech.common.config.ConfigMachines;
+import gregtech.common.config.ConfigPollution;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.Launch;
@@ -418,6 +419,9 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mAchievements = ConfigGeneral.mAchievements;
         GT_Mod.gregtechproxy.mHideUnusedOres = ConfigGeneral.mHideUnusedOres;
         GT_Mod.gregtechproxy.mEnableAllMaterials = ConfigGeneral.mEnableAllMaterials;
+        GT_Mod.gregtechproxy.mExplosionItemDrop = tMainConfig
+            .get("general", "ExplosionItemDrops", GT_Mod.gregtechproxy.mExplosionItemDrop)
+            .getBoolean(GT_Mod.gregtechproxy.mExplosionItemDrop);
 
         // machines
         GT_Values.ticksBetweenSounds = ConfigMachines.ticksBetweenSounds;
@@ -443,109 +447,31 @@ public class GT_PreLoad {
         // client
         loadClientConfig();
 
-        // Pollution: edit GT_Proxy.java to change default values
-        GT_Mod.gregtechproxy.mPollution = tMainConfig
-            .get("Pollution", "EnablePollution", GT_Mod.gregtechproxy.mPollution)
-            .getBoolean(GT_Mod.gregtechproxy.mPollution);
-        GT_Mod.gregtechproxy.mPollutionSmogLimit = tMainConfig
-            .get("Pollution", "SmogLimit", GT_Mod.gregtechproxy.mPollutionSmogLimit)
-            .getInt(GT_Mod.gregtechproxy.mPollutionSmogLimit);
-        GT_Mod.gregtechproxy.mPollutionPoisonLimit = tMainConfig
-            .get("Pollution", "PoisonLimit", GT_Mod.gregtechproxy.mPollutionPoisonLimit)
-            .getInt(GT_Mod.gregtechproxy.mPollutionPoisonLimit);
-        GT_Mod.gregtechproxy.mPollutionVegetationLimit = tMainConfig
-            .get("Pollution", "VegetationLimit", GT_Mod.gregtechproxy.mPollutionVegetationLimit)
-            .getInt(GT_Mod.gregtechproxy.mPollutionVegetationLimit);
-        GT_Mod.gregtechproxy.mPollutionSourRainLimit = tMainConfig
-            .get("Pollution", "SourRainLimit", GT_Mod.gregtechproxy.mPollutionSourRainLimit)
-            .getInt(GT_Mod.gregtechproxy.mPollutionSourRainLimit);
-        GT_Mod.gregtechproxy.mPollutionOnExplosion = tMainConfig
-            .get("Pollution", "SourRainLimit", GT_Mod.gregtechproxy.mPollutionOnExplosion)
-            .getInt(GT_Mod.gregtechproxy.mPollutionOnExplosion);
-        GT_Mod.gregtechproxy.mExplosionItemDrop = tMainConfig
-            .get("general", "ExplosionItemDrops", GT_Mod.gregtechproxy.mExplosionItemDrop)
-            .getBoolean(GT_Mod.gregtechproxy.mExplosionItemDrop);
-        GT_Mod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond = tMainConfig
-            .get(
-                "Pollution",
-                "PollutionPrimitiveBlastFurnace",
-                GT_Mod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond);
-        GT_Mod.gregtechproxy.mPollutionCharcoalPitPerSecond = tMainConfig
-            .get("Pollution", "PollutionCharcoalPit", GT_Mod.gregtechproxy.mPollutionCharcoalPitPerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionCharcoalPitPerSecond);
-        GT_Mod.gregtechproxy.mPollutionEBFPerSecond = tMainConfig
-            .get("Pollution", "PollutionEBF", GT_Mod.gregtechproxy.mPollutionEBFPerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionEBFPerSecond);
-        GT_Mod.gregtechproxy.mPollutionLargeCombustionEnginePerSecond = tMainConfig
-            .get(
-                "Pollution",
-                "PollutionLargeCombustionEngine",
-                GT_Mod.gregtechproxy.mPollutionLargeCombustionEnginePerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionLargeCombustionEnginePerSecond);
-        GT_Mod.gregtechproxy.mPollutionExtremeCombustionEnginePerSecond = tMainConfig
-            .get(
-                "Pollution",
-                "PollutionExtremeCombustionEngine",
-                GT_Mod.gregtechproxy.mPollutionExtremeCombustionEnginePerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionExtremeCombustionEnginePerSecond);
-        GT_Mod.gregtechproxy.mPollutionImplosionCompressorPerSecond = tMainConfig
-            .get(
-                "Pollution",
-                "PollutionImplosionCompressor",
-                GT_Mod.gregtechproxy.mPollutionImplosionCompressorPerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionImplosionCompressorPerSecond);
-        GT_Mod.gregtechproxy.mPollutionLargeBronzeBoilerPerSecond = tMainConfig
-            .get("Pollution", "PollutionLargeBronzeBoiler", GT_Mod.gregtechproxy.mPollutionLargeBronzeBoilerPerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionLargeBronzeBoilerPerSecond);
-        GT_Mod.gregtechproxy.mPollutionLargeSteelBoilerPerSecond = tMainConfig
-            .get("Pollution", "PollutionLargeSteelBoiler", GT_Mod.gregtechproxy.mPollutionLargeSteelBoilerPerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionLargeSteelBoilerPerSecond);
-        GT_Mod.gregtechproxy.mPollutionLargeTitaniumBoilerPerSecond = tMainConfig
-            .get(
-                "Pollution",
-                "PollutionLargeTitaniumBoiler",
-                GT_Mod.gregtechproxy.mPollutionLargeTitaniumBoilerPerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionLargeTitaniumBoilerPerSecond);
-        GT_Mod.gregtechproxy.mPollutionLargeTungstenSteelBoilerPerSecond = tMainConfig
-            .get(
-                "Pollution",
-                "PollutionLargeTungstenSteelBoiler",
-                GT_Mod.gregtechproxy.mPollutionLargeTungstenSteelBoilerPerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionLargeTungstenSteelBoilerPerSecond);
-        GT_Mod.gregtechproxy.mPollutionReleasedByThrottle = tMainConfig
-            .get("Pollution", "PollutionReleasedByThrottle", GT_Mod.gregtechproxy.mPollutionReleasedByThrottle)
-            .getDouble(GT_Mod.gregtechproxy.mPollutionReleasedByThrottle);
-        GT_Mod.gregtechproxy.mPollutionLargeGasTurbinePerSecond = tMainConfig
-            .get("Pollution", "PollutionLargeGasTurbine", GT_Mod.gregtechproxy.mPollutionLargeGasTurbinePerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionLargeGasTurbinePerSecond);
-        GT_Mod.gregtechproxy.mPollutionMultiSmelterPerSecond = tMainConfig
-            .get("Pollution", "PollutionMultiSmelter", GT_Mod.gregtechproxy.mPollutionMultiSmelterPerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionMultiSmelterPerSecond);
-        GT_Mod.gregtechproxy.mPollutionPyrolyseOvenPerSecond = tMainConfig
-            .get("Pollution", "PollutionPyrolyseOven", GT_Mod.gregtechproxy.mPollutionPyrolyseOvenPerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionPyrolyseOvenPerSecond);
-        GT_Mod.gregtechproxy.mPollutionSmallCoalBoilerPerSecond = tMainConfig
-            .get("Pollution", "PollutionSmallCoalBoiler", GT_Mod.gregtechproxy.mPollutionSmallCoalBoilerPerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionSmallCoalBoilerPerSecond);
-        GT_Mod.gregtechproxy.mPollutionHighPressureLavaBoilerPerSecond = tMainConfig
-            .get(
-                "Pollution",
-                "PollutionHighPressureLavaBoiler",
-                GT_Mod.gregtechproxy.mPollutionHighPressureLavaBoilerPerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionHighPressureLavaBoilerPerSecond);
-        GT_Mod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond = tMainConfig
-            .get(
-                "Pollution",
-                "PollutionHighPressureCoalBoiler",
-                GT_Mod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond);
-        GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond = tMainConfig
-            .get(
-                "Pollution",
-                "PollutionBaseDieselGenerator",
-                GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond);
+        // Pollution
+        GT_Mod.gregtechproxy.mPollution = ConfigPollution.mPollution;
+        GT_Mod.gregtechproxy.mPollutionSmogLimit = ConfigPollution.mPollutionSmogLimit;
+        GT_Mod.gregtechproxy.mPollutionPoisonLimit = ConfigPollution.mPollutionPoisonLimit;
+        GT_Mod.gregtechproxy.mPollutionVegetationLimit = ConfigPollution.mPollutionVegetationLimit;
+        GT_Mod.gregtechproxy.mPollutionSourRainLimit = ConfigPollution.mPollutionSourRainLimit;
+        GT_Mod.gregtechproxy.mPollutionOnExplosion = ConfigPollution.mPollutionOnExplosion;
+        GT_Mod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond = ConfigPollution.mPollutionPrimitveBlastFurnacePerSecond;
+        GT_Mod.gregtechproxy.mPollutionCharcoalPitPerSecond = ConfigPollution.mPollutionCharcoalPitPerSecond;
+        GT_Mod.gregtechproxy.mPollutionEBFPerSecond = ConfigPollution.mPollutionEBFPerSecond;
+        GT_Mod.gregtechproxy.mPollutionLargeCombustionEnginePerSecond = ConfigPollution.mPollutionLargeCombustionEnginePerSecond;
+        GT_Mod.gregtechproxy.mPollutionExtremeCombustionEnginePerSecond = ConfigPollution.mPollutionExtremeCombustionEnginePerSecond;
+        GT_Mod.gregtechproxy.mPollutionImplosionCompressorPerSecond = ConfigPollution.mPollutionImplosionCompressorPerSecond;
+        GT_Mod.gregtechproxy.mPollutionLargeBronzeBoilerPerSecond = ConfigPollution.mPollutionLargeBronzeBoilerPerSecond;
+        GT_Mod.gregtechproxy.mPollutionLargeSteelBoilerPerSecond = ConfigPollution.mPollutionLargeSteelBoilerPerSecond;
+        GT_Mod.gregtechproxy.mPollutionLargeTitaniumBoilerPerSecond = ConfigPollution.mPollutionLargeTitaniumBoilerPerSecond;
+        GT_Mod.gregtechproxy.mPollutionLargeTungstenSteelBoilerPerSecond = ConfigPollution.mPollutionLargeTungstenSteelBoilerPerSecond;
+        GT_Mod.gregtechproxy.mPollutionReleasedByThrottle = ConfigPollution.mPollutionReleasedByThrottle;
+        GT_Mod.gregtechproxy.mPollutionLargeGasTurbinePerSecond = ConfigPollution.mPollutionLargeGasTurbinePerSecond;
+        GT_Mod.gregtechproxy.mPollutionMultiSmelterPerSecond = ConfigPollution.mPollutionMultiSmelterPerSecond;
+        GT_Mod.gregtechproxy.mPollutionPyrolyseOvenPerSecond = ConfigPollution.mPollutionPyrolyseOvenPerSecond;
+        GT_Mod.gregtechproxy.mPollutionSmallCoalBoilerPerSecond = ConfigPollution.mPollutionSmallCoalBoilerPerSecond;
+        GT_Mod.gregtechproxy.mPollutionHighPressureLavaBoilerPerSecond = ConfigPollution.mPollutionHighPressureLavaBoilerPerSecond;
+        GT_Mod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond = ConfigPollution.mPollutionHighPressureCoalBoilerPerSecond;
+        GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond = ConfigPollution.mPollutionBaseDieselGeneratorPerSecond;
         double[] mPollutionDieselGeneratorReleasedByTier = tMainConfig
             .get(
                 "Pollution",
@@ -559,12 +485,7 @@ public class GT_PreLoad {
             GT_FML_LOGGER
                 .error("The Length of the Diesel Turbine Pollution Array Config must be the same as the Default");
         }
-        GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond = tMainConfig
-            .get(
-                "Pollution",
-                "PollutionBaseGasTurbineGenerator",
-                GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond)
-            .getInt(GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond);
+        GT_Mod.gregtechproxy.mPollutionBaseGasTurbinePerSecond = ConfigPollution.mPollutionBaseGasTurbinePerSecond;
         double[] mPollutionGasTurbineReleasedByTier = tMainConfig
             .get(
                 "Pollution",
