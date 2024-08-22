@@ -228,7 +228,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             && itemStack.getTagCompound() != null
             && this.type.equals(new NBTTagCompound())) {
             this.type = itemStack.getTagCompound();
-            this.mInventory[1] = null;
+            this.mInventory[1].stackSize -= 1;
             this.getBaseMetaTileEntity()
                 .issueBlockUpdate();
             return true;
