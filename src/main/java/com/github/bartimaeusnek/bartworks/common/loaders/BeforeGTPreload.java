@@ -46,9 +46,6 @@ public class BeforeGTPreload implements Runnable {
     @Override
     public void run() {
         if (didrun) return;
-        // fixing BorosilicateGlass... -_-'
-        Materials.BorosilicateGlass
-            .add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
 
         Field activeContainer = FieldUtils.getDeclaredField(LoadController.class, "activeContainer", true);
         ModContainer bartworks = null;
