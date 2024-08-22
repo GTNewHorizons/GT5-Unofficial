@@ -84,11 +84,6 @@ public class ConfigMachines {
     @Config.RequiresMcRestart
     public static boolean alwaysReloadChunkloaders;
 
-    @Config.Comment("Debug parameter for chunk loaders.")
-    @Config.DefaultBoolean(false)
-    @Config.RequiresMcRestart
-    public static boolean debugChunkloaders;
-
     @Config.Comment("If true, then digital chest with AE2 storage bus will be accessible only through AE2")
     @Config.DefaultBoolean(false)
     @Config.RequiresMcRestart

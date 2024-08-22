@@ -17,6 +17,7 @@ import java.util.function.Predicate;
 
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
+import gregtech.common.config.ConfigDebug;
 import gregtech.common.config.ConfigGeneral;
 import gregtech.common.config.ConfigMachines;
 import net.minecraft.entity.player.EntityPlayer;
@@ -174,6 +175,7 @@ public class GT_Mod implements IGT_Mod {
         try{
             ConfigurationManager.registerConfig(ConfigGeneral.class);
             ConfigurationManager.registerConfig(ConfigMachines.class);
+            ConfigurationManager.registerConfig(ConfigDebug.class);
         }
         catch (ConfigException e) {
             throw new RuntimeException(e);
