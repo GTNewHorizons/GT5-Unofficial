@@ -637,11 +637,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 double remainingCost = combinedInput.inputAmount * currentParallel;
                 long providedAmount = 0;
 
-                // for non-consumed input
-                if (combinedInput.inputAmount == 0) {
-                    continue;
-                }
-
                 for (int i = 0; i < unifiedProvidedInputs.length; i++) {
                     final ItemStack providedUnifiedItem = unifiedProvidedInputs[i];
                     final ItemStack providedItem = aInputs[i];
