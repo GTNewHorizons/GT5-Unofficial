@@ -156,7 +156,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             this.inputAmount = stack.stackSize;
             final boolean stackNeedsNBT = GT_Recipe.shouldCheckNBT(stack);
             this.usesNbtMatching = recipeIsNBTSensitive | stackNeedsNBT;
-            // GT_OreDictUnificator.get_nocopy(true, itemStack)
             if (stackNeedsNBT) {
                 this.unifiedStack = stack;
             } else {
@@ -643,8 +642,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     continue;
                 }
 
-                for (final ItemStack providedItem : unifiedProvidedInputs) {
-                    if (!combinedInput.matchesType(providedItem)) {
+                for (int i = 0; i < unifiedProvidedInputs.length; i++) {
+                    final ItemStack providedUnifiedItem = unifiedProvidedInputs[i];
+                    final ItemStack providedItem = aInputs[i];
+                    if (!combinedInput.matchesType(providedUnifiedItem)) {
                         continue;
                     }
 
