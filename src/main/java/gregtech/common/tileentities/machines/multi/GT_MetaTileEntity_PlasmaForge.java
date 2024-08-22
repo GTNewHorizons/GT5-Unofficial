@@ -1134,12 +1134,8 @@ public class GT_MetaTileEntity_PlasmaForge extends
 
     @Override
     public void receiveClientEvent(byte aEventID, byte aValue) {
-        if (aEventID == 1) {
-            if ((aValue & CONVERGENCE_BITMAP) == CONVERGENCE_BITMAP) {
-                convergence = true;
-            } else {
-                convergence = false;
-            }
+        if (aEventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA) {
+            convergence = (aValue & CONVERGENCE_BITMAP) == CONVERGENCE_BITMAP;
             if ((aValue & DISCOUNT_BITMAP) == DISCOUNT_BITMAP) {
                 discount = maximum_discount;
             }
