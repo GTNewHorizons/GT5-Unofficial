@@ -82,7 +82,7 @@ public class RecipeLoader_Nuclear {
             .itemInputs(FLUORIDES.LITHIUM_FLUORIDE.getDust(4), FLUORIDES.BERYLLIUM_FLUORIDE.getDust(3))
             .itemOutputs(NUCLIDE.Li2BeF4.getDust(7))
             .duration(2 * MINUTES + 20 * SECONDS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .metadata(COIL_HEAT, 3000)
             .addTo(blastFurnaceRecipes);
 
@@ -389,7 +389,7 @@ public class RecipeLoader_Nuclear {
             .itemOutputs(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1))
             .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid", 400))
             .fluidOutputs(aHydrogenChloride)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .duration(15 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
 
@@ -401,7 +401,7 @@ public class RecipeLoader_Nuclear {
             .itemOutputs(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1))
             .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 800))
             .fluidOutputs(aHydrogenChloride)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .duration(30 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
 
@@ -497,7 +497,7 @@ public class RecipeLoader_Nuclear {
             .itemInputs(NUCLIDE.Li2BeF4.getDust(1))
             .fluidOutputs(NUCLIDE.Li2BeF4.getFluidStack(144))
             .duration(5 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .addTo(fluidExtractionRecipes);
 
         // Lithium Fluoride
@@ -505,7 +505,7 @@ public class RecipeLoader_Nuclear {
             .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 1))
             .fluidOutputs(FLUORIDES.LITHIUM_FLUORIDE.getFluidStack(144))
             .duration(5 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .addTo(fluidExtractionRecipes);
 
         // LFTR Fuel 1
@@ -527,7 +527,7 @@ public class RecipeLoader_Nuclear {
             .itemInputs(NUCLIDE.LiFBeF2ThF4UF4.getDust(1))
             .fluidOutputs(NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(144))
             .duration(7 * SECONDS + 10 * TICKS)
-            .eut(2000)
+            .eut(TierEU.RECIPE_EV)
             .addTo(fluidExtractionRecipes);
 
         // ZIRCONIUM_TETRAFLUORIDE
@@ -554,7 +554,7 @@ public class RecipeLoader_Nuclear {
                 new FluidStack(ELEMENT.getInstance().NEON.getPlasma(), 144),
                 Materials.Bedrockium.getMolten(144))
             .fluidOutputs(new FluidStack(ELEMENT.STANDALONE.FORCE.getPlasma(), 1000))
-            .duration(3 * SECONDS + 4 * TICKS)
+            .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .metadata(FUSION_THRESHOLD, 100_000_000)
             .addTo(fusionRecipes);
@@ -609,10 +609,10 @@ public class RecipeLoader_Nuclear {
 
         GT_Values.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(ELEMENT.STANDALONE.ADVANCED_NITINOL.getPlasma(), 144),
+                new FluidStack(ELEMENT.STANDALONE.ADVANCED_NITINOL.getPlasma(), 72),
                 Materials.Tartarite.getMolten(2))
             .fluidOutputs(new FluidStack(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 1000))
-            .duration(16 * TICKS)
+            .duration(8 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .metadata(FUSION_THRESHOLD, 500_000_000)
             .addTo(fusionRecipes);
@@ -640,7 +640,7 @@ public class RecipeLoader_Nuclear {
             .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid", 10000))
             .fluidOutputs(FLUORIDES.URANIUM_TETRAFLUORIDE.getFluidStack(3600))
             .duration(2 * MINUTES + 30 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
 
     }
@@ -658,7 +658,7 @@ public class RecipeLoader_Nuclear {
                 ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 1))
             .outputChances(5000, 278, 1000, 1000, 300, 300)
             .duration(30 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .addTo(sifterRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedTin", 1))
@@ -671,7 +671,7 @@ public class RecipeLoader_Nuclear {
                 ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1))
             .outputChances(10000, 556, 1500, 1000, 500, 500)
             .duration(30 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .addTo(sifterRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedCassiterite", 1))
@@ -684,7 +684,7 @@ public class RecipeLoader_Nuclear {
                 ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1))
             .outputChances(10000, 556, 1500, 1000, 500, 500)
             .duration(30 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .addTo(sifterRecipes);
         // Radium
         GT_Values.RA.stdBuilder()
@@ -698,7 +698,7 @@ public class RecipeLoader_Nuclear {
                 ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1))
             .outputChances(10000, 500, 300, 200, 100, 100)
             .duration(30 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .addTo(sifterRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedUranium", 1))
@@ -711,7 +711,7 @@ public class RecipeLoader_Nuclear {
                 ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1))
             .outputChances(10000, 556, 1000, 500, 500, 500)
             .duration(30 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .addTo(sifterRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedUraninite", 1))
@@ -724,7 +724,7 @@ public class RecipeLoader_Nuclear {
                 ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1))
             .outputChances(10000, 556, 500, 250, 250, 250)
             .duration(30 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .addTo(sifterRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedPitchblende", 1))
@@ -737,7 +737,7 @@ public class RecipeLoader_Nuclear {
                 ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1))
             .outputChances(10000, 556, 500, 250, 250, 250)
             .duration(30 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .addTo(sifterRecipes);
 
     }
@@ -747,7 +747,7 @@ public class RecipeLoader_Nuclear {
             .itemInputs(FLUORIDES.SODIUM_FLUORIDE.getDust(1))
             .fluidOutputs(FLUORIDES.SODIUM_FLUORIDE.getFluidStack(144))
             .duration(30 * SECONDS)
-            .eut(500)
+            .eut(TierEU.RECIPE_HV)
             .addTo(fluidHeaterRecipes);
     }
 }

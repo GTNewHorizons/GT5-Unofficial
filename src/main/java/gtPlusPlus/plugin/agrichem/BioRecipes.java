@@ -675,7 +675,7 @@ public class BioRecipes {
                 FluidUtils.getFluidStack(BioRecipes.mAcetone, 9000),
                 FluidUtils.getFluidStack(BioRecipes.mEthanol, 3000))
             .duration(100 * SECONDS)
-            .eut(32)
+            .eut(TierEU.RECIPE_LV)
             .metadata(CHEMPLANT_CASING_TIER, 1)
             .noOptimize()
             .addTo(chemicalPlantRecipes);

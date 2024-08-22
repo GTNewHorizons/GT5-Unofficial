@@ -2,8 +2,6 @@ package com.github.technus.tectech.util;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import gregtech.api.enums.GT_Values;
-
 /**
  * Created by danie_000 on 11.01.2017.
  */
@@ -22,9 +20,6 @@ public final class CommonValues {
     // - in case some hatches are not in multiblock structure
     public static final byte MULTI_CHECK_AT = 12; // multiblock checks its state
     public static final byte TRANSFER_AT = 16;
-
-    public static final String[] VN = GT_Values.VN;
-    public static final long[] V = GT_Values.V;
 
     public static final String[] EOH_TIER_FANCY_NAMES = { "Crude", "Primitive", "Stable", "Advanced", "Superb",
         "Exotic", "Perfect", "Tipler", EnumChatFormatting.BOLD + "Gallifreyan" };

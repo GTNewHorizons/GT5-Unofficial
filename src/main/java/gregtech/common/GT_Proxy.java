@@ -33,9 +33,7 @@ import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.enums.Mods.WitchingGadgets;
 import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
-import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gregtech.api.util.GT_Util.LAST_BROKEN_TILEENTITY;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
@@ -68,6 +66,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -88,7 +87,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -119,8 +117,6 @@ import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -147,20 +143,22 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.net.GT_Packet_MusicSystemData;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_UO_DimensionList;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeCategorySetting;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_BlockMap;
 import gregtech.api.util.GT_CLS_Compat;
 import gregtech.api.util.GT_ChunkAssociatedData;
 import gregtech.api.util.GT_ClientPreference;
-import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_MusicSystem;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeRegistrator;
@@ -176,7 +174,7 @@ import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 
-public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
+public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
 
     private static final EnumSet<OreGenEvent.GenerateMinable.EventType> PREVENTED_ORES = EnumSet.of(
         OreGenEvent.GenerateMinable.EventType.COAL,
@@ -543,11 +541,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     private final DateFormat mDateFormat = DateFormat.getInstance();
     public final BlockingQueue<String> mBufferedPlayerActivity = new LinkedBlockingQueue<>();
     public final GT_BlockMap<Boolean> mCTMBlockCache = new GT_BlockMap<>();
-    public boolean mHardcoreCables = false;
     public boolean mDisableVanillaOres = true;
-    public boolean mHardMachineCasings = true;
     public boolean mAllowSmallBoilerAutomation = false;
-    public boolean mNerfDustCrafting = true;
     public boolean mSortToTheEnd = true;
     public boolean mCraftingUnification = true;
     public boolean mInventoryUnification = true;
@@ -558,19 +553,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean mNerfedVanillaTools = true;
     public boolean mHardRock = false;
     public boolean mHungerEffect = true;
-    public boolean mOnline = true;
     public boolean mIgnoreTcon = true;
-    public boolean mDisableIC2Cables = false;
     public boolean mAchievements = true;
-    public boolean mArcSmeltIntoAnnealed = true;
-    public boolean mMagneticraftRecipes = false;
-    public boolean mImmersiveEngineeringRecipes = false;
     private boolean isFirstServerWorldTick = true;
     private boolean isFirstWorldTick = true;
     private boolean mOreDictActivated = false;
     public boolean mChangeHarvestLevels = false;
-    public boolean mNerfedCombs = true;
-    public boolean mNerfedCrops = true;
     public boolean mGTBees = true;
     public boolean mHideUnusedOres = true;
     public boolean mPollution = true;
@@ -616,21 +604,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean enableUndergroundGravelGen = true;
     public boolean enableUndergroundDirtGen = true;
     public int mTicksUntilNextCraftSound = 0;
-    public double mMagneticraftBonusOutputPercent = 0d;
     private World mUniverse = null;
-    public boolean mTEMachineRecipes = false;
     public boolean mEnableAllMaterials = false;
     public boolean mEnableCleanroom = true;
     public boolean mLowGravProcessing = false;
     public boolean mAprilFool = false;
     public boolean mCropNeedBlock = true;
-    @Deprecated
-    public boolean mDisableOldChemicalRecipes = false;
     public boolean mAMHInteraction = true;
     public boolean mForceFreeFace = true;
     public boolean mBrickedBlastFurnace = true;
-    @Deprecated
-    public boolean mEasierIVPlusCables = false;
     public boolean mMixedOreOnlyYieldsTwoThirdsOfPureOre = false;
     public boolean mRichOreYieldMultiplier = true;
     public boolean mNetherOreYieldMultiplier = true;
@@ -855,7 +837,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         this.mIgnoreTcon = GregTech_API.sOPStuff.get(ConfigCategories.general, "ignoreTConstruct", true);
         this.mWireHeatingTicks = GregTech_API.sOPStuff.get(ConfigCategories.general, "WireHeatingTicks", 4);
         this.replicatorExponent = GregTech_API.sOPStuff.get("Replicator", "Nerf Exponent", 1.2D);
-        NetworkRegistry.INSTANCE.registerGuiHandler(GT_Values.GT, this);
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
@@ -1383,6 +1364,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         GT_Log.out.println("GT_Mod: ServerStarting-Phase started!");
         GT_Log.ore.println("GT_Mod: ServerStarting-Phase started!");
 
+        GT_MusicSystem.ServerSystem.reset();
+
         this.mUniverse = null;
         this.isFirstServerWorldTick = true;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
@@ -1433,6 +1416,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     }
 
     public void onServerStopping() {
+        GT_MusicSystem.ServerSystem.reset();
         File tSaveDirectory = getSaveDirectory();
         GregTech_API.sWirelessRedstone.clear();
         if (tSaveDirectory != null) {
@@ -1561,6 +1545,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             ((EntityItem) aEvent.entity)
                 .setEntityItemStack(GT_OreDictUnificator.get(true, ((EntityItem) aEvent.entity).getEntityItem(), true));
         }
+    }
+
+    @SubscribeEvent
+    public void onPlayerJoinEvent(cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.player == null || event.player.isClientWorld()
+            || !(event.player instanceof EntityPlayerMP mpPlayer)) {
+            return;
+        }
+        GT_Values.NW.sendToPlayer(new GT_Packet_MusicSystemData(GT_MusicSystem.ServerSystem.serialize()), mpPlayer);
     }
 
     @SubscribeEvent
@@ -1739,8 +1732,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 }
             }
             String tModToName = aMod + " -> " + aEvent.Name;
-            if ((this.mOreDictActivated) || (GregTech_API.sPostloadStarted)
-                || ((this.mSortToTheEnd) && (GregTech_API.sLoadFinished))) {
+            if (this.mOreDictActivated || GregTech_API.sPostloadStarted || GregTech_API.sLoadFinished) {
                 tModToName = aOriginalMod + " --Late--> " + aEvent.Name;
             }
             if (((aEvent.Ore.getItem() instanceof ItemBlock))
@@ -2054,20 +2046,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                                                         OrePrefixes.ingot,
                                                         Materials.Brass,
                                                         new ItemStack(aEvent.Ore.getItem(), 1, 2));
-                                                    if (!mDisableIC2Cables) {
-                                                        GT_Values.RA.stdBuilder()
-                                                            .itemInputs(GT_ModHandler.getIC2Item("copperCableItem", 3L))
-                                                            .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 1, 8))
-                                                            .duration(20 * SECONDS)
-                                                            .eut(1)
-                                                            .addTo(wiremillRecipes);
-                                                        GT_Values.RA.stdBuilder()
-                                                            .itemInputs(GT_ModHandler.getIC2Item("ironCableItem", 6L))
-                                                            .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 1, 9))
-                                                            .duration(20 * SECONDS)
-                                                            .eut(2)
-                                                            .addTo(wiremillRecipes);
-                                                    }
 
                                                     GT_Values.RA.stdBuilder()
                                                         .itemInputs(new ItemStack(aEvent.Ore.getItem(), 1, 3))
@@ -2223,9 +2201,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         if (aEvent.side.isServer()) {
             if (aEvent.phase == TickEvent.Phase.START) {
                 TICK_LOCK.lock();
-
             } else {
                 TICK_LOCK.unlock();
+                GT_MusicSystem.ServerSystem.tick();
             }
 
             // Making sure it is being freed up in order to prevent exploits or Garbage Collection mishaps.
@@ -2334,106 +2312,107 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     }
 
     public static void registerRecipes(GT_Proxy.OreDictEventContainer aOre) {
-        if ((aOre.mEvent.Ore == null) || (aOre.mEvent.Ore.getItem() == null)) {
+        if ((aOre.mEvent.Ore == null) || (aOre.mEvent.Ore.getItem() == null)
+            || (aOre.mPrefix == null)
+            || (aOre.mPrefix.isIgnored(aOre.mMaterial))) {
             return;
         }
         if (aOre.mEvent.Ore.stackSize != 1) {
             aOre.mEvent.Ore.stackSize = 1;
         }
-        if (aOre.mPrefix != null) {
-            if (!aOre.mPrefix.isIgnored(aOre.mMaterial)) {
-                aOre.mPrefix.processOre(
-                    aOre.mMaterial == null ? Materials._NULL : aOre.mMaterial,
-                    aOre.mEvent.Name,
-                    aOre.mModID,
-                    GT_Utility.copyAmount(1, aOre.mEvent.Ore));
-            }
-        } else {
-            // GT_FML_LOGGER.info("Thingy Name: "+ aOre.mEvent.Name+ " !!!Unknown 'Thingy' detected!!! This
-            // Object seems to probably not follow a valid OreDictionary Convention, or I missed a Convention. Please
-            // report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag
-            // Source, it is just an Information, which you should pass to me.");
-        }
+
+        aOre.mPrefix.processOre(
+            aOre.mMaterial == null ? Materials._NULL : aOre.mMaterial,
+            aOre.mEvent.Name,
+            aOre.mModID,
+            GT_Utility.copyAmount(1, aOre.mEvent.Ore));
     }
 
     @SubscribeEvent
     public void onPlayerTickEventServer(TickEvent.PlayerTickEvent aEvent) {
-        if ((aEvent.side.isServer()) && (aEvent.phase == TickEvent.Phase.END) && (!aEvent.player.isDead)) {
-            if ((aEvent.player.ticksExisted % 200 == 0) && (aEvent.player.capabilities.allowEdit)
-                && (!aEvent.player.capabilities.isCreativeMode)
-                && (this.mSurvivalIntoAdventure)) {
-                aEvent.player.setGameType(GameType.ADVENTURE);
-                aEvent.player.capabilities.allowEdit = false;
-                if (this.mAxeWhenAdventure) {
-                    GT_Utility.sendChatToPlayer(
-                        aEvent.player,
-                        GT_LanguageManager.addStringLocalization(
-                            "Interaction_DESCRIPTION_Index_097",
-                            "It's dangerous to go alone! Take this."));
-                    aEvent.player.worldObj.spawnEntityInWorld(
-                        new EntityItem(
-                            aEvent.player.worldObj,
-                            aEvent.player.posX,
-                            aEvent.player.posY,
-                            aEvent.player.posZ,
-                            GT_MetaGenerated_Tool_01.INSTANCE
-                                .getToolWithStats(ID_MetaTool_01.AXE.ID, 1, Materials.Flint, Materials.Wood, null)));
-                }
+        if ((!aEvent.side.isServer()) || (aEvent.phase == TickEvent.Phase.END) || (aEvent.player.isDead)) {
+            return;
+        }
+
+        if ((aEvent.player.ticksExisted % 200 == 0) && (aEvent.player.capabilities.allowEdit)
+            && (!aEvent.player.capabilities.isCreativeMode)
+            && (this.mSurvivalIntoAdventure)) {
+            aEvent.player.setGameType(GameType.ADVENTURE);
+            aEvent.player.capabilities.allowEdit = false;
+            if (this.mAxeWhenAdventure) {
+                GT_Utility.sendChatToPlayer(
+                    aEvent.player,
+                    GT_LanguageManager.addStringLocalization(
+                        "Interaction_DESCRIPTION_Index_097",
+                        "It's dangerous to go alone! Take this."));
+                aEvent.player.worldObj.spawnEntityInWorld(
+                    new EntityItem(
+                        aEvent.player.worldObj,
+                        aEvent.player.posX,
+                        aEvent.player.posY,
+                        aEvent.player.posZ,
+                        GT_MetaGenerated_Tool_01.INSTANCE
+                            .getToolWithStats(ID_MetaTool_01.AXE.ID, 1, Materials.Flint, Materials.Wood, null)));
             }
-            final boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);
-            if (aEvent.player.ticksExisted % 120 == 0) {
-                int tCount = 64;
-                for (int i = 0; i < 36; i++) {
-                    final ItemStack tStack;
-                    if ((tStack = aEvent.player.inventory.getStackInSlot(i)) != null) {
-                        if (!aEvent.player.capabilities.isCreativeMode) {
-                            GT_Utility.applyRadioactivity(
-                                aEvent.player,
-                                GT_Utility.getRadioactivityLevel(tStack),
-                                tStack.stackSize);
-                            final float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
-                            if (tHeat != 0.0F) {
-                                if (tHeat > 0.0F) {
-                                    GT_Utility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
-                                } else {
-                                    GT_Utility.applyFrostDamage(aEvent.player, -tHeat);
-                                }
-                            }
-                        }
-                        if (tHungerEffect) {
-                            tCount += tStack.stackSize * 64 / Math.max(1, tStack.getMaxStackSize());
-                        }
-                        if (this.mInventoryUnification) {
-                            GT_OreDictUnificator.setStack(true, tStack);
-                        }
+        }
+        final boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);
+
+        if (aEvent.player.ticksExisted % 120 != 0) {
+            return;
+        }
+
+        int tCount = 64;
+        for (int i = 0; i < 36; i++) {
+            final ItemStack tStack = aEvent.player.inventory.getStackInSlot(i);
+            if (tStack == null) {
+                continue;
+            }
+
+            if (!aEvent.player.capabilities.isCreativeMode) {
+                GT_Utility
+                    .applyRadioactivity(aEvent.player, GT_Utility.getRadioactivityLevel(tStack), tStack.stackSize);
+                final float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
+                if (tHeat != 0.0F) {
+                    if (tHeat > 0.0F) {
+                        GT_Utility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
+                    } else {
+                        GT_Utility.applyFrostDamage(aEvent.player, -tHeat);
                     }
                 }
-                for (int i = 0; i < 4; i++) {
-                    final ItemStack tStack;
-                    if ((tStack = aEvent.player.inventory.armorInventory[i]) != null) {
-                        if (!aEvent.player.capabilities.isCreativeMode) {
-                            GT_Utility.applyRadioactivity(
-                                aEvent.player,
-                                GT_Utility.getRadioactivityLevel(tStack),
-                                tStack.stackSize);
-                            final float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
-                            if (tHeat != 0.0F) {
-                                if (tHeat > 0.0F) {
-                                    GT_Utility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
-                                } else {
-                                    GT_Utility.applyFrostDamage(aEvent.player, -tHeat);
-                                }
-                            }
-                        }
-                        if (tHungerEffect) {
-                            tCount += 256;
-                        }
+            }
+            if (tHungerEffect) {
+                tCount += tStack.stackSize * 64 / Math.max(1, tStack.getMaxStackSize());
+            }
+            if (this.mInventoryUnification) {
+                GT_OreDictUnificator.setStack(true, tStack);
+            }
+
+        }
+        for (int i = 0; i < 4; i++) {
+            final ItemStack tStack = aEvent.player.inventory.armorInventory[i];
+            if (tStack == null) {
+                continue;
+            }
+
+            if (!aEvent.player.capabilities.isCreativeMode) {
+                GT_Utility
+                    .applyRadioactivity(aEvent.player, GT_Utility.getRadioactivityLevel(tStack), tStack.stackSize);
+                final float tHeat = GT_Utility.getHeatDamageFromItem(tStack);
+                if (tHeat != 0.0F) {
+                    if (tHeat > 0.0F) {
+                        GT_Utility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
+                    } else {
+                        GT_Utility.applyFrostDamage(aEvent.player, -tHeat);
                     }
                 }
-                if (tHungerEffect) {
-                    aEvent.player.addExhaustion(Math.max(1.0F, tCount / 666.6F));
-                }
             }
+            if (tHungerEffect) {
+                tCount += 256;
+            }
+
+        }
+        if (tHungerEffect) {
+            aEvent.player.addExhaustion(Math.max(1.0F, tCount / 666.6F));
         }
     }
 
@@ -2443,56 +2422,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
     public void setClientPreference(UUID aPlayerID, GT_ClientPreference aPreference) {
         mClientPrefernces.put(aPlayerID, aPreference);
-    }
-
-    @Override
-    public Object getServerGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
-        if (aID >= 1000) {
-            return null;
-        }
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof IGregTechTileEntity)) {
-            if (GUI_ID_COVER_SIDE_BASE <= aID && aID < GUI_ID_COVER_SIDE_BASE + 6) {
-                return null;
-            }
-            final IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-            if (tMetaTileEntity != null && !tMetaTileEntity.useModularUI()) {
-                return tMetaTileEntity.getServerGUI(aID, aPlayer.inventory, (IGregTechTileEntity) tTileEntity);
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Object getClientGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
-        if (aID >= 1000) {
-            return null;
-        }
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof IGregTechTileEntity tile)) {
-
-            if (GUI_ID_COVER_SIDE_BASE <= aID && aID < GUI_ID_COVER_SIDE_BASE + 6) {
-                final ForgeDirection side = ForgeDirection
-                    .getOrientation((byte) (aID - GT_Proxy.GUI_ID_COVER_SIDE_BASE));
-                GT_CoverBehaviorBase<?> cover = tile.getCoverBehaviorAtSideNew(side);
-
-                if (cover.hasCoverGUI() && !cover.useModularUI()) {
-                    return cover.getClientGUI(
-                        side,
-                        tile.getCoverIDAtSide(side),
-                        tile.getComplexCoverDataAtSide(side),
-                        tile,
-                        aPlayer,
-                        aWorld);
-                }
-                return null;
-            }
-            final IMetaTileEntity tMetaTileEntity = tile.getMetaTileEntity();
-            if (tMetaTileEntity != null && !tMetaTileEntity.useModularUI()) {
-                return tMetaTileEntity.getClientGUI(aID, aPlayer.inventory, tile);
-            }
-        }
-        return null;
     }
 
     private static List<String> getOreDictNames(ItemStack stack) {
@@ -2664,7 +2593,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .addTo(UniversalChemical);
+                .addTo(RecipeMaps.chemicalReactorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(aMaterial.getCells(1), GT_Utility.getIntegratedCircuit(i + 1))
@@ -2673,7 +2602,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .addTo(UniversalChemical);
+                .addTo(RecipeMaps.chemicalReactorRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.getIntegratedCircuit(i + 1))
+                .fluidInputs(new FluidStack(uncrackedFluid, 1000), Materials.Hydrogen.getGas(hydrogenAmount * 1000))
+                .fluidOutputs(new FluidStack(crackedFluids[i], 800))
+                .duration((4 + 2 * i) * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(RecipeMaps.multiblockChemicalReactorRecipes);
         }
         aMaterial.setHydroCrackedFluids(crackedFluids);
     }
@@ -2716,7 +2653,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .addTo(UniversalChemical);
+                .addTo(RecipeMaps.chemicalReactorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(aMaterial.getCells(1), GT_Utility.getIntegratedCircuit(i + 1))
@@ -2725,7 +2662,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .addTo(UniversalChemical);
+                .addTo(RecipeMaps.chemicalReactorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(aMaterial.getCells(1), GT_Utility.getIntegratedCircuit(i + 1))
@@ -2734,7 +2671,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .addTo(UniversalChemical);
+                .addTo(RecipeMaps.chemicalReactorRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.getIntegratedCircuit(i + 1))
+                .fluidInputs(new FluidStack(uncrackedFluid, 1000), GT_ModHandler.getSteam(1000))
+                .fluidOutputs(new FluidStack(crackedFluids[i], 800))
+                .duration((4 + 2 * i) * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(RecipeMaps.multiblockChemicalReactorRecipes);
         }
         aMaterial.setSteamCrackedFluids(crackedFluids);
     }

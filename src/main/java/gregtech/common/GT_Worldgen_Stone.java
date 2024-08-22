@@ -82,7 +82,7 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
         XSTR stoneRNG = new XSTR();
         ArrayList<ValidSeeds> stones = new ArrayList<>();
 
-        if (!isGenerationAllowed(aWorld, aDimensionType, this.mDimensionType)) {
+        if (!isGenerationAllowed(aWorld, mDimensionType)) {
             return false;
         }
         if (!(this.mBiomeList.isEmpty() || this.mBiomeList.contains(aBiome))) {

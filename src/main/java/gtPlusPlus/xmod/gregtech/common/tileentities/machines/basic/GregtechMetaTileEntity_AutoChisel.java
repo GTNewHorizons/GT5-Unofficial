@@ -161,11 +161,6 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
         return DID_NOT_FIND_RECIPE;
     }
 
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
     private static final FallbackableUITexture progressBarTexture = GT_UITextures
         .fallbackableProgressbar("auto_chisel", GT_UITextures.PROGRESSBAR_COMPRESS);
 

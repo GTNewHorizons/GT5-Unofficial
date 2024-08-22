@@ -13,6 +13,7 @@ import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_OFF;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_ON;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_RAINBOWSCREEN_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
@@ -66,10 +67,12 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
@@ -93,6 +96,8 @@ public class GT_MetaTileEntity_PlasmaForge extends
     // Multiplier for the efficiency decay rate
     private static final double efficiency_decay_rate = 100;
     private static final double maximum_discount = 0.5d;
+    private static final int CONVERGENCE_BITMAP = 0b1;
+    private static final int DISCOUNT_BITMAP = 0b10;
 
     // Valid fuels which the discount will get applied to.
     private static final FluidStack[] valid_fuels = { MaterialsUEVplus.ExcitedDTCC.getFluid(1L),
@@ -647,8 +652,6 @@ public class GT_MetaTileEntity_PlasmaForge extends
                     + EnumChatFormatting.GRAY
                     + " TT energy hatch.")
             .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " maintenance hatch.")
-            .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + min_input_hatch
                     + EnumChatFormatting.GRAY
@@ -698,13 +701,17 @@ public class GT_MetaTileEntity_PlasmaForge extends
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
+        IIconContainer glow = OVERLAY_FUSION1_GLOW;
+        if (convergence && discount == maximum_discount) {
+            glow = OVERLAY_RAINBOWSCREEN_GLOW;
+        }
         if (side == aFacing) {
             if (aActive) return new ITexture[] { casingTexturePages[0][DIM_BRIDGE_CASING], TextureFactory.builder()
                 .addIcon(OVERLAY_DTPF_ON)
                 .extFacing()
                 .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FUSION1_GLOW)
+                    .addIcon(glow)
                     .extFacing()
                     .glow()
                     .build() };
@@ -797,6 +804,8 @@ public class GT_MetaTileEntity_PlasmaForge extends
                         && overclockCalculator != null
                         && overclockCalculator.getCalculationStatus()) {
                         calculateCatalystIncrease(tRecipe, i, false);
+                        getBaseMetaTileEntity()
+                            .sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
                     }
                     tRecipe.mFluidInputs[i].amount = (int) Math.round(tRecipe.mFluidInputs[i].amount * discount);
                     adjusted = true;
@@ -811,6 +820,7 @@ public class GT_MetaTileEntity_PlasmaForge extends
             && overclockCalculator.getCalculationStatus()) {
             recalculateDiscount();
             calculateCatalystIncrease(tRecipe, 0, true);
+            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         }
         return tRecipe;
     }
@@ -864,8 +874,9 @@ public class GT_MetaTileEntity_PlasmaForge extends
         // If there are no energy hatches or TT energy hatches, structure will fail to form.
         if ((mEnergyHatches.size() == 0) && (mExoticEnergyHatches.size() == 0)) return false;
 
-        // One maintenance hatch only. Mandatory.
-        if (mMaintenanceHatches.size() != 1) return false;
+        // Maintenance hatch not required but left for compatibility.
+        // Don't allow more than 1, no free casing spam!
+        if (mMaintenanceHatches.size() > 1) return false;
 
         // Heat capacity of coils used on multi. No free heat from extra EU!
         mHeatingCapacity = (int) getCoilLevel().getHeat();
@@ -1084,6 +1095,8 @@ public class GT_MetaTileEntity_PlasmaForge extends
                 if (convergence && (controllerStack == null
                     || !controllerStack.isItemEqual(ItemList.Transdimensional_Alignment_Matrix.get(1)))) {
                     convergence = false;
+                    getBaseMetaTileEntity()
+                        .sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
                 }
             }
         }
@@ -1105,6 +1118,28 @@ public class GT_MetaTileEntity_PlasmaForge extends
     @Override
     protected ResourceLocation getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_PLASMAFORGE_LOOP.resourceLocation;
+    }
+
+    @Override
+    public byte getUpdateData() {
+        byte data = 0;
+        if (discount == maximum_discount) {
+            data += DISCOUNT_BITMAP;
+        }
+        if (convergence) {
+            data += CONVERGENCE_BITMAP;
+        }
+        return data;
+    }
+
+    @Override
+    public void receiveClientEvent(byte aEventID, byte aValue) {
+        if (aEventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA) {
+            convergence = (aValue & CONVERGENCE_BITMAP) == CONVERGENCE_BITMAP;
+            if ((aValue & DISCOUNT_BITMAP) == DISCOUNT_BITMAP) {
+                discount = maximum_discount;
+            }
+        }
     }
 
     private static final int CATALYST_WINDOW_ID = 10;
@@ -1219,5 +1254,10 @@ public class GT_MetaTileEntity_PlasmaForge extends
     @Override
     public boolean supportsBatchMode() {
         return true;
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

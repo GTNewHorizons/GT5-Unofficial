@@ -1,494 +1,66 @@
 package gregtech.loaders.preload;
 
-import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_DATA_ACCESS_HATCH;
-import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_DEBUG_STRUCTURE_WRITTER;
-import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_SEISMIC_PROSPECTOR_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_SEISMIC_PROSPECTOR_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_SEISMIC_PROSPECTOR_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_SEISMIC_PROSPECTOR_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.ASSEMBLING_LINE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.AUTOMATABLE_DATA_ACCESS_HATCH;
-import static gregtech.api.enums.MetaTileEntityIDs.AUTO_MAINTENANCE_HATCH;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_1_BY_1_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_2_BY_2_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_3_BY_3_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_BUFFER_4_BY_4_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.BATTERY_CHARGER_4_BY_4_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.BRICKED_BLAST_FURNACE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.CHARCOAL_PILE_IGNITER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.CHEST_BUFFER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.CLEANROOM_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.COMBUSTION_ENGINE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.COMBUSTION_GENERATOR_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.COMBUSTION_GENERATOR_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.COMBUSTION_GENERATOR_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.CONCRETE_BACKFILLER_II_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.CONCRETE_BACKFILLER_I_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.CRAFTING_INPUT_ME;
-import static gregtech.api.enums.MetaTileEntityIDs.CRAFTING_INPUT_ME_BUS;
-import static gregtech.api.enums.MetaTileEntityIDs.CRAFTING_INPUT_SLAVE;
-import static gregtech.api.enums.MetaTileEntityIDs.DATA_ACCESS_HATCH;
-import static gregtech.api.enums.MetaTileEntityIDs.DISTILLATION_TOWER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.DTPF_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.DYNAMO_HATCH_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.DroneDownLink;
-import static gregtech.api.enums.MetaTileEntityIDs.Drone_Centre;
-import static gregtech.api.enums.MetaTileEntityIDs.EBF_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.ENERGY_HATCH_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.EXTREME_COMBUSTION_ENGINE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.FUSION_CONTROLLER_MKI;
-import static gregtech.api.enums.MetaTileEntityIDs.FUSION_CONTROLLER_MKII;
-import static gregtech.api.enums.MetaTileEntityIDs.FUSION_CONTROLLER_MKIII;
-import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.GAS_TURBINE_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.HATCH_DEGASIFIER_CONTROL;
-import static gregtech.api.enums.MetaTileEntityIDs.HATCH_LENS_HOUSING;
-import static gregtech.api.enums.MetaTileEntityIDs.HATCH_LENS_INDICATOR;
-import static gregtech.api.enums.MetaTileEntityIDs.HATCH_PH_SENSOR;
-import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_COAL_BOILER;
-import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_LAVA_BOILER;
-import static gregtech.api.enums.MetaTileEntityIDs.HIGH_PRESSURE_SOLAR_BOILER;
-import static gregtech.api.enums.MetaTileEntityIDs.HP_STEAM_ALLOY_SMELTER;
-import static gregtech.api.enums.MetaTileEntityIDs.HP_STEAM_COMPRESSOR;
-import static gregtech.api.enums.MetaTileEntityIDs.HP_STEAM_EXTRACTOR;
-import static gregtech.api.enums.MetaTileEntityIDs.HP_STEAM_FORGE_HAMMER;
-import static gregtech.api.enums.MetaTileEntityIDs.HP_STEAM_FURNACE;
-import static gregtech.api.enums.MetaTileEntityIDs.HP_STEAM_MACERATOR;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_BRICKED_BRONZE;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_BRONZE;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_STEEL;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_WROUGHT_IRON;
-import static gregtech.api.enums.MetaTileEntityIDs.HULL_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.IMPLOSION_COMPRESSOR_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_APIARY;
-import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.INDUSTRIAL_LASER_ENGRAVER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_ME;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_ME_ADVANCED;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_BUS_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_ME;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_ME_ADVANCED;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.INPUT_HATCH_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.INTEGRATED_ORE_FACTORY_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_DISTRIBUTOR_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_ADVANCED_GAS_TURBINE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_BRONZE_BOILER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_GAS_TURBINE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_HEAT_EXCHANGER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_HP_STEAM_TURBINE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_PLASMA_TURBINE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_STEAM_TURBINE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_STEEL_BOILER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_TITANIUM_BOILER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_TUNGSTENSTEEL_BOILER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LCR_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.LIGHTNING_ROD_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.LIGHTNING_ROD_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.LIGHTNING_ROD_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.LOCKER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LONG_DISTANCE_PIPELINE_FLUID;
-import static gregtech.api.enums.MetaTileEntityIDs.LONG_DISTANCE_PIPELINE_ITEM;
-import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_ABSORBER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_ABSORBER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_ABSORBER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_ABSORBER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_CONVERTER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_CONVERTER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.MAGIC_ENERGY_CONVERTER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.MAG_HATCH;
-import static gregtech.api.enums.MetaTileEntityIDs.MAINTENANCE_HATCH;
-import static gregtech.api.enums.MetaTileEntityIDs.MASS_FABRICATOR_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.MASS_FABRICATOR_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.MASS_FABRICATOR_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.MASS_FABRICATOR_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.MASS_FABRICATOR_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.MICROWAVE_ENERGY_TRANSMITTER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.MINER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.MINER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.MINER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.MONSTER_REPELLATOR_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.MONSTER_REPELLATOR_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.MONSTER_REPELLATOR_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.MONSTER_REPELLATOR_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.MONSTER_REPELLATOR_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.MONSTER_REPELLATOR_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.MONSTER_REPELLATOR_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.MONSTER_REPELLATOR_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.MUFFLER_HATCH_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.MULTIBLOCK_PUMP_INFINITE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.MULTIBLOCK_PUMP_MKI_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.MULTILOCK_PUMP_MKIII_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.MULTILOCK_PUMP_MKII_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.MULTILOCK_PUMP_MKIV_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.MULTI_CANNER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.MULTI_LATHE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.MULTI_SMELTER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.NANO_FORGE_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.NAQUADAH_REACTOR_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.OIL_CRACKER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.ORE_DRILL_MKIII_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.ORE_DRILL_MKII_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.ORE_DRILL_MKIV_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.ORE_DRILL_MKI_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_ME;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_BUS_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_ME;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.OUTPUT_HATCH_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.PACKAGER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.PCB_FACTORY_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.PLASMA_GENERATOR_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.PROCESSING_ARRAY_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.PUMP_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.PUMP_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.PUMP_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.PUMP_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.PUMP_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_PLANT_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_CLARIFIER;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_DEGASIFIER;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_FLOCCULATOR;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_OZONATION;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_PARTICLE_EXTRACTOR;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_PH_ADJUSTMENT;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_PLASMA_HEATER;
-import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_UV_TREATMENT;
-import static gregtech.api.enums.MetaTileEntityIDs.PYROLYSE_OVEN_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUADRUPLE_INPUT_HATCHES_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_CHEST_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_CHEST_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_CHEST_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_CHEST_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_CHEST_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_TANK_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_TANK_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_TANK_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_TANK_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.QUANTUM_TANK_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.RECIPE_FILTER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.REPLICATOR_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.REPLICATOR_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.REPLICATOR_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.REPLICATOR_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.REPLICATOR_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.ROCK_BREAKER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.ROCK_BREAKER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.ROCK_BREAKER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.ROCK_BREAKER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.ROCK_BREAKER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.SCANNER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.SCANNER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.SCANNER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.SCANNER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.SCANNER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.SIMPLE_SOLAR_BOILER;
-import static gregtech.api.enums.MetaTileEntityIDs.SMALL_COAL_BOILER;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_ALLOY_SMELTER;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_COMPRESSOR;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_EXTRACTOR;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_FORGE_HAMMER;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_FURNACE;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_MACERATOR;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_TURBINE_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_TURBINE_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.STEAM_TURBINE_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_BUFFER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_CHEST_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_CHEST_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_CHEST_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_CHEST_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_CHEST_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_TANK_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_TANK_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_TANK_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_TANK_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.SUPER_TANK_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.TELEPORTER;
-import static gregtech.api.enums.MetaTileEntityIDs.TRANSCENDENT_PLASMA_MIXER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.TYPE_FILTER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.VACUUM_FREEZER_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.VOLTAGE_REGULATOR_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_DYNAMO_ENERGY_HATCH_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.WIRELESS_HATCH_ENERGY_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_EV_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_HV_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_IV_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_LV_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_LuV_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_MV_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_UHV_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_UV_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
+import static gregtech.api.enums.MetaTileEntityIDs.*;
+import static gregtech.api.enums.MetaTileEntityIDs.LASER_ENGRAVER_IV;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
+import static gregtech.api.recipe.RecipeMaps.amplifierRecipes;
+import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
+import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.circuitAssemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
+import static gregtech.api.recipe.RecipeMaps.electroMagneticSeparatorRecipes;
+import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
+import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
+import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
+import static gregtech.api.recipe.RecipeMaps.fermentingRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
+import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
+import static gregtech.api.recipe.RecipeMaps.furnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
+import static gregtech.api.recipe.RecipeMaps.latheRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.microwaveRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
+import static gregtech.api.recipe.RecipeMaps.plasmaArcFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.polarizerRecipes;
+import static gregtech.api.recipe.RecipeMaps.recyclerRecipes;
+import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
+import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
+import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Item;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
@@ -502,8 +74,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_QuadrupleHumongous;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MagHatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_WetTransformer;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Wireless_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Wireless_Hatch;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -539,6 +113,7 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Input_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_AdvSeismicProspector;
+import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_BetterJukebox;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Boxinator;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Charger;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_IndustrialApiary;
@@ -552,6 +127,8 @@ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Replicator;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_RockBreaker;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Scanner;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Teleporter;
+import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_TurboCharger;
+import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineItem;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_AssemblyLine;
@@ -602,6 +179,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ProcessingA
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PyrolyseOven;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_TranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_WormholeGenerator;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_DroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.GT_MetaTileEntity_Hatch_DroneDownLink;
 import gregtech.common.tileentities.machines.multi.purification.GT_MetaTileEntity_Hatch_DegasifierControlHatch;
@@ -634,6 +212,7 @@ import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumTank;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperChest;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperTank;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTransformerHiAmp;
 
 // Free IDs left for machines in GT as of 29th of July 2022 - Colen. Please try use them up in order.
 // 366
@@ -1130,11 +709,17 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_MultiCanner(MULTI_CANNER_CONTROLLER.ID, "multimachine.canner", "TurboCan Pro")
                 .getStackForm(1));
 
+        ItemList.WormholeGenerator.set(
+            new GT_MetaTileEntity_WormholeGenerator(
+                WORMHOLE_GENERATOR_CONTROLLER.ID,
+                "multimachine.wormhole",
+                "Miniature Wormhole Generator").getStackForm(1));
+
         ItemList.Machine_Multi_IndustrialLaserEngraver.set(
             new GT_MetaTileEntity_IndustrialLaserEngraver(
                 INDUSTRIAL_LASER_ENGRAVER_CONTROLLER.ID,
                 "multimachine.engraver",
-                "High Energy Laser Emitter").getStackForm(1));
+                "Hyper-Intensity Laser Emitter").getStackForm(1));
 
         ItemList.Machine_Multi_Lathe.set(
             new GT_MetaTileEntity_MultiLathe(
@@ -1167,6 +752,719 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "bronzemachine.alloysmelter",
                 "Steam Alloy Smelter").getStackForm(1L));
 
+    }
+
+    private static void registerUnpackager() {
+        ItemList.Machine_LV_Unboxinator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                UNPACKAGER_LV.ID,
+                "basicmachine.unboxinator.tier.01",
+                "Basic Unpackager",
+                1,
+                MachineType.UNPACKAGER.tooltipDescription(),
+                RecipeMaps.unpackagerRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "UNBOXINATOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Unboxinator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                UNPACKAGER_MV.ID,
+                "basicmachine.unboxinator.tier.02",
+                "Advanced Unpackager",
+                2,
+                MachineType.UNPACKAGER.tooltipDescription(),
+                RecipeMaps.unpackagerRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "UNBOXINATOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Unboxinator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                UNPACKAGER_HV.ID,
+                "basicmachine.unboxinator.tier.03",
+                "Advanced Unpackager II",
+                3,
+                MachineType.UNPACKAGER.tooltipDescription(),
+                RecipeMaps.unpackagerRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "UNBOXINATOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Unboxinator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                UNPACKAGER_EV.ID,
+                "basicmachine.unboxinator.tier.04",
+                "Advanced Unpackager III",
+                4,
+                MachineType.UNPACKAGER.tooltipDescription(),
+                RecipeMaps.unpackagerRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "UNBOXINATOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Unboxinator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                UNPACKAGER_IV.ID,
+                "basicmachine.unboxinator.tier.05",
+                "Unboxinator",
+                5,
+                MachineType.UNPACKAGER.tooltipDescription(),
+                RecipeMaps.unpackagerRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "UNBOXINATOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_LuV_Unboxinator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                UNPACKAGER_LuV.ID,
+                "basicmachine.unboxinator.tier.06",
+                "Unboxinator",
+                6,
+                MachineType.UNPACKAGER.tooltipDescription(),
+                RecipeMaps.unpackagerRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "UNBOXINATOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_ZPM_Unboxinator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                UNPACKAGER_ZPM.ID,
+                "basicmachine.unboxinator.tier.07",
+                "Unboxinator",
+                7,
+                MachineType.UNPACKAGER.tooltipDescription(),
+                RecipeMaps.unpackagerRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "UNBOXINATOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_UV_Unboxinator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                UNPACKAGER_UV.ID,
+                "basicmachine.unboxinator.tier.08",
+                "Unboxinator",
+                8,
+                MachineType.UNPACKAGER.tooltipDescription(),
+                RecipeMaps.unpackagerRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "UNBOXINATOR",
+                null).getStackForm(1L));
+    }
+
+    private static void registerAssemblingMachine() {
+
+        ItemList.Machine_LV_Assembler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLER_LV.ID,
+                "basicmachine.assembler.tier.01",
+                "Basic Assembling Machine",
+                1,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                RecipeMaps.assemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Assembler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLER_MV.ID,
+                "basicmachine.assembler.tier.02",
+                "Advanced Assembling Machine",
+                2,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                RecipeMaps.assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Assembler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLER_HV.ID,
+                "basicmachine.assembler.tier.03",
+                "Advanced Assembling Machine II",
+                3,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                RecipeMaps.assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Assembler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLER_EV.ID,
+                "basicmachine.assembler.tier.04",
+                "Advanced Assembling Machine III",
+                4,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                RecipeMaps.assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Assembler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLER_IV.ID,
+                "basicmachine.assembler.tier.05",
+                "Advanced Assembling Machine IV",
+                5,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                RecipeMaps.assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.AssemblingMachineLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLING_MACHINE_LuV.ID,
+                "basicmachine.assembler.tier.06",
+                "Elite Assembling Machine",
+                6,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.AssemblingMachineZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLING_MACHINE_ZPM.ID,
+                "basicmachine.assembler.tier.07",
+                "Elite Assembling Machine II",
+                7,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.AssemblingMachineUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLING_MACHINE_UV.ID,
+                "basicmachine.assembler.tier.08",
+                "Ultimate Assembly Constructor",
+                8,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.AssemblingMachineUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLING_MACHINE_UHV.ID,
+                "basicmachine.assembler.tier.09",
+                "Epic Assembly Constructor",
+                9,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.AssemblingMachineUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLING_MACHINE_UEV.ID,
+                "basicmachine.assembler.tier.10",
+                "Epic Assembly Constructor II",
+                10,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.AssemblingMachineUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLING_MACHINE_UIV.ID,
+                "basicmachine.assembler.tier.11",
+                "Epic Assembly Constructor III",
+                11,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.AssemblingMachineUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ASSEMBLING_MACHINE_UMV.ID,
+                "basicmachine.assembler.tier.12",
+                "Epic Assembly Constructor IV",
+                12,
+                MachineType.ASSEMBLER.tooltipDescription(),
+                assemblerRecipes,
+                9,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ASSEMBLER",
+                null).getStackForm(1L));
+    }
+
+    private static void registerMatterAmplifier() {
+        ItemList.Machine_LV_Amplifab.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_LV.ID,
+                "basicmachine.amplifab.tier.01",
+                "Basic Amplifabricator",
+                1,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                RecipeMaps.amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Amplifab.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_MV.ID,
+                "basicmachine.amplifab.tier.02",
+                "Advanced Amplifabricator",
+                2,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                RecipeMaps.amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Amplifab.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_HV.ID,
+                "basicmachine.amplifab.tier.03",
+                "Advanced Amplifabricator II",
+                3,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                RecipeMaps.amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Amplifab.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_EV.ID,
+                "basicmachine.amplifab.tier.04",
+                "Advanced Amplifabricator III",
+                4,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                RecipeMaps.amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Amplifab.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_IV.ID,
+                "basicmachine.amplifab.tier.05",
+                "Advanced Amplifabricator IV",
+                5,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                RecipeMaps.amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+
+        ItemList.AmplifabricatorLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_LuV.ID,
+                "basicmachine.amplifab.tier.06",
+                "Elite Amplifabricator",
+                6,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+
+        ItemList.AmplifabricatorZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_ZPM.ID,
+                "basicmachine.amplifab.tier.07",
+                "Elite Amplifabricator II",
+                7,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+
+        ItemList.AmplifabricatorUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_UV.ID,
+                "basicmachine.amplifab.tier.08",
+                "Ultimate Amplicreator",
+                8,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+
+        ItemList.AmplifabricatorUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_UHV.ID,
+                "basicmachine.amplifab.tier.09",
+                "Epic Amplicreator",
+                9,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+
+        ItemList.AmplifabricatorUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_UEV.ID,
+                "basicmachine.amplifab.tier.10",
+                "Epic Amplicreator II",
+                10,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+
+        ItemList.AmplifabricatorUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_UIV.ID,
+                "basicmachine.amplifab.tier.11",
+                "Epic Amplicreator III",
+                11,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+
+        ItemList.AmplifabricatorUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MATTER_AMPLIFIER_UMV.ID,
+                "basicmachine.amplifab.tier.12",
+                "Epic Amplicreator IV",
+                12,
+                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
+                amplifierRecipes,
+                1,
+                1,
+                1000,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AMPLIFAB",
+                null).getStackForm(1L));
+    }
+
+    private static void registerAlloySmelter() {
+        ItemList.Machine_LV_AlloySmelter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_LV.ID,
+                "basicmachine.alloysmelter.tier.01",
+                "Basic Alloy Smelter",
+                1,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                RecipeMaps.alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_AlloySmelter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_MV.ID,
+                "basicmachine.alloysmelter.tier.02",
+                "Advanced Alloy Smelter",
+                2,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                RecipeMaps.alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_AlloySmelter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_HV.ID,
+                "basicmachine.alloysmelter.tier.03",
+                "Advanced Alloy Smelter II",
+                3,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                RecipeMaps.alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_AlloySmelter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_EV.ID,
+                "basicmachine.alloysmelter.tier.04",
+                "Advanced Alloy Smelter III",
+                4,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                RecipeMaps.alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_AlloySmelter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_IV.ID,
+                "basicmachine.alloysmelter.tier.05",
+                "Advanced Alloy Smelter IV",
+                5,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                RecipeMaps.alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
+
+        ItemList.AlloySmelterLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_LuV.ID,
+                "basicmachine.alloysmelter.tier.06",
+                "Elite Alloy Smelter",
+                6,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
+
+        ItemList.AlloySmelterZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_ZPM.ID,
+                "basicmachine.alloysmelter.tier.07",
+                "Elite Alloy Smelter II",
+                7,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
+
+        ItemList.AlloySmelterUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_UV.ID,
+                "basicmachine.alloysmelter.tier.08",
+                "Ultimate Alloy Integrator",
+                8,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
+
+        ItemList.AlloySmelterUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_UHV.ID,
+                "basicmachine.alloysmelter.tier.09",
+                "Epic Alloy Integrator",
+                9,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
+
+        ItemList.AlloySmelterUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_UEV.ID,
+                "basicmachine.alloysmelter.tier.10",
+                "Epic Alloy Integrator II",
+                10,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
+
+        ItemList.AlloySmelterUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_UIV.ID,
+                "basicmachine.alloysmelter.tier.11",
+                "Epic Alloy Integrator III",
+                11,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
+
+        ItemList.AlloySmelterUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ALLOY_SMELTER_UMV.ID,
+                "basicmachine.alloysmelter.tier.12",
+                "Epic Alloy Integrator IV",
+                12,
+                MachineType.ALLOY_SMELTER.tooltipDescription(),
+                alloySmelterRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ALLOY_SMELTER",
+                null).getStackForm(1L));
     }
 
     private static void registerHPSteamMachines() {
@@ -1243,6 +1541,39 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Machine_IV_Scanner.set(
             new GT_MetaTileEntity_Scanner(SCANNER_IV.ID, "basicmachine.scanner.tier.05", "Advanced Scanner IV", 5)
                 .getStackForm(1L));
+        ItemList.ScannerLuV.set(
+            new GT_MetaTileEntity_Scanner(SCANNER_LuV.ID, "basicmachine.scanner.tier.06", "Elite Scanner", 6)
+                .getStackForm(1L));
+        ItemList.ScannerZPM.set(
+            new GT_MetaTileEntity_Scanner(SCANNER_ZPM.ID, "basicmachine.scanner.tier.07", "Elite Scanner II", 7)
+                .getStackForm(1L));
+        ItemList.ScannerUV.set(
+            new GT_MetaTileEntity_Scanner(
+                SCANNER_UV.ID,
+                "basicmachine.scanner.tier.08",
+                "Ultimate Electron Microscope",
+                8).getStackForm(1L));
+        ItemList.ScannerUHV.set(
+            new GT_MetaTileEntity_Scanner(SCANNER_UHV.ID, "basicmachine.scanner.tier.09", "Epic Electron Microscope", 9)
+                .getStackForm(1L));
+        ItemList.ScannerUEV.set(
+            new GT_MetaTileEntity_Scanner(
+                SCANNER_UEV.ID,
+                "basicmachine.scanner.tier.10",
+                "Epic Electron Microscope II",
+                10).getStackForm(1L));
+        ItemList.ScannerUIV.set(
+            new GT_MetaTileEntity_Scanner(
+                SCANNER_UIV.ID,
+                "basicmachine.scanner.tier.11",
+                "Epic Electron Microscope III",
+                11).getStackForm(1L));
+        ItemList.ScannerUMV.set(
+            new GT_MetaTileEntity_Scanner(
+                SCANNER_UMV.ID,
+                "basicmachine.scanner.tier.12",
+                "Epic Electron Microscope IV",
+                12).getStackForm(1L));
     }
 
     private static void registerPackager() {
@@ -1306,6 +1637,54 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "basicmachine.rockbreaker.tier.05",
                 "Cryogenic Magma Solidifier R-8200",
                 5).getStackForm(1L));
+        ItemList.RockBreakerLuV.set(
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_LuV.ID,
+                "rockbreaker.tier.06",
+                "Cryogenic Magma Solidifier R-9200",
+                6).getStackForm(1L));
+
+        ItemList.RockBreakerZPM.set(
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_ZPM.ID,
+                "rockbreaker.tier.07",
+                "Cryogenic Magma Solidifier R-10200",
+                7).getStackForm(1L));
+
+        ItemList.RockBreakerUV.set(
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_UV.ID,
+                "rockbreaker.tier.08",
+                "Cryogenic Magma Solidifier R-11200",
+                8).getStackForm(1L));
+
+        ItemList.RockBreakerUHV.set(
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_UHV.ID,
+                "rockbreaker.tier.09",
+                "Cryogenic Magma Solidifier R-12200",
+                9).getStackForm(1L));
+
+        ItemList.RockBreakerUEV.set(
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_UEV.ID,
+                "rockbreaker.tier.10",
+                "Cryogenic Magma Solidifier R-13200",
+                10).getStackForm(1L));
+
+        ItemList.RockBreakerUIV.set(
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_UIV.ID,
+                "rockbreaker.tier.11",
+                "Cryogenic Magma Solidifier R-14200",
+                11).getStackForm(1L));
+
+        ItemList.RockBreakerUMV.set(
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_UMV.ID,
+                "rockbreaker.tier.12",
+                "Cryogenic Magma Solidifier R-15200",
+                12).getStackForm(1L));
     }
 
     private static void registerIndustrialApiary() {
@@ -1380,6 +1759,49 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "basicmachine.replicator.tier.05",
                 "Advanced Replicator IV",
                 5).getStackForm(1L));
+
+        ItemList.ReplicatorLuV.set(
+            new GT_MetaTileEntity_Replicator(
+                MATTER_REPLICATOR_LuV.ID,
+                "basicmachine.replicator.tier.06",
+                "Elite Replicator",
+                6).getStackForm(1L));
+        ItemList.ReplicatorZPM.set(
+            new GT_MetaTileEntity_Replicator(
+                MATTER_REPLICATOR_ZPM.ID,
+                "basicmachine.replicator.tier.07",
+                "Elite Replicator II",
+                7).getStackForm(1L));
+        ItemList.ReplicatorUV.set(
+            new GT_MetaTileEntity_Replicator(
+                MATTER_REPLICATOR_UV.ID,
+                "basicmachine.replicator.tier.08",
+                "Ultimate Elemental Composer",
+                8).getStackForm(1L));
+        ItemList.ReplicatorUHV.set(
+            new GT_MetaTileEntity_Replicator(
+                MATTER_REPLICATOR_UHV.ID,
+                "basicmachine.replicator.tier.09",
+                "Epic Elemental Composer",
+                9).getStackForm(1L));
+        ItemList.ReplicatorUEV.set(
+            new GT_MetaTileEntity_Replicator(
+                MATTER_REPLICATOR_UEV.ID,
+                "basicmachine.replicator.tier.10",
+                "Epic Elemental Composer II",
+                10).getStackForm(1L));
+        ItemList.ReplicatorUIV.set(
+            new GT_MetaTileEntity_Replicator(
+                MATTER_REPLICATOR_UIV.ID,
+                "basicmachine.replicator.tier.11",
+                "Epic Elemental Composer III",
+                11).getStackForm(1L));
+        ItemList.ReplicatorUMV.set(
+            new GT_MetaTileEntity_Replicator(
+                MATTER_REPLICATOR_UMV.ID,
+                "basicmachine.replicator.tier.12",
+                "Epic Elemental Composer IV",
+                12).getStackForm(1L));
     }
 
     private static void registerBrewery() {
@@ -1398,6 +1820,37 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Machine_IV_Brewery.set(
             new GT_MetaTileEntity_PotionBrewer(BREWERY_IV.ID, "basicmachine.brewery.tier.05", "Advanced Brewery IV", 5)
                 .getStackForm(1L));
+
+        ItemList.BreweryLuV.set(
+            new GT_MetaTileEntity_PotionBrewer(BREWERY_LuV.ID, "basicmachine.brewery.tier.06", "Elite Brewery", 6)
+                .getStackForm(1L));
+        ItemList.BreweryZPM.set(
+            new GT_MetaTileEntity_PotionBrewer(BREWERY_ZPM.ID, "basicmachine.brewery.tier.07", "Elite Brewery II", 7)
+                .getStackForm(1L));
+        ItemList.BreweryUV.set(
+            new GT_MetaTileEntity_PotionBrewer(BREWERY_UV.ID, "basicmachine.brewery.tier.08", "Ultimate Brew Rusher", 8)
+                .getStackForm(1L));
+        ItemList.BreweryUHV.set(
+            new GT_MetaTileEntity_PotionBrewer(BREWERY_UHV.ID, "basicmachine.brewery.tier.09", "Epic Brew Rusher", 9)
+                .getStackForm(1L));
+        ItemList.BreweryUEV.set(
+            new GT_MetaTileEntity_PotionBrewer(
+                BREWERY_UEV.ID,
+                "basicmachine.brewery.tier.10",
+                "Epic Brew Rusher II",
+                10).getStackForm(1L));
+        ItemList.BreweryUIV.set(
+            new GT_MetaTileEntity_PotionBrewer(
+                BREWERY_UIV.ID,
+                "basicmachine.brewery.tier.11",
+                "Epic Brew Rusher III",
+                11).getStackForm(1L));
+        ItemList.BreweryUMV.set(
+            new GT_MetaTileEntity_PotionBrewer(
+                BREWERY_UMV.ID,
+                "basicmachine.brewery.tier.12",
+                "Epic Brew Rusher IV",
+                12).getStackForm(1L));
     }
 
     private static void registerMiner() {
@@ -1423,6 +1876,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 .getStackForm(1L));
         ItemList.Pump_IV.set(
             new GT_MetaTileEntity_Pump(PUMP_IV.ID, "basicmachine.pump.tier.05", "Advanced Pump IV", 5)
+                .getStackForm(1L));
+        ItemList.PumpLuV.set(
+            new GT_MetaTileEntity_Pump(PUMP_LuV.ID, "basicmachine.pump.tier.06", "Lake Dislocator", 6)
+                .getStackForm(1L));
+        ItemList.PumpZPM.set(
+            new GT_MetaTileEntity_Pump(PUMP_ZPM.ID, "basicmachine.pump.tier.07", "Ocean Transposer", 7)
                 .getStackForm(1L));
     }
 
@@ -1481,6 +1940,58 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "basicmachine.mobrep.tier.08",
                 "Advanced Monster Repellator VII",
                 8).getStackForm(1L));
+    }
+
+    private void registerWorldAccelerator() {
+        ItemList.AcceleratorLV.set(
+            new GT_MetaTileEntity_WorldAccelerator(
+                WORLD_ACCELERATOR_LV.ID,
+                "basicmachine.accelerator.tier.01",
+                "Basic World Accelerator",
+                1).getStackForm(1L));
+        ItemList.AcceleratorMV.set(
+            new GT_MetaTileEntity_WorldAccelerator(
+                WORLD_ACCELERATOR_MV.ID,
+                "basicmachine.accelerator.tier.02",
+                "Advanced World Accelerator",
+                2).getStackForm(1L));
+        ItemList.AcceleratorHV.set(
+            new GT_MetaTileEntity_WorldAccelerator(
+                WORLD_ACCELERATOR_HV.ID,
+                "basicmachine.accelerator.tier.03",
+                "Advanced World Accelerator II",
+                3).getStackForm(1L));
+        ItemList.AcceleratorEV.set(
+            new GT_MetaTileEntity_WorldAccelerator(
+                WORLD_ACCELERATOR_EV.ID,
+                "basicmachine.accelerator.tier.04",
+                "Advanced World Accelerator III",
+                4).getStackForm(1L));
+        ItemList.AcceleratorIV.set(
+            new GT_MetaTileEntity_WorldAccelerator(
+                WORLD_ACCELERATOR_IV.ID,
+                "basicmachine.accelerator.tier.05",
+                "Advanced World Accelerator IV",
+                5).getStackForm(1L));
+        ItemList.AcceleratorLuV.set(
+            new GT_MetaTileEntity_WorldAccelerator(
+                WORLD_ACCELERATOR_LuV.ID,
+                "basicmachine.accelerator.tier.06",
+                "Elite World Accelerator",
+                6).getStackForm(1L));
+        ItemList.AcceleratorZPM.set(
+            new GT_MetaTileEntity_WorldAccelerator(
+                WORLD_ACCELERATOR_ZPM.ID,
+                "basicmachine.accelerator.tier.07",
+                "Elite World Accelerator II",
+                7).getStackForm(1L));
+        ItemList.AcceleratorUV.set(
+            new GT_MetaTileEntity_WorldAccelerator(
+                WORLD_ACCELERATOR_UV.ID,
+                "basicmachine.accelerator.tier.08",
+                "Ultimate Time Anomaly",
+                8).getStackForm(1L));
+
     }
 
     private static void registerAdvancedSeismicProspector() {
@@ -1557,6 +2068,39 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 8).getStackForm(1L));
     }
 
+    private static void registerBetterJukebox() {
+        ItemList.BetterJukebox_LV.set(
+            new GT_MetaTileEntity_BetterJukebox(
+                BETTER_JUKEBOX_LV.ID,
+                "basicmachine.betterjukebox.tier.01",
+                "Basic Electric Jukebox",
+                1).getStackForm(1L));
+        ItemList.BetterJukebox_MV.set(
+            new GT_MetaTileEntity_BetterJukebox(
+                BETTER_JUKEBOX_MV.ID,
+                "basicmachine.betterjukebox.tier.02",
+                "Advanced Electric Jukebox",
+                2).getStackForm(1L));
+        ItemList.BetterJukebox_HV.set(
+            new GT_MetaTileEntity_BetterJukebox(
+                BETTER_JUKEBOX_HV.ID,
+                "basicmachine.betterjukebox.tier.03",
+                "Advanced Electric Jukebox II",
+                3).getStackForm(1L));
+        ItemList.BetterJukebox_EV.set(
+            new GT_MetaTileEntity_BetterJukebox(
+                BETTER_JUKEBOX_EV.ID,
+                "basicmachine.betterjukebox.tier.04",
+                "Extreme Music Mixer",
+                4).getStackForm(1L));
+        ItemList.BetterJukebox_IV.set(
+            new GT_MetaTileEntity_BetterJukebox(
+                BETTER_JUKEBOX_IV.ID,
+                "basicmachine.betterjukebox.tier.05",
+                "Duke Mix'em 3D",
+                5).getStackForm(1L));
+    }
+
     private static void registerChestBuffer() {
         ItemList.Automation_ChestBuffer_ULV.set(
             new GT_MetaTileEntity_ChestBuffer(
@@ -1612,12 +2156,33 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "automation.chestbuffer.tier.08",
                 "Ultimate Voltage Chest Buffer",
                 8).getStackForm(1L));
-        ItemList.Automation_ChestBuffer_MAX.set(
+        ItemList.Automation_ChestBuffer_UHV.set(
             new GT_MetaTileEntity_ChestBuffer(
                 CHEST_BUFFER_UHV.ID,
                 "automation.chestbuffer.tier.09",
                 "Highly Ultimate Voltage Chest Buffer",
                 9).getStackForm(1L));
+
+        ItemList.Automation_ChestBuffer_UEV.set(
+            new GT_MetaTileEntity_ChestBuffer(
+                CHEST_BUFFER_UEV.ID,
+                "automation.chestbuffer.tier.10",
+                "Ultra High Voltage Chest Buffer",
+                10).getStackForm(1L));
+
+        ItemList.Automation_ChestBuffer_UIV.set(
+            new GT_MetaTileEntity_ChestBuffer(
+                CHEST_BUFFER_UIV.ID,
+                "automation.chestbuffer.tier.11",
+                "UIV Voltage Chest Buffer",
+                11).getStackForm(1L));
+
+        ItemList.Automation_ChestBuffer_UMV.set(
+            new GT_MetaTileEntity_ChestBuffer(
+                CHEST_BUFFER_UMV.ID,
+                "automation.chestbuffer.tier.12",
+                "UMV Voltage Chest Buffer",
+                12).getStackForm(1L));
     }
 
     private static void registerItemFilter() {
@@ -2049,6 +2614,46 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hull_MAX.set(
             new GT_MetaTileEntity_BasicHull(HULL_UHV.ID, "hull.tier.09", "UHV Machine Hull", 9, imagination)
                 .getStackForm(1L));
+
+        ItemList.Hull_UEV.set(
+            new GT_MetaTileEntity_BasicHull(
+                HULL_UEV.ID,
+                "hull.tier.10",
+                "UEV Machine Hull",
+                10,
+                GT_Loader_MetaTileEntities.imagination).getStackForm(1L));
+
+        ItemList.Hull_UIV.set(
+            new GT_MetaTileEntity_BasicHull(
+                HULL_UIV.ID,
+                "hull.tier.11",
+                "UIV Machine Hull",
+                11,
+                GT_Loader_MetaTileEntities.imagination).getStackForm(1L));
+
+        ItemList.Hull_UMV.set(
+            new GT_MetaTileEntity_BasicHull(
+                HULL_UMV.ID,
+                "hull.tier.12",
+                "UMV Machine Hull",
+                12,
+                GT_Loader_MetaTileEntities.imagination).getStackForm(1L));
+
+        ItemList.Hull_UXV.set(
+            new GT_MetaTileEntity_BasicHull(
+                HULL_UXV.ID,
+                "hull.tier.13",
+                "UXV Machine Hull",
+                13,
+                GT_Loader_MetaTileEntities.imagination).getStackForm(1L));
+
+        ItemList.Hull_MAXV.set(
+            new GT_MetaTileEntity_BasicHull(
+                HULL_MAX.ID,
+                "hull.tier.14",
+                "MAX Machine Hull",
+                14,
+                GT_Loader_MetaTileEntities.imagination).getStackForm(1L));
     }
 
     private static void registerTransformer() {
@@ -2115,6 +2720,7127 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Ultimate Transformer",
                 8,
                 "UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
+        ItemList.Transformer_UEV_UHV.set(
+            new GT_MetaTileEntity_Transformer(
+                TRANSFORMER_UEV_UHV.ID,
+                "transformer.tier.09",
+                "Highly Ultimate Transformer",
+                9,
+                "UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.Transformer_UIV_UEV.set(
+            new GT_MetaTileEntity_Transformer(
+                TRANSFORMER_UIV_UEV.ID,
+                "transformer.tier.10",
+                "Extremely Ultimate Transformer",
+                10,
+                "UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.Transformer_UMV_UIV.set(
+            new GT_MetaTileEntity_Transformer(
+                TRANSFORMER_UMV_UIV.ID,
+                "transformer.tier.11",
+                "Insanely Ultimate Transformer",
+                11,
+                "UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.Transformer_UXV_UMV.set(
+            new GT_MetaTileEntity_Transformer(
+                TRANSFORMER_UXV_UMV.ID,
+                "transformer.tier.12",
+                "Mega Ultimate Transformer",
+                12,
+                "UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.Transformer_MAX_UXV.set(
+            new GT_MetaTileEntity_Transformer(
+                TRANSFORMER_MAX_UXV.ID,
+                "transformer.tier.13",
+                "Extended Mega Ultimate Transformer",
+                13,
+                "MAX -> UXV (Use Soft Mallet to invert)").getStackForm(1L));
+    }
+
+    private void registerChemicalBath() {
+        ItemList.Machine_LV_ChemicalBath.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_LV.ID,
+                "basicmachine.chemicalbath.tier.01",
+                "Basic Chemical Bath",
+                1,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                RecipeMaps.chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_ChemicalBath.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_MV.ID,
+                "basicmachine.chemicalbath.tier.02",
+                "Advanced Chemical Bath",
+                2,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                RecipeMaps.chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_ChemicalBath.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_HV.ID,
+                "basicmachine.chemicalbath.tier.03",
+                "Advanced Chemical Bath II",
+                3,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                RecipeMaps.chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_ChemicalBath.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_EV.ID,
+                "basicmachine.chemicalbath.tier.04",
+                "Advanced Chemical Bath III",
+                4,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                RecipeMaps.chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_ChemicalBath.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_IV.ID,
+                "basicmachine.chemicalbath.tier.05",
+                "Advanced Chemical Bath IV",
+                5,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                RecipeMaps.chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalBathLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_LuV.ID,
+                "basicmachine.chemicalbath.tier.06",
+                "Elite Chemical Bath",
+                6,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalBathZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_ZPM.ID,
+                "basicmachine.chemicalbath.tier.07",
+                "Elite Chemical Bath II",
+                7,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalBathUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_UV.ID,
+                "basicmachine.chemicalbath.tier.08",
+                "Ultimate Chemical Dunktron",
+                8,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalBathUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_UHV.ID,
+                "basicmachine.chemicalbath.tier.09",
+                "Epic Chemical Dunktron",
+                9,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalBathUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_UEV.ID,
+                "basicmachine.chemicalbath.tier.10",
+                "Epic Chemical Dunktron II",
+                10,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalBathUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_UIV.ID,
+                "basicmachine.chemicalbath.tier.11",
+                "Epic Chemical Dunktron III",
+                11,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalBathUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_BATH_UMV.ID,
+                "basicmachine.chemicalbath.tier.12",
+                "Epic Chemical Dunktron IV",
+                12,
+                MachineType.CHEMICAL_BATH.tooltipDescription(),
+                chemicalBathRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_BATH",
+                null).getStackForm(1L));
+    }
+
+    private void registerChemicalReactor() {
+        ItemList.Machine_LV_ChemicalReactor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_LV.ID,
+                "basicmachine.chemicalreactor.tier.01",
+                "Basic Chemical Reactor",
+                1,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                RecipeMaps.chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_ChemicalReactor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_MV.ID,
+                "basicmachine.chemicalreactor.tier.02",
+                "Advanced Chemical Reactor",
+                2,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                RecipeMaps.chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_ChemicalReactor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_HV.ID,
+                "basicmachine.chemicalreactor.tier.03",
+                "Advanced Chemical Reactor II",
+                3,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                RecipeMaps.chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_ChemicalReactor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_EV.ID,
+                "basicmachine.chemicalreactor.tier.04",
+                "Advanced Chemical Reactor III",
+                4,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                RecipeMaps.chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_ChemicalReactor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_IV.ID,
+                "basicmachine.chemicalreactor.tier.05",
+                "Advanced Chemical Reactor IV",
+                5,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                RecipeMaps.chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalReactorLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_LuV.ID,
+                "basicmachine.chemicalreactor.tier.06",
+                "Elite Chemical Reactor",
+                6,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalReactorZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_ZPM.ID,
+                "basicmachine.chemicalreactor.tier.07",
+                "Elite Chemical Reactor II",
+                7,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalReactorUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_UV.ID,
+                "basicmachine.chemicalreactor.tier.08",
+                "Ultimate Chemical Perforer",
+                8,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalReactorUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_UHV.ID,
+                "basicmachine.chemicalreactor.tier.09",
+                "Epic Chemical Performer",
+                9,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalReactorUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_UEV.ID,
+                "basicmachine.chemicalreactor.tier.10",
+                "Epic Chemical Performer II",
+                10,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalReactorUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_UIV.ID,
+                "basicmachine.chemicalreactor.tier.11",
+                "Epic Chemical Performer III",
+                11,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ChemicalReactorUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CHEMICAL_REACTOR_UMV.ID,
+                "basicmachine.chemicalreactor.tier.12",
+                "Epic Chemical Performer IV",
+                12,
+                MachineType.CHEMICAL_REACTOR.tooltipDescription(),
+                chemicalReactorRecipes,
+                2,
+                2,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CHEMICAL_REACTOR",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerFermenter() {
+        ItemList.Machine_LV_Fermenter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_LV.ID,
+                "basicmachine.fermenter.tier.01",
+                "Basic Fermenter",
+                1,
+                MachineType.FERMENTER.tooltipDescription(),
+                RecipeMaps.fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Fermenter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_MV.ID,
+                "basicmachine.fermenter.tier.02",
+                "Advanced Fermenter",
+                2,
+                MachineType.FERMENTER.tooltipDescription(),
+                RecipeMaps.fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Fermenter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_HV.ID,
+                "basicmachine.fermenter.tier.03",
+                "Advanced Fermenter II",
+                3,
+                MachineType.FERMENTER.tooltipDescription(),
+                RecipeMaps.fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Fermenter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_EV.ID,
+                "basicmachine.fermenter.tier.04",
+                "Advanced Fermenter III",
+                4,
+                MachineType.FERMENTER.tooltipDescription(),
+                RecipeMaps.fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Fermenter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_IV.ID,
+                "basicmachine.fermenter.tier.05",
+                "Advanced Fermenter IV",
+                5,
+                MachineType.FERMENTER.tooltipDescription(),
+                RecipeMaps.fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.FermenterLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_LuV.ID,
+                "basicmachine.fermenter.tier.06",
+                "Elite Fermenter",
+                6,
+                MachineType.FERMENTER.tooltipDescription(),
+                fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.FermenterZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_ZPM.ID,
+                "basicmachine.fermenter.tier.07",
+                "Elite Fermenter II",
+                7,
+                MachineType.FERMENTER.tooltipDescription(),
+                fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.FermenterUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_UV.ID,
+                "basicmachine.fermenter.tier.08",
+                "Ultimate Fermentation Hastener",
+                8,
+                MachineType.FERMENTER.tooltipDescription(),
+                fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.FermenterUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_UHV.ID,
+                "basicmachine.fermenter.tier.09",
+                "Epic Fermentation Hastener",
+                9,
+                MachineType.FERMENTER.tooltipDescription(),
+                fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.FermenterUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_UEV.ID,
+                "basicmachine.fermenter.tier.10",
+                "Epic Fermentation Hastener II",
+                10,
+                MachineType.FERMENTER.tooltipDescription(),
+                fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.FermenterUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_UIV.ID,
+                "basicmachine.fermenter.tier.11",
+                "Epic Fermentation Hastener III",
+                11,
+                MachineType.FERMENTER.tooltipDescription(),
+                fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+
+        ItemList.FermenterUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FERMENTER_UMV.ID,
+                "basicmachine.fermenter.tier.12",
+                "Epic Fermentation Hastener IV",
+                12,
+                MachineType.FERMENTER.tooltipDescription(),
+                fermentingRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FERMENTER",
+                null).getStackForm(1L));
+    }
+
+    private void registerFluidCanner() {
+        ItemList.Machine_LV_FluidCanner.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_LV.ID,
+                "basicmachine.fluidcanner.tier.01",
+                "Basic Fluid Canner",
+                1,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                RecipeMaps.fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_FluidCanner.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_MV.ID,
+                "basicmachine.fluidcanner.tier.02",
+                "Advanced Fluid Canner",
+                2,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                RecipeMaps.fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_FluidCanner.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_HV.ID,
+                "basicmachine.fluidcanner.tier.03",
+                "Quick Fluid Canner",
+                3,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                RecipeMaps.fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_FluidCanner.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_EV.ID,
+                "basicmachine.fluidcanner.tier.04",
+                "Turbo Fluid Canner",
+                4,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                RecipeMaps.fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_FluidCanner.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_IV.ID,
+                "basicmachine.fluidcanner.tier.05",
+                "Instant Fluid Canner",
+                5,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                RecipeMaps.fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.FluidCannerLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_LuV.ID,
+                "basicmachine.fluidcanner.tier.06",
+                "Elite Fluid Canner",
+                6,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.FluidCannerZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_ZPM.ID,
+                "basicmachine.fluidcanner.tier.07",
+                "Elite Fluid Canner II",
+                7,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.FluidCannerUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_UV.ID,
+                "basicmachine.fluidcanner.tier.08",
+                "Ultimate Liquid Can Actuator",
+                8,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.FluidCannerUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_UHV.ID,
+                "basicmachine.fluidcanner.tier.09",
+                "Epic Liquid Can Actuator",
+                9,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.FluidCannerUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_UEV.ID,
+                "basicmachine.fluidcanner.tier.10",
+                "Epic Liquid Can Actuator II",
+                10,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.FluidCannerUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_UIV.ID,
+                "basicmachine.fluidcanner.tier.11",
+                "Epic Liquid Can Actuator III",
+                11,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+
+        ItemList.FluidCannerUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_CANNER_UMV.ID,
+                "basicmachine.fluidcanner.tier.12",
+                "Epic Liquid Can Actuator IV",
+                12,
+                MachineType.FLUID_CANNER.tooltipDescription(),
+                fluidCannerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_CANNER",
+                null).getStackForm(1L));
+    }
+
+    private void registerFluidExtractor() {
+        ItemList.Machine_LV_FluidExtractor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_LV.ID,
+                "basicmachine.fluidextractor.tier.01",
+                "Basic Fluid Extractor",
+                1,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                RecipeMaps.fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_FluidExtractor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_MV.ID,
+                "basicmachine.fluidextractor.tier.02",
+                "Advanced Fluid Extractor",
+                2,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                RecipeMaps.fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_FluidExtractor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_HV.ID,
+                "basicmachine.fluidextractor.tier.03",
+                "Advanced Fluid Extractor II",
+                3,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                RecipeMaps.fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_FluidExtractor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_EV.ID,
+                "basicmachine.fluidextractor.tier.04",
+                "Advanced Fluid Extractor III",
+                4,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                RecipeMaps.fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_FluidExtractor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_IV.ID,
+                "basicmachine.fluidextractor.tier.05",
+                "Advanced Fluid Extractor IV",
+                5,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                RecipeMaps.fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.FluidExtractorLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_LuV.ID,
+                "basicmachine.fluidextractor.tier.06",
+                "Elite Fluid Extractor",
+                6,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.FluidExtractorZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_ZPM.ID,
+                "basicmachine.fluidextractor.tier.07",
+                "Elite Fluid Extractor II",
+                7,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.FluidExtractorUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_UV.ID,
+                "basicmachine.fluidextractor.tier.08",
+                "Ultimate Liquefying Sucker",
+                8,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.FluidExtractorUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_UHV.ID,
+                "basicmachine.fluidextractor.tier.09",
+                "Epic Liquefying Sucker",
+                9,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.FluidExtractorUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_UEV.ID,
+                "basicmachine.fluidextractor.tier.10",
+                "Epic Liquefying Sucker II",
+                10,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.FluidExtractorUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_UIV.ID,
+                "basicmachine.fluidextractor.tier.11",
+                "Epic Liquefying Sucker III",
+                11,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.FluidExtractorUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_EXTRACTOR_UMV.ID,
+                "basicmachine.fluidextractor.tier.12",
+                "Epic Liquefying Sucker IV",
+                12,
+                MachineType.FLUID_EXTRACTOR.tooltipDescription(),
+                fluidExtractionRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_EXTRACTOR",
+                null).getStackForm(1L));
+    }
+
+    private void registerFluidHeater() {
+        ItemList.Machine_LV_FluidHeater.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_LV.ID,
+                "basicmachine.fluidheater.tier.01",
+                "Basic Fluid Heater",
+                1,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                RecipeMaps.fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_FluidHeater.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_MV.ID,
+                "basicmachine.fluidheater.tier.02",
+                "Advanced Fluid Heater",
+                2,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                RecipeMaps.fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_FluidHeater.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_HV.ID,
+                "basicmachine.fluidheater.tier.03",
+                "Advanced Fluid Heater II",
+                3,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                RecipeMaps.fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_FluidHeater.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_EV.ID,
+                "basicmachine.fluidheater.tier.04",
+                "Advanced Fluid Heater III",
+                4,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                RecipeMaps.fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_FluidHeater.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_IV.ID,
+                "basicmachine.fluidheater.tier.05",
+                "Advanced Fluid Heater IV",
+                5,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                RecipeMaps.fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.FluidHeaterLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_LuV.ID,
+                "basicmachine.fluidheater.tier.06",
+                "Elite Fluid Heater",
+                6,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.FluidHeaterZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_ZPM.ID,
+                "basicmachine.fluidheater.tier.07",
+                "Elite Fluid Heater II",
+                7,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.FluidHeaterUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_UV.ID,
+                "basicmachine.fluidheater.tier.08",
+                "Ultimate Heat Infuser",
+                8,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.FluidHeaterUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_UHV.ID,
+                "basicmachine.fluidheater.tier.09",
+                "Epic Heat Infuser",
+                9,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.FluidHeaterUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_UEV.ID,
+                "basicmachine.fluidheater.tier.10",
+                "Epic Heat Infuser II",
+                10,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.FluidHeaterUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_UIV.ID,
+                "basicmachine.fluidheater.tier.11",
+                "Epic Heat Infuser III",
+                11,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+
+        ItemList.FluidHeaterUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_HEATER_UMV.ID,
+                "basicmachine.fluidheater.tier.12",
+                "Epic Heat Infuser IV",
+                12,
+                MachineType.FLUID_HEATER.tooltipDescription(),
+                fluidHeaterRecipes,
+                1,
+                0,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_HEATER",
+                null).getStackForm(1L));
+    }
+
+    private void registerMixer() {
+        ItemList.Machine_LV_Mixer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_LV.ID,
+                "basicmachine.mixer.tier.01",
+                "Basic Mixer",
+                1,
+                MachineType.MIXER.tooltipDescription(),
+                RecipeMaps.mixerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Mixer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_MV.ID,
+                "basicmachine.mixer.tier.02",
+                "Advanced Mixer",
+                2,
+                MachineType.MIXER.tooltipDescription(),
+                RecipeMaps.mixerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Mixer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_HV.ID,
+                "basicmachine.mixer.tier.03",
+                "Advanced Mixer II",
+                3,
+                MachineType.MIXER.tooltipDescription(),
+                RecipeMaps.mixerRecipes,
+                6,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Mixer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_EV.ID,
+                "basicmachine.mixer.tier.04",
+                "Advanced Mixer III",
+                4,
+                MachineType.MIXER.tooltipDescription(),
+                RecipeMaps.mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Mixer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_IV.ID,
+                "basicmachine.mixer.tier.05",
+                "Advanced Mixer IV",
+                5,
+                MachineType.MIXER.tooltipDescription(),
+                RecipeMaps.mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.MixerLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_LuV.ID,
+                "basicmachine.mixer.tier.06",
+                "Elite Mixer",
+                6,
+                MachineType.MIXER.tooltipDescription(),
+                mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.MixerZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_ZPM.ID,
+                "basicmachine.mixer.tier.07",
+                "Elite Mixer II",
+                7,
+                MachineType.MIXER.tooltipDescription(),
+                mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.MixerUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_UV.ID,
+                "basicmachine.mixer.tier.08",
+                "Ultimate Matter Organizer",
+                8,
+                MachineType.MIXER.tooltipDescription(),
+                mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.MixerUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_UHV.ID,
+                "basicmachine.mixer.tier.09",
+                "Epic Matter Organizer",
+                9,
+                MachineType.MIXER.tooltipDescription(),
+                mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.MixerUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_UEV.ID,
+                "basicmachine.mixer.tier.10",
+                "Epic Matter Organizer II",
+                10,
+                MachineType.MIXER.tooltipDescription(),
+                mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.MixerUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_UIV.ID,
+                "basicmachine.mixer.tier.11",
+                "Epic Matter Organizer III",
+                11,
+                MachineType.MIXER.tooltipDescription(),
+                mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+
+        ItemList.MixerUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MIXER_UMV.ID,
+                "basicmachine.mixer.tier.12",
+                "Epic Matter Organizer IV",
+                12,
+                MachineType.MIXER.tooltipDescription(),
+                mixerRecipes,
+                9,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MIXER",
+                null).getStackForm(1L));
+    }
+
+    private void registerAutoclave() {
+        ItemList.Machine_LV_Autoclave.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                AUTOCLAVE_LV.ID,
+                "basicmachine.autoclave.tier.01",
+                "Basic Autoclave",
+                1,
+                MachineType.AUTOCLAVE.tooltipDescription(),
+                RecipeMaps.autoclaveRecipes,
+                2,
+                2,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AUTOCLAVE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Autoclave.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                AUTOCLAVE_MV.ID,
+                "basicmachine.autoclave.tier.02",
+                "Advanced Autoclave",
+                2,
+                MachineType.AUTOCLAVE.tooltipDescription(),
+                RecipeMaps.autoclaveRecipes,
+                2,
+                2,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AUTOCLAVE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Autoclave.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                AUTOCLAVE_HV.ID,
+                "basicmachine.autoclave.tier.03",
+                "Advanced Autoclave II",
+                3,
+                MachineType.AUTOCLAVE.tooltipDescription(),
+                RecipeMaps.autoclaveRecipes,
+                2,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AUTOCLAVE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Autoclave.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                AUTOCLAVE_EV.ID,
+                "basicmachine.autoclave.tier.04",
+                "Advanced Autoclave III",
+                4,
+                MachineType.AUTOCLAVE.tooltipDescription(),
+                RecipeMaps.autoclaveRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AUTOCLAVE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Autoclave.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                AUTOCLAVE_IV.ID,
+                "basicmachine.autoclave.tier.05",
+                "Advanced Autoclave IV",
+                5,
+                MachineType.AUTOCLAVE.tooltipDescription(),
+                RecipeMaps.autoclaveRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AUTOCLAVE",
+                null).getStackForm(1L));
+
+        ItemList.AutoclaveLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                AUTOCLAVE_LuV.ID,
+                "basicmachine.autoclave.tier.06",
+                "Elite Autoclave",
+                6,
+                MachineType.AUTOCLAVE.tooltipDescription(),
+                autoclaveRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AUTOCLAVE",
+                null).getStackForm(1L));
+
+        ItemList.AutoclaveZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                AUTOCLAVE_ZPM.ID,
+                "basicmachine.autoclave.tier.07",
+                "Elite Autoclave II",
+                7,
+                MachineType.AUTOCLAVE.tooltipDescription(),
+                autoclaveRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AUTOCLAVE",
+                null).getStackForm(1L));
+
+        ItemList.AutoclaveUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                AUTOCLAVE_UV.ID,
+                "basicmachine.autoclave.tier.08",
+                "Ultimate Pressure Cooker",
+                8,
+                MachineType.AUTOCLAVE.tooltipDescription(),
+                autoclaveRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AUTOCLAVE",
+                null).getStackForm(1L));
+
+        ItemList.AutoclaveUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                AUTOCLAVE_UHV.ID,
+                "basicmachine.autoclave.tier.09",
+                "Epic Pressure Cooker",
+                9,
+                MachineType.AUTOCLAVE.tooltipDescription(),
+                autoclaveRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AUTOCLAVE",
+                null).getStackForm(1L));
+
+        ItemList.AutoclaveUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                AUTOCLAVE_UEV.ID,
+                "basicmachine.autoclave.tier.10",
+                "Epic Pressure Cooker II",
+                10,
+                MachineType.AUTOCLAVE.tooltipDescription(),
+                autoclaveRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AUTOCLAVE",
+                null).getStackForm(1L));
+
+        ItemList.AutoclaveUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                AUTOCLAVE_UIV.ID,
+                "basicmachine.autoclave.tier.11",
+                "Epic Pressure Cooker III",
+                11,
+                MachineType.AUTOCLAVE.tooltipDescription(),
+                autoclaveRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AUTOCLAVE",
+                null).getStackForm(1L));
+
+        ItemList.AutoclaveUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                AUTOCLAVE_UMV.ID,
+                "basicmachine.autoclave.tier.12",
+                "Epic Pressure Cooker IV",
+                12,
+                MachineType.AUTOCLAVE.tooltipDescription(),
+                autoclaveRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "AUTOCLAVE",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerBendingMachine() {
+        ItemList.Machine_LV_Bender.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                BENDING_MACHINE_LV.ID,
+                "basicmachine.bender.tier.01",
+                "Basic Bending Machine",
+                1,
+                MachineType.BENDING_MACHINE.tooltipDescription(),
+                RecipeMaps.benderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "BENDER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Bender.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                BENDING_MACHINE_MV.ID,
+                "basicmachine.bender.tier.02",
+                "Advanced Bending Machine",
+                2,
+                MachineType.BENDING_MACHINE.tooltipDescription(),
+                RecipeMaps.benderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "BENDER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Bender.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                BENDING_MACHINE_HV.ID,
+                "basicmachine.bender.tier.03",
+                "Advanced Bending Machine II",
+                3,
+                MachineType.BENDING_MACHINE.tooltipDescription(),
+                RecipeMaps.benderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "BENDER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Bender.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                BENDING_MACHINE_EV.ID,
+                "basicmachine.bender.tier.04",
+                "Advanced Bending Machine III",
+                4,
+                MachineType.BENDING_MACHINE.tooltipDescription(),
+                RecipeMaps.benderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "BENDER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Bender.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                BENDING_MACHINE_IV.ID,
+                "basicmachine.bender.tier.05",
+                "Advanced Bending Machine IV",
+                5,
+                MachineType.BENDING_MACHINE.tooltipDescription(),
+                RecipeMaps.benderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "BENDER",
+                null).getStackForm(1L));
+
+        ItemList.BendingMachineLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                BENDING_MACHINE_LuV.ID,
+                "basicmachine.bender.tier.06",
+                "Elite Bending Machine",
+                6,
+                MachineType.BENDING_MACHINE.tooltipDescription(),
+                benderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "BENDER",
+                null).getStackForm(1L));
+
+        ItemList.BendingMachineZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                BENDING_MACHINE_ZPM.ID,
+                "basicmachine.bender.tier.07",
+                "Elite Bending Machine II",
+                7,
+                MachineType.BENDING_MACHINE.tooltipDescription(),
+                benderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "BENDER",
+                null).getStackForm(1L));
+
+        ItemList.BendingMachineUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                BENDING_MACHINE_UV.ID,
+                "basicmachine.bender.tier.08",
+                "Ultimate Bending Unit",
+                8,
+                MachineType.BENDING_MACHINE.tooltipDescription(),
+                benderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "BENDER",
+                null).getStackForm(1L));
+
+        ItemList.BendingMachineUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                BENDING_MACHINE_UHV.ID,
+                "basicmachine.bender.tier.09",
+                "Epic Bending Unit",
+                9,
+                MachineType.BENDING_MACHINE.tooltipDescription(),
+                benderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "BENDER",
+                null).getStackForm(1L));
+
+        ItemList.BendingMachineUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                BENDING_MACHINE_UEV.ID,
+                "basicmachine.bender.tier.10",
+                "Epic Bending Unit II",
+                10,
+                MachineType.BENDING_MACHINE.tooltipDescription(),
+                benderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "BENDER",
+                null).getStackForm(1L));
+
+        ItemList.BendingMachineUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                BENDING_MACHINE_UIV.ID,
+                "basicmachine.bender.tier.11",
+                "Epic Bending Unit III",
+                11,
+                MachineType.BENDING_MACHINE.tooltipDescription(),
+                benderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "BENDER",
+                null).getStackForm(1L));
+
+        ItemList.BendingMachineUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                BENDING_MACHINE_UMV.ID,
+                "basicmachine.bender.tier.12",
+                "Epic Bending Unit IV",
+                12,
+                MachineType.BENDING_MACHINE.tooltipDescription(),
+                benderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "BENDER",
+                null).getStackForm(1L));
+    }
+
+    private void registerCompressor() {
+        ItemList.Machine_LV_Compressor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                COMPRESSOR_LV.ID,
+                "basicmachine.compressor.tier.01",
+                "Basic Compressor",
+                1,
+                MachineType.COMPRESSOR.tooltipDescription(),
+                RecipeMaps.compressorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "COMPRESSOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Compressor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                COMPRESSOR_MV.ID,
+                "basicmachine.compressor.tier.02",
+                "Advanced Compressor",
+                2,
+                MachineType.COMPRESSOR.tooltipDescription(),
+                RecipeMaps.compressorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "COMPRESSOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Compressor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                COMPRESSOR_HV.ID,
+                "basicmachine.compressor.tier.03",
+                "Advanced Compressor II",
+                3,
+                MachineType.COMPRESSOR.tooltipDescription(),
+                RecipeMaps.compressorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "COMPRESSOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Compressor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                COMPRESSOR_EV.ID,
+                "basicmachine.compressor.tier.04",
+                "Advanced Compressor III",
+                4,
+                MachineType.COMPRESSOR.tooltipDescription(),
+                RecipeMaps.compressorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "COMPRESSOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Compressor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                COMPRESSOR_IV.ID,
+                "basicmachine.compressor.tier.05",
+                "Singularity Compressor",
+                5,
+                MachineType.COMPRESSOR.tooltipDescription(),
+                RecipeMaps.compressorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "COMPRESSOR",
+                null).getStackForm(1L));
+
+        ItemList.CompressorLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                COMPRESSOR_LuV.ID,
+                "basicmachine.compressor.tier.06",
+                "Elite Compressor",
+                6,
+                MachineType.COMPRESSOR.tooltipDescription(),
+                compressorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "COMPRESSOR",
+                null).getStackForm(1L));
+
+        ItemList.CompressorZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                COMPRESSOR_ZPM.ID,
+                "basicmachine.compressor.tier.07",
+                "Elite Compressor II",
+                7,
+                MachineType.COMPRESSOR.tooltipDescription(),
+                compressorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "COMPRESSOR",
+                null).getStackForm(1L));
+
+        ItemList.CompressorUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                COMPRESSOR_UV.ID,
+                "basicmachine.compressor.tier.08",
+                "Ultimate Matter Constrictor",
+                8,
+                MachineType.COMPRESSOR.tooltipDescription(),
+                compressorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "COMPRESSOR",
+                null).getStackForm(1L));
+
+        ItemList.CompressorUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                COMPRESSOR_UHV.ID,
+                "basicmachine.compressor.tier.09",
+                "Epic Matter Constrictor",
+                9,
+                MachineType.COMPRESSOR.tooltipDescription(),
+                compressorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "COMPRESSOR",
+                null).getStackForm(1L));
+
+        ItemList.CompressorUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                COMPRESSOR_UEV.ID,
+                "basicmachine.compressor.tier.10",
+                "Epic Matter Constrictor II",
+                10,
+                MachineType.COMPRESSOR.tooltipDescription(),
+                compressorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "COMPRESSOR",
+                null).getStackForm(1L));
+
+        ItemList.CompressorUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                COMPRESSOR_UIV.ID,
+                "basicmachine.compressor.tier.11",
+                "Epic Matter Constrictor III",
+                11,
+                MachineType.COMPRESSOR.tooltipDescription(),
+                compressorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "COMPRESSOR",
+                null).getStackForm(1L));
+
+        ItemList.CompressorUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                COMPRESSOR_UMV.ID,
+                "basicmachine.compressor.tier.12",
+                "Epic Matter Constrictor IV",
+                12,
+                MachineType.COMPRESSOR.tooltipDescription(),
+                compressorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "COMPRESSOR",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerCuttingMachine() {
+        ItemList.Machine_LV_Cutter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CUTTING_MACHINE_LV.ID,
+                "basicmachine.cutter.tier.01",
+                "Basic Cutting Machine",
+                1,
+                MachineType.CUTTING_MACHINE.tooltipDescription(),
+                RecipeMaps.cutterRecipes,
+                1,
+                2,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CUTTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Cutter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CUTTING_MACHINE_MV.ID,
+                "basicmachine.cutter.tier.02",
+                "Advanced Cutting Machine",
+                2,
+                MachineType.CUTTING_MACHINE.tooltipDescription(),
+                RecipeMaps.cutterRecipes,
+                2,
+                2,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CUTTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Cutter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CUTTING_MACHINE_HV.ID,
+                "basicmachine.cutter.tier.03",
+                "Advanced Cutting Machine II",
+                3,
+                MachineType.CUTTING_MACHINE.tooltipDescription(),
+                RecipeMaps.cutterRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CUTTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Cutter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CUTTING_MACHINE_EV.ID,
+                "basicmachine.cutter.tier.04",
+                "Advanced Cutting Machine III",
+                4,
+                MachineType.CUTTING_MACHINE.tooltipDescription(),
+                RecipeMaps.cutterRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CUTTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Cutter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CUTTING_MACHINE_IV.ID,
+                "basicmachine.cutter.tier.05",
+                "Advanced Cutting Machine IV",
+                5,
+                MachineType.CUTTING_MACHINE.tooltipDescription(),
+                RecipeMaps.cutterRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CUTTER",
+                null).getStackForm(1L));
+
+        ItemList.CuttingMachineLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CUTTING_MACHINE_LuV.ID,
+                "basicmachine.cutter.tier.06",
+                "Elite Cutting Machine",
+                6,
+                MachineType.CUTTING_MACHINE.tooltipDescription(),
+                cutterRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CUTTER",
+                null).getStackForm(1L));
+
+        ItemList.CuttingMachineZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CUTTING_MACHINE_ZPM.ID,
+                "basicmachine.cutter.tier.07",
+                "Elite Cutting Machine II",
+                7,
+                MachineType.CUTTING_MACHINE.tooltipDescription(),
+                cutterRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CUTTER",
+                null).getStackForm(1L));
+
+        ItemList.CuttingMachineUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CUTTING_MACHINE_UV.ID,
+                "basicmachine.cutter.tier.08",
+                "Ultimate Object Divider",
+                8,
+                MachineType.CUTTING_MACHINE.tooltipDescription(),
+                cutterRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CUTTER",
+                null).getStackForm(1L));
+
+        ItemList.CuttingMachineUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CUTTING_MACHINE_UHV.ID,
+                "basicmachine.cutter.tier.09",
+                "Epic Object Divider",
+                9,
+                MachineType.CUTTING_MACHINE.tooltipDescription(),
+                cutterRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CUTTER",
+                null).getStackForm(1L));
+
+        ItemList.CuttingMachineUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CUTTING_MACHINE_UEV.ID,
+                "basicmachine.cutter.tier.10",
+                "Epic Object Divider II",
+                10,
+                MachineType.CUTTING_MACHINE.tooltipDescription(),
+                cutterRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CUTTER",
+                null).getStackForm(1L));
+
+        ItemList.CuttingMachineUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CUTTING_MACHINE_UIV.ID,
+                "basicmachine.cutter.tier.11",
+                "Epic Object Divider III",
+                11,
+                MachineType.CUTTING_MACHINE.tooltipDescription(),
+                cutterRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CUTTER",
+                null).getStackForm(1L));
+
+        ItemList.CuttingMachineUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CUTTING_MACHINE_UMV.ID,
+                "basicmachine.cutter.tier.12",
+                "Epic Object Divider IV",
+                12,
+                MachineType.CUTTING_MACHINE.tooltipDescription(),
+                cutterRecipes,
+                2,
+                4,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CUTTER",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerDistillery() {
+        ItemList.Machine_LV_Distillery.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                DISTILLERY_LV.ID,
+                "basicmachine.distillery.tier.01",
+                "Basic Distillery",
+                1,
+                MachineType.DISTILLERY.tooltipDescription(),
+                RecipeMaps.distilleryRecipes,
+                1,
+                1,
+                true,
+                SoundResource.GT_MACHINES_DISTILLERY_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "DISTILLERY",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Distillery.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                DISTILLERY_MV.ID,
+                "basicmachine.distillery.tier.02",
+                "Advanced Distillery",
+                2,
+                MachineType.DISTILLERY.tooltipDescription(),
+                RecipeMaps.distilleryRecipes,
+                1,
+                1,
+                true,
+                SoundResource.GT_MACHINES_DISTILLERY_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "DISTILLERY",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Distillery.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                DISTILLERY_HV.ID,
+                "basicmachine.distillery.tier.03",
+                "Advanced Distillery II",
+                3,
+                MachineType.DISTILLERY.tooltipDescription(),
+                RecipeMaps.distilleryRecipes,
+                1,
+                1,
+                true,
+                SoundResource.GT_MACHINES_DISTILLERY_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "DISTILLERY",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Distillery.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                DISTILLERY_EV.ID,
+                "basicmachine.distillery.tier.04",
+                "Advanced Distillery III",
+                4,
+                MachineType.DISTILLERY.tooltipDescription(),
+                RecipeMaps.distilleryRecipes,
+                1,
+                1,
+                true,
+                SoundResource.GT_MACHINES_DISTILLERY_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "DISTILLERY",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Distillery.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                DISTILLERY_IV.ID,
+                "basicmachine.distillery.tier.05",
+                "Advanced Distillery IV",
+                5,
+                MachineType.DISTILLERY.tooltipDescription(),
+                RecipeMaps.distilleryRecipes,
+                1,
+                1,
+                true,
+                SoundResource.GT_MACHINES_DISTILLERY_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "DISTILLERY",
+                null).getStackForm(1L));
+
+        ItemList.DistilleryLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                DISTILLERY_LuV.ID,
+                "basicmachine.distillery.tier.06",
+                "Elite Distillery",
+                6,
+                MachineType.DISTILLERY.tooltipDescription(),
+                distilleryRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "DISTILLERY",
+                null).getStackForm(1L));
+
+        ItemList.DistilleryZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                DISTILLERY_ZPM.ID,
+                "basicmachine.distillery.tier.07",
+                "Elite Distillery II",
+                7,
+                MachineType.DISTILLERY.tooltipDescription(),
+                distilleryRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "DISTILLERY",
+                null).getStackForm(1L));
+
+        ItemList.DistilleryUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                DISTILLERY_UV.ID,
+                "basicmachine.distillery.tier.08",
+                "Ultimate Fraction Splitter",
+                8,
+                MachineType.DISTILLERY.tooltipDescription(),
+                distilleryRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "DISTILLERY",
+                null).getStackForm(1L));
+
+        ItemList.DistilleryUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                DISTILLERY_UHV.ID,
+                "basicmachine.distillery.tier.09",
+                "Epic Fraction Splitter",
+                9,
+                MachineType.DISTILLERY.tooltipDescription(),
+                distilleryRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "DISTILLERY",
+                null).getStackForm(1L));
+
+        ItemList.DistilleryUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                DISTILLERY_UEV.ID,
+                "basicmachine.distillery.tier.10",
+                "Epic Fraction Splitter II",
+                10,
+                MachineType.DISTILLERY.tooltipDescription(),
+                distilleryRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "DISTILLERY",
+                null).getStackForm(1L));
+
+        ItemList.DistilleryUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                DISTILLERY_UIV.ID,
+                "basicmachine.distillery.tier.11",
+                "Epic Fraction Splitter III",
+                11,
+                MachineType.DISTILLERY.tooltipDescription(),
+                distilleryRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "DISTILLERY",
+                null).getStackForm(1L));
+
+        ItemList.DistilleryUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                DISTILLERY_UMV.ID,
+                "basicmachine.distillery.tier.12",
+                "Epic Fraction Splitter IV",
+                12,
+                MachineType.DISTILLERY.tooltipDescription(),
+                distilleryRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "DISTILLERY",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerElectricFurnace() {
+        ItemList.Machine_LV_E_Furnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTRIC_FURNACE_LV.ID,
+                "basicmachine.e_furnace.tier.01",
+                "Basic Electric Furnace",
+                1,
+                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
+                RecipeMaps.furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_FURNACE",
+                null).setProgressBarTextureName("E_Furnace")
+                    .getStackForm(1L));
+
+        ItemList.Machine_MV_E_Furnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTRIC_FURNACE_MV.ID,
+                "basicmachine.e_furnace.tier.02",
+                "Advanced Electric Furnace",
+                2,
+                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
+                RecipeMaps.furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_FURNACE",
+                null).setProgressBarTextureName("E_Furnace")
+                    .getStackForm(1L));
+
+        ItemList.Machine_HV_E_Furnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTRIC_FURNACE_HV.ID,
+                "basicmachine.e_furnace.tier.03",
+                "Advanced Electric Furnace II",
+                3,
+                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
+                RecipeMaps.furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_FURNACE",
+                null).setProgressBarTextureName("E_Furnace")
+                    .getStackForm(1L));
+
+        ItemList.Machine_EV_E_Furnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTRIC_FURNACE_EV.ID,
+                "basicmachine.e_furnace.tier.04",
+                "Advanced Electric Furnace III",
+                4,
+                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
+                RecipeMaps.furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_FURNACE",
+                null).setProgressBarTextureName("E_Furnace")
+                    .getStackForm(1L));
+
+        ItemList.Machine_IV_E_Furnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTRIC_FURNACE_IV.ID,
+                "basicmachine.e_furnace.tier.05",
+                "Electron Exitement Processor",
+                5,
+                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
+                RecipeMaps.furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_FURNACE",
+                null).setProgressBarTextureName("E_Furnace")
+                    .getStackForm(1L));
+
+        ItemList.ElectricFurnaceLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTRIC_FURNACE_LuV.ID,
+                "basicmachine.e_furnace.tier.06",
+                "Elite Electric Furnace",
+                6,
+                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
+                furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.ElectricFurnaceZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTRIC_FURNACE_ZPM.ID,
+                "basicmachine.e_furnace.tier.07",
+                "Elite Electric Furnace II",
+                7,
+                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
+                furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.ElectricFurnaceUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTRIC_FURNACE_UV.ID,
+                "basicmachine.e_furnace.tier.08",
+                "Ultimate Atom Stimulator",
+                8,
+                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
+                furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.ElectricFurnaceUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTRIC_FURNACE_UHV.ID,
+                "basicmachine.e_furnace.tier.09",
+                "Epic Atom Stimulator",
+                9,
+                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
+                furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.ElectricFurnaceUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTRIC_FURNACE_UEV.ID,
+                "basicmachine.e_furnace.tier.10",
+                "Epic Atom Stimulator II",
+                10,
+                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
+                furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.ElectricFurnaceUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTRIC_FURNACE_UIV.ID,
+                "basicmachine.e_furnace.tier.11",
+                "Epic Atom Stimulator III",
+                11,
+                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
+                furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.ElectricFurnaceUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTRIC_FURNACE_UMV.ID,
+                "basicmachine.e_furnace.tier.12",
+                "Epic Atom Stimulator IV",
+                12,
+                MachineType.ELECTRIC_FURNACE.tooltipDescription(),
+                furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_FURNACE",
+                null).getStackForm(1L));
+    }
+
+    private void registerElectrolyzer() {
+        ItemList.Machine_LV_Electrolyzer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROLYSER_LV.ID,
+                "basicmachine.electrolyzer.tier.01",
+                "Basic Electrolyzer",
+                1,
+                MachineType.ELECTROLYZER.tooltipDescription(),
+                RecipeMaps.electrolyzerRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROLYZER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Electrolyzer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROLYSER_MV.ID,
+                "basicmachine.electrolyzer.tier.02",
+                "Advanced Electrolyzer",
+                2,
+                MachineType.ELECTROLYZER.tooltipDescription(),
+                RecipeMaps.electrolyzerRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROLYZER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Electrolyzer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROLYSER_HV.ID,
+                "basicmachine.electrolyzer.tier.03",
+                "Advanced Electrolyzer II",
+                3,
+                MachineType.ELECTROLYZER.tooltipDescription(),
+                RecipeMaps.electrolyzerRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROLYZER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Electrolyzer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROLYSER_EV.ID,
+                "basicmachine.electrolyzer.tier.04",
+                "Advanced Electrolyzer III",
+                4,
+                MachineType.ELECTROLYZER.tooltipDescription(),
+                RecipeMaps.electrolyzerRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROLYZER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Electrolyzer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROLYSER_IV.ID,
+                "basicmachine.electrolyzer.tier.05",
+                "Molecular Disintegrator E-4908",
+                5,
+                MachineType.ELECTROLYZER.tooltipDescription(),
+                RecipeMaps.electrolyzerRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROLYZER",
+                null).getStackForm(1L));
+
+        ItemList.ElectrolyzerLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROLYZER_LuV.ID,
+                "basicmachine.electrolyzer.tier.06",
+                "Elite Electrolyzer",
+                6,
+                MachineType.ELECTROLYZER.tooltipDescription(),
+                electrolyzerRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROLYZER",
+                null).getStackForm(1L));
+
+        ItemList.ElectrolyzerZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROLYZER_ZPM.ID,
+                "basicmachine.electrolyzer.tier.07",
+                "Elite Electrolyzer II",
+                7,
+                MachineType.ELECTROLYZER.tooltipDescription(),
+                electrolyzerRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROLYZER",
+                null).getStackForm(1L));
+
+        ItemList.ElectrolyzerUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROLYZER_UV.ID,
+                "basicmachine.electrolyzer.tier.08",
+                "Ultimate Ionizer",
+                8,
+                MachineType.ELECTROLYZER.tooltipDescription(),
+                electrolyzerRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROLYZER",
+                null).getStackForm(1L));
+
+        ItemList.ElectrolyzerUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROLYZER_UHV.ID,
+                "basicmachine.electrolyzer.tier.09",
+                "Epic Ionizer",
+                9,
+                MachineType.ELECTROLYZER.tooltipDescription(),
+                electrolyzerRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROLYZER",
+                null).getStackForm(1L));
+
+        ItemList.ElectrolyzerUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROLYZER_UEV.ID,
+                "basicmachine.electrolyzer.tier.10",
+                "Epic Ionizer II",
+                10,
+                MachineType.ELECTROLYZER.tooltipDescription(),
+                electrolyzerRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROLYZER",
+                null).getStackForm(1L));
+
+        ItemList.ElectrolyzerUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROLYZER_UIV.ID,
+                "basicmachine.electrolyzer.tier.11",
+                "Epic Ionizer III",
+                11,
+                MachineType.ELECTROLYZER.tooltipDescription(),
+                electrolyzerRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROLYZER",
+                null).getStackForm(1L));
+
+        ItemList.ElectrolyzerUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROLYZER_UMV.ID,
+                "basicmachine.electrolyzer.tier.12",
+                "Epic Ionizer IV",
+                12,
+                MachineType.ELECTROLYZER.tooltipDescription(),
+                electrolyzerRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROLYZER",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerElectromagneticSeparator() {
+        ItemList.Machine_LV_ElectromagneticSeparator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROMAGNETIC_SEPARATOR_LV.ID,
+                "basicmachine.electromagneticseparator.tier.01",
+                "Basic Electromagnetic Separator",
+                1,
+                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
+                RecipeMaps.electroMagneticSeparatorRecipes,
+                1,
+                3,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROMAGNETIC_SEPARATOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_ElectromagneticSeparator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROMAGNETIC_SEPARATOR_MV.ID,
+                "basicmachine.electromagneticseparator.tier.02",
+                "Advanced Electromagnetic Separator",
+                2,
+                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
+                RecipeMaps.electroMagneticSeparatorRecipes,
+                1,
+                3,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROMAGNETIC_SEPARATOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_ElectromagneticSeparator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROMAGNETIC_SEPARATOR_HV.ID,
+                "basicmachine.electromagneticseparator.tier.03",
+                "Advanced Electromagnetic Separator II",
+                3,
+                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
+                RecipeMaps.electroMagneticSeparatorRecipes,
+                1,
+                3,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROMAGNETIC_SEPARATOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_ElectromagneticSeparator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROMAGNETIC_SEPARATOR_EV.ID,
+                "basicmachine.electromagneticseparator.tier.04",
+                "Advanced Electromagnetic Separator III",
+                4,
+                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
+                RecipeMaps.electroMagneticSeparatorRecipes,
+                1,
+                3,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROMAGNETIC_SEPARATOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_ElectromagneticSeparator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROMAGNETIC_SEPARATOR_IV.ID,
+                "basicmachine.electromagneticseparator.tier.05",
+                "Advanced Electromagnetic Separator IV",
+                5,
+                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
+                RecipeMaps.electroMagneticSeparatorRecipes,
+                1,
+                3,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROMAGNETIC_SEPARATOR",
+                null).getStackForm(1L));
+
+        ItemList.ElectromagneticSeparatorLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROMAGNETIC_SEPARATOR_LuV.ID,
+                "basicmachine.electromagneticseparator.tier.06",
+                "Elite Electromagnetic Separator",
+                6,
+                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
+                electroMagneticSeparatorRecipes,
+                1,
+                3,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROMAGNETIC_SEPARATOR",
+                null).getStackForm(1L));
+
+        ItemList.ElectromagneticSeparatorZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROMAGNETIC_SEPARATOR_ZPM.ID,
+                "basicmachine.electromagneticseparator.tier.07",
+                "Elite Electromagnetic Separator II",
+                7,
+                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
+                electroMagneticSeparatorRecipes,
+                1,
+                3,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROMAGNETIC_SEPARATOR",
+                null).getStackForm(1L));
+
+        ItemList.ElectromagneticSeparatorUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROMAGNETIC_SEPARATOR_UV.ID,
+                "basicmachine.electromagneticseparator.tier.08",
+                "Ultimate Magnetar Separator",
+                8,
+                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
+                electroMagneticSeparatorRecipes,
+                1,
+                3,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROMAGNETIC_SEPARATOR",
+                null).getStackForm(1L));
+
+        ItemList.ElectromagneticSeparatorUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROMAGNETIC_SEPARATOR_UHV.ID,
+                "basicmachine.electromagneticseparator.tier.09",
+                "Epic Magnetar Separator",
+                9,
+                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
+                electroMagneticSeparatorRecipes,
+                1,
+                3,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROMAGNETIC_SEPARATOR",
+                null).getStackForm(1L));
+
+        ItemList.ElectromagneticSeparatorUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROMAGNETIC_SEPARATOR_UEV.ID,
+                "basicmachine.electromagneticseparator.tier.10",
+                "Epic Magnetar Separator II",
+                10,
+                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
+                electroMagneticSeparatorRecipes,
+                1,
+                3,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROMAGNETIC_SEPARATOR",
+                null).getStackForm(1L));
+
+        ItemList.ElectromagneticSeparatorUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROMAGNETIC_SEPARATOR_UIV.ID,
+                "basicmachine.electromagneticseparator.tier.11",
+                "Epic Magnetar Separator III",
+                11,
+                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
+                electroMagneticSeparatorRecipes,
+                1,
+                3,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROMAGNETIC_SEPARATOR",
+                null).getStackForm(1L));
+
+        ItemList.ElectromagneticSeparatorUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ELECTROMAGNETIC_SEPARATOR_UMV.ID,
+                "basicmachine.electromagneticseparator.tier.12",
+                "Epic Magnetar Separator IV",
+                12,
+                MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription(),
+                electroMagneticSeparatorRecipes,
+                1,
+                3,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTROMAGNETIC_SEPARATOR",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerExtractor() {
+        ItemList.Machine_LV_Extractor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRACTOR_LV.ID,
+                "basicmachine.extractor.tier.01",
+                "Basic Extractor",
+                1,
+                MachineType.EXTRACTOR.tooltipDescription(),
+                RecipeMaps.extractorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Extractor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRACTOR_MV.ID,
+                "basicmachine.extractor.tier.02",
+                "Advanced Extractor",
+                2,
+                MachineType.EXTRACTOR.tooltipDescription(),
+                RecipeMaps.extractorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Extractor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRACTOR_HV.ID,
+                "basicmachine.extractor.tier.03",
+                "Advanced Extractor II",
+                3,
+                MachineType.EXTRACTOR.tooltipDescription(),
+                RecipeMaps.extractorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Extractor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRACTOR_EV.ID,
+                "basicmachine.extractor.tier.04",
+                "Advanced Extractor III",
+                4,
+                MachineType.EXTRACTOR.tooltipDescription(),
+                RecipeMaps.extractorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Extractor.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRACTOR_IV.ID,
+                "basicmachine.extractor.tier.05",
+                "Vacuum Extractor",
+                5,
+                MachineType.EXTRACTOR.tooltipDescription(),
+                RecipeMaps.extractorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ExtractorLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRACTOR_LuV.ID,
+                "basicmachine.extractor.tier.06",
+                "Elite Extractor",
+                6,
+                MachineType.EXTRACTOR.tooltipDescription(),
+                extractorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ExtractorZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRACTOR_ZPM.ID,
+                "basicmachine.extractor.tier.07",
+                "Elite Extractor II",
+                7,
+                MachineType.EXTRACTOR.tooltipDescription(),
+                extractorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ExtractorUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRACTOR_UV.ID,
+                "basicmachine.extractor.tier.08",
+                "Ultimate Extractinator",
+                8,
+                MachineType.EXTRACTOR.tooltipDescription(),
+                extractorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ExtractorUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRACTOR_UHV.ID,
+                "basicmachine.extractor.tier.09",
+                "Epic Extractinator",
+                9,
+                MachineType.EXTRACTOR.tooltipDescription(),
+                extractorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ExtractorUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRACTOR_UEV.ID,
+                "basicmachine.extractor.tier.10",
+                "Epic Extractinator II",
+                10,
+                MachineType.EXTRACTOR.tooltipDescription(),
+                extractorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ExtractorUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRACTOR_UIV.ID,
+                "basicmachine.extractor.tier.11",
+                "Epic Extractinator III",
+                11,
+                MachineType.EXTRACTOR.tooltipDescription(),
+                extractorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRACTOR",
+                null).getStackForm(1L));
+
+        ItemList.ExtractorUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRACTOR_UMV.ID,
+                "basicmachine.extractor.tier.12",
+                "Epic Extractinator IV",
+                12,
+                MachineType.EXTRACTOR.tooltipDescription(),
+                extractorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRACTOR",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerExtruder() {
+        ItemList.Machine_LV_Extruder.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRUDER_LV.ID,
+                "basicmachine.extruder.tier.01",
+                "Basic Extruder",
+                1,
+                MachineType.EXTRUDER.tooltipDescription(),
+                RecipeMaps.extruderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRUDER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Extruder.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRUDER_MV.ID,
+                "basicmachine.extruder.tier.02",
+                "Advanced Extruder",
+                2,
+                MachineType.EXTRUDER.tooltipDescription(),
+                RecipeMaps.extruderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRUDER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Extruder.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRUDER_HV.ID,
+                "basicmachine.extruder.tier.03",
+                "Advanced Extruder II",
+                3,
+                MachineType.EXTRUDER.tooltipDescription(),
+                RecipeMaps.extruderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRUDER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Extruder.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRUDER_EV.ID,
+                "basicmachine.extruder.tier.04",
+                "Advanced Extruder III",
+                4,
+                MachineType.EXTRUDER.tooltipDescription(),
+                RecipeMaps.extruderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRUDER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Extruder.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRUDER_IV.ID,
+                "basicmachine.extruder.tier.05",
+                "Advanced Extruder IV",
+                5,
+                MachineType.EXTRUDER.tooltipDescription(),
+                RecipeMaps.extruderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRUDER",
+                null).getStackForm(1L));
+
+        ItemList.ExtruderLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRUDER_LuV.ID,
+                "basicmachine.extruder.tier.06",
+                "Elite Extruder",
+                6,
+                MachineType.EXTRUDER.tooltipDescription(),
+                extruderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRUDER",
+                null).getStackForm(1L));
+
+        ItemList.ExtruderZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRUDER_ZPM.ID,
+                "basicmachine.extruder.tier.07",
+                "Elite Extruder II",
+                7,
+                MachineType.EXTRUDER.tooltipDescription(),
+                extruderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRUDER",
+                null).getStackForm(1L));
+
+        ItemList.ExtruderUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRUDER_UV.ID,
+                "basicmachine.extruder.tier.08",
+                "Ultimate Shape Driver",
+                8,
+                MachineType.EXTRUDER.tooltipDescription(),
+                extruderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRUDER",
+                null).getStackForm(1L));
+
+        ItemList.ExtruderUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRUDER_UHV.ID,
+                "basicmachine.extruder.tier.09",
+                "Epic Shape Driver",
+                9,
+                MachineType.EXTRUDER.tooltipDescription(),
+                extruderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRUDER",
+                null).getStackForm(1L));
+
+        ItemList.ExtruderUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRUDER_UEV.ID,
+                "basicmachine.extruder.tier.10",
+                "Epic Shape Driver II",
+                10,
+                MachineType.EXTRUDER.tooltipDescription(),
+                extruderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRUDER",
+                null).getStackForm(1L));
+
+        ItemList.ExtruderUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRUDER_UIV.ID,
+                "basicmachine.extruder.tier.11",
+                "Epic Shape Driver III",
+                11,
+                MachineType.EXTRUDER.tooltipDescription(),
+                extruderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRUDER",
+                null).getStackForm(1L));
+
+        ItemList.ExtruderUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                EXTRUDER_UMV.ID,
+                "basicmachine.extruder.tier.12",
+                "Epic Shape Driver IV",
+                12,
+                MachineType.EXTRUDER.tooltipDescription(),
+                extruderRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "EXTRUDER",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerFluidSolidifier() {
+        ItemList.Machine_LV_FluidSolidifier.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_SOLIDIFIER_LV.ID,
+                "basicmachine.fluidsolidifier.tier.01",
+                "Basic Fluid Solidifier",
+                1,
+                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
+                RecipeMaps.fluidSolidifierRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_SOLIDIFIER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_FluidSolidifier.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_SOLIDIFIER_MV.ID,
+                "basicmachine.fluidsolidifier.tier.02",
+                "Advanced Fluid Solidifier",
+                2,
+                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
+                RecipeMaps.fluidSolidifierRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_SOLIDIFIER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_FluidSolidifier.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_SOLIDIFIER_HV.ID,
+                "basicmachine.fluidsolidifier.tier.03",
+                "Advanced Fluid Solidifier II",
+                3,
+                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
+                RecipeMaps.fluidSolidifierRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_SOLIDIFIER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_FluidSolidifier.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_SOLIDIFIER_EV.ID,
+                "basicmachine.fluidsolidifier.tier.04",
+                "Advanced Fluid Solidifier III",
+                4,
+                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
+                RecipeMaps.fluidSolidifierRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_SOLIDIFIER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_FluidSolidifier.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_SOLIDIFIER_IV.ID,
+                "basicmachine.fluidsolidifier.tier.05",
+                "Advanced Fluid Solidifier IV",
+                5,
+                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
+                RecipeMaps.fluidSolidifierRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_SOLIDIFIER",
+                null).getStackForm(1L));
+
+        ItemList.FluidSolidifierLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_SOLIDIFIER_LuV.ID,
+                "basicmachine.fluidsolidifier.tier.06",
+                "Elite Fluid Solidifier",
+                6,
+                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
+                fluidSolidifierRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_SOLIDIFIER",
+                null).getStackForm(1L));
+
+        ItemList.FluidSolidifierZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_SOLIDIFIER_ZPM.ID,
+                "basicmachine.fluidsolidifier.tier.07",
+                "Elite Fluid Solidifier II",
+                7,
+                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
+                fluidSolidifierRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_SOLIDIFIER",
+                null).getStackForm(1L));
+
+        ItemList.FluidSolidifierUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_SOLIDIFIER_UV.ID,
+                "basicmachine.fluidsolidifier.tier.08",
+                "Ultimate Fluid Petrificator",
+                8,
+                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
+                fluidSolidifierRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_SOLIDIFIER",
+                null).getStackForm(1L));
+
+        ItemList.FluidSolidifierUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_SOLIDIFIER_UHV.ID,
+                "basicmachine.fluidsolidifier.tier.09",
+                "Epic Fluid Petrificator",
+                9,
+                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
+                fluidSolidifierRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_SOLIDIFIER",
+                null).getStackForm(1L));
+
+        ItemList.FluidSolidifierUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_SOLIDIFIER_UEV.ID,
+                "basicmachine.fluidsolidifier.tier.10",
+                "Epic Fluid Petrificator II",
+                10,
+                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
+                fluidSolidifierRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_SOLIDIFIER",
+                null).getStackForm(1L));
+
+        ItemList.FluidSolidifierUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_SOLIDIFIER_UIV.ID,
+                "basicmachine.fluidsolidifier.tier.11",
+                "Epic Fluid Petrificator III",
+                11,
+                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
+                fluidSolidifierRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_SOLIDIFIER",
+                null).getStackForm(1L));
+
+        ItemList.FluidSolidifierUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FLUID_SOLIDIFIER_UMV.ID,
+                "basicmachine.fluidsolidifier.tier.12",
+                "Epic Fluid Petrificator IV",
+                12,
+                MachineType.FLUID_SOLIDIFIER.tooltipDescription(),
+                fluidSolidifierRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "FLUID_SOLIDIFIER",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerFormingPress() {
+        ItemList.Machine_LV_Press.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORMING_PRESS_LV.ID,
+                "basicmachine.press.tier.01",
+                "Basic Forming Press",
+                1,
+                MachineType.FORMING_PRESS.tooltipDescription(),
+                RecipeMaps.formingPressRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PRESS",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Press.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORMING_PRESS_MV.ID,
+                "basicmachine.press.tier.02",
+                "Advanced Forming Press",
+                2,
+                MachineType.FORMING_PRESS.tooltipDescription(),
+                RecipeMaps.formingPressRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PRESS",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Press.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORMING_PRESS_HV.ID,
+                "basicmachine.press.tier.03",
+                "Advanced Forming Press II",
+                3,
+                MachineType.FORMING_PRESS.tooltipDescription(),
+                RecipeMaps.formingPressRecipes,
+                4,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PRESS",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Press.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORMING_PRESS_EV.ID,
+                "basicmachine.press.tier.04",
+                "Advanced Forming Press III",
+                4,
+                MachineType.FORMING_PRESS.tooltipDescription(),
+                RecipeMaps.formingPressRecipes,
+                4,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PRESS",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Press.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORMING_PRESS_IV.ID,
+                "basicmachine.press.tier.05",
+                "Advanced Forming Press IV",
+                5,
+                MachineType.FORMING_PRESS.tooltipDescription(),
+                RecipeMaps.formingPressRecipes,
+                6,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PRESS",
+                null).getStackForm(1L));
+
+        ItemList.FormingPressLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORMING_PRESS_LuV.ID,
+                "basicmachine.press.tier.06",
+                "Elite Forming Press",
+                6,
+                MachineType.FORMING_PRESS.tooltipDescription(),
+                formingPressRecipes,
+                6,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PRESS",
+                null).getStackForm(1L));
+
+        ItemList.FormingPressZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORMING_PRESS_ZPM.ID,
+                "basicmachine.press.tier.07",
+                "Elite Forming Press II",
+                7,
+                MachineType.FORMING_PRESS.tooltipDescription(),
+                formingPressRecipes,
+                6,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PRESS",
+                null).getStackForm(1L));
+
+        ItemList.FormingPressUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORMING_PRESS_UV.ID,
+                "basicmachine.press.tier.08",
+                "Ultimate Surface Shifter",
+                8,
+                MachineType.FORMING_PRESS.tooltipDescription(),
+                formingPressRecipes,
+                6,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PRESS",
+                null).getStackForm(1L));
+
+        ItemList.FormingPressUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORMING_PRESS_UHV.ID,
+                "basicmachine.press.tier.09",
+                "Epic Surface Shifter",
+                9,
+                MachineType.FORMING_PRESS.tooltipDescription(),
+                formingPressRecipes,
+                6,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PRESS",
+                null).getStackForm(1L));
+
+        ItemList.FormingPressUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORMING_PRESS_UEV.ID,
+                "basicmachine.press.tier.10",
+                "Epic Surface Shifter II",
+                10,
+                MachineType.FORMING_PRESS.tooltipDescription(),
+                formingPressRecipes,
+                6,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PRESS",
+                null).getStackForm(1L));
+
+        ItemList.FormingPressUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORMING_PRESS_UIV.ID,
+                "basicmachine.press.tier.11",
+                "Epic Surface Shifter III",
+                11,
+                MachineType.FORMING_PRESS.tooltipDescription(),
+                formingPressRecipes,
+                6,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PRESS",
+                null).getStackForm(1L));
+
+        ItemList.FormingPressUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORMING_PRESS_UMV.ID,
+                "basicmachine.press.tier.12",
+                "Epic Surface Shifter IV",
+                12,
+                MachineType.FORMING_PRESS.tooltipDescription(),
+                formingPressRecipes,
+                6,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PRESS",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerForgeHammer() {
+        ItemList.Machine_LV_Hammer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORGE_HAMMER_LV.ID,
+                "basicmachine.hammer.tier.01",
+                "Basic Forge Hammer",
+                1,
+                MachineType.FORGE_HAMMER.tooltipDescription(),
+                RecipeMaps.hammerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.RANDOM_ANVIL_USE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                "HAMMER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Hammer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORGE_HAMMER_MV.ID,
+                "basicmachine.hammer.tier.02",
+                "Advanced Forge Hammer",
+                2,
+                MachineType.FORGE_HAMMER.tooltipDescription(),
+                RecipeMaps.hammerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.RANDOM_ANVIL_USE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                "HAMMER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Hammer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORGE_HAMMER_HV.ID,
+                "basicmachine.hammer.tier.03",
+                "Advanced Forge Hammer II",
+                3,
+                MachineType.FORGE_HAMMER.tooltipDescription(),
+                RecipeMaps.hammerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.RANDOM_ANVIL_USE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                "HAMMER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Hammer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORGE_HAMMER_EV.ID,
+                "basicmachine.hammer.tier.04",
+                "Advanced Forge Hammer III",
+                4,
+                MachineType.FORGE_HAMMER.tooltipDescription(),
+                RecipeMaps.hammerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.RANDOM_ANVIL_USE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                "HAMMER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Hammer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORGE_HAMMER_IV.ID,
+                "basicmachine.hammer.tier.05",
+                "Advanced Forge Hammer IV",
+                5,
+                MachineType.FORGE_HAMMER.tooltipDescription(),
+                RecipeMaps.hammerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.RANDOM_ANVIL_USE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.MAIN_RANDOM_SPARKS,
+                "HAMMER",
+                null).getStackForm(1L));
+
+        ItemList.ForgeHammerLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORGE_HAMMER_LuV.ID,
+                "basicmachine.hammer.tier.06",
+                "Elite Forge Hammer",
+                6,
+                MachineType.FORGE_HAMMER.tooltipDescription(),
+                hammerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.RANDOM_ANVIL_USE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "HAMMER",
+                null).getStackForm(1L));
+
+        ItemList.ForgeHammerZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORGE_HAMMER_ZPM.ID,
+                "basicmachine.hammer.tier.07",
+                "Elite Forge Hammer II",
+                7,
+                MachineType.FORGE_HAMMER.tooltipDescription(),
+                hammerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.RANDOM_ANVIL_USE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "HAMMER",
+                null).getStackForm(1L));
+
+        ItemList.ForgeHammerUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORGE_HAMMER_UV.ID,
+                "basicmachine.hammer.tier.08",
+                "Ultimate Impact Modulator",
+                8,
+                MachineType.FORGE_HAMMER.tooltipDescription(),
+                hammerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.RANDOM_ANVIL_USE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "HAMMER",
+                null).getStackForm(1L));
+
+        ItemList.ForgeHammerUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORGE_HAMMER_UHV.ID,
+                "basicmachine.hammer.tier.09",
+                "Epic Impact Modulator",
+                9,
+                MachineType.FORGE_HAMMER.tooltipDescription(),
+                hammerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.RANDOM_ANVIL_USE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "HAMMER",
+                null).getStackForm(1L));
+
+        ItemList.ForgeHammerUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORGE_HAMMER_UEV.ID,
+                "basicmachine.hammer.tier.10",
+                "Epic Impact Modulator II",
+                10,
+                MachineType.FORGE_HAMMER.tooltipDescription(),
+                hammerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.RANDOM_ANVIL_USE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "HAMMER",
+                null).getStackForm(1L));
+
+        ItemList.ForgeHammerUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORGE_HAMMER_UIV.ID,
+                "basicmachine.hammer.tier.11",
+                "Epic Impact Modulator III",
+                11,
+                MachineType.FORGE_HAMMER.tooltipDescription(),
+                hammerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.RANDOM_ANVIL_USE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "HAMMER",
+                null).getStackForm(1L));
+
+        ItemList.ForgeHammerUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                FORGE_HAMMER_UMV.ID,
+                "basicmachine.hammer.tier.12",
+                "Epic Impact Modulator IV",
+                12,
+                MachineType.FORGE_HAMMER.tooltipDescription(),
+                hammerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.RANDOM_ANVIL_USE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "HAMMER",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerLathe() {
+        ItemList.Machine_LV_Lathe.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                LATHE_LV.ID,
+                "basicmachine.lathe.tier.01",
+                "Basic Lathe",
+                1,
+                MachineType.LATHE.tooltipDescription(),
+                RecipeMaps.latheRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LATHE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Lathe.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                LATHE_MV.ID,
+                "basicmachine.lathe.tier.02",
+                "Advanced Lathe",
+                2,
+                MachineType.LATHE.tooltipDescription(),
+                RecipeMaps.latheRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LATHE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Lathe.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                LATHE_HV.ID,
+                "basicmachine.lathe.tier.03",
+                "Advanced Lathe II",
+                3,
+                MachineType.LATHE.tooltipDescription(),
+                RecipeMaps.latheRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LATHE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Lathe.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                LATHE_EV.ID,
+                "basicmachine.lathe.tier.04",
+                "Advanced Lathe III",
+                4,
+                MachineType.LATHE.tooltipDescription(),
+                RecipeMaps.latheRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LATHE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Lathe.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                LATHE_IV.ID,
+                "basicmachine.lathe.tier.05",
+                "Advanced Lathe IV",
+                5,
+                MachineType.LATHE.tooltipDescription(),
+                RecipeMaps.latheRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LATHE",
+                null).getStackForm(1L));
+
+        ItemList.LatheLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                LATHE_LuV.ID,
+                "basicmachine.lathe.tier.06",
+                "Elite Lathe",
+                6,
+                MachineType.LATHE.tooltipDescription(),
+                latheRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LATHE",
+                null).getStackForm(1L));
+
+        ItemList.LatheZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                LATHE_ZPM.ID,
+                "basicmachine.lathe.tier.07",
+                "Elite Lathe II",
+                7,
+                MachineType.LATHE.tooltipDescription(),
+                latheRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LATHE",
+                null).getStackForm(1L));
+
+        ItemList.LatheUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                LATHE_UV.ID,
+                "basicmachine.lathe.tier.08",
+                "Ultimate Turn-O-Matic",
+                8,
+                MachineType.LATHE.tooltipDescription(),
+                latheRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LATHE",
+                null).getStackForm(1L));
+
+        ItemList.LatheUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                LATHE_UHV.ID,
+                "basicmachine.lathe.tier.09",
+                "Epic Turn-O-Matic",
+                9,
+                MachineType.LATHE.tooltipDescription(),
+                latheRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LATHE",
+                null).getStackForm(1L));
+
+        ItemList.LatheUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                LATHE_UEV.ID,
+                "basicmachine.lathe.tier.10",
+                "Epic Turn-O-Matic II",
+                10,
+                MachineType.LATHE.tooltipDescription(),
+                latheRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LATHE",
+                null).getStackForm(1L));
+
+        ItemList.LatheUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                LATHE_UIV.ID,
+                "basicmachine.lathe.tier.11",
+                "Epic Turn-O-Matic III",
+                11,
+                MachineType.LATHE.tooltipDescription(),
+                latheRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LATHE",
+                null).getStackForm(1L));
+
+        ItemList.LatheUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                LATHE_UMV.ID,
+                "basicmachine.lathe.tier.12",
+                "Epic Turn-O-Matic IV",
+                12,
+                MachineType.LATHE.tooltipDescription(),
+                latheRecipes,
+                1,
+                2,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LATHE",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerPrecisionLaserEngraver() {
+        ItemList.Machine_LV_LaserEngraver.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                LASER_ENGRAVER_LV.ID,
+                "basicmachine.laserengraver.tier.01",
+                "Basic Precision Laser Engraver",
+                1,
+                MachineType.LASER_ENGRAVER.tooltipDescription(),
+                RecipeMaps.laserEngraverRecipes,
+                2,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LASER_ENGRAVER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_LaserEngraver.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                LASER_ENGRAVER_MV.ID,
+                "basicmachine.laserengraver.tier.02",
+                "Advanced Precision Laser Engraver",
+                2,
+                MachineType.LASER_ENGRAVER.tooltipDescription(),
+                RecipeMaps.laserEngraverRecipes,
+                2,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LASER_ENGRAVER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_LaserEngraver.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                LASER_ENGRAVER_HV.ID,
+                "basicmachine.laserengraver.tier.03",
+                "Advanced Precision Laser Engraver II",
+                3,
+                MachineType.LASER_ENGRAVER.tooltipDescription(),
+                RecipeMaps.laserEngraverRecipes,
+                2,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LASER_ENGRAVER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_LaserEngraver.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                LASER_ENGRAVER_EV.ID,
+                "basicmachine.laserengraver.tier.04",
+                "Advanced Precision Laser Engraver III",
+                4,
+                MachineType.LASER_ENGRAVER.tooltipDescription(),
+                RecipeMaps.laserEngraverRecipes,
+                4,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LASER_ENGRAVER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_LaserEngraver.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                LASER_ENGRAVER_IV.ID,
+                "basicmachine.laserengraver.tier.05",
+                "Advanced Precision Laser Engraver IV",
+                5,
+                MachineType.LASER_ENGRAVER.tooltipDescription(),
+                RecipeMaps.laserEngraverRecipes,
+                4,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LASER_ENGRAVER",
+                null).getStackForm(1L));
+
+        ItemList.PrecisionLaserEngraverLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PRECISION_LASER_ENGRAVER_LuV.ID,
+                "basicmachine.laserengraver.tier.06",
+                "Elite Precision Laser Engraver",
+                6,
+                MachineType.LASER_ENGRAVER.tooltipDescription(),
+                laserEngraverRecipes,
+                4,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LASER_ENGRAVER",
+                null).getStackForm(1L));
+
+        ItemList.PrecisionLaserEngraverZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PRECISION_LASER_ENGRAVER_ZPM.ID,
+                "basicmachine.laserengraver.tier.07",
+                "Elite Precision Laser Engraver II",
+                7,
+                MachineType.LASER_ENGRAVER.tooltipDescription(),
+                laserEngraverRecipes,
+                4,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LASER_ENGRAVER",
+                null).getStackForm(1L));
+
+        ItemList.PrecisionLaserEngraverUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PRECISION_LASER_ENGRAVER_UV.ID,
+                "basicmachine.laserengraver.tier.08",
+                "Ultimate Exact Photon Cannon",
+                8,
+                MachineType.LASER_ENGRAVER.tooltipDescription(),
+                laserEngraverRecipes,
+                4,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LASER_ENGRAVER",
+                null).getStackForm(1L));
+
+        ItemList.PrecisionLaserEngraverUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PRECISION_LASER_ENGRAVER_UHV.ID,
+                "basicmachine.laserengraver.tier.09",
+                "Epic Exact Photon Cannon",
+                9,
+                MachineType.LASER_ENGRAVER.tooltipDescription(),
+                laserEngraverRecipes,
+                4,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LASER_ENGRAVER",
+                null).getStackForm(1L));
+
+        ItemList.PrecisionLaserEngraverUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PRECISION_LASER_ENGRAVER_UEV.ID,
+                "basicmachine.laserengraver.tier.10",
+                "Epic Exact Photon Cannon II",
+                10,
+                MachineType.LASER_ENGRAVER.tooltipDescription(),
+                laserEngraverRecipes,
+                4,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LASER_ENGRAVER",
+                null).getStackForm(1L));
+
+        ItemList.PrecisionLaserEngraverUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PRECISION_LASER_ENGRAVER_UIV.ID,
+                "basicmachine.laserengraver.tier.11",
+                "Epic Exact Photon Cannon III",
+                11,
+                MachineType.LASER_ENGRAVER.tooltipDescription(),
+                laserEngraverRecipes,
+                4,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LASER_ENGRAVER",
+                null).getStackForm(1L));
+
+        ItemList.PrecisionLaserEngraverUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PRECISION_LASER_ENGRAVER_UMV.ID,
+                "basicmachine.laserengraver.tier.12",
+                "Epic Exact Photon Cannon IV",
+                12,
+                MachineType.LASER_ENGRAVER.tooltipDescription(),
+                laserEngraverRecipes,
+                4,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "LASER_ENGRAVER",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerMacerator() {
+        ItemList.Machine_LV_Macerator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MACERATOR_LV.ID,
+                "basicmachine.macerator.tier.01",
+                "Basic Macerator",
+                1,
+                MachineType.MACERATOR.tooltipDescription(),
+                RecipeMaps.maceratorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MACERATOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "MACERATOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Macerator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MACERATOR_MV.ID,
+                "basicmachine.macerator.tier.02",
+                "Advanced Macerator",
+                2,
+                MachineType.MACERATOR.tooltipDescription(),
+                RecipeMaps.maceratorRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MACERATOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "MACERATOR",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Macerator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MACERATOR_HV.ID,
+                "basicmachine.macerator.tier.03",
+                "Universal Macerator",
+                3,
+                MachineType.MACERATOR_PULVERIZER.tooltipDescription(),
+                RecipeMaps.maceratorRecipes,
+                1,
+                2,
+                false,
+                SoundResource.IC2_MACHINES_MACERATOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PULVERIZER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Macerator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MACERATOR_EV.ID,
+                "basicmachine.macerator.tier.04",
+                "Universal Pulverizer",
+                4,
+                MachineType.MACERATOR_PULVERIZER.tooltipDescription(),
+                RecipeMaps.maceratorRecipes,
+                1,
+                3,
+                false,
+                SoundResource.IC2_MACHINES_MACERATOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PULVERIZER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Macerator.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MACERATOR_IV.ID,
+                "basicmachine.macerator.tier.05",
+                "Blend-O-Matic 9001",
+                5,
+                MachineType.MACERATOR_PULVERIZER.tooltipDescription(),
+                RecipeMaps.maceratorRecipes,
+                1,
+                4,
+                false,
+                SoundResource.IC2_MACHINES_MACERATOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PULVERIZER",
+                null).getStackForm(1L));
+
+        ItemList.MaceratorLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MACERATOR_LuV.ID,
+                "basicmachine.macerator.tier.06",
+                "Elite Pulverizer",
+                6,
+                MachineType.MACERATOR.tooltipDescription(),
+                maceratorRecipes,
+                1,
+                4,
+                false,
+                SoundResource.IC2_MACHINES_MACERATOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PULVERIZER",
+                null).getStackForm(1L));
+
+        ItemList.MaceratorZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MACERATOR_ZPM.ID,
+                "basicmachine.macerator.tier.07",
+                "Elite Pulverizer II",
+                7,
+                MachineType.MACERATOR.tooltipDescription(),
+                maceratorRecipes,
+                1,
+                4,
+                false,
+                SoundResource.IC2_MACHINES_MACERATOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PULVERIZER",
+                null).getStackForm(1L));
+
+        ItemList.MaceratorUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MACERATOR_UV.ID,
+                "basicmachine.macerator.tier.08",
+                "Ultimate Shape Eliminator",
+                8,
+                MachineType.MACERATOR.tooltipDescription(),
+                maceratorRecipes,
+                1,
+                4,
+                false,
+                SoundResource.IC2_MACHINES_MACERATOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PULVERIZER",
+                null).getStackForm(1L));
+
+        ItemList.MaceratorUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MACERATOR_UHV.ID,
+                "basicmachine.macerator.tier.09",
+                "Epic Shape Eliminator",
+                9,
+                MachineType.MACERATOR.tooltipDescription(),
+                maceratorRecipes,
+                1,
+                4,
+                false,
+                SoundResource.IC2_MACHINES_MACERATOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PULVERIZER",
+                null).getStackForm(1L));
+
+        ItemList.MaceratorUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MACERATOR_UEV.ID,
+                "basicmachine.macerator.tier.10",
+                "Epic Shape Eliminator II",
+                10,
+                MachineType.MACERATOR.tooltipDescription(),
+                maceratorRecipes,
+                1,
+                4,
+                false,
+                SoundResource.IC2_MACHINES_MACERATOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PULVERIZER",
+                null).getStackForm(1L));
+
+        ItemList.MaceratorUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MACERATOR_UIV.ID,
+                "basicmachine.macerator.tier.11",
+                "Epic Shape Eliminator III",
+                11,
+                MachineType.MACERATOR.tooltipDescription(),
+                maceratorRecipes,
+                1,
+                4,
+                false,
+                SoundResource.IC2_MACHINES_MACERATOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PULVERIZER",
+                null).getStackForm(1L));
+
+        ItemList.MaceratorUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MACERATOR_UMV.ID,
+                "basicmachine.macerator.tier.12",
+                "Epic Shape Eliminator IV",
+                12,
+                MachineType.MACERATOR.tooltipDescription(),
+                maceratorRecipes,
+                1,
+                4,
+                false,
+                SoundResource.IC2_MACHINES_MACERATOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PULVERIZER",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerMatterFabricator() {
+
+        ItemList.MassFabricatorLuV.set(
+            new GT_MetaTileEntity_Massfabricator(
+                MATTER_FABRICATOR_LuV.ID,
+                "basicmachine.massfab.tier.06",
+                "Elite Mass Fabricator",
+                6).getStackForm(1L));
+        ItemList.MassFabricatorZPM.set(
+            new GT_MetaTileEntity_Massfabricator(
+                MATTER_FABRICATOR_ZPM.ID,
+                "basicmachine.massfab.tier.07",
+                "Elite Mass Fabricator II",
+                7).getStackForm(1L));
+        ItemList.MassFabricatorUV.set(
+            new GT_MetaTileEntity_Massfabricator(
+                MATTER_FABRICATOR_UV.ID,
+                "basicmachine.massfab.tier.08",
+                "Ultimate Existence Initiator",
+                8).getStackForm(1L));
+        ItemList.MassFabricatorUHV.set(
+            new GT_MetaTileEntity_Massfabricator(
+                MATTER_FABRICATOR_UHV.ID,
+                "basicmachine.massfab.tier.09",
+                "Epic Existence Initiator",
+                9).getStackForm(1L));
+        ItemList.MassFabricatorUEV.set(
+            new GT_MetaTileEntity_Massfabricator(
+                MATTER_FABRICATOR_UEV.ID,
+                "basicmachine.massfab.tier.10",
+                "Epic Existence Initiator II",
+                10).getStackForm(1L));
+        ItemList.MassFabricatorUIV.set(
+            new GT_MetaTileEntity_Massfabricator(
+                MATTER_FABRICATOR_UIV.ID,
+                "basicmachine.massfab.tier.11",
+                "Epic Existence Initiator III",
+                11).getStackForm(1L));
+        ItemList.MassFabricatorUMV.set(
+            new GT_MetaTileEntity_Massfabricator(
+                MATTER_FABRICATOR_UMV.ID,
+                "basicmachine.massfab.tier.12",
+                "Epic Existence Initiator IV",
+                12).getStackForm(1L));
+    }
+
+    private void registerMicrowave() {
+        ItemList.Machine_LV_Microwave.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MICROWAVE_OVEN_LV.ID,
+                "basicmachine.microwave.tier.01",
+                "Basic Microwave",
+                1,
+                MachineType.MICROWAVE.tooltipDescription(),
+                RecipeMaps.microwaveRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MICROWAVE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Microwave.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MICROWAVE_OVEN_MV.ID,
+                "basicmachine.microwave.tier.02",
+                "Advanced Microwave",
+                2,
+                MachineType.MICROWAVE.tooltipDescription(),
+                RecipeMaps.microwaveRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MICROWAVE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Microwave.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MICROWAVE_OVEN_HV.ID,
+                "basicmachine.microwave.tier.03",
+                "Advanced Microwave II",
+                3,
+                MachineType.MICROWAVE.tooltipDescription(),
+                RecipeMaps.microwaveRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MICROWAVE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Microwave.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MICROWAVE_OVEN_EV.ID,
+                "basicmachine.microwave.tier.04",
+                "Advanced Microwave III",
+                4,
+                MachineType.MICROWAVE.tooltipDescription(),
+                RecipeMaps.microwaveRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MICROWAVE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Microwave.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MICROWAVE_OVEN_IV.ID,
+                "basicmachine.microwave.tier.05",
+                "Advanced Microwave IV",
+                5,
+                MachineType.MICROWAVE.tooltipDescription(),
+                RecipeMaps.microwaveRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MICROWAVE",
+                null).getStackForm(1L));
+
+        ItemList.MicrowaveLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MICROWAVE_LuV.ID,
+                "basicmachine.microwave.tier.06",
+                "Elite Microwave",
+                6,
+                MachineType.MICROWAVE.tooltipDescription(),
+                microwaveRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MICROWAVE",
+                null).getStackForm(1L));
+
+        ItemList.MicrowaveZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MICROWAVE_ZPM.ID,
+                "basicmachine.microwave.tier.07",
+                "Elite Microwave II",
+                7,
+                MachineType.MICROWAVE.tooltipDescription(),
+                microwaveRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MICROWAVE",
+                null).getStackForm(1L));
+
+        ItemList.MicrowaveUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MICROWAVE_UV.ID,
+                "basicmachine.microwave.tier.08",
+                "Ultimate UFO Engine",
+                8,
+                MachineType.MICROWAVE.tooltipDescription(),
+                microwaveRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MICROWAVE",
+                null).getStackForm(1L));
+
+        ItemList.MicrowaveUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MICROWAVE_UHV.ID,
+                "basicmachine.microwave.tier.09",
+                "Epic UFO Engine",
+                9,
+                MachineType.MICROWAVE.tooltipDescription(),
+                microwaveRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MICROWAVE",
+                null).getStackForm(1L));
+
+        ItemList.MicrowaveUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MICROWAVE_UEV.ID,
+                "basicmachine.microwave.tier.10",
+                "Epic UFO Engine II",
+                10,
+                MachineType.MICROWAVE.tooltipDescription(),
+                microwaveRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MICROWAVE",
+                null).getStackForm(1L));
+
+        ItemList.MicrowaveUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MICROWAVE_UIV.ID,
+                "basicmachine.microwave.tier.11",
+                "Epic UFO Engine III",
+                11,
+                MachineType.MICROWAVE.tooltipDescription(),
+                microwaveRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MICROWAVE",
+                null).getStackForm(1L));
+
+        ItemList.MicrowaveUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                MICROWAVE_UMV.ID,
+                "basicmachine.microwave.tier.12",
+                "Epic UFO Engine IV",
+                12,
+                MachineType.MICROWAVE.tooltipDescription(),
+                microwaveRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "MICROWAVE",
+                null).getStackForm(1L));
+
+    }
+
+    private static void registerOven() {
+        ItemList.Machine_LV_Oven.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                OVEN_LV.ID,
+                "basicmachine.e_oven.tier.01",
+                "Basic Electric Oven",
+                1,
+                MachineType.OVEN.tooltipDescription(),
+                RecipeMaps.furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_OVEN",
+                null).setProgressBarTextureName("E_Oven")
+                    .getStackForm(1L));
+
+        ItemList.Machine_MV_Oven.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                OVEN_MV.ID,
+                "basicmachine.e_oven.tier.02",
+                "Advanced Electric Oven",
+                2,
+                MachineType.OVEN.tooltipDescription(),
+                RecipeMaps.furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_OVEN",
+                null).setProgressBarTextureName("E_Oven")
+                    .getStackForm(1L));
+
+        ItemList.Machine_HV_Oven.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                OVEN_HV.ID,
+                "basicmachine.e_oven.tier.03",
+                "Advanced Electric Oven II",
+                3,
+                MachineType.OVEN.tooltipDescription(),
+                RecipeMaps.furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_OVEN",
+                null).setProgressBarTextureName("E_Oven")
+                    .getStackForm(1L));
+
+        ItemList.Machine_EV_Oven.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                OVEN_EV.ID,
+                "basicmachine.e_oven.tier.04",
+                "Advanced Electric Oven III",
+                4,
+                MachineType.OVEN.tooltipDescription(),
+                RecipeMaps.furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_OVEN",
+                null).setProgressBarTextureName("E_Oven")
+                    .getStackForm(1L));
+
+        ItemList.Machine_IV_Oven.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                OVEN_IV.ID,
+                "basicmachine.e_oven.tier.05",
+                "Advanced Electric Oven IV",
+                5,
+                MachineType.OVEN.tooltipDescription(),
+                RecipeMaps.furnaceRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ELECTRIC_OVEN",
+                null).setProgressBarTextureName("E_Oven")
+                    .getStackForm(1L));
+    }
+
+    private void registerOreWashingPlant() {
+        ItemList.Machine_LV_OreWasher.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ORE_WASHER_LV.ID,
+                "basicmachine.orewasher.tier.01",
+                "Basic Ore Washing Plant",
+                1,
+                MachineType.ORE_WASHER.tooltipDescription(),
+                RecipeMaps.oreWasherRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ORE_WASHER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_OreWasher.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ORE_WASHER_MV.ID,
+                "basicmachine.orewasher.tier.02",
+                "Advanced Ore Washing Plant",
+                2,
+                MachineType.ORE_WASHER.tooltipDescription(),
+                RecipeMaps.oreWasherRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ORE_WASHER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_OreWasher.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ORE_WASHER_HV.ID,
+                "basicmachine.orewasher.tier.03",
+                "Advanced Ore Washing Plant II",
+                3,
+                MachineType.ORE_WASHER.tooltipDescription(),
+                RecipeMaps.oreWasherRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ORE_WASHER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_OreWasher.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ORE_WASHER_EV.ID,
+                "basicmachine.orewasher.tier.04",
+                "Advanced Ore Washing Plant III",
+                4,
+                MachineType.ORE_WASHER.tooltipDescription(),
+                RecipeMaps.oreWasherRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ORE_WASHER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_OreWasher.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ORE_WASHER_IV.ID,
+                "basicmachine.orewasher.tier.05",
+                "Repurposed Laundry-Washer I-360",
+                5,
+                MachineType.ORE_WASHER.tooltipDescription(),
+                RecipeMaps.oreWasherRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ORE_WASHER",
+                null).getStackForm(1L));
+
+        ItemList.OreWashingPlantLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ORE_WASHING_PLANT_LuV.ID,
+                "basicmachine.orewasher.tier.06",
+                "Elite Ore Washing Plant",
+                6,
+                MachineType.ORE_WASHER.tooltipDescription(),
+                oreWasherRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ORE_WASHER",
+                null).getStackForm(1L));
+
+        ItemList.OreWashingPlantZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ORE_WASHING_PLANT_ZPM.ID,
+                "basicmachine.orewasher.tier.07",
+                "Elite Ore Washing Plant II",
+                7,
+                MachineType.ORE_WASHER.tooltipDescription(),
+                oreWasherRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ORE_WASHER",
+                null).getStackForm(1L));
+
+        ItemList.OreWashingPlantUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ORE_WASHING_PLANT_UV.ID,
+                "basicmachine.orewasher.tier.08",
+                "Ultimate Ore Washing Machine",
+                8,
+                MachineType.ORE_WASHER.tooltipDescription(),
+                oreWasherRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ORE_WASHER",
+                null).getStackForm(1L));
+
+        ItemList.OreWashingPlantUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ORE_WASHING_PLANT_UHV.ID,
+                "basicmachine.orewasher.tier.09",
+                "Epic Ore Washing Machine",
+                9,
+                MachineType.ORE_WASHER.tooltipDescription(),
+                oreWasherRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ORE_WASHER",
+                null).getStackForm(1L));
+
+        ItemList.OreWashingPlantUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ORE_WASHING_PLANT_UEV.ID,
+                "basicmachine.orewasher.tier.10",
+                "Epic Ore Washing Machine II",
+                10,
+                MachineType.ORE_WASHER.tooltipDescription(),
+                oreWasherRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ORE_WASHER",
+                null).getStackForm(1L));
+
+        ItemList.OreWashingPlantUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ORE_WASHING_PLANT_UIV.ID,
+                "basicmachine.orewasher.tier.11",
+                "Epic Ore Washing Machine III",
+                11,
+                MachineType.ORE_WASHER.tooltipDescription(),
+                oreWasherRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ORE_WASHER",
+                null).getStackForm(1L));
+
+        ItemList.OreWashingPlantUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ORE_WASHING_PLANT_UMV.ID,
+                "basicmachine.orewasher.tier.12",
+                "Epic Ore Washing Machine IV",
+                12,
+                MachineType.ORE_WASHER.tooltipDescription(),
+                oreWasherRecipes,
+                1,
+                3,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ORE_WASHER",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerPolarizer() {
+        ItemList.Machine_LV_Polarizer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                POLARIZER_LV.ID,
+                "basicmachine.polarizer.tier.01",
+                "Basic Polarizer",
+                1,
+                MachineType.POLARIZER.tooltipDescription(),
+                RecipeMaps.polarizerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "POLARIZER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Polarizer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                POLARIZER_MV.ID,
+                "basicmachine.polarizer.tier.02",
+                "Advanced Polarizer",
+                2,
+                MachineType.POLARIZER.tooltipDescription(),
+                RecipeMaps.polarizerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "POLARIZER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Polarizer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                POLARIZER_HV.ID,
+                "basicmachine.polarizer.tier.03",
+                "Advanced Polarizer II",
+                3,
+                MachineType.POLARIZER.tooltipDescription(),
+                RecipeMaps.polarizerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "POLARIZER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Polarizer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                POLARIZER_EV.ID,
+                "basicmachine.polarizer.tier.04",
+                "Advanced Polarizer III",
+                4,
+                MachineType.POLARIZER.tooltipDescription(),
+                RecipeMaps.polarizerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "POLARIZER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Polarizer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                POLARIZER_IV.ID,
+                "basicmachine.polarizer.tier.05",
+                "Advanced Polarizer IV",
+                5,
+                MachineType.POLARIZER.tooltipDescription(),
+                RecipeMaps.polarizerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "POLARIZER",
+                null).getStackForm(1L));
+
+        ItemList.PolarizerLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                POLARIZER_LuV.ID,
+                "basicmachine.polarizer.tier.06",
+                "Elite Polarizer",
+                6,
+                MachineType.POLARIZER.tooltipDescription(),
+                polarizerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "POLARIZER",
+                null).getStackForm(1L));
+
+        ItemList.PolarizerZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                POLARIZER_ZPM.ID,
+                "basicmachine.polarizer.tier.07",
+                "Elite Polarizer II",
+                7,
+                MachineType.POLARIZER.tooltipDescription(),
+                polarizerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "POLARIZER",
+                null).getStackForm(1L));
+
+        ItemList.PolarizerUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                POLARIZER_UV.ID,
+                "basicmachine.polarizer.tier.08",
+                "Ultimate Magnetism Inducer",
+                8,
+                MachineType.POLARIZER.tooltipDescription(),
+                polarizerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "POLARIZER",
+                null).getStackForm(1L));
+
+        ItemList.PolarizerUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                POLARIZER_UHV.ID,
+                "basicmachine.polarizer.tier.09",
+                "Epic Magnetism Inducer",
+                9,
+                MachineType.POLARIZER.tooltipDescription(),
+                polarizerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "POLARIZER",
+                null).getStackForm(1L));
+
+        ItemList.PolarizerUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                POLARIZER_UEV.ID,
+                "basicmachine.polarizer.tier.10",
+                "Epic Magnetism Inducer II",
+                10,
+                MachineType.POLARIZER.tooltipDescription(),
+                polarizerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "POLARIZER",
+                null).getStackForm(1L));
+
+        ItemList.PolarizerUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                POLARIZER_UIV.ID,
+                "basicmachine.polarizer.tier.11",
+                "Epic Magnetism Inducer III",
+                11,
+                MachineType.POLARIZER.tooltipDescription(),
+                polarizerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "POLARIZER",
+                null).getStackForm(1L));
+
+        ItemList.PolarizerUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                POLARIZER_UMV.ID,
+                "basicmachine.polarizer.tier.12",
+                "Epic Magnetism Inducer IV",
+                12,
+                MachineType.POLARIZER.tooltipDescription(),
+                polarizerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_MAGNETIZER_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "POLARIZER",
+                null).getStackForm(1L));
+
+    }
+
+    private static void registerPrinter() {
+        ItemList.Machine_LV_Printer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PRINTER_LV.ID,
+                "basicmachine.printer.tier.01",
+                "Basic Printer",
+                1,
+                MachineType.PRINTER.tooltipDescription(),
+                RecipeMaps.printerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PRINTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Printer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PRINTER_MV.ID,
+                "basicmachine.printer.tier.02",
+                "Advanced Printer",
+                2,
+                MachineType.PRINTER.tooltipDescription(),
+                RecipeMaps.printerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PRINTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Printer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PRINTER_HV.ID,
+                "basicmachine.printer.tier.03",
+                "Advanced Printer II",
+                3,
+                MachineType.PRINTER.tooltipDescription(),
+                RecipeMaps.printerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PRINTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Printer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PRINTER_EV.ID,
+                "basicmachine.printer.tier.04",
+                "Advanced Printer III",
+                4,
+                MachineType.PRINTER.tooltipDescription(),
+                RecipeMaps.printerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PRINTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Printer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PRINTER_IV.ID,
+                "basicmachine.printer.tier.05",
+                "Advanced Printer IV",
+                5,
+                MachineType.PRINTER.tooltipDescription(),
+                RecipeMaps.printerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PRINTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_LuV_Printer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PRINTER_LuV.ID,
+                "basicmachine.printer.tier.06",
+                "Advanced Printer V",
+                6,
+                MachineType.PRINTER.tooltipDescription(),
+                RecipeMaps.printerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PRINTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_ZPM_Printer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PRINTER_ZPM.ID,
+                "basicmachine.printer.tier.07",
+                "Advanced Printer VI",
+                7,
+                MachineType.PRINTER.tooltipDescription(),
+                RecipeMaps.printerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PRINTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_UV_Printer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PRINTER_UV.ID,
+                "basicmachine.printer.tier.08",
+                "Advanced Printer VII",
+                8,
+                MachineType.PRINTER.tooltipDescription(),
+                RecipeMaps.printerRecipes,
+                1,
+                1,
+                true,
+                SoundResource.IC2_MACHINES_COMPRESSOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.TOP_SMOKE,
+                "PRINTER",
+                null).getStackForm(1L));
+    }
+
+    private void registerRecycler() {
+        ItemList.Machine_LV_Recycler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                RECYCLER_LV.ID,
+                "basicmachine.recycler.tier.01",
+                "Basic Recycler",
+                1,
+                MachineType.RECYCLER.tooltipDescription(),
+                RecipeMaps.recyclerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "RECYCLER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Recycler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                RECYCLER_MV.ID,
+                "basicmachine.recycler.tier.02",
+                "Advanced Recycler",
+                2,
+                MachineType.RECYCLER.tooltipDescription(),
+                RecipeMaps.recyclerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "RECYCLER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Recycler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                RECYCLER_HV.ID,
+                "basicmachine.recycler.tier.03",
+                "Advanced Recycler II",
+                3,
+                MachineType.RECYCLER.tooltipDescription(),
+                RecipeMaps.recyclerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "RECYCLER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Recycler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                RECYCLER_EV.ID,
+                "basicmachine.recycler.tier.04",
+                "Advanced Recycler III",
+                4,
+                MachineType.RECYCLER.tooltipDescription(),
+                RecipeMaps.recyclerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "RECYCLER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Recycler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                RECYCLER_IV.ID,
+                "basicmachine.recycler.tier.05",
+                "The Oblitterator",
+                5,
+                MachineType.RECYCLER.tooltipDescription(),
+                RecipeMaps.recyclerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "RECYCLER",
+                null).getStackForm(1L));
+
+        ItemList.RecyclerLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                RECYCLER_LuV.ID,
+                "basicmachine.recycler.tier.06",
+                "Elite Recycler",
+                6,
+                MachineType.RECYCLER.tooltipDescription(),
+                recyclerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "RECYCLER",
+                null).getStackForm(1L));
+
+        ItemList.RecyclerZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                RECYCLER_ZPM.ID,
+                "basicmachine.recycler.tier.07",
+                "Elite Recycler II",
+                7,
+                MachineType.RECYCLER.tooltipDescription(),
+                recyclerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "RECYCLER",
+                null).getStackForm(1L));
+
+        ItemList.RecyclerUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                RECYCLER_UV.ID,
+                "basicmachine.recycler.tier.08",
+                "Ultimate Scrap-O-Matic",
+                8,
+                MachineType.RECYCLER.tooltipDescription(),
+                recyclerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "RECYCLER",
+                null).getStackForm(1L));
+
+        ItemList.RecyclerUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                RECYCLER_UHV.ID,
+                "basicmachine.recycler.tier.09",
+                "Epic Scrap-O-Matic",
+                9,
+                MachineType.RECYCLER.tooltipDescription(),
+                recyclerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "RECYCLER",
+                null).getStackForm(1L));
+
+        ItemList.RecyclerUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                RECYCLER_UEV.ID,
+                "basicmachine.recycler.tier.10",
+                "Epic Scrap-O-Matic II",
+                10,
+                MachineType.RECYCLER.tooltipDescription(),
+                recyclerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "RECYCLER",
+                null).getStackForm(1L));
+
+        ItemList.RecyclerUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                RECYCLER_UIV.ID,
+                "basicmachine.recycler.tier.11",
+                "Epic Scrap-O-Matic III",
+                11,
+                MachineType.RECYCLER.tooltipDescription(),
+                recyclerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "RECYCLER",
+                null).getStackForm(1L));
+
+        ItemList.RecyclerUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                RECYCLER_UMV.ID,
+                "basicmachine.recycler.tier.12",
+                "Epic Scrap-O-Matic IV",
+                12,
+                MachineType.RECYCLER.tooltipDescription(),
+                recyclerRecipes,
+                1,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "RECYCLER",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerSiftingMachine() {
+        ItemList.Machine_LV_Sifter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SIFTER_LV.ID,
+                "basicmachine.sifter.tier.01",
+                "Basic Sifting Machine",
+                1,
+                MachineType.SIFTER.tooltipDescription(),
+                RecipeMaps.sifterRecipes,
+                1,
+                9,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SIFTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Sifter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SIFTER_MV.ID,
+                "basicmachine.sifter.tier.02",
+                "Advanced Sifting Machine",
+                2,
+                MachineType.SIFTER.tooltipDescription(),
+                RecipeMaps.sifterRecipes,
+                1,
+                9,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SIFTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Sifter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SIFTER_HV.ID,
+                "basicmachine.sifter.tier.03",
+                "Advanced Sifting Machine II",
+                3,
+                MachineType.SIFTER.tooltipDescription(),
+                RecipeMaps.sifterRecipes,
+                1,
+                9,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SIFTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Sifter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SIFTER_EV.ID,
+                "basicmachine.sifter.tier.04",
+                "Advanced Sifting Machine III",
+                4,
+                MachineType.SIFTER.tooltipDescription(),
+                RecipeMaps.sifterRecipes,
+                1,
+                9,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SIFTER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Sifter.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SIFTER_IV.ID,
+                "basicmachine.sifter.tier.05",
+                "Advanced Sifting Machine IV",
+                5,
+                MachineType.SIFTER.tooltipDescription(),
+                RecipeMaps.sifterRecipes,
+                1,
+                9,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SIFTER",
+                null).getStackForm(1L));
+
+        ItemList.SiftingMachineLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SIFTING_MACHINE_LuV.ID,
+                "basicmachine.sifter.tier.06",
+                "Elite Sifting Machine",
+                6,
+                MachineType.SIFTER.tooltipDescription(),
+                sifterRecipes,
+                1,
+                9,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SIFTER",
+                null).getStackForm(1L));
+
+        ItemList.SiftingMachineZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SIFTING_MACHINE_ZPM.ID,
+                "basicmachine.sifter.tier.07",
+                "Elite Sifting Machine II",
+                7,
+                MachineType.SIFTER.tooltipDescription(),
+                sifterRecipes,
+                1,
+                9,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SIFTER",
+                null).getStackForm(1L));
+
+        ItemList.SiftingMachineUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SIFTING_MACHINE_UV.ID,
+                "basicmachine.sifter.tier.08",
+                "Ultimate Pulsation Filter",
+                8,
+                MachineType.SIFTER.tooltipDescription(),
+                sifterRecipes,
+                1,
+                9,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SIFTER",
+                null).getStackForm(1L));
+
+        ItemList.SiftingMachineUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SIFTING_MACHINE_UHV.ID,
+                "basicmachine.sifter.tier.09",
+                "Epic Pulsation Filter",
+                9,
+                MachineType.SIFTER.tooltipDescription(),
+                sifterRecipes,
+                1,
+                9,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SIFTER",
+                null).getStackForm(1L));
+
+        ItemList.SiftingMachineUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SIFTING_MACHINE_UEV.ID,
+                "basicmachine.sifter.tier.10",
+                "Epic Pulsation Filter II",
+                10,
+                MachineType.SIFTER.tooltipDescription(),
+                sifterRecipes,
+                1,
+                9,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SIFTER",
+                null).getStackForm(1L));
+
+        ItemList.SiftingMachineUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SIFTING_MACHINE_UIV.ID,
+                "basicmachine.sifter.tier.11",
+                "Epic Pulsation Filter III",
+                11,
+                MachineType.SIFTER.tooltipDescription(),
+                sifterRecipes,
+                1,
+                9,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SIFTER",
+                null).getStackForm(1L));
+
+        ItemList.SiftingMachineUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SIFTING_MACHINE_UMV.ID,
+                "basicmachine.sifter.tier.12",
+                "Epic Pulsation Filter IV",
+                12,
+                MachineType.SIFTER.tooltipDescription(),
+                sifterRecipes,
+                1,
+                9,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SIFTER",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerSlicingMachine() {
+        ItemList.Machine_LV_Slicer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SLICER_LV.ID,
+                "basicmachine.slicer.tier.01",
+                "Basic Slicing Machine",
+                1,
+                MachineType.SLICER.tooltipDescription(),
+                RecipeMaps.slicerRecipes,
+                2,
+                1,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SLICER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Slicer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SLICER_MV.ID,
+                "basicmachine.slicer.tier.02",
+                "Advanced Slicing Machine",
+                2,
+                MachineType.SLICER.tooltipDescription(),
+                RecipeMaps.slicerRecipes,
+                2,
+                1,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SLICER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Slicer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SLICER_HV.ID,
+                "basicmachine.slicer.tier.03",
+                "Advanced Slicing Machine II",
+                3,
+                MachineType.SLICER.tooltipDescription(),
+                RecipeMaps.slicerRecipes,
+                2,
+                1,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SLICER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Slicer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SLICER_EV.ID,
+                "basicmachine.slicer.tier.04",
+                "Advanced Slicing Machine III",
+                4,
+                MachineType.SLICER.tooltipDescription(),
+                RecipeMaps.slicerRecipes,
+                2,
+                1,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SLICER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Slicer.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SLICER_IV.ID,
+                "basicmachine.slicer.tier.05",
+                "Advanced Slicing Machine IV",
+                5,
+                MachineType.SLICER.tooltipDescription(),
+                RecipeMaps.slicerRecipes,
+                2,
+                1,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SLICER",
+                null).getStackForm(1L));
+
+        ItemList.SlicingMachineLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SLICING_MACHINE_LuV.ID,
+                "basicmachine.slicer.tier.06",
+                "Elite Slicing Machine",
+                6,
+                MachineType.SLICER.tooltipDescription(),
+                slicerRecipes,
+                2,
+                1,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SLICER",
+                null).getStackForm(1L));
+
+        ItemList.SlicingMachineZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SLICING_MACHINE_ZPM.ID,
+                "basicmachine.slicer.tier.07",
+                "Elite Slicing Machine II",
+                7,
+                MachineType.SLICER.tooltipDescription(),
+                slicerRecipes,
+                2,
+                1,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SLICER",
+                null).getStackForm(1L));
+
+        ItemList.SlicingMachineUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SLICING_MACHINE_UV.ID,
+                "basicmachine.slicer.tier.08",
+                "Ultimate Quantum Slicer",
+                8,
+                MachineType.SLICER.tooltipDescription(),
+                slicerRecipes,
+                2,
+                1,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SLICER",
+                null).getStackForm(1L));
+
+        ItemList.SlicingMachineUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SLICING_MACHINE_UHV.ID,
+                "basicmachine.slicer.tier.09",
+                "Epic Quantum Slicer",
+                9,
+                MachineType.SLICER.tooltipDescription(),
+                slicerRecipes,
+                2,
+                1,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SLICER",
+                null).getStackForm(1L));
+
+        ItemList.SlicingMachineUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SLICING_MACHINE_UEV.ID,
+                "basicmachine.slicer.tier.10",
+                "Epic Quantum Slicer II",
+                10,
+                MachineType.SLICER.tooltipDescription(),
+                slicerRecipes,
+                2,
+                1,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SLICER",
+                null).getStackForm(1L));
+
+        ItemList.SlicingMachineUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SLICING_MACHINE_UIV.ID,
+                "basicmachine.slicer.tier.11",
+                "Epic Quantum Slicer III",
+                11,
+                MachineType.SLICER.tooltipDescription(),
+                slicerRecipes,
+                2,
+                1,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SLICER",
+                null).getStackForm(1L));
+
+        ItemList.SlicingMachineUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                SLICING_MACHINE_UMV.ID,
+                "basicmachine.slicer.tier.12",
+                "Epic Quantum Slicer IV",
+                12,
+                MachineType.SLICER.tooltipDescription(),
+                slicerRecipes,
+                2,
+                1,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "SLICER",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerThermalCentrifuge() {
+        ItemList.Machine_LV_ThermalCentrifuge.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                THERMAL_CENTRIFUGE_LV.ID,
+                "basicmachine.thermalcentrifuge.tier.01",
+                "Basic Thermal Centrifuge",
+                1,
+                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
+                RecipeMaps.thermalCentrifugeRecipes,
+                1,
+                3,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "THERMAL_CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_ThermalCentrifuge.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                THERMAL_CENTRIFUGE_MV.ID,
+                "basicmachine.thermalcentrifuge.tier.02",
+                "Advanced Thermal Centrifuge",
+                2,
+                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
+                RecipeMaps.thermalCentrifugeRecipes,
+                1,
+                3,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "THERMAL_CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_ThermalCentrifuge.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                THERMAL_CENTRIFUGE_HV.ID,
+                "basicmachine.thermalcentrifuge.tier.03",
+                "Advanced Thermal Centrifuge II",
+                3,
+                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
+                RecipeMaps.thermalCentrifugeRecipes,
+                1,
+                3,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "THERMAL_CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_ThermalCentrifuge.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                THERMAL_CENTRIFUGE_EV.ID,
+                "basicmachine.thermalcentrifuge.tier.04",
+                "Advanced Thermal Centrifuge III",
+                4,
+                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
+                RecipeMaps.thermalCentrifugeRecipes,
+                1,
+                3,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "THERMAL_CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_ThermalCentrifuge.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                THERMAL_CENTRIFUGE_IV.ID,
+                "basicmachine.thermalcentrifuge.tier.05",
+                "Blaze Sweatshop T-6350",
+                5,
+                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
+                RecipeMaps.thermalCentrifugeRecipes,
+                1,
+                3,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "THERMAL_CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.ThermalCentrifugeLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                THERMAL_CENTRIFUGE_LuV.ID,
+                "basicmachine.thermalcentrifuge.tier.06",
+                "Elite Thermal Centrifuge",
+                6,
+                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
+                thermalCentrifugeRecipes,
+                1,
+                3,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "THERMAL_CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.ThermalCentrifugeZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                THERMAL_CENTRIFUGE_ZPM.ID,
+                "basicmachine.thermalcentrifuge.tier.07",
+                "Elite Thermal Centrifuge II",
+                7,
+                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
+                thermalCentrifugeRecipes,
+                1,
+                3,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "THERMAL_CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.ThermalCentrifugeUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                THERMAL_CENTRIFUGE_UV.ID,
+                "basicmachine.thermalcentrifuge.tier.08",
+                "Ultimate Fire Cyclone",
+                8,
+                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
+                thermalCentrifugeRecipes,
+                1,
+                3,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "THERMAL_CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.ThermalCentrifugeUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                THERMAL_CENTRIFUGE_UHV.ID,
+                "basicmachine.thermalcentrifuge.tier.09",
+                "Epic Fire Cyclone",
+                9,
+                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
+                thermalCentrifugeRecipes,
+                1,
+                3,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "THERMAL_CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.ThermalCentrifugeUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                THERMAL_CENTRIFUGE_UEV.ID,
+                "basicmachine.thermalcentrifuge.tier.10",
+                "Epic Fire Cyclone II",
+                10,
+                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
+                thermalCentrifugeRecipes,
+                1,
+                3,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "THERMAL_CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.ThermalCentrifugeUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                THERMAL_CENTRIFUGE_UIV.ID,
+                "basicmachine.thermalcentrifuge.tier.11",
+                "Epic Fire Cyclone III",
+                11,
+                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
+                thermalCentrifugeRecipes,
+                1,
+                3,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "THERMAL_CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.ThermalCentrifugeUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                THERMAL_CENTRIFUGE_UMV.ID,
+                "basicmachine.thermalcentrifuge.tier.12",
+                "Epic Fire Cyclone IV",
+                12,
+                MachineType.THERMAL_CENTRIFUGE.tooltipDescription(),
+                thermalCentrifugeRecipes,
+                1,
+                3,
+                false,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "THERMAL_CENTRIFUGE",
+                null).getStackForm(1L));
+    }
+
+    private void registerWiremill() {
+        ItemList.Machine_LV_Wiremill.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                WIREMILL_LV.ID,
+                "basicmachine.wiremill.tier.01",
+                "Basic Wiremill",
+                1,
+                MachineType.WIREMILL.tooltipDescription(),
+                RecipeMaps.wiremillRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "WIREMILL",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Wiremill.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                WIREMILL_MV.ID,
+                "basicmachine.wiremill.tier.02",
+                "Advanced Wiremill",
+                2,
+                MachineType.WIREMILL.tooltipDescription(),
+                RecipeMaps.wiremillRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "WIREMILL",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Wiremill.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                WIREMILL_HV.ID,
+                "basicmachine.wiremill.tier.03",
+                "Advanced Wiremill II",
+                3,
+                MachineType.WIREMILL.tooltipDescription(),
+                RecipeMaps.wiremillRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "WIREMILL",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Wiremill.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                WIREMILL_EV.ID,
+                "basicmachine.wiremill.tier.04",
+                "Advanced Wiremill III",
+                4,
+                MachineType.WIREMILL.tooltipDescription(),
+                RecipeMaps.wiremillRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "WIREMILL",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Wiremill.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                WIREMILL_IV.ID,
+                "basicmachine.wiremill.tier.05",
+                "Advanced Wiremill IV",
+                5,
+                MachineType.WIREMILL.tooltipDescription(),
+                RecipeMaps.wiremillRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "WIREMILL",
+                null).getStackForm(1L));
+
+        ItemList.WiremillLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                WIREMILL_LuV.ID,
+                "basicmachine.wiremill.tier.06",
+                "Elite Wiremill",
+                6,
+                MachineType.WIREMILL.tooltipDescription(),
+                wiremillRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "WIREMILL",
+                null).getStackForm(1L));
+
+        ItemList.WiremillZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                WIREMILL_ZPM.ID,
+                "basicmachine.wiremill.tier.07",
+                "Elite Wiremill II",
+                7,
+                MachineType.WIREMILL.tooltipDescription(),
+                wiremillRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "WIREMILL",
+                null).getStackForm(1L));
+
+        ItemList.WiremillUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                WIREMILL_UV.ID,
+                "basicmachine.wiremill.tier.08",
+                "Ultimate Wire Transfigurator",
+                8,
+                MachineType.WIREMILL.tooltipDescription(),
+                wiremillRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "WIREMILL",
+                null).getStackForm(1L));
+
+        ItemList.WiremillUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                WIREMILL_UHV.ID,
+                "basicmachine.wiremill.tier.09",
+                "Epic Wire Transfigurator",
+                9,
+                MachineType.WIREMILL.tooltipDescription(),
+                wiremillRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "WIREMILL",
+                null).getStackForm(1L));
+
+        ItemList.WiremillUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                WIREMILL_UEV.ID,
+                "basicmachine.wiremill.tier.10",
+                "Epic Wire Transfigurator II",
+                10,
+                MachineType.WIREMILL.tooltipDescription(),
+                wiremillRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "WIREMILL",
+                null).getStackForm(1L));
+
+        ItemList.WiremillUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                WIREMILL_UIV.ID,
+                "basicmachine.wiremill.tier.11",
+                "Epic Wire Transfigurator III",
+                11,
+                MachineType.WIREMILL.tooltipDescription(),
+                wiremillRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "WIREMILL",
+                null).getStackForm(1L));
+
+        ItemList.WiremillUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                WIREMILL_UMV.ID,
+                "basicmachine.wiremill.tier.12",
+                "Epic Wire Transfigurator IV",
+                12,
+                MachineType.WIREMILL.tooltipDescription(),
+                wiremillRecipes,
+                2,
+                1,
+                false,
+                SoundResource.IC2_MACHINES_RECYCLER_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "WIREMILL",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerArcFurnace() {
+        ItemList.Machine_LV_ArcFurnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ARC_FURNACE_LV.ID,
+                "basicmachine.arcfurnace.tier.01",
+                "Basic Arc Furnace",
+                1,
+                MachineType.ARC_FURNACE.tooltipDescription(),
+                RecipeMaps.arcFurnaceRecipes,
+                1,
+                4,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_ArcFurnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ARC_FURNACE_MV.ID,
+                "basicmachine.arcfurnace.tier.02",
+                "Advanced Arc Furnace",
+                2,
+                MachineType.ARC_FURNACE.tooltipDescription(),
+                RecipeMaps.arcFurnaceRecipes,
+                1,
+                4,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_ArcFurnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ARC_FURNACE_HV.ID,
+                "basicmachine.arcfurnace.tier.03",
+                "Advanced Arc Furnace II",
+                3,
+                MachineType.ARC_FURNACE.tooltipDescription(),
+                RecipeMaps.arcFurnaceRecipes,
+                1,
+                4,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_ArcFurnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ARC_FURNACE_EV.ID,
+                "basicmachine.arcfurnace.tier.04",
+                "Advanced Arc Furnace III",
+                4,
+                MachineType.ARC_FURNACE.tooltipDescription(),
+                RecipeMaps.arcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_ArcFurnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ARC_FURNACE_IV.ID,
+                "basicmachine.arcfurnace.tier.05",
+                "Advanced Arc Furnace IV",
+                5,
+                MachineType.ARC_FURNACE.tooltipDescription(),
+                RecipeMaps.arcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.ArcFurnaceLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ARC_FURNACE_LuV.ID,
+                "basicmachine.arcfurnace.tier.06",
+                "Elite Arc Furnace",
+                6,
+                MachineType.ARC_FURNACE.tooltipDescription(),
+                arcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.ArcFurnaceZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ARC_FURNACE_ZPM.ID,
+                "basicmachine.arcfurnace.tier.07",
+                "Elite Arc Furnace II",
+                7,
+                MachineType.ARC_FURNACE.tooltipDescription(),
+                arcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.ArcFurnaceUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ARC_FURNACE_UV.ID,
+                "basicmachine.arcfurnace.tier.08",
+                "Ultimate Short Circuit Heater",
+                8,
+                MachineType.ARC_FURNACE.tooltipDescription(),
+                arcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.ArcFurnaceUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ARC_FURNACE_UHV.ID,
+                "basicmachine.arcfurnace.tier.09",
+                "Epic Short Circuit Heater",
+                9,
+                MachineType.ARC_FURNACE.tooltipDescription(),
+                arcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.ArcFurnaceUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ARC_FURNACE_UEV.ID,
+                "basicmachine.arcfurnace.tier.10",
+                "Epic Short Circuit Heater II",
+                10,
+                MachineType.ARC_FURNACE.tooltipDescription(),
+                arcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.ArcFurnaceUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ARC_FURNACE_UIV.ID,
+                "basicmachine.arcfurnace.tier.11",
+                "Epic Short Circuit Heater III",
+                11,
+                MachineType.ARC_FURNACE.tooltipDescription(),
+                arcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.ArcFurnaceUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                ARC_FURNACE_UMV.ID,
+                "basicmachine.arcfurnace.tier.12",
+                "Epic Short Circuit Heater IV",
+                12,
+                MachineType.ARC_FURNACE.tooltipDescription(),
+                arcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "ARC_FURNACE",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerCentrifuge() {
+        ItemList.Machine_LV_Centrifuge.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CENTRIFUGE_LV.ID,
+                "basicmachine.centrifuge.tier.01",
+                "Basic Centrifuge",
+                1,
+                MachineType.CENTRIFUGE.tooltipDescription(),
+                RecipeMaps.centrifugeRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Centrifuge.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CENTRIFUGE_MV.ID,
+                "basicmachine.centrifuge.tier.02",
+                "Advanced Centrifuge",
+                2,
+                MachineType.CENTRIFUGE.tooltipDescription(),
+                RecipeMaps.centrifugeRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Centrifuge.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CENTRIFUGE_HV.ID,
+                "basicmachine.centrifuge.tier.03",
+                "Turbo Centrifuge",
+                3,
+                MachineType.CENTRIFUGE.tooltipDescription(),
+                RecipeMaps.centrifugeRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Centrifuge.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CENTRIFUGE_EV.ID,
+                "basicmachine.centrifuge.tier.04",
+                "Molecular Separator",
+                4,
+                MachineType.CENTRIFUGE.tooltipDescription(),
+                RecipeMaps.centrifugeRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Centrifuge.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CENTRIFUGE_IV.ID,
+                "basicmachine.centrifuge.tier.05",
+                "Molecular Cyclone",
+                5,
+                MachineType.CENTRIFUGE.tooltipDescription(),
+                RecipeMaps.centrifugeRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.CentrifugeLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CENTRIFUGE_LuV.ID,
+                "basicmachine.centrifuge.tier.06",
+                "Elite Centrifuge",
+                6,
+                MachineType.CENTRIFUGE.tooltipDescription(),
+                centrifugeRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.CentrifugeZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CENTRIFUGE_ZPM.ID,
+                "basicmachine.centrifuge.tier.07",
+                "Elite Centrifuge II",
+                7,
+                MachineType.CENTRIFUGE.tooltipDescription(),
+                centrifugeRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.CentrifugeUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CENTRIFUGE_UV.ID,
+                "basicmachine.centrifuge.tier.08",
+                "Ultimate Molecular Tornado",
+                8,
+                MachineType.CENTRIFUGE.tooltipDescription(),
+                centrifugeRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.CentrifugeUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CENTRIFUGE_UHV.ID,
+                "basicmachine.centrifuge.tier.09",
+                "Epic Molecular Tornado",
+                9,
+                MachineType.CENTRIFUGE.tooltipDescription(),
+                centrifugeRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.CentrifugeUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CENTRIFUGE_UEV.ID,
+                "basicmachine.centrifuge.tier.10",
+                "Epic Molecular Tornado II",
+                10,
+                MachineType.CENTRIFUGE.tooltipDescription(),
+                centrifugeRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.CentrifugeUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CENTRIFUGE_UIV.ID,
+                "basicmachine.centrifuge.tier.11",
+                "Epic Molecular Tornado III",
+                11,
+                MachineType.CENTRIFUGE.tooltipDescription(),
+                centrifugeRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CENTRIFUGE",
+                null).getStackForm(1L));
+
+        ItemList.CentrifugeUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CENTRIFUGE_UMV.ID,
+                "basicmachine.centrifuge.tier.12",
+                "Epic Molecular Tornado IV",
+                12,
+                MachineType.CENTRIFUGE.tooltipDescription(),
+                centrifugeRecipes,
+                2,
+                6,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CENTRIFUGE",
+                null).getStackForm(1L));
+
+    }
+
+    private void registerPlasmaArcFurnace() {
+        ItemList.Machine_LV_PlasmaArcFurnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PLASMA_ARC_FURNACE_LV.ID,
+                "basicmachine.plasmaarcfurnace.tier.01",
+                "Basic Plasma Arc Furnace",
+                1,
+                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
+                RecipeMaps.plasmaArcFurnaceRecipes,
+                1,
+                4,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PLASMA_ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_PlasmaArcFurnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PLASMA_ARC_FURNACE_MV.ID,
+                "basicmachine.plasmaarcfurnace.tier.02",
+                "Advanced Plasma Arc Furnace",
+                2,
+                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
+                RecipeMaps.plasmaArcFurnaceRecipes,
+                1,
+                4,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PLASMA_ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_PlasmaArcFurnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PLASMA_ARC_FURNACE_HV.ID,
+                "basicmachine.plasmaarcfurnace.tier.03",
+                "Advanced Plasma Arc Furnace II",
+                3,
+                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
+                RecipeMaps.plasmaArcFurnaceRecipes,
+                1,
+                4,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PLASMA_ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_PlasmaArcFurnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PLASMA_ARC_FURNACE_EV.ID,
+                "basicmachine.plasmaarcfurnace.tier.04",
+                "Advanced Plasma Arc Furnace III",
+                4,
+                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
+                RecipeMaps.plasmaArcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PLASMA_ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_PlasmaArcFurnace.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PLASMA_ARC_FURNACE_IV.ID,
+                "basicmachine.plasmaarcfurnace.tier.05",
+                "Advanced Plasma Arc Furnace IV",
+                5,
+                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
+                RecipeMaps.plasmaArcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PLASMA_ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.PlasmaArcFurnaceLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PLASMA_ARC_FURNACE_LuV.ID,
+                "basicmachine.plasmaarcfurnace.tier.06",
+                "Elite Plasma Arc Furnace",
+                6,
+                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
+                plasmaArcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PLASMA_ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.PlasmaArcFurnaceZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PLASMA_ARC_FURNACE_ZPM.ID,
+                "basicmachine.plasmaarcfurnace.tier.07",
+                "Elite Plasma Arc Furnace II",
+                7,
+                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
+                plasmaArcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PLASMA_ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.PlasmaArcFurnaceUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PLASMA_ARC_FURNACE_UV.ID,
+                "basicmachine.plasmaarcfurnace.tier.08",
+                "Ultimate Plasma Discharge Heater",
+                8,
+                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
+                plasmaArcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PLASMA_ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.PlasmaArcFurnaceUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PLASMA_ARC_FURNACE_UHV.ID,
+                "basicmachine.plasmaarcfurnace.tier.09",
+                "Epic Plasma Discharge Heater",
+                9,
+                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
+                plasmaArcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PLASMA_ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.PlasmaArcFurnaceUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PLASMA_ARC_FURNACE_UEV.ID,
+                "basicmachine.plasmaarcfurnace.tier.10",
+                "Epic Plasma Discharge Heater II",
+                10,
+                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
+                plasmaArcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PLASMA_ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.PlasmaArcFurnaceUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PLASMA_ARC_FURNACE_UIV.ID,
+                "basicmachine.plasmaarcfurnace.tier.11",
+                "Epic Plasma Discharge Heater III",
+                11,
+                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
+                plasmaArcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PLASMA_ARC_FURNACE",
+                null).getStackForm(1L));
+
+        ItemList.PlasmaArcFurnaceUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                PLASMA_ARC_FURNACE_UMV.ID,
+                "basicmachine.plasmaarcfurnace.tier.12",
+                "Epic Plasma Discharge Heater IV",
+                12,
+                MachineType.PLASMA_ARC_FURNACE.tooltipDescription(),
+                plasmaArcFurnaceRecipes,
+                1,
+                9,
+                true,
+                SoundResource.IC2_MACHINES_INDUCTION_LOOP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "PLASMA_ARC_FURNACE",
+                null).getStackForm(1L));
+    }
+
+    private void registerCanningMachine() {
+        ItemList.Machine_LV_Canner.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CANNER_LV.ID,
+                "basicmachine.canner.tier.01",
+                "Basic Canning Machine",
+                1,
+                MachineType.CANNER.tooltipDescription(),
+                RecipeMaps.cannerRecipes,
+                2,
+                2,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CANNER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_Canner.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CANNER_MV.ID,
+                "basicmachine.canner.tier.02",
+                "Advanced Canning Machine",
+                2,
+                MachineType.CANNER.tooltipDescription(),
+                RecipeMaps.cannerRecipes,
+                2,
+                2,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CANNER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_Canner.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CANNER_HV.ID,
+                "basicmachine.canner.tier.03",
+                "Advanced Canning Machine II",
+                3,
+                MachineType.CANNER.tooltipDescription(),
+                RecipeMaps.cannerRecipes,
+                2,
+                2,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CANNER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_Canner.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CANNER_EV.ID,
+                "basicmachine.canner.tier.04",
+                "Advanced Canning Machine III",
+                4,
+                MachineType.CANNER.tooltipDescription(),
+                RecipeMaps.cannerRecipes,
+                2,
+                2,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CANNER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_Canner.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CANNER_IV.ID,
+                "basicmachine.canner.tier.05",
+                "Advanced Canning Machine IV",
+                5,
+                MachineType.CANNER.tooltipDescription(),
+                RecipeMaps.cannerRecipes,
+                2,
+                2,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CANNER",
+                null).getStackForm(1L));
+
+        ItemList.CanningMachineLuV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CANNING_MACHINE_LuV.ID,
+                "basicmachine.canner.tier.06",
+                "Elite Canning Machine",
+                6,
+                MachineType.CANNER.tooltipDescription(),
+                cannerRecipes,
+                2,
+                2,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CANNER",
+                null).getStackForm(1L));
+
+        ItemList.CanningMachineZPM.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CANNING_MACHINE_ZPM.ID,
+                "basicmachine.canner.tier.07",
+                "Elite Canning Machine II",
+                7,
+                MachineType.CANNER.tooltipDescription(),
+                cannerRecipes,
+                2,
+                2,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CANNER",
+                null).getStackForm(1L));
+
+        ItemList.CanningMachineUV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CANNING_MACHINE_UV.ID,
+                "basicmachine.canner.tier.08",
+                "Ultimate Can Operator",
+                8,
+                MachineType.CANNER.tooltipDescription(),
+                cannerRecipes,
+                2,
+                2,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CANNER",
+                null).getStackForm(1L));
+
+        ItemList.CanningMachineUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CANNING_MACHINE_UHV.ID,
+                "basicmachine.canner.tier.09",
+                "Epic Can Operator",
+                9,
+                MachineType.CANNER.tooltipDescription(),
+                cannerRecipes,
+                2,
+                2,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CANNER",
+                null).getStackForm(1L));
+
+        ItemList.CanningMachineUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CANNING_MACHINE_UEV.ID,
+                "basicmachine.canner.tier.10",
+                "Epic Can Operator II",
+                10,
+                MachineType.CANNER.tooltipDescription(),
+                cannerRecipes,
+                2,
+                2,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CANNER",
+                null).getStackForm(1L));
+
+        ItemList.CanningMachineUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CANNING_MACHINE_UIV.ID,
+                "basicmachine.canner.tier.11",
+                "Epic Can Operator III",
+                11,
+                MachineType.CANNER.tooltipDescription(),
+                cannerRecipes,
+                2,
+                2,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CANNER",
+                null).getStackForm(1L));
+
+        ItemList.CanningMachineUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CANNING_MACHINE_UMV.ID,
+                "basicmachine.canner.tier.12",
+                "Epic Can Operator IV",
+                12,
+                MachineType.CANNER.tooltipDescription(),
+                cannerRecipes,
+                2,
+                2,
+                false,
+                SoundResource.IC2_MACHINES_EXTRACTOR_OP,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CANNER",
+                null).getStackForm(1L));
     }
 
     private static void registerDynamoHatch() {
@@ -2145,8 +9871,23 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Dynamo_UV.set(
             new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UV.ID, "hatch.dynamo.tier.08", "UV Dynamo Hatch", 8)
                 .getStackForm(1L));
-        ItemList.Hatch_Dynamo_MAX.set(
+        ItemList.Hatch_Dynamo_UHV.set(
             new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UHV.ID, "hatch.dynamo.tier.09", "UHV Dynamo Hatch", 9)
+                .getStackForm(1L));
+        ItemList.Hatch_Dynamo_UEV.set(
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UEV.ID, "hatch.dynamo.tier.10", "UEV Dynamo Hatch", 10)
+                .getStackForm(1L));
+
+        ItemList.Hatch_Dynamo_UIV.set(
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UIV.ID, "hatch.dynamo.tier.11", "UIV Dynamo Hatch", 11)
+                .getStackForm(1L));
+
+        ItemList.Hatch_Dynamo_UMV.set(
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UMV.ID, "hatch.dynamo.tier.12", "UMV Dynamo Hatch", 12)
+                .getStackForm(1L));
+
+        ItemList.Hatch_Dynamo_UXV.set(
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UXV.ID, "hatch.dynamo.tier.13", "UXV Dynamo Hatch", 13)
                 .getStackForm(1L));
     }
 
@@ -2178,8 +9919,23 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Energy_UV.set(
             new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UV.ID, "hatch.energy.tier.08", "UV Energy Hatch", 8)
                 .getStackForm(1L));
-        ItemList.Hatch_Energy_MAX.set(
+        ItemList.Hatch_Energy_UHV.set(
             new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UHV.ID, "hatch.energy.tier.09", "UHV Energy Hatch", 9)
+                .getStackForm(1L));
+        ItemList.Hatch_Energy_UEV.set(
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UEV.ID, "hatch.energy.tier.10", "UEV Energy Hatch", 10)
+                .getStackForm(1L));
+
+        ItemList.Hatch_Energy_UIV.set(
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UIV.ID, "hatch.energy.tier.11", "UIV Energy Hatch", 11)
+                .getStackForm(1L));
+
+        ItemList.Hatch_Energy_UMV.set(
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UMV.ID, "hatch.energy.tier.12", "UMV Energy Hatch", 12)
+                .getStackForm(1L));
+
+        ItemList.Hatch_Energy_UXV.set(
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UXV.ID, "hatch.energy.tier.13", "UXV Energy Hatch", 13)
                 .getStackForm(1L));
     }
 
@@ -2211,8 +9967,23 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Input_UV.set(
             new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UV.ID, "hatch.input.tier.08", "Input Hatch (UV)", 8)
                 .getStackForm(1L));
-        ItemList.Hatch_Input_MAX.set(
+        ItemList.Hatch_Input_UHV.set(
             new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UHV.ID, "hatch.input.tier.09", "Input Hatch (UHV)", 9)
+                .getStackForm(1L));
+        ItemList.Hatch_Input_UEV.set(
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UEV.ID, "hatch.input.tier.10", "Input Hatch (UEV)", 10)
+                .getStackForm(1L));
+        ItemList.Hatch_Input_UIV.set(
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UIV.ID, "hatch.input.tier.11", "Input Hatch (UIV)", 11)
+                .getStackForm(1L));
+        ItemList.Hatch_Input_UMV.set(
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UMV.ID, "hatch.input.tier.12", "Input Hatch (UMV)", 12)
+                .getStackForm(1L));
+        ItemList.Hatch_Input_UXV.set(
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UXV.ID, "hatch.input.tier.13", "Input Hatch (UXV)", 13)
+                .getStackForm(1L));
+        ItemList.Hatch_Input_MAX.set(
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_MAX.ID, "hatch.input.tier.14", "Input Hatch (MAX)", 14)
                 .getStackForm(1L));
     }
 
@@ -2324,8 +10095,23 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Output_UV.set(
             new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UV.ID, "hatch.output.tier.08", "Output Hatch (UV)", 8)
                 .getStackForm(1L));
-        ItemList.Hatch_Output_MAX.set(
+        ItemList.Hatch_Output_UHV.set(
             new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UHV.ID, "hatch.output.tier.09", "Output Hatch (UHV)", 9)
+                .getStackForm(1L));
+        ItemList.Hatch_Output_UEV.set(
+            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UEV.ID, "hatch.output.tier.10", "Output Hatch (UEV)", 10)
+                .getStackForm(1L));
+        ItemList.Hatch_Output_UIV.set(
+            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UIV.ID, "hatch.output.tier.11", "Output Hatch (UIV)", 11)
+                .getStackForm(1L));
+        ItemList.Hatch_Output_UMV.set(
+            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UMV.ID, "hatch.output.tier.12", "Output Hatch (UMV)", 12)
+                .getStackForm(1L));
+        ItemList.Hatch_Output_UXV.set(
+            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UXV.ID, "hatch.output.tier.13", "Output Hatch (UXV)", 13)
+                .getStackForm(1L));
+        ItemList.Hatch_Output_MAX.set(
+            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_MAX.ID, "hatch.output.tier.14", "Output Hatch (MAX)", 14)
                 .getStackForm(1L));
     }
 
@@ -2462,8 +10248,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_CraftingInput_Bus_Slave.set(
             new GT_MetaTileEntity_Hatch_CraftingInput_Slave(
                 CRAFTING_INPUT_SLAVE.ID,
-                "hatch.crafting_input.slave",
-                "Crafting Input Slave").getStackForm(1L));
+                "hatch.crafting_input.proxy",
+                "Crafting Input Proxy").getStackForm(1L));
     }
 
     private static void registerMagHatch() {
@@ -2662,12 +10448,57 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 8,
                 "",
                 1).getStackForm(1L));
-        ItemList.Battery_Buffer_1by1_MAX.set(
+        ItemList.Battery_Buffer_1by1_UHV.set(
             new GT_MetaTileEntity_BasicBatteryBuffer(
                 BATTERY_BUFFER_1_BY_1_UHV.ID,
                 "batterybuffer.01.tier.09",
                 "Highly Ultimate Voltage Battery Buffer",
                 9,
+                "",
+                1).getStackForm(1L));
+
+        ItemList.Battery_Buffer_1by1_UEV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_1_BY_1_UEV.ID,
+                "batterybuffer.01.tier.10",
+                "Extremely Ultimate Battery Buffer",
+                10,
+                "",
+                1).getStackForm(1L));
+
+        ItemList.Battery_Buffer_1by1_UIV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_1_BY_1_UIV.ID,
+                "batterybuffer.01.tier.11",
+                "Insanely Ultimate Battery Buffer",
+                11,
+                "",
+                1).getStackForm(1L));
+
+        ItemList.Battery_Buffer_1by1_UMV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_1_BY_1_UMV.ID,
+                "batterybuffer.01.tier.12",
+                "Mega Ultimate Battery Buffer",
+                12,
+                "",
+                1).getStackForm(1L));
+
+        ItemList.Battery_Buffer_1by1_UXV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_1_BY_1_UXV.ID,
+                "batterybuffer.01.tier.13",
+                "Extended Mega Ultimate Battery Buffer",
+                13,
+                "",
+                1).getStackForm(1L));
+
+        ItemList.Battery_Buffer_1by1_MAXV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_1_BY_1_MAX.ID,
+                "batterybuffer.01.tier.14",
+                "Maximum Battery Buffer",
+                14,
                 "",
                 1).getStackForm(1L));
     }
@@ -2745,12 +10576,57 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 8,
                 "",
                 4).getStackForm(1L));
-        ItemList.Battery_Buffer_2by2_MAX.set(
+        ItemList.Battery_Buffer_2by2_UHV.set(
             new GT_MetaTileEntity_BasicBatteryBuffer(
                 BATTERY_BUFFER_2_BY_2_UHV.ID,
                 "batterybuffer.04.tier.09",
                 "Highly Ultimate Voltage Battery Buffer",
                 9,
+                "",
+                4).getStackForm(1L));
+
+        ItemList.Battery_Buffer_2by2_UEV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_2_BY_2_UEV.ID,
+                "batterybuffer.04.tier.10",
+                "Extremely Ultimate Battery Buffer",
+                10,
+                "",
+                4).getStackForm(1L));
+
+        ItemList.Battery_Buffer_2by2_UIV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_2_BY_2_UIV.ID,
+                "batterybuffer.04.tier.11",
+                "Insanely Ultimate Battery Buffer",
+                11,
+                "",
+                4).getStackForm(1L));
+
+        ItemList.Battery_Buffer_2by2_UMV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_2_BY_2_UMV.ID,
+                "batterybuffer.04.tier.12",
+                "Mega Ultimate Battery Buffer",
+                12,
+                "",
+                4).getStackForm(1L));
+
+        ItemList.Battery_Buffer_2by2_UXV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_2_BY_2_UXV.ID,
+                "batterybuffer.04.tier.13",
+                "Extended Mega Ultimate Battery Buffer",
+                13,
+                "",
+                4).getStackForm(1L));
+
+        ItemList.Battery_Buffer_2by2_MAXV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_2_BY_2_MAX.ID,
+                "batterybuffer.04.tier.14",
+                "Maximum Battery Buffer",
+                14,
                 "",
                 4).getStackForm(1L));
     }
@@ -2828,12 +10704,57 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 8,
                 "",
                 9).getStackForm(1L));
-        ItemList.Battery_Buffer_3by3_MAX.set(
+        ItemList.Battery_Buffer_3by3_UHV.set(
             new GT_MetaTileEntity_BasicBatteryBuffer(
                 BATTERY_BUFFER_3_BY_3_UHV.ID,
                 "batterybuffer.09.tier.09",
                 "Highly Ultimate Voltage Battery Buffer",
                 9,
+                "",
+                9).getStackForm(1L));
+
+        ItemList.Battery_Buffer_3by3_UEV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_3_BY_3_UEV.ID,
+                "batterybuffer.09.tier.10",
+                "Extremely Ultimate Battery Buffer",
+                10,
+                "",
+                9).getStackForm(1L));
+
+        ItemList.Battery_Buffer_3by3_UIV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_3_BY_3_UIV.ID,
+                "batterybuffer.09.tier.11",
+                "Insanely Ultimate Battery Buffer",
+                11,
+                "",
+                9).getStackForm(1L));
+
+        ItemList.Battery_Buffer_3by3_UMV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_3_BY_3_UMV.ID,
+                "batterybuffer.09.tier.12",
+                "Mega Ultimate Battery Buffer",
+                12,
+                "",
+                9).getStackForm(1L));
+
+        ItemList.Battery_Buffer_3by3_UXV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_3_BY_3_UXV.ID,
+                "batterybuffer.09.tier.13",
+                "Extended Mega Ultimate Battery Buffer",
+                13,
+                "",
+                9).getStackForm(1L));
+
+        ItemList.Battery_Buffer_3by3_MAXV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_3_BY_3_MAX.ID,
+                "batterybuffer.09.tier.14",
+                "Maximum Battery Buffer",
+                14,
                 "",
                 9).getStackForm(1L));
     }
@@ -2911,12 +10832,56 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 8,
                 "",
                 16).getStackForm(1L));
-        ItemList.Battery_Buffer_4by4_MAX.set(
+        ItemList.Battery_Buffer_4by4_UHV.set(
             new GT_MetaTileEntity_BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_UHV.ID,
                 "batterybuffer.16.tier.09",
                 "Highly Ultimate Voltage Battery Buffer",
                 9,
+                "",
+                16).getStackForm(1L));
+        ItemList.Battery_Buffer_4by4_UEV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_4_BY_4_UEV.ID,
+                "batterybuffer.16.tier.10",
+                "Extremely Ultimate Battery Buffer",
+                10,
+                "",
+                16).getStackForm(1L));
+
+        ItemList.Battery_Buffer_4by4_UIV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_4_BY_4_UIV.ID,
+                "batterybuffer.16.tier.11",
+                "Insanely Ultimate Battery Buffer",
+                11,
+                "",
+                16).getStackForm(1L));
+
+        ItemList.Battery_Buffer_4by4_UMV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_4_BY_4_UMV.ID,
+                "batterybuffer.16.tier.12",
+                "Mega Ultimate Battery Buffer",
+                12,
+                "",
+                16).getStackForm(1L));
+
+        ItemList.Battery_Buffer_4by4_UXV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_4_BY_4_UXV.ID,
+                "batterybuffer.16.tier.13",
+                "Extended Mega Ultimate Battery Buffer",
+                13,
+                "",
+                16).getStackForm(1L));
+
+        ItemList.Battery_Buffer_4by4_MAXV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_4_BY_4_MAX.ID,
+                "batterybuffer.16.tier.14",
+                "Maximum Battery Buffer",
+                14,
                 "",
                 16).getStackForm(1L));
     }
@@ -2994,7 +10959,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 8,
                 "Each battery gives 8A in/4A out (min 4A/2A)",
                 4).getStackForm(1L));
-        ItemList.Battery_Charger_4by4_MAX.set(
+        ItemList.Battery_Charger_4by4_UHV.set(
             new GT_MetaTileEntity_Charger(
                 BATTERY_CHARGER_4_BY_4_UHV.ID,
                 "batterycharger.16.tier.09",
@@ -3002,6 +10967,514 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 "Each battery gives 8A in/4A out (min 4A/2A)",
                 4).getStackForm(1L));
+
+        ItemList.Battery_Charger_4by4_UEV.set(
+            new GT_MetaTileEntity_Charger(
+                BATTERY_CHARGER_4_4_UEV.ID,
+                "batterycharger.16.tier.10",
+                "Extremely Ultimate Battery Charger",
+                10,
+                "",
+                4).getStackForm(1L));
+
+        ItemList.Battery_Charger_4by4_UIV.set(
+            new GT_MetaTileEntity_Charger(
+                BATTERY_CHARGER_4_4_UIV.ID,
+                "batterycharger.16.tier.11",
+                "Insanely Ultimate Battery Charger",
+                11,
+                "",
+                4).getStackForm(1L));
+
+        ItemList.Battery_Charger_4by4_UMV.set(
+            new GT_MetaTileEntity_Charger(
+                BATTERY_CHARGER_4_4_UMV.ID,
+                "batterycharger.16.tier.12",
+                "Mega Ultimate Battery Charger",
+                12,
+                "",
+                4).getStackForm(1L));
+
+        ItemList.Battery_Charger_4by4_UXV.set(
+            new GT_MetaTileEntity_Charger(
+                BATTERY_CHARGER_4_4_UXV.ID,
+                "batterycharger.16.tier.13",
+                "Extended Mega Ultimate Battery Charger",
+                13,
+                "",
+                4).getStackForm(1L));
+    }
+
+    private void registerCircuitAssembler() {
+        ItemList.Machine_LV_CircuitAssembler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_LV.ID,
+                "basicmachine.circuitassembler.tier.01",
+                "Basic Circuit Assembler",
+                1,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                RecipeMaps.circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_MV_CircuitAssembler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_MV.ID,
+                "basicmachine.circuitassembler.tier.02",
+                "Advanced Circuit Assembler",
+                2,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                RecipeMaps.circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_HV_CircuitAssembler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_HV.ID,
+                "basicmachine.circuitassembler.tier.03",
+                "Advanced Circuit Assembler II",
+                3,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                RecipeMaps.circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_EV_CircuitAssembler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_EV.ID,
+                "basicmachine.circuitassembler.tier.04",
+                "Advanced Circuit Assembler III",
+                4,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                RecipeMaps.circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_IV_CircuitAssembler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_IV.ID,
+                "basicmachine.circuitassembler.tier.05",
+                "Advanced Circuit Assembler IV",
+                5,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                RecipeMaps.circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_LuV_CircuitAssembler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_LuV.ID,
+                "basicmachine.circuitassembler.tier.06",
+                "Advanced Circuit Assembler V",
+                6,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                RecipeMaps.circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_ZPM_CircuitAssembler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_ZPM.ID,
+                "basicmachine.circuitassembler.tier.07",
+                "Advanced Circuit Assembler VI",
+                7,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                RecipeMaps.circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.Machine_UV_CircuitAssembler.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_UV.ID,
+                "basicmachine.circuitassembler.tier.08",
+                "Advanced Circuit Assembler VII",
+                8,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                RecipeMaps.circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.CircuitAssemblerUHV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_UHV.ID,
+                "basicmachine.circuitassembler.tier.09",
+                "Ultimate Circuit Assembling Machine",
+                9,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.CircuitAssemblerUEV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_UEV.ID,
+                "basicmachine.circuitassembler.tier.10",
+                "Ultimate Circuit Assembling Machine II",
+                10,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.CircuitAssemblerUIV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_UIV.ID,
+                "basicmachine.circuitassembler.tier.11",
+                "Ultimate Circuit Assembling Machine III",
+                11,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.CircuitAssemblerUMV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_UMV.ID,
+                "basicmachine.circuitassembler.tier.12",
+                "Ultimate Circuit Assembling Machine IV",
+                12,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.CircuitAssemblerUXV.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_UXV.ID,
+                "basicmachine.circuitassembler.tier.13",
+                "Ultimate Circuit Assembling Machine V",
+                13,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+
+        ItemList.CircuitAssemblerMAX.set(
+            new GT_MetaTileEntity_BasicMachine_GT_Recipe(
+                CIRCUIT_ASSEMBLER_MAX.ID,
+                "basicmachine.circuitassembler.tier.14",
+                "MAX Circuit Assembling Machine",
+                14,
+                MachineType.CIRCUIT_ASSEMBLER.tooltipDescription(),
+                circuitAssemblerRecipes,
+                6,
+                1,
+                true,
+                SoundResource.NONE,
+                GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects.NONE,
+                "CIRCUITASSEMBLER",
+                null).getStackForm(1L));
+    }
+
+    private void registerWetTransformer() {
+        ItemList.WetTransformer_LV_ULV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_LV_ULV.ID,
+                "wettransformer.tier.00",
+                "Ultra Low Voltage Power Transformer",
+                0,
+                "LV -> ULV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_MV_LV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_MV_LV.ID,
+                "wetransformer.tier.01",
+                "Low Voltage Power Transformer",
+                1,
+                "MV -> LV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_HV_MV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_HV_MV.ID,
+                "wettransformer.tier.02",
+                "Medium Voltage Power Transformer",
+                2,
+                "HV -> MV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_EV_HV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_EV_HV.ID,
+                "wettransformer.tier.03",
+                "High Voltage Power Transformer",
+                3,
+                "EV -> HV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_IV_EV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_IV_EV.ID,
+                "wettransformer.tier.04",
+                "Extreme Power Transformer",
+                4,
+                "IV -> EV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_LuV_IV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_LuV_IV.ID,
+                "wettransformer.tier.05",
+                "Insane Power Transformer",
+                5,
+                "LuV -> IV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_ZPM_LuV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_ZPM_LuV.ID,
+                "wettransformer.tier.06",
+                "Ludicrous Power Transformer",
+                6,
+                "ZPM -> LuV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_UV_ZPM.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_UV_ZPM.ID,
+                "wettransformer.tier.07",
+                "ZPM Voltage Power Transformer",
+                7,
+                "UV -> ZPM (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_UHV_UV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_UHV_UV.ID,
+                "wettransformer.tier.08",
+                "Ultimate Power Transformer",
+                8,
+                "UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_UEV_UHV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_UEV_UHV.ID,
+                "wettransformer.tier.09",
+                "Highly Ultimate Power Transformer",
+                9,
+                "UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_UIV_UEV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_UIV_UEV.ID,
+                "wettransformer.tier.10",
+                "Extremely Ultimate Power Transformer",
+                10,
+                "UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_UMV_UIV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_UMV_UIV.ID,
+                "wettransformer.tier.11",
+                "Insanely Ultimate Power Transformer",
+                11,
+                "UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_UXV_UMV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_UXV_UMV.ID,
+                "wettransformer.tier.12",
+                "Mega Ultimate Power Transformer",
+                12,
+                "UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
+
+        ItemList.WetTransformer_MAX_UXV.set(
+            new GT_MetaTileEntity_WetTransformer(
+                WET_TRANSFORMER_MAX_UXV.ID,
+                "wettransformer.tier.13",
+                "Extended Mega Ultimate Power Transformer",
+                13,
+                "MAX -> UXV (Use Soft Mallet to invert)").getStackForm(1L));
+    }
+
+    private void registerHighAmpTransformer() {
+        ItemList.Transformer_HA_UEV_UHV.set(
+            new GregtechMetaTransformerHiAmp(
+                HIGH_AMP_TRANSFORMER_UEV_UHV.ID,
+                "transformer.ha.tier.09",
+                "Highly Ultimate Hi-Amp Transformer",
+                9,
+                "UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
+        ItemList.Transformer_HA_UIV_UEV.set(
+            new GregtechMetaTransformerHiAmp(
+                HIGH_AMP_TRANSFORMER_UIV_UEV.ID,
+                "transformer.ha.tier.10",
+                "Extremely Ultimate Hi-Amp Transformer",
+                10,
+                "UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
+        ItemList.Transformer_HA_UMV_UIV.set(
+            new GregtechMetaTransformerHiAmp(
+                HIGH_AMP_TRANSFORMER_UMV_UIV.ID,
+                "transformer.ha.tier.11",
+                "Insanely Ultimate Hi-Amp Transformer",
+                11,
+                "UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
+        ItemList.Transformer_HA_UXV_UMV.set(
+            new GregtechMetaTransformerHiAmp(
+                HIGH_AMP_TRANSFORMER_UXV_UMV.ID,
+                "transformer.ha.tier.12",
+                "Mega Ultimate Hi-Amp Transformer",
+                12,
+                "UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
+        ItemList.Transformer_HA_MAX_UXV.set(
+            new GregtechMetaTransformerHiAmp(
+                HIGH_AMP_TRANSFORMER_MAX_UXV.ID,
+                "transformer.ha.tier.13",
+                "Extended Mega Ultimate Hi-Amp Transformer",
+                13,
+                "MAX -> UXV (Use Soft Mallet to invert)").getStackForm(1L));
+
+    }
+
+    private void registerTurboCharger4By4() {
+        ItemList.Battery_TurboCharger_4by4_ULV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_ULV.ID,
+                "batteryturbocharger.16.tier.00",
+                "Ultra Low Voltage Turbo Charger",
+                0,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_LV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_LV.ID,
+                "batteryturbocharger.16.tier.01",
+                "Low Voltage Turbo Charger",
+                1,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_MV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_MV.ID,
+                "batteryturbocharger.16.tier.02",
+                "Medium Voltage Turbo Charger",
+                2,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_HV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_HV.ID,
+                "batteryturbocharger.16.tier.03",
+                "High Voltage Turbo Charger",
+                3,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_EV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_EV.ID,
+                "batteryturbocharger.16.tier.04",
+                "Extreme Voltage Turbo Charger",
+                4,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_IV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_IV.ID,
+                "batteryturbocharger.16.tier.05",
+                "Insane Voltage Turbo Charger",
+                5,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_LuV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_LuV.ID,
+                "batteryturbocharger.16.tier.06",
+                "Ludicrous Voltage Turbo Charger",
+                6,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_ZPM.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_ZPM.ID,
+                "batteryturbocharger.16.tier.07",
+                "ZPM Voltage Turbo Charger",
+                7,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_UV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_UV.ID,
+                "batteryturbocharger.16.tier.08",
+                "Ultimate Voltage Turbo Charger",
+                8,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
+        ItemList.Battery_TurboCharger_4by4_UHV.set(
+            new GT_MetaTileEntity_TurboCharger(
+                TURBO_CHARGER_UHV.ID,
+                "batteryturbocharger.16.tier.09",
+                "Highly Ultimate Voltage Turbo Charger",
+                9,
+                "64A in /16A out, 120A/item, Disable to force Charge",
+                4).getStackForm(1L));
+
     }
 
     private static void registerWirelessEnergyHatch() {
@@ -3378,24 +11851,38 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void registerPlasmaGenerators() {
-        ItemList.Generator_Plasma_IV.set(
+        ItemList.Generator_Plasma_EV.set(
             new GT_MetaTileEntity_PlasmaGenerator(
-                PLASMA_GENERATOR_IV.ID,
+                PLASMA_GENERATOR_EV.ID,
                 "basicgenerator.plasmagenerator.tier.05",
                 "Plasma Generator Mark I",
                 4).getStackForm(1L));
-        ItemList.Generator_Plasma_LuV.set(
+        ItemList.Generator_Plasma_IV.set(
             new GT_MetaTileEntity_PlasmaGenerator(
-                PLASMA_GENERATOR_LuV.ID,
+                PLASMA_GENERATOR_IV.ID,
                 "basicgenerator.plasmagenerator.tier.06",
                 "Plasma Generator Mark II",
                 5).getStackForm(1L));
-        ItemList.Generator_Plasma_ZPMV.set(
+        ItemList.Generator_Plasma_LuV.set(
             new GT_MetaTileEntity_PlasmaGenerator(
-                PLASMA_GENERATOR_ZPM.ID,
+                PLASMA_GENERATOR_LuV.ID,
                 "basicgenerator.plasmagenerator.tier.07",
                 "Plasma Generator Mark III",
                 6).getStackForm(1L));
+
+        ItemList.Generator_Plasma_ZPMV.set(
+            new GT_MetaTileEntity_PlasmaGenerator(
+                PLASMA_GENERATOR_ZPM.ID,
+                "basicgenerator.plasmagenerator.tier.08",
+                "Plasma Generator Mark IV",
+                7).getStackForm(1L));
+
+        ItemList.Generator_Plasma_UV.set(
+            new GT_MetaTileEntity_PlasmaGenerator(
+                PLASMA_GENERATOR_UV.ID,
+                "basicgenerator.plasmagenerator.tier.09",
+                "Ultimate Pocket Sun",
+                8).getStackForm(1L));
     }
 
     private static void generateWiresAndPipes() {
@@ -3414,7 +11901,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                     GregTech_API.sGeneratedMaterials[i]);
             }
         }
-        boolean bEC = !GT_Mod.gregtechproxy.mHardcoreCables;
 
         makeWires(Materials.RedAlloy, 2000, 0L, 1L, 1L, gregtech.api.enums.GT_Values.V[0], true, false);
 
@@ -3425,264 +11911,40 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         makeWires(Materials.Zinc, 1260, 1L, 2L, 1L, gregtech.api.enums.GT_Values.V[1], true, false);
         makeWires(Materials.SolderingAlloy, 1280, 1L, 2L, 1L, gregtech.api.enums.GT_Values.V[1], true, false);
 
-        makeWires(
-            Materials.Iron,
-            1300,
-            bEC ? 3L : 4L,
-            bEC ? 6L : 8L,
-            2L,
-            gregtech.api.enums.GT_Values.V[2],
-            true,
-            false);
-        makeWires(
-            Materials.Nickel,
-            1320,
-            bEC ? 3L : 5L,
-            bEC ? 6L : 10L,
-            3L,
-            gregtech.api.enums.GT_Values.V[2],
-            true,
-            false);
-        makeWires(
-            Materials.Cupronickel,
-            1340,
-            bEC ? 3L : 4L,
-            bEC ? 6L : 8L,
-            2L,
-            gregtech.api.enums.GT_Values.V[2],
-            true,
-            false);
-        makeWires(
-            Materials.Copper,
-            1360,
-            bEC ? 2L : 3L,
-            bEC ? 4L : 6L,
-            1L,
-            gregtech.api.enums.GT_Values.V[2],
-            true,
-            false);
-        makeWires(
-            Materials.AnnealedCopper,
-            1380,
-            bEC ? 1L : 2L,
-            bEC ? 2L : 4L,
-            1L,
-            gregtech.api.enums.GT_Values.V[2],
-            true,
-            false);
+        makeWires(Materials.Iron, 1300, 3L, 6L, 2L, gregtech.api.enums.GT_Values.V[2], true, false);
+        makeWires(Materials.Nickel, 1320, 3L, 6L, 3L, gregtech.api.enums.GT_Values.V[2], true, false);
+        makeWires(Materials.Cupronickel, 1340, 3L, 6L, 2L, gregtech.api.enums.GT_Values.V[2], true, false);
+        makeWires(Materials.Copper, 1360, 2L, 4L, 1L, gregtech.api.enums.GT_Values.V[2], true, false);
+        makeWires(Materials.AnnealedCopper, 1380, 2L, 4L, 1L, gregtech.api.enums.GT_Values.V[2], true, false);
 
-        makeWires(
-            Materials.Kanthal,
-            1400,
-            bEC ? 3L : 8L,
-            bEC ? 6L : 16L,
-            4L,
-            gregtech.api.enums.GT_Values.V[3],
-            true,
-            false);
-        makeWires(
-            Materials.Gold,
-            1420,
-            bEC ? 2L : 6L,
-            bEC ? 4L : 12L,
-            3L,
-            gregtech.api.enums.GT_Values.V[3],
-            true,
-            false);
-        makeWires(
-            Materials.Electrum,
-            1440,
-            bEC ? 2L : 5L,
-            bEC ? 4L : 10L,
-            2L,
-            gregtech.api.enums.GT_Values.V[3],
-            true,
-            false);
-        makeWires(
-            Materials.Silver,
-            1460,
-            bEC ? 1L : 4L,
-            bEC ? 2L : 8L,
-            1L,
-            gregtech.api.enums.GT_Values.V[3],
-            true,
-            false);
-        makeWires(
-            Materials.BlueAlloy,
-            1480,
-            bEC ? 1L : 4L,
-            bEC ? 2L : 8L,
-            2L,
-            gregtech.api.enums.GT_Values.V[3],
-            true,
-            false);
+        makeWires(Materials.Kanthal, 1400, 3L, 6L, 4L, gregtech.api.enums.GT_Values.V[3], true, false);
+        makeWires(Materials.Gold, 1420, 2L, 4L, 3L, gregtech.api.enums.GT_Values.V[3], true, false);
+        makeWires(Materials.Electrum, 1440, 2L, 4L, 2L, gregtech.api.enums.GT_Values.V[3], true, false);
+        makeWires(Materials.Silver, 1460, 1L, 2L, 1L, gregtech.api.enums.GT_Values.V[3], true, false);
+        makeWires(Materials.BlueAlloy, 1480, 1L, 2L, 2L, gregtech.api.enums.GT_Values.V[3], true, false);
 
-        makeWires(
-            Materials.Nichrome,
-            1500,
-            bEC ? 4L : 32L,
-            bEC ? 8L : 64L,
-            3L,
-            gregtech.api.enums.GT_Values.V[4],
-            true,
-            false);
-        makeWires(
-            Materials.Steel,
-            1520,
-            bEC ? 2L : 16L,
-            bEC ? 4L : 32L,
-            2L,
-            gregtech.api.enums.GT_Values.V[4],
-            true,
-            false);
-        makeWires(
-            Materials.BlackSteel,
-            1540,
-            bEC ? 2L : 14L,
-            bEC ? 4L : 28L,
-            3L,
-            gregtech.api.enums.GT_Values.V[4],
-            true,
-            false);
-        makeWires(
-            Materials.Titanium,
-            1560,
-            bEC ? 2L : 12L,
-            bEC ? 4L : 24L,
-            4L,
-            gregtech.api.enums.GT_Values.V[4],
-            true,
-            false);
-        makeWires(
-            Materials.Aluminium,
-            1580,
-            bEC ? 1L : 8L,
-            bEC ? 2L : 16L,
-            1L,
-            gregtech.api.enums.GT_Values.V[4],
-            true,
-            false);
+        makeWires(Materials.Nichrome, 1500, 4L, 8L, 3L, gregtech.api.enums.GT_Values.V[4], true, false);
+        makeWires(Materials.Steel, 1520, 2L, 4L, 2L, gregtech.api.enums.GT_Values.V[4], true, false);
+        makeWires(Materials.BlackSteel, 1540, 2L, 4L, 3L, gregtech.api.enums.GT_Values.V[4], true, false);
+        makeWires(Materials.Titanium, 1560, 2L, 4L, 4L, gregtech.api.enums.GT_Values.V[4], true, false);
+        makeWires(Materials.Aluminium, 1580, 1L, 2L, 1L, gregtech.api.enums.GT_Values.V[4], true, false);
 
-        makeWires(
-            Materials.Graphene,
-            1600,
-            bEC ? 1L : 16L,
-            bEC ? 2L : 32L,
-            1L,
-            gregtech.api.enums.GT_Values.V[5],
-            false,
-            true);
-        makeWires(
-            Materials.Osmium,
-            1620,
-            bEC ? 2L : 32L,
-            bEC ? 4L : 64L,
-            4L,
-            gregtech.api.enums.GT_Values.V[5],
-            true,
-            false);
-        makeWires(
-            Materials.Platinum,
-            1640,
-            bEC ? 1L : 16L,
-            bEC ? 2L : 32L,
-            2L,
-            gregtech.api.enums.GT_Values.V[5],
-            true,
-            false);
-        makeWires(
-            Materials.TungstenSteel,
-            1660,
-            bEC ? 2L : 14L,
-            bEC ? 4L : 28L,
-            3L,
-            gregtech.api.enums.GT_Values.V[5],
-            true,
-            false);
-        makeWires(
-            Materials.Tungsten,
-            1680,
-            bEC ? 2L : 12L,
-            bEC ? 4L : 24L,
-            2L,
-            gregtech.api.enums.GT_Values.V[5],
-            true,
-            false);
+        makeWires(Materials.Graphene, 1600, 1L, 2L, 1L, gregtech.api.enums.GT_Values.V[5], false, true);
+        makeWires(Materials.Osmium, 1620, 2L, 4L, 4L, gregtech.api.enums.GT_Values.V[5], true, false);
+        makeWires(Materials.Platinum, 1640, 1L, 2L, 2L, gregtech.api.enums.GT_Values.V[5], true, false);
+        makeWires(Materials.TungstenSteel, 1660, 2L, 4L, 3L, gregtech.api.enums.GT_Values.V[5], true, false);
+        makeWires(Materials.Tungsten, 1680, 2L, 4L, 2L, gregtech.api.enums.GT_Values.V[5], true, false);
 
-        makeWires(
-            Materials.HSSG,
-            1700,
-            bEC ? 2L : 128L,
-            bEC ? 4L : 256L,
-            4L,
-            gregtech.api.enums.GT_Values.V[6],
-            true,
-            false);
-        makeWires(
-            Materials.NiobiumTitanium,
-            1720,
-            bEC ? 2L : 128L,
-            bEC ? 4L : 256L,
-            4L,
-            gregtech.api.enums.GT_Values.V[6],
-            true,
-            false);
-        makeWires(
-            Materials.VanadiumGallium,
-            1740,
-            bEC ? 2L : 128L,
-            bEC ? 4L : 256L,
-            4L,
-            gregtech.api.enums.GT_Values.V[6],
-            true,
-            false);
-        makeWires(
-            Materials.YttriumBariumCuprate,
-            1760,
-            bEC ? 4L : 256L,
-            bEC ? 8L : 512L,
-            4L,
-            gregtech.api.enums.GT_Values.V[6],
-            true,
-            false);
+        makeWires(Materials.HSSG, 1700, 2L, 4L, 4L, gregtech.api.enums.GT_Values.V[6], true, false);
+        makeWires(Materials.NiobiumTitanium, 1720, 2L, 4L, 4L, gregtech.api.enums.GT_Values.V[6], true, false);
+        makeWires(Materials.VanadiumGallium, 1740, 2L, 4L, 4L, gregtech.api.enums.GT_Values.V[6], true, false);
+        makeWires(Materials.YttriumBariumCuprate, 1760, 4L, 8L, 4L, gregtech.api.enums.GT_Values.V[6], true, false);
 
-        makeWires(
-            Materials.Naquadah,
-            1780,
-            bEC ? 2L : 64L,
-            bEC ? 4L : 128L,
-            2L,
-            gregtech.api.enums.GT_Values.V[7],
-            true,
-            false);
+        makeWires(Materials.Naquadah, 1780, 2L, 4L, 2L, gregtech.api.enums.GT_Values.V[7], true, false);
 
-        makeWires(
-            Materials.NaquadahAlloy,
-            1800,
-            bEC ? 4L : 64L,
-            bEC ? 8L : 128L,
-            2L,
-            gregtech.api.enums.GT_Values.V[8],
-            true,
-            false);
-        makeWires(
-            Materials.Duranium,
-            1820,
-            bEC ? 8L : 64L,
-            bEC ? 16L : 128L,
-            1L,
-            gregtech.api.enums.GT_Values.V[8],
-            true,
-            false);
-        makeWires(
-            Materials.TPV,
-            1840,
-            bEC ? 1L : 14L,
-            bEC ? 2L : 28L,
-            6L,
-            gregtech.api.enums.GT_Values.V[4],
-            true,
-            false);
+        makeWires(Materials.NaquadahAlloy, 1800, 4L, 8L, 2L, gregtech.api.enums.GT_Values.V[8], true, false);
+        makeWires(Materials.Duranium, 1820, 8L, 16L, 1L, gregtech.api.enums.GT_Values.V[8], true, false);
+        makeWires(Materials.TPV, 1840, 1L, 2L, 6L, gregtech.api.enums.GT_Values.V[4], true, false);
 
         // Superconductor base.
         makeWires(
@@ -4191,6 +12453,54 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         registerMagicEnergyConverters();
         registerPlasmaGenerators();
         registerMultiblockControllers();
+        registerWorldAccelerator();
+        registerAlloySmelter();
+        registerMatterAmplifier();
+        registerAssemblingMachine();
+        registerWetTransformer();
+        registerHighAmpTransformer();
+        registerChemicalBath();
+        registerChemicalReactor();
+        registerFermenter();
+        registerFluidCanner();
+        registerFluidExtractor();
+        registerFluidHeater();
+        registerMixer();
+        registerAutoclave();
+        registerBendingMachine();
+        registerCompressor();
+        registerCuttingMachine();
+        registerDistillery();
+        registerElectricFurnace();
+        registerElectromagneticSeparator();
+        registerExtractor();
+        registerExtruder();
+        registerFluidSolidifier();
+        registerFormingPress();
+        registerForgeHammer();
+        registerLathe();
+        registerPrecisionLaserEngraver();
+        registerMacerator();
+        registerMatterFabricator();
+        registerMicrowave();
+        registerOreWashingPlant();
+        registerPolarizer();
+        registerRecycler();
+        registerSiftingMachine();
+        registerSlicingMachine();
+        registerThermalCentrifuge();
+        registerWiremill();
+        registerArcFurnace();
+        registerCentrifuge();
+        registerPlasmaArcFurnace();
+        registerCanningMachine();
+        registerElectrolyzer();
+        registerCircuitAssembler();
+        registerTurboCharger4By4();
+        registerBetterJukebox();
+        registerUnpackager();
+        registerPrinter();
+        registerOven();
 
         ItemList.AdvDebugStructureWriter.set(
             new GT_MetaTileEntity_AdvDebugStructureWriter(
