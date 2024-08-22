@@ -1,6 +1,6 @@
 package gregtech.api.recipe;
 
-import static gregtech.api.util.GT_RecipeMapUtil.buildOrEmpty;
+import static gregtech.api.util.RecipeMapUtil.buildOrEmpty;
 
 import java.util.function.Function;
 

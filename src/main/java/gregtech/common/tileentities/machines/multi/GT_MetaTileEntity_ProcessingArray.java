@@ -25,6 +25,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.common.blocks.ItemMachines;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -73,10 +74,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GT_ProcessingArray_Manager;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.GT_Item_Machines;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -94,7 +94,7 @@ public class GT_MetaTileEntity_ProcessingArray extends ExtendedPowerMultiBlockBa
             'h',
             ofChain(
                 lazy(
-                    t -> GT_StructureUtility.<GT_MetaTileEntity_ProcessingArray>buildHatchAdder()
+                    t -> StructureUtility.<GT_MetaTileEntity_ProcessingArray>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .casingIndex(48)
                         .dot(1)
@@ -270,7 +270,7 @@ public class GT_MetaTileEntity_ProcessingArray extends ExtendedPowerMultiBlockBa
     }
 
     private void setTierAndMult() {
-        IMetaTileEntity aMachine = GT_Item_Machines.getMetaTileEntity(getControllerSlot());
+        IMetaTileEntity aMachine = ItemMachines.getMetaTileEntity(getControllerSlot());
         if (aMachine instanceof TieredMachineBlock) {
             tTier = ((TieredMachineBlock) aMachine).mTier;
         } else {

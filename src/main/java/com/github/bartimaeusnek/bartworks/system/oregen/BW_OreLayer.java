@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import gregtech.common.blocks.TileEntityOres;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -40,7 +41,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.world.GT_Worldgen;
-import gregtech.common.blocks.GT_TileEntity_Ores;
 
 /**
  * Original GT File Stripped and adjusted to work with this mod
@@ -184,7 +184,7 @@ public abstract class BW_OreLayer extends GT_Worldgen {
     public boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean isSmallOre) {
         // security stuff to prevent crashes with 2 TileEntites on the same Spot
         TileEntity te = aWorld.getTileEntity(aX, aY, aZ);
-        if (te instanceof BW_MetaGeneratedOreTE || te instanceof GT_TileEntity_Ores) return true;
+        if (te instanceof BW_MetaGeneratedOreTE || te instanceof TileEntityOres) return true;
 
         if (aMetaData == this.mSporadicMeta && (this.bwOres & 0b0001) != 0
             || aMetaData == this.mBetweenMeta && (this.bwOres & 0b0010) != 0
@@ -215,7 +215,7 @@ public abstract class BW_OreLayer extends GT_Worldgen {
     }
 
     public boolean setGTOreBlockSpace(World aWorld, int aX, int aY, int aZ, int aMetaData, Block block) {
-        if (GT_TileEntity_Ores.setOreBlock(aWorld, aX, aY, aZ, aMetaData, false, false)) return true;
+        if (TileEntityOres.setOreBlock(aWorld, aX, aY, aZ, aMetaData, false, false)) return true;
         aY = Math.min(aWorld.getActualHeight(), Math.max(aY, 1));
         Block tBlock = aWorld.getBlock(aX, aY, aZ);
         Block tOreBlock = GregTech_API.sBlockOres1;
@@ -228,7 +228,7 @@ public abstract class BW_OreLayer extends GT_Worldgen {
             aMetaData += 5000;
             aWorld.setBlock(aX, aY, aZ, tOreBlock, aMetaData, 0);
             TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-            if (tTileEntity instanceof GT_TileEntity_Ores ore) {
+            if (tTileEntity instanceof TileEntityOres ore) {
                 ore.mMetaData = (short) aMetaData;
             }
             return true;

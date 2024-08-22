@@ -14,7 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_GLOW;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -42,7 +42,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.GT_Block_Casings2;
+import gregtech.common.blocks.BlockCasings2;
 
 public class GT_MetaTileEntity_MultiLathe extends EnhancedMultiBlockBase<GT_MetaTileEntity_MultiLathe>
     implements ISurvivalConstructable {
@@ -124,7 +124,7 @@ public class GT_MetaTileEntity_MultiLathe extends EnhancedMultiBlockBase<GT_Meta
         .addElement(
             'A',
             buildHatchAdder(GT_MetaTileEntity_MultiLathe.class).atLeast(Maintenance, Muffler, Energy)
-                .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                .casingIndex(((BlockCasings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(
@@ -136,7 +136,7 @@ public class GT_MetaTileEntity_MultiLathe extends EnhancedMultiBlockBase<GT_Meta
             'D',
             buildHatchAdder(GT_MetaTileEntity_MultiLathe.class)
                 .atLeast(InputBus, OutputBus, Maintenance, Muffler, Energy)
-                .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                .casingIndex(((BlockCasings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(

@@ -11,7 +11,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.StructureUtility.ofFrame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,7 +49,7 @@ import gregtech.api.metatileentity.implementations.Hatch_MultiInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -93,7 +93,7 @@ public class GT_MetaTileEntity_PurificationUnitDegasifier
             'A',
             ofChain(
                 lazy(
-                    t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitDegasifier>buildHatchAdder()
+                    t -> StructureUtility.<GT_MetaTileEntity_PurificationUnitDegasifier>buildHatchAdder()
                         .atLeastList(Arrays.asList(InputHatch, OutputHatch, SpecialHatchElement.ControlHatch))
                         .casingIndex(CASING_INDEX_MAIN)
                         .dot(1)

@@ -58,6 +58,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
+import gregtech.api.util.RecipeRegistrator;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -160,7 +161,6 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_MusicSystem;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_Shaped_Recipe;
 import gregtech.api.util.GT_Shapeless_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -1983,8 +1983,8 @@ public abstract class GT_Proxy implements IGT_Mod, IFuelHandler {
                                     case gearGt -> OreDictUnificator
                                         .registerOre(OrePrefixes.gear, aMaterial, aEvent.Ore);
                                     case stick -> {
-                                        if (!GT_RecipeRegistrator.sRodMaterialList.contains(aMaterial)) {
-                                            GT_RecipeRegistrator.sRodMaterialList.add(aMaterial);
+                                        if (!RecipeRegistrator.sRodMaterialList.contains(aMaterial)) {
+                                            RecipeRegistrator.sRodMaterialList.add(aMaterial);
                                         } else if (aMaterial == Materials.Wood) {
                                             OreDictUnificator.addToBlacklist(aEvent.Ore);
                                         } else if ((aMaterial == Materials.Tin) || (aMaterial == Materials.Lead)

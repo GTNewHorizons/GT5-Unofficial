@@ -12,7 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.StructureUtility.ofFrame;
 import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ import gregtech.api.metatileentity.implementations.Hatch_InputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -153,7 +153,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
             'I',
             ofChain(
                 lazy(
-                    t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
+                    t -> StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .dot(1)
                         .casingIndex(CASING_INDEX_MIDDLE)
@@ -164,7 +164,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
             'R',
             ofChain(
                 lazy(
-                    t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
+                    t -> StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
                         .atLeast(SpecialHatchElement.PhSensor)
                         .dot(2)
                         .cacheHint(() -> "pH Sensor Hatch")
@@ -176,7 +176,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
         .addElement(
             'X',
             lazy(
-                t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
+                t -> StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
                     .atLeast(InputBus)
                     .dot(3)
                     .adder(GT_MetaTileEntity_PurificationUnitPhAdjustment::addAlkalineBusToMachineList)
@@ -187,7 +187,7 @@ public class GT_MetaTileEntity_PurificationUnitPhAdjustment
         .addElement(
             'Y',
             lazy(
-                t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
+                t -> StructureUtility.<GT_MetaTileEntity_PurificationUnitPhAdjustment>buildHatchAdder()
                     .atLeast(InputHatch)
                     .dot(4)
                     .adder(GT_MetaTileEntity_PurificationUnitPhAdjustment::addAcidHatchToMachineList)

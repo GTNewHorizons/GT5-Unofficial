@@ -14,7 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.StructureUtility.ofFrame;
 import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ import gregtech.api.metatileentity.implementations.Hatch_Input;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -134,7 +134,7 @@ public class GT_MetaTileEntity_PurificationUnitFlocculation
             'B',
             ofChain(
                 lazy(
-                    t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitFlocculation>buildHatchAdder()
+                    t -> StructureUtility.<GT_MetaTileEntity_PurificationUnitFlocculation>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .casingIndex(MAIN_CASING_INDEX)
                         .dot(1)

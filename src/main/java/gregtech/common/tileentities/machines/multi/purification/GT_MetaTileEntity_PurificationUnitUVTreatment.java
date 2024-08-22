@@ -10,7 +10,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.StructureUtility.ofFrame;
 import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -115,7 +115,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
         .addElement(
             'L',
             lazy(
-                t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitUVTreatment>buildHatchAdder()
+                t -> StructureUtility.<GT_MetaTileEntity_PurificationUnitUVTreatment>buildHatchAdder()
                     .atLeast(SpecialHatchElement.LensHousing)
                     .dot(2)
                     .cacheHint(() -> "Lens Housing")
@@ -125,7 +125,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
         .addElement(
             'I',
             lazy(
-                t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitUVTreatment>buildHatchAdder()
+                t -> StructureUtility.<GT_MetaTileEntity_PurificationUnitUVTreatment>buildHatchAdder()
                     .atLeast(SpecialHatchElement.LensIndicator)
                     .dot(3)
                     .cacheHint(() -> "Lens Indicator")
@@ -136,7 +136,7 @@ public class GT_MetaTileEntity_PurificationUnitUVTreatment
             'H',
             ofChain(
                 lazy(
-                    t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitUVTreatment>buildHatchAdder()
+                    t -> StructureUtility.<GT_MetaTileEntity_PurificationUnitUVTreatment>buildHatchAdder()
                         .atLeastList(Arrays.asList(InputHatch, OutputHatch))
                         .dot(1)
                         .cacheHint(() -> "Input Hatch, Output Hatch")

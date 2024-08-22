@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import gregtech.common.blocks.ItemMachines;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -39,7 +40,6 @@ import gregtech.api.multitileentity.MultiTileEntityItem;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
 
 public class GT_MetaTileEntity_RecipeFilter extends MetaTileEntity_SpecialFilter {
@@ -72,7 +72,7 @@ public class GT_MetaTileEntity_RecipeFilter extends MetaTileEntity_SpecialFilter
 
     private static RecipeMap<?> getItemStackMachineRecipeMap(ItemStack stack) {
         if (stack != null) {
-            IMetaTileEntity metaTileEntity = GT_Item_Machines.getMetaTileEntity(stack);
+            IMetaTileEntity metaTileEntity = ItemMachines.getMetaTileEntity(stack);
             if (metaTileEntity != null) {
                 return getMetaTileEntityRecipeMap(metaTileEntity);
             } else if (stack.getItem() instanceof MultiTileEntityItem) {

@@ -18,7 +18,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import net.minecraft.entity.player.EntityPlayer;

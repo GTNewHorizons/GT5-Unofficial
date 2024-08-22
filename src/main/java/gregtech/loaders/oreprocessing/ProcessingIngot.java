@@ -10,6 +10,7 @@ import static gregtech.api.util.RecipeBuilder.TICKS;
 import static gregtech.api.util.RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.RecipeConstants.FUEL_VALUE;
 
+import gregtech.api.util.RecipeRegistrator;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
@@ -20,7 +21,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.OreDictUnificator;
 import gregtech.api.util.RecipeConstants;
@@ -71,11 +71,11 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 }
                 // Reverse recipes
                 {
-                    GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
-                    GT_RecipeRegistrator
+                    RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
+                    RecipeRegistrator
                         .registerReverseMacerating(aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false);
                     if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
-                        GT_RecipeRegistrator.registerReverseArcSmelting(
+                        RecipeRegistrator.registerReverseArcSmelting(
                             GT_Utility.copyAmount(1, aStack),
                             aMaterial,
                             aPrefix.mMaterialAmount,

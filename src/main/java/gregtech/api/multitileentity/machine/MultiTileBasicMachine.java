@@ -56,7 +56,7 @@ import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.task.tasks.ProcessingTask;
 import gregtech.api.util.GT_Utility;
-import gregtech.client.GT_SoundLoop;
+import gregtech.client.SoundLoop;
 import gregtech.common.gui.MachineGUIProvider;
 
 public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> extends TickableMultiTileEntity
@@ -106,7 +106,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     protected GUIProvider<?> guiProvider = createGUIProvider();
 
     @SideOnly(Side.CLIENT)
-    protected GT_SoundLoop activitySoundLoop;
+    protected SoundLoop activitySoundLoop;
 
     public MultiTileBasicMachine() {
         new ProcessingTask<>(this);
@@ -412,7 +412,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     @SideOnly(Side.CLIENT)
     protected void doActivitySound(ResourceLocation activitySound) {
         if (isActive() && activitySound != null && activitySoundLoop == null) {
-            activitySoundLoop = new GT_SoundLoop(activitySound, this, false, true);
+            activitySoundLoop = new SoundLoop(activitySound, this, false, true);
             Minecraft.getMinecraft()
                 .getSoundHandler()
                 .playSound(activitySoundLoop);

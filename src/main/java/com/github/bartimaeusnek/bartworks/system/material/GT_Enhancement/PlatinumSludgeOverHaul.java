@@ -88,6 +88,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import gregtech.common.blocks.BlockOresAbstract;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -117,7 +118,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.OreDictUnificator;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
 
 public class PlatinumSludgeOverHaul {
 
@@ -1037,7 +1037,7 @@ public class PlatinumSludgeOverHaul {
             return true;
 
         if (Block.getBlockFromItem(stack.getItem()) instanceof BlockGeneric
-            && !(Block.getBlockFromItem(stack.getItem()) instanceof GT_Block_Ores_Abstract)) return true;
+            && !(Block.getBlockFromItem(stack.getItem()) instanceof BlockOresAbstract)) return true;
 
         if (Arrays.stream(ItemList.values())
             .filter(ItemList::hasBeenSet)

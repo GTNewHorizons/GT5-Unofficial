@@ -362,13 +362,13 @@ public class OreDictUnificator {
                     mRunThroughTheList = false;
                     for (Entry<ItemStack, ItemData> tEntry : sItemStack2DataMap.entrySet()) if (!tEntry.getValue()
                         .hasValidPrefixData() || tEntry.getValue().mPrefix.mAllowNormalRecycling)
-                        GT_RecipeRegistrator.registerMaterialRecycling(
+                        RecipeRegistrator.registerMaterialRecycling(
                             GT_ItemStack.internalCopyStack(tEntry.getKey()),
                             tEntry.getValue());
                 }
             } else {
                 if (!aData.hasValidPrefixData() || aData.mPrefix.mAllowNormalRecycling)
-                    GT_RecipeRegistrator.registerMaterialRecycling(aStack, aData);
+                    RecipeRegistrator.registerMaterialRecycling(aStack, aData);
             }
         } else {
             for (Object tObject : aData.mExtraData)

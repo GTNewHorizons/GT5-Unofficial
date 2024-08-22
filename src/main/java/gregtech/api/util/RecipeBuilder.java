@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import static gregtech.api.util.GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES;
+import static gregtech.api.util.RecipeMapUtil.SPECIAL_VALUE_ALIASES;
 import static gregtech.api.util.GT_Utility.copyFluidArray;
 import static gregtech.api.util.GT_Utility.copyItemArray;
 

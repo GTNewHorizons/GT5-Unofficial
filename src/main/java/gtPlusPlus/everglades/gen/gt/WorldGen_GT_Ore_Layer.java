@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import gregtech.common.blocks.BlockOres;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
@@ -18,8 +19,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Log;
-import gregtech.common.blocks.GT_Block_Ores;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.TileEntityOres;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
@@ -422,7 +422,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         }
 
         // Set GT ORE
-        if (aMetaData instanceof GT_Block_Ores) {
+        if (aMetaData instanceof BlockOres) {
             if (ore1String.equals("unset")) {
                 ore1String = Utils.sanitizeString(
                     this.mPrimary.getLocalizedName()
@@ -564,7 +564,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         Method setOres = null;
 
         try {
-            setOres = GT_TileEntity_Ores.class.getDeclaredMethod(
+            setOres = TileEntityOres.class.getDeclaredMethod(
                 "setOreBlock",
                 World.class,
                 int.class,

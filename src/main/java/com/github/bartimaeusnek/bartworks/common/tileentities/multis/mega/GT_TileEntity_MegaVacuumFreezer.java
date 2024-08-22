@@ -24,7 +24,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +32,7 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import gregtech.common.blocks.BlockCasingsAbstract;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -63,7 +64,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
 
 public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaVacuumFreezer>
     implements ISurvivalConstructable {
@@ -116,7 +116,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
     private SubspaceCoolingFluid currentCoolingFluid = null;
 
     private static final int CASING_INDEX = 17;
-    private static final int CASING_INDEX_T2 = ((GT_Block_Casings_Abstract) GregTech_API.sBlockCasings8)
+    private static final int CASING_INDEX_T2 = ((BlockCasingsAbstract) GregTech_API.sBlockCasings8)
         .getTextureIndex(14);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_T2 = "main_t2";

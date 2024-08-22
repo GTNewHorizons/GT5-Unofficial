@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import gregtech.common.blocks.TileEntityOres;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -57,8 +58,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OreDictUnificator;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.crossmod.visualprospecting.GT_VisualProspecting_Database;
 
 public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTileEntity_DrillerBase
@@ -250,8 +250,8 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         if (oreBlock != null && GT_Utility.isOre(oreBlock, oreBlockMetadata)) {
             short metaData = 0;
             TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntity(x, y, z);
-            if (tTileEntity instanceof GT_TileEntity_Ores) {
-                metaData = ((GT_TileEntity_Ores) tTileEntity).mMetaData;
+            if (tTileEntity instanceof TileEntityOres) {
+                metaData = ((TileEntityOres) tTileEntity).mMetaData;
             }
 
             Collection<ItemStack> oreBlockDrops = getBlockDrops(oreBlock, x, y, z);
@@ -540,9 +540,9 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         if (oreBlock.canSilkHarvest(getBaseMetaTileEntity().getWorld(), null, posX, posY, posZ, blockMeta)) {
             return Collections.singleton(new ItemStack(oreBlock, 1, blockMeta));
         }
-        if (oreBlock instanceof GT_Block_Ores_Abstract) {
+        if (oreBlock instanceof BlockOresAbstract) {
             TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntity(posX, posY, posZ);
-            if (tTileEntity instanceof GT_TileEntity_Ores && ((GT_TileEntity_Ores) tTileEntity).mMetaData >= 16000) {
+            if (tTileEntity instanceof TileEntityOres && ((TileEntityOres) tTileEntity).mMetaData >= 16000) {
                 // GT_Log.out.println("Running Small Ore");
                 return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, mTier + 3);
             }
@@ -588,9 +588,9 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         int blockMeta = getBaseMetaTileEntity().getMetaID(x, y, z);
         ChunkPosition blockPos = new ChunkPosition(x, y, z);
         if (!oreBlockPositions.contains(blockPos)) {
-            if (block instanceof GT_Block_Ores_Abstract) {
+            if (block instanceof BlockOresAbstract) {
                 TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntity(x, y, z);
-                if (tTileEntity instanceof GT_TileEntity_Ores && ((GT_TileEntity_Ores) tTileEntity).mNatural)
+                if (tTileEntity instanceof TileEntityOres && ((TileEntityOres) tTileEntity).mNatural)
                     oreBlockPositions.add(blockPos);
             } else if (GT_Utility.isOre(block, blockMeta)) oreBlockPositions.add(blockPos);
         }

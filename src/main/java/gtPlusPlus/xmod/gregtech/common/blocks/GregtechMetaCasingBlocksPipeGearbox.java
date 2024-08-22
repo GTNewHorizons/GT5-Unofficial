@@ -9,7 +9,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -18,7 +18,7 @@ public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlock
     private static HashMap<Integer, Integer> sMaterialMapping = new HashMap<>();
 
     public GregtechMetaCasingBlocksPipeGearbox() {
-        super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.pipesgears", GT_Material_Casings.INSTANCE);
+        super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.pipesgears", MaterialCasings.INSTANCE);
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Eglin Steel Gear Box Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Inconel-792 Gear Box Casing");
         GT_LanguageManager

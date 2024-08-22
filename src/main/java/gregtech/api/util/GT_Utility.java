@@ -56,6 +56,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.common.blocks.BlockOresAbstract;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
@@ -169,7 +170,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.Runnable_Sound;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.GT_Pollution;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
@@ -4366,7 +4366,7 @@ public class GT_Utility {
         "gtPlusPlus.core.block.base.BlockBaseOre");
 
     public static boolean isOre(Block aBlock, int aMeta) {
-        return (aBlock instanceof GT_Block_Ores_Abstract) || isOre(new ItemStack(aBlock, 1, aMeta))
+        return (aBlock instanceof BlockOresAbstract) || isOre(new ItemStack(aBlock, 1, aMeta))
             || ORE_BLOCK_CLASSES.contains(
                 aBlock.getClass()
                     .getName());

@@ -6,6 +6,7 @@ import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 import static gregtech.api.util.RecipeBuilder.SECONDS;
 import static gregtech.api.util.RecipeBuilder.TICKS;
 
+import gregtech.api.util.RecipeRegistrator;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
@@ -16,7 +17,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.OreDictUnificator;
 
@@ -64,8 +64,8 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
             }
         }
 
-        GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
-        GT_RecipeRegistrator
+        RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
+        RecipeRegistrator
             .registerReverseMacerating(aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false);
         if (!aMaterial.contains(SubTag.NO_SMELTING)
             && OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {

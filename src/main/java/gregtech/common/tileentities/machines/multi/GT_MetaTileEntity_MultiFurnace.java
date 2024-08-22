@@ -44,7 +44,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -68,12 +68,12 @@ public class GT_MetaTileEntity_MultiFurnace
         .addElement('m', Muffler.newAny(CASING_INDEX, 2))
         .addElement(
             'C',
-            GT_StructureUtility
+            StructureUtility
                 .ofCoil(GT_MetaTileEntity_MultiFurnace::setCoilLevel, GT_MetaTileEntity_MultiFurnace::getCoilLevel))
         .addElement(
             'b',
             ofChain(
-                GT_StructureUtility.<GT_MetaTileEntity_MultiFurnace>buildHatchAdder()
+                StructureUtility.<GT_MetaTileEntity_MultiFurnace>buildHatchAdder()
                     .atLeast(Maintenance, InputBus, OutputBus, Energy)
                     .casingIndex(CASING_INDEX)
                     .dot(1)

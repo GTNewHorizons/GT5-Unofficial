@@ -9,8 +9,8 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.filterByMTETier;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.Set;

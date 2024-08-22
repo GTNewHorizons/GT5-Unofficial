@@ -11,11 +11,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.StructureUtility;
 import gregtech.api.util.IGT_HatchAdder;
 
 public interface IHatchElement<T> {
@@ -61,7 +60,7 @@ public interface IHatchElement<T> {
 
     default <T2 extends T> IStructureElement<T2> newAny(int aCasingIndex, int aDot) {
         if (aCasingIndex < 0 || aDot < 0) throw new IllegalArgumentException();
-        return GT_StructureUtility.<T2>buildHatchAdder()
+        return StructureUtility.<T2>buildHatchAdder()
             .anyOf(this)
             .casingIndex(aCasingIndex)
             .dot(aDot)
@@ -73,17 +72,17 @@ public interface IHatchElement<T> {
     default <T2 extends T> IStructureElement<T2> newAnyOrCasing(int aCasingIndex, int aDot, Block casingBlock,
         int casingMeta) {
         if (aCasingIndex < 0 || aDot < 0) throw new IllegalArgumentException();
-        return GT_StructureUtility.<T2>buildHatchAdder()
+        return StructureUtility.<T2>buildHatchAdder()
             .anyOf(this)
             .casingIndex(aCasingIndex)
             .dot(aDot)
             .continueIfSuccess()
-            .buildAndChain(StructureUtility.ofBlock(casingBlock, casingMeta));
+            .buildAndChain(com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock(casingBlock, casingMeta));
     }
 
     default <T2 extends T> IStructureElement<T2> newAny(int aCasingIndex, int aDot, ForgeDirection... allowedFacings) {
         if (aCasingIndex < 0 || aDot < 0) throw new IllegalArgumentException();
-        return GT_StructureUtility.<T2>buildHatchAdder()
+        return StructureUtility.<T2>buildHatchAdder()
             .anyOf(this)
             .casingIndex(aCasingIndex)
             .dot(aDot)
@@ -96,7 +95,7 @@ public interface IHatchElement<T> {
     default <T2 extends T> IStructureElement<T2> newAny(int aCasingIndex, int aDot,
         BiPredicate<? super T2, ? super IGregTechTileEntity> aShouldSkip) {
         if (aCasingIndex < 0 || aDot < 0 || aShouldSkip == null) throw new IllegalArgumentException();
-        return GT_StructureUtility.<T2>buildHatchAdder()
+        return StructureUtility.<T2>buildHatchAdder()
             .anyOf(this)
             .casingIndex(aCasingIndex)
             .dot(aDot)

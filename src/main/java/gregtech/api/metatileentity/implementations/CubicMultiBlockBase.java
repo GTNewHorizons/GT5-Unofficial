@@ -25,7 +25,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.StructureUtility;
 
 /**
  * A simple 3x3x3 hollow cubic multiblock, that can be arbitrarily rotated, made of a single type of machine casing and
@@ -58,7 +58,7 @@ public abstract class CubicMultiBlockBase<T extends CubicMultiBlockBase<T>> exte
                     'h',
                     ofChain(
                         lazy(
-                            t -> GT_StructureUtility.<CubicMultiBlockBase<?>>buildHatchAdder()
+                            t -> StructureUtility.<CubicMultiBlockBase<?>>buildHatchAdder()
                                 .atLeastList(t.getAllowedHatches())
                                 .casingIndex(t.getHatchTextureIndex())
                                 .dot(1)

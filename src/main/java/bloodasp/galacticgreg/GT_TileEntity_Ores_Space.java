@@ -1,5 +1,6 @@
 package bloodasp.galacticgreg;
 
+import gregtech.common.blocks.TileEntityOres;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -9,8 +10,7 @@ import bloodasp.galacticgreg.api.Enums.ReplaceState;
 import bloodasp.galacticgreg.api.ModDimensionDef;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Log;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.BlockOresAbstract;
 
 public class GT_TileEntity_Ores_Space {
 
@@ -27,7 +27,7 @@ public class GT_TileEntity_Ores_Space {
 
     /**
      * Check if the block at given position may be replaced by an ore
-     * 
+     *
      * @param pWorld the world in question
      * @param pX     X-Cord
      * @param pY     Y-Cord
@@ -55,7 +55,7 @@ public class GT_TileEntity_Ores_Space {
 
     /**
      * Actually set the OreBlock
-     * 
+     *
      * @param pWorld    the world in question
      * @param pX
      * @param pY
@@ -106,15 +106,15 @@ public class GT_TileEntity_Ores_Space {
                         pY,
                         pZ,
                         GregTech_API.sBlockOres1,
-                        GT_TileEntity_Ores.getHarvestData(
+                        TileEntityOres.getHarvestData(
                             (short) pMetaData,
-                            ((GT_Block_Ores_Abstract) GregTech_API.sBlockOres1)
+                            ((BlockOresAbstract) GregTech_API.sBlockOres1)
                                 .getBaseBlockHarvestLevel(pMetaData % 16000 / 1000)),
                         0);
                     TileEntity tTileEntity = pWorld.getTileEntity(pX, pY, pZ);
-                    if ((tTileEntity instanceof GT_TileEntity_Ores)) {
-                        ((GT_TileEntity_Ores) tTileEntity).mMetaData = ((short) pMetaData);
-                        ((GT_TileEntity_Ores) tTileEntity).mNatural = true;
+                    if ((tTileEntity instanceof TileEntityOres)) {
+                        ((TileEntityOres) tTileEntity).mMetaData = ((short) pMetaData);
+                        ((TileEntityOres) tTileEntity).mNatural = true;
                     } else {
                         // This is somehow triggered randomly, and most times the target block is air, which should
                         // never happen as we check for air...

@@ -22,6 +22,7 @@ import static gregtech.api.util.RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.RecipeConstants.FUEL_VALUE;
 import static gregtech.common.GT_Proxy.tBits;
 
+import gregtech.api.util.RecipeRegistrator;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -39,7 +40,6 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.OreDictUnificator;
 import gregtech.api.util.RecipeConstants;
@@ -506,7 +506,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .eut(calculateRecipeEU(aMaterial, 16))
                 .addTo(cutterRecipes);
         }
-        GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
+        RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
     }
 
     private void registerPlateAlloy(final String aOreDictName, final ItemStack aStack) {

@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -47,7 +47,7 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
     }
 
     public GregtechMetaSpecialMultiCasings2() {
-        super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.3", GT_Material_Casings.INSTANCE);
+        super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.3", MaterialCasings.INSTANCE);
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
             // TAE.registerTextures(new GT_CopiedBlockTexture(this, 6, i));
             // Don't register these Textures, They already exist within vanilla GT. (May not exist in 5.08)

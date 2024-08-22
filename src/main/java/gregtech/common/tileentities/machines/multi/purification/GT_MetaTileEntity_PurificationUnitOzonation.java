@@ -13,7 +13,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.StructureUtility.ofFrame;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -41,7 +41,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
@@ -83,7 +83,7 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
             'A',
             ofChain(
                 lazy(
-                    t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitOzonation>buildHatchAdder()
+                    t -> StructureUtility.<GT_MetaTileEntity_PurificationUnitOzonation>buildHatchAdder()
                         .atLeastList(ImmutableList.of(InputHatch, OutputHatch, OutputBus))
                         .casingIndex(getTextureIndex(GregTech_API.sBlockCasings9, 10))
                         .dot(1)
@@ -100,7 +100,7 @@ public class GT_MetaTileEntity_PurificationUnitOzonation
         .addElement(
             'O',
             lazy(
-                t -> GT_StructureUtility.<GT_MetaTileEntity_PurificationUnitOzonation>buildHatchAdder()
+                t -> StructureUtility.<GT_MetaTileEntity_PurificationUnitOzonation>buildHatchAdder()
                     .atLeast(InputHatch)
                     .casingIndex(getTextureIndex(GregTech_API.sBlockCasings9, 9))
                     .dot(2)

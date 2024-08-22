@@ -32,7 +32,7 @@ import gregtech.api.gui.modularui.UITextures;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.StructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multiblock.logic.LaserEngraverProcessingLogic;
 
@@ -208,7 +208,7 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver, Lase
                     ofMuTECasings(NOTHING, CLEANROOM_CASINGS, GT_MultiTileCasing.LaserEngraver.getCasing()))
                 .addElement('D', ofMuTECasings(NOTHING, WIRELESS_CASINGS, GT_MultiTileCasing.LaserEngraver.getCasing()))
                 .addElement('E', ofMuTECasings(NOTHING, MOTOR_CASINGS))
-                .addElement('F', GT_StructureUtility.ofFrame(Materials.Naquadah)
+                .addElement('F', StructureUtility.ofFrame(Materials.Naquadah)
 
                 )
                 .addElement('H', ofMuTECasings(NOTHING, GT_MultiTileCasing.Mirror.getCasing()))

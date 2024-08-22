@@ -20,11 +20,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.common.blocks.BlockCasingsAbstract;
+import gregtech.common.blocks.MaterialCasings;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class StabilisationFieldCasing extends GT_Block_Casings_Abstract {
+public class StabilisationFieldCasing extends BlockCasingsAbstract {
 
     private static IIcon textureTier0;
     private static IIcon textureTier1;
@@ -40,7 +40,7 @@ public class StabilisationFieldCasing extends GT_Block_Casings_Abstract {
     private static final byte START_INDEX = 32;
 
     public StabilisationFieldCasing() {
-        super(GT_Item_Casings_Stabilisation.class, "gt.stabilisation_field_generator", GT_Material_Casings.INSTANCE);
+        super(GT_Item_Casings_Stabilisation.class, "gt.stabilisation_field_generator", MaterialCasings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
             Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] = new GT_CopiedBlockTexture(this, 6, b);
         }

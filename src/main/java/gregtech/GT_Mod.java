@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import gregtech.api.util.RecipeRegistrator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -66,12 +67,11 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.threads.Runnable_MachineBlockUpdate;
 import gregtech.api.util.Assemblyline_Server;
-import gregtech.api.util.GT_Forestry_Compat;
+import gregtech.api.util.ForestryCompat;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_SpawnEventHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.OreDictUnificator;
@@ -406,7 +406,7 @@ public class GT_Mod implements IGT_Mod {
         new GT_Worldgenloader().run();
         new GT_CoverLoader().run();
 
-        GT_RecipeRegistrator.registerUsagesForMaterials(
+        RecipeRegistrator.registerUsagesForMaterials(
             null,
             false,
             new ItemStack(Blocks.planks, 1),
@@ -480,8 +480,8 @@ public class GT_Mod implements IGT_Mod {
         GT_PostLoad.registerFluidCannerRecipes();
 
         if (Forestry.isModLoaded()) {
-            GT_Forestry_Compat.transferCentrifugeRecipes();
-            GT_Forestry_Compat.transferSqueezerRecipes();
+            ForestryCompat.transferCentrifugeRecipes();
+            ForestryCompat.transferSqueezerRecipes();
         }
         GT_MetaTileEntity_DigitalChestBase.registerAEIntegration();
         ItemStack facade = AEApi.instance()

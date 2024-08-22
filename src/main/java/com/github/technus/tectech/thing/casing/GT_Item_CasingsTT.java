@@ -11,12 +11,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import gregtech.common.blocks.GT_Item_Casings_Abstract;
+import gregtech.common.blocks.ItemCasingsAbstract;
 
 /**
  * Created by danie_000 on 03.10.2016.
  */
-public class GT_Item_CasingsTT extends GT_Item_Casings_Abstract {
+public class GT_Item_CasingsTT extends ItemCasingsAbstract {
 
     public GT_Item_CasingsTT(Block par1) {
         super(par1);

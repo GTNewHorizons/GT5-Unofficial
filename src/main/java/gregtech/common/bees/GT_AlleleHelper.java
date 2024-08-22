@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import forestry.core.genetics.alleles.AlleleHelper;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import forestry.api.apiculture.EnumBeeChromosome;
@@ -20,7 +21,6 @@ import forestry.api.lepidopterology.EnumButterflyChromosome;
 import forestry.apiculture.flowers.FlowerProvider;
 import forestry.core.config.Constants;
 import forestry.core.genetics.alleles.AlleleBoolean;
-import forestry.core.genetics.alleles.AlleleHelper;
 import forestry.core.genetics.alleles.AlleleInteger;
 import forestry.core.genetics.alleles.AlleleTolerance;
 import forestry.core.genetics.alleles.EnumAllele;
@@ -139,12 +139,12 @@ public class GT_AlleleHelper extends AlleleHelper {
 
         try {
             helper.alleleMaps = (Map<Class<?>, Map<?, ? extends IAllele>>) FieldUtils
-                .readField(FieldUtils.getField(AlleleHelper.class, "alleleMaps", true), AlleleHelper.instance, true);
+                .readField(FieldUtils.getField(forestry.core.genetics.alleles.AlleleHelper.class, "alleleMaps", true), forestry.core.genetics.alleles.AlleleHelper.instance, true);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
 
-        AlleleHelper.instance = helper;
+        forestry.core.genetics.alleles.AlleleHelper.instance = helper;
         // AlleleHelper.instance.init();
     }
 

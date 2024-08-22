@@ -22,6 +22,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import gregtech.api.util.RecipeRegistrator;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -45,10 +46,9 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_CLS_Compat;
-import gregtech.api.util.GT_Forestry_Compat;
+import gregtech.api.util.ForestryCompat;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.OreDictUnificator;
 import gregtech.api.util.RecipeBuilder;
@@ -140,7 +140,7 @@ public class GT_PostLoad {
         GT_Log.out.println("GT_Mod: Adding Fake Recipes for NEI");
 
         if (Forestry.isModLoaded()) {
-            GT_Forestry_Compat.populateFakeNeiRecipes();
+            ForestryCompat.populateFakeNeiRecipes();
         }
 
         if (ItemList.IC2_Crop_Seeds.get(1L) != null) {
@@ -417,7 +417,7 @@ public class GT_PostLoad {
         GT_Mod.GT_FML_LOGGER.info("Replacing Vanilla Materials in recipes, please wait.");
         Set<Materials> replaceVanillaItemsSet = GT_Mod.gregtechproxy.mUseGreatlyShrukenReplacementList
             ? Arrays.stream(Materials.values())
-                .filter(GT_RecipeRegistrator::hasVanillaRecipes)
+                .filter(RecipeRegistrator::hasVanillaRecipes)
                 .collect(Collectors.toSet())
             : new HashSet<>(Arrays.asList(Materials.values()));
 
@@ -445,9 +445,9 @@ public class GT_PostLoad {
         String plateName = OrePrefixes.plate.get(m)
             .toString();
         boolean noSmash = !m.contains(SubTag.NO_SMASHING);
-        if ((m.mTypes & 2) != 0) GT_RecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getIngots(1));
-        if ((m.mTypes & 4) != 0) GT_RecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getGems(1));
-        if (m.getBlocks(1) != null) GT_RecipeRegistrator.registerUsagesForMaterials(null, noSmash, m.getBlocks(1));
+        if ((m.mTypes & 2) != 0) RecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getIngots(1));
+        if ((m.mTypes & 4) != 0) RecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getGems(1));
+        if (m.getBlocks(1) != null) RecipeRegistrator.registerUsagesForMaterials(null, noSmash, m.getBlocks(1));
     }
 
     public static void createGTtoolsCreativeTab() {

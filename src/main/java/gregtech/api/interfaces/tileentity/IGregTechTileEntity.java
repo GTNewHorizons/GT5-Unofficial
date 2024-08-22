@@ -22,7 +22,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddInventorySlots;
 import gregtech.api.interfaces.modularui.IGetGUITextureSet;
 import gregtech.api.util.shutdown.ShutDownReason;
-import gregtech.common.blocks.GT_Block_Machines;
+import gregtech.common.blocks.BlockMachines;
 
 /**
  * A simple compound Interface for all my TileEntities.
@@ -186,7 +186,7 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
 
     /**
      * A randomly called display update to be able to add particles or other items for display The event is proxied by
-     * the {@link GT_Block_Machines#randomDisplayTick}
+     * the {@link BlockMachines#randomDisplayTick}
      */
     @SideOnly(Side.CLIENT)
     default void onRandomDisplayTick() {

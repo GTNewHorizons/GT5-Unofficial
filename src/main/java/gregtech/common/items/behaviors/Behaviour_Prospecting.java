@@ -3,6 +3,7 @@ package gregtech.common.items.behaviors;
 import java.util.List;
 import java.util.Random;
 
+import gregtech.common.blocks.TileEntityOres;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,8 +25,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.OreDictUnificator;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.BlockOresAbstract;
 
 public class Behaviour_Prospecting extends Behaviour_None {
 
@@ -115,10 +115,10 @@ public class Behaviour_Prospecting extends Behaviour_None {
                     tY = aY - 4 - tQuality + tRandom.nextInt(j);
                     tZ = aZ - 4 - tQuality + tRandom.nextInt(j);
                     tBlock = aWorld.getBlock(tX, tY, tZ);
-                    if (tBlock instanceof GT_Block_Ores_Abstract) {
+                    if (tBlock instanceof BlockOresAbstract) {
                         final TileEntity tTileEntity = aWorld.getTileEntity(tX, tY, tZ);
-                        if (tTileEntity instanceof GT_TileEntity_Ores) {
-                            final Materials tMaterial = GregTech_API.sGeneratedMaterials[((GT_TileEntity_Ores) tTileEntity).mMetaData
+                        if (tTileEntity instanceof TileEntityOres) {
+                            final Materials tMaterial = GregTech_API.sGeneratedMaterials[((TileEntityOres) tTileEntity).mMetaData
                                 % 1000];
                             if (tMaterial != null && tMaterial != Materials._NULL) {
                                 GT_Utility.sendChatToPlayer(

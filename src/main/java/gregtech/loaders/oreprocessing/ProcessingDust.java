@@ -18,6 +18,7 @@ import static gregtech.api.util.RecipeConstants.FUEL_VALUE;
 
 import java.util.ArrayList;
 
+import gregtech.api.util.RecipeRegistrator;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -31,7 +32,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.OreDictUnificator;
 import gregtech.api.util.RecipeBuilder;
@@ -70,9 +70,9 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .addTo(cannerRecipes);
                 }
                 if (!aMaterial.mBlastFurnaceRequired) {
-                    GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
+                    RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
                     if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
-                        GT_RecipeRegistrator.registerReverseArcSmelting(
+                        RecipeRegistrator.registerReverseArcSmelting(
                             GT_Utility.copyAmount(1, aStack),
                             aMaterial,
                             aPrefix.mMaterialAmount,
@@ -582,9 +582,9 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     .eut(4)
                     .addTo(packagerRecipes);
                 if (!aMaterial.mBlastFurnaceRequired) {
-                    GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
+                    RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
                     if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
-                        GT_RecipeRegistrator.registerReverseArcSmelting(
+                        RecipeRegistrator.registerReverseArcSmelting(
                             GT_Utility.copyAmount(1, aStack),
                             aMaterial,
                             aPrefix.mMaterialAmount,
@@ -602,9 +602,9 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     .eut(4)
                     .addTo(packagerRecipes);
                 if (!aMaterial.mBlastFurnaceRequired) {
-                    GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
+                    RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
                     if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
-                        GT_RecipeRegistrator.registerReverseArcSmelting(
+                        RecipeRegistrator.registerReverseArcSmelting(
                             GT_Utility.copyAmount(1, aStack),
                             aMaterial,
                             aPrefix.mMaterialAmount,

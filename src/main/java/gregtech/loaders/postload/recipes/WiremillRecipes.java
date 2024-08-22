@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
-import static gregtech.api.util.GT_RecipeRegistrator.registerWiremillRecipes;
+import static gregtech.api.util.RecipeRegistrator.registerWiremillRecipes;
 import static gregtech.api.util.RecipeBuilder.SECONDS;
 
 import net.minecraft.init.Items;

@@ -3,9 +3,9 @@ package gregtech.api.recipe;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.NEICustomDiagrams;
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.util.GT_RecipeMapUtil.GT_RecipeTemplate;
-import static gregtech.api.util.GT_RecipeMapUtil.asTemplate;
-import static gregtech.api.util.GT_RecipeMapUtil.buildOrEmpty;
+import static gregtech.api.util.RecipeMapUtil.GT_RecipeTemplate;
+import static gregtech.api.util.RecipeMapUtil.asTemplate;
+import static gregtech.api.util.RecipeMapUtil.buildOrEmpty;
 import static gregtech.api.util.GT_Utility.clamp;
 import static gregtech.api.util.GT_Utility.copyAmount;
 import static gregtech.api.util.GT_Utility.getFluidForFilledItem;
@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 
+import gregtech.api.util.RecipeMapUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -67,7 +68,6 @@ import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeMapUtil;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.OreDictUnificator;
 import gregtech.api.util.RecipeConstants;
@@ -1059,20 +1059,20 @@ public final class RecipeMaps {
         .of("gt.recipe.largeelectrolyzer")
         .maxIO(1, 6, 1, 6)
         .disableRegisterNEI()
-        .recipeEmitter(GT_RecipeMapUtil::buildRecipeForMultiblock)
+        .recipeEmitter(RecipeMapUtil::buildRecipeForMultiblock)
         .build();
     public static final RecipeMap<RecipeMapBackend> centrifugeNonCellRecipes = RecipeMapBuilder
         .of("gt.recipe.largecentrifuge")
         .maxIO(2, 6, 1, 6)
         .disableOptimize()
         .disableRegisterNEI()
-        .recipeEmitter(GT_RecipeMapUtil::buildRecipeForMultiblock)
+        .recipeEmitter(RecipeMapUtil::buildRecipeForMultiblock)
         .build();
     public static final RecipeMap<RecipeMapBackend> mixerNonCellRecipes = RecipeMapBuilder.of("gt.recipe.largemixer")
         .maxIO(9, 4, 6, 4)
         .disableOptimize()
         .disableRegisterNEI()
-        .recipeEmitter(GT_RecipeMapUtil::buildRecipeForMultiblockNoCircuit)
+        .recipeEmitter(RecipeMapUtil::buildRecipeForMultiblockNoCircuit)
         .build();
     public static final RecipeMap<LargeBoilerFuelBackend> largeBoilerFakeFuels = RecipeMapBuilder
         .of("gt.recipe.largeboilerfakefuels", LargeBoilerFuelBackend::new)

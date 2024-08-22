@@ -7,8 +7,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_GLOW;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.ofFrame;
 
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +58,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.LaserRenderingUtil;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OreDictUnificator;
-import gregtech.common.blocks.GT_Block_Casings10;
+import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.tileentities.render.TileLaser;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -79,7 +79,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             'a',
             buildHatchAdder(GT_MetaTileEntity_IndustrialLaserEngraver.class)
                 .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
-                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(1))
+                .casingIndex(((BlockCasings10) GregTech_API.sBlockCasings10).getTextureIndex(1))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(
@@ -101,7 +101,7 @@ public class GT_MetaTileEntity_IndustrialLaserEngraver
             buildHatchAdder(GT_MetaTileEntity_IndustrialLaserEngraver.class)
                 .adder(GT_MetaTileEntity_IndustrialLaserEngraver::addLaserSource)
                 .hatchClass(GT_MetaTileEntity_Hatch_DynamoTunnel.class)
-                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(1))
+                .casingIndex(((BlockCasings10) GregTech_API.sBlockCasings10).getTextureIndex(1))
                 .dot(3)
                 .build())
         .build();

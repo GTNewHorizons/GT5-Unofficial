@@ -41,7 +41,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -149,47 +149,47 @@ public class ComponentAssemblyLine extends ExtendedPowerMultiBlockBase<Component
                 t -> t.casingTier))
         .addElement(
             'J',
-            GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class)
+            StructureUtility.buildHatchAdder(ComponentAssemblyLine.class)
                 .atLeast(InputBus)
                 .dot(1)
                 .casingIndex(183)
                 .buildAndChain(GregTech_API.sBlockCasings8, 7))
         .addElement(
             'N',
-            GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class)
+            StructureUtility.buildHatchAdder(ComponentAssemblyLine.class)
                 .atLeast(InputBus)
                 .dot(1)
                 .casingIndex(183)
-                .buildAndChain(GT_StructureUtility.ofFrame(Materials.TungstenSteel)))
+                .buildAndChain(StructureUtility.ofFrame(Materials.TungstenSteel)))
         .addElement(
             'K',
-            GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class)
+            StructureUtility.buildHatchAdder(ComponentAssemblyLine.class)
                 .atLeast(OutputBus)
                 .dot(2)
                 .casingIndex(183)
                 .buildAndChain(GregTech_API.sBlockCasings8, 7))
         .addElement(
             'L',
-            GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class)
+            StructureUtility.buildHatchAdder(ComponentAssemblyLine.class)
                 .atLeast(Energy, ExoticEnergy)
                 .dot(3)
                 .casingIndex(183)
                 .buildAndChain(GregTech_API.sBlockCasings8, 7))
         .addElement(
             'I',
-            GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class)
+            StructureUtility.buildHatchAdder(ComponentAssemblyLine.class)
                 .atLeast(Maintenance)
                 .dot(4)
                 .casingIndex(183)
                 .buildAndChain(GregTech_API.sBlockCasings8, 7))
         .addElement(
             'M',
-            GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class)
+            StructureUtility.buildHatchAdder(ComponentAssemblyLine.class)
                 .atLeast(InputHatch)
                 .dot(5)
                 .casingIndex(183)
                 .buildAndChain(GregTech_API.sBlockCasings8, 7))
-        .addElement('n', GT_StructureUtility.ofFrame(Materials.TungstenSteel))
+        .addElement('n', StructureUtility.ofFrame(Materials.TungstenSteel))
         .build();
 
     public ComponentAssemblyLine(int aID, String aName, String aNameRegional) {

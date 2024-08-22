@@ -2,6 +2,7 @@ package kubatech.loaders.block.defc;
 
 import static kubatech.kubatech.KT;
 
+import gregtech.common.blocks.BlockCasingsAbstract;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -12,11 +13,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import kubatech.Tags;
 import kubatech.api.enums.ItemList;
 
-public class DEFCCasingBlock extends GT_Block_Casings_Abstract {
+public class DEFCCasingBlock extends BlockCasingsAbstract {
 
     @SideOnly(Side.CLIENT)
     private IIcon[] texture;

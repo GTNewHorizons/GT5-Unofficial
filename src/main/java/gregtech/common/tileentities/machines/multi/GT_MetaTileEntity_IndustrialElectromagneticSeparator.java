@@ -7,8 +7,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.ofFrame;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -53,7 +53,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.GT_Block_Casings10;
+import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -129,7 +129,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             ofChain(
                 buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
                     .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
+                    .casingIndex(((BlockCasings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
                     .dot(1)
                     .buildAndChain(
                         onElementPass(
@@ -141,7 +141,7 @@ public class GT_MetaTileEntity_IndustrialElectromagneticSeparator
             buildHatchAdder(GT_MetaTileEntity_IndustrialElectromagneticSeparator.class)
                 .adder(GT_MetaTileEntity_IndustrialElectromagneticSeparator::addMagHatch)
                 .hatchClass(Hatch_Magnet.class)
-                .casingIndex(((GT_Block_Casings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
+                .casingIndex(((BlockCasings10) GregTech_API.sBlockCasings10).getTextureIndex(0))
                 .dot(2)
                 .build())
         .build();

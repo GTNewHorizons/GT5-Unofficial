@@ -51,7 +51,7 @@ import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
+import gregtech.common.blocks.BlockCasingsAbstract;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -167,7 +167,7 @@ public abstract class GT_MetaTileEntity_PurificationUnitBase<T extends ExtendedP
      * @return The correct index into the global texture atlas.
      */
     protected static int getTextureIndex(Block block, int meta) {
-        return ((GT_Block_Casings_Abstract) block).getTextureIndex(meta);
+        return ((BlockCasingsAbstract) block).getTextureIndex(meta);
     }
 
     @Override

@@ -18,14 +18,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.common.blocks.BlockCasingsAbstract;
+import gregtech.common.blocks.MaterialCasings;
 
 /**
  * Created by danie_000 on 03.10.2016.
  */
 // Mostly tesla coils, also 2 eye of harmony casings.
-public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
+public class GT_Block_CasingsBA0 extends BlockCasingsAbstract {
 
     private static final IIcon[] tM0 = new IIcon[2];
     private static final IIcon[] tM1 = new IIcon[2];
@@ -45,7 +45,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
     private static final byte START_INDEX = 16;
 
     public GT_Block_CasingsBA0() {
-        super(GT_Item_CasingsBA0.class, "gt.blockcasingsBA0", GT_Material_Casings.INSTANCE);
+        super(GT_Item_CasingsBA0.class, "gt.blockcasingsBA0", MaterialCasings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
             Textures.BlockIcons.casingTexturePages[texturePage][b
                 + START_INDEX] = new GT_CopiedBlockTexture(this, 6, b);

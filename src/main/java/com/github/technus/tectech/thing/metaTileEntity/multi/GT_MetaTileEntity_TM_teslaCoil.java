@@ -27,7 +27,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -111,7 +111,7 @@ import gregtech.api.util.IGT_HatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OreDictUnificator;
 import gregtech.api.util.shutdown.ShutDownReason;
-import gregtech.common.blocks.GT_Item_Machines;
+import gregtech.common.blocks.ItemMachines;
 
 public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM
     implements ISurvivalConstructable, ITeslaConnectable {
@@ -286,7 +286,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 ItemStack trigger, IItemSource source, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                 if (check(t, world, x, y, z)) return PlaceResult.SKIP;
                 ItemStack tFrameStack = source
-                    .takeOne(s -> GT_Item_Machines.getMetaTileEntity(s) instanceof MetaPipeEntity_Frame, true);
+                    .takeOne(s -> ItemMachines.getMetaTileEntity(s) instanceof MetaPipeEntity_Frame, true);
                 if (tFrameStack == null) return PlaceResult.REJECT;
                 return StructureUtility.survivalPlaceBlock(
                     tFrameStack,

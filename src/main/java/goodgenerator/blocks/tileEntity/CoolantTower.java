@@ -3,7 +3,7 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GT_StructureUtility.*;
+import static gregtech.api.util.StructureUtility.*;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import net.minecraft.item.ItemStack;

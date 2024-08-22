@@ -6,6 +6,7 @@ import static net.minecraft.util.EnumChatFormatting.WHITE;
 
 import java.util.List;
 
+import gregtech.common.blocks.BlockCasingsAbstract;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -20,11 +21,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.common.blocks.MaterialCasings;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class SpacetimeCompressionFieldCasing extends GT_Block_Casings_Abstract {
+public class SpacetimeCompressionFieldCasing extends BlockCasingsAbstract {
 
     private static IIcon textureTier0;
     private static IIcon textureTier1;
@@ -43,7 +43,7 @@ public class SpacetimeCompressionFieldCasing extends GT_Block_Casings_Abstract {
         super(
             GT_Item_Casings_Spacetime.class,
             "gt.spacetime_compression_field_generator",
-            GT_Material_Casings.INSTANCE);
+            MaterialCasings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
             Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] = new GT_CopiedBlockTexture(this, 6, b);
         }

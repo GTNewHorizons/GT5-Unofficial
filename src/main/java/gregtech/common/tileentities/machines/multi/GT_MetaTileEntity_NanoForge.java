@@ -13,8 +13,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.ofFrame;
 
 import javax.annotation.Nonnull;
 
@@ -52,7 +52,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.GT_Block_Casings8;
+import gregtech.common.blocks.BlockCasings8;
 
 public class GT_MetaTileEntity_NanoForge extends ExtendedPowerMultiBlockBase<GT_MetaTileEntity_NanoForge>
     implements ISurvivalConstructable {
@@ -158,7 +158,7 @@ public class GT_MetaTileEntity_NanoForge extends ExtendedPowerMultiBlockBase<GT_
             buildHatchAdder(GT_MetaTileEntity_NanoForge.class)
                 .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
                 .dot(1)
-                .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(10))
+                .casingIndex(((BlockCasings8) GregTech_API.sBlockCasings8).getTextureIndex(10))
                 .buildAndChain(GregTech_API.sBlockCasings8, 10))
         .build();
     private byte mSpecialTier = 0;

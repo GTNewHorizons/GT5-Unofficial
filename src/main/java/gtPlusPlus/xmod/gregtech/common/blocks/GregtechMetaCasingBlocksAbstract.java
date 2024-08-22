@@ -21,10 +21,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
+import gregtech.common.blocks.BlockCasingsAbstract;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
-public abstract class GregtechMetaCasingBlocksAbstract extends GT_Block_Casings_Abstract {
+public abstract class GregtechMetaCasingBlocksAbstract extends BlockCasingsAbstract {
 
     public GregtechMetaCasingBlocksAbstract(final Class<? extends ItemBlock> aItemClass, final String aName,
         final Material aMaterial) {

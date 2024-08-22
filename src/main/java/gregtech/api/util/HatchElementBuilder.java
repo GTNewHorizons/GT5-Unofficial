@@ -17,6 +17,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import gregtech.common.blocks.ItemMachines;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -33,7 +34,6 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
 import gnu.trove.TIntCollection;
@@ -42,7 +42,6 @@ import gnu.trove.set.hash.TIntHashSet;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.common.blocks.GT_Item_Machines;
 
 public class HatchElementBuilder<T> {
 
@@ -139,7 +138,7 @@ public class HatchElementBuilder<T> {
                 .reduce(IGT_HatchAdder::orElse)
                 .orElseThrow(AssertionError::new))
                     .hatchItemFilter(
-                        obj -> GT_StructureUtility.filterByMTEClass(
+                        obj -> StructureUtility.filterByMTEClass(
                             elements.entrySet()
                                 .stream()
                                 .filter(
@@ -321,7 +320,7 @@ public class HatchElementBuilder<T> {
 
     // region intermediate
     public HatchElementBuilder<T> hatchClass(Class<? extends IMetaTileEntity> clazz) {
-        return hatchItemFilter(c -> is -> clazz.isInstance(GT_Item_Machines.getMetaTileEntity(is)))
+        return hatchItemFilter(c -> is -> clazz.isInstance(ItemMachines.getMetaTileEntity(is)))
             .cacheHint(() -> "of class " + clazz.getSimpleName())
             .shouldSkip(
                 (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> clazz
@@ -335,7 +334,7 @@ public class HatchElementBuilder<T> {
 
     public final HatchElementBuilder<T> hatchClasses(List<? extends Class<? extends IMetaTileEntity>> classes) {
         List<? extends Class<? extends IMetaTileEntity>> list = new ArrayList<>(classes);
-        return hatchItemFilter(obj -> GT_StructureUtility.filterByMTEClass(list)).cacheHint(
+        return hatchItemFilter(obj -> StructureUtility.filterByMTEClass(list)).cacheHint(
             () -> list.stream()
                 .map(Class::getSimpleName)
                 .sorted()
@@ -347,7 +346,7 @@ public class HatchElementBuilder<T> {
 
     public HatchElementBuilder<T> hatchId(int aId) {
         return hatchItemFilter(
-            c -> is -> GT_Utility.isStackValid(is) && is.getItem() instanceof GT_Item_Machines
+            c -> is -> GT_Utility.isStackValid(is) && is.getItem() instanceof ItemMachines
                 && is.getItemDamage() == aId).cacheHint(() -> "of id " + aId)
                     .shouldSkip(
                         (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null
@@ -359,7 +358,7 @@ public class HatchElementBuilder<T> {
         if (aIds.length == 1) return hatchId(aIds[0]);
         TIntCollection coll = aIds.length < 16 ? new TIntArrayList(aIds) : new TIntHashSet(aIds);
         return hatchItemFilter(
-            c -> is -> GT_Utility.isStackValid(is) && is.getItem() instanceof GT_Item_Machines
+            c -> is -> GT_Utility.isStackValid(is) && is.getItem() instanceof ItemMachines
                 && coll.contains(is.getItemDamage())).cacheHint(
                     () -> Arrays.stream(coll.toArray())
                         .sorted()
@@ -493,7 +492,7 @@ public class HatchElementBuilder<T> {
                         .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
                     return PlaceResult.REJECT;
                 }
-                if (StructureUtility.survivalPlaceBlock(
+                if (com.gtnewhorizon.structurelib.structure.StructureUtility.survivalPlaceBlock(
                     taken,
                     ItemStackPredicate.NBTMode.IGNORE,
                     null,

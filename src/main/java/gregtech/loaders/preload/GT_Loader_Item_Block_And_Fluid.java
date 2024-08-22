@@ -19,6 +19,7 @@ import static gregtech.api.util.RecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
+import gregtech.common.blocks.TileEntityOres;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -52,30 +53,29 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.OreDictUnificator;
-import gregtech.common.blocks.GT_Block_Casings1;
-import gregtech.common.blocks.GT_Block_Casings10;
-import gregtech.common.blocks.GT_Block_Casings11;
-import gregtech.common.blocks.GT_Block_Casings2;
-import gregtech.common.blocks.GT_Block_Casings3;
-import gregtech.common.blocks.GT_Block_Casings4;
-import gregtech.common.blocks.GT_Block_Casings5;
-import gregtech.common.blocks.GT_Block_Casings6;
-import gregtech.common.blocks.GT_Block_Casings8;
-import gregtech.common.blocks.GT_Block_Casings9;
-import gregtech.common.blocks.GT_Block_Concretes;
-import gregtech.common.blocks.GT_Block_Drone;
-import gregtech.common.blocks.GT_Block_Glass1;
-import gregtech.common.blocks.GT_Block_Granites;
-import gregtech.common.blocks.GT_Block_Laser;
-import gregtech.common.blocks.GT_Block_Machines;
-import gregtech.common.blocks.GT_Block_Metal;
-import gregtech.common.blocks.GT_Block_Ores;
-import gregtech.common.blocks.GT_Block_Reinforced;
-import gregtech.common.blocks.GT_Block_Stones;
-import gregtech.common.blocks.GT_Block_TintedIndustrialGlass;
-import gregtech.common.blocks.GT_Cyclotron_Coils;
-import gregtech.common.blocks.GT_TileEntity_Ores;
-import gregtech.common.blocks.GT_WormholeRenderBlock;
+import gregtech.common.blocks.BlockCasings1;
+import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.blocks.BlockCasings11;
+import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.blocks.BlockCasings3;
+import gregtech.common.blocks.BlockCasings4;
+import gregtech.common.blocks.BlockCasings5;
+import gregtech.common.blocks.BlockCasings6;
+import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.blocks.BlockCasings9;
+import gregtech.common.blocks.BlockConcretes;
+import gregtech.common.blocks.BlockDrone;
+import gregtech.common.blocks.BlockGlass1;
+import gregtech.common.blocks.BlockGranites;
+import gregtech.common.blocks.BlockLaser;
+import gregtech.common.blocks.BlockMachines;
+import gregtech.common.blocks.BlockMetal;
+import gregtech.common.blocks.BlockOres;
+import gregtech.common.blocks.BlockReinforced;
+import gregtech.common.blocks.BlockStones;
+import gregtech.common.blocks.BlockTintedIndustrialGlass;
+import gregtech.common.blocks.BlockCyclotronCoils;
+import gregtech.common.blocks.WormholeRenderBlock;
 import gregtech.common.items.GT_DepletetCell_Item;
 import gregtech.common.items.GT_FluidDisplayItem;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
@@ -538,31 +538,31 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 true));
 
         GT_Log.out.println("GT_Mod: Adding Blocks.");
-        GregTech_API.sBlockMachines = new GT_Block_Machines();
-        GregTech_API.sBlockCasings1 = new GT_Block_Casings1();
-        GregTech_API.sBlockCasings2 = new GT_Block_Casings2();
-        GregTech_API.sBlockCasings3 = new GT_Block_Casings3();
-        GregTech_API.sBlockCasings4 = new GT_Block_Casings4();
-        GregTech_API.sBlockCasings5 = new GT_Block_Casings5();
-        GregTech_API.sBlockCasings6 = new GT_Block_Casings6();
-        GregTech_API.sBlockCasings8 = new GT_Block_Casings8();
-        GregTech_API.sBlockCasings9 = new GT_Block_Casings9();
-        GregTech_API.sBlockCasings10 = new GT_Block_Casings10();
-        GregTech_API.sBlockCasings11 = new GT_Block_Casings11();
-        GregTech_API.sBlockGranites = new GT_Block_Granites();
+        GregTech_API.sBlockMachines = new BlockMachines();
+        GregTech_API.sBlockCasings1 = new BlockCasings1();
+        GregTech_API.sBlockCasings2 = new BlockCasings2();
+        GregTech_API.sBlockCasings3 = new BlockCasings3();
+        GregTech_API.sBlockCasings4 = new BlockCasings4();
+        GregTech_API.sBlockCasings5 = new BlockCasings5();
+        GregTech_API.sBlockCasings6 = new BlockCasings6();
+        GregTech_API.sBlockCasings8 = new BlockCasings8();
+        GregTech_API.sBlockCasings9 = new BlockCasings9();
+        GregTech_API.sBlockCasings10 = new BlockCasings10();
+        GregTech_API.sBlockCasings11 = new BlockCasings11();
+        GregTech_API.sBlockGranites = new BlockGranites();
         GregTech_API.sBlockLongDistancePipes = new BlockLongDistancePipe();
-        GregTech_API.sBlockConcretes = new GT_Block_Concretes();
-        GregTech_API.sBlockStones = new GT_Block_Stones();
-        GregTech_API.sBlockOres1 = new GT_Block_Ores();
-        GregTech_API.sDroneRender = new GT_Block_Drone();
-        GregTech_API.sBlockGlass1 = new GT_Block_Glass1();
-        GregTech_API.sBlockTintedGlass = new GT_Block_TintedIndustrialGlass();
-        GregTech_API.sLaserRender = new GT_Block_Laser();
-        GregTech_API.sWormholeRender = new GT_WormholeRenderBlock();
+        GregTech_API.sBlockConcretes = new BlockConcretes();
+        GregTech_API.sBlockStones = new BlockStones();
+        GregTech_API.sBlockOres1 = new BlockOres();
+        GregTech_API.sDroneRender = new BlockDrone();
+        GregTech_API.sBlockGlass1 = new BlockGlass1();
+        GregTech_API.sBlockTintedGlass = new BlockTintedIndustrialGlass();
+        GregTech_API.sLaserRender = new BlockLaser();
+        GregTech_API.sWormholeRender = new WormholeRenderBlock();
 
         // meta ID order, DO NOT CHANGE ORDER
 
-        GregTech_API.sBlockMetal1 = new GT_Block_Metal(
+        GregTech_API.sBlockMetal1 = new BlockMetal(
             "gt.blockmetal1",
             new Materials[] { Materials.Adamantium, Materials.Aluminium, Materials.Americium, Materials.AnnealedCopper,
                 Materials.Antimony, Materials.Arsenic, Materials.AstralSilver, Materials.BatteryAlloy,
@@ -571,7 +571,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS1);
 
-        GregTech_API.sBlockMetal2 = new GT_Block_Metal(
+        GregTech_API.sBlockMetal2 = new BlockMetal(
             "gt.blockmetal2",
             new Materials[] { Materials.Bronze, Materials.Caesium, Materials.Cerium, Materials.Chrome,
                 Materials.ChromiumDioxide, Materials.Cobalt, Materials.CobaltBrass, Materials.Copper,
@@ -580,7 +580,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS2);
 
-        GregTech_API.sBlockMetal3 = new GT_Block_Metal(
+        GregTech_API.sBlockMetal3 = new BlockMetal(
             "gt.blockmetal3",
             new Materials[] { Materials.ElectrumFlux, Materials.Enderium, Materials.Erbium, Materials.Europium,
                 Materials.FierySteel, Materials.Gadolinium, Materials.Gallium, Materials.Holmium, Materials.HSLA,
@@ -589,7 +589,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS3);
 
-        GregTech_API.sBlockMetal4 = new GT_Block_Metal(
+        GregTech_API.sBlockMetal4 = new BlockMetal(
             "gt.blockmetal4",
             new Materials[] { Materials.Knightmetal, Materials.Lanthanum, Materials.Lead, Materials.Lutetium,
                 Materials.Magnalium, Materials.Magnesium, Materials.Manganese, Materials.MeteoricIron,
@@ -598,7 +598,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS4);
 
-        GregTech_API.sBlockMetal5 = new GT_Block_Metal(
+        GregTech_API.sBlockMetal5 = new BlockMetal(
             "gt.blockmetal5",
             new Materials[] { Materials.Neodymium, Materials.NeodymiumMagnetic, Materials.Neutronium,
                 Materials.Nichrome, Materials.Nickel, Materials.Niobium, Materials.NiobiumNitride,
@@ -608,7 +608,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS5);
 
-        GregTech_API.sBlockMetal6 = new GT_Block_Metal(
+        GregTech_API.sBlockMetal6 = new BlockMetal(
             "gt.blockmetal6",
             new Materials[] { Materials.Promethium, Materials.RedAlloy, Materials.RedSteel, Materials.RoseGold,
                 Materials.Rubidium, Materials.Samarium, Materials.Scandium, Materials.ShadowIron, Materials.ShadowSteel,
@@ -617,7 +617,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS6);
 
-        GregTech_API.sBlockMetal7 = new GT_Block_Metal(
+        GregTech_API.sBlockMetal7 = new BlockMetal(
             "gt.blockmetal7",
             new Materials[] { Materials.Sunnarium, Materials.Tantalum, Materials.Tellurium, Materials.Terbium,
                 Materials.Thaumium, Materials.Thorium, Materials.Thulium, Materials.Tin, Materials.TinAlloy,
@@ -626,7 +626,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS7);
 
-        GregTech_API.sBlockMetal8 = new GT_Block_Metal(
+        GregTech_API.sBlockMetal8 = new BlockMetal(
             "gt.blockmetal8",
             new Materials[] { Materials.Vanadium, Materials.VanadiumGallium, Materials.WroughtIron, Materials.Ytterbium,
                 Materials.Yttrium, Materials.YttriumBariumCuprate, Materials.Zinc, Materials.TungstenCarbide,
@@ -635,7 +635,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS8);
 
-        GregTech_API.sBlockGem1 = new GT_Block_Metal(
+        GregTech_API.sBlockGem1 = new BlockMetal(
             "gt.blockgem1",
             new Materials[] { Materials.InfusedAir, Materials.Amber, Materials.Amethyst, Materials.InfusedWater,
                 Materials.BlueTopaz, Materials.CertusQuartz, Materials.Dilithium, Materials.EnderEye,
@@ -644,7 +644,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS9);
 
-        GregTech_API.sBlockGem2 = new GT_Block_Metal(
+        GregTech_API.sBlockGem2 = new BlockMetal(
             "gt.blockgem2",
             new Materials[] { Materials.Lazurite, Materials.Lignite, Materials.Monazite, Materials.Niter,
                 Materials.Olivine, Materials.Opal, Materials.InfusedOrder, Materials.InfusedEntropy,
@@ -653,14 +653,14 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS10);
 
-        GregTech_API.sBlockGem3 = new GT_Block_Metal(
+        GregTech_API.sBlockGem3 = new BlockMetal(
             "gt.blockgem3",
             new Materials[] { Materials.Topaz, Materials.Vinteum, Materials.GarnetYellow, Materials.NetherStar,
                 Materials.Charcoal, Materials.Blaze },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS11);
 
-        GregTech_API.sBlockMetal9 = new GT_Block_Metal(
+        GregTech_API.sBlockMetal9 = new BlockMetal(
             "gt.blockmetal9",
             new Materials[] { Materials.Cryolite, Materials.SiliconSG, MaterialsKevlar.NickelAluminide,
                 MaterialsUEVplus.SpaceTime, MaterialsUEVplus.TranscendentMetal, Materials.Oriharukon,
@@ -669,7 +669,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
 
-        GregTech_API.sBlockReinforced = new GT_Block_Reinforced("gt.blockreinforced");
+        GregTech_API.sBlockReinforced = new BlockReinforced("gt.blockreinforced");
 
         GT_Log.out.println("GT_Mod: Register TileEntities.");
 
@@ -697,8 +697,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         FMLInterModComms.sendMessage(AppliedEnergistics2.ID, "whitelist-spatial", BaseMetaPipeEntity.class.getName());
 
         GT_Log.out.println("GT_Mod: Registering the Ore TileEntity.");
-        GameRegistry.registerTileEntity(GT_TileEntity_Ores.class, "GT_TileEntity_Ores");
-        FMLInterModComms.sendMessage(AppliedEnergistics2.ID, "whitelist-spatial", GT_TileEntity_Ores.class.getName());
+        GameRegistry.registerTileEntity(TileEntityOres.class, "GT_TileEntity_Ores");
+        FMLInterModComms.sendMessage(AppliedEnergistics2.ID, "whitelist-spatial", TileEntityOres.class.getName());
 
         GT_Log.out.println("GT_Mod: Registering Fluids.");
         Materials.ConstructionFoam.mFluid = GT_Utility
@@ -2122,7 +2122,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API
             .registerMachineBlock(GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("reinforcedGlass", 0)), 0);
 
-        GregTech_API.sSolenoidCoilCasings = new GT_Cyclotron_Coils();
+        GregTech_API.sSolenoidCoilCasings = new BlockCyclotronCoils();
         ItemList.TierdDrone0
             .set(new GT_TierDrone("tierdDrone0", "Drone (Level 1)", "Quadcopter Stable Small Aircraft", 1));
         ItemList.TierdDrone1

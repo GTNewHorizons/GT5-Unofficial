@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import gregtech.common.blocks.TileEntityOres;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderEnd;
 import net.minecraft.world.WorldProviderHell;
@@ -16,7 +17,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
-import gregtech.common.blocks.GT_TileEntity_Ores;
 
 public class GT_Worldgen_GT_Ore_SmallPieces extends GT_Worldgen {
 
@@ -117,7 +117,7 @@ public class GT_Worldgen_GT_Ore_SmallPieces extends GT_Worldgen {
         if (this.mMeta > 0) {
             int j = Math.max(1, this.mAmount / 2 + aRandom.nextInt(this.mAmount) / 2);
             for (int i = 0; i < j; i++) {
-                GT_TileEntity_Ores.setOreBlock(
+                TileEntityOres.setOreBlock(
                     aWorld,
                     aChunkX + 8 + aRandom.nextInt(16),
                     this.mMinY + aRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)),

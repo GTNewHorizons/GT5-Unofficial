@@ -7,7 +7,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.Hatch_InputBus;
-import gregtech.client.GT_TooltipHandler;
+import gregtech.client.TooltipHandler;
 
 public class GT_MetaTileEntity_LensHousing extends Hatch_InputBus {
 
@@ -16,7 +16,7 @@ public class GT_MetaTileEntity_LensHousing extends Hatch_InputBus {
             id,
             name,
             nameRegional,
-            GT_TooltipHandler.Tier.UV.ordinal(),
+            TooltipHandler.Tier.UV.ordinal(),
             1,
             new String[] { "Holds a lens for UV laser focusing." });
     }

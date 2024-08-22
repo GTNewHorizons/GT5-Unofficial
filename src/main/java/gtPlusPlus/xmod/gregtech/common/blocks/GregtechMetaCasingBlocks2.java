@@ -12,7 +12,7 @@ import net.minecraft.util.IIcon;
 import gregtech.api.enums.TAE;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler2;
@@ -60,7 +60,7 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
     }
 
     public GregtechMetaCasingBlocks2() {
-        super(GregtechMetaCasingItemBlocks2.class, "gtplusplus.blockcasings.2", GT_Material_Casings.INSTANCE);
+        super(GregtechMetaCasingItemBlocks2.class, "gtplusplus.blockcasings.2", MaterialCasings.INSTANCE);
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
             if (i == 4 || i == 10 || i == 11 || i == 12 || i == 14) {
                 continue;

@@ -51,7 +51,7 @@ import gregtech.api.objects.GT_Cover_None;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.CoverBehaviorBase;
-import gregtech.api.util.GT_GC_Compat;
+import gregtech.api.util.GCCompat;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
@@ -353,7 +353,7 @@ public class MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTileEnt
 
         // ((tIsGregTechTileEntity && tIsTileEntityCable) && (tAlwaysLookConnected || tLetEnergyIn || tLetEnergyOut) )
         // --> Not needed
-        if (GalacticraftCore.isModLoaded() && GT_GC_Compat.canConnect(tileEntity, oppositeSide)) return true;
+        if (GalacticraftCore.isModLoaded() && GCCompat.canConnect(tileEntity, oppositeSide)) return true;
 
         // AE2-p2p Compat
         if (tileEntity instanceof appeng.tile.powersink.IC2 ic2sink

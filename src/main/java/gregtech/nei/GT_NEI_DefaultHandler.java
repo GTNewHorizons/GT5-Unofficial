@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.common.blocks.ItemMachines;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
@@ -67,7 +68,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.OreDictUnificator;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.gui.modularui.UIHelper;
 
 public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
@@ -323,7 +323,7 @@ public class GT_NEI_DefaultHandler extends TemplateRecipeHandler {
             ItemStack candidate = (ItemStack) ingredients[0];
             GT_NEI_DefaultHandler handler = (GT_NEI_DefaultHandler) newInstance();
             if (RecipeCatalysts.containsCatalyst(handler, candidate)) {
-                IMetaTileEntity metaTile = GT_Item_Machines.getMetaTileEntity(candidate);
+                IMetaTileEntity metaTile = ItemMachines.getMetaTileEntity(candidate);
                 OverclockDescriber overclockDescriber;
                 if (metaTile instanceof IOverclockDescriptionProvider provider) {
                     overclockDescriber = provider.getOverclockDescriber();

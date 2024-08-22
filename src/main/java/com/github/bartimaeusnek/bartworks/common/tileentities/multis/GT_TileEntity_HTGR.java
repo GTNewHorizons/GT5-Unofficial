@@ -16,7 +16,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_Values.AuthorKuba;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 import static gregtech.api.util.RecipeBuilder.HOURS;
 

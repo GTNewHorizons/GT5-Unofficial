@@ -10,9 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Item_Casings_Abstract;
+import gregtech.common.blocks.ItemCasingsAbstract;
 
-public class GT_Item_Casings_Stabilisation extends GT_Item_Casings_Abstract {
+public class GT_Item_Casings_Stabilisation extends ItemCasingsAbstract {
 
     public GT_Item_Casings_Stabilisation(Block par1) {
         super(par1);

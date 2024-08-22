@@ -14,8 +14,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.ofFrame;
 import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
@@ -92,7 +92,7 @@ import gregtech.api.util.OreDictUnificator;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.blocks.GT_Block_Casings8;
+import gregtech.common.blocks.BlockCasings8;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class GT_MetaTileEntity_PCBFactory extends ExtendedPowerMultiBlockBase<GT_MetaTileEntity_PCBFactory>
@@ -236,7 +236,7 @@ public class GT_MetaTileEntity_PCBFactory extends ExtendedPowerMultiBlockBase<GT
             buildHatchAdder(GT_MetaTileEntity_PCBFactory.class)
                 .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
                 .dot(1)
-                .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11))
+                .casingIndex(((BlockCasings8) GregTech_API.sBlockCasings8).getTextureIndex(11))
                 .buildAndChain(GregTech_API.sBlockCasings8, 11))
         .addElement('H', ofFrame(Materials.Duranium))
         .addElement('G', ofBlock(GregTech_API.sBlockCasings8, 12))
@@ -247,7 +247,7 @@ public class GT_MetaTileEntity_PCBFactory extends ExtendedPowerMultiBlockBase<GT
             buildHatchAdder(GT_MetaTileEntity_PCBFactory.class)
                 .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
                 .dot(1)
-                .casingIndex(((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13))
+                .casingIndex(((BlockCasings8) GregTech_API.sBlockCasings8).getTextureIndex(13))
                 .buildAndChain(GregTech_API.sBlockCasings8, 13))
         .addElement('L', ofBlock(GregTech_API.sBlockCasings4, 1))
         .addElement(
@@ -441,8 +441,8 @@ public class GT_MetaTileEntity_PCBFactory extends ExtendedPowerMultiBlockBase<GT
                     .build() };
         }
         return new ITexture[] { BlockIcons.getCasingTextureForId(
-            mSetTier < 3 ? ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(11)
-                : ((GT_Block_Casings8) GregTech_API.sBlockCasings8).getTextureIndex(13)) };
+            mSetTier < 3 ? ((BlockCasings8) GregTech_API.sBlockCasings8).getTextureIndex(11)
+                : ((BlockCasings8) GregTech_API.sBlockCasings8).getTextureIndex(13)) };
     }
 
     @Override

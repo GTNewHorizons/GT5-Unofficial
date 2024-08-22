@@ -16,9 +16,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.TierEU;
-import gregtech.common.blocks.GT_Item_Casings_Abstract;
+import gregtech.common.blocks.ItemCasingsAbstract;
 
-public class GT_Item_CasingsBA0 extends GT_Item_Casings_Abstract {
+public class GT_Item_CasingsBA0 extends ItemCasingsAbstract {
 
     public GT_Item_CasingsBA0(Block par1) {
         super(par1);

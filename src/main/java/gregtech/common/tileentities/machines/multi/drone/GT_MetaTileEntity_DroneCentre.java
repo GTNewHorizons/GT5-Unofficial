@@ -7,7 +7,7 @@ import static gregtech.api.enums.GT_Values.AuthorSilverMoon;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.multitileentity.multiblock.casing.Glasses.chainAllGlasses;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.io.IOException;
 import java.text.Collator;

@@ -29,8 +29,8 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.BlockOresAbstract;
+import gregtech.common.blocks.TileEntityOres;
 import gregtech.common.misc.GT_DrillingLogicDelegate;
 import gregtech.common.misc.GT_IDrillingLogicDelegateOwner;
 
@@ -277,9 +277,9 @@ public class GT_MetaTileEntity_Miner extends BasicMachine implements GT_IDrillin
                 int blockMeta = aBaseMetaTileEntity.getMetaIDOffset(x, pipe.getTipDepth(), z);
 
                 // todo some weird checks. refactorings needed
-                if (block instanceof GT_Block_Ores_Abstract) {
+                if (block instanceof BlockOresAbstract) {
                     TileEntity oreEntity = aBaseMetaTileEntity.getTileEntityOffset(x, pipe.getTipDepth(), z);
-                    if (oreEntity instanceof GT_TileEntity_Ores && ((GT_TileEntity_Ores) oreEntity).mNatural) {
+                    if (oreEntity instanceof TileEntityOres && ((TileEntityOres) oreEntity).mNatural) {
                         oreBlockPositions.add(new ChunkPosition(x, pipe.getTipDepth(), z));
                     }
                 } else if (GT_Utility.isOre(block, blockMeta)) {

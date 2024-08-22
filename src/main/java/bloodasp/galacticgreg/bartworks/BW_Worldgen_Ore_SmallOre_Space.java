@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import gregtech.common.blocks.TileEntityOres;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -26,7 +27,6 @@ import bloodasp.galacticgreg.registry.GalacticGregRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.common.blocks.GT_TileEntity_Ores;
 
 public class BW_Worldgen_Ore_SmallOre_Space extends BW_OreLayer {
 
@@ -70,7 +70,7 @@ public class BW_Worldgen_Ore_SmallOre_Space extends BW_OreLayer {
 
     /**
      * Script Friendly Constructor, WONT WORK WITH NEI
-     * 
+     *
      * @param aName
      * @param enabled
      */
@@ -104,7 +104,7 @@ public class BW_Worldgen_Ore_SmallOre_Space extends BW_OreLayer {
     @Override
     public boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean isSmallOre) {
         TileEntity te = aWorld.getTileEntity(aX, aY, aZ);
-        if (!(te instanceof BW_MetaGeneratedOreTE) && !(te instanceof GT_TileEntity_Ores)) {
+        if (!(te instanceof BW_MetaGeneratedOreTE) && !(te instanceof TileEntityOres)) {
             if (aMetaData == this.mSporadicMeta && (this.bwOres & 1) != 0
                 || aMetaData == this.mBetweenMeta && (this.bwOres & 2) != 0
                 || aMetaData == this.mPrimaryMeta && (this.bwOres & 8) != 0

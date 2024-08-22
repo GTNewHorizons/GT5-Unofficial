@@ -52,7 +52,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.StructureUtility;
 
 public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_MultiblockBase_EM {
 
@@ -98,7 +98,7 @@ public class GT_MetaTileEntity_EM_BaseModule extends GT_MetaTileEntity_Multibloc
         .addElement('A', ofBlock(GregTech_API.sSolenoidCoilCasings, 9))
         .addElement(
             'B',
-            GT_StructureUtility.ofHatchAdderOptional(
+            StructureUtility.ofHatchAdderOptional(
                 GT_MetaTileEntity_EM_BaseModule::addClassicToMachineList,
                 TEXTURE_INDEX,
                 1,

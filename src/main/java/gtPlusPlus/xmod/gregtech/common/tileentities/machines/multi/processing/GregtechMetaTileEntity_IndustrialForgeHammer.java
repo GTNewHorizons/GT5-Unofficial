@@ -14,7 +14,7 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.ThaumicBases;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.HashMap;
 import java.util.List;

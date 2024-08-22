@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.debugBlockMiner;
 
 import java.util.List;
 
+import gregtech.common.blocks.TileEntityOres;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -14,7 +15,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_TileEntity_Ores;
 
 /** @author Relvl on 27.01.2022 */
 @SuppressWarnings("ObjectEquality")
@@ -178,8 +178,8 @@ public class GT_DrillingLogicDelegate {
         short metaData = 0;
         TileEntity tTileEntity = owner.getBaseMetaTileEntity()
             .getTileEntity(x, y, z);
-        if (tTileEntity instanceof GT_TileEntity_Ores) {
-            metaData = ((GT_TileEntity_Ores) tTileEntity).mMetaData;
+        if (tTileEntity instanceof TileEntityOres) {
+            metaData = ((TileEntityOres) tTileEntity).mMetaData;
         }
 
         ItemStack cobble = GT_Utility.getCobbleForOre(block, metaData);

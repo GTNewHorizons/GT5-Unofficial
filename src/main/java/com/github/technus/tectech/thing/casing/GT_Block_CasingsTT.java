@@ -19,13 +19,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.common.blocks.BlockCasingsAbstract;
+import gregtech.common.blocks.MaterialCasings;
 
 /**
  * Created by danie_000 on 03.10.2016.
  */
-public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
+public class GT_Block_CasingsTT extends BlockCasingsAbstract {
 
     public static final byte texturePage = tectechTexturePage1;
     public static final short textureOffset = texturePage << 7; // Start of PAGE 8 (which is the 9th page) (8*128)
@@ -34,7 +34,7 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
     private static final IIcon[] debug = new IIcon[6];
 
     public GT_Block_CasingsTT() {
-        super(GT_Item_CasingsTT.class, "gt.blockcasingsTT", GT_Material_Casings.INSTANCE);
+        super(GT_Item_CasingsTT.class, "gt.blockcasingsTT", MaterialCasings.INSTANCE);
         setCreativeTab(creativeTabTecTech);
 
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {

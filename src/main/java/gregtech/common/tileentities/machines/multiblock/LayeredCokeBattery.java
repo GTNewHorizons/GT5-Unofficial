@@ -38,7 +38,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.StackableModularController;
-import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.StructureUtility;
 import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multiblock.logic.LayeredCokeBatteryProcessingLogic;
@@ -156,7 +156,7 @@ public class LayeredCokeBattery
                         FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
                         GT_MultiTileCasing.Distillation.getCasing()))
                 .addElement('C', ofBlock(GregTech_API.sBlockCasings4, 1))
-                .addElement('D', GT_StructureUtility.ofFrame(Materials.Steel))
+                .addElement('D', StructureUtility.ofFrame(Materials.Steel))
                 .addElement('E', ofMuTECasings(NOTHING, MOTOR_CASINGS))
                 .addElement(
                     'F',

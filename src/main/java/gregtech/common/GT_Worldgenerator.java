@@ -12,6 +12,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
 
+import gregtech.common.blocks.TileEntityOres;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,7 +34,6 @@ import gregtech.api.net.Packet_SendOregenPattern;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
-import gregtech.common.blocks.GT_TileEntity_Ores;
 
 public class GT_Worldgenerator implements IWorldGenerator {
 
@@ -666,13 +666,13 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                         }
                                         int ranOre = random.nextInt(50);
                                         if (ranOre < 3) {
-                                            GT_TileEntity_Ores.setOreBlock(world, eX, eY, eZ, primaryMeta, false);
+                                            TileEntityOres.setOreBlock(world, eX, eY, eZ, primaryMeta, false);
                                         } else if (ranOre < 6) {
-                                            GT_TileEntity_Ores.setOreBlock(world, eX, eY, eZ, secondaryMeta, false);
+                                            TileEntityOres.setOreBlock(world, eX, eY, eZ, secondaryMeta, false);
                                         } else if (ranOre < 8) {
-                                            GT_TileEntity_Ores.setOreBlock(world, eX, eY, eZ, betweenMeta, false);
+                                            TileEntityOres.setOreBlock(world, eX, eY, eZ, betweenMeta, false);
                                         } else if (ranOre < 10) {
-                                            GT_TileEntity_Ores.setOreBlock(world, eX, eY, eZ, sporadicMeta, false);
+                                            TileEntityOres.setOreBlock(world, eX, eY, eZ, sporadicMeta, false);
                                         } else {
                                             world.setBlock(eX, eY, eZ, Blocks.end_stone, 0, 0);
                                         }

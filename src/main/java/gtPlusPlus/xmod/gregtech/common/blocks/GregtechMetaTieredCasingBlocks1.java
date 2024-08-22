@@ -12,7 +12,7 @@ import net.minecraft.util.IIcon;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -42,7 +42,7 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
     }
 
     public GregtechMetaTieredCasingBlocks1() {
-        super(TieredCasingItemBlock.class, "gtplusplus.blocktieredcasings.1", GT_Material_Casings.INSTANCE);
+        super(TieredCasingItemBlock.class, "gtplusplus.blocktieredcasings.1", MaterialCasings.INSTANCE);
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Integral Encasement I");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Integral Encasement II");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Integral Encasement III");

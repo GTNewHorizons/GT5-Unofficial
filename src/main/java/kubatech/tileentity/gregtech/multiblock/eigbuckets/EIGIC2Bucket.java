@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+import gregtech.common.blocks.TileEntityOres;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.init.Blocks;
@@ -19,9 +20,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_Item_Ores;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.BlockOresAbstract;
+import gregtech.common.blocks.ItemOres;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 import ic2.core.Ic2Items;
@@ -396,19 +396,19 @@ public class EIGIC2Bucket extends EIGBucket {
         Block b = Block.getBlockFromItem(item);
         if (b == Blocks.air || !(item instanceof ItemBlock)) return false;
         short tDamage = (short) item.getDamage(stack);
-        if (item instanceof GT_Item_Ores && tDamage > 0) {
+        if (item instanceof ItemOres && tDamage > 0) {
             if (!world.setBlock(
                 x,
                 y,
                 z,
                 b,
-                GT_TileEntity_Ores.getHarvestData(
+                TileEntityOres.getHarvestData(
                     tDamage,
-                    ((GT_Block_Ores_Abstract) b).getBaseBlockHarvestLevel(tDamage % 16000 / 1000)),
+                    ((BlockOresAbstract) b).getBaseBlockHarvestLevel(tDamage % 16000 / 1000)),
                 0)) {
                 return false;
             }
-            GT_TileEntity_Ores tTileEntity = (GT_TileEntity_Ores) world.getTileEntity(x, y, z);
+            TileEntityOres tTileEntity = (TileEntityOres) world.getTileEntity(x, y, z);
             tTileEntity.mMetaData = tDamage;
             tTileEntity.mNatural = false;
         } else world.setBlock(x, y, z, b, tDamage, 0);

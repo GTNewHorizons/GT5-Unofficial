@@ -1,16 +1,16 @@
 package gtPlusPlus.core.common.compat;
 
 import static gregtech.api.enums.Mods.Baubles;
-import static gregtech.client.GT_TooltipHandler.Tier.EV;
-import static gregtech.client.GT_TooltipHandler.Tier.HV;
-import static gregtech.client.GT_TooltipHandler.Tier.IV;
-import static gregtech.client.GT_TooltipHandler.Tier.LV;
-import static gregtech.client.GT_TooltipHandler.Tier.LuV;
-import static gregtech.client.GT_TooltipHandler.Tier.MV;
-import static gregtech.client.GT_TooltipHandler.Tier.UHV;
-import static gregtech.client.GT_TooltipHandler.Tier.UV;
-import static gregtech.client.GT_TooltipHandler.Tier.ZPM;
-import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
+import static gregtech.client.TooltipHandler.Tier.EV;
+import static gregtech.client.TooltipHandler.Tier.HV;
+import static gregtech.client.TooltipHandler.Tier.IV;
+import static gregtech.client.TooltipHandler.Tier.LV;
+import static gregtech.client.TooltipHandler.Tier.LuV;
+import static gregtech.client.TooltipHandler.Tier.MV;
+import static gregtech.client.TooltipHandler.Tier.UHV;
+import static gregtech.client.TooltipHandler.Tier.UV;
+import static gregtech.client.TooltipHandler.Tier.ZPM;
+import static gregtech.client.TooltipHandler.registerTieredTooltip;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;

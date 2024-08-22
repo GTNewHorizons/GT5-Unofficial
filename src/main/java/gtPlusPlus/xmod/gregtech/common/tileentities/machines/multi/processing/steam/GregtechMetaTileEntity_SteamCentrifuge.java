@@ -4,7 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.GregTech_API.*;
 import static gregtech.api.enums.GT_Values.AuthorEvgenWarGold;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,8 +48,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.GT_Block_Casings1;
-import gregtech.common.blocks.GT_Block_Casings2;
+import gregtech.common.blocks.BlockCasings1;
+import gregtech.common.blocks.BlockCasings2;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -139,8 +139,8 @@ public class GregtechMetaTileEntity_SteamCentrifuge
 
     private int getCasingTextureID() {
         if (tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierFireBoxCasing == 2 || tierMachineCasing == 2)
-            return ((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0);
-        return ((GT_Block_Casings1) GregTech_API.sBlockCasings1).getTextureIndex(10);
+            return ((BlockCasings2) GregTech_API.sBlockCasings2).getTextureIndex(0);
+        return ((BlockCasings1) GregTech_API.sBlockCasings1).getTextureIndex(10);
     }
 
     @Override

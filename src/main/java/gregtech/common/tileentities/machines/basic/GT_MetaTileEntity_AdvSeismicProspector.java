@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import gregtech.common.blocks.BlockOresAbstract;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -44,8 +45,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.OreDictUnificator;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.TileEntityOres;
 import ic2.core.Ic2Items;
 
 public class GT_MetaTileEntity_AdvSeismicProspector extends BasicMachine {
@@ -275,14 +275,14 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends BasicMachine {
         Block tBlock = this.getBaseMetaTileEntity()
             .getBlock(x, y, z);
 
-        if (tBlock instanceof GT_Block_Ores_Abstract) {
+        if (tBlock instanceof BlockOresAbstract) {
             TileEntity tTileEntity = getBaseMetaTileEntity().getWorld()
                 .getTileEntity(x, y, z);
 
-            if ((tTileEntity instanceof GT_TileEntity_Ores) && (((GT_TileEntity_Ores) tTileEntity).mMetaData < 16000)) { // Filtering
+            if ((tTileEntity instanceof TileEntityOres) && (((TileEntityOres) tTileEntity).mMetaData < 16000)) { // Filtering
                                                                                                                          // small
                                                                                                                          // ores
-                Materials tMaterial = GregTech_API.sGeneratedMaterials[((GT_TileEntity_Ores) tTileEntity).mMetaData
+                Materials tMaterial = GregTech_API.sGeneratedMaterials[((TileEntityOres) tTileEntity).mMetaData
                     % 1000];
 
                 if ((tMaterial != null) && (tMaterial != Materials._NULL)) return tMaterial.mDefaultLocalName;

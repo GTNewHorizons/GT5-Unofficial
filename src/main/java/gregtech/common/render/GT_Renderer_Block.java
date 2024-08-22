@@ -52,9 +52,9 @@ import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
-import gregtech.common.blocks.GT_Block_Machines;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.BlockMachines;
+import gregtech.common.blocks.BlockOresAbstract;
+import gregtech.common.blocks.TileEntityOres;
 
 @ThreadSafeISBRH(perThread = true)
 public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
@@ -541,7 +541,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         }
     }
 
-    final GT_TileEntity_Ores tTileEntity = new GT_TileEntity_Ores();
+    final TileEntityOres tTileEntity = new TileEntityOres();
 
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
@@ -550,7 +550,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
 
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        if (aBlock instanceof GT_Block_Ores_Abstract) {
+        if (aBlock instanceof BlockOresAbstract) {
             tTileEntity.mMetaData = ((short) aMeta);
 
             aBlock.setBlockBoundsForItemRender();
@@ -565,7 +565,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
             // spotless:on
         } else if (aMeta > 0 && (aMeta < GregTech_API.METATILEENTITIES.length)
-            && aBlock instanceof GT_Block_Machines
+            && aBlock instanceof BlockMachines
             && (GregTech_API.METATILEENTITIES[aMeta] != null)
             && (!GregTech_API.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
                 renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);

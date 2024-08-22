@@ -14,18 +14,18 @@ import com.github.technus.tectech.thing.CustomItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
-import gregtech.common.blocks.GT_Material_Casings;
+import gregtech.common.blocks.BlockCasingsAbstract;
+import gregtech.common.blocks.MaterialCasings;
 
 /**
  * Created by danie_000 on 03.10.2016.
  */
-public class GT_Block_CasingsNH extends GT_Block_Casings_Abstract {
+public class GT_Block_CasingsNH extends BlockCasingsAbstract {
 
     public static boolean mConnectedMachineTextures = true;
 
     public GT_Block_CasingsNH() {
-        super(GT_Item_CasingsNH.class, "gt.blockcasingsNH", GT_Material_Casings.INSTANCE);
+        super(GT_Item_CasingsNH.class, "gt.blockcasingsNH", MaterialCasings.INSTANCE);
         setCreativeTab(creativeTabTecTech);
 
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {

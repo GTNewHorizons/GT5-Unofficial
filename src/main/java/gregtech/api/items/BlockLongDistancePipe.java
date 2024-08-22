@@ -22,15 +22,15 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Item_LongDistancePipe;
-import gregtech.common.blocks.GT_Material_Machines;
+import gregtech.common.blocks.ItemLongDistancePipe;
+import gregtech.common.blocks.MaterialMachines;
 
 public class BlockLongDistancePipe extends BlockGeneric {
 
     public IIconContainer[] mIcons;
 
     public BlockLongDistancePipe() {
-        super(GT_Item_LongDistancePipe.class, "gt.block.longdistancepipe", new GT_Material_Machines());
+        super(ItemLongDistancePipe.class, "gt.block.longdistancepipe", new MaterialMachines());
         setStepSound(soundTypeMetal);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
         GregTech_API.registerMachineBlock(this, -1);

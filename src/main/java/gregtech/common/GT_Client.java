@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
 
+import gregtech.common.blocks.ItemMachines;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
@@ -90,7 +91,6 @@ import gregtech.api.util.GT_PlayedSound;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.SeekingOggCodec;
-import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.render.GT_CapeRenderer;
 import gregtech.common.render.GT_FlaskRenderer;
 import gregtech.common.render.GT_FluidDisplayStackRenderer;
@@ -851,7 +851,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
 
         if (aEvent.player.isSneaking() && aTileEntity instanceof IGregTechTileEntity gtEntity
             && gtEntity.getMetaTileEntity() instanceof MetaPipeEntity) {
-            if (aEvent.currentItem != null && aEvent.currentItem.getItem() instanceof GT_Item_Machines
+            if (aEvent.currentItem != null && aEvent.currentItem.getItem() instanceof ItemMachines
                 && GregTech_API.METATILEENTITIES[aEvent.currentItem.getItemDamage()] instanceof MetaPipeEntity) {
                 drawGrid(aEvent, false, false, false);
             }
@@ -1097,7 +1097,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 || GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList)
                 || GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCrowbarList)
                 || GregTech_API.sCovers.containsKey(new GT_ItemStack(tCurrentItem))
-                || (tCurrentItem.getItem() instanceof GT_Item_Machines
+                || (tCurrentItem.getItem() instanceof ItemMachines
                     && GregTech_API.METATILEENTITIES[tCurrentItem.getItemDamage()] instanceof MetaPipeEntity
                     && player.isSneaking())) {
                 hide |= 0x2;

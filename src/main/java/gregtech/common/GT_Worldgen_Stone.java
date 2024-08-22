@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Random;
 
+import gregtech.common.blocks.BlockOresAbstract;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -17,8 +18,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen_Ore;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.TileEntityOres;
 
 public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
 
@@ -260,13 +260,13 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
                             if (leftHandSize <= rightHandSide) {
                                 // Yay! We can actually place a block now. (this part copied from original code)
                                 Block tTargetedBlock = aWorld.getBlock(iX, iY, iZ);
-                                if (tTargetedBlock instanceof GT_Block_Ores_Abstract) {
+                                if (tTargetedBlock instanceof BlockOresAbstract) {
                                     TileEntity tTileEntity = aWorld.getTileEntity(iX, iY, iZ);
-                                    if ((tTileEntity instanceof GT_TileEntity_Ores)) {
+                                    if ((tTileEntity instanceof TileEntityOres)) {
                                         if (tTargetedBlock != GregTech_API.sBlockOres1) {
-                                            ((GT_TileEntity_Ores) tTileEntity).convertOreBlock(aWorld, iX, iY, iZ);
+                                            ((TileEntityOres) tTileEntity).convertOreBlock(aWorld, iX, iY, iZ);
                                         }
-                                        ((GT_TileEntity_Ores) tTileEntity)
+                                        ((TileEntityOres) tTileEntity)
                                             .overrideOreBlockMaterial(this.mBlock, (byte) this.mBlockMeta);
                                     }
                                 } else if (((this.mAllowToGenerateinVoid) && (aWorld.getBlock(iX, iY, iZ)

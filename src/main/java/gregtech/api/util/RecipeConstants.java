@@ -1,7 +1,7 @@
 package gregtech.api.util;
 
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
-import static gregtech.api.util.GT_RecipeMapUtil.convertCellToFluid;
+import static gregtech.api.util.RecipeMapUtil.convertCellToFluid;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -522,7 +522,7 @@ public class RecipeConstants {
         for (ItemStack input : OreDictUnificator.getOresImmutable(builder.getMetadata(OREDICT_INPUT))) {
             ret.addAll(
                 builder.copy()
-                    .itemInputs(GT_RecipeMapUtil.appendArray(builder.getItemInputsBasic(), input))
+                    .itemInputs(RecipeMapUtil.appendArray(builder.getItemInputsBasic(), input))
                     .addTo(RecipeMaps.assemblerRecipes));
         }
         return ret;
@@ -577,25 +577,25 @@ public class RecipeConstants {
     }
 
     static {
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COIL_HEAT);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUSION_THRESHOLD);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUEL_VALUE);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NANO_FORGE_TIER);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_EXOTIC_TIER);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_PLASMA_TIER);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DEFC_CASING_TIER);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(CHEMPLANT_CASING_TIER);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(QFT_FOCUS_TIER);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DISSOLUTION_TANK_RATIO);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RTG_DURATION_IN_DAYS);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(LNG_BASIC_OUTPUT);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NFR_COIL_TIER);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NKE_RANGE);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(PRECISE_ASSEMBLER_CASING_TIER);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COAL_CASING_TIER);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RESEARCH_STATION_DATA);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(SIEVERTS);
-        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DECAY_TICKS);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COIL_HEAT);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUSION_THRESHOLD);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUEL_VALUE);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NANO_FORGE_TIER);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_EXOTIC_TIER);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_PLASMA_TIER);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DEFC_CASING_TIER);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(CHEMPLANT_CASING_TIER);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(QFT_FOCUS_TIER);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DISSOLUTION_TANK_RATIO);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RTG_DURATION_IN_DAYS);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(LNG_BASIC_OUTPUT);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NFR_COIL_TIER);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NKE_RANGE);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(PRECISE_ASSEMBLER_CASING_TIER);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COAL_CASING_TIER);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RESEARCH_STATION_DATA);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(SIEVERTS);
+        RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DECAY_TICKS);
 
     }
 }

@@ -98,7 +98,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.JubilanceMegaApiary;
 import gregtech.api.util.OreDictUnificator;
 import gregtech.common.bees.GT_AlleleBeeSpecies;
-import gregtech.common.bees.GT_Bee_Mutation;
+import gregtech.common.bees.GT_BeeMutation;
 import gregtech.common.items.CombType;
 import gregtech.common.items.DropType;
 import gregtech.common.items.PropolisType;
@@ -2605,8 +2605,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     private IBeeGenome genome;
 
     GT_BeeDefinition(GT_BranchDefinition branch, String binomial, boolean dominant, Color primary, Color secondary,
-        Consumer<GT_AlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles,
-        Consumer<GT_BeeDefinition> aMutations) {
+                     Consumer<GT_AlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles,
+                     Consumer<GT_BeeDefinition> aMutations) {
         this.mAlleles = aAlleles;
         this.mMutations = aMutations;
         this.mSpeciesProperties = aSpeciesProperties;
@@ -2726,7 +2726,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
      */
     private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance,
         float chanceDivider) {
-        return new GT_Bee_Mutation(parent1, parent2, this.getTemplate(), chance, chanceDivider);
+        return new GT_BeeMutation(parent1, parent2, this.getTemplate(), chance, chanceDivider);
     }
 
     private IBeeMutationCustom registerMutation(GT_BeeDefinition parent1, IAlleleBeeSpecies parent2, int chance,

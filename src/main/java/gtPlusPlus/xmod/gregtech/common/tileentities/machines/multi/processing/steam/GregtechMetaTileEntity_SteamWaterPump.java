@@ -6,8 +6,8 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_Values.AuthorEvgenWarGold;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.StructureUtility.buildHatchAdder;
+import static gregtech.api.util.StructureUtility.ofFrame;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
-import gregtech.common.blocks.GT_Block_Casings9;
+import gregtech.common.blocks.BlockCasings9;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -136,12 +136,12 @@ public class GregtechMetaTileEntity_SteamWaterPump
                     'C',
                         ofChain(
                             buildSteamInput(GregtechMetaTileEntity_SteamWaterPump.class)
-                                .casingIndex(((GT_Block_Casings9) GregTech_API.sBlockCasings9).getTextureIndex(2))
+                                .casingIndex(((BlockCasings9) GregTech_API.sBlockCasings9).getTextureIndex(2))
                                 .dot(1)
                                 .build(),
                             buildHatchAdder(GregtechMetaTileEntity_SteamWaterPump.class)
                                 .atLeast(OutputHatch)
-                                .casingIndex(((GT_Block_Casings9) GregTech_API.sBlockCasings9).getTextureIndex(2))
+                                .casingIndex(((BlockCasings9) GregTech_API.sBlockCasings9).getTextureIndex(2))
                                 .dot(1)
                                 .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(GregTech_API.sBlockCasings9, 2)))
                         )

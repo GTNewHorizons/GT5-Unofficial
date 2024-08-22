@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.util.Map;
 
+import gregtech.common.blocks.ItemMachines;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -50,7 +51,6 @@ import org.junit.jupiter.api.Test;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.common.blocks.GT_Item_Machines;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 import ic2.core.Ic2Items;
@@ -208,7 +208,7 @@ public class EIGTests {
         TileEntityCrop cropTile = (TileEntityCrop) myWorld.getTileEntity(10, 81, 0);
         ItemStack ccStack = ItemCropSeed.generateItemStackFromValues(cc, (byte) 10, (byte) 10, (byte) 10, (byte) 1);
 
-        GT_Item_Machines itemMachines = (GT_Item_Machines) Item.getItemFromBlock(GregTech_API.sBlockMachines);
+        ItemMachines itemMachines = (ItemMachines) Item.getItemFromBlock(GregTech_API.sBlockMachines);
         itemMachines.placeBlockAt(
             new ItemStack(itemMachines, 1, EIG_CONTROLLER_METADATA),
             null,

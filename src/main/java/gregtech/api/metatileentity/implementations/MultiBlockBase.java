@@ -92,7 +92,7 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.client.GT_SoundLoop;
+import gregtech.client.SoundLoop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
@@ -157,7 +157,7 @@ public abstract class MultiBlockBase extends MetaTileEntity
     protected List<Hatch> mExoticEnergyHatches = new ArrayList<>();
     protected final ProcessingLogic processingLogic;
     @SideOnly(Side.CLIENT)
-    protected GT_SoundLoop activitySoundLoop;
+    protected SoundLoop activitySoundLoop;
 
     private long mLastWorkingTick = 0;
     private static final int CHECK_INTERVAL = 100; // How often should we check for a new recipe on an idle machine?
@@ -647,7 +647,7 @@ public abstract class MultiBlockBase extends MetaTileEntity
     protected void doActivitySound(ResourceLocation activitySound) {
         if (getBaseMetaTileEntity().isActive() && activitySound != null) {
             if (activitySoundLoop == null) {
-                activitySoundLoop = new GT_SoundLoop(activitySound, getBaseMetaTileEntity(), false, true);
+                activitySoundLoop = new SoundLoop(activitySound, getBaseMetaTileEntity(), false, true);
                 Minecraft.getMinecraft()
                     .getSoundHandler()
                     .playSound(activitySoundLoop);
