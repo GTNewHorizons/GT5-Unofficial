@@ -89,13 +89,6 @@ public class GT_UO_DimensionList {
         fConfig = aConfig;
         if (!fConfig.hasCategory(fCategory)) SetDafultValues();
 
-        fConfig.setCategoryComment(fCategory, "Config Underground Fluids (Delete this Category for regenerate)");
-        fConfig.setCategoryComment(
-            fCategory + ".Default",
-            "Set Default Generating (Use this Category for Default settings)");
-        fConfig.setCategoryComment(fCategory + ".Overworld", "Set Overworld Generating");
-        fConfig.setCategoryComment(fCategory + ".Moon", "Set Moon Generating");
-
         blackList = new int[] { -1, 1 };
         blackList = aConfig.get(fCategory, "DimBlackList", blackList, "Dimension IDs Black List")
             .getIntList();
