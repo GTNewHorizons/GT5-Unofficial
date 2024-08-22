@@ -422,12 +422,6 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mExplosionItemDrop = ConfigGeneral.mExplosionItemDrop;
         GT_Mod.gregtechproxy.mEnableCleanroom = ConfigGeneral.mEnableCleanroom;
         GT_Mod.gregtechproxy.mLowGravProcessing = GalacticraftCore.isModLoaded() && ConfigGeneral.mLowGravProcessing;
-
-        // marked for removal
-        GT_Mod.gregtechproxy.mUseGreatlyShrukenReplacementList = tMainConfig
-            .get("general", "GTNH Optimised Material Loading", true)
-            .getBoolean(true);
-
         GT_Mod.gregtechproxy.mCropNeedBlock = ConfigGeneral.mCropNeedBlock;
         GT_Mod.gregtechproxy.mAMHInteraction = ConfigGeneral.mAMHInteraction;
         GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre = ConfigGeneral.mMixedOreOnlyYieldsTwoThirdsOfPureOre;

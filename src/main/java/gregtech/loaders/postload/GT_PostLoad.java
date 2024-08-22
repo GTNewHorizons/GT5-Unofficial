@@ -415,11 +415,7 @@ public class GT_PostLoad {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
         GT_Mod.GT_FML_LOGGER.info("Replacing Vanilla Materials in recipes, please wait.");
-        Set<Materials> replaceVanillaItemsSet = GT_Mod.gregtechproxy.mUseGreatlyShrukenReplacementList
-            ? Arrays.stream(Materials.values())
-                .filter(GT_RecipeRegistrator::hasVanillaRecipes)
-                .collect(Collectors.toSet())
-            : new HashSet<>(Arrays.asList(Materials.values()));
+        Set<Materials> replaceVanillaItemsSet = Arrays.stream(Materials.values()).filter(GT_RecipeRegistrator::hasVanillaRecipes).collect(Collectors.toSet());
 
         ProgressManager.ProgressBar progressBar = ProgressManager
             .push("Register materials", replaceVanillaItemsSet.size());
