@@ -5,7 +5,6 @@ import gregtech.api.enums.Mods;
 
 @Config(modid = Mods.Names.GREG_TECH, category = "pollution",configSubDirectory = "GregTech",filename = "GregTech")
 public class ConfigPollution {
-    // Pollution: edit GT_Proxy.java to change default values
     @Config.Comment("if true, enables pollution in the game.")
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
